@@ -11,9 +11,9 @@ html {
     background-color: #0069D9 !important;
   }
 
-  .font-organization {
-    color: #fff;
-    font-weight: 600;
+  .font-brand {
+    color: #fff !important;
+    font-weight: 600 !important;
   }
 
   .anchor-menu {
