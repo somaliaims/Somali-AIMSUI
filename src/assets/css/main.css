@@ -48,4 +48,14 @@ html {
     /*box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);*/ 
     box-shadow: 0 .25rem .75rem rgba(0, 105, 217, .1);
   }
+
+  /*custom css for validation*/
+  .ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+  }
+  
+  .ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+  }
+  /*End of css for validation*/
   

@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="card card-signin my-5">
+      <div class="card-body">
+        <h5 class="card-title text-center">Register</h5>
+        <form (ngSubmit)="onSubmit()" #registrationForm="ngForm">
+          <div class="form-group">
+            <label for="name">Display Name</label>
+            <input type="text" class="form-control" id="displayName" required [(ngModel)]="model.displayName" name="displayName" #name="ngModel">
+            <div [hidden]="displayName.valid || displayName.pristine" class="alert alert-danger">
+              Display Name is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="model.email" required [(ngModel)]="model.email" name="email" #email="ngModel">
+          </div>
+
+          <div class="form-group">
+            <label for="userType">User Type</label>
+            <select class="form-control" id="userType" required [(ngModel)]="model.userType" name="userType" #userType="ngModel">
+              <option *ngFor="let uType of userTypes" [value]="uType.id">{{uType.typeName}}</option>
+            </select>
+            <div [hidden]="userType.valid || userType.pristine" class="alert alert-danger">
+              Select a User Type
+            </div>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
