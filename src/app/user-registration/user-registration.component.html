@@ -6,15 +6,34 @@
         <form (ngSubmit)="onSubmit()" #registrationForm="ngForm">
           <div class="form-group">
             <label for="name">Display Name</label>
-            <input type="text" class="form-control" id="displayName" required [(ngModel)]="model.displayName" name="displayName" #name="ngModel">
+            <input type="text" class="form-control" id="displayName" required [(ngModel)]="model.displayName" name="displayName" #displayName="ngModel">
             <div [hidden]="displayName.valid || displayName.pristine" class="alert alert-danger">
-              Display Name is required
+              Display name is required
             </div>
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" [(ngModel)]="model.email" required [(ngModel)]="model.email" name="email" #email="ngModel">
+            <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+              Enter valid email address
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" [(ngModel)]="model.password" required [(ngModel)]="model.password" name="password" #password="ngModel">
+            <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+              Password is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="model.confirmPassword" required [(ngModel)]="model.confirmPassword" name="confirmPassword" #confirmPassword="ngModel">
+            <div [hidden]="model.password == model.confirmPassword || model.confirmPassword.length == 0" class="alert alert-danger">
+              Passwords do not match
+            </div>
           </div>
 
           <div class="form-group">
@@ -23,7 +42,7 @@
               <option *ngFor="let uType of userTypes" [value]="uType.id">{{uType.typeName}}</option>
             </select>
             <div [hidden]="userType.valid || userType.pristine" class="alert alert-danger">
-              Select a User Type
+              Select a user type
             </div>
           </div>
           <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>

@@ -13,10 +13,11 @@ export class UserRegistrationComponent implements OnInit {
   model: any = {};
  
   onSubmit() {
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.model))
+    console.log(JSON.stringify(this.model))
   }
 
   ngOnInit() {
+    this.model = new RegistrationModel('', '', '', '', '');
     this.fillUserTypes();
   }
 
