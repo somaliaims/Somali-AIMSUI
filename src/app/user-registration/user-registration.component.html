@@ -4,6 +4,15 @@
       <div class="card-body">
         <h5 class="card-title text-center">Register</h5>
         <form (ngSubmit)="onSubmit()" #registrationForm="ngForm">
+          
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="model.email" required [(ngModel)]="model.email" name="email" #email="ngModel">
+            <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+              Enter valid email address
+            </div>
+          </div>
+
           <div class="form-group">
             <label for="name">Display Name</label>
             <input type="text" class="form-control" id="displayName" required [(ngModel)]="model.displayName" name="displayName" #displayName="ngModel">
@@ -12,13 +21,6 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" [(ngModel)]="model.email" required [(ngModel)]="model.email" name="email" #email="ngModel">
-            <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
-              Enter valid email address
-            </div>
-          </div>
 
           <div class="form-group">
             <label for="password">Password</label>
