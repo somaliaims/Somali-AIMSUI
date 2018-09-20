@@ -58,4 +58,13 @@ html {
     border-left: 5px solid #a94442; /* red */
   }
   /*End of css for validation*/
+
+  .margin-top-10 {
+    margin-top: 10px !important;
+  }
+
+  .disable {
+    pointer-events: none !important;
+    opacity: 0.5 !important;
+  }
   

@@ -7,47 +7,53 @@
           
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" [(ngModel)]="model.email" required [(ngModel)]="model.email" name="email" #email="ngModel">
-            <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+            <input type="email" class="form-control" [class.disable]='disableEmail' id="Email" [(ngModel)]="model.Email" required [(ngModel)]="model.Email" name="Email" #Email="ngModel">
+            <div [hidden]="Email.valid || Email.pristine" class="alert alert-danger">
               Enter valid email address
             </div>
-          </div>
-
-          <div class="form-group">
-            <label for="name">Display Name</label>
-            <input type="text" class="form-control" id="displayName" required [(ngModel)]="model.displayName" name="displayName" #displayName="ngModel">
-            <div [hidden]="displayName.valid || displayName.pristine" class="alert alert-danger">
-              Display name is required
+            <div [hidden]="!emailNotAvailable" class="alert alert-danger">
+              Email Address already taken
             </div>
+            <button *ngIf="!isEmailOk" class="btn btn-sm btn-info btn-block text-uppercase" type="button" (click)="checkIfEmailAvailable()">Check Email</button>
           </div>
-
-
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" [(ngModel)]="model.password" required [(ngModel)]="model.password" name="password" #password="ngModel">
-            <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
-              Password is required
+          
+          <div *ngIf="isEmailOk">
+            <div class="form-group">
+              <label for="name">Display Name</label>
+              <input type="text" class="form-control" id="displayName" required [(ngModel)]="model.DisplayName" name="DisplayName" #DisplayName="ngModel">
+              <div [hidden]="DisplayName.valid || DisplayName.pristine" class="alert alert-danger">
+                Display name is required
+              </div>
             </div>
-          </div>
-
-          <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="model.confirmPassword" required [(ngModel)]="model.confirmPassword" name="confirmPassword" #confirmPassword="ngModel">
-            <div [hidden]="model.password == model.confirmPassword || model.confirmPassword.length == 0" class="alert alert-danger">
-              Passwords do not match
+  
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" [(ngModel)]="model.Password" required [(ngModel)]="model.Password" name="Password" #Password="ngModel">
+              <div [hidden]="Password.valid || Password.pristine" class="alert alert-danger">
+                Password is required
+              </div>
             </div>
-          </div>
-
-          <div class="form-group">
-            <label for="userType">User Type</label>
-            <select class="form-control" id="userType" required [(ngModel)]="model.userType" name="userType" #userType="ngModel">
-              <option *ngFor="let uType of userTypes" [value]="uType.id">{{uType.typeName}}</option>
-            </select>
-            <div [hidden]="userType.valid || userType.pristine" class="alert alert-danger">
-              Select a user type
+  
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" class="form-control" id="ConfirmPassword" [(ngModel)]="model.ConfirmPassword" required [(ngModel)]="model.ConfirmPassword" name="ConfirmPassword" #ConfirmPassword="ngModel">
+              <div [hidden]="model.Password == model.ConfirmPassword || model.ConfirmPassword.length == 0" class="alert alert-danger">
+                Passwords do not match
+              </div>
             </div>
+  
+            <div class="form-group">
+              <label for="UserType">User Type</label>
+              <select class="form-control" id="UserType" required [(ngModel)]="model.UserType" name="UserType" #UserType="ngModel">
+                <option *ngFor="let uType of userTypes" [value]="uType.id">{{uType.typeName}}</option>
+              </select>
+              <div [hidden]="UserType.valid || UserType.pristine" class="alert alert-danger">
+                Select a user type
+              </div>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
           </div>
-          <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+          
         </form>
       </div>
     </div>

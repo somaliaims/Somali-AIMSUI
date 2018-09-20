@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as urlsList from "../config/urls";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class UrlHelperService {
     BASE_URL : string; 
     
