@@ -22,7 +22,7 @@ import { UrlHelperService } from './services/url-helper-service';
     BrowserModule,
     FormsModule,
     Routing,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
   ],

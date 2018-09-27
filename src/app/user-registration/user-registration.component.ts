@@ -23,7 +23,7 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.model = new RegistrationModel('', '', '', '', '');
+    this.model = new RegistrationModel('', '', '', '', '', '');
     this.fillUserTypes();
   }
 
@@ -56,5 +56,24 @@ export class UserRegistrationComponent implements OnInit {
       }
     );
   }
+
+  registerUser() {
+    this.userService.registerUser(this.model).subscribe(
+      data => {
+        console.log(data);
+      },
+      error => {
+        console.log("Request Faild: ", error);
+      }
+    )
+  }
+
+  resetModel() {
+    this.model = new RegistrationModel('', '', '', '', '', '');
+    this.isEmailOk = false;
+    this.emailNotAvailable = false;
+    this.disableEmail = false;
+  }
+
 
 }

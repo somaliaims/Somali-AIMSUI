@@ -17,7 +17,6 @@ const httpOptions = {
 })
 export class UserService {
     customersObservable : Observable<UserModel[]>;
-    
     constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService) { 
     }
 
@@ -31,21 +30,22 @@ export class UserService {
         var model = { "Email": email, "Password": password };
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.handleError<any>('authentication')));
+                catchError(this.handleError<any>('Authentication')));
     }
 
     checkEmailAvailability(email: string) {
-        var headers = this.getHttpHeader();
         var url = this.urlHelper.emailAvailabilityUrl(email);
         return this.httpClient
             .get<boolean>(url);
     }
 
-    private getHttpHeader() {
-        let headers = new HttpHeaders();
-        headers.append('Content-Type', 'application/json');
-        return headers;
+    registerUser(model: UserModel) {
+        var url  = this.urlHelper.userRegistrationUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.handleError<any>('User registration')));
     }
+
 
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {

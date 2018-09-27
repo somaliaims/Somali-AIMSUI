@@ -19,5 +19,9 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.checkEmailAvailability + email);
     }
 
+    userRegistrationUrl() {
+        return (this.BASE_URL + urlsList.urls.userRegistration);
+    }
+
 
 }
