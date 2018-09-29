@@ -4,7 +4,6 @@ import { UserModel } from "../models/user-model";
 import { UrlHelperService } from "./url-helper-service";
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import * as urlsList from "../config/urls";
 
 const httpOptions = {
     headers: new HttpHeaders({

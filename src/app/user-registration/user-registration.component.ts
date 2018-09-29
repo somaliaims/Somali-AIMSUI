@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistrationModel } from '../models/registration';
 import { UserService } from '../services/user-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-registration',
@@ -14,12 +15,13 @@ export class UserRegistrationComponent implements OnInit {
   emailNotAvailable: boolean = false;
   disableEmail: boolean = false;
   
-  constructor(private userService: UserService) { 
-    
+  constructor(private userService: UserService, private router: Router) { 
   }
  
   onSubmit() {
-    console.log(JSON.stringify(this.model))
+    console.log(JSON.stringify(this.model));
+    this.router.navigateByUrl('user-org-registration');
+
   }
 
   ngOnInit() {
@@ -74,6 +76,5 @@ export class UserRegistrationComponent implements OnInit {
     this.emailNotAvailable = false;
     this.disableEmail = false;
   }
-
 
 }

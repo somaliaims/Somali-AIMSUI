@@ -3,5 +3,6 @@ export const urls = {
 	baseUrl: "http://localhost:60815/api/",
 	getToken: "Account/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
-	userRegistration: "User"
+	userRegistration: "User",
+	organizationsList: "Organization"
 };

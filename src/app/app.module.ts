@@ -1,7 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import {MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatButtonModule, MatProgressSpinnerModule} from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
@@ -11,18 +13,27 @@ import { UserRegistrationComponent } from './user-registration/user-registration
 //Services
 import { UserService } from './services/user-service';
 import { UrlHelperService } from './services/url-helper-service';
+import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    UserRegistrationComponent
+    UserRegistrationComponent,
+    UserOrgRegistrationComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     Routing,
     HttpClientModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
   ],

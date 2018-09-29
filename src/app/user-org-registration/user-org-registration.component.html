@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="card card-signin my-5">
+      <div class="card-body">
+        <h5 class="card-title text-center">Register Organization</h5>
+
+        <form class="example-form" [formGroup]='usersForm'>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Choose/Enter your Organization" [matAutocomplete]="auto" formControlName='userInput'>
+          </mat-form-field>
+        
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+            <ng-container *ngIf="!isLoading">
+              <mat-option *ngFor="let organization of filteredOrganizations" [value]="organization">
+                <span>{{ organization.organizationName }}</span>
+                <small> | ID: {{organization.id}}</small>
+              </mat-option>
+            </ng-container>
+          </mat-autocomplete>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
