@@ -8,8 +8,8 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" class="form-control" [class.disable]='disableEmail' id="Email" [(ngModel)]="model.Email" required [(ngModel)]="model.Email" name="Email" #Email="ngModel">
-            <div [hidden]="Email.valid" class="alert alert-danger">
-              Enter valid email address
+            <div [hidden]="Email.valid || Email.pristine || (!Email.errors)" class="alert alert-danger">
+              Enter email address
             </div>
             <div [hidden]="!emailNotAvailable" class="alert alert-danger">
               Email Address already taken
@@ -20,7 +20,7 @@
           <div *ngIf="isEmailOk">
             <div class="form-group">
               <label for="name">Display Name</label>
-              <input type="text" class="form-control" id="displayName" required [(ngModel)]="model.DisplayName" name="DisplayName" #DisplayName="ngModel">
+              <input type="text" class="form-control" id="displayName" required [(ngModel)]="model.DisplayName" [elFocus]="isNameFocus" name="DisplayName" #DisplayName="ngModel">
               <div [hidden]="DisplayName.valid || DisplayName.pristine" class="alert alert-danger">
                 Display name is required
               </div>

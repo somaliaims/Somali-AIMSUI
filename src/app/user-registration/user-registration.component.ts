@@ -14,7 +14,8 @@ export class UserRegistrationComponent implements OnInit {
   isEmailOk: boolean = false;
   emailNotAvailable: boolean = false;
   disableEmail: boolean = false;
-  
+  isNameFocus: boolean = false;
+
   constructor(private userService: UserService, private router: Router) { 
   }
  
@@ -51,6 +52,7 @@ export class UserRegistrationComponent implements OnInit {
         } else {
           this.emailNotAvailable = false;
           this.disableEmail = true;
+          this.isNameFocus = true;
         }
       },
       error => {

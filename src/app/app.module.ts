@@ -14,13 +14,15 @@ import { UserRegistrationComponent } from './user-registration/user-registration
 import { UserService } from './services/user-service';
 import { UrlHelperService } from './services/url-helper-service';
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
+import { FocusDirectiveDirective } from './directives/focus-directive.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserRegistrationComponent,
-    UserOrgRegistrationComponent
+    UserOrgRegistrationComponent,
+    FocusDirectiveDirective
   ],
   imports: [
     BrowserModule,
