@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {switchMap, debounceTime, tap, finalize} from 'rxjs/operators';
 import { OrganizationService } from '../services/organization-service';
+import { StoreService } from '../services/store-service';
+import { RegistrationModel } from '../models/registration';
 
 @Component({
   selector: 'app-user-org-registration',
@@ -13,13 +15,13 @@ export class UserOrgRegistrationComponent implements OnInit {
   filteredOrganizations: any = [];
   usersForm: FormGroup;
   isLoading = false;
-  
+  model: RegistrationModel = null;
 
-  constructor(private fb: FormBuilder, private organizationService: OrganizationService) {
-    
+  constructor(private fb: FormBuilder, private organizationService: OrganizationService, private storeService: StoreService) {
   }
 
   ngOnInit() {
+    this.storeService.currentRegistration.subscribe(model => this.model = model);
     this.usersForm = this.fb.group({
       userInput: null
     });

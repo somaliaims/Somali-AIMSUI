@@ -3,15 +3,21 @@
     <div class="card card-signin my-5">
       <div class="card-body">
         <h5 class="card-title text-center">Sign In</h5>
-        <form class="form-signin">
-          <div class="form-label-group">
-            <label for="inputEmail">Email address</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <form class="form-signin" (ngSubmit)="authenticateUser()" #loginForm="ngForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="Email" [(ngModel)]="model.Email" name="Email" #Email="ngModel" required email>
+            <div [hidden]="Email.valid" class="alert alert-danger">
+              Enter valid email address
+            </div>
           </div>
 
-          <div class="form-label-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="Password" [(ngModel)]="model.Password" name="Password" #Password="ngModel" required>
+            <div [hidden]="Password.valid" class="alert alert-danger">
+              Password is required
+            </div>
           </div>
 
           <div class="custom-control custom-checkbox mb-3">

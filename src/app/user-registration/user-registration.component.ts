@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RegistrationModel } from '../models/registration';
 import { UserService } from '../services/user-service';
 import { Router } from '@angular/router';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-user-registration',
@@ -16,13 +17,12 @@ export class UserRegistrationComponent implements OnInit {
   disableEmail: boolean = false;
   isNameFocus: boolean = false;
 
-  constructor(private userService: UserService, private router: Router) { 
+  constructor(private userService: UserService, private router: Router, private storeService: StoreService) { 
+  
   }
  
   onSubmit() {
-    console.log(JSON.stringify(this.model));
-    this.router.navigateByUrl('user-org-registration');
-
+    //console.log(JSON.stringify(this.model));
   }
 
   ngOnInit() {
@@ -62,14 +62,16 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   registerUser() {
-    this.userService.registerUser(this.model).subscribe(
+    /*this.userService.registerUser(this.model).subscribe(
       data => {
         console.log(data);
       },
       error => {
         console.log("Request Faild: ", error);
       }
-    )
+    )*/
+    this.storeService.newRegistration(this.model);
+    this.router.navigateByUrl('user-org-registration');
   }
 
   resetModel() {
