@@ -23,4 +23,10 @@ export class OrganizationService {
       })
       );
     }
+
+    getOrganizationTypes() {
+      var url = this.urlHelper.organizationTypesUrl();
+        return this.httpClient
+            .get<any>(url);
+    }
 }

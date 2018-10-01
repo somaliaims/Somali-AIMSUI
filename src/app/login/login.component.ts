@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginModel } from '../models/login-model';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ export class LoginComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.model = new LoginModel('', '');
   }
 
 }

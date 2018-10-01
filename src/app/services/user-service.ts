@@ -4,6 +4,7 @@ import { UserModel } from "../models/user-model";
 import { UrlHelperService } from "./url-helper-service";
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
+import { RegistrationModel } from '../models/registration';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -38,7 +39,7 @@ export class UserService {
             .get<boolean>(url);
     }
 
-    registerUser(model: UserModel) {
+    registerUser(model: RegistrationModel) {
         var url  = this.urlHelper.userRegistrationUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(

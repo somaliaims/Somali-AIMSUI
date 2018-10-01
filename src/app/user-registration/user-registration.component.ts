@@ -26,7 +26,7 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.model = new RegistrationModel('', '', '', '', '', '');
+    this.model = new RegistrationModel('', '', '', '', '', '', '', '', false);
     this.fillUserTypes();
   }
 
@@ -61,24 +61,9 @@ export class UserRegistrationComponent implements OnInit {
     );
   }
 
-  registerUser() {
-    /*this.userService.registerUser(this.model).subscribe(
-      data => {
-        console.log(data);
-      },
-      error => {
-        console.log("Request Faild: ", error);
-      }
-    )*/
+  proceedRegistration() {
     this.storeService.newRegistration(this.model);
     this.router.navigateByUrl('user-org-registration');
-  }
-
-  resetModel() {
-    this.model = new RegistrationModel('', '', '', '', '', '');
-    this.isEmailOk = false;
-    this.emailNotAvailable = false;
-    this.disableEmail = false;
   }
 
 }

@@ -27,5 +27,9 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationsList);
     }
 
+    organizationTypesUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationTypesList);
+    }
+
 
 }
