@@ -16,9 +16,11 @@ export class OrganizationService {
     return this.httpClient.get<Organization[]>(url)
     .pipe(
       tap((response: Organization[]) => {
-           response = response
+        if (response && response.length > 0) {
+          response
           .map(org => new Organization(org.id, org.organizationName))
-          .filter(org => org.organizationName.includes(filter.name))
+          .filter(org => (org.organizationName) ? org.organizationName.includes(filter.name) : null)
+        }
         return response;
       })
       );

@@ -5,6 +5,7 @@ import { OrganizationService } from '../services/organization-service';
 import { StoreService } from '../services/store-service';
 import { RegistrationModel } from '../models/registration';
 import { UserService } from '../services/user-service';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-user-org-registration',
@@ -23,7 +24,8 @@ export class UserOrgRegistrationComponent implements OnInit {
   organizationTypeId: string = null;
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService, 
-    private storeService: StoreService, private userService: UserService) {
+    private storeService: StoreService, private userService: UserService,
+    private modalService: NgxSmartModalService) {
   }
 
   ngOnInit() {
@@ -84,7 +86,8 @@ export class UserOrgRegistrationComponent implements OnInit {
 
     this.userService.registerUser(this.model).subscribe(
       data => {
-        console.log(data);
+        this.modalService.getModal('infoModal').open();
+        this.resetModel();
       },
       error => {
         console.log("Request Faild: ", error);
