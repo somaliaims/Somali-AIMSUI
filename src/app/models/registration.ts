@@ -6,7 +6,7 @@ export class RegistrationModel {
         public ConfirmPassword: string,
         public UserType: string,
         public OrganizationId: string,
-        public Organization: string,
+        public OrganizationName: string,
         public OrganizationTypeId: string,
         public IsNewOrganization: boolean
       ) {  }

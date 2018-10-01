@@ -21,7 +21,7 @@
 
           <div class="form-group">
             <label for="organizationType">Organization Type</label>
-            <select class="form-control" id="organizationType" required formControllerName="organizationType">
+            <select class="form-control" id="organizationType" required formControlName="organizationType">
               <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>
             </select>
           </div>

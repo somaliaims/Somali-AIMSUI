@@ -29,7 +29,8 @@ export class UserOrgRegistrationComponent implements OnInit {
   ngOnInit() {
     this.storeService.currentRegistration.subscribe(model => this.model = model);
     this.usersForm = this.fb.group({
-      userInput: null
+      userInput: null,
+      organizationType: null
     });
 
     this.usersForm
@@ -68,10 +69,10 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   registerUser() {
     if (this.organizationId == 0) {
-      this.model.Organization = this.usersForm.get('userInput').value;
+      this.model.OrganizationName = this.usersForm.get('userInput').value;
       this.model.OrganizationTypeId = this.usersForm.get('organizationType').value;
 
-      if (this.model.Organization.length == 0) {
+      if (this.model.OrganizationName.length == 0) {
         //Need to show a dialog message here
         return false;
       } else if (this.model.IsNewOrganization && this.model.OrganizationTypeId == null) {
