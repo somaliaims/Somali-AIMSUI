@@ -26,7 +26,7 @@
             </select>
           </div>
 
-          <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+          <button [class.disable]="isProcessing" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
         </form>
 
       </div>
@@ -34,8 +34,4 @@
   </div>
 </div>
 
-<ngx-smart-modal #infoModal identifier="infoModal">
-  <h1>Information</h1>
-  <p>User registration information submitted successfully.</p>
-  <button (click)="myModal.close()">Close</button>
-</ngx-smart-modal>
+<info-modal message="Your registration information is forwarded successfuly. You will get the account status email soon."></info-modal>

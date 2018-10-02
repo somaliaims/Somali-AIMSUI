@@ -14,7 +14,7 @@
             <div [hidden]="!emailNotAvailable" class="alert alert-danger">
               Email Address already taken
             </div>
-            <button *ngIf="!isEmailOk" class="btn btn-sm btn-info btn-block text-uppercase" type="button" (click)="checkIfEmailAvailable()">Check Email</button>
+            <button *ngIf="!isEmailOk" [class.disable]="isSearchingEmail" class="btn btn-sm btn-info btn-block text-uppercase" type="button" (click)="checkIfEmailAvailable()">{{btnCheckEmailTitle}}</button>
           </div>
           
           <div *ngIf="isEmailOk">

@@ -16,6 +16,8 @@ export class UserRegistrationComponent implements OnInit {
   emailNotAvailable: boolean = false;
   disableEmail: boolean = false;
   isNameFocus: boolean = false;
+  isSearchingEmail: boolean = false;
+  btnCheckEmailTitle: string = 'Check Availability';
 
   constructor(private userService: UserService, private router: Router, private storeService: StoreService) { 
   
@@ -43,6 +45,9 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   checkIfEmailAvailable() {
+    this.isSearchingEmail = true;
+    this.btnCheckEmailTitle = 'Wait processing...';
+
     this.userService.checkEmailAvailability(this.model.Email).subscribe(
       data => {
         this.isEmailOk = data;

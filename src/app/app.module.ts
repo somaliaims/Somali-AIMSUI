@@ -16,6 +16,7 @@ import { UserRegistrationComponent } from './user-registration/user-registration
 //import { UrlHelperService } from './services/url-helper-service';
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
 import { FocusDirectiveDirective } from './directives/focus-directive.directive';
+import { InfoModalComponent } from './info-modal/info-modal.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FocusDirectiveDirective } from './directives/focus-directive.directive'
     LoginComponent,
     UserRegistrationComponent,
     UserOrgRegistrationComponent,
-    FocusDirectiveDirective
+    FocusDirectiveDirective,
+    InfoModalComponent
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ import { StoreService } from '../services/store-service';
 import { RegistrationModel } from '../models/registration';
 import { UserService } from '../services/user-service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-org-registration',
@@ -22,10 +23,12 @@ export class UserOrgRegistrationComponent implements OnInit {
   model: RegistrationModel = null;
   organizationId: number = 0;
   organizationTypeId: string = null;
+  isProcessing: boolean = false;
+  btnRegisterText: string = 'Register';
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService, 
     private storeService: StoreService, private userService: UserService,
-    private modalService: NgxSmartModalService) {
+    private modalService: NgxSmartModalService, private router: Router) {
   }
 
   ngOnInit() {
@@ -82,17 +85,33 @@ export class UserOrgRegistrationComponent implements OnInit {
       }
       this.model.IsNewOrganization = true;
       this.model.OrganizationId = '0';
+    } else {
+
     }
 
+    this.isProcessing = true;
+    this.btnRegisterText = 'Wait processing...';
     this.userService.registerUser(this.model).subscribe(
       data => {
-        this.modalService.getModal('infoModal').open();
+        //this.modalService.getModal('infoModal').open();
         this.resetModel();
+        this.storeService
+        .newInfoMessage('Your registration information is forwarded successfully. We will get back to you soon');
+        
+        setTimeout(function() {
+          this.router.navigate('');
+        }.bind(this), 1000);
       },
       error => {
         console.log("Request Faild: ", error);
+        this.resetProcessingStatus();
       }
     )
+  }
+
+  resetProcessingStatus() {
+    this.btnRegisterText = 'Register';
+    this.isProcessing = false;
   }
 
   resetModel() {
