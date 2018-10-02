@@ -59,6 +59,8 @@ export class UserRegistrationComponent implements OnInit {
           this.disableEmail = true;
           this.isNameFocus = true;
         }
+        this.isSearchingEmail = false;
+        this.btnCheckEmailTitle = 'Check Email';
       },
       error => {
         console.log("Request Failed: ", error);

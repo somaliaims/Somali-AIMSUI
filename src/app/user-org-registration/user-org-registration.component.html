@@ -25,7 +25,6 @@
               <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>
             </select>
           </div>
-
           <button [class.disable]="isProcessing" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
         </form>
 

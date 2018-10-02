@@ -25,6 +25,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   organizationTypeId: string = null;
   isProcessing: boolean = false;
   btnRegisterText: string = 'Register';
+  isShowType: boolean = false;
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService, 
     private storeService: StoreService, private userService: UserService,
@@ -56,7 +57,7 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   displayFn(org: any) {
     if (org) { 
-      this.organizationId = org.organizationId;
+      this.organizationId = org.id;
       return org.organizationName; 
     }
   }
@@ -73,8 +74,9 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   registerUser() {
-    if (this.organizationId == 0) {
-      this.model.OrganizationName = this.usersForm.get('userInput').value;
+    var orgValue = this.usersForm.get('userInput').value;
+    if (orgValue.id && orgValue.id == 0) {
+      this.model.OrganizationName = orgValue.organizationName;
       this.model.OrganizationTypeId = this.usersForm.get('organizationType').value;
 
       if (this.model.OrganizationName.length == 0) {
@@ -86,7 +88,8 @@ export class UserOrgRegistrationComponent implements OnInit {
       this.model.IsNewOrganization = true;
       this.model.OrganizationId = '0';
     } else {
-
+        this.model.OrganizationId = orgValue.id;
+        this.model.OrganizationTypeId = '0';
     }
 
     this.isProcessing = true;
@@ -99,8 +102,9 @@ export class UserOrgRegistrationComponent implements OnInit {
         .newInfoMessage('Your registration information is forwarded successfully. We will get back to you soon');
         
         setTimeout(function() {
-          this.router.navigate('');
+          this.router.navigateByUrl('');  
         }.bind(this), 1000);
+        
       },
       error => {
         console.log("Request Faild: ", error);
