@@ -9,7 +9,7 @@
             <input matInput placeholder="Choose/Enter your Organization" [matAutocomplete]="auto" formControlName='userInput'>
           </mat-form-field>
         
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-autocomplete #auto="matAutocomplete" class="org-autocomplete" [displayWith]="displayFn">
             <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
             <ng-container *ngIf="!isLoading">
               <mat-option *ngFor="let organization of filteredOrganizations" [value]="organization">
@@ -25,12 +25,10 @@
               <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>
             </select>
           </div>
-          <button [class.disable]="isProcessing" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+          <button [class.disable]="isProcessing" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">{{btnRegisterText}}</button>
         </form>
 
       </div>
     </div>
   </div>
 </div>
-
-<info-modal message="Your registration information is forwarded successfuly. You will get the account status email soon."></info-modal>

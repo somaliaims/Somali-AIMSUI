@@ -16,6 +16,7 @@ export class UserRegistrationComponent implements OnInit {
   emailNotAvailable: boolean = false;
   disableEmail: boolean = false;
   isNameFocus: boolean = false;
+  isEmailFocus: boolean = false;
   isSearchingEmail: boolean = false;
   btnCheckEmailTitle: string = 'Check Availability';
 
@@ -54,10 +55,12 @@ export class UserRegistrationComponent implements OnInit {
         if (!this.isEmailOk) {
           this.emailNotAvailable = true;
           this.disableEmail = false;
+          this.isEmailFocus = true;
         } else {
           this.emailNotAvailable = false;
           this.disableEmail = true;
           this.isNameFocus = true;
+          this.isEmailFocus = false;
         }
         this.isSearchingEmail = false;
         this.btnCheckEmailTitle = 'Check Email';
@@ -66,6 +69,10 @@ export class UserRegistrationComponent implements OnInit {
         console.log("Request Failed: ", error);
       }
     );
+  }
+
+  resetEmailAvailable(el: any) {
+    this.emailNotAvailable = false;
   }
 
   proceedRegistration() {

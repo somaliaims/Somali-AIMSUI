@@ -17,6 +17,7 @@ import { UserRegistrationComponent } from './user-registration/user-registration
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
 import { FocusDirectiveDirective } from './directives/focus-directive.directive';
 import { InfoModalComponent } from './info-modal/info-modal.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
     UserRegistrationComponent,
     UserOrgRegistrationComponent,
     FocusDirectiveDirective,
-    InfoModalComponent
+    InfoModalComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

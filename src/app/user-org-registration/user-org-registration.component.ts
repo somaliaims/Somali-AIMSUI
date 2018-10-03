@@ -26,6 +26,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   isProcessing: boolean = false;
   btnRegisterText: string = 'Register';
   isShowType: boolean = false;
+  delaySeconds: number = 2000;
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService, 
     private storeService: StoreService, private userService: UserService,
@@ -33,7 +34,19 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.storeService.currentRegistration.subscribe(model => this.model = model);
+    this.storeService.currentRegistration.subscribe(model => {
+      if (model) {
+        if (model.Email === '' || model.Email == null) {
+          this.router.navigateByUrl('user-registration');
+        } else {
+          this.model = model;
+        }
+      } else {
+        this.router.navigateByUrl('user-registration');
+      }
+    });
+    
+
     this.usersForm = this.fb.group({
       userInput: null,
       organizationType: null
@@ -96,14 +109,13 @@ export class UserOrgRegistrationComponent implements OnInit {
     this.btnRegisterText = 'Wait processing...';
     this.userService.registerUser(this.model).subscribe(
       data => {
-        //this.modalService.getModal('infoModal').open();
         this.resetModel();
         this.storeService
         .newInfoMessage('Your registration information is forwarded successfully. We will get back to you soon');
-        
-        setTimeout(function() {
+        this.btnRegisterText = 'Redirecting...';
+        setTimeout(() => {
           this.router.navigateByUrl('');  
-        }.bind(this), 1000);
+        }, this.delaySeconds);
         
       },
       error => {
