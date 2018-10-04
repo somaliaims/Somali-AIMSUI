@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {switchMap, debounceTime, tap, finalize} from 'rxjs/operators';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { switchMap, debounceTime, tap, finalize } from 'rxjs/operators';
 import { OrganizationService } from '../services/organization-service';
 import { StoreService } from '../services/store-service';
 import { RegistrationModel } from '../models/registration';
@@ -27,8 +27,9 @@ export class UserOrgRegistrationComponent implements OnInit {
   btnRegisterText: string = 'Register';
   isShowType: boolean = false;
   delaySeconds: number = 2000;
+  isOrgTypeVisible: boolean = true;
 
-  constructor(private fb: FormBuilder, private organizationService: OrganizationService, 
+  constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
     private modalService: NgxSmartModalService, private router: Router) {
   }
@@ -45,7 +46,7 @@ export class UserOrgRegistrationComponent implements OnInit {
         this.router.navigateByUrl('user-registration');
       }
     });
-    
+
 
     this.usersForm = this.fb.group({
       userInput: null,
@@ -58,20 +59,23 @@ export class UserOrgRegistrationComponent implements OnInit {
       .pipe(
         debounceTime(300),
         tap(() => this.isLoading = true),
-        switchMap(value => this.organizationService.searchOrganizations({name: value}, 1)
-        .pipe(
-          finalize(() => this.isLoading = false),
+        switchMap(value => this.organizationService.searchOrganizations({ name: value }, 1)
+          .pipe(
+            finalize(() => this.isLoading = false),
           )
         )
       )
       .subscribe(organizations => this.filteredOrganizations = organizations);
-      this.fillOrganizationTypes();
+    this.fillOrganizationTypes();
   }
 
   displayFn(org: any) {
-    if (org) { 
-      this.organizationId = org.id;
-      return org.organizationName; 
+    if (org) {
+      () => {
+        this.organizationId = org.id;
+        this.isOrgTypeVisible = false;
+        return org.organizationName;
+      }
     }
   }
 
@@ -88,8 +92,8 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   registerUser() {
     var orgValue = this.usersForm.get('userInput').value;
-    if (orgValue.id && orgValue.id == 0) {
-      this.model.OrganizationName = orgValue.organizationName;
+    if (!orgValue.id) {
+      this.model.OrganizationName = orgValue;
       this.model.OrganizationTypeId = this.usersForm.get('organizationType').value;
 
       if (this.model.OrganizationName.length == 0) {
@@ -100,9 +104,9 @@ export class UserOrgRegistrationComponent implements OnInit {
       }
       this.model.IsNewOrganization = true;
       this.model.OrganizationId = '0';
-    } else {
-        this.model.OrganizationId = orgValue.id;
-        this.model.OrganizationTypeId = '0';
+    } else if (orgValue.id && orgValue.id != 0) {
+      this.model.OrganizationId = orgValue.id;
+      this.model.OrganizationTypeId = '0';
     }
 
     this.isProcessing = true;
@@ -111,12 +115,12 @@ export class UserOrgRegistrationComponent implements OnInit {
       data => {
         this.resetModel();
         this.storeService
-        .newInfoMessage('Your registration information is forwarded successfully. We will get back to you soon');
+          .newInfoMessage('Your registration information is forwarded successfully. We will get back to you soon');
         this.btnRegisterText = 'Redirecting...';
         setTimeout(() => {
-          this.router.navigateByUrl('');  
+          this.router.navigateByUrl('');
         }, this.delaySeconds);
-        
+
       },
       error => {
         console.log("Request Faild: ", error);
@@ -131,7 +135,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   resetModel() {
-    this.model = new RegistrationModel('', '', '', '', '','', '', '', false);
+    this.model = new RegistrationModel('', '', '', '', '', '', '', '', false);
   }
 
 }

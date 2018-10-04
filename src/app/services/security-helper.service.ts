@@ -7,9 +7,8 @@ import * as Settings from '../config/settings';
 })
 
 export class SecurityHelperService {
-
   secretKey: string;
-  
+
   constructor() {
     this.secretKey = Settings.settings.secretKey;
   }
@@ -20,6 +19,30 @@ export class SecurityHelperService {
 
   decryptText(text: string) {
     return (CryptoJS.AES.decrypt(text, this.secretKey));
+  }
+
+  storeLoginData(userObj: any) {
+    if (userObj.token && userObj.token != null) {
+      var eToken = this.encryptText(userObj.token);
+      localStorage.setItem('token', eToken);
+      localStorage.setItem('displayName', userObj.displayName);
+      localStorage.setItem('organizationId', userObj.organizationId);
+      localStorage.setItem('userType', userObj.userType);
+      localStorage.setItem('isLoggedIn', true.toString());
+    }
+  }
+
+  getUserToken() {
+    var token = localStorage.getItem('token');
+    if (token && token != null) {
+      return this.decryptText(token);
+    }
+    return null;
+  }
+
+  clearLoginSession() {
+    localStorage.clear();
+    localStorage.setItem('isLoggedIn', false.toString());
   }
   
 }
