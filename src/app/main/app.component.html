@@ -5,21 +5,22 @@
       <li class="nav-item">
         <a class="nav-link anchor-menu" href="#">Projects</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="isLoggedIn" class="nav-item">
         <a class="nav-link anchor-menu" href="#">Users</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="isLoggedIn" class="nav-item">
         <a class="nav-link anchor-menu" href="#">Reports</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="isLoggedIn" class="nav-item">
         <a class="nav-link anchor-menu" href="#">Data Entry</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="isLoggedIn" class="nav-item">
         <a class="nav-link anchor-menu" href="#">Administration</a>
       </li>
     </ul>
   </nav>
-  <a class="btn btn-outline-primary sign-in-btn" [routerLink]="['login']">Sign In</a>
+  <a *ngIf="!isLoggedIn" class="btn btn-outline-primary sign-in-btn" [routerLink]="['login']">Sign In</a>
+  <button *ngIf="isLoggedIn" class="btn btn-outline-primary sign-in-btn" (clidk)="logout">Logout</button>
 </div>
 
   <div class="container-fluid">

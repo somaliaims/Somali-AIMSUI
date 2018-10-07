@@ -14,6 +14,9 @@ export class StoreService {
   private infoMessage = new BehaviorSubject<string>('');
   currentInfoMessage = this.infoMessage.asObservable(); 
 
+  private errorMessage = new BehaviorSubject<string>('');
+  currentErrorMessage = this.errorMessage.asObservable();
+
   constructor() { }
 
   newRegistration(model: RegistrationModel) {
@@ -22,6 +25,10 @@ export class StoreService {
 
   newInfoMessage(message: string) {
     this.infoMessage.next(message);
+  }
+
+  newErrorMessage(message: string) {
+    this.errorMessage.next(message);
   }
 
 }
