@@ -94,6 +94,18 @@ html {
     margin: 10px !important;
   }
 
+  .ten-px-left-padding {
+    padding-left: 10px !important;
+  }
+
+  .five-px-left-padding {
+    padding-left: 5px !important;
+  }
+
+  .five-px-right-padding {
+    padding-left: 5px !important;
+  }
+
   /*Custom css for different screens*/
   /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
