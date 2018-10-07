@@ -20,7 +20,7 @@
     </ul>
   </nav>
   <a *ngIf="!isLoggedIn" class="btn btn-outline-primary sign-in-btn" [routerLink]="['login']">Sign In</a>
-  <button *ngIf="isLoggedIn" class="btn btn-outline-primary sign-in-btn" (clidk)="logout">Logout</button>
+  <button *ngIf="isLoggedIn" class="btn btn-outline-primary sign-in-btn" (click)="logout($event)">Logout</button>
 </div>
 
   <div class="container-fluid">

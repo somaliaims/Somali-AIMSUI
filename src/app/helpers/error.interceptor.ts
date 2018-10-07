@@ -15,7 +15,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (err.status === 401) {
                 // auto logout if 401 response returned from api
                 var isLoggedIn = localStorage.getItem('isLoggedIn');
-                if (isLoggedIn) {
+                if (isLoggedIn == 'true') {
                     this.storeService.newErrorMessage('You are unauthorized to perform this action');
                 } else {
                     this.storeService.newErrorMessage('Username/Password provided is invalid');

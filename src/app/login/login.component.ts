@@ -20,6 +20,11 @@ export class LoginComponent implements OnInit {
     private router: Router, private storeService: StoreService) { }
 
   ngOnInit() {
+    var isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn == 'true') {
+      this.router.navigateByUrl('');
+    }
+
     this.model = new LoginModel('', '');
     this.storeService.currentErrorMessage.subscribe(message => {
       if (message) {
@@ -45,7 +50,11 @@ export class LoginComponent implements OnInit {
       if (data) {
         if (data.token) {
           this.securityService.storeLoginData(data);
-          this.router.navigateByUrl('');
+          //this.router.navigateByUrl('');
+          //setTimeout(function() {
+            location.reload();
+          //}, 1000);
+          
         }
       } else {
       }

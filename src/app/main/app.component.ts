@@ -11,6 +11,11 @@ export class AppComponent {
   isLoggedIn: boolean = false;
 
   constructor(private securityService: SecurityHelperService) {
-    this.isLoggedIn = (localStorage.getItem('isLoggedIn') == '1');
+    this.isLoggedIn = (localStorage.getItem('isLoggedIn') == 'true');
+  }
+
+  logout(e) {
+    this.securityService.clearLoginSession();
+    location.reload();
   }
 }
