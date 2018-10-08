@@ -4,26 +4,26 @@
   <nav class="navbar navbar-expand-sm">
     <ul class="navbar-nav">
       <li class="nav-item ten-px-left-padding">
-        <a class="nav-link anchor-menu" href="#">Projects</a>
+        <a class="nav-link anchor-menu" [routerLink]="['/home']">Home</a>
+      </li>
+      <li class="nav-item five-px-left-padding">
+        <a class="nav-link anchor-menu" [routerLink]="['/projects']">View Projects</a>
+      </li>
+      <li class="nav-item five-px-left-padding">
+        <a class="nav-link anchor-menu" [routerLink]="['/reports']">View Reports</a>
       </li>
       <li *ngIf="isLoggedIn" class="nav-item five-px-left-padding">
-        <a class="nav-link anchor-menu" href="#">Users</a>
+        <a class="nav-link anchor-menu" [routerLink]="['/data-entry']">Data Entry</a>
       </li>
       <li *ngIf="isLoggedIn" class="nav-item five-px-left-padding">
-        <a class="nav-link anchor-menu" href="#">Reports</a>
-      </li>
-      <li *ngIf="isLoggedIn" class="nav-item five-px-left-padding">
-        <a class="nav-link anchor-menu" href="#">Data Entry</a>
-      </li>
-      <li *ngIf="isLoggedIn" class="nav-item five-px-left-padding">
-        <a class="nav-link anchor-menu" href="#">Administration</a>
+        <a class="nav-link anchor-menu" [routerLink]="['/management']">Management</a>
       </li>
     </ul>
   </nav>
   
   <div class="ml-md-auto">
-    <a *ngIf="!isLoggedIn" class="btn btn-outline-primary sign-in-btn" [routerLink]="['login']">Sign In</a>
-    <button *ngIf="isLoggedIn" class="btn btn-outline-primary sign-in-btn" (click)="logout($event)">Sign Out</button>
+    <a *ngIf="!isLoggedIn" class="btn btn-outline-primary sign-in-btn" [routerLink]="['/login']">Login</a>
+    <button *ngIf="isLoggedIn" class="btn btn-outline-primary sign-in-btn" (click)="logout($event)">Logout</button>
   </div>
   
 </div>

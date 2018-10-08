@@ -19,6 +19,10 @@ import { FocusDirectiveDirective } from './directives/focus-directive.directive'
 import { InfoModalComponent } from './info-modal/info-modal.component';
 import { HomeComponent } from './home/home.component';
 import { ErrorInterceptor } from './helpers/error.interceptor';
+import { ProjectsComponent } from './projects/projects.component';
+import { ReportsComponent } from './reports/reports.component';
+import { ManagementComponent } from './management/management.component';
+import { DataEntryComponent } from './data-entry/data-entry.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,11 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
     UserOrgRegistrationComponent,
     FocusDirectiveDirective,
     InfoModalComponent,
-    HomeComponent
+    HomeComponent,
+    ProjectsComponent,
+    ReportsComponent,
+    ManagementComponent,
+    DataEntryComponent
   ],
   imports: [
     BrowserModule,
