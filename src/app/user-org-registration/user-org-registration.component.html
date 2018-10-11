@@ -6,7 +6,7 @@
 
         <form (ngSubmit)="registerUser()" class="example-form" [formGroup]='usersForm'>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Choose/Enter your Organization" [matAutocomplete]="auto" formControlName='userInput'>
+            <input matInput placeholder="Choose/Enter your Organization" [matAutocomplete]="auto"  formControlName='userInput'>
           </mat-form-field>
         
           <mat-autocomplete #auto="matAutocomplete" class="org-autocomplete" [displayWith]="displayFn">
@@ -19,7 +19,7 @@
             </ng-container>
           </mat-autocomplete>
 
-          <div class="form-group">
+          <div *ngIf="isOrgTypeVisible" class="form-group">
             <label for="organizationType">Organization Type</label>
             <select class="form-control" id="organizationType" required formControlName="organizationType">
               <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>

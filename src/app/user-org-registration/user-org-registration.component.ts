@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { switchMap, debounceTime, tap, finalize } from 'rxjs/operators';
 import { OrganizationService } from '../services/organization-service';
@@ -31,7 +31,9 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
-    private modalService: NgxSmartModalService, private router: Router) {
+    private modalService: NgxSmartModalService, private router: Router,
+    private zone: NgZone) {
+
   }
 
   ngOnInit() {
@@ -65,18 +67,26 @@ export class UserOrgRegistrationComponent implements OnInit {
           )
         )
       )
-      .subscribe(organizations => this.filteredOrganizations = organizations);
+      .subscribe(organizations => {
+        this.filteredOrganizations = organizations;
+        this.setOrgStatus();
+      });
     this.fillOrganizationTypes();
   }
 
+  setOrgStatus() {
+    var selectedValue = this.usersForm.get('userInput').value;
+    if (selectedValue && selectedValue.id) {
+      this.isOrgTypeVisible = false;
+    } else {
+      this.isOrgTypeVisible = true;
+    }
+  }
+
   displayFn(org: any) {
-    if (org) {
-      () => {
-        this.organizationId = org.id;
-        this.isOrgTypeVisible = false;
+      if (org) {
         return org.organizationName;
       }
-    }
   }
 
   fillOrganizationTypes() {

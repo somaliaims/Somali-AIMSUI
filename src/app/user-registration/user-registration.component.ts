@@ -36,12 +36,17 @@ export class UserRegistrationComponent implements OnInit {
   fillUserTypes() {
     this.userTypes.push({
       "id": 1,
-      "typeName": "Regular"
+      "typeName": "Super Admin"
     });
 
     this.userTypes.push({
       "id": 2,
       "typeName": "Manager"
+    });
+
+    this.userTypes.push({
+      "id": 3,
+      "typeName": "Regular"
     });
   }
 
@@ -51,6 +56,7 @@ export class UserRegistrationComponent implements OnInit {
 
     this.userService.checkEmailAvailability(this.model.Email).subscribe(
       data => {
+        console.log(data);
         this.isEmailOk = data;
         if (!this.isEmailOk) {
           this.emailNotAvailable = true;

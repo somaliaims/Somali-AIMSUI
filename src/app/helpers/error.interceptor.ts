@@ -22,6 +22,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                 }
                 //location.reload(true);
             }
+
+            if (err.status == 400) {
+                this.storeService.newErrorMessage(err.message);
+            }
             
             const error = err.message || err.statusText;
             return throwError(error);
