@@ -11,9 +11,6 @@ import { AppComponent } from './main/app.component';
 import { LoginComponent } from './login/login.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 
-//Services
-//import { UserService } from './services/user-service';
-//import { UrlHelperService } from './services/url-helper-service';
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
 import { FocusDirectiveDirective } from './directives/focus-directive.directive';
 import { InfoModalComponent } from './info-modal/info-modal.component';
@@ -23,6 +20,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ManagementComponent } from './management/management.component';
 import { DataEntryComponent } from './data-entry/data-entry.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +34,8 @@ import { DataEntryComponent } from './data-entry/data-entry.component';
     ProjectsComponent,
     ReportsComponent,
     ManagementComponent,
-    DataEntryComponent
+    DataEntryComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

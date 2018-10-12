@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { UserModel } from "../models/user-model";
 import { UrlHelperService } from "./url-helper-service";
-import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { RegistrationModel } from '../models/registration';
-
-const httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json'
-    })
-  };
+import { httpOptions } from '../config/httpoptions';
+import { StoreService } from './store-service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
     customersObservable : Observable<UserModel[]>;
-    constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService) { 
+    constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService, 
+        private storeService: StoreService) { 
     }
 
     private extractData(res: Response) {
@@ -30,7 +27,7 @@ export class UserService {
         var model = { "Email": email, "Password": password };
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.handleError<any>('Authentication')));
+                catchError(this.storeService.handleError<any>('Authentication')));
     }
 
     checkEmailAvailability(email: string) {
@@ -43,21 +40,6 @@ export class UserService {
         var url  = this.urlHelper.userRegistrationUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.handleError<any>('User registration')));
+                catchError(this.storeService.handleError<any>('User registration')));
     }
-
-
-    private handleError<T> (operation = 'operation', result?: T) {
-        return (error: any): Observable<T> => {
-    
-          // TODO: send the error to remote logging infrastructure
-          console.error(error); // log to console instead
-    
-          // TODO: better job of transforming error for user consumption
-          console.log(`${operation} failed: ${error.message}`);
-    
-          // Let the app keep running by returning an empty result.
-          return of(result as T);
-        };
-      }
 }

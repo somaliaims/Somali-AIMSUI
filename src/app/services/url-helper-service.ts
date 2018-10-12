@@ -31,5 +31,9 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationTypesList);
     }
 
+    userNotificationsUrl() {
+        return (this.BASE_URL + urlsList.urls.userNotificationsList);
+    }
+
 
 }

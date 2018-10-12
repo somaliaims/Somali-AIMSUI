@@ -5,5 +5,6 @@ export const urls = {
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
 	organizationsList: "Organization",
-	organizationTypesList: "OrganizationType"
+	organizationTypesList: "OrganizationType",
+	userNotificationsList: "Notification"
 };
