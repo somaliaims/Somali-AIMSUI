@@ -35,11 +35,6 @@ export class UserRegistrationComponent implements OnInit {
 
   fillUserTypes() {
     this.userTypes.push({
-      "id": 1,
-      "typeName": "Super Admin"
-    });
-
-    this.userTypes.push({
       "id": 2,
       "typeName": "Manager"
     });
