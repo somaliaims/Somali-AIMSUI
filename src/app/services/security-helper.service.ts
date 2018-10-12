@@ -23,8 +23,9 @@ export class SecurityHelperService {
 
   storeLoginData(userObj: any) {
     if (userObj.token && userObj.token != null) {
-      var eToken = this.encryptText(userObj.token);
-      localStorage.setItem('token', eToken);
+      var token = userObj.token;
+      //var eToken = this.encryptText(token);
+      localStorage.setItem('token', token);
       localStorage.setItem('displayName', userObj.displayName);
       localStorage.setItem('organizationId', userObj.organizationId);
       localStorage.setItem('userType', userObj.userType);
