@@ -1,3 +1,15 @@
-<p>
-  notification works!
-</p>
+<div class="container view-area">
+  <div class="row">
+      <h3>Your Notifications</h3>
+      <div class="row" *ngFor="let notification of notifications">
+          <div class="col-md-9">
+              {{notification.message}}<br>
+              {{notification.dated}}
+          </div>
+          <div *ngIf="notification.notificationType == 1" class="col-md-3">
+            <button class="btn btn-primary btn-sm" (click)="activateUserAccount($event, notification.treatmentId)">Approve</button>
+          </div>
+      </div>
+  </div>
+  
+</div>

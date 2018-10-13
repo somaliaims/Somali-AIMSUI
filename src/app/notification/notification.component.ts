@@ -7,7 +7,7 @@ import { NotificationService } from '../services/notification.service';
   styleUrls: ['./notification.component.css']
 })
 export class NotificationComponent implements OnInit {
-
+  notifications: any = [];
   constructor(private notificationService: NotificationService) { 
     this.getNotifications();
   }
@@ -17,13 +17,23 @@ export class NotificationComponent implements OnInit {
 
   getNotifications() {
     this.notificationService.getUserNotifications().subscribe( data => {
-      console.log(data);
-      if (data) {
-        
+      if (data && data.length) {
+        if (data.length > 0) {
+          this.notifications = data;
+        }
       }
     },
     error => {
       console.log("Request Failed: ", error);
+    });
+  }
+
+  activateUserAccount(event, id) {
+    this.notificationService.activateUserAccount(id).subscribe(data => {
+      console.log('Account activated: ' + data);
+    },
+    error => {
+      console.log(error);
     });
   }
 
