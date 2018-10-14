@@ -8,6 +8,8 @@ import { NotificationService } from '../services/notification.service';
 })
 export class NotificationComponent implements OnInit {
   notifications: any = [];
+  isLoading: boolean = true;
+  showNoFound: boolean = false;
   constructor(private notificationService: NotificationService) { 
     this.getNotifications();
   }
@@ -16,16 +18,25 @@ export class NotificationComponent implements OnInit {
   }
 
   getNotifications() {
+    
     this.notificationService.getUserNotifications().subscribe( data => {
+      this.isLoading = false;
       if (data && data.length) {
         if (data.length > 0) {
           this.notifications = data;
-        }
+          this.showNoFound = false;
+        } 
+      } else {
+        this.showNoFound = true;
       }
     },
     error => {
       console.log("Request Failed: ", error);
     });
+  }
+
+  refreshNotifications(id) {
+
   }
 
   activateUserAccount(event, id) {
