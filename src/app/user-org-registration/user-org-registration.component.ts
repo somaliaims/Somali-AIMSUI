@@ -28,6 +28,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   isShowType: boolean = false;
   delaySeconds: number = 2000;
   isOrgTypeVisible: boolean = true;
+  validationMessage: string = '';
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
@@ -108,6 +109,7 @@ export class UserOrgRegistrationComponent implements OnInit {
 
       if (this.model.OrganizationName.length == 0) {
         //Need to show a dialog message here
+        this.modalService.getModal('info-modal').open();
         return false;
       } else if (this.model.IsNewOrganization && this.model.OrganizationTypeId == null) {
         return false;

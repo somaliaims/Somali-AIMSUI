@@ -20,9 +20,14 @@ export class NotificationService {
               catchError(this.storeService.handleError<any>('Notifications')));
   }
 
-  activateUserAccount(userId) {
-    var url = this.urlHelper.userAccountActivationUrl(userId);
-        return this.httpClient.post(url, null, httpOptions).pipe(
+  activateUserAccount(userId: number, notificationId: number) {
+    var model = {
+      UserId: userId,
+      NotificationId: notificationId
+    };
+
+    var url = this.urlHelper.userAccountActivationUrl();
+        return this.httpClient.post(url, model, httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('User Activation')));
   }
 

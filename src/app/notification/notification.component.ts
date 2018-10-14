@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../services/notification.service';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-notification',
@@ -10,7 +11,9 @@ export class NotificationComponent implements OnInit {
   notifications: any = [];
   isLoading: boolean = true;
   showNoFound: boolean = false;
-  constructor(private notificationService: NotificationService) { 
+  infoMessage: string = '';
+
+  constructor(private notificationService: NotificationService, private modalService: NgxSmartModalService) { 
     this.getNotifications();
   }
 
@@ -39,9 +42,10 @@ export class NotificationComponent implements OnInit {
 
   }
 
-  activateUserAccount(event, id) {
-    this.notificationService.activateUserAccount(id).subscribe(data => {
-      console.log('Account activated: ' + data);
+  activateUserAccount(event, userId, notificationId) {
+    this.notificationService.activateUserAccount(userId, notificationId).subscribe(data => {
+      this.infoMessage = 'User account is activated successfully';
+      this.modalService.getModal('infoModal').open();
     },
     error => {
       console.log(error);

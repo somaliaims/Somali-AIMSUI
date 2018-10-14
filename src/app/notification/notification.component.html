@@ -14,12 +14,13 @@
               {{notification.dated}}
           </div>
           <div *ngIf="notification.notificationType == 1" class="col-md-3">
-            <button class="btn btn-primary btn-sm" (click)="activateUserAccount($event, notification.treatmentId)">Approve</button>
+            <button class="btn btn-primary btn-sm" (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
           </div>
       </div>
       <div class="col-md-12" *ngIf="showNoFound">
         No notifications found.
       </div>
   </div>
-  
+
+  <info-modal message={{infoMessage}}></info-modal>
 </div>

@@ -35,8 +35,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.userNotificationsList);
     }
 
-    userAccountActivationUrl(userId) {
-        return (this.BASE_URL + urlsList.urls.userAccountActivation + userId);
+    userAccountActivationUrl() {
+        return (this.BASE_URL + urlsList.urls.userAccountActivation);
     }
 
 }
