@@ -46,6 +46,9 @@ export class NotificationComponent implements OnInit {
     this.notificationService.activateUserAccount(userId, notificationId).subscribe(data => {
       this.infoMessage = 'User account is activated successfully';
       this.modalService.getModal('infoModal').open();
+      this.notifications = this.notifications.filter(function (n) {
+        return (n.id != notificationId);
+      });
     },
     error => {
       console.log(error);

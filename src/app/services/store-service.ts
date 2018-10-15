@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RegistrationModel } from '../models/registration';
+import { RequestModel } from '../models/request-model';
 
 @Injectable({
     providedIn: 'root'
@@ -8,16 +9,22 @@ import { RegistrationModel } from '../models/registration';
   
 export class StoreService {
 
+  private requestNumber: number = 0;
   private messageSource = new BehaviorSubject<RegistrationModel>(null);
   currentRegistration = this.messageSource.asObservable();
 
   private infoMessage = new BehaviorSubject<string>('');
   currentInfoMessage = this.infoMessage.asObservable(); 
 
-  private errorMessage = new BehaviorSubject<string>('');
-  currentErrorMessage = this.errorMessage.asObservable();
+  private requestTrack = new BehaviorSubject<RequestModel>(null);
+  currentRequestTrack = this.requestTrack.asObservable();
+  
 
   constructor() { }
+
+  newRequestTrack(track: RequestModel) {
+    this.requestTrack.next(track);
+  }
 
   newRegistration(model: RegistrationModel) {
     this.messageSource.next(model);
@@ -27,8 +34,16 @@ export class StoreService {
     this.infoMessage.next(message);
   }
 
-  newErrorMessage(message: string) {
-    this.errorMessage.next(message);
+  newRequestNumber(requestNo: number) {
+    this.requestNumber = requestNo;
+  }
+
+  getNewRequestNumber() {
+    return (++this.requestNumber);
+  }
+
+  getCurrentRequestId() {
+    return this.requestNumber;
   }
 
   handleError<T> (operation = 'operation', result?: T) {

@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import {StoreService} from '../services/store-service';
+import { RequestModel } from '../models/request-model';
 
 
 @Injectable()
@@ -12,22 +13,17 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
-            if (err.status === 401) {
-                // auto logout if 401 response returned from api
-                var isLoggedIn = localStorage.getItem('isLoggedIn');
-                if (isLoggedIn == 'true') {
-                    this.storeService.newErrorMessage('You are unauthorized to perform this action');
-                } else {
-                    this.storeService.newErrorMessage('Username/Password provided is invalid');
-                }
-                //location.reload(true);
+            var currentRequestNo = this.storeService.getCurrentRequestId();
+            var model = new RequestModel(currentRequestNo, err.status, '');
+            //Need to use status codes if needed
+            /*if (err.status === 401) {
             }
-
-            if (err.status == 400) {
-                this.storeService.newErrorMessage(err.message);
-            }
-            
+            else if (err.status == 400) {
+            } else if (err.status == 404) {
+            }*/
             const error = err.message || err.statusText;
+            model.errorMessage = error;
+            this.storeService.newRequestTrack(model);
             return throwError(error);
         }))
     }

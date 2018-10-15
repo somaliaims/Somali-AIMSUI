@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   tenSeconds: number = 10000;
   btnText: string = 'Log In';
   isBtnDisabled: boolean = false;
+  requestNo: number = 0;
 
   constructor(private userService: UserService, private securityService: SecurityHelperService,
     private router: Router, private storeService: StoreService) { }
@@ -28,11 +29,12 @@ export class LoginComponent implements OnInit {
     }
 
     this.model = new LoginModel('', '');
-    this.storeService.currentErrorMessage.subscribe(message => {
-      if (message) {
-        this.errorMessage = message;
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
         this.isError = true;
         this.resetError();
+        this.resetDefaultStatus();
       }
     });
   }
@@ -49,16 +51,20 @@ export class LoginComponent implements OnInit {
     this.isError = false;
     this.btnText = 'Authenticating...';
     this.isBtnDisabled = true;
+    this.requestNo = this.storeService.getNewRequestNumber();
+
     this.userService.authenticateUser(this.model.Email, this.model.Password).subscribe( data => {
       console.log(data);
       if (data) {
         if (data.token) {
           this.securityService.storeLoginData(data);
             location.reload();
+        } else {
+            this.errorMessage = 'Username/Password entered is incorrect';
+            this.isError = true;
+            this.resetDefaultStatus();
         }
-      } else {
-        this.resetDefaultStatus();
-      }
+      } 
     },
     error => {
       console.log("Request Failed: ", error);
