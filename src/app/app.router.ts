@@ -9,6 +9,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { ManagementComponent } from './management/management.component';
 import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
+import { OrganizationsComponent } from './organizations/organizations.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -21,7 +22,8 @@ export const routes: Routes = [
   { path: 'reports', component: ReportsComponent},
   { path: 'management', component: ManagementComponent },
   { path: 'data-entry', component: DataEntryComponent },
-  { path: 'notification', component: NotificationComponent }
+  { path: 'notification', component: NotificationComponent },
+  { path: 'organizations', component: OrganizationsComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

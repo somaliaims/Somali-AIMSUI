@@ -5,12 +5,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatButtonModule, MatProgressSpinnerModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
 import { LoginComponent } from './login/login.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
-
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
 import { FocusDirectiveDirective } from './directives/focus-directive.directive';
 import { InfoModalComponent } from './info-modal/info-modal.component';
@@ -21,6 +22,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { ManagementComponent } from './management/management.component';
 import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
+import { OrganizationsComponent } from './organizations/organizations.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { NotificationComponent } from './notification/notification.component';
     ReportsComponent,
     ManagementComponent,
     DataEntryComponent,
-    NotificationComponent
+    NotificationComponent,
+    OrganizationsComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,9 @@ import { NotificationComponent } from './notification/notification.component';
     MatFormFieldModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    NgxSmartModalModule.forRoot()
+    NgxSmartModalModule.forRoot(),
+    AngularFontAwesomeModule,
+    NgxPaginationModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

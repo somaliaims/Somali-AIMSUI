@@ -1,0 +1,15 @@
+<div class="container-fluid view-area">
+  <table class="table table-responsive">
+    <tr>
+      <th>Id</th>
+      <th>Organization Name</th>
+      <th>Type</th>
+    </tr>
+    <tr *ngFor="let org of organizationsList | paginate: { itemsPerPage: 10, currentPage: p }">
+      <td>{{org.id}}</td>
+      <td>{{org.organizationName}}</td>
+      <td>{{org.organizationType}}</td>
+    </tr>
+  </table>
+  <pagination-controls (pageChange)="p=$event"></pagination-controls>
+</div>

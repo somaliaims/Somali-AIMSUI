@@ -1,11 +1,118 @@
-<div class="container view-area">
-  <div class="row">
+<div class="container-fluid view-area">
+  <div class="row text-center">
     <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <strong>Information!</strong> {{infoMessage}}
     </div>
   </div>
+
   <div class="row">
-    <h3>Welcome to AIMS, Somalia.</h3>
+
+    <div class="col-lg-3 col-md-3 col-xs-6">
+      <div class="card bg-light">
+        <div class="card-header">
+          <h6>User Accounts</h6>
+        </div>
+        <div class="card-body text-info">
+          <div class="row">
+            <div class="col-xs-3 col-md-3">
+              <fa name="user" size="5x"></fa>
+            </div>
+            <div class="col-xs-9 col-md-9 text-right">
+              <div class="font-dashboard-menu-item">126</div>
+              <div>Users</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="col text-center">
+            <a [routerLink]="['/user-registration']" class="btn btn-info">
+              <span class="pull-left">Register Now</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-xs-6">
+      <div class="card bg-light">
+        <div class="card-header">
+          <h6>AIMS Projects</h6>
+        </div>
+        <div class="card-body text-warning">
+          <div class="row">
+            <div class="col-xs-3 col-md-3">
+              <fa name="tasks" size="5x"></fa>
+            </div>
+            <div class="col-xs-9 col-md-9 text-right">
+              <div class="font-dashboard-menu-item">1000</div>
+              <div>Projects</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="col text-center">
+            <a [routerLink]="['/projects']" class="btn btn-warning">
+              <span class="pull-left">Add Now</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-xs-6">
+      <div class="card bg-light">
+        <div class="card-header">
+          <h6>Partner Organizations</h6>
+        </div>
+        <div class="card-body text-success">
+          <div class="row">
+            <div class="col-xs-3 col-md-3">
+              <fa name="building" size="5x"></fa>
+            </div>
+            <div class="col-xs-9 col-md-9 text-right">
+              <div class="font-dashboard-menu-item">85</div>
+              <div>Organizations</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="col text-center">
+            <a [routerLink]="['/organizations']" class="btn btn-success">
+              <span class="pull-left">View Information</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="card bg-light">
+          <div class="card-header">
+            <h6>Reports</h6>
+          </div>
+          <div class="card-body text-primary">
+            <div class="row">
+              <div class="col-xs-3 col-md-3">
+                <fa name="file" size="5x"></fa>
+              </div>
+              <div class="col-xs-9 col-md-9 text-right">
+                <div class="font-dashboard-menu-item">15</div>
+                <div>Reports</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="col text-center">
+              <a [routerLink]="['/reports']" class="btn btn-primary">
+                <span class="pull-left">View Reports</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
   </div>
-</div>
+
+  <div class="row margin-top-20">
+  </div>
