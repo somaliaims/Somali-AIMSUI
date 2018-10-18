@@ -27,6 +27,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationsList);
     }
 
+    organizationsFilterUrl(criteria) {
+        return (this.BASE_URL + urlsList.urls.searchOrganizations + criteria);
+    }
+
     organizationTypesUrl() {
         return (this.BASE_URL + urlsList.urls.organizationTypesList);
     }

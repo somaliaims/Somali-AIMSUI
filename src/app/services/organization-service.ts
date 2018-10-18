@@ -40,4 +40,10 @@ export class OrganizationService {
       return this.httpClient.get(url, httpOptions).pipe(
         catchError(this.storeService.handleError<any>('Organizations')));
     }
+
+    filterOrganizations(criteria: string) {
+      var url = this.urlHelper.organizationsFilterUrl(criteria);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Organizations')));
+    }
 }
