@@ -15,7 +15,7 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getToken);
     }
 
-    emailAvailabilityUrl(email) {
+    emailAvailabilityUrl(email: string) {
         return (this.BASE_URL + urlsList.urls.checkEmailAvailability + email);
     }
 
@@ -27,7 +27,7 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationsList);
     }
 
-    organizationsFilterUrl(criteria) {
+    organizationsFilterUrl(criteria: string) {
         return (this.BASE_URL + urlsList.urls.searchOrganizations + criteria);
     }
 
@@ -41,6 +41,10 @@ export class UrlHelperService {
 
     userAccountActivationUrl() {
         return (this.BASE_URL + urlsList.urls.userAccountActivation);
+    }
+
+    getOrganizationUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getOrganization + id);
     }
 
 }

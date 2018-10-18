@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizationService } from '../services/organization-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-organizations',
@@ -11,7 +12,7 @@ export class OrganizationsComponent implements OnInit {
   criteria: string = null;
   isLoading: boolean = true;
 
-  constructor(private organizationService: OrganizationService) { }
+  constructor(private organizationService: OrganizationService, private router: Router) { }
 
   ngOnInit() {
     this.getOrganizationsList();
@@ -50,6 +51,10 @@ export class OrganizationsComponent implements OnInit {
     } else {
       this.organizationsList();
     }
+  }
+
+  edit(id: string) {
+    this.router.navigateByUrl('/manage-organization/' + id);
   }
 
 }

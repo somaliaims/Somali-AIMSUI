@@ -10,6 +10,7 @@ import { ManagementComponent } from './management/management.component';
 import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
 import { OrganizationsComponent } from './organizations/organizations.component';
+import { ManageOrganizationComponent } from './manage-organization/manage-organization.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -23,7 +24,9 @@ export const routes: Routes = [
   { path: 'management', component: ManagementComponent },
   { path: 'data-entry', component: DataEntryComponent },
   { path: 'notification', component: NotificationComponent },
-  { path: 'organizations', component: OrganizationsComponent }
+  { path: 'organizations', component: OrganizationsComponent },
+  { path: 'manage-organization/:{id}', component: ManageOrganizationComponent, data: { isForEdit: true } },
+  { path: 'manage-organization', component: ManageOrganizationComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

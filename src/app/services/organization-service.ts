@@ -46,4 +46,10 @@ export class OrganizationService {
       return this.httpClient.get(url, httpOptions).pipe(
         catchError(this.storeService.handleError<any>('Organizations')));
     }
+
+    getOrganization(id: string) {
+      var url = this.urlHelper.getOrganizationUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Organizations')));
+    }
 }

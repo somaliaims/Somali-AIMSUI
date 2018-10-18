@@ -1,0 +1,33 @@
+<div class="container-fluid view-area">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Error!</strong> {{errorMessage}}
+              </div>
+              <h5 class="card-title text-center">Organization</h5>
+              <form class="form-signin" (ngSubmit)="authenticateUser()" #loginForm="ngForm">
+                <div class="form-group">
+                  <label for="text">Organization Name</label>
+                  <input type="text" class="form-control" id="organizationName" [(ngModel)]="model.organizationName" name="organizationName" #organizationName="ngModel" required>
+                  <div [hidden]="organizationName.valid" class="alert alert-danger">
+                    Organization Name is required
+                  </div>
+                </div>
+      
+                <div class="form-group">
+                  <label for="organizationType">Organization Type</label>
+                  <select class="form-control" id="organizationType" required formControlName="organizationType">
+                    <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>
+                  </select>
+                </div>
+                
+                <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">{{btnText}}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>

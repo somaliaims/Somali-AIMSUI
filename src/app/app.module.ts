@@ -23,6 +23,7 @@ import { ManagementComponent } from './management/management.component';
 import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
 import { OrganizationsComponent } from './organizations/organizations.component';
+import { ManageOrganizationComponent } from './manage-organization/manage-organization.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { OrganizationsComponent } from './organizations/organizations.component'
     ManagementComponent,
     DataEntryComponent,
     NotificationComponent,
-    OrganizationsComponent
+    OrganizationsComponent,
+    ManageOrganizationComponent
   ],
   imports: [
     BrowserModule,
