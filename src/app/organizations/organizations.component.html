@@ -1,15 +1,29 @@
 <div class="container-fluid view-area">
-  <table class="table table-responsive">
-    <tr>
-      <th>Id</th>
-      <th>Organization Name</th>
-      <th>Type</th>
-    </tr>
-    <tr *ngFor="let org of organizationsList | paginate: { itemsPerPage: 10, currentPage: p }">
-      <td>{{org.id}}</td>
-      <td>{{org.organizationName}}</td>
-      <td>{{org.organizationType}}</td>
-    </tr>
-  </table>
-  <pagination-controls (pageChange)="p=$event"></pagination-controls>
+  <div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active btn-info" data-toggle="tab" [routerLink]="['/organizations']">Organizations List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-info" data-toggle="tab" href="#menu1">Create New</a>
+            </li>
+          </ul>
+    </div>
+    <div class="col margin-top-10">
+      <table class="table table-bordered table-stripped">
+        <tr>
+          <th>Id</th>
+          <th>Organization Name</th>
+          <th>Type</th>
+        </tr>
+        <tr *ngFor="let org of organizationsList | paginate: { itemsPerPage: 2, currentPage: p }">
+          <td>{{org.id}}</td>
+          <td>{{org.organizationName}}</td>
+          <td>{{org.typeName}}</td>
+        </tr>
+      </table>
+      <pagination-controls (pageChange)="p=$event"></pagination-controls>
+    </div>
+  </div>
 </div>

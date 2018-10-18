@@ -8,5 +8,6 @@ export const settings = {
         "standard": {
             canDo: true
         }
-    }
+    },
+    "rowsPerPage": 2
 }
