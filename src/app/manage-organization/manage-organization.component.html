@@ -18,8 +18,8 @@
                 </div>
       
                 <div class="form-group">
-                  <label for="organizationType">Organization Type</label>
-                  <select class="form-control" id="organizationType" required formControlName="organizationType">
+                  <label for="organizationTypeId">Organization Type</label>
+                  <select class="form-control" id="organizationTypeId" required formControlName="organizationTypeId">
                     <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>
                   </select>
                 </div>

@@ -13,7 +13,7 @@ export class ManageOrganizationComponent implements OnInit {
   orgId: number = 0;
   btnText: string = 'Add Organization';
   organizationTypes: any = null;
-  model = { id: 0, organizationName: '', typeName: ''};
+  model = { id: 0, organizationName: '', organizationTypeId: 0};
 
   constructor(private organizationService: OrganizationService, private route: ActivatedRoute) {
   }
@@ -29,7 +29,7 @@ export class ManageOrganizationComponent implements OnInit {
           data => {
             this.model.id = data.id;
             this.model.organizationName = data.organizationName;
-            this.model.typeName = data.typeName;
+            this.model.organizationTypeId = data.organizationTypeId;
           },
           error => {
             console.log("Request Failed: ", error);

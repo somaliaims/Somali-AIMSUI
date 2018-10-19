@@ -3,6 +3,10 @@
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
           <div class="card card-signin my-5">
             <div class="card-body">
+                <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Error!</strong> {{errorMessage}}
+                  </div>
               <h5 class="card-title text-center">Register Organization</h5>
       
               <form (ngSubmit)="registerUser()" class="example-form" [formGroup]='usersForm'>
@@ -20,12 +24,12 @@
                   </ng-container>
                 </mat-autocomplete>
       
-                <div *ngIf="isOrgTypeVisible" class="form-group">
+                <!--<div *ngIf="isOrgTypeVisible" class="form-group">
                   <label for="organizationType">Organization Type</label>
                   <select class="form-control" id="organizationType" required formControlName="organizationType">
                     <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>
                   </select>
-                </div>
+                </div>-->
                 <button [class.disable]="isProcessing" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">{{btnRegisterText}}</button>
               </form>
       

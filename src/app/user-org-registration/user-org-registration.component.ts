@@ -29,6 +29,9 @@ export class UserOrgRegistrationComponent implements OnInit {
   delaySeconds: number = 2000;
   isOrgTypeVisible: boolean = true;
   validationMessage: string = '';
+  requestNo: number = 0;
+  isError: boolean = false;
+  errorMessage: string = '';
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
@@ -47,6 +50,13 @@ export class UserOrgRegistrationComponent implements OnInit {
         }
       } else {
         this.router.navigateByUrl('user-registration');
+      }
+    });
+
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.isError = true;
       }
     });
 
@@ -85,9 +95,9 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   displayFn(org: any) {
-      if (org) {
-        return org.organizationName;
-      }
+    if (org) {
+      return org.organizationName;
+    }
   }
 
   fillOrganizationTypes() {
@@ -105,7 +115,7 @@ export class UserOrgRegistrationComponent implements OnInit {
     var orgValue = this.usersForm.get('userInput').value;
     if (!orgValue.id) {
       this.model.OrganizationName = orgValue;
-      this.model.OrganizationTypeId = this.usersForm.get('organizationType').value;
+      //this.model.OrganizationTypeId = this.usersForm.get('organizationType').value;
 
       if (this.model.OrganizationName.length == 0) {
         //Need to show a dialog message here
@@ -118,21 +128,25 @@ export class UserOrgRegistrationComponent implements OnInit {
       this.model.OrganizationId = '0';
     } else if (orgValue.id && orgValue.id != 0) {
       this.model.OrganizationId = orgValue.id;
-      this.model.OrganizationTypeId = '0';
+      //this.model.OrganizationTypeId = '0';
     }
 
+    this.requestNo = this.storeService.getNewRequestNumber();
     this.isProcessing = true;
     this.btnRegisterText = 'Wait processing...';
     this.userService.registerUser(this.model).subscribe(
       data => {
-        this.resetModel();
-        this.storeService
-          .newInfoMessage('Your registration information is forwarded successfully. We will get back to you soon');
-        this.btnRegisterText = 'Redirecting...';
-        setTimeout(() => {
-          this.router.navigateByUrl('');
-        }, this.delaySeconds);
-
+        if (!this.isError) {
+          this.resetModel();
+          this.storeService
+            .newInfoMessage('Your registration information is forwarded successfully. We will get back to you soon');
+          this.btnRegisterText = 'Redirecting...';
+          setTimeout(() => {
+            this.router.navigateByUrl('');
+          }, this.delaySeconds);
+        } else {
+          this.resetProcessingStatus();
+        }
       },
       error => {
         console.log("Request Faild: ", error);
