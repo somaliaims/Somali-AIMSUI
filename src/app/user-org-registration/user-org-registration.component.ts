@@ -27,7 +27,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   btnRegisterText: string = 'Register';
   isShowType: boolean = false;
   delaySeconds: number = 2000;
-  isOrgTypeVisible: boolean = true;
+  //isOrgTypeVisible: boolean = true;
   validationMessage: string = '';
   requestNo: number = 0;
   isError: boolean = false;
@@ -80,18 +80,8 @@ export class UserOrgRegistrationComponent implements OnInit {
       )
       .subscribe(organizations => {
         this.filteredOrganizations = organizations;
-        this.setOrgStatus();
       });
     this.fillOrganizationTypes();
-  }
-
-  setOrgStatus() {
-    var selectedValue = this.usersForm.get('userInput').value;
-    if (selectedValue && selectedValue.id) {
-      this.isOrgTypeVisible = false;
-    } else {
-      this.isOrgTypeVisible = true;
-    }
   }
 
   displayFn(org: any) {
@@ -161,7 +151,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   resetModel() {
-    this.model = new RegistrationModel('', '', '', '', '', '', '', '', false);
+    this.model = new RegistrationModel('', '', '', '', '', '', '', false);
   }
 
 }

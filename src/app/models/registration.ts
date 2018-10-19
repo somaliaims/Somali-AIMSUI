@@ -4,7 +4,6 @@ export class RegistrationModel {
         public Email: string,
         public Password: string,
         public ConfirmPassword: string,
-        public UserType: string,
         public OrganizationId: string,
         public OrganizationName: string,
         public OrganizationTypeId: string,
