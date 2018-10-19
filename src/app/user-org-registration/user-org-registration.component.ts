@@ -7,6 +7,7 @@ import { RegistrationModel } from '../models/registration';
 import { UserService } from '../services/user-service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Router } from '@angular/router';
+import { messages } from '../config/messages';
 
 @Component({
   selector: 'app-user-org-registration',
@@ -129,7 +130,7 @@ export class UserOrgRegistrationComponent implements OnInit {
         if (!this.isError) {
           this.resetModel();
           this.storeService
-            .newInfoMessage('Your registration information is forwarded successfully. We will get back to you soon');
+            .newInfoMessage(messages.USER_REGISTRATION_MESSAGE);
           this.btnRegisterText = 'Redirecting...';
           setTimeout(() => {
             this.router.navigateByUrl('');
