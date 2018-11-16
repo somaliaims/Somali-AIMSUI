@@ -18,7 +18,9 @@ export class ManageOrganizationComponent implements OnInit {
   btnText: string = 'Add Organization';
   errorMessage: string = '';
   organizationTypes: any = null;
-  model = { id: 0, organizationName: '', organizationTypeId: 0};
+  requestNo: number = 0;
+  isError: boolean = false;
+  model = { id: 0, organizationName: '', organizationTypeId: 0 };
 
   constructor(private organizationService: OrganizationService, private route: ActivatedRoute,
     private router: Router, private modalService: NgxSmartModalService,
@@ -26,7 +28,6 @@ export class ManageOrganizationComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.params);
     this.fillOrganizationTypes();
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
@@ -46,6 +47,13 @@ export class ManageOrganizationComponent implements OnInit {
         );
       }
     }
+
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.isError = true;
+      }
+    });
   }
 
   fillOrganizationTypes() {
@@ -60,35 +68,57 @@ export class ManageOrganizationComponent implements OnInit {
   }
 
   saveOrganization() {
-    var model = { 
-      OrganizationName: this.model.organizationName, 
-      OrganizationTypeId: this.model.organizationTypeId
+    var model = {
+      Name: this.model.organizationName,
+      TypeId: this.model.organizationTypeId
     };
 
+    this.isBtnDisabled = true;
     if (this.isForEdit) {
+      this.btnText = 'Updating...';
       this.organizationService.updateOrganization(this.model.id, model).subscribe(
         data => {
-          var message = 'New organization' + Messages.NEW_RECORD;
-          this.storeService.newInfoMessage(message);
-          this.router.navigateByUrl('organizations');
+          if (!this.isError) {
+            var message = 'Organization' + Messages.RECORD_UPDATED;
+            this.storeService.newInfoMessage(message);
+            this.router.navigateByUrl('organizations');
+          } else {
+            this.resetFormState();
+          }
         },
         error => {
+          this.isError = true;
           this.errorMessage = error;
-          this.modalService.getModal('error-modal').open();
+          this.resetFormState();
         }
       );
     } else {
+      this.btnText = 'Saving...';
       this.organizationService.updateOrganization(this.model.id, model).subscribe(
         data => {
-          var message = 'Selected organization' + Messages.RECORD_UPDATED;
-          this.storeService.newInfoMessage(message);
-          this.router.navigateByUrl('organizations');
+          if (!this.isError) {
+            var message = 'New organization' + Messages.NEW_RECORD;
+            this.storeService.newInfoMessage(message);
+            this.router.navigateByUrl('organizations');
+          } else {
+            this.resetFormState();
+          }
         },
         error => {
           this.errorMessage = error;
-          this.modalService.getModal('error-modal').open();
+          this.isError = true;
+          this.resetFormState();
         }
       );
+    }
+  }
+
+  resetFormState() {
+    this.isBtnDisabled = false;
+    if (this.isForEdit) {
+      this.btnText = 'Edit Organization';
+    } else {
+      this.btnText = 'Add Organization';
     }
   }
 

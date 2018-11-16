@@ -62,7 +62,7 @@ export class OrganizationService {
 
     updateOrganization(id: number, model: any) {
       var url  = this.urlHelper.getOrganizationUrl() + '/' + id;
-        return this.httpClient.post(url,
+        return this.httpClient.put(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Update Organization')));
     }
