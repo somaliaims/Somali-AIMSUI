@@ -43,8 +43,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.userAccountActivation);
     }
 
-    getOrganizationUrl(id: string) {
+    getSearchOrganizationUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getOrganization + id);
+    }
+
+    getOrganizationUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationUrl);
     }
 
 }

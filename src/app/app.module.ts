@@ -24,6 +24,7 @@ import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { ManageOrganizationComponent } from './manage-organization/manage-organization.component';
+import { ErrorModalComponent } from './error-modal/error-modal.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ManageOrganizationComponent } from './manage-organization/manage-organi
     DataEntryComponent,
     NotificationComponent,
     OrganizationsComponent,
-    ManageOrganizationComponent
+    ManageOrganizationComponent,
+    ErrorModalComponent
   ],
   imports: [
     BrowserModule,

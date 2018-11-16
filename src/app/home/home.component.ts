@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '../services/store-service';
+import {Settings} from '../config/settings';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import { StoreService } from '../services/store-service';
 export class HomeComponent implements OnInit {
   infoMessage: string = null;
   showMessage: boolean = false;
-  tenSeconds: number = 10000;
+  
   constructor(private storeService: StoreService) { }
 
   ngOnInit() {
@@ -20,7 +21,7 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {
       this.storeService.newInfoMessage('');
       this.showMessage = false;
-    }, this.tenSeconds);
+    }, Settings.displayMessageTime);
   }
 
 }

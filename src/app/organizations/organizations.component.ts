@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizationService } from '../services/organization-service';
 import { Router } from '@angular/router';
-
+import { StoreService } from '../services/store-service';
+import { Settings } from '../config/settings';
 @Component({
   selector: 'app-organizations',
   templateUrl: './organizations.component.html',
@@ -11,10 +12,22 @@ export class OrganizationsComponent implements OnInit {
   organizationsList: any = null;
   criteria: string = null;
   isLoading: boolean = true;
+  infoMessage: string = null;
+  showMessage: boolean = false;
 
-  constructor(private organizationService: OrganizationService, private router: Router) { }
+  constructor(private organizationService: OrganizationService, private router: Router,
+    private storeService: StoreService) { }
 
   ngOnInit() {
+    this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
+    if (this.infoMessage !== null && this.infoMessage !== '') {
+      this.showMessage = true;
+    }
+    setTimeout(() => {
+      this.storeService.newInfoMessage('');
+      this.showMessage = false;
+    }, Settings.displayMessageTime);
+
     this.getOrganizationsList();
   }
 

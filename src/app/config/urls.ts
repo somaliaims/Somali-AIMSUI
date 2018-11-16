@@ -9,5 +9,6 @@ export const urls = {
 	userNotificationsList: "Notification",
 	userAccountActivation: "User/ActivateAccount/",
 	searchOrganizations: "Organization/",
-	getOrganization: "Organization/GetById/"
+	getOrganization: "Organization/GetById/",
+	organizationUrl: "Organization",
 };

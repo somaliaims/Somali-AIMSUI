@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import * as Settings from '../config/settings';
+import {Settings} from '../config/settings';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class SecurityHelperService {
   secretKey: string;
 
   constructor() {
-    this.secretKey = Settings.settings.secretKey;
+    this.secretKey = Settings.secretKey;
   }
 
   encryptText(text: string) {

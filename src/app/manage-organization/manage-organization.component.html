@@ -8,7 +8,8 @@
                 <strong>Error!</strong> {{errorMessage}}
               </div>
               <h5 class="card-title text-center">Organization</h5>
-              <form class="form-signin" (ngSubmit)="authenticateUser()" #loginForm="ngForm">
+              
+              <form class="form-signin" (ngSubmit)="saveOrganization()" #organizationForm="ngForm">
                 <div class="form-group">
                   <label for="text">Organization Name</label>
                   <input type="text" class="form-control" id="organizationName" [(ngModel)]="model.organizationName" name="organizationName" #organizationName="ngModel" required>
@@ -19,15 +20,17 @@
       
                 <div class="form-group">
                   <label for="organizationTypeId">Organization Type</label>
-                  <select class="form-control" id="organizationTypeId" required formControlName="organizationTypeId">
+                  <select class="form-control" id="organizationTypeId" required [(ngModel)]="model.organizationTypeId" name="organizationTypeId" #organizationTypeId="ngModel" required>
                     <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>
                   </select>
                 </div>
                 
-                <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">{{btnText}}</button>
+                <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
               </form>
             </div>
           </div>
         </div>
       </div>
+
+      <error-modal></error-modal>
 </div>

@@ -1,0 +1,11 @@
+<ngx-smart-modal class="" #ErrorModal identifier="errorModal">
+  <div class="modal-header">
+    <h4 class="modal-title">Error</h4>
+  </div>
+  <div class="modal-body">
+    <p>{{message}}</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="errorModal.close()">Ok</button>
+  </div>
+</ngx-smart-modal>
