@@ -22,6 +22,12 @@ export class LocationService {
         catchError(this.storeService.handleError<any>('Locations')));
     }
 
+    filterLocations(criteria: string) {
+      var url = this.urlHelper.getSearchLocationsUrl(criteria);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Locations')));
+    }
+
     getLocation(id: string) {
       var url = this.urlHelper.getSingleLocationUrl(id);
       return this.httpClient.get(url, httpOptions).pipe(

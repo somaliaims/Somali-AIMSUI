@@ -52,7 +52,11 @@ export class UrlHelperService {
     }
 
     getSingleLocationUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.locationUrl + '/' + id);
+        return (this.BASE_URL + urlsList.urls.getLocation + id);
+    }
+
+    getSearchLocationsUrl(criteria: string) {
+        return (this.BASE_URL + urlsList.urls.locationUrl + '/' + criteria);
     }
 
     getLocationUrl() {
