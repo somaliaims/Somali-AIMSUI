@@ -51,4 +51,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationUrl);
     }
 
+    getSingleLocationUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.locationUrl + '/' + id);
+    }
+
+    getLocationUrl() {
+        return (this.BASE_URL + urlsList.urls.locationUrl);
+    }
+
 }

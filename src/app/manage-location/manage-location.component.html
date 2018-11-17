@@ -1,0 +1,57 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/locations']">Locations List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">Location</h5>
+
+          <form class="form-signin" (ngSubmit)="saveLocation()" #locationForm="ngForm">
+
+            <div class="form-group">
+              <label for="location">Location Name</label>
+              <input type="text" class="form-control" id="location" [(ngModel)]="model.location" name="location"
+                #location="ngModel" required>
+              <div [hidden]="location.valid" class="alert alert-danger">
+                Location Name is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="latitude">Latitude</label>
+              <input type="number" class="form-control" id="latitude" [(ngModel)]="model.latitude" name="location"
+                #latitude="ngModel">
+              <div [hidden]="latitude.valid" class="alert alert-danger">
+                Enter valid value for latitude
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="longitude">Longitude</label>
+              <input type="number" class="form-control" id="longitude" [(ngModel)]="model.longitude" name="longitude"
+                #longitude="ngModel">
+              <div [hidden]="longitude.valid" class="alert alert-danger">
+                Enter valid value for longitude
+              </div>
+            </div>
+
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -25,6 +25,8 @@ import { NotificationComponent } from './notification/notification.component';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { ManageOrganizationComponent } from './manage-organization/manage-organization.component';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
+import { LocationsComponent } from './locations/locations.component';
+import { ManageLocationComponent } from './manage-location/manage-location.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { ErrorModalComponent } from './error-modal/error-modal.component';
     NotificationComponent,
     OrganizationsComponent,
     ManageOrganizationComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    LocationsComponent,
+    ManageLocationComponent
   ],
   imports: [
     BrowserModule,

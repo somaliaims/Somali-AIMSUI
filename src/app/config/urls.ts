@@ -11,4 +11,5 @@ export const urls = {
 	searchOrganizations: "Organization/",
 	getOrganization: "Organization/GetById/",
 	organizationUrl: "Organization",
+	locationUrl: "Location"
 };

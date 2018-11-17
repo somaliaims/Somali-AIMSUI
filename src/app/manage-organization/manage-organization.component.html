@@ -1,5 +1,15 @@
 <div class="container-fluid view-area">
     <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/organizations']">Organizations List</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
+              </li>
+            </ul>
+          </div>
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
           <div class="card card-signin my-5">
             <div class="card-body">
@@ -20,9 +30,12 @@
       
                 <div class="form-group">
                   <label for="organizationTypeId">Organization Type</label>
-                  <select class="form-control" id="organizationTypeId" required [(ngModel)]="model.organizationTypeId" name="organizationTypeId" #organizationTypeId="ngModel" required>
+                  <select class="form-control" id="organizationTypeId" [(ngModel)]="model.organizationTypeId" name="organizationTypeId" #organizationTypeId="ngModel" required>
                     <option *ngFor="let oType of organizationTypes" [value]="oType.id">{{oType.typeName}}</option>
                   </select>
+                  <div [hidden]="organizationTypeId.valid && organizationTypeId != 0" class="alert alert-danger">
+                      Organization Type is required
+                    </div>
                 </div>
                 
                 <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>

@@ -1,45 +1,44 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OrganizationService } from '../services/organization-service';
+import { LocationService } from '../services/location.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSmartModalService } from 'ngx-smart-modal';
-import { Messages } from '../config/messages';
 import { StoreService } from '../services/store-service';
+import { Messages } from '../config/messages';
 
 @Component({
-  selector: 'manage-organization',
-  templateUrl: './manage-organization.component.html',
-  styleUrls: ['./manage-organization.component.css']
+  selector: 'app-manage-location',
+  templateUrl: './manage-location.component.html',
+  styleUrls: ['./manage-location.component.css']
 })
-export class ManageOrganizationComponent implements OnInit {
+export class ManageLocationComponent implements OnInit {
+
   @Input()
   isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
   orgId: number = 0;
-  btnText: string = 'Add Organization';
+  btnText: string = 'Add Location';
   errorMessage: string = '';
-  organizationTypes: any = null;
+  locationTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
-  model = { id: 0, organizationName: '', organizationTypeId: 1 };
+  model = { id: 0, location: '', latitude: '', longitude: '' };
 
-  constructor(private organizationService: OrganizationService, private route: ActivatedRoute,
-    private router: Router, private modalService: NgxSmartModalService,
-    private storeService: StoreService) {
+  constructor(private locationService: LocationService, private route: ActivatedRoute,
+    private router: Router, private storeService: StoreService) {
   }
 
   ngOnInit() {
-    this.fillOrganizationTypes();
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit Organization';
+        this.btnText = 'Edit Location';
         this.isForEdit = true;
         this.orgId = id;
-        this.organizationService.getOrganization(id).subscribe(
+        this.locationService.getLocation(id).subscribe(
           data => {
             this.model.id = data.id;
-            this.model.organizationName = data.organizationName;
-            this.model.organizationTypeId = data.organizationTypeId;
+            this.model.location = data.location;
+            this.model.latitude = data.latitude;
+            this.model.longitude = data.longitude;
           },
           error => {
             console.log("Request Failed: ", error);
@@ -56,32 +55,22 @@ export class ManageOrganizationComponent implements OnInit {
     });
   }
 
-  fillOrganizationTypes() {
-    this.organizationService.getOrganizationTypes().subscribe(
-      data => {
-        this.organizationTypes = data;
-      },
-      error => {
-        console.log("Request Failed: ", error);
-      }
-    );
-  }
-
-  saveOrganization() {
+  saveLocation() {
     var model = {
-      Name: this.model.organizationName,
-      TypeId: this.model.organizationTypeId
+      Location: this.model.location,
+      Latitude: this.model.latitude,
+      Longitude: this.model.longitude
     };
 
     this.isBtnDisabled = true;
     if (this.isForEdit) {
       this.btnText = 'Updating...';
-      this.organizationService.updateOrganization(this.model.id, model).subscribe(
+      this.locationService.updateLocation(this.model.id, model).subscribe(
         data => {
           if (!this.isError) {
-            var message = 'Organization' + Messages.RECORD_UPDATED;
+            var message = 'Location' + Messages.RECORD_UPDATED;
             this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('organizations');
+            this.router.navigateByUrl('locations');
           } else {
             this.resetFormState();
           }
@@ -94,12 +83,12 @@ export class ManageOrganizationComponent implements OnInit {
       );
     } else {
       this.btnText = 'Saving...';
-      this.organizationService.addOrganization(model).subscribe(
+      this.locationService.addLocation(model).subscribe(
         data => {
           if (!this.isError) {
-            var message = 'New organization' + Messages.NEW_RECORD;
+            var message = 'New location' + Messages.NEW_RECORD;
             this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('organizations');
+            this.router.navigateByUrl('locations');
           } else {
             this.resetFormState();
           }
@@ -116,9 +105,9 @@ export class ManageOrganizationComponent implements OnInit {
   resetFormState() {
     this.isBtnDisabled = false;
     if (this.isForEdit) {
-      this.btnText = 'Edit Organization';
+      this.btnText = 'Edit Location';
     } else {
-      this.btnText = 'Add Organization';
+      this.btnText = 'Add Location';
     }
   }
 
