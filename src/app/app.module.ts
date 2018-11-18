@@ -27,6 +27,7 @@ import { ManageOrganizationComponent } from './manage-organization/manage-organi
 import { ErrorModalComponent } from './error-modal/error-modal.component';
 import { LocationsComponent } from './locations/locations.component';
 import { ManageLocationComponent } from './manage-location/manage-location.component';
+import { SectorTypesComponent } from './sector-types/sector-types.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ManageLocationComponent } from './manage-location/manage-location.compo
     ManageOrganizationComponent,
     ErrorModalComponent,
     LocationsComponent,
-    ManageLocationComponent
+    ManageLocationComponent,
+    SectorTypesComponent
   ],
   imports: [
     BrowserModule,

@@ -12,5 +12,7 @@ export const urls = {
 	getOrganization: "Organization/GetById/",
 	organizationUrl: "Organization",
 	locationUrl: "Location",
-	getLocation: "Location/GetById/"
+	getLocation: "Location/GetById/",
+	sectorTypesUrl: "SectorTypes",
+	getSectorType: "SectorTypes/GetById/"
 };
