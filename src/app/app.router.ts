@@ -14,6 +14,7 @@ import { ManageOrganizationComponent } from './manage-organization/manage-organi
 import { LocationsComponent } from './locations/locations.component';
 import { ManageLocationComponent } from './manage-location/manage-location.component';
 import { SectorTypesComponent } from './sector-types/sector-types.component';
+import { ManageSectortypeComponent } from './manage-sectortype/manage-sectortype.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -33,7 +34,9 @@ export const routes: Routes = [
   { path: 'locations', component: LocationsComponent },
   { path: 'manage-location/:{id}', component: ManageLocationComponent, data: { isForEdit: true } },
   { path: 'manage-location', component: ManageLocationComponent },
-  { path: 'sector-types', component: SectorTypesComponent }
+  { path: 'sector-types', component: SectorTypesComponent },
+  { path: 'manage-sectortype/:{id}', component: ManageSectortypeComponent, data: { isForEdit: true } },
+  { path: 'manage-sectortype', component: ManageSectortypeComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

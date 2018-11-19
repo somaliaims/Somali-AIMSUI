@@ -69,7 +69,7 @@ export class SectorTypesComponent implements OnInit {
   }
 
   edit(id: string) {
-    this.router.navigateByUrl('/manage-sectorType/' + id);
+    this.router.navigateByUrl('/manage-sectortype/' + id);
   }
 
 }
