@@ -3,6 +3,7 @@ import { SectorCategoryService } from '../services/sector-category-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
+import { SectorTypeService } from '../services/sector-types.service';
 
 @Component({
   selector: 'app-manage-sectorcategory',
@@ -20,18 +21,20 @@ export class ManageSectorCategoryComponent implements OnInit {
   sectorCategoryTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
+  sectorTypes: any = [];
   model = { id: 0, typeName: '' };
 
   constructor(private sectorCategoryService: SectorCategoryService, private route: ActivatedRoute,
-    private router: Router,
+    private router: Router, private sectorTypeService: SectorTypeService,
     private storeService: StoreService) {
   }
 
   ngOnInit() {
+    this.getSectorTypes();
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit SectorCategory';
+        this.btnText = 'Edit Sector Category';
         this.isForEdit = true;
         this.orgId = id;
         this.sectorCategoryService.getSectorCategory(id).subscribe(
@@ -52,6 +55,17 @@ export class ManageSectorCategoryComponent implements OnInit {
         this.isError = true;
       }
     });
+  }
+
+  getSectorTypes() {
+    this.sectorTypeService.getSectorTypesList().subscribe(data => {
+      if (data && data.length) {
+        this.sectorTypes = data
+      }
+    },
+      error => {
+      }
+    );
   }
 
   saveSectorCategory() {
