@@ -1,0 +1,57 @@
+<div class="container-fluid view-area">
+    <div class="row text-center">
+        <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Information!</strong> {{infoMessage}}
+        </div>
+      </div>
+  <div class="row">
+    <div class="col-md-6">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab" >Sector Categories List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-sectortype']">Create New</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Enter sector type name" [(ngModel)]="criteria"
+          aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-info" (click)="searchSectorCategories()" type="button"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row text-center" *ngIf="isLoading">
+    <div class="col-md-12">
+      <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="!isLoading" class="row">
+    <div class="col margin-top-10">
+      <table class="table table-bordered table-stripped">
+        <tr>
+          <th>Id</th>
+          <th>Sector Category</th>
+          <th>Sector Type</th>
+          <th>Actions</th>
+        </tr>
+        <tr *ngFor="let sector of sectorTypesList | paginate: { itemsPerPage: 2, currentPage: p }">
+          <td>{{sector.id}}</td>
+          <td>{{sector.category}}</td>
+          <td>{{sector.sectorType}}</td>
+          <td>
+            <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
+          </td>
+        </tr>
+      </table>
+      <pagination-controls (pageChange)="p=$event"></pagination-controls>
+    </div>
+  </div>
+  </div>

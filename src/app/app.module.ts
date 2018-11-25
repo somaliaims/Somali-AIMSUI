@@ -29,6 +29,8 @@ import { LocationsComponent } from './locations/locations.component';
 import { ManageLocationComponent } from './manage-location/manage-location.component';
 import { SectorTypesComponent } from './sector-types/sector-types.component';
 import { ManageSectortypeComponent } from './manage-sectortype/manage-sectortype.component';
+import { SectorCategoriesComponent } from './sector-categories/sector-categories.component';
+import { ManageSectorCategoryComponent } from './manage-sector-category/manage-sectorcategory.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { ManageSectortypeComponent } from './manage-sectortype/manage-sectortype
     LocationsComponent,
     ManageLocationComponent,
     SectorTypesComponent,
-    ManageSectortypeComponent
+    ManageSectortypeComponent,
+    SectorCategoriesComponent,
+    ManageSectorCategoryComponent
   ],
   imports: [
     BrowserModule,
