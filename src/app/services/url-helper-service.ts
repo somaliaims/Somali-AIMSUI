@@ -87,4 +87,16 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorCategoriesUrl);
     }
 
+    getSingleSectorSubCategoryUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getSectorSubCategory + id);
+    }
+
+    getSearchSectorSubCategoryUrl(criteria: string) {
+        return (this.BASE_URL + urlsList.urls.sectorSubCategoriesUrl + '/' + criteria);
+    }
+
+    getSectorSubCategoryUrl() {
+        return (this.BASE_URL + urlsList.urls.sectorSubCategoriesUrl);
+    }
+
 }
