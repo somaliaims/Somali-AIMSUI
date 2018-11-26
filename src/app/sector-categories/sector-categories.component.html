@@ -18,7 +18,7 @@
     </div>
     <div class="col-md-6">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Enter sector type name" [(ngModel)]="criteria"
+        <input type="text" class="form-control" placeholder="Enter sector category" [(ngModel)]="criteria"
           aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button class="btn btn-outline-info" (click)="searchSectorCategories()" type="button"><i class="fa fa-search"></i></button>
@@ -42,12 +42,12 @@
           <th>Sector Type</th>
           <th>Actions</th>
         </tr>
-        <tr *ngFor="let sector of sectorTypesList | paginate: { itemsPerPage: 2, currentPage: p }">
-          <td>{{sector.id}}</td>
-          <td>{{sector.category}}</td>
-          <td>{{sector.sectorType}}</td>
+        <tr *ngFor="let category of sectorCategoriesList | paginate: { itemsPerPage: 2, currentPage: p }">
+          <td>{{category.id}}</td>
+          <td>{{category.category}}</td>
+          <td>{{category.sectorType}}</td>
           <td>
-            <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
+            <a title="Edit" (click)="edit(category.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
           </td>
         </tr>
       </table>

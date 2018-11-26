@@ -22,7 +22,7 @@ export class ManageSectorCategoryComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   sectorTypes: any = [];
-  model = { id: 0, typeName: '' };
+  model = { id: 0, category: '', sectorTypeId: 0 };
 
   constructor(private sectorCategoryService: SectorCategoryService, private route: ActivatedRoute,
     private router: Router, private sectorTypeService: SectorTypeService,
@@ -31,6 +31,7 @@ export class ManageSectorCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.getSectorTypes();
+    
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
@@ -40,7 +41,8 @@ export class ManageSectorCategoryComponent implements OnInit {
         this.sectorCategoryService.getSectorCategory(id).subscribe(
           data => {
             this.model.id = data.id;
-            this.model.typeName = data.typeName;
+            this.model.category = data.category;
+            this.model.sectorTypeId = data.sectorTypeId;
           },
           error => {
             console.log("Request Failed: ", error);
@@ -70,8 +72,8 @@ export class ManageSectorCategoryComponent implements OnInit {
 
   saveSectorCategory() {
     var model = {
-      TypeName: this.model.typeName,
-      Id: this.model.id
+      Category: this.model.category,
+      SectorTypeId: this.model.sectorTypeId
     };
 
     this.isBtnDisabled = true;
