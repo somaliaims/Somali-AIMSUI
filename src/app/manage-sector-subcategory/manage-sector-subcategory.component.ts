@@ -22,7 +22,7 @@ export class ManageSectorSubCategoryComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   sectorCategories: any = [];
-  model = { id: 0, subCategory: '', categoryId: 0 };
+  model = { id: 0, subCategory: '', categoryId: 1 };
 
   constructor(private sectorSubCategoryService: SectorSubCategoryService, private route: ActivatedRoute,
     private router: Router, private sectorCategoryService: SectorCategoryService,
@@ -48,8 +48,8 @@ export class ManageSectorSubCategoryComponent implements OnInit {
             console.log("Request Failed: ", error);
           }
         );
-      }
-    }
+      } 
+    } 
 
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -63,6 +63,10 @@ export class ManageSectorSubCategoryComponent implements OnInit {
     this.sectorCategoryService.getSectorCategoriesList().subscribe(data => {
       if (data && data.length) {
         this.sectorCategories = data
+
+        if (!this.isForEdit && data.length > 0) {
+          this.model.categoryId = data[0].id;
+        } 
       }
     },
       error => {
