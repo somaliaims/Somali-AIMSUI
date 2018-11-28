@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { SectorSubCategoryService } from '../services/sector-subcategory-service';
+import { SectorService } from '../services/sector.service';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
 
 @Component({
-  selector: 'app-sector-subcategories',
-  templateUrl: './sector-subcategories.component.html',
-  styleUrls: ['./sector-subcategories.component.css']
+  selector: 'app-sectors',
+  templateUrl: './sectors.component.html',
+  styleUrls: ['./sectors.component.css']
 })
-export class SectorSubCategoriesComponent implements OnInit {
+export class SectorsComponent implements OnInit {
 
-  sectorSubCategoriesList: any = null;
+  sectorsList: any = null;
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
 
-  constructor(private sectorSubCategoryService: SectorSubCategoryService, private router: Router,
+  constructor(private sectorService: SectorService, private router: Router,
     private storeService: StoreService) { }
 
   ngOnInit() {
@@ -30,15 +30,15 @@ export class SectorSubCategoriesComponent implements OnInit {
       this.showMessage = false;
     }, Settings.displayMessageTime);
 
-    this.getSectorSubCategoriesList();
+    this.getSectorsList();
   }
 
-  getSectorSubCategoriesList() {
-    this.sectorSubCategoryService.getSectorSubCategoriesList().subscribe(
+  getSectorsList() {
+    this.sectorService.getSectorsList().subscribe(
       data => {
         this.isLoading = false;
         if (data && data.length) {
-          this.sectorSubCategoriesList = data;
+          this.sectorsList = data;
         }
       },
       error => {
@@ -48,15 +48,15 @@ export class SectorSubCategoriesComponent implements OnInit {
     );
   }
 
-  searchSectorSubCategories() {
+  searchSectors() {
     if (this.criteria != null) {
       this.isLoading = true;
       
-      this.sectorSubCategoryService.filterSectorSubCategories(this.criteria).subscribe(
+      this.sectorService.filterSectors(this.criteria).subscribe(
         data => {
           this.isLoading = false;
           if (data && data.length) {
-            this.sectorSubCategoriesList = data
+            this.sectorsList = data
           }
         },
         error => {
@@ -64,12 +64,12 @@ export class SectorSubCategoriesComponent implements OnInit {
         }
       );
     } else {
-      this.sectorSubCategoriesList();
+      this.sectorsList();
     }
   }
 
   edit(id: string) {
-    this.router.navigateByUrl('/manage-sectorsubcategory/' + id);
+    this.router.navigateByUrl('/manage-sector/' + id);
   }
 
 }

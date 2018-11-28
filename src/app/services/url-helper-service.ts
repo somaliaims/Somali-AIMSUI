@@ -99,4 +99,16 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorSubCategoriesUrl);
     }
 
+    getSingleSectorUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getSector + id);
+    }
+
+    getSearchSectorsUrl(criteria: string) {
+        return (this.BASE_URL + urlsList.urls.sectorsUrl + '/' + criteria);
+    }
+
+    getSectorUrl() {
+        return (this.BASE_URL + urlsList.urls.sectorsUrl);
+    }
+
 }
