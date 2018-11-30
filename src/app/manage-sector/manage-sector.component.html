@@ -1,0 +1,73 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sector-categories']">Sector Categories List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">Sector</h5>
+
+          <form class="form-signin" (ngSubmit)="saveSector()" #sectorForm="ngForm">
+            
+            <div class="form-group">
+              <label for="sectorTypeId">Sector Type</label>
+              <select class="form-control" id="sectorTypeId" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
+                #sectorTypeId="ngModel" required (change)="filterCategories($event)">
+                <option *ngFor="let sType of sectorTypes" [value]="sType.id">{{sType.typeName}}</option>
+              </select>
+              <div [hidden]="sectorTypeId.valid && sectorTypeId != 0" class="alert alert-danger">
+                Sector Type is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="sectorTypeId">Category</label>
+              <select class="form-control" id="categoryId" [(ngModel)]="model.categoryId" name="categoryId"
+                #categoryId="ngModel" required (change)="filterSubCategories($event)">
+                <option *ngFor="let category of filteredCategories" [value]="category.id">{{category.Category}}</option>
+              </select>
+              <div [hidden]="categoryId.valid && categoryId != 0" class="alert alert-danger">
+                Category is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="sectorTypeId">Sub-Category</label>
+              <select class="form-control" id="subCategoryId" [(ngModel)]="model.subCategoryId" name="subCategoryId"
+                #subCategoryId="ngModel" required>
+                <option *ngFor="let subCategory of filteredSubCategories" [value]="subCategory.id">{{category.Category}}</option>
+              </select>
+              <div [hidden]="subCategoryId.valid && subCategoryId != 0" class="alert alert-danger">
+                Sub-Category is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="text"> Name</label>
+              <input type="text" class="form-control" id="sectorName" [(ngModel)]="model.sectorName" name="sectorName"
+                #sectorName="ngModel" required>
+              <div [hidden]="sectorName.valid" class="alert alert-danger">
+                 Sector Name is required
+              </div>
+            </div>
+
+        
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
