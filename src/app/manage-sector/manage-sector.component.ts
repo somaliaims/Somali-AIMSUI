@@ -27,7 +27,7 @@ export class ManageSectorComponent implements OnInit {
   filteredSubCategories: any = [];
   requestNo: number = 0;
   isError: boolean = false;
-  model = { id: 0, sectorName: '', categoryId: 0, subCategoryId: 0 };
+  model = { id: 0, sectorName: '', sectorTypeId: null, categoryId: null, subCategoryId: null };
 
   constructor(private sectorService: SectorService, private route: ActivatedRoute,
     private router: Router, private sectorTypeService: SectorTypeService,
@@ -36,29 +36,18 @@ export class ManageSectorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getSectorTypes();
-    this.getCategories();
-    this.getSubCategories();
-
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
         this.btnText = 'Edit Sector';
         this.isForEdit = true;
         this.orgId = id;
-        this.sectorService.getSector(id).subscribe(
-          data => {
-            this.model.id = data.id;
-            this.model.sectorName = data.sectorName;
-            this.model.categoryId = data.categoryId;
-            this.model.subCategoryId = data.subCategoryId;
-          },
-          error => {
-            console.log("Request Failed: ", error);
-          }
-        );
       }
     }
+
+    this.getSectorTypes();
+    this.getCategories();
+    this.getSubCategories();
 
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -88,31 +77,62 @@ export class ManageSectorComponent implements OnInit {
     )
   }
 
+  loadSectorData() {
+    this.sectorService.getSector(this.orgId.toString()).subscribe(
+      data => {
+        this.model.id = data.id;
+        this.model.sectorTypeId = data.sectorTypeId;
+        this.model.sectorName = data.sectorName;
+
+        //Filter categories for the selected sector type
+        this.filteredCategories = this.categories.filter(function (category) {
+          return category.id == data.categoryId;
+        });
+        this.model.categoryId = data.categoryId;
+
+        //Filter sub-categories for the selected category
+        this.filteredSubCategories = this.subCategories.filter(function (subCategory) {
+          return subCategory.id == data.subCategoryId;
+        });
+        
+        this.model.subCategoryId = data.subCategoryId;
+      },
+      error => {
+        console.log("Request Failed: ", error);
+      }
+    );
+  }
+
   filterCategories(e) {
-    console.log(this.categories);
-    var id = console.log(e.target.value);
+    var id = e.target.value;
     this.filteredCategories = this.categories.filter(function (category) {
-      category.sectorTypeId === id;
+      return category.sectorTypeId == id;
     });
-    console.log(this.filteredCategories);
   }
 
   getSubCategories() {
     this.subcategoryService.getSectorSubCategoriesList().subscribe(
       data => {
         this.subCategories = data;
+        if (this.isForEdit) {
+          this.loadSectorData();
+        }
       },
       error => {
       }
     )
   }
 
-  filterSubCategories() {
-
+  filterSubCategories(e) {
+    var categoryId = e.target.value;
+    this.filteredSubCategories = this.subCategories.filter(function (sCategory) {
+      return sCategory.categoryId == categoryId;
+    });
   }
 
   saveSector() {
     var model = {
+      SectorTypeId: this.model.sectorTypeId,
       CategoryId: this.model.categoryId,
       SubCategoryId: this.model.subCategoryId,
       SectorName: this.model.sectorName,
@@ -124,9 +144,9 @@ export class ManageSectorComponent implements OnInit {
       this.sectorService.updateSector(this.model.id, model).subscribe(
         data => {
           if (!this.isError) {
-            var message = 'Sector Type' + Messages.RECORD_UPDATED;
+            var message = 'Sector' + Messages.RECORD_UPDATED;
             this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('sector-types');
+            this.router.navigateByUrl('sectors');
           } else {
             this.resetFormState();
           }

@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sector-categories']">Sector Categories List</a>
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sectors']">Sector Categories List</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
@@ -36,7 +36,7 @@
               <label for="sectorTypeId">Category</label>
               <select class="form-control" id="categoryId" [(ngModel)]="model.categoryId" name="categoryId"
                 #categoryId="ngModel" required (change)="filterSubCategories($event)">
-                <option *ngFor="let category of filteredCategories" [value]="category.id">{{category.Category}}</option>
+                <option *ngFor="let category of filteredCategories" [value]="category.id">{{category.category}}</option>
               </select>
               <div [hidden]="categoryId.valid && categoryId != 0" class="alert alert-danger">
                 Category is required
@@ -47,7 +47,7 @@
               <label for="sectorTypeId">Sub-Category</label>
               <select class="form-control" id="subCategoryId" [(ngModel)]="model.subCategoryId" name="subCategoryId"
                 #subCategoryId="ngModel" required>
-                <option *ngFor="let subCategory of filteredSubCategories" [value]="subCategory.id">{{category.Category}}</option>
+                <option *ngFor="let subCategory of filteredSubCategories" [value]="subCategory.id">{{subCategory.subCategory}}</option>
               </select>
               <div [hidden]="subCategoryId.valid && subCategoryId != 0" class="alert alert-danger">
                 Sub-Category is required
