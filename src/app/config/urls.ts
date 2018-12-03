@@ -21,4 +21,8 @@ export const urls = {
 	getSectorSubCategory: "SectorSubCategory/GetById/",
 	sectorsUrl: "Sector",
 	getSector: "Sector/GetById/",
+	projectTypesUrl: "ProjectType",
+	getProjectType: "ProjectType/GetById/",
+	projectsUrl: "Project",
+	getProject: "Project/GetById/",
 };

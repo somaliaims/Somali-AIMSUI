@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../services/project.service';
+import { ProjectTypeService } from '../services/project-types.service';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
 
 @Component({
-  selector: 'app-projects',
-  templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.css']
+  selector: 'app-project-types',
+  templateUrl: './project-types.component.html',
+  styleUrls: ['./project-types.component.css']
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectTypesComponent implements OnInit {
 
-  projectsList: any = null;
+  projectTypesList: any = null;
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
 
-  constructor(private projectService: ProjectService, private router: Router,
+  constructor(private projectTypeService: ProjectTypeService, private router: Router,
     private storeService: StoreService) { }
 
   ngOnInit() {
@@ -30,15 +30,15 @@ export class ProjectsComponent implements OnInit {
       this.showMessage = false;
     }, Settings.displayMessageTime);
 
-    this.getProjectsList();
+    this.getProjectTypesList();
   }
 
-  getProjectsList() {
-    this.projectService.getProjectsList().subscribe(
+  getProjectTypesList() {
+    this.projectTypeService.getProjectTypesList().subscribe(
       data => {
         this.isLoading = false;
         if (data && data.length) {
-          this.projectsList = data;
+          this.projectTypesList = data;
         }
       },
       error => {
@@ -48,15 +48,15 @@ export class ProjectsComponent implements OnInit {
     );
   }
 
-  searchProjects() {
+  searchProjectTypes() {
     if (this.criteria != null) {
       this.isLoading = true;
       
-      this.projectService.filterProjects(this.criteria).subscribe(
+      this.projectTypeService.filterProjectTypes(this.criteria).subscribe(
         data => {
           this.isLoading = false;
           if (data && data.length) {
-            this.projectsList = data
+            this.projectTypesList = data
           }
         },
         error => {
@@ -64,12 +64,13 @@ export class ProjectsComponent implements OnInit {
         }
       );
     } else {
-      this.projectsList();
+      this.projectTypesList();
     }
   }
 
   edit(id: string) {
-    this.router.navigateByUrl('/manage-project/' + id);
+    this.router.navigateByUrl('/manage-projecttype/' + id);
   }
+
 
 }

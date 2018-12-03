@@ -35,6 +35,8 @@ import { SectorSubCategoriesComponent } from './sector-subcategories/sector-subc
 import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/manage-sector-subcategory.component';
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
+import { ManageProjectComponent } from './manage-project/manage-project.component';
+import { ProjectTypesComponent } from './project-types/project-types.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,9 @@ import { ManageSectorComponent } from './manage-sector/manage-sector.component';
     SectorSubCategoriesComponent,
     ManageSectorSubCategoryComponent,
     SectorsComponent,
-    ManageSectorComponent
+    ManageSectorComponent,
+    ManageProjectComponent,
+    ProjectTypesComponent,
   ],
   imports: [
     BrowserModule,

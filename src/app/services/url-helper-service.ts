@@ -111,4 +111,28 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorsUrl);
     }
 
+    getSingleProjectTypeUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectType + id);
+    }
+
+    getSearchProjectTypesUrl(criteria: string) {
+        return (this.BASE_URL + urlsList.urls.projectTypesUrl + '/' + criteria);
+    }
+
+    getProjectTypesUrl() {
+        return (this.BASE_URL + urlsList.urls.projectTypesUrl);
+    }
+
+    getSingleProjectUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProject + id);
+    }
+
+    getSearchProjectsUrl(criteria: string) {
+        return (this.BASE_URL + urlsList.urls.projectsUrl + '/' + criteria);
+    }
+
+    getProjectUrl() {
+        return (this.BASE_URL + urlsList.urls.projectsUrl);
+    }
+
 }

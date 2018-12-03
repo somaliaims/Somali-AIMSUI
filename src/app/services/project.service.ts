@@ -8,42 +8,43 @@ import { httpOptions } from '../config/httpoptions';
 @Injectable({
   providedIn: 'root'
 })
-export class LocationService {
+
+export class ProjectService {
 
   constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService, 
     private storeService: StoreService) { }
 
 
-    getLocationsList() {
-      var url = this.urlHelper.getLocationUrl();
+    getProjectsList() {
+      var url = this.urlHelper.getProjectUrl();
       return this.httpClient.get(url, httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('Locations')));
+        catchError(this.storeService.handleError<any>('Projects')));
     }
 
-    filterLocations(criteria: string) {
-      var url = this.urlHelper.getSearchLocationsUrl(criteria);
+    filterProjects(criteria: string) {
+      var url = this.urlHelper.getSearchProjectsUrl(criteria);
       return this.httpClient.get(url, httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('Locations')));
+        catchError(this.storeService.handleError<any>('Projects')));
     }
 
-    getLocation(id: string) {
-      var url = this.urlHelper.getSingleLocationUrl(id);
+    getProject(id: string) {
+      var url = this.urlHelper.getSingleProjectUrl(id);
       return this.httpClient.get(url, httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('Location')));
+        catchError(this.storeService.handleError<any>('Project')));
     }
 
-    addLocation(model: any) {
-      var url  = this.urlHelper.getLocationUrl();
+    addProject(model: any) {
+      var url  = this.urlHelper.getProjectUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('New Location')));
+                catchError(this.storeService.handleError<any>('New Project')));
     }
 
-    updateLocation(id: number, model: any) {
-      var url  = this.urlHelper.getLocationUrl() + '/' + id;
+    updateProject(id: number, model: any) {
+      var url  = this.urlHelper.getProjectUrl() + '/' + id;
         return this.httpClient.put(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('Update Location')));
+                catchError(this.storeService.handleError<any>('Update Project')));
     }
 
 }
