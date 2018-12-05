@@ -45,6 +45,8 @@ export class UserPasswordChangeComponent {
     //  error => {
     //    console.log("Request Failed: ", error);
     //  }
+
+    console.log("Button was enabled and submitted")
     );
   
   }
