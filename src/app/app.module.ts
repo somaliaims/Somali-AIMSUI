@@ -37,7 +37,7 @@ import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
 import { ProjectTypesComponent } from './project-types/project-types.component';
-import { ManageProjecttypeComponent } from './manage-projecttype/manage-projecttype.component';
+import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +68,7 @@ import { ManageProjecttypeComponent } from './manage-projecttype/manage-projectt
     ManageSectorComponent,
     ManageProjectComponent,
     ProjectTypesComponent,
-    ManageProjecttypeComponent,
+    UserPasswordChangeComponent,
   ],
   imports: [
     BrowserModule,

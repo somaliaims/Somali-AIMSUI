@@ -22,7 +22,7 @@ import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/ma
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ProjectTypesComponent } from './project-types/project-types.component';
-import { ManageProjecttypeComponent } from './manage-projecttype/manage-projecttype.component';
+import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -31,6 +31,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'user-registration', component: UserRegistrationComponent},
   { path: 'user-org-registration', component: UserOrgRegistrationComponent },
+  { path: 'user-password-change', component: UserPasswordChangeComponent },
   { path: 'projects', component: ProjectsComponent },
   { path: 'reports', component: ReportsComponent},
   { path: 'management', component: ManagementComponent },
@@ -55,8 +56,6 @@ export const routes: Routes = [
   { path: 'manage-sector', component: ManageSectorComponent },
   { path: 'manage-sector/:{id}', component: ManageSectorComponent, data: { isForEdit: true } },
   { path: 'project-types', component: ProjectTypesComponent },
-  { path: 'manage-projecttype/:{id}', component: ManageProjecttypeComponent, data: { isForEdit: true } },
-  { path: 'manage-projecttype', component: ManageProjecttypeComponent },
   { path: 'projects', component: ProjectsComponent },
 ];
 
