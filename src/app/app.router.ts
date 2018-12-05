@@ -23,6 +23,7 @@ import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ProjectTypesComponent } from './project-types/project-types.component';
 import { ManageProjecttypeComponent } from './manage-projecttype/manage-projecttype.component';
+import { ManageProjectComponent } from './manage-project/manage-project.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -58,6 +59,8 @@ export const routes: Routes = [
   { path: 'manage-projecttype/:{id}', component: ManageProjecttypeComponent, data: { isForEdit: true } },
   { path: 'manage-projecttype', component: ManageProjecttypeComponent },
   { path: 'projects', component: ProjectsComponent },
+  { path: 'manage-project/:{id}', component: ManageProjectComponent, data: { isForEdit: true } },
+  { path: 'manage-project', component: ManageProjectComponent },
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

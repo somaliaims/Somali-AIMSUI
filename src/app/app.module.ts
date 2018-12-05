@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxPaginationModule } from 'ngx-pagination';
+import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
@@ -84,7 +85,8 @@ import { ManageProjecttypeComponent } from './manage-projecttype/manage-projectt
     MatProgressSpinnerModule,
     NgxSmartModalModule.forRoot(),
     AngularFontAwesomeModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgbDatepickerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
