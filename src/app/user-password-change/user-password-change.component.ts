@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomValidators } from './custom-validators';
 import { StoreService } from '../services/store-service';
 import { UserService } from '../services/user-service';
-import { UrlHelperService } from "./url-helper-service";
+
 
 @Component({
   selector: 'app-userpasswordchange',
@@ -37,14 +37,14 @@ export class UserPasswordChangeComponent {
   }
 
   submit() {
-  	this.userService.editPassword(this.model.Email).subscribe(
-      data => {
-        console.log(data);
+  	//this.userService.editPassword().subscribe(
+    //  data => {
+    //    console.log(data);
        
-      },
-      error => {
-        console.log("Request Failed: ", error);
-      }
+    //  },
+    //  error => {
+    //    console.log("Request Failed: ", error);
+    //  }
     );
   
   }

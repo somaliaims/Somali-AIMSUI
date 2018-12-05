@@ -48,7 +48,7 @@ export class UrlHelperService {
     }
 
     getEditUserUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.getUser);
+        return (this.BASE_URL + urlsList.urls.editUser);
     }
 
     getOrganizationUrl() {
