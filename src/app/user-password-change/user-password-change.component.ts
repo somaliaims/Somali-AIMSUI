@@ -47,7 +47,6 @@ export class UserPasswordChangeComponent {
     //  }
 
     console.log("Button was enabled and submitted")
-    );
   
-  }
+  };
 }
