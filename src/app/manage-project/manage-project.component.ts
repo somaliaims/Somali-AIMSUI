@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import { ProjectTypeService } from '../services/project-types.service';
 
 @Component({
   selector: 'app-manage-project',
@@ -27,11 +26,11 @@ export class ManageProjectComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   startDateModel: NgbDateStruct;
-  model = { id: 0, title: '', projectTypeId: null, startDate: null, endDate: null, objective: null };
+  model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
-    private storeService: StoreService, private projectTypeService: ProjectTypeService) {
+    private storeService: StoreService) {
   }
 
   ngOnInit() {
@@ -44,7 +43,7 @@ export class ManageProjectComponent implements OnInit {
       }
     }
 
-    this.getProjectTypes();
+    this.loadProjectData();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
@@ -53,29 +52,16 @@ export class ManageProjectComponent implements OnInit {
     });
   }
 
-  getProjectTypes() {
-    this.projectTypeService.getProjectTypesList().subscribe(
-      data => {
-        this.projectTypes = data;
-        this.loadProjectData();
-      },
-      error => {
-
-      }
-    );
-  }
-
   loadProjectData() {
     this.projectService.getProject(this.projectId.toString()).subscribe(
       data => {
         var sDateArr = data.startDate.split('/');
         var eDateArr = data.endDate.split('/');
-        var startDateModel = {year: sDateArr[2], month: sDateArr[0], day: sDateArr[1]};
-        var endDateModel = {year: eDateArr[2], month: eDateArr[0], day: eDateArr[1]};
+        var startDateModel = {year: parseInt(sDateArr[2]), month: parseInt(sDateArr[0]), day: parseInt(sDateArr[1])};
+        var endDateModel = {year: parseInt(eDateArr[2]), month: parseInt(eDateArr[0]), day: parseInt(eDateArr[1])};
         this.model.id = data.id;
-        this.model.projectTypeId = data.projectTypeId;
         this.model.title = data.title;
-        this.model.objective = data.objective;
+        this.model.description = data.description;
         this.model.startDate = startDateModel;
         this.model.endDate = endDateModel;
       },
@@ -92,11 +78,10 @@ export class ManageProjectComponent implements OnInit {
           this.model.endDate.day;
 
     var model = {
-      ProjectTypeId: this.model.projectTypeId,
       Title: this.model.title,
       StartDate: startDate,
       EndDate: endDate,
-      Objective: this.model.objective
+      Description: this.model.description
     };
 
     this.isBtnDisabled = true;
