@@ -4,6 +4,7 @@ export const urls = {
 	getToken: "User/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
+	editUser: "User/EditPassword/",
 	organizationsList: "Organization",
 	organizationTypesList: "OrganizationType",
 	userNotificationsList: "Notification",

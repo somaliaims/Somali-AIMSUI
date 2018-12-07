@@ -21,6 +21,7 @@ import { SectorSubCategoriesComponent } from './sector-subcategories/sector-subc
 import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/manage-sector-subcategory.component';
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
+import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
 
 // Route Configuration
@@ -30,6 +31,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'user-registration', component: UserRegistrationComponent},
   { path: 'user-org-registration', component: UserOrgRegistrationComponent },
+  { path: 'user-password-change', component: UserPasswordChangeComponent },
   { path: 'projects', component: ProjectsComponent },
   { path: 'reports', component: ReportsComponent},
   { path: 'management', component: ManagementComponent },
