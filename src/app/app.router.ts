@@ -21,8 +21,8 @@ import { SectorSubCategoriesComponent } from './sector-subcategories/sector-subc
 import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/manage-sector-subcategory.component';
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
-import { ProjectTypesComponent } from './project-types/project-types.component';
 import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
+import { ManageProjectComponent } from './manage-project/manage-project.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -55,8 +55,9 @@ export const routes: Routes = [
   { path: 'sectors', component: SectorsComponent },
   { path: 'manage-sector', component: ManageSectorComponent },
   { path: 'manage-sector/:{id}', component: ManageSectorComponent, data: { isForEdit: true } },
-  { path: 'project-types', component: ProjectTypesComponent },
   { path: 'projects', component: ProjectsComponent },
+  { path: 'manage-project/:{id}', component: ManageProjectComponent, data: { isForEdit: true } },
+  { path: 'manage-project', component: ManageProjectComponent },
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);
