@@ -47,4 +47,12 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('Update Project')));
     }
 
+    //Project locations functions
+    addProjectLocation(model: any) {
+      var url  = this.urlHelper.addProjectLocationUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('New Project Location')));
+    }
+
 }

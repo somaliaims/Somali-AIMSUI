@@ -139,4 +139,20 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectsUrl);
     }
 
+    getProjectLocationsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectLocationsUrl);
+    }
+
+    addProjectLocationUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectLocation);
+    }
+
+    getProjectSectorsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectSectorsUrl);
+    }
+
+    addProjectSectorUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectSector);
+    }
+
 }

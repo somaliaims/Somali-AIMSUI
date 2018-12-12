@@ -38,6 +38,8 @@ import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
 import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
+import { ViewProjectComponent } from './view-project/view-project.component';
+import { ProjectLocationComponent } from './project-location/project-location.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { UserPasswordChangeComponent } from './user-password-change/user-passwor
     ManageSectorComponent,
     ManageProjectComponent,
     UserPasswordChangeComponent,
+    ViewProjectComponent,
+    ProjectLocationComponent,
   ],
   imports: [
     BrowserModule,
