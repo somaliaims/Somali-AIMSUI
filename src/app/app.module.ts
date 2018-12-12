@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxPaginationModule } from 'ngx-pagination';
+import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
@@ -36,7 +37,6 @@ import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/ma
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
-import { ProjectTypesComponent } from './project-types/project-types.component';
 import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
 
 @NgModule({
@@ -67,7 +67,6 @@ import { UserPasswordChangeComponent } from './user-password-change/user-passwor
     SectorsComponent,
     ManageSectorComponent,
     ManageProjectComponent,
-    ProjectTypesComponent,
     UserPasswordChangeComponent,
   ],
   imports: [
@@ -84,7 +83,8 @@ import { UserPasswordChangeComponent } from './user-password-change/user-passwor
     MatProgressSpinnerModule,
     NgxSmartModalModule.forRoot(),
     AngularFontAwesomeModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgbDatepickerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

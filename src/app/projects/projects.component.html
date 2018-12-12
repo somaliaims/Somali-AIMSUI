@@ -38,7 +38,6 @@
     <table class="table table-bordered table-stripped">
       <tr>
         <th>Id</th>
-        <th>Project Type</th>
         <th>Project Title</th>
         <th>Start Date</th>
         <th>End Date</th>
@@ -46,7 +45,6 @@
       </tr>
       <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: 2, currentPage: p }">
         <td>{{project.id}}</td>
-        <td>{{project.projectType}}</td>
         <td>{{project.title}}</td>
         <td>{{project.startDate}}</td>
         <td>{{project.endDate}}</td>
