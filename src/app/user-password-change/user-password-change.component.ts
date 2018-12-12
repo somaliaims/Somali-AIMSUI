@@ -10,8 +10,9 @@ import { UserService } from '../services/user-service';
   templateUrl: './user-password-change.component.html',
   styleUrls: ['./user-password-change.component.css']
 })
-export class UserPasswordChangeComponent {
+export class UserPasswordChangeComponent{
   public frmChangePassword: FormGroup;
+  btnText: string = 'Save';
 
   constructor(private fb: FormBuilder) {
     this.frmChangePassword = this.createChangePasswordForm();
