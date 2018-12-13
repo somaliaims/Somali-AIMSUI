@@ -5,6 +5,7 @@ export const urls = {
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
 	editUser: "User/EditPassword/",
+	sendUserPassword: "User/SendPassword/",
 	organizationsList: "Organization",
 	organizationTypesList: "OrganizationType",
 	userNotificationsList: "Notification",
