@@ -12,6 +12,7 @@ export class ViewProjectComponent implements OnInit {
   requestNo: number = 0;
   errorMessage: string = '';
   isError: boolean = false;
+  isLoading: boolean = true;
 
   //project data variables
   projectData: any = null;
@@ -22,7 +23,7 @@ export class ViewProjectComponent implements OnInit {
     private storeService: StoreService) { }
 
   ngOnInit() {
-    if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
+    if (this.route.snapshot.data) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
         this.loadProjectData(id);    
@@ -43,12 +44,18 @@ export class ViewProjectComponent implements OnInit {
   loadProjectData(id) {
     this.projectService.getProject(id).subscribe(
       data => {
-
+        this.hideLoader();
+        this.projectData = data;
       },
       error => {
-
+        this.hideLoader();
+        console.log(error);
       }
     )
+  }
+
+  hideLoader() {
+    this.isLoading = false;
   }
 
 }
