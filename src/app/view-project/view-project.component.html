@@ -71,13 +71,32 @@
       <div class="col margin-top-10">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">Project Locations</div>
+            <div class="card-header">
+              <span class="float-left">
+                  Locations
+              </span>
+              <span class="float-right">
+                  <button class="btn btn-success" (click)="addProjectLocation()">Add Location</button>
+              </span>
+            </div>
             <div class="card-body">
-              <table class="table table-stripped table-responsive">
-                <tr *ngFor="let location in projectLocations">
-                  <td></td>
+              <table *ngIf="projectLocations.length > 0" class="table table-stripped table-responsive">
+                <tr>
+                  <th>Location</th>
+                  <th>Latitude</th>
+                  <th>Longitude</th>
+                  <th>Actions</th>
+                </tr>
+                <tr *ngFor="let location of projectLocations">
+                  <td>{{location.location}}</td>
+                  <td>{{location.latitude}}</td>
+                  <td>{{location.longitude}}</td>
+                  <td>
+                      <a title="View Details" (click)="deleteLocation(location.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+                  </td>
                 </tr>
               </table>
+              <p *ngIf="projectLocations.length == 0">No project locations found.</p>
             </div>
           </div>
         </div>

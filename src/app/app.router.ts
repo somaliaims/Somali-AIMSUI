@@ -24,6 +24,7 @@ import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
 import { ViewProjectComponent } from './view-project/view-project.component';
+import { ProjectLocationComponent } from './project-location/project-location.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -59,7 +60,8 @@ export const routes: Routes = [
   { path: 'projects', component: ProjectsComponent },
   { path: 'manage-project/:{id}', component: ManageProjectComponent, data: { isForEdit: true } },
   { path: 'manage-project', component: ManageProjectComponent },
-  { path: 'view-project/:{id}', component: ViewProjectComponent }
+  { path: 'view-project/:{id}', component: ViewProjectComponent },
+  { path: 'project-location/:{id}', component: ProjectLocationComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

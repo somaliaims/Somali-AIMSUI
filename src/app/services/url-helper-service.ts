@@ -140,7 +140,7 @@ export class UrlHelperService {
     }
 
     getProjectLocationsUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.getProjectLocationsUrl);
+        return (this.BASE_URL + urlsList.urls.getProjectLocationsUrl + id);
     }
 
     addProjectLocationUrl() {

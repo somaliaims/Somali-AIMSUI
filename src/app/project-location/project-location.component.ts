@@ -33,7 +33,8 @@ export class ProjectLocationComponent implements OnInit {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
         this.btnText = 'Add Location for Project';
-        this.projectId = id;
+        this.model.projectId = id;
+        this.loadLocations();
       } else {
         this.router.navigateByUrl('/');
       }

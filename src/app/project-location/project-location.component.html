@@ -20,12 +20,11 @@
           <h5 class="card-title text-center">New Project Location</h5>
 
           <form class="form-signin" (ngSubmit)="saveProjectLocation()" #sectorForm="ngForm">
-            
             <div class="form-group">
               <label for="locationId">Select Location</label>
               <select class="form-control" id="locationId" [(ngModel)]="model.locationId" name="locationId"
                 #locationId="ngModel" required>
-                <option *ngFor="let location of locations" [value]="location.id">{{location.typeName}}</option>
+                <option *ngFor="let location of locations" [value]="location.id">{{location.location}}</option>
               </select>
               <div [hidden]="locationId.valid" class="alert alert-danger">
                 Location is required
@@ -33,7 +32,7 @@
             </div>
 
             <div class="form-group">
-              <label for="text">Fund Percentage </label>
+              <label for="text"> </label>
               <input type="number" class="form-control" id="percentage" [(ngModel)]="model.percentage" name="percentage"
                 #percentage="ngModel" required>
               <div [hidden]="percentage.valid" class="alert alert-danger">

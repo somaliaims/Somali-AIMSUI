@@ -14,6 +14,7 @@ export class ViewProjectComponent implements OnInit {
   isError: boolean = false;
   isLoading: boolean = true;
   isLocationLoading: boolean = false;
+  projectId: number = 0;
 
   //project data variables
   projectData: any = [];
@@ -26,6 +27,7 @@ export class ViewProjectComponent implements OnInit {
   ngOnInit() {
     if (this.route.snapshot.data) {
       var id = this.route.snapshot.params["{id}"];
+      this.projectId = id;
       if (id) {
         this.loadProjectData(id);    
       } else {
@@ -40,11 +42,16 @@ export class ViewProjectComponent implements OnInit {
     });
   }
 
+  addProjectLocation() {
+    this.router.navigateByUrl('project-location/' + this.projectId);
+  }
+
   loadProjectData(id) {
     this.projectService.getProject(id).subscribe(
       data => {
         this.hideLoader();
         this.projectData = data;
+        this.loadProjectLocations(id);
       },
       error => {
         this.hideLoader();
