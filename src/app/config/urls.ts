@@ -1,6 +1,6 @@
 export const urls = {
-	//baseUrl: "http://104.140.103.166:7000/api/",
-	baseUrl: "http://localhost:60815/api/",
+	baseUrl: "http://104.140.103.166:7000/api/",
+	//baseUrl: "http://localhost:60815/api/",
 	getToken: "User/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
@@ -27,4 +27,8 @@ export const urls = {
 	getProjectType: "ProjectType/GetById/",
 	projectsUrl: "Project",
 	getProject: "Project/GetById/",
+	getProjectLocationsUrl: "Project/GetLocations/",
+	addProjectLocation: "Project/AddProjectLocation",
+	getProjectSectorsUrl: "Project/GetSectors/",
+	addProjectSector: "Project/AddProjectSector"
 };
