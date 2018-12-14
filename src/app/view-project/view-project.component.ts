@@ -13,10 +13,11 @@ export class ViewProjectComponent implements OnInit {
   errorMessage: string = '';
   isError: boolean = false;
   isLoading: boolean = true;
+  isLocationLoading: boolean = false;
 
   //project data variables
-  projectData: any = null;
-  projectLocatoins: any = null;
+  projectData: any = [];
+  projectLocations: any = [];
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router,
@@ -31,8 +32,6 @@ export class ViewProjectComponent implements OnInit {
 
       }
     }
-
-    
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
@@ -49,6 +48,17 @@ export class ViewProjectComponent implements OnInit {
       },
       error => {
         this.hideLoader();
+        console.log(error);
+      }
+    )
+  }
+
+  loadProjectLocations(id) {
+    this.projectService.getProjectLocations(id).subscribe(
+      data => {
+        this.projectLocations = data;
+      },
+      error => {
         console.log(error);
       }
     )
