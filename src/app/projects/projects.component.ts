@@ -72,4 +72,8 @@ export class ProjectsComponent implements OnInit {
     this.router.navigateByUrl('/manage-project/' + id);
   }
 
+  viewDetails(id: string) {
+    this.router.navigateByUrl('/view-project/' + id);
+  }
+
 }
