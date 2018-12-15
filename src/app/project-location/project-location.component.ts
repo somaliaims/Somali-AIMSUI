@@ -15,7 +15,6 @@ export class ProjectLocationComponent implements OnInit {
   @Input()
   isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
-  projectId: number = 0;
   btnText: string = 'Add Project';
   errorMessage: string = '';
   locations: any = [];
@@ -73,7 +72,7 @@ export class ProjectLocationComponent implements OnInit {
           if (!this.isError) {
             var message = 'New project location ' + Messages.NEW_RECORD;
             this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('projects');
+            this.router.navigateByUrl('view-project/' + this.model.projectId);
           } else {
             this.resetFormState();
           }

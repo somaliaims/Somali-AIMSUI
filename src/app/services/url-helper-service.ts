@@ -147,6 +147,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.addProjectLocation);
     }
 
+    deleteProjectLocationUrl(projectId: string, locationId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectLocation + projectId + '/' + locationId);
+    }
+
     getProjectSectorsUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getProjectSectorsUrl);
     }

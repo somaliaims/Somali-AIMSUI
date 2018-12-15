@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-view-project',
@@ -19,6 +20,9 @@ export class ViewProjectComponent implements OnInit {
   //project data variables
   projectData: any = [];
   projectLocations: any = [];
+
+  //Overlay UI blocker
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router,
@@ -67,6 +71,20 @@ export class ViewProjectComponent implements OnInit {
       },
       error => {
         console.log(error);
+      }
+    )
+  }
+
+  deleteProjectLocation(projectId, locationId) {
+    this.blockUI.start('Working...');
+    this.projectService.deleteProjectLocation(projectId, locationId).subscribe(
+      data => {
+        this.projectLocations = this.projectLocations.filter(l => l.id != locationId);
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
       }
     )
   }

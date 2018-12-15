@@ -55,6 +55,12 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('New Project Location')));
     }
 
+    deleteProjectLocation(projectId: string, locationId: string) {
+      var url  = this.urlHelper.deleteProjectLocationUrl(projectId, locationId);
+        return this.httpClient.delete(url, httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Delete Project Location')));
+    }
+
     getProjectLocations(id: string) {
       var url = this.urlHelper.getProjectLocationsUrl(id);
       return this.httpClient.get(url, httpOptions).pipe(
