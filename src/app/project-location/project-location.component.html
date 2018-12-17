@@ -19,7 +19,7 @@
           </div>
           <h5 class="card-title text-center">New Project Location</h5>
 
-          <form class="form-signin" (ngSubmit)="saveProjectLocation()" #sectorForm="ngForm">
+          <form class="form-signin" (ngSubmit)="saveProjectLocation()" #locationForm="ngForm">
             <div class="form-group">
               <label for="locationId">Select Location</label>
               <select class="form-control" id="locationId" [(ngModel)]="model.locationId" name="locationId"

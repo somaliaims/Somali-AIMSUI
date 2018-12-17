@@ -15,11 +15,13 @@ export class ViewProjectComponent implements OnInit {
   isError: boolean = false;
   isLoading: boolean = true;
   isLocationLoading: boolean = false;
+  isSectorLoading: boolean = false;
   projectId: number = 0;
 
   //project data variables
   projectData: any = [];
   projectLocations: any = [];
+  projectSectors: any = [];
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -50,6 +52,10 @@ export class ViewProjectComponent implements OnInit {
     this.router.navigateByUrl('project-location/' + this.projectId);
   }
 
+  addProjectSector() {
+    this.router.navigateByUrl('project-sector/' + this.projectId);
+  }
+
   loadProjectData(id) {
     this.projectService.getProject(id).subscribe(
       data => {
@@ -65,6 +71,17 @@ export class ViewProjectComponent implements OnInit {
   }
 
   loadProjectLocations(id) {
+    this.projectService.getProjectLocations(id).subscribe(
+      data => {
+        this.projectLocations = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  loadProjectSectors(id) {
     this.projectService.getProjectLocations(id).subscribe(
       data => {
         this.projectLocations = data;

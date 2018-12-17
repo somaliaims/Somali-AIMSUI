@@ -67,4 +67,24 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('Project Locations')));
     }
 
+    //Project sector functions
+    addProjectSector(model: any) {
+      var url  = this.urlHelper.addProjectSectorUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('New Project Sector')));
+    }
+
+    getProjectSectors(id: string) {
+      var url = this.urlHelper.getProjectSectorsUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Sectors')));
+    }
+
+    deleteProjectSector(projectId: string, sectorId: string) {
+      var url  = this.urlHelper.deleteProjectLocationUrl(projectId, sectorId);
+        return this.httpClient.delete(url, httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Delete Project Sector')));
+    }
+
 }

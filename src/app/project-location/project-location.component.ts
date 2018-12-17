@@ -13,7 +13,6 @@ import { LocationService } from '../services/location.service';
 export class ProjectLocationComponent implements OnInit {
 
   @Input()
-  isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
   btnText: string = 'Add Project';
   errorMessage: string = '';

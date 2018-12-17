@@ -41,6 +41,7 @@ import { ManageProjectComponent } from './manage-project/manage-project.componen
 import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
 import { ViewProjectComponent } from './view-project/view-project.component';
 import { ProjectLocationComponent } from './project-location/project-location.component';
+import { ProjectSectorComponent } from './project-sector/project-sector.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { ProjectLocationComponent } from './project-location/project-location.co
     UserPasswordChangeComponent,
     ViewProjectComponent,
     ProjectLocationComponent,
+    ProjectSectorComponent,
   ],
   imports: [
     BrowserModule,

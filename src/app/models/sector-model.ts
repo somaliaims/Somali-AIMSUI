@@ -1,5 +1,5 @@
 export class Sector {
     constructor(public id: number, public sectorName: string, 
-        public categoryId: number, public subCategoryId: number) { }
+        public category: string, public subCategory: string) { }
   }
   
