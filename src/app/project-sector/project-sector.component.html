@@ -20,7 +20,26 @@
           <h5 class="card-title text-center">Sector</h5>
 
           <form class="form-signin" (ngSubmit)="saveProjectSector()" [formGroup]='sectorForm'>
-            <mat-form-field class="example-full-width">
+
+              <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Sector" aria-label="Sector" [matAutocomplete]="auto" [formControl]="userInput">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                    <mat-option *ngFor="let sector of filteredSectors | async" [value]="sector">
+                      <span>{{sector.sectorName}}</span> |
+                      <small>Category: {{sector.category}} - {{sector.subCategory}}</small>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <div class="form-group">
+                    <label for="text">Allocated Amount</label>
+                    <input type="number" class="form-control" id="percentage" [(ngModel)]="model.percentage" name="percentage"
+                      #percentage="ngModel" required>
+                    <div [hidden]="percentage.valid" class="alert alert-danger">
+                       Fund percentage is required
+                    </div>
+                  </div>
+            <!--<mat-form-field class="example-full-width">
               <input matInput placeholder="Type and Choose a Sector" [matAutocomplete]="auto" formControlName='userInput'>
             </mat-form-field>
 
@@ -34,7 +53,7 @@
                   <small> | ID: {{sector.id}}</small>
                 </mat-option>
               </ng-container>
-            </mat-autocomplete>
+            </mat-autocomplete>-->
         
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>

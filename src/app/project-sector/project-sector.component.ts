@@ -4,9 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SectorService } from '../services/sector.service';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
-import { NgxSmartModalService } from 'ngx-smart-modal';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { startWith, map } from 'rxjs/operators';
+import { Sector } from '../models/sector-model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-project-sector',
@@ -20,16 +21,18 @@ export class ProjectSectorComponent implements OnInit {
   btnText: string = 'Add Project';
   errorMessage: string = '';
   sectors: any = [];
-  filteredSectors: any = [];
   requestNo: number = 0;
+  selectedSectorId: number = 0;
   isError: boolean = false;
   isLoading: boolean = false;
   model = { projectId: 0, sectorId: null };
   sectorForm: FormGroup;
+  userInput = new FormControl();
+  filteredSectors: Observable<Sector[]>;
 
   constructor(private fb: FormBuilder,private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private sectorService: SectorService,
-    private storeService: StoreService, private modalService: NgxSmartModalService) {
+    private storeService: StoreService) {
   }
 
   ngOnInit() {
@@ -55,7 +58,7 @@ export class ProjectSectorComponent implements OnInit {
       userInput: null,
     });
 
-    this.sectorForm
+    /*this.sectorForm
       .get('userInput')
       .valueChanges
       .pipe(
@@ -69,13 +72,26 @@ export class ProjectSectorComponent implements OnInit {
       )
       .subscribe(sectors => {
         this.filteredSectors = sectors;
-      });
+      });*/
+  }
+
+  private filterSectors(value: string): Sector[] {
+    if (typeof value != "string") {
+    } else {
+      const filterValue = value.toLowerCase();
+      return this.sectors.filter(sector => sector.sectorName.toLowerCase().indexOf(filterValue) !== -1);
+    }
   }
 
   loadSectors() {
     this.sectorService.getSectorsList().subscribe(
       data => {
         this.sectors = data;
+        this.filteredSectors = this.userInput.valueChanges
+      .pipe(
+        startWith(''),
+        map(sector => sector ? this.filterSectors(sector) : this.sectors.slice())
+      );
       },
       error => {
         console.log("Request Failed: ", error);
@@ -83,13 +99,20 @@ export class ProjectSectorComponent implements OnInit {
     );
   }
 
+  displayFn(sector?: Sector): string | undefined {
+    if (sector) {
+      this.selectedSectorId = sector.id;
+      console.log(this.selectedSectorId);
+    }
+    return sector ? sector.sectorName : undefined;
+  }
+
   saveProjectSector() {
-    var sectorValue = this.sectorForm.get('userInput').value;
-    if (!sectorValue) {
-      this.modalService.getModal('info-modal').open();
+    if (this.selectedSectorId == 0) {
       return false;
     }
 
+    this.model.sectorId = this.selectedSectorId;
     var model = {
       ProjectId: this.model.projectId,
       SectorId: this.model.sectorId,
