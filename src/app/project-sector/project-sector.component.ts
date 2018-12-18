@@ -25,8 +25,8 @@ export class ProjectSectorComponent implements OnInit {
   selectedSectorId: number = 0;
   isError: boolean = false;
   isLoading: boolean = false;
-  model = { projectId: 0, sectorId: null };
-  sectorForm: FormGroup;
+  model = { projectId: 0, sectorId: null, fundsPercentage: null, currency: null, exchangeRate: null };
+  sectorSelectionForm: FormGroup;
   userInput = new FormControl();
   filteredSectors: Observable<Sector[]>;
 
@@ -54,25 +54,9 @@ export class ProjectSectorComponent implements OnInit {
       }
     });
 
-    this.sectorForm = this.fb.group({
+    this.sectorSelectionForm = this.fb.group({
       userInput: null,
     });
-
-    /*this.sectorForm
-      .get('userInput')
-      .valueChanges
-      .pipe(
-        debounceTime(300),
-        tap(() => this.isLoading = true),
-        switchMap(value => this.sectorService.searchSectors({ name: value }, 1)
-          .pipe(
-            finalize(() => this.isLoading = false),
-          )
-        )
-      )
-      .subscribe(sectors => {
-        this.filteredSectors = sectors;
-      });*/
   }
 
   private filterSectors(value: string): Sector[] {
@@ -116,6 +100,9 @@ export class ProjectSectorComponent implements OnInit {
     var model = {
       ProjectId: this.model.projectId,
       SectorId: this.model.sectorId,
+      fundsPercentage: this.model.fundsPercentage,
+      currency: this.model.currency,
+      exchangeRate: this.model.exchangeRate
     };
 
     this.isBtnDisabled = true;

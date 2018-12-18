@@ -19,42 +19,48 @@
           </div>
           <h5 class="card-title text-center">Sector</h5>
 
-          <form class="form-signin" (ngSubmit)="saveProjectSector()" [formGroup]='sectorForm'>
+          <form class="form-signin" [formGroup]='sectorSelectionForm'>
 
-              <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Sector" aria-label="Sector" [matAutocomplete]="auto" [formControl]="userInput">
-                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
-                    <mat-option *ngFor="let sector of filteredSectors | async" [value]="sector">
-                      <span>{{sector.sectorName}}</span> |
-                      <small>Category: {{sector.category}} - {{sector.subCategory}}</small>
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-
-                <div class="form-group">
-                    <label for="text">Allocated Amount</label>
-                    <input type="number" class="form-control" id="percentage" [(ngModel)]="model.percentage" name="percentage"
-                      #percentage="ngModel" required>
-                    <div [hidden]="percentage.valid" class="alert alert-danger">
-                       Fund percentage is required
-                    </div>
-                  </div>
-            <!--<mat-form-field class="example-full-width">
-              <input matInput placeholder="Type and Choose a Sector" [matAutocomplete]="auto" formControlName='userInput'>
-            </mat-form-field>
-
-            <mat-autocomplete #auto="matAutocomplete" class="org-autocomplete" [displayWith]="displayFn">
-              <mat-option *ngIf="isLoading" class="is-loading">
-                <mat-spinner diameter="50"></mat-spinner>
-              </mat-option>
-              <ng-container *ngIf="!isLoading">
-                <mat-option *ngFor="let sector of filteredSectors" [value]="sector">
-                  <span>{{ sector.sectorName }}</span>
-                  <small> | ID: {{sector.id}}</small>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Sector" aria-label="Sector" [matAutocomplete]="auto" [formControl]="userInput">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let sector of filteredSectors | async" [value]="sector">
+                  <span>{{sector.sectorName}}</span> |
+                  <small>Category: {{sector.category}} - {{sector.subCategory}}</small>
                 </mat-option>
-              </ng-container>
-            </mat-autocomplete>-->
-        
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+
+          <form (ngSubmit)="saveProjectSector()" #sectorForm="ngForm">
+
+            <div class="form-group">
+              <label for="text">Funds Percentage</label>
+              <input type="number" class="form-control" id="fundsPercentage" [(ngModel)]="model.fundsPercentage" name="fundsPercentage"
+                #fundsPercentage="ngModel" required>
+              <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
+                Funds percentage is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="text">Currency</label>
+              <input type="text" class="form-control" maxlength="4" id="currency" [(ngModel)]="model.currency" name="currency"
+                #currency="ngModel" required>
+              <div [hidden]="currency.valid" class="alert alert-danger">
+                Currency is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="text">Exchange Rate</label>
+              <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate" name="percentage"
+                #exchangeRate="ngModel" required>
+              <div [hidden]="exchangeRate.valid" class="alert alert-danger">
+                Exchange rate is required
+              </div>
+            </div>
+
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>
         </div>
