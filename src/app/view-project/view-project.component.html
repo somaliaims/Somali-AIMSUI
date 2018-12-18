@@ -20,22 +20,20 @@
     </div>
 
     <div class="row">
-
     </div>
-
-    <div class="row text-center" *ngIf="isLoading">
-      <div class="col-md-12">
-        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
-      </div>
-    </div>
-
-    <div *ngIf="!isLoading" class="row">
+    <!--Loading project data -->
+    <div class="row">
       <div class="col margin-top-10">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">Project Detail</div>
             <div class="card-body">
-              <table class="table table-stripped table-responsive">
+              <div class="row text-center" *ngIf="isLoading">
+                <div class="col-md-12">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+                </div>
+              </div>
+              <table class="table table-stripped">
                 <tr>
                   <td><b>Id: </b></td>
                   <td>{{projectData.id}}</td>
@@ -62,13 +60,7 @@
     </div>
 
     <!--Project Locations-->
-    <div class="row text-center margin-top-10" *ngIf="isLocationLoading">
-      <div class="col-md-12">
-        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading locations...</span>
-      </div>
-    </div>
-
-    <div *ngIf="!isLocationLoading" class="row">
+    <div class="row">
       <div class="col margin-top-10">
         <div class="col-md-12">
           <div class="card">
@@ -81,6 +73,11 @@
               </span>
             </div>
             <div class="card-body">
+              <div class="row text-center margin-top-10" *ngIf="isLocationLoading">
+                <div class="col-md-12">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading locations...</span>
+                </div>
+              </div>
               <table *ngIf="projectLocations.length > 0" class="table table-stripped">
                 <tr>
                   <th>Location</th>
@@ -98,20 +95,14 @@
                   </td>
                 </tr>
               </table>
-              <p *ngIf="projectLocations.length == 0">No project locations found.</p>
+              <p *ngIf="projectLocations.length == 0 && !isLocationLoading">No project locations found.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row text-center margin-top-10" *ngIf="isSectorLoading">
-      <div class="col-md-12">
-        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sectors...</span>
-      </div>
-    </div>
-
-    <div *ngIf="!isSectorLoading" class="row">
+    <div class="row">
       <div class="col margin-top-10">
         <div class="col-md-12">
           <div class="card">
@@ -124,25 +115,32 @@
               </span>
             </div>
             <div class="card-body">
-              <table *ngIf="projectLocations.length > 0" class="table table-stripped">
+              <div class="row text-center margin-top-10" *ngIf="isSectorLoading">
+                <div class="col-md-12">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sectors...</span>
+                </div>
+              </div>
+
+              <table *ngIf="projectSectors.length > 0" class="table table-stripped">
                 <tr>
-                  <th>Id</th>
-                  <th>Category</th>
-                  <th>Sub-Category</th>
-                  <th>Sector Name</th>
+                  <th>Sector</th>
+                  <th>Funds Percentage</th>
+                  <th>Currency</th>
+                  <th>Exchange Rate</th>
                   <th>Actions</th>
                 </tr>
                 <tr *ngFor="let sector of projectSectors">
-                  <td>{{sector.id}}</td>
-                  <td>{{sector.category}}</td>
-                  <td>{{sector.subCategory}}</td>
-                  <td>{{sector.sectorName}}</td>
+                  <td>{{sector.sector}}</td>
+                  <td>{{sector.fundsPercentage}}</td>
+                  <td>{{sector.currency}}</td>
+                  <td>{{sector.exchangeRate}}</td>
                   <td>
-                    <a title="Remove Location" (click)="deleteProjectSector(projectId, sector.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+                    <a title="Remove Sector" (click)="deleteProjectSector(projectId, sector.sectorId)" class="btn btn-danger"><i
+                        class="fa fa-trash color-white"></i></a>
                   </td>
                 </tr>
               </table>
-              <p *ngIf="projectLocations.length == 0">No project sectors found.</p>
+              <p *ngIf="projectSectors.length == 0 && !isSectorLoading">No project sectors found.</p>
             </div>
           </div>
         </div>

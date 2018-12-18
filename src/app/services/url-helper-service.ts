@@ -152,7 +152,7 @@ export class UrlHelperService {
     }
 
     getProjectSectorsUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.getProjectSectorsUrl);
+        return (this.BASE_URL + urlsList.urls.getProjectSectorsUrl + id);
     }
 
     addProjectSectorUrl() {

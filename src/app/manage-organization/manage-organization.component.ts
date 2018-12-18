@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OrganizationService } from '../services/organization-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Messages } from '../config/messages';
 import { StoreService } from '../services/store-service';
 
@@ -23,7 +22,7 @@ export class ManageOrganizationComponent implements OnInit {
   model = { id: 0, organizationName: '', organizationTypeId: 1 };
 
   constructor(private organizationService: OrganizationService, private route: ActivatedRoute,
-    private router: Router, private modalService: NgxSmartModalService,
+    private router: Router,
     private storeService: StoreService) {
   }
 

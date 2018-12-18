@@ -14,9 +14,10 @@ export class ViewProjectComponent implements OnInit {
   errorMessage: string = '';
   isError: boolean = false;
   isLoading: boolean = true;
-  isLocationLoading: boolean = false;
-  isSectorLoading: boolean = false;
+  isLocationLoading: boolean = true;
+  isSectorLoading: boolean = true;
   projectId: number = 0;
+  delayTime: number = 2000;
 
   //project data variables
   projectData: any = [];
@@ -35,7 +36,15 @@ export class ViewProjectComponent implements OnInit {
       var id = this.route.snapshot.params["{id}"];
       this.projectId = id;
       if (id) {
-        this.loadProjectData(id);    
+        this.loadProjectData(id);   
+
+        setTimeout(() => {
+          this.loadProjectLocations(id);
+        }, this.delayTime); 
+
+        setTimeout(() => {
+          this.loadProjectSectors(id);
+        }, this.delayTime); 
       } else {
 
       }
@@ -61,7 +70,6 @@ export class ViewProjectComponent implements OnInit {
       data => {
         this.hideLoader();
         this.projectData = data;
-        this.loadProjectLocations(id);
       },
       error => {
         this.hideLoader();
@@ -73,6 +81,7 @@ export class ViewProjectComponent implements OnInit {
   loadProjectLocations(id) {
     this.projectService.getProjectLocations(id).subscribe(
       data => {
+        this.hideLocationLoader();
         this.projectLocations = data;
       },
       error => {
@@ -82,9 +91,10 @@ export class ViewProjectComponent implements OnInit {
   }
 
   loadProjectSectors(id) {
-    this.projectService.getProjectLocations(id).subscribe(
+    this.projectService.getProjectSectors(id).subscribe(
       data => {
-        this.projectLocations = data;
+        this.hideSectorLoader();
+        this.projectSectors = data;
       },
       error => {
         console.log(error);
@@ -106,8 +116,30 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  deleteProjectSector(projectId, sectorId) {
+    this.blockUI.start('Working...');
+    this.projectService.deleteProjectSector(projectId, sectorId).subscribe(
+      data => {
+        this.projectSectors = this.projectSectors.filter(s => s.sectorId != sectorId);
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+
   hideLoader() {
     this.isLoading = false;
+  }
+
+  hideLocationLoader() {
+    this.isLocationLoading = false;
+  }
+
+  hideSectorLoader() {
+    this.isSectorLoading = false;
   }
 
 }

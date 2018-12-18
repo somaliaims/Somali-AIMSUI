@@ -5,7 +5,6 @@ import { OrganizationService } from '../services/organization-service';
 import { StoreService } from '../services/store-service';
 import { RegistrationModel } from '../models/registration';
 import { UserService } from '../services/user-service';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Router } from '@angular/router';
 import { Messages } from '../config/messages';
 
@@ -36,7 +35,7 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
-    private modalService: NgxSmartModalService, private router: Router,
+    private router: Router,
     private zone: NgZone) {
 
   }
@@ -106,11 +105,9 @@ export class UserOrgRegistrationComponent implements OnInit {
     var orgValue = this.usersForm.get('userInput').value;
     if (!orgValue.id) {
       this.model.OrganizationName = orgValue;
-      //this.model.OrganizationTypeId = this.usersForm.get('organizationType').value;
-
       if (this.model.OrganizationName.length == 0) {
         //Need to show a dialog message here
-        this.modalService.getModal('info-modal').open();
+        console.log('error');
         return false;
       } else if (this.model.IsNewOrganization && this.model.OrganizationTypeId == null) {
         return false;
