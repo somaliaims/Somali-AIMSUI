@@ -163,4 +163,16 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteProjectSector + projectId + '/' + locationId);
     }
 
+    getProjectFundersUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectFundersUrl + id);
+    }
+
+    addProjectFunderUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectFunder);
+    }
+
+    deleteProjectFunderUrl(projectId: string, funderId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectFunder + projectId + '/' + funderId);
+    }
+
 }

@@ -146,5 +146,53 @@
         </div>
       </div>
     </div>
+
+
+    <div class="row">
+      <div class="col margin-top-10">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <span class="float-left">
+                Project Funders
+              </span>
+              <span class="float-right">
+                <button class="btn btn-success" (click)="addProjectFunder()">Add Project Funder</button>
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="row text-center margin-top-10" *ngIf="isFunderLoading">
+                <div class="col-md-12">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading funders...</span>
+                </div>
+              </div>
+
+              <table *ngIf="projectFunders.length > 0" class="table table-stripped">
+                <tr>
+                  <th>Funder</th>
+                  <th>Amount</th>
+                  <th>Currency</th>
+                  <th>Exchange Rate</th>
+                  <th>Actions</th>
+                </tr>
+                <tr *ngFor="let funder of projectFunders">
+                  <td>{{funder.funder}}</td>
+                  <td>{{funder.amount}}</td>
+                  <td>{{funder.currency}}</td>
+                  <td>{{funder.exchangeRate}}</td>
+                  <td>
+                    <a title="Remove Funder" (click)="deleteProjectFunder(projectId, funder.funderId)" class="btn btn-danger"><i
+                        class="fa fa-trash color-white"></i></a>
+                  </td>
+                </tr>
+              </table>
+              <p *ngIf="projectFunders.length == 0 && !isFunderLoading">No project funders found.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </block-ui>
 </div>

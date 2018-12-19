@@ -30,6 +30,9 @@ export const urls = {
 	addProjectLocation: "Project/AddProjectLocation",
 	getProjectSectorsUrl: "Project/GetSectors/",
 	addProjectSector: "Project/AddProjectSector",
+	getProjectFundersUrl: "Project/GetFunders/",
+	addProjectFunder: "Project/AddProjectFunder",
 	deleteProjectLocation: "Project/DeleteProjectLocation/",
-	deleteProjectSector: "Project/DeleteProjectSector/"
+	deleteProjectSector: "Project/DeleteProjectSector/",
+	deleteProjectFunder: "Project/DeleteProjectFunder/"
 };

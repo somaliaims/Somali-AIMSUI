@@ -16,6 +16,7 @@ export class ViewProjectComponent implements OnInit {
   isLoading: boolean = true;
   isLocationLoading: boolean = true;
   isSectorLoading: boolean = true;
+  isFunderLoading: boolean = true;
   projectId: number = 0;
   delayTime: number = 2000;
 
@@ -23,6 +24,7 @@ export class ViewProjectComponent implements OnInit {
   projectData: any = [];
   projectLocations: any = [];
   projectSectors: any = [];
+  projectFunders: any = [];
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -65,6 +67,10 @@ export class ViewProjectComponent implements OnInit {
     this.router.navigateByUrl('project-sector/' + this.projectId);
   }
 
+  addProjectFunder() {
+    this.router.navigateByUrl('project-funder/' + this.projectId);
+  }
+
   loadProjectData(id) {
     this.projectService.getProject(id).subscribe(
       data => {
@@ -102,6 +108,18 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  loadProjectFunders(id) {
+    this.projectService.getProjectFunders(id).subscribe(
+      data => {
+        this.hideFunderLoader();
+        this.projectFunders = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
   deleteProjectLocation(projectId, locationId) {
     this.blockUI.start('Working...');
     this.projectService.deleteProjectLocation(projectId, locationId).subscribe(
@@ -130,6 +148,20 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  deleteProjectFunder(projectId, funderId) {
+    this.blockUI.start('Working...');
+    this.projectService.deleteProjectSector(projectId, funderId).subscribe(
+      data => {
+        this.projectFunders = this.projectFunders.filter(f => f.funderId != funderId);
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+
   hideLoader() {
     this.isLoading = false;
   }
@@ -140,6 +172,10 @@ export class ViewProjectComponent implements OnInit {
 
   hideSectorLoader() {
     this.isSectorLoading = false;
+  }
+
+  hideFunderLoader() {
+    this.isFunderLoading = false;
   }
 
 }

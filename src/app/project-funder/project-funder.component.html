@@ -1,0 +1,70 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/view-project/', model.projectId]">Back to Project Details</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Create New Funder</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">Funder</h5>
+
+          <form class="form-signin" [formGroup]='funderSelectionForm'>
+
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Funder" aria-label="Funder" [matAutocomplete]="auto" [formControl]="userInput">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let funder of filteredFunders | async" [value]="funder">
+                  <span>{{funder.funderName}}</span> |
+                  <small>Category: {{funder.category}} - {{funder.subCategory}}</small>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+
+          <form (ngSubmit)="saveProjectFunder()" #funderForm="ngForm">
+
+            <div class="form-group">
+              <label for="text">Funds Percentage</label>
+              <input type="number" class="form-control" id="fundsPercentage" [(ngModel)]="model.fundsPercentage" name="fundsPercentage"
+                #fundsPercentage="ngModel" required>
+              <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
+                Funds percentage is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="text">Currency</label>
+              <input type="text" class="form-control" maxlength="4" id="currency" [(ngModel)]="model.currency" name="currency"
+                #currency="ngModel" required>
+              <div [hidden]="currency.valid" class="alert alert-danger">
+                Currency is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="text">Exchange Rate</label>
+              <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate" name="percentage"
+                #exchangeRate="ngModel" required>
+              <div [hidden]="exchangeRate.valid" class="alert alert-danger">
+                Exchange rate is required
+              </div>
+            </div>
+
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

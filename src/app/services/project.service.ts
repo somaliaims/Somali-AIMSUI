@@ -87,4 +87,24 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('Delete Project Sector')));
     }
 
+    //Project funder functions
+    addProjectFunder(model: any) {
+      var url  = this.urlHelper.addProjectFunderUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('New Project Funder')));
+    }
+
+    getProjectFunders(id: string) {
+      var url = this.urlHelper.getProjectFundersUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Sectors')));
+    }
+
+    deleteProjectFunder(projectId: string, funderId: string) {
+      var url  = this.urlHelper.deleteProjectFunderUrl(projectId, funderId);
+        return this.httpClient.delete(url, httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Delete Project Funder')));
+    }
+
 }

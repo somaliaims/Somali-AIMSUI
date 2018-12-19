@@ -1,37 +1,37 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Organization } from '../models/organization-model';
 import { ProjectService } from '../services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SectorService } from '../services/sector.service';
+import { OrganizationService } from '../services/organization-service';
 import { StoreService } from '../services/store-service';
-import { Messages } from '../config/messages';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
-import { Sector } from '../models/sector-model';
-import { Observable } from 'rxjs';
+import { Messages } from '../config/messages';
 
 @Component({
-  selector: 'app-project-sector',
-  templateUrl: './project-sector.component.html',
-  styleUrls: ['./project-sector.component.css']
+  selector: 'app-project-funder',
+  templateUrl: './project-funder.component.html',
+  styleUrls: ['./project-funder.component.css']
 })
-export class ProjectSectorComponent implements OnInit {
+export class ProjectFunderComponent implements OnInit {
 
   @Input()
   isBtnDisabled: boolean = false;
   btnText: string = 'Add Project';
   errorMessage: string = '';
-  sectors: any = [];
+  organizations: any = [];
   requestNo: number = 0;
-  selectedSectorId: number = 0;
+  selectedOrganizationId: number = 0;
   isError: boolean = false;
   isLoading: boolean = false;
-  model = { projectId: 0, sectorId: null, fundsPercentage: null, currency: null, exchangeRate: null };
-  sectorSelectionForm: FormGroup;
+  model = { projectId: 0, organizationId: null, fundsPercentage: null, currency: null, exchangeRate: null };
+  funderSelectionForm: FormGroup;
   userInput = new FormControl();
-  filteredSectors: Observable<Sector[]>;
+  filteredOrganizations: Observable<Organization[]>;
 
   constructor(private fb: FormBuilder,private projectService: ProjectService, private route: ActivatedRoute,
-    private router: Router, private sectorService: SectorService,
+    private router: Router, private organizationService: OrganizationService,
     private storeService: StoreService) {
   }
 
@@ -39,9 +39,9 @@ export class ProjectSectorComponent implements OnInit {
     if (this.route.snapshot.data) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Add Sector for Project';
+        this.btnText = 'Add Funder';
         this.model.projectId = id;
-        this.loadSectors();
+        this.loadOrganizations();
       } else {
         this.router.navigateByUrl('/');
       }
@@ -54,27 +54,27 @@ export class ProjectSectorComponent implements OnInit {
       }
     });
 
-    this.sectorSelectionForm = this.fb.group({
+    this.funderSelectionForm = this.fb.group({
       userInput: null,
     });
   }
 
-  private filterSectors(value: string): Sector[] {
+  private filterOrganizations(value: string): Organization[] {
     if (typeof value != "string") {
     } else {
       const filterValue = value.toLowerCase();
-      return this.sectors.filter(sector => sector.sectorName.toLowerCase().indexOf(filterValue) !== -1);
+      return this.organizations.filter(organization => organization.organizationName.toLowerCase().indexOf(filterValue) !== -1);
     }
   }
 
-  loadSectors() {
-    this.sectorService.getSectorsList().subscribe(
+  loadOrganizations() {
+    this.organizationService.getOrganizationsList().subscribe(
       data => {
-        this.sectors = data;
-        this.filteredSectors = this.userInput.valueChanges
+        this.organizations = data;
+        this.filteredOrganizations = this.userInput.valueChanges
       .pipe(
         startWith(''),
-        map(sector => sector ? this.filterSectors(sector) : this.sectors.slice())
+        map(organization => organization ? this.filterOrganizations(organization) : this.organizations.slice())
       );
       },
       error => {
@@ -83,23 +83,22 @@ export class ProjectSectorComponent implements OnInit {
     );
   }
 
-  displayFn(sector?: Sector): string | undefined {
-    if (sector) {
-      this.selectedSectorId = sector.id;
-      console.log(this.selectedSectorId);
+  displayFn(organization?: Organization): string | undefined {
+    if (organization) {
+      this.selectedOrganizationId = organization.id;
     }
-    return sector ? sector.sectorName : undefined;
+    return organization ? organization.organizationName : undefined;
   }
 
-  saveProjectSector() {
-    if (this.selectedSectorId == 0) {
+  saveProjectOrganization() {
+    if (this.selectedOrganizationId == 0) {
       return false;
     }
 
-    this.model.sectorId = this.selectedSectorId;
+    this.model.organizationId = this.selectedOrganizationId;
     var model = {
       ProjectId: this.model.projectId,
-      SectorId: this.model.sectorId,
+      FunderId: this.model.organizationId,
       FundsPercentage: this.model.fundsPercentage,
       Currency: this.model.currency,
       ExchangeRate: this.model.exchangeRate
@@ -107,10 +106,10 @@ export class ProjectSectorComponent implements OnInit {
 
     this.isBtnDisabled = true;
       this.btnText = 'Saving...';
-      this.projectService.addProjectSector(model).subscribe(
+      this.projectService.addProjectFunder(model).subscribe(
         data => {
           if (!this.isError) {
-            var message = 'New project location ' + Messages.NEW_RECORD;
+            var message = 'New project funder ' + Messages.NEW_RECORD;
             this.storeService.newInfoMessage(message);
             this.router.navigateByUrl('view-project/' + this.model.projectId);
           } else {
@@ -127,7 +126,7 @@ export class ProjectSectorComponent implements OnInit {
 
   resetFormState() {
     this.isBtnDisabled = false;
-    this.btnText = 'Add Project Sector';
+    this.btnText = 'Add Funder';
   }
 
 }
