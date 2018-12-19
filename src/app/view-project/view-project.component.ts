@@ -44,7 +44,7 @@ export class ViewProjectComponent implements OnInit {
 
         setTimeout(() => {
           this.loadProjectSectors(id);
-        }, this.delayTime); 
+        }, (this.delayTime + this.delayTime)); 
       } else {
 
       }

@@ -82,7 +82,7 @@ export class ProjectService {
     }
 
     deleteProjectSector(projectId: string, sectorId: string) {
-      var url  = this.urlHelper.deleteProjectLocationUrl(projectId, sectorId);
+      var url  = this.urlHelper.deleteProjectSectorUrl(projectId, sectorId);
         return this.httpClient.delete(url, httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Delete Project Sector')));
     }
