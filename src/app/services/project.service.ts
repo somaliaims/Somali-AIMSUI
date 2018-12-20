@@ -127,4 +127,24 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('Delete Project Implementor')));
     }
 
+    //Project disbursements functions
+    addProjectDisbursement(model: any) {
+      var url  = this.urlHelper.addProjectDisbursementUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('New Project Disbursement')));
+    }
+
+    getProjectDisbursements(id: string) {
+      var url = this.urlHelper.getProjectDisbursementsUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Disbursements')));
+    }
+
+    deleteProjectDisbursement(id: string) {
+      var url  = this.urlHelper.deleteProjectDisbursementUrl(id);
+        return this.httpClient.delete(url, httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Delete Project Disbursement')));
+    }
+
 }

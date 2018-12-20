@@ -14,7 +14,7 @@ export class ProjectLocationComponent implements OnInit {
 
   @Input()
   isBtnDisabled: boolean = false;
-  btnText: string = 'Add Project';
+  btnText: string = 'Add Project Location';
   errorMessage: string = '';
   locations: any = [];
   requestNo: number = 0;
@@ -30,7 +30,7 @@ export class ProjectLocationComponent implements OnInit {
     if (this.route.snapshot.data) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Add Location for Project';
+        this.btnText = 'Add Project Location';
         this.model.projectId = id;
         this.loadLocations();
       } else {

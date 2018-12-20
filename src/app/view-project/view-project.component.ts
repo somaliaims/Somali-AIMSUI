@@ -18,8 +18,13 @@ export class ViewProjectComponent implements OnInit {
   isSectorLoading: boolean = true;
   isFunderLoading: boolean = true;
   isImplementorLoading: boolean = true;
+  isDisbursementLoading: boolean = true;
   projectId: number = 0;
   delayTime: number = 2000;
+  monthStrings: any = { 
+    "1": "January", "2": "February", "3": "March", "4": "April", "5": "May", "6": "June",
+    "7": "July", "8": "August", "9": "September", "10": "October", "11": "November", "12": "December" 
+  }
 
   //project data variables
   projectData: any = [];
@@ -27,6 +32,7 @@ export class ViewProjectComponent implements OnInit {
   projectSectors: any = [];
   projectFunders: any = [];
   projectImplementors: any = [];
+  projectDisbursements: any = [];
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -58,6 +64,10 @@ export class ViewProjectComponent implements OnInit {
           this.loadProjectImplementors(id);
         }, (this.delayTime + 3));
 
+        setTimeout(() => {
+          this.loadProjectDisbursements(id);
+        }, (this.delayTime + 4));
+
       } else {
 
       }
@@ -84,6 +94,10 @@ export class ViewProjectComponent implements OnInit {
 
   addProjectImplementor() {
     this.router.navigateByUrl('project-implementor/' + this.projectId);
+  }
+
+  addProjectDisbursement() {
+    this.router.navigateByUrl('project-disbursement/' + this.projectId);
   }
 
   loadProjectData(id) {
@@ -147,6 +161,18 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  loadProjectDisbursements(id) {
+    this.projectService.getProjectDisbursements(id).subscribe(
+      data => {
+        this.hideDisbursementLoader();
+        this.projectDisbursements = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
   deleteProjectLocation(projectId, locationId) {
     this.blockUI.start('Working...');
     this.projectService.deleteProjectLocation(projectId, locationId).subscribe(
@@ -203,6 +229,21 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  deleteProjectDisbursement(projectId, startingYear) {
+    this.blockUI.start('Working...');
+    this.projectService.deleteProjectDisbursement(projectId, startingYear).subscribe(
+      data => {
+        this.projectDisbursements = this.projectDisbursements.filter(d => d.projectId != projectId 
+          && d.startingYear != startingYear);
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+
   hideLoader() {
     this.isLoading = false;
   }
@@ -221,6 +262,10 @@ export class ViewProjectComponent implements OnInit {
 
   hideImplementorLoader() {
     this.isImplementorLoading = false;
+  }
+
+  hideDisbursementLoader() {
+    this.isDisbursementLoading = false;
   }
 
 }

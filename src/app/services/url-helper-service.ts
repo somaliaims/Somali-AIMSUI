@@ -187,4 +187,16 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteProjectImplementor + projectId + '/' + implementorId);
     }
 
+    getProjectDisbursementsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectDisbursementUrl + id);
+    }
+
+    addProjectDisbursementUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectDisbursement);
+    }
+
+    deleteProjectDisbursementUrl(projectId: string, startingYear: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectDisbursement + projectId + '/' + startingYear);
+    }
+
 }
