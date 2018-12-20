@@ -25,8 +25,7 @@
               <input matInput placeholder="Funder" aria-label="Funder" [matAutocomplete]="auto" [formControl]="userInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
                 <mat-option *ngFor="let funder of filteredOrganizations | async" [value]="funder">
-                  <span>{{funder.organizationName}}</span> |
-                  <small>{{funder.typeName}}</small>
+                  <span>{{funder.organizationName}}</span>
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>

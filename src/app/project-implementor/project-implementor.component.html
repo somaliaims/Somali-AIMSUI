@@ -1,0 +1,39 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/view-project/', model.projectId]">Back to Project Details</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Create New Implementor</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">Implementor</h5>
+
+          <form class="form-signin" (ngSubmit)="saveProjectImplementor()" [formGroup]='implementorSelectionForm'>
+
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Implementor" aria-label="Implementor" [matAutocomplete]="auto" [formControl]="userInput">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let implementor of filteredOrganizations | async" [value]="implementor">
+                  <span>{{implementor.organizationName}}</span>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

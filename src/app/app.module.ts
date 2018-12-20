@@ -40,6 +40,7 @@ import { ViewProjectComponent } from './view-project/view-project.component';
 import { ProjectLocationComponent } from './project-location/project-location.component';
 import { ProjectSectorComponent } from './project-sector/project-sector.component';
 import { ProjectFunderComponent } from './project-funder/project-funder.component';
+import { ProjectImplementorComponent } from './project-implementor/project-implementor.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { ProjectFunderComponent } from './project-funder/project-funder.componen
     ProjectLocationComponent,
     ProjectSectorComponent,
     ProjectFunderComponent,
+    ProjectImplementorComponent,
   ],
   imports: [
     BrowserModule,

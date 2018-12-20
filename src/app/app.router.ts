@@ -27,6 +27,7 @@ import { ViewProjectComponent } from './view-project/view-project.component';
 import { ProjectLocationComponent } from './project-location/project-location.component';
 import { ProjectSectorComponent } from './project-sector/project-sector.component';
 import { ProjectFunderComponent } from './project-funder/project-funder.component';
+import { ProjectImplementorComponent } from './project-implementor/project-implementor.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -65,7 +66,8 @@ export const routes: Routes = [
   { path: 'view-project/:{id}', component: ViewProjectComponent },
   { path: 'project-location/:{id}', component: ProjectLocationComponent },
   { path: 'project-sector/:{id}', component: ProjectSectorComponent },
-  { path: 'project-funder/:{id}', component: ProjectFunderComponent }
+  { path: 'project-funder/:{id}', component: ProjectFunderComponent },
+  { path: 'project-implementor/:{id}', component: ProjectImplementorComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

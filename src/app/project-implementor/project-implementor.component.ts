@@ -10,23 +10,23 @@ import { startWith, map } from 'rxjs/operators';
 import { Messages } from '../config/messages';
 
 @Component({
-  selector: 'app-project-funder',
-  templateUrl: './project-funder.component.html',
-  styleUrls: ['./project-funder.component.css']
+  selector: 'app-project-implementor',
+  templateUrl: './project-implementor.component.html',
+  styleUrls: ['./project-implementor.component.css']
 })
-export class ProjectFunderComponent implements OnInit {
+export class ProjectImplementorComponent implements OnInit {
 
   @Input()
   isBtnDisabled: boolean = false;
-  btnText: string = 'Add Project Funder';
+  btnText: string = 'Add Project Implementor';
   errorMessage: string = '';
   organizations: any = [];
   requestNo: number = 0;
   selectedOrganizationId: number = 0;
   isError: boolean = false;
   isLoading: boolean = false;
-  model = { projectId: 0, organizationId: null, amount: null, currency: null, exchangeRate: null };
-  funderSelectionForm: FormGroup;
+  model = { projectId: 0, organizationId: null };
+  implementorSelectionForm: FormGroup;
   userInput = new FormControl();
   filteredOrganizations: Observable<Organization[]>;
 
@@ -39,7 +39,7 @@ export class ProjectFunderComponent implements OnInit {
     if (this.route.snapshot.data) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Add Funder';
+        this.btnText = 'Add Implementor';
         this.model.projectId = id;
         this.loadOrganizations();
       } else {
@@ -54,7 +54,7 @@ export class ProjectFunderComponent implements OnInit {
       }
     });
 
-    this.funderSelectionForm = this.fb.group({
+    this.implementorSelectionForm = this.fb.group({
       userInput: null,
     });
   }
@@ -90,7 +90,7 @@ export class ProjectFunderComponent implements OnInit {
     return organization ? organization.organizationName : undefined;
   }
 
-  saveProjectFunder() {
+  saveProjectImplementor() {
     if (this.selectedOrganizationId == 0) {
       return false;
     }
@@ -98,18 +98,15 @@ export class ProjectFunderComponent implements OnInit {
     this.model.organizationId = this.selectedOrganizationId;
     var model = {
       ProjectId: this.model.projectId,
-      FunderId: this.model.organizationId,
-      Amount: this.model.amount,
-      Currency: this.model.currency,
-      ExchangeRate: this.model.exchangeRate
+      ImplementorId: this.model.organizationId,
     };
 
     this.isBtnDisabled = true;
       this.btnText = 'Saving...';
-      this.projectService.addProjectFunder(model).subscribe(
+      this.projectService.addProjectImplementor(model).subscribe(
         data => {
           if (!this.isError) {
-            var message = 'New project funder ' + Messages.NEW_RECORD;
+            var message = 'New project implementor ' + Messages.NEW_RECORD;
             this.storeService.newInfoMessage(message);
             this.router.navigateByUrl('view-project/' + this.model.projectId);
           } else {
@@ -126,7 +123,7 @@ export class ProjectFunderComponent implements OnInit {
 
   resetFormState() {
     this.isBtnDisabled = false;
-    this.btnText = 'Add Funder';
+    this.btnText = 'Add Implementor';
   }
 
 }

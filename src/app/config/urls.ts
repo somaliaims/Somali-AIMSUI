@@ -32,7 +32,10 @@ export const urls = {
 	addProjectSector: "Project/AddProjectSector",
 	getProjectFundersUrl: "Project/GetFunders/",
 	addProjectFunder: "Project/AddProjectFunder",
+	getProjectImplementorsUrl: "Project/GetImplementors/",
+	addProjectImplementor: "Project/AddProjectImplementor",
 	deleteProjectLocation: "Project/DeleteProjectLocation/",
 	deleteProjectSector: "Project/DeleteProjectSector/",
-	deleteProjectFunder: "Project/DeleteProjectFunder/"
+	deleteProjectFunder: "Project/DeleteProjectFunder/",
+	deleteProjectImplementor: "Project/DeleteProjectImplementor/"
 };

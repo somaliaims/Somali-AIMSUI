@@ -17,6 +17,7 @@ export class ViewProjectComponent implements OnInit {
   isLocationLoading: boolean = true;
   isSectorLoading: boolean = true;
   isFunderLoading: boolean = true;
+  isImplementorLoading: boolean = true;
   projectId: number = 0;
   delayTime: number = 2000;
 
@@ -25,6 +26,7 @@ export class ViewProjectComponent implements OnInit {
   projectLocations: any = [];
   projectSectors: any = [];
   projectFunders: any = [];
+  projectImplementors: any = [];
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -52,6 +54,10 @@ export class ViewProjectComponent implements OnInit {
           this.loadProjectFunders(id);
         }, (this.delayTime + 2));
 
+        setTimeout(() => {
+          this.loadProjectImplementors(id);
+        }, (this.delayTime + 3));
+
       } else {
 
       }
@@ -74,6 +80,10 @@ export class ViewProjectComponent implements OnInit {
 
   addProjectFunder() {
     this.router.navigateByUrl('project-funder/' + this.projectId);
+  }
+
+  addProjectImplementor() {
+    this.router.navigateByUrl('project-implementor/' + this.projectId);
   }
 
   loadProjectData(id) {
@@ -125,6 +135,18 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  loadProjectImplementors(id) {
+    this.projectService.getProjectImplementors(id).subscribe(
+      data => {
+        this.hideImplementorLoader();
+        this.projectImplementors = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
   deleteProjectLocation(projectId, locationId) {
     this.blockUI.start('Working...');
     this.projectService.deleteProjectLocation(projectId, locationId).subscribe(
@@ -167,6 +189,20 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  deleteProjectImplementor(projectId, implementorId) {
+    this.blockUI.start('Working...');
+    this.projectService.deleteProjectImplementor(projectId, implementorId).subscribe(
+      data => {
+        this.projectImplementors = this.projectImplementors.filter(i => i.implementorId != implementorId);
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+
   hideLoader() {
     this.isLoading = false;
   }
@@ -181,6 +217,10 @@ export class ViewProjectComponent implements OnInit {
 
   hideFunderLoader() {
     this.isFunderLoading = false;
+  }
+
+  hideImplementorLoader() {
+    this.isImplementorLoading = false;
   }
 
 }
