@@ -46,7 +46,12 @@ export class ViewProjectComponent implements OnInit {
 
         setTimeout(() => {
           this.loadProjectSectors(id);
-        }, (this.delayTime + this.delayTime)); 
+        }, (this.delayTime + 1));
+        
+        setTimeout(() => {
+          this.loadProjectFunders(id);
+        }, (this.delayTime + 2));
+
       } else {
 
       }
@@ -150,7 +155,7 @@ export class ViewProjectComponent implements OnInit {
 
   deleteProjectFunder(projectId, funderId) {
     this.blockUI.start('Working...');
-    this.projectService.deleteProjectSector(projectId, funderId).subscribe(
+    this.projectService.deleteProjectFunder(projectId, funderId).subscribe(
       data => {
         this.projectFunders = this.projectFunders.filter(f => f.funderId != funderId);
         this.blockUI.stop();

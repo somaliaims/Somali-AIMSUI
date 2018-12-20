@@ -25,7 +25,7 @@ export class ProjectFunderComponent implements OnInit {
   selectedOrganizationId: number = 0;
   isError: boolean = false;
   isLoading: boolean = false;
-  model = { projectId: 0, organizationId: null, fundsPercentage: null, currency: null, exchangeRate: null };
+  model = { projectId: 0, organizationId: null, amount: null, currency: null, exchangeRate: null };
   funderSelectionForm: FormGroup;
   userInput = new FormControl();
   filteredOrganizations: Observable<Organization[]>;
@@ -90,7 +90,7 @@ export class ProjectFunderComponent implements OnInit {
     return organization ? organization.organizationName : undefined;
   }
 
-  saveProjectOrganization() {
+  saveProjectFunder() {
     if (this.selectedOrganizationId == 0) {
       return false;
     }
@@ -99,7 +99,7 @@ export class ProjectFunderComponent implements OnInit {
     var model = {
       ProjectId: this.model.projectId,
       FunderId: this.model.organizationId,
-      FundsPercentage: this.model.fundsPercentage,
+      Amount: this.model.amount,
       Currency: this.model.currency,
       ExchangeRate: this.model.exchangeRate
     };

@@ -24,9 +24,9 @@
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Funder" aria-label="Funder" [matAutocomplete]="auto" [formControl]="userInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
-                <mat-option *ngFor="let funder of filteredFunders | async" [value]="funder">
-                  <span>{{funder.funderName}}</span> |
-                  <small>Category: {{funder.category}} - {{funder.subCategory}}</small>
+                <mat-option *ngFor="let funder of filteredOrganizations | async" [value]="funder">
+                  <span>{{funder.organizationName}}</span> |
+                  <small>{{funder.typeName}}</small>
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
@@ -35,11 +35,11 @@
           <form (ngSubmit)="saveProjectFunder()" #funderForm="ngForm">
 
             <div class="form-group">
-              <label for="text">Funds Percentage</label>
-              <input type="number" class="form-control" id="fundsPercentage" [(ngModel)]="model.fundsPercentage" name="fundsPercentage"
-                #fundsPercentage="ngModel" required>
-              <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
-                Funds percentage is required
+              <label for="text">Amount</label>
+              <input type="number" class="form-control" id="amount" [(ngModel)]="model.amount" name="amount"
+                #amount="ngModel" required>
+              <div [hidden]="amount.valid" class="alert alert-danger">
+                Amount is required
               </div>
             </div>
 
