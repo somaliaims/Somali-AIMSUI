@@ -1,0 +1,48 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/view-project/', model.projectId]">Back to Project</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">New Project Document</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">New Project Document</h5>
+
+          <form class="form-signin" (ngSubmit)="saveProjectDocument()" #documentForm="ngForm">
+            
+            <div class="form-group">
+              <label for="text"> </label>
+              <input type="text" class="form-control" id="documentTitle" [(ngModel)]="model.documentTitle" name="documentTitle"
+                #documentTitle="ngModel" required>
+              <div [hidden]="documentTitle.valid" class="alert alert-danger">
+                 Document title is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="text"> </label>
+              <input type="url" class="form-control" id="documentUrl" [(ngModel)]="model.documentUrl" name="documentUrl"
+                #documentUrl="ngModel" required>
+              <div [hidden]="documentUrl.valid" class="alert alert-danger">
+                 Document url is required
+              </div>
+            </div>
+        
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

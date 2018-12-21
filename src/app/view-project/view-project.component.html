@@ -279,6 +279,48 @@
       </div>
     </div>
 
+    <!--Project Documents-->
+    <div class="row">
+      <div class="col margin-top-10">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <span class="float-left">
+                Project Documents
+              </span>
+              <span class="float-right">
+                <button class="btn btn-success" (click)="addProjectDocument()">Add Project Document</button>
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="row text-center margin-top-10" *ngIf="isDocumentLoading">
+                <div class="col-md-12">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading documents...</span>
+                </div>
+              </div>
+
+              <table *ngIf="projectDocuments.length > 0" class="table table-stripped">
+                <tr>
+                  <th>Document Title</th>
+                  <th>Url</th>
+                  <th>Actions</th>
+                </tr>
+                <tr *ngFor="let document of projectDocuments">
+                  <td>{{document.documentTitle}}</td>
+                  <td>{{document.documentUrl}}</td>
+                  <td>
+                    <a title="Remove Document" (click)="deleteProjectDocument(document.id)" class="btn btn-danger"><i
+                        class="fa fa-trash color-white"></i></a>
+                  </td>
+                </tr>
+              </table>
+              <p *ngIf="projectDocuments.length == 0 && !isDocumentLoading">No project documents found.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
   </block-ui>
 </div>

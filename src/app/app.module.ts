@@ -42,6 +42,7 @@ import { ProjectSectorComponent } from './project-sector/project-sector.componen
 import { ProjectFunderComponent } from './project-funder/project-funder.component';
 import { ProjectImplementorComponent } from './project-implementor/project-implementor.component';
 import { ProjectDisbursementComponent } from './project-disbursement/project-disbursement.component';
+import { ProjectDocumentComponent } from './project-document/project-document.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { ProjectDisbursementComponent } from './project-disbursement/project-dis
     ProjectFunderComponent,
     ProjectImplementorComponent,
     ProjectDisbursementComponent,
+    ProjectDocumentComponent,
   ],
   imports: [
     BrowserModule,

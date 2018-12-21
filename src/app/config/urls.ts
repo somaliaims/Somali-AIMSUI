@@ -36,9 +36,12 @@ export const urls = {
 	addProjectImplementor: "Project/AddProjectImplementor",
 	getProjectDisbursementUrl: "Project/GetDisbursements/",
 	addProjectDisbursement: "Project/AddProjectDisbursement",
+	getProjectDocumentUrl: "Project/GetDocuments/",
+	addProjectDocument: "Project/AddProjectDocument",
 	deleteProjectLocation: "Project/DeleteProjectLocation/",
 	deleteProjectSector: "Project/DeleteProjectSector/",
 	deleteProjectFunder: "Project/DeleteProjectFunder/",
 	deleteProjectImplementor: "Project/DeleteProjectImplementor/",
-	deleteProjectDisbursement: "Project/DeleteProjectImplementor/"
+	deleteProjectDisbursement: "Project/DeleteProjectImplementor/",
+	deleteProjectDocument: "Project/DeleteProjectDocument/"
 };

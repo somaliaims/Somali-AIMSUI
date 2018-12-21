@@ -19,6 +19,7 @@ export class ViewProjectComponent implements OnInit {
   isFunderLoading: boolean = true;
   isImplementorLoading: boolean = true;
   isDisbursementLoading: boolean = true;
+  isDocumentLoading: boolean = true;
   projectId: number = 0;
   delayTime: number = 2000;
   monthStrings: any = { 
@@ -33,6 +34,7 @@ export class ViewProjectComponent implements OnInit {
   projectFunders: any = [];
   projectImplementors: any = [];
   projectDisbursements: any = [];
+  projectDocuments: any = [];
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -68,6 +70,10 @@ export class ViewProjectComponent implements OnInit {
           this.loadProjectDisbursements(id);
         }, (this.delayTime + 4));
 
+        setTimeout(() => {
+          this.loadProjectDocuments(id);
+        }, (this.delayTime + 5));
+
       } else {
 
       }
@@ -98,6 +104,10 @@ export class ViewProjectComponent implements OnInit {
 
   addProjectDisbursement() {
     this.router.navigateByUrl('project-disbursement/' + this.projectId);
+  }
+
+  addProjectDocument() {
+    this.router.navigateByUrl('project-document/' + this.projectId);
   }
 
   loadProjectData(id) {
@@ -166,6 +176,18 @@ export class ViewProjectComponent implements OnInit {
       data => {
         this.hideDisbursementLoader();
         this.projectDisbursements = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  loadProjectDocuments(id) {
+    this.projectService.getProjectDocuments(id).subscribe(
+      data => {
+        this.hideDocumentLoader();
+        this.projectDocuments = data;
       },
       error => {
         console.log(error);
@@ -244,6 +266,20 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  deleteProjectDocument(id) {
+    this.blockUI.start('Working...');
+    this.projectService.deleteProjectDocument(id).subscribe(
+      data => {
+        this.projectDisbursements = this.projectDocuments.filter(d => d.id != id);
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+
   hideLoader() {
     this.isLoading = false;
   }
@@ -266,6 +302,10 @@ export class ViewProjectComponent implements OnInit {
 
   hideDisbursementLoader() {
     this.isDisbursementLoading = false;
+  }
+
+  hideDocumentLoader() {
+    this.isDocumentLoading = false;
   }
 
 }

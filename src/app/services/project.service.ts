@@ -141,10 +141,30 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('Project Disbursements')));
     }
 
-    deleteProjectDisbursement(id: string) {
-      var url  = this.urlHelper.deleteProjectDisbursementUrl(id);
+    deleteProjectDisbursement(projectId: string, startingYear: string) {
+      var url  = this.urlHelper.deleteProjectDisbursementUrl(projectId, startingYear);
         return this.httpClient.delete(url, httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Delete Project Disbursement')));
+    }
+
+    //Project documents functions
+    addProjectDocument(model: any) {
+      var url  = this.urlHelper.addProjectDocumentUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('New Project Document')));
+    }
+
+    getProjectDocuments(id: string) {
+      var url = this.urlHelper.getProjectDocumentsUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Documents')));
+    }
+
+    deleteProjectDocument(id: string) {
+      var url  = this.urlHelper.deleteProjectDocumentUrl(id);
+        return this.httpClient.delete(url, httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Delete Project Document')));
     }
 
 }
