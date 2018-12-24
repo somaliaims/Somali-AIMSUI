@@ -17,6 +17,7 @@ export class ManageProjectComponent implements OnInit {
   isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
   projectId: number = 0;
+  counter: number = 0;
   btnText: string = 'Add Project';
   errorMessage: string = '';
   projectTypes: any = [];
@@ -75,6 +76,19 @@ export class ManageProjectComponent implements OnInit {
           iati.description.toLowerCase().indexOf(filterValue) !== -1
       );
     }
+  }
+
+  selectIATIActivity(e) {
+    var id = e.target.id;
+    var selectActivity = this.iatiActivities.filter(
+      iati => iati.id == id
+    );
+
+    if (selectActivity.length && selectActivity.length > 0) {
+      this.model.title = selectActivity[0].title;
+      this.model.description = selectActivity[0].description;
+    }
+    
   }
 
   loadProjectData() {
