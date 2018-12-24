@@ -43,5 +43,8 @@ export const urls = {
 	deleteProjectFunder: "Project/DeleteProjectFunder/",
 	deleteProjectImplementor: "Project/DeleteProjectImplementor/",
 	deleteProjectDisbursement: "Project/DeleteProjectImplementor/",
-	deleteProjectDocument: "Project/DeleteProjectDocument/"
+	deleteProjectDocument: "Project/DeleteProjectDocument/",
+	iatiActivities: "IATI/GetActivities",
+	iatiOrganizations: "IATI/GetOrganizations",
+	iatiMatchingActivities: "IATI/GetMatchingActivities"
 };

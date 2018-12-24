@@ -211,4 +211,16 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteProjectDocument + id);
     }
 
+    getIATIActivitiesUrl() {
+        return (this.BASE_URL + urlsList.urls.iatiActivities);
+    }
+
+    getFilteredIATIActivitiesUrl(criteria: string) {
+        return (this.BASE_URL + urlsList.urls.iatiActivities + '/' + criteria);
+    }
+
+    getIATIOrganizationsUrl() {
+        return (this.BASE_URL + urlsList.urls.iatiOrganizations);
+    }
+
 }

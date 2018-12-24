@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { IATIService } from '../services/iati.service';
 
 @Component({
   selector: 'app-manage-project',
@@ -23,6 +24,8 @@ export class ManageProjectComponent implements OnInit {
   filteredCategories: any = [];
   subCategories: any = [];
   filteredSubCategories: any = [];
+  iatiActivities: any = [];
+  filteredIatiActivities: any = [];
   requestNo: number = 0;
   isError: boolean = false;
   startDateModel: NgbDateStruct;
@@ -30,7 +33,7 @@ export class ManageProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
-    private storeService: StoreService) {
+    private storeService: StoreService, private iatiService: IATIService) {
   }
 
   ngOnInit() {
@@ -40,16 +43,38 @@ export class ManageProjectComponent implements OnInit {
         this.btnText = 'Edit Project';
         this.isForEdit = true;
         this.projectId = id;
+        this.loadProjectData();
       }
     }
-
-    this.loadProjectData();
+    
+    this.loadIATIActivities();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
         this.isError = true;
       }
     });
+  }
+
+  loadIATIActivities() {
+    this.iatiService.getIATIActivities().subscribe(
+      data => {
+        this.iatiActivities = data;
+      },
+      error => {
+      }
+    )
+  }
+
+  filterMatchingActivities(e) {
+    var str = e.target.value;
+    if (this.iatiActivities.length > 0) {
+      const filterValue = str.toLowerCase();
+      this.filteredIatiActivities = this.iatiActivities.filter(
+        iati => iati.title.toLowerCase().indexOf(filterValue) !== -1 ||
+          iati.description.toLowerCase().indexOf(filterValue) !== -1
+      );
+    }
   }
 
   loadProjectData() {
