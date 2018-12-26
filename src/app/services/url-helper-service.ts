@@ -223,4 +223,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.iatiOrganizations);
     }
 
+    getProjectTitle(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectTitle + id);
+    }
+
 }

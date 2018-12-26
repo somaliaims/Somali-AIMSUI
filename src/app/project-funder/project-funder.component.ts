@@ -8,6 +8,7 @@ import { OrganizationService } from '../services/organization-service';
 import { StoreService } from '../services/store-service';
 import { startWith, map } from 'rxjs/operators';
 import { Messages } from '../config/messages';
+import { IATIService } from '../services/iati.service';
 
 @Component({
   selector: 'app-project-funder',
@@ -21,18 +22,21 @@ export class ProjectFunderComponent implements OnInit {
   btnText: string = 'Add Project Funder';
   errorMessage: string = '';
   organizations: any = [];
+  iatiOrganizations: any = [];
+  filteredIATIOrganizations: any = [];
   requestNo: number = 0;
   selectedOrganizationId: number = 0;
   isError: boolean = false;
   isLoading: boolean = false;
   model = { projectId: 0, organizationId: null, amount: null, currency: null, exchangeRate: null };
   funderSelectionForm: FormGroup;
+  projectTitle: string = '';
   userInput = new FormControl();
   filteredOrganizations: Observable<Organization[]>;
 
   constructor(private fb: FormBuilder,private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private organizationService: OrganizationService,
-    private storeService: StoreService) {
+    private storeService: StoreService, private iatiService: IATIService) {
   }
 
   ngOnInit() {
@@ -42,6 +46,7 @@ export class ProjectFunderComponent implements OnInit {
         this.btnText = 'Add Funder';
         this.model.projectId = id;
         this.loadOrganizations();
+        this.getProjectTitle(id);
       } else {
         this.router.navigateByUrl('/');
       }
@@ -65,6 +70,17 @@ export class ProjectFunderComponent implements OnInit {
       const filterValue = value.toLowerCase();
       return this.organizations.filter(organization => organization.organizationName.toLowerCase().indexOf(filterValue) !== -1);
     }
+  }
+
+  private getProjectTitle(id: string) {
+    this.projectService.getProjectTitle(id).subscribe(
+      data => {
+        this.projectTitle = data.projectTitle;
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   loadOrganizations() {
@@ -123,6 +139,28 @@ export class ProjectFunderComponent implements OnInit {
         }
       );
   }
+
+  loadIATIOrganizations() {
+    this.iatiService.getOrganizations().subscribe(
+      data => {
+        this.iatiOrganizations = data;
+      },
+      error => {
+      }
+    )
+  }
+
+  filterMatchingOrganizations(e) {
+    var str = e.target.value;
+    if (this.iatiOrganizations.length > 0) {
+      const filterValue = str.toLowerCase();
+      this.filteredIATIOrganizations = this.iatiOrganizations.filter(
+        iati => iati.name.toLowerCase().indexOf(filterValue) !== -1 &&
+        iati.role == 'Funding'
+      );
+    }
+  }
+
 
   resetFormState() {
     this.isBtnDisabled = false;

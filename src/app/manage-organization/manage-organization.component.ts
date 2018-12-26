@@ -3,6 +3,7 @@ import { OrganizationService } from '../services/organization-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Messages } from '../config/messages';
 import { StoreService } from '../services/store-service';
+import { IATIService } from '../services/iati.service';
 
 @Component({
   selector: 'manage-organization',
@@ -19,15 +20,16 @@ export class ManageOrganizationComponent implements OnInit {
   organizationTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
+  iatiOrganizations: any = [];
+  filteredIATIOrganizations: any = [];
   model = { id: 0, organizationName: '', organizationTypeId: 1 };
 
   constructor(private organizationService: OrganizationService, private route: ActivatedRoute,
-    private router: Router,
+    private router: Router, 
     private storeService: StoreService) {
   }
 
   ngOnInit() {
-    this.fillOrganizationTypes();
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {

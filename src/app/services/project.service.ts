@@ -33,6 +33,12 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('Project')));
     }
 
+    getProjectTitle(id: string) {
+      var url = this.urlHelper.getProjectTitle(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project title')));
+    }
+
     addProject(model: any) {
       var url  = this.urlHelper.getProjectUrl();
         return this.httpClient.post(url,

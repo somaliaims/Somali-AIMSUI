@@ -26,6 +26,7 @@ export const urls = {
 	getProjectType: "ProjectType/GetById/",
 	projectsUrl: "Project",
 	getProject: "Project/GetById/",
+	getProjectTitle: "Project/GetTitle/",
 	getProjectLocationsUrl: "Project/GetLocations/",
 	addProjectLocation: "Project/AddProjectLocation",
 	getProjectSectorsUrl: "Project/GetSectors/",
