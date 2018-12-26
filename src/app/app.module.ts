@@ -36,6 +36,7 @@ import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
 import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
+import { UserPasswordForgotComponent } from './user-password-forgot/user-password-forgot.component';
 import { ViewProjectComponent } from './view-project/view-project.component';
 import { ProjectLocationComponent } from './project-location/project-location.component';
 import { ProjectSectorComponent } from './project-sector/project-sector.component';
@@ -71,6 +72,7 @@ import { ProjectDocumentComponent } from './project-document/project-document.co
     ManageSectorComponent,
     ManageProjectComponent,
     UserPasswordChangeComponent,
+    UserPasswordForgotComponent,
     ViewProjectComponent,
     ProjectLocationComponent,
     ProjectSectorComponent,

@@ -42,6 +42,12 @@ export class UserService {
         catchError(this.storeService.handleError<any>('User password edit')));
     }
 
+    sendUserPassword(email: string, confirmemail: string) {
+      var url = this.urlHelper.getSendUserPassword(email);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('User password recovery')));
+    }
+
     registerUser(model: RegistrationModel) {
         var url  = this.urlHelper.userRegistrationUrl();
         return this.httpClient.post(url,
