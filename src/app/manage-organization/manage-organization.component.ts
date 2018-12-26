@@ -22,7 +22,7 @@ export class ManageOrganizationComponent implements OnInit {
   isError: boolean = false;
   iatiOrganizations: any = [];
   filteredIATIOrganizations: any = [];
-  model = { id: 0, organizationName: '', organizationTypeId: 1 };
+  model = { id: 0, organizationName: '' };
 
   constructor(private organizationService: OrganizationService, private route: ActivatedRoute,
     private router: Router, 
@@ -40,7 +40,7 @@ export class ManageOrganizationComponent implements OnInit {
           data => {
             this.model.id = data.id;
             this.model.organizationName = data.organizationName;
-            this.model.organizationTypeId = data.organizationTypeId;
+            //this.model.organizationTypeId = data.organizationTypeId;
           },
           error => {
             console.log("Request Failed: ", error);
@@ -58,20 +58,20 @@ export class ManageOrganizationComponent implements OnInit {
   }
 
   fillOrganizationTypes() {
-    this.organizationService.getOrganizationTypes().subscribe(
+    /*this.organizationService.getOrganizationTypes().subscribe(
       data => {
         this.organizationTypes = data;
       },
       error => {
         console.log("Request Failed: ", error);
       }
-    );
+    );*/
   }
 
   saveOrganization() {
     var model = {
       Name: this.model.organizationName,
-      TypeId: this.model.organizationTypeId
+      //TypeId: this.model.organizationTypeId
     };
 
     this.isBtnDisabled = true;

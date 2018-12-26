@@ -11,20 +11,13 @@
 
           <form (ngSubmit)="registerUser()" class="example-form" [formGroup]='usersForm'>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Choose/Enter your Organization" [matAutocomplete]="auto" formControlName='userInput'>
-            </mat-form-field>
-
-            <mat-autocomplete #auto="matAutocomplete" class="org-autocomplete" [displayWith]="displayFn">
-              <mat-option *ngIf="isLoading" class="is-loading">
-                <mat-spinner diameter="50"></mat-spinner>
-              </mat-option>
-              <ng-container *ngIf="!isLoading">
-                <mat-option *ngFor="let organization of filteredOrganizations" [value]="organization">
-                  <span>{{ organization.organizationName }}</span>
-                  <small> | ID: {{organization.id}}</small>
+              <input matInput placeholder="Enter/Select Organization" aria-label="Organization" [matAutocomplete]="auto" [formControl]="userInput">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                <mat-option *ngFor="let org of filteredOrganizations | async" [value]="org">
+                  <span>{{org.organizationName}}</span>
                 </mat-option>
-              </ng-container>
-            </mat-autocomplete>
+              </mat-autocomplete>
+            </mat-form-field>
 
             <!--<div *ngIf="isOrgTypeVisible" class="form-group">
                   <label for="organizationType">Organization Type</label>
