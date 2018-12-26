@@ -6,39 +6,39 @@ import { UserService } from '../services/user-service';
 
 
 @Component({
-  selector: 'app-userpasswordchange',
-  templateUrl: './user-password-change.component.html',
-  styleUrls: ['./user-password-change.component.css']
+  selector: 'app-userpasswordforgot',
+  templateUrl: './user-password-forgot.component.html',
+  styleUrls: ['./user-password-forgot.component.css']
 })
-export class UserPasswordChangeComponent{
-  public frmChangePassword: FormGroup;
-  btnText: string = 'Save';
+export class UserPasswordForgotComponent{
+  public frmForgotPassword: FormGroup;
+  btnText: string = 'SEND';
 
   constructor(private fb: FormBuilder) {
-    this.frmChangePassword = this.createChangePasswordForm();
+    this.frmForgotPassword = this.createForgotPasswordForm();
   }
 
-  createChangePasswordForm(): FormGroup {
+  createForgotPasswordForm(): FormGroup {
     return this.fb.group(
       {
-        password: [
+        email: [
           null,
           Validators.compose([
             Validators.required,
-            Validators.minLength(4)
+            Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
           ])
         ],
-        confirmPassword: [null, Validators.compose([Validators.required])]
+        confirmEmail: [null, Validators.compose([Validators.required])]
       },
       {
-        // Check if  password and confirm password match
-        validator: CustomValidators.passwordMatchValidator
+        // Check if  emails match
+        validator: CustomValidators.emailMatchValidator
       }
     );
   }
 
   submit() {
-  	//this.userService.editPassword().subscribe(
+  	//this.userService.forgotPassword().subscribe(
     //  data => {
     //    console.log(data);
        
