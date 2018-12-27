@@ -13,6 +13,7 @@ import { UserService } from '../services/user-service';
 export class UserPasswordChangeComponent{
   public frmChangePassword: FormGroup;
   btnText: string = 'Save';
+  isBtnDisabled: boolean = false;
 
   constructor(private fb: FormBuilder) {
     this.frmChangePassword = this.createChangePasswordForm();
