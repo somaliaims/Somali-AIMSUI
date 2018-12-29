@@ -5,11 +5,12 @@ import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { IATIService } from '../services/iati.service';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-manage-project',
   templateUrl: './manage-project.component.html',
-  styleUrls: ['./manage-project.component.css']
+  styleUrls: []
 })
 export class ManageProjectComponent implements OnInit {
 
@@ -34,7 +35,8 @@ export class ManageProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
-    private storeService: StoreService, private iatiService: IATIService) {
+    private storeService: StoreService, private iatiService: IATIService,
+    private modalService: ModalService) {
   }
 
   ngOnInit() {
@@ -55,6 +57,10 @@ export class ManageProjectComponent implements OnInit {
         this.isError = true;
       }
     });
+
+    setTimeout(function() {
+      this.openModal('custom-modal-1');
+    }.bind(this), 5000);
   }
 
   loadIATIActivities() {
@@ -170,6 +176,14 @@ export class ManageProjectComponent implements OnInit {
     } else {
       this.btnText = 'Add Project';
     }
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
   }
 
 }

@@ -22,7 +22,7 @@
                 <tr *ngFor="let activity of filteredIatiActivities">
                   <td>
                     <span class="float-left">
-                        <b>Organization: </b>{{activity.title}}<br />
+                        <b>Activity Title: </b>{{activity.title}}<br />
                         <b>Description: </b>{{activity.description}}<br />
                         <b>Currency: </b>{{activity.defaultCurrency}}<br />
                     </span>
@@ -90,7 +90,11 @@
           </div>
         </div>
       </div>
-
     </div>
-    
 </div>
+
+<jw-modal id="custom-modal-1">
+    <h1>A Custom Modal!</h1>
+    <p>Home page text: <input type="text" /></p>
+    <button (click)="closeModal('custom-modal-1');">Close</button>
+  </jw-modal>

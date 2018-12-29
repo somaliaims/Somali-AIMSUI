@@ -44,6 +44,7 @@ import { ProjectFunderComponent } from './project-funder/project-funder.componen
 import { ProjectImplementorComponent } from './project-implementor/project-implementor.component';
 import { ProjectDisbursementComponent } from './project-disbursement/project-disbursement.component';
 import { ProjectDocumentComponent } from './project-document/project-document.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { ProjectDocumentComponent } from './project-document/project-document.co
     ProjectImplementorComponent,
     ProjectDisbursementComponent,
     ProjectDocumentComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -99,7 +101,9 @@ import { ProjectDocumentComponent } from './project-document/project-document.co
     BlockUIModule.forRoot()
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { 
+      provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true,
+    }
   ],
   bootstrap: [AppComponent]
 })
