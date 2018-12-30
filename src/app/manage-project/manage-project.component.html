@@ -12,89 +12,120 @@
     </div>
   </div>
 
-    <div class="row">
-
-      <div class="col-md-6 col-sm-12">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-              <h5 class="card-title text-center">Matching IATI Activities</h5>
-              <table class="table table-bordered">
-                <tr *ngFor="let activity of filteredIatiActivities">
-                  <td>
-                    <span class="float-left">
-                        <b>Activity Title: </b>{{activity.title}}<br />
-                        <b>Description: </b>{{activity.description}}<br />
-                        <b>Currency: </b>{{activity.defaultCurrency}}<br />
-                    </span>
-                    <span class="float-right">
-                      <button type="button" id="{{activity.id}}" class="btn btn-success" (click)="selectIATIActivity($event)">Select</button>
-                    </span>
-                  </td>
-                </tr>
-              </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-            <div *ngIf="isError" class="alert alert-danger alert-dismissible">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <strong>Error!</strong> {{errorMessage}}
-            </div>
-            <h5 class="card-title text-center">Project</h5>
-  
-            <form class="form-signin" (ngSubmit)="saveProject()" #projectForm="ngForm">
-  
-              <div class="form-group">
-                <label for="title">Project Title</label>
-                <input type="text" class="form-control" id="title" (change)="filterMatchingActivities($event)" [(ngModel)]="model.title" name="title"
-                  #title="ngModel" required>
-                <div [hidden]="title.valid" class="alert alert-danger">
-                   Project Title is required
-                </div>
-              </div>
-  
-              <div class="form-group">
-                  <label for="title">Start Date</label>
-                <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd"
-                         type="date" name="startDate" [(ngModel)]="model.startDate" ngbDatepicker #s="ngbDatepicker" required>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="form-group">
-                  <label for="title">End Date</label>
-                <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd"
-                        type="date" name="endDate" [(ngModel)]="model.endDate" ngbDatepicker #e="ngbDatepicker" required>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="form-group">
-                  <label for="title">Description</label>
-                  <textarea class="form-control" id="description" [(ngModel)]="model.description" name="description"
-                    #description="ngModel" rows="7" maxlength="300">
-                  </textarea>
-              </div>
-          
-              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
-            </form>
-          </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">Matching IATI Activities</h5>
+          <table class="table table-bordered">
+            <tr *ngFor="let activity of filteredIatiActivities">
+              <td>
+                <span class="float-left">
+                  <b>Activity Title: </b>{{activity.title}}<br />
+                  <b>Description: </b>{{activity.description}}<br />
+                  <b>Currency: </b>{{activity.defaultCurrency}}<br />
+                </span>
+                <span class="float-right">
+                  <button type="button" id="{{activity.id}}" class="btn btn-success" (click)="selectIATIActivity($event)">Select</button>
+                </span>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
+
+    <div class="col-md-6 col-sm-12">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">Project</h5>
+
+          <form class="form-signin" (ngSubmit)="saveProject()" #projectForm="ngForm">
+
+            <div class="form-group">
+              <label for="title">Project Title</label>
+              <input type="text" class="form-control" id="title" (change)="filterMatchingActivities($event)"
+                [(ngModel)]="model.title" name="title" #title="ngModel" required>
+
+              <div *ngIf="isSearchingProjects">
+                <div>Looking for matches...</div>
+              </div>
+              <div *ngIf="isSearchedResults">
+                <div *ngIf="matchingProjects.length > 0" class="margin-top-10">
+                  <button type="button" class="btn btn-success btn-sm" (click)="openMatchingProjects()">{{matchingProjects.length}}
+                    matches found</button>
+                </div>
+              </div>
+              <div [hidden]="title.valid" class="alert alert-danger">
+                Project Title is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="title">Start Date</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="startDate" [(ngModel)]="model.startDate"
+                  ngbDatepicker #s="ngbDatepicker" required>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="title">End Date</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="endDate" [(ngModel)]="model.endDate"
+                  ngbDatepicker #e="ngbDatepicker" required>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="title">Description</label>
+              <textarea class="form-control" id="description" [(ngModel)]="model.description" name="description"
+                #description="ngModel" rows="7" maxlength="300">
+                  </textarea>
+            </div>
+
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<jw-modal id="custom-modal-1">
-    <h1>A Custom Modal!</h1>
-    <p>Home page text: <input type="text" /></p>
-    <button (click)="closeModal('custom-modal-1');">Close</button>
-  </jw-modal>
+<jw-modal id="matching-projects">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Matching Projects</h5>
+            <table class="table table-bordered">
+              <tr *ngFor="let project of matchingProjects">
+                <td>
+                  <span class="float-left">
+                    <b>Project Title: </b>{{project.title}}<br />
+                    <b>Start Date: </b>{{project.startDate}}<br />
+                    <b>End Date: </b>{{project.endDate}}<br />
+                  </span>
+                  <span class="float-right">
+                    <button type="button" id="{{project.id}}" class="btn btn-success" (click)="showProjectProfile($event)">Show Profile</button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <button class="btn btn-primary" (click)="closeModal('matching-projects');">Close</button>
+    </div>
+    
+  </div>
+</jw-modal>

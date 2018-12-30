@@ -28,8 +28,12 @@ export class ManageProjectComponent implements OnInit {
   filteredSubCategories: any = [];
   iatiActivities: any = [];
   filteredIatiActivities: any = [];
+  matchingProjects: any = [];
   requestNo: number = 0;
   isError: boolean = false;
+  isSearchingProjects: boolean = false;
+  isSearchedResults: boolean = false;
+  displayTime: number = 5000;
   startDateModel: NgbDateStruct;
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
 
@@ -57,10 +61,6 @@ export class ManageProjectComponent implements OnInit {
         this.isError = true;
       }
     });
-
-    setTimeout(function() {
-      this.openModal('custom-modal-1');
-    }.bind(this), 5000);
   }
 
   loadIATIActivities() {
@@ -74,6 +74,7 @@ export class ManageProjectComponent implements OnInit {
   }
 
   filterMatchingActivities(e) {
+    this.searchProjects();
     var str = e.target.value;
     if (this.iatiActivities.length > 0) {
       const filterValue = str.toLowerCase();
@@ -169,6 +170,37 @@ export class ManageProjectComponent implements OnInit {
     }
   }
 
+  searchProjects() {
+    if (this.model.title != null) {
+      this.isSearchingProjects = true;
+      
+      this.projectService.filterProjects(this.model.title).subscribe(
+        data => {
+          this.isSearchingProjects = false;
+          if (data && data.length) {
+            this.matchingProjects = data
+            this.isSearchedResults = true;
+          } else {
+            setTimeout(() => {
+              this.isSearchedResults = true;
+            }, this.displayTime);
+          }
+        },
+        error => {
+          this.isSearchingProjects = false;
+        }
+      );
+    } 
+  }
+
+  showProjectProfile(e) {
+    var id = e.target.id;
+    if (id) {
+      this.closeModal('matching-projects');
+      this.router.navigateByUrl('view-project/' + id);
+    }
+  }
+
   resetFormState() {
     this.isBtnDisabled = false;
     if (this.isForEdit) {
@@ -176,6 +208,10 @@ export class ManageProjectComponent implements OnInit {
     } else {
       this.btnText = 'Add Project';
     }
+  }
+
+  openMatchingProjects() {
+    this.openModal('matching-projects');
   }
 
   openModal(id: string) {
