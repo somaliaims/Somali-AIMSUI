@@ -11,7 +11,7 @@
       <li class="nav-item">
         <a class="nav-link active btn-info" data-toggle="tab" >Projects List</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="permissions.canEditProject" class="nav-item">
         <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-project']">Create New</a>
       </li>
     </ul>
@@ -37,21 +37,23 @@
   <div class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
-        <th>Id</th>
         <th>Project Title</th>
         <th>Start Date</th>
         <th>End Date</th>
         <th>Actions</th>
       </tr>
-      <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: 2, currentPage: p }">
-        <td>{{project.id}}</td>
-        <td>{{project.title}}</td>
+      <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+        <td>
+            <a title="View Details" class="text-info" [routerLink]="['/view-project', project.id]">
+              {{project.title}}
+            </a>
+        </td>
         <td>{{project.startDate}}</td>
         <td>{{project.endDate}}</td>
         <td>
           <a title="View Details" (click)="viewDetails(project.id)" class="btn btn-primary"><i class="fa fa-eye color-white"></i></a>
           &nbsp;
-          <a title="Edit" (click)="edit(project.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
+          <a *ngIf="permissions.canEditProject" title="Edit" (click)="edit(project.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
         </td>
       </tr>
     </table>

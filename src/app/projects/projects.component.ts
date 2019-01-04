@@ -3,6 +3,7 @@ import { ProjectService } from '../services/project.service';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-projects',
@@ -16,9 +17,11 @@ export class ProjectsComponent implements OnInit {
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
+  pagingSize: number = Settings.rowsPerPage;
+  permissions: any = {};
 
   constructor(private projectService: ProjectService, private router: Router,
-    private storeService: StoreService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService) { }
 
   ngOnInit() {
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
@@ -30,6 +33,7 @@ export class ProjectsComponent implements OnInit {
       this.showMessage = false;
     }, Settings.displayMessageTime);
 
+    this.permissions = this.securityService.getUserPermissions();
     this.getProjectsList();
   }
 
