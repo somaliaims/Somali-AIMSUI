@@ -8,6 +8,11 @@ import {Settings} from '../config/settings';
 
 export class SecurityHelperService {
   secretKey: string;
+  userTypes: any = {
+    "SuperAdmin": "1",
+    "Manager": "2",
+    "Standard": "3"
+  }
 
   constructor() {
     this.secretKey = Settings.secretKey;
@@ -39,6 +44,21 @@ export class SecurityHelperService {
       return this.decryptText(token);
     }
     return null;
+  }
+
+  getUserPermissions() {
+    var userType = localStorage.getItem("userType");
+    var permissions = {};
+    if (userType == this.userTypes.Standard) {
+      permissions = Settings.permissions.standard;
+    } else if (userType == this.userTypes.SuperAdmin) {
+      permissions = Settings.permissions.superAdmin;
+    } else if (userType == this.userTypes.Manager) {
+      permissions = Settings.permissions.manager;
+    } else {
+      permissions = Settings.permissions.guest;
+    }
+    return permissions;
   }
 
   clearLoginSession() {

@@ -10,9 +10,15 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'aims-ui';
   isLoggedIn: boolean = false;
+  permissions: any = {};
 
   constructor(private securityService: SecurityHelperService, private router: Router) {
     this.isLoggedIn = (localStorage.getItem('isLoggedIn') == 'true');
+  }
+
+  ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    console.log(this.permissions);
   }
 
   logout(e) {
