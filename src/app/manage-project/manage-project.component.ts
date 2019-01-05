@@ -16,6 +16,7 @@ export class ManageProjectComponent implements OnInit {
 
   @Input()
   isForEdit: boolean = false;
+  isIATILoading: boolean = false;
   isBtnDisabled: boolean = false;
   projectId: number = 0;
   counter: number = 0;
@@ -74,28 +75,23 @@ export class ManageProjectComponent implements OnInit {
   }
 
   filterMatchingActivities(e) {
-    //this.searchProjects();
+    this.isIATILoading = true;
     var str = e.target.value;
     this.iatiService.getFilteredIATIActivities(str).subscribe(
       data => {
+        this.isIATILoading = false;
         this.filteredIatiActivities = data;
       },
       error => {
+        this.isIATILoading = false;
         console.log(error);
       }
     )
-    /*if (this.iatiActivities.length > 0) {
-      const filterValue = str.toLowerCase();
-      this.filteredIatiActivities = this.iatiActivities.filter(
-        iati => iati.title.toLowerCase().indexOf(filterValue) !== -1 ||
-          iati.description.toLowerCase().indexOf(filterValue) !== -1
-      );
-    }*/
   }
 
   selectIATIActivity(e) {
     var id = e.target.id;
-    var selectActivity = this.iatiActivities.filter(
+    var selectActivity = this.filteredIatiActivities.filter(
       iati => iati.id == id
     );
 

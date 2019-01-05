@@ -132,8 +132,8 @@ html {
   }
 
   .iati-box {
-    max-height: 600px;
-    overflow-y: visible;
+    max-height: 620px;
+    overflow-y: auto;
   }
 
   /*Css for calendar button on ng-datepicker*/
