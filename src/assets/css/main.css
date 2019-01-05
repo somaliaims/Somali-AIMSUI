@@ -131,6 +131,11 @@ html {
     padding: 10px !important;
   }
 
+  .iati-box {
+    max-height: 600px;
+    overflow-y: visible;
+  }
+
   /*Css for calendar button on ng-datepicker*/
   button.calendar, button.calendar:active {
     width: 2.75rem;

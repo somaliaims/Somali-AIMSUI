@@ -219,7 +219,7 @@ export class UrlHelperService {
     }
 
     getFilteredIATIActivitiesUrl(criteria: string) {
-        return (this.BASE_URL + urlsList.urls.iatiActivities + '/' + criteria);
+        return (this.BASE_URL + urlsList.urls.iatiMatchingActivities + '/' + criteria);
     }
 
     getIATIOrganizationsUrl() {

@@ -17,7 +17,7 @@ export const Settings = {
             canEditSectorType: false,
             canEditSectorCategory: false,
             canEditSectorSubCategory: false,
-            canEditProjects: true,
+            canEditProject: true,
             canDoSMTPSettings: false,
             canDoIATISettings: false
         },
@@ -26,7 +26,7 @@ export const Settings = {
             canEditSectorType: true,
             canEditSectorCategory: true,
             canEditSectorSubCategory: true,
-            canEditProjects: true,
+            canEditProject: true,
             canDoSMTPSettings: true,
             canDoIATISettings: true
         },
@@ -35,7 +35,7 @@ export const Settings = {
             canEditSectorType: true,
             canEditSectorCategory: true,
             canEditSectorSubCategory: true,
-            canEditProjects: true,
+            canEditProject: true,
             canDoSMTPSettings: true,
             canDoIATISettings: true
         },
@@ -44,7 +44,7 @@ export const Settings = {
             canEditSectorType: false,
             canEditSectorCategory: false,
             canEditSectorSubCategory: false,
-            canEditProjects: false,
+            canEditProject: false,
             canDoSMTPSettings: false,
             canDoIATISettings: false
         }

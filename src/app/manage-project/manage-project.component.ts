@@ -74,15 +74,23 @@ export class ManageProjectComponent implements OnInit {
   }
 
   filterMatchingActivities(e) {
-    this.searchProjects();
+    //this.searchProjects();
     var str = e.target.value;
-    if (this.iatiActivities.length > 0) {
+    this.iatiService.getFilteredIATIActivities(str).subscribe(
+      data => {
+        this.filteredIatiActivities = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+    /*if (this.iatiActivities.length > 0) {
       const filterValue = str.toLowerCase();
       this.filteredIatiActivities = this.iatiActivities.filter(
         iati => iati.title.toLowerCase().indexOf(filterValue) !== -1 ||
           iati.description.toLowerCase().indexOf(filterValue) !== -1
       );
-    }
+    }*/
   }
 
   selectIATIActivity(e) {
