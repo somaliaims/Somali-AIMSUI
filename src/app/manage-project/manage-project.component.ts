@@ -100,7 +100,6 @@ export class ManageProjectComponent implements OnInit {
       this.model.title = selectActivity[0].title;
       this.model.description = selectActivity[0].description;
     }
-    
   }
 
   loadProjectData() {

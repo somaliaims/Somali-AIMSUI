@@ -226,6 +226,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.iatiOrganizations);
     }
 
+    getIATIProjectsUrl() {
+        return (this.BASE_URL + urlsList.urls.iatiProjects);
+    }
+
     getProjectTitle(id: string) {
         return (this.BASE_URL + urlsList.urls.getProjectTitle + id);
     }

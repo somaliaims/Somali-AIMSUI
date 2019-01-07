@@ -31,4 +31,10 @@ export class IATIService {
         catchError(this.storeService.handleError<any>('IATI Organizations')));
     }
 
+    getProjects() {
+      var url = this.urlHelper.getIATIProjectsUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('IATI Projects')));
+    }
+
 }
