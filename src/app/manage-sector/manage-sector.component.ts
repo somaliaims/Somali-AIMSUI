@@ -6,6 +6,7 @@ import { Messages } from '../config/messages';
 import { SectorTypeService } from '../services/sector-types.service';
 import { SectorCategoryService } from '../services/sector-category-service';
 import { SectorSubCategoryService } from '../services/sector-subcategory-service';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-manage-sector',
@@ -17,9 +18,10 @@ export class ManageSectorComponent implements OnInit {
   @Input()
   isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
-  orgId: number = 0;
+  sectorId: number = 0;
   btnText: string = 'Add Sector';
   errorMessage: string = '';
+  sectors: any = [];
   sectorTypes: any = [];
   categories: any = [];
   filteredCategories: any = [];
@@ -27,28 +29,34 @@ export class ManageSectorComponent implements OnInit {
   filteredSubCategories: any = [];
   requestNo: number = 0;
   isError: boolean = false;
-  model = { id: 0, sectorName: '', sectorTypeId: null, categoryId: null, subCategoryId: null };
+  model = { id: 0, sectorName: '', parentId: 0 };
+  permissions: any = {};
 
   constructor(private sectorService: SectorService, private route: ActivatedRoute,
     private router: Router, private sectorTypeService: SectorTypeService,
     private categoryService: SectorCategoryService, private subcategoryService: SectorSubCategoryService,
-    private storeService: StoreService) {
+    private storeService: StoreService, private securityService: SecurityHelperService) {
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditSector) {
+      this.router.navigateByUrl('sectors');
+    }
+
+    this.getSectors();
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
         this.btnText = 'Edit Sector';
         this.isForEdit = true;
-        this.orgId = id;
-      }
+        this.sectorId = id;
+        this.loadSectorData();
+      } 
     }
-
-    this.getSectorTypes();
-    this.getCategories();
-    this.getSubCategories();
-
+    //this.getSectorTypes();
+    //this.getCategories();
+    //this.getSubCategories();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
@@ -77,25 +85,23 @@ export class ManageSectorComponent implements OnInit {
     )
   }
 
+  getSectors() {
+    this.sectorService.getSectorsList().subscribe(
+      data => {
+        this.sectors = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
   loadSectorData() {
-    this.sectorService.getSector(this.orgId.toString()).subscribe(
+    this.sectorService.getSector(this.sectorId.toString()).subscribe(
       data => {
         this.model.id = data.id;
-        this.model.sectorTypeId = data.sectorTypeId;
+        this.model.parentId = data.parentId;
         this.model.sectorName = data.sectorName;
-
-        //Filter categories for the selected sector type
-        this.filteredCategories = this.categories.filter(function (category) {
-          return category.id == data.categoryId;
-        });
-        this.model.categoryId = data.categoryId;
-
-        //Filter sub-categories for the selected category
-        this.filteredSubCategories = this.subCategories.filter(function (subCategory) {
-          return subCategory.id == data.subCategoryId;
-        });
-        
-        this.model.subCategoryId = data.subCategoryId;
       },
       error => {
         console.log("Request Failed: ", error);
@@ -132,10 +138,8 @@ export class ManageSectorComponent implements OnInit {
 
   saveSector() {
     var model = {
-      SectorTypeId: this.model.sectorTypeId,
-      CategoryId: this.model.categoryId,
-      SubCategoryId: this.model.subCategoryId,
       SectorName: this.model.sectorName,
+      ParentId: this.model.parentId,
     };
 
     this.isBtnDisabled = true;

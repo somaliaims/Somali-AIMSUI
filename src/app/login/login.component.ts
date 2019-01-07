@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit {
     this.requestNo = this.storeService.getNewRequestNumber();
 
     this.userService.authenticateUser(this.model.Email, this.model.Password).subscribe( data => {
-      console.log(data);
       if (data) {
         if (data.token) {
           this.securityService.storeLoginData(data);

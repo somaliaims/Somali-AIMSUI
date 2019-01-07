@@ -7,7 +7,6 @@ import { catchError } from 'rxjs/operators';
 import { RegistrationModel } from '../models/registration';
 import { httpOptions } from '../config/httpoptions';
 import { StoreService } from './store-service';
-import { Settings } from '../config/settings';
 
 @Injectable({
     providedIn: 'root'
@@ -54,16 +53,5 @@ export class UserService {
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('User registration')));
-    }
-
-    getUserPermissions(userType: string) {
-        var userType = localStorage.getItem("userType");
-        var permissions = {};
-        if (userType == 'standard') {
-            permissions = Settings.permissions.standard;
-        } else if (userType == 'superAdmin') {
-            permissions = Settings.permissions.superAdmin;
-        }
-        return permissions;
     }
 }

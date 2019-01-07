@@ -18,7 +18,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
-    console.log(this.permissions);
+    //console.log(this.permissions);
   }
 
   logout(e) {

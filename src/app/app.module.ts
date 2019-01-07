@@ -8,6 +8,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxPaginationModule } from 'ngx-pagination';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import { BlockUIModule } from 'ng-block-ui';
+import { ChartsModule } from 'ng2-charts';
 
 import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
@@ -98,7 +99,8 @@ import { ModalComponent } from './modal/modal.component';
     AngularFontAwesomeModule,
     NgxPaginationModule,
     NgbDatepickerModule,
-    BlockUIModule.forRoot()
+    BlockUIModule.forRoot(),
+    ChartsModule
   ],
   providers: [
     { 

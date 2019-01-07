@@ -62,7 +62,10 @@ export class SecurityHelperService {
   }
 
   clearLoginSession() {
-    localStorage.clear();
+    localStorage.setItem('token', null);
+    localStorage.setItem('displayName', null);
+    localStorage.setItem('organizationId', null);
+    localStorage.setItem('userType', null);
     localStorage.setItem('isLoggedIn', false.toString());
   }
   
