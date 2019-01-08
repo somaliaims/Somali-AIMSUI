@@ -31,6 +31,7 @@ import { ProjectFunderComponent } from './project-funder/project-funder.componen
 import { ProjectImplementorComponent } from './project-implementor/project-implementor.component';
 import { ProjectDisbursementComponent } from './project-disbursement/project-disbursement.component';
 import { ProjectDocumentComponent } from './project-document/project-document.component';
+import { NewProjectComponent } from './new-project/new-project.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -67,6 +68,7 @@ export const routes: Routes = [
   { path: 'projects', component: ProjectsComponent },
   { path: 'manage-project/:{id}', component: ManageProjectComponent, data: { isForEdit: true } },
   { path: 'manage-project', component: ManageProjectComponent },
+  { path: 'new-project', component: NewProjectComponent},
   { path: 'view-project/:{id}', component: ViewProjectComponent },
   { path: 'project-location/:{id}', component: ProjectLocationComponent },
   { path: 'project-sector/:{id}', component: ProjectSectorComponent },

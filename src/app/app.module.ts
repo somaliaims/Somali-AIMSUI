@@ -46,6 +46,7 @@ import { ProjectImplementorComponent } from './project-implementor/project-imple
 import { ProjectDisbursementComponent } from './project-disbursement/project-disbursement.component';
 import { ProjectDocumentComponent } from './project-document/project-document.component';
 import { ModalComponent } from './modal/modal.component';
+import { NewProjectComponent } from './new-project/new-project.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { ModalComponent } from './modal/modal.component';
     ProjectDisbursementComponent,
     ProjectDocumentComponent,
     ModalComponent,
+    NewProjectComponent,
   ],
   imports: [
     BrowserModule,

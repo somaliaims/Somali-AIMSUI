@@ -136,6 +136,11 @@ html {
     overflow-y: auto;
   }
 
+  .disabledDiv {
+    pointer-events: none;
+    opacity: 0.4;   
+  }
+
   /*Css for calendar button on ng-datepicker*/
   button.calendar, button.calendar:active {
     width: 2.75rem;
