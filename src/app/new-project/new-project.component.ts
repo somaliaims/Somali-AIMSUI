@@ -28,12 +28,14 @@ export class NewProjectComponent implements OnInit {
   iatiProjects: any = [];
   filteredIatiProjects: any = [];
   matchingProjects: any = [];
+  selectedProjects: any = [];
   requestNo: number = 0;
   isError: boolean = false;
   isSearchingProjects: boolean = false;
   isSearchedResults: boolean = false;
   displayTime: number = 5000;
   startDateModel: NgbDateStruct;
+  projectId: number = 0;
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
@@ -85,15 +87,31 @@ export class NewProjectComponent implements OnInit {
     this.isIATILoading = false;
   }
 
-  selectIATIActivity(e) {
+  selectIATIProject(e) {
     var id = e.target.id;
-    var selectActivity = this.filteredIatiProjects.filter(
+    var selectedProject = this.filteredIatiProjects.filter(
       iati => iati.id == id
     );
 
-    if (selectActivity.length && selectActivity.length > 0) {
-      this.model.title = selectActivity[0].title;
-      this.model.description = selectActivity[0].description;
+    if (selectedProject.length && selectedProject.length > 0) {
+      var iatiProject = {id: this.projectId, title: '', description: '', type: 'IATI'};
+      iatiProject.title = selectedProject[0].title;
+      iatiProject.description = selectedProject[0].description;
+      this.addProject(iatiProject);
+    }
+  }
+
+  selectAIMSProject(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.filteredIatiProjects.filter(
+      iati => iati.id == id
+    );
+
+    if (selectedProject.length && selectedProject.length > 0) {
+      var iatiProject = {id: this.projectId, title: '', description: '', type: 'IATI'};
+      iatiProject.title = selectedProject[0].title;
+      iatiProject.description = selectedProject[0].description;
+      this.addProject(iatiProject);
     }
   }
 
@@ -144,6 +162,29 @@ export class NewProjectComponent implements OnInit {
       this.selectedProjectDescription = project[0].description;
     }
     this.openModal('project-description');
+  }
+
+  addProject(project) {
+    this.selectedProjects.push(project);
+  }
+
+  showSelectedProjectDescription(e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.selectedProjects.filter(p => p.id == id);
+
+    if (project.length > 0) {
+      this.selectedProjectDescription = project[0].description;
+    }
+    this.openModal('project-description');
+  }
+
+  removeSelectedProject(e) {
+    var id = e.target.id;
+    
+  }
+
+  removeProject(id) {
+    this.selectedProjects = this.selectedProjects.filter(p => p.id != id);
   }
 
   openModal(id: string) {
