@@ -74,10 +74,15 @@ export class NewProjectComponent implements OnInit {
   }
 
   filterMatchingProjects(e) {
+    this.searchProjects();
     this.isIATILoading = true;
     var str = e.target.value.toLowerCase();
-    this.filteredIatiProjects =  this.iatiProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1 ||
-    project.description.indexOf(str) != -1);
+    if (this.iatiProjects.length > 0) {
+      this.filteredIatiProjects = this.iatiProjects.filter(project =>
+        project.title.toLowerCase().indexOf(str) != -1);
+      
+    }
+    this.isIATILoading = false;
   }
 
   selectIATIActivity(e) {
@@ -101,10 +106,10 @@ export class NewProjectComponent implements OnInit {
           this.isSearchingProjects = false;
           if (data && data.length) {
             this.matchingProjects = data
-            this.isSearchedResults = true;
+            this.isSearchingProjects = false;
           } else {
             setTimeout(() => {
-              this.isSearchedResults = true;
+              this.isSearchingProjects = false;
             }, this.displayTime);
           }
         },
@@ -122,11 +127,19 @@ export class NewProjectComponent implements OnInit {
       this.router.navigateByUrl('view-project/' + id);
     }
   }
-  
 
   showProjectDescription(e) {
     var id = e.target.id;
     var project = this.filteredIatiProjects.filter(project => project.id == id);
+    if (project && project.length) {
+      this.selectedProjectDescription = project[0].description;
+    }
+    this.openModal('project-description');
+  }
+
+  showAIMSProjectDescription(e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.matchingProjects.filter(project => project.id == id);
     if (project && project.length) {
       this.selectedProjectDescription = project[0].description;
     }
