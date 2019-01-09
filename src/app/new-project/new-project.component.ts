@@ -35,7 +35,7 @@ export class NewProjectComponent implements OnInit {
   isSearchedResults: boolean = false;
   displayTime: number = 5000;
   startDateModel: NgbDateStruct;
-  projectId: number = 0;
+  projectIdCounter: number = 0;
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
@@ -94,7 +94,8 @@ export class NewProjectComponent implements OnInit {
     );
 
     if (selectedProject.length && selectedProject.length > 0) {
-      var iatiProject = {id: this.projectId, title: '', description: '', type: 'IATI'};
+      ++this.projectIdCounter;
+      var iatiProject = {id: this.projectIdCounter, title: '', description: '', type: 'IATI'};
       iatiProject.title = selectedProject[0].title;
       iatiProject.description = selectedProject[0].description;
       this.addProject(iatiProject);
@@ -103,12 +104,13 @@ export class NewProjectComponent implements OnInit {
 
   selectAIMSProject(e) {
     var id = e.target.id.split('-')[1];
-    var selectedProject = this.filteredIatiProjects.filter(
+    var selectedProject = this.matchingProjects.filter(
       iati => iati.id == id
     );
 
     if (selectedProject.length && selectedProject.length > 0) {
-      var iatiProject = {id: this.projectId, title: '', description: '', type: 'IATI'};
+      ++this.projectIdCounter;
+      var iatiProject = {id: this.projectIdCounter, title: '', description: '', type: 'IATI'};
       iatiProject.title = selectedProject[0].title;
       iatiProject.description = selectedProject[0].description;
       this.addProject(iatiProject);
@@ -180,10 +182,6 @@ export class NewProjectComponent implements OnInit {
 
   removeSelectedProject(e) {
     var id = e.target.id;
-    
-  }
-
-  removeProject(id) {
     this.selectedProjects = this.selectedProjects.filter(p => p.id != id);
   }
 
