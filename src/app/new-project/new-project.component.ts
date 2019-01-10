@@ -193,4 +193,8 @@ export class NewProjectComponent implements OnInit {
     this.modalService.close(id);
   }
 
+  proceedToDataEntry() {
+    this.storeService.newDataProjects(this.selectedProjects);
+  }
+
 }

@@ -5,7 +5,7 @@ import { UserRegistrationComponent } from './user-registration/user-registration
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { ReportsComponent } from './reports/reports.component';
+import { ReportsPanelComponent } from './reports-panel/reports-panel.component';
 import { ManagementComponent } from './management/management.component';
 import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -32,6 +32,7 @@ import { ProjectImplementorComponent } from './project-implementor/project-imple
 import { ProjectDisbursementComponent } from './project-disbursement/project-disbursement.component';
 import { ProjectDocumentComponent } from './project-document/project-document.component';
 import { NewProjectComponent } from './new-project/new-project.component';
+import { ProjectEntryComponent } from './project-entry/project-entry.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -43,7 +44,7 @@ export const routes: Routes = [
   { path: 'user-password-change', component: UserPasswordChangeComponent },
   { path: 'user-password-forgot', component: UserPasswordForgotComponent },
   { path: 'projects', component: ProjectsComponent },
-  { path: 'reports', component: ReportsComponent},
+  { path: 'reports-panel', component: ReportsPanelComponent},
   { path: 'management', component: ManagementComponent },
   { path: 'data-entry', component: DataEntryComponent },
   { path: 'notification', component: NotificationComponent },
@@ -75,7 +76,8 @@ export const routes: Routes = [
   { path: 'project-funder/:{id}', component: ProjectFunderComponent },
   { path: 'project-implementor/:{id}', component: ProjectImplementorComponent },
   { path: 'project-disbursement/:{id}', component: ProjectDisbursementComponent },
-  { path: 'project-document/:{id}', component: ProjectDocumentComponent }
+  { path: 'project-document/:{id}', component: ProjectDocumentComponent },
+  { path: 'project-entry', component: ProjectEntryComponent}
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

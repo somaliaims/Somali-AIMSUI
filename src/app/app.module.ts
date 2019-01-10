@@ -19,7 +19,7 @@ import { FocusDirectiveDirective } from './directives/focus-directive.directive'
 import { HomeComponent } from './home/home.component';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { ProjectsComponent } from './projects/projects.component';
-import { ReportsComponent } from './reports/reports.component';
+import { ReportsPanelComponent } from './reports-panel/reports-panel.component';
 import { ManagementComponent } from './management/management.component';
 import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -47,6 +47,8 @@ import { ProjectDisbursementComponent } from './project-disbursement/project-dis
 import { ProjectDocumentComponent } from './project-document/project-document.component';
 import { ModalComponent } from './modal/modal.component';
 import { NewProjectComponent } from './new-project/new-project.component';
+import { ProjectReportComponent } from './report-components/project-report/project-report.component';
+import { ProjectEntryComponent } from './project-entry/project-entry.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,7 @@ import { NewProjectComponent } from './new-project/new-project.component';
     FocusDirectiveDirective,
     HomeComponent,
     ProjectsComponent,
-    ReportsComponent,
+    ReportsPanelComponent,
     ManagementComponent,
     DataEntryComponent,
     NotificationComponent,
@@ -85,6 +87,8 @@ import { NewProjectComponent } from './new-project/new-project.component';
     ProjectDocumentComponent,
     ModalComponent,
     NewProjectComponent,
+    ProjectReportComponent,
+    ProjectEntryComponent,
   ],
   imports: [
     BrowserModule,

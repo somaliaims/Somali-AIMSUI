@@ -1,0 +1,70 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/projects']">Projects List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">New Project</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-12 col-sm-12">
+    <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Error!</strong> {{errorMessage}}
+    </div>
+    <form class="form-signin margin-top-10" #projectForm="ngForm">
+      <div class="form-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+        <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (change)="filterMatchingProjects($event)"
+          [(ngModel)]="model.title" name="title" #title="ngModel" required>
+      </div>
+    </form>
+  </div>
+
+  <div class="row">
+    <!--IATI Activity Box-->
+    <div class="col-md-4 col-sm-6">
+      <div class="card card-signin my-5">
+        <div class="card-body iati-box">
+          <h5 class="card-title text-center">Projects from IATI</h5>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!--Projects box from AIMS-->
+  <div class="col-md-4 col-sm-6">
+    <div class="card card-signin my-5">
+      <div class="card-body iati-box">
+        <h5 class="card-title text-center">Matches from AIMS</h5>
+        <div *ngIf="isSearchingProjects">
+          Wait looking for matches from AIMS...
+        </div>
+        <div *ngIf="!isSearchingProjects">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Selected projects box-->
+  <div class="col-md-4 col-sm-6">
+      <div class="card card-signin my-5">
+        <div class="card-body iati-box">
+          <h5 class="card-title text-center">Selected Projects</h5>
+          <div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!--End of Boxes row-->
+
+</div>

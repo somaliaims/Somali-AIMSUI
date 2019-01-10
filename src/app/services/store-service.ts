@@ -18,7 +18,9 @@ export class StoreService {
 
   private requestTrack = new BehaviorSubject<RequestModel>(null);
   currentRequestTrack = this.requestTrack.asObservable();
-  
+
+  private dataProjects = new BehaviorSubject<any>(null);
+  currentDataProjects = this.dataProjects.asObservable();
 
   constructor() { }
 
@@ -36,6 +38,10 @@ export class StoreService {
 
   newRequestNumber(requestNo: number) {
     this.requestNumber = requestNo;
+  }
+
+  newDataProjects(dataProjects: any) {
+    this.dataProjects.next(dataProjects);
   }
 
   getNewRequestNumber() {
