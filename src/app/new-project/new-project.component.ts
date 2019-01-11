@@ -52,6 +52,7 @@ export class NewProjectComponent implements OnInit {
         this.isError = true;
       }
     });
+    localStorage.setItem('selected-projects', null);
   }
 
   loadIATIProjects() {
@@ -110,7 +111,7 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var iatiProject = {id: this.projectIdCounter, title: '', description: '', type: 'IATI'};
+      var iatiProject = {id: this.projectIdCounter, title: '', description: '', type: 'AIMS'};
       iatiProject.title = selectedProject[0].title;
       iatiProject.description = selectedProject[0].description;
       this.addProject(iatiProject);
@@ -194,7 +195,9 @@ export class NewProjectComponent implements OnInit {
   }
 
   proceedToDataEntry() {
-    this.storeService.newDataProjects(this.selectedProjects);
+    var projects = JSON.stringify(this.selectedProjects);
+    localStorage.setItem("selected-projects", projects);
+    this.router.navigateByUrl('project-entry');
   }
 
 }

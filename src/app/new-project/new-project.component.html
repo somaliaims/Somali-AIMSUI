@@ -18,9 +18,12 @@
       <strong>Error!</strong> {{errorMessage}}
     </div>
     <form class="form-signin margin-top-10" #projectForm="ngForm">
-      <div class="form-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+      <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
         <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (change)="filterMatchingProjects($event)"
           [(ngModel)]="model.title" name="title" #title="ngModel" required>
+        <span class="input-group-btn">
+          <button class="btn btn-info" (click)="proceedToDataEntry()">Proceed</button>
+        </span>
       </div>
     </form>
   </div>

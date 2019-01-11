@@ -14,16 +14,23 @@ export class ProjectEntryComponent implements OnInit {
   constructor(private storeService: StoreService) { }
 
   ngOnInit() {
+    var projects = localStorage.getItem('selected-projects');
+    if (projects)
+    {
+      var parsedProjects = JSON.parse(projects);
+      this.selectedProjects = parsedProjects;
+    }
+
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
         this.isError = true;
       }
     });
-
-    this.storeService.currentDataProjects.subscribe(data => {
-      this.selectedProjects = data.dataProjects;
-    });
+    
+    /*this.storeService.currentDataProjects.subscribe(data => {
+      this.selectedProjects = data;
+    });*/
   }
 
 }
