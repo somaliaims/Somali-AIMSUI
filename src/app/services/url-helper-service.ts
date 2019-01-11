@@ -234,4 +234,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getProjectTitle + id);
     }
 
+    extractProjectsByIds() {
+        return (this.BASE_URL + urlsList.urls.iatiProjectsByIds);
+    }
+
 }

@@ -96,9 +96,10 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var iatiProject = {id: this.projectIdCounter, title: '', description: '', type: 'IATI'};
+      var iatiProject = {id: this.projectIdCounter, title: '', identifier: '', description: '', type: 'IATI'};
       iatiProject.title = selectedProject[0].title;
       iatiProject.description = selectedProject[0].description;
+      iatiProject.identifier = selectedProject[0].iatiIdentifier;
       this.addProject(iatiProject);
     }
   }
@@ -111,7 +112,7 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var iatiProject = {id: this.projectIdCounter, title: '', description: '', type: 'AIMS'};
+      var iatiProject = {id: this.projectIdCounter, identifier: '', title: '', description: '', type: 'AIMS'};
       iatiProject.title = selectedProject[0].title;
       iatiProject.description = selectedProject[0].description;
       this.addProject(iatiProject);

@@ -37,4 +37,11 @@ export class IATIService {
         catchError(this.storeService.handleError<any>('IATI Projects')));
     }
 
+    extractProjectsByIds(model: any) {
+      var url = this.urlHelper.extractProjectsByIds();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('IATI Projects by Ids')));
+    }
+
 }

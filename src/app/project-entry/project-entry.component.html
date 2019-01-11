@@ -7,7 +7,22 @@
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">Project Selection</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">New Project Entry</a>
+          <a href="#" class="nav-link active btn-info" (click)="showDataEntry()" data-toggle="tab">Project Entry</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link active btn-info" (click)="showSectors()" data-toggle="tab">Sectors</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link active btn-info" (click)="showLocations()" data-toggle="tab">Locations</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link active btn-info" (click)="showDocuments()" data-toggle="tab">Documents</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link active btn-info" (click)="showFunders()" data-toggle="tab">Funders</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link active btn-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
         </li>
       </ul>
     </div>
@@ -20,8 +35,9 @@
     </div>
   </div>
 
-  <div class="row">
-    <!--IATI Activity Box-->
+  <!--Data entry tab for projects-->
+  <div *ngIf="currentTab == 'project'" class="row">
+  
     <div class="col-md-6 col-sm-6">
       <div class="card card-signin my-5">
         <div class="card-body iati-box">
@@ -37,18 +53,48 @@
         </div>
       </div>
     </div>
+    <!--Data entry box-->
+    <div class="col-md-6 col-sm-6">
+      <div class="card card-signin my-5">
+        <div class="card-body iati-box">
+          <h5 class="card-title text-center">New Project</h5>
   
-  <!--Data entry box-->
-  <div class="col-md-6 col-sm-6">
-    <div class="card card-signin my-5">
-      <div class="card-body iati-box">
-        <h5 class="card-title text-center">New Project</h5>
-        
+        </div>
       </div>
     </div>
+  
   </div>
+  <!--End of data entry tab-->
 
-</div>
-<!--End of Boxes row-->
+  <!--Sectors tab for projects-->
+  <div *ngIf="currentTab == 'sector'" class="row">
+  
+      <div class="col-md-6 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Sectors</h5>
+            <table class="table table-bordered">
+              <tr *ngFor="let project of selectedProjects">
+                <td>
+                  <b>Project Title: </b>{{project.title}}<br />
+                  <b>From: </b>{{project.type}}<br />
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!--Data entry box-->
+      <div class="col-md-6 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Manage Sectors</h5>
+    
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    <!--End of data entry tab-->
 
 </div>
