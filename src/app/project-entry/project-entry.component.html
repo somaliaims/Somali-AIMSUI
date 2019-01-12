@@ -7,41 +7,163 @@
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">Project Selection</a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link active btn-info" (click)="showDataEntry()" data-toggle="tab">Project Entry</a>
+          <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}"  href="#" class="nav-link text-info" (click)="showDataEntry()" data-toggle="tab">Project Entry</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link active btn-info" (click)="showSectors()" data-toggle="tab">Sectors</a>
+          <a [ngClass]="{'btn-info': currentTab == 'sector', 'text-info': currentTab != 'sector'}" href="#" class="nav-link text-info" (click)="showSectors()" data-toggle="tab">Sectors</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link active btn-info" (click)="showLocations()" data-toggle="tab">Locations</a>
+          <a [ngClass]="{'btn-info': currentTab == 'location', 'text-info': currentTab != 'location'}" href="#" class="nav-link text-info" (click)="showLocations()" data-toggle="tab">Locations</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link active btn-info" (click)="showDocuments()" data-toggle="tab">Documents</a>
+          <a [ngClass]="{'btn-info': currentTab == 'document', 'text-info': currentTab != 'document'}" href="#" class="nav-link text-info" (click)="showDocuments()" data-toggle="tab">Documents</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link active btn-info" (click)="showFunders()" data-toggle="tab">Funders</a>
+          <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#" class="nav-link text-info" (click)="showFunders()" data-toggle="tab">Funders</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link active btn-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
+          <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#" class="nav-link text-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
         </li>
       </ul>
     </div>
   </div>
 
-  <div class="col-md-12 col-sm-12">
+  <div class="row text-center">
     <div *ngIf="isError" class="alert alert-danger alert-dismissible">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <strong>Error!</strong> {{errorMessage}}
     </div>
   </div>
 
+  <div class="row text-center">
+    <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Information!</strong> {{infoMessage}}
+    </div>
+  </div>
+
   <!--Data entry tab for projects-->
   <div *ngIf="currentTab == 'project'" class="row">
-  
+
+    <div class="col-md-6">
+
+      <div class="col-md-12 col-sm-12">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Selected AIMS Projects</h5>
+            <table class="table table-bordered">
+              <tr *ngFor="let project of aimsProjects">
+                <td>
+                  <span class="float-left">
+                    <b>Project Title: </b>{{project.title}}<br />
+                    <b>Description: </b>{{project.description}}<br />
+                  </span>
+                  <span class="float-right">
+                    <button id="aims-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectAIMS($event)">Enter</button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-sm-12">
+          <div class="card card-signin my-5">
+            <div class="card-body iati-box">
+              <h5 class="card-title text-center">Selected IATI Projects</h5>
+              <table class="table table-bordered">
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <span class="float-left">
+                      <b>Project Title: </b>{{project.title}}<br />
+                      <b>Description: </b>{{project.description}}<br />
+                    </span>
+                    <span class="float-right">
+                      <button id="iati-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectIATI($event)">Enter</button>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+      <!--Data entry box-->
+      <div class="col-md-12 col-sm-12">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">New Project</h5>
+            <form class="form-signin" (ngSubmit)="saveProject()" #projectForm="ngForm">
+
+              <div class="form-group">
+                <label for="title">Project Title</label>
+                <input type="text" class="form-control" id="title" [(ngModel)]="model.title" name="title" #title="ngModel" required>
+
+                <div *ngIf="isSearchingProjects">
+                  <div>Looking for matches...</div>
+                </div>
+                <div *ngIf="isSearchedResults">
+                  <div *ngIf="matchingProjects.length > 0" class="margin-top-10">
+                    <button type="button" class="btn btn-success btn-sm" (click)="openMatchingProjects()">{{matchingProjects.length}}
+                      matches found</button>
+                  </div>
+                </div>
+                <div [hidden]="title.valid" class="alert alert-danger">
+                  Project Title is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="title">Start Date</label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="startDate" [(ngModel)]="model.startDate"
+                    ngbDatepicker #s="ngbDatepicker" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="title">End Date</label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="endDate" [(ngModel)]="model.endDate"
+                    ngbDatepicker #e="ngbDatepicker" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="title">Description</label>
+                <textarea class="form-control" id="description" [(ngModel)]="model.description" name="description"
+                  #description="ngModel" rows="7" maxlength="800">
+                      </textarea>
+              </div>
+
+              <button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectText}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <!--End of data entry tab-->
+
+  <!--Sectors tab for projects-->
+  <div *ngIf="currentTab == 'sector'" class="row">
+
     <div class="col-md-6 col-sm-6">
       <div class="card card-signin my-5">
         <div class="card-body iati-box">
-          <h5 class="card-title text-center">Selected Projects</h5>
+          <h5 class="card-title text-center">Sectors</h5>
           <table class="table table-bordered">
             <tr *ngFor="let project of selectedProjects">
               <td>
@@ -57,44 +179,13 @@
     <div class="col-md-6 col-sm-6">
       <div class="card card-signin my-5">
         <div class="card-body iati-box">
-          <h5 class="card-title text-center">New Project</h5>
-  
+          <h5 class="card-title text-center">Manage Sectors</h5>
+
         </div>
       </div>
     </div>
-  
+
   </div>
   <!--End of data entry tab-->
-
-  <!--Sectors tab for projects-->
-  <div *ngIf="currentTab == 'sector'" class="row">
-  
-      <div class="col-md-6 col-sm-6">
-        <div class="card card-signin my-5">
-          <div class="card-body iati-box">
-            <h5 class="card-title text-center">Sectors</h5>
-            <table class="table table-bordered">
-              <tr *ngFor="let project of selectedProjects">
-                <td>
-                  <b>Project Title: </b>{{project.title}}<br />
-                  <b>From: </b>{{project.type}}<br />
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-      <!--Data entry box-->
-      <div class="col-md-6 col-sm-6">
-        <div class="card card-signin my-5">
-          <div class="card-body iati-box">
-            <h5 class="card-title text-center">Manage Sectors</h5>
-    
-          </div>
-        </div>
-      </div>
-    
-    </div>
-    <!--End of data entry tab-->
 
 </div>

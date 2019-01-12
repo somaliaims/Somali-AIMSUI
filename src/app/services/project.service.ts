@@ -173,4 +173,11 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('Delete Project Document')));
     }
 
+    extractProjectsByIds(model: any) {
+      var url = this.urlHelper.extractAIMSProjectsByIds();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Projects By Ids')));
+    }
+
 }

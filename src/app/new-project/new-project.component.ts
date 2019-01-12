@@ -112,10 +112,11 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var iatiProject = {id: this.projectIdCounter, identifier: '', title: '', description: '', type: 'AIMS'};
-      iatiProject.title = selectedProject[0].title;
-      iatiProject.description = selectedProject[0].description;
-      this.addProject(iatiProject);
+      var aimsProject = {id: this.projectIdCounter, identifier: '', title: '', description: '', type: 'AIMS'};
+      aimsProject.title = selectedProject[0].title;
+      aimsProject.description = selectedProject[0].description;
+      aimsProject.identifier = selectedProject[0].id;
+      this.addProject(aimsProject);
     }
   }
 
