@@ -7,22 +7,28 @@
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">Project Selection</a>
         </li>
         <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}"  href="#" class="nav-link text-info" (click)="showDataEntry()" data-toggle="tab">Project Entry</a>
+          <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#" class="nav-link text-info"
+            (click)="showProjects()" data-toggle="tab">Project Entry</a>
         </li>
         <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'sector', 'text-info': currentTab != 'sector'}" href="#" class="nav-link text-info" (click)="showSectors()" data-toggle="tab">Sectors</a>
+          <a [ngClass]="{'btn-info': currentTab == 'sector', 'text-info': currentTab != 'sector'}" href="#" class="nav-link text-info"
+            (click)="showSectors()" data-toggle="tab">Sectors</a>
         </li>
         <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'location', 'text-info': currentTab != 'location'}" href="#" class="nav-link text-info" (click)="showLocations()" data-toggle="tab">Locations</a>
+          <a [ngClass]="{'btn-info': currentTab == 'location', 'text-info': currentTab != 'location'}" href="#" class="nav-link text-info"
+            (click)="showLocations()" data-toggle="tab">Locations</a>
         </li>
         <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'document', 'text-info': currentTab != 'document'}" href="#" class="nav-link text-info" (click)="showDocuments()" data-toggle="tab">Documents</a>
+          <a [ngClass]="{'btn-info': currentTab == 'document', 'text-info': currentTab != 'document'}" href="#" class="nav-link text-info"
+            (click)="showDocuments()" data-toggle="tab">Documents</a>
         </li>
         <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#" class="nav-link text-info" (click)="showFunders()" data-toggle="tab">Funders</a>
+          <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#" class="nav-link text-info"
+            (click)="showFunders()" data-toggle="tab">Funders</a>
         </li>
         <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#" class="nav-link text-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
+          <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#"
+            class="nav-link text-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
         </li>
       </ul>
     </div>
@@ -69,25 +75,25 @@
       </div>
 
       <div class="col-md-12 col-sm-12">
-          <div class="card card-signin my-5">
-            <div class="card-body iati-box">
-              <h5 class="card-title text-center">Selected IATI Projects</h5>
-              <table class="table table-bordered">
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <span class="float-left">
-                      <b>Project Title: </b>{{project.title}}<br />
-                      <b>Description: </b>{{project.description}}<br />
-                    </span>
-                    <span class="float-right">
-                      <button id="iati-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectIATI($event)">Enter</button>
-                    </span>
-                  </td>
-                </tr>
-              </table>
-            </div>
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Selected IATI Projects</h5>
+            <table class="table table-bordered">
+              <tr *ngFor="let project of iatiProjects">
+                <td>
+                  <span class="float-left">
+                    <b>Project Title: </b>{{project.title}}<br />
+                    <b>Description: </b>{{project.description}}<br />
+                  </span>
+                  <span class="float-right">
+                    <button id="iati-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectIATI($event)">Enter</button>
+                  </span>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
+      </div>
 
     </div>
 
@@ -101,7 +107,8 @@
 
               <div class="form-group">
                 <label for="title">Project Title</label>
-                <input type="text" class="form-control" id="title" [(ngModel)]="model.title" name="title" #title="ngModel" required>
+                <input type="text" class="form-control" id="title" [(ngModel)]="model.title" name="title" #title="ngModel"
+                  required>
 
                 <div *ngIf="isSearchingProjects">
                   <div>Looking for matches...</div>
@@ -161,21 +168,78 @@
   <div *ngIf="currentTab == 'sector'" class="row">
 
     <div class="col-md-6 col-sm-6">
-      <div class="card card-signin my-5">
-        <div class="card-body iati-box">
-          <h5 class="card-title text-center">Sectors</h5>
-          <table class="table table-bordered">
-            <tr *ngFor="let project of selectedProjects">
-              <td>
-                <b>Project Title: </b>{{project.title}}<br />
-                <b>From: </b>{{project.type}}<br />
-              </td>
-            </tr>
-          </table>
+
+      <div class="col-md-12">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Sectors from AIMS</h5>
+            <table class="table table-bordered">
+              <tr *ngFor="let project of aimsProjects">
+                <td>
+                  <b>Project Title: </b>{{project.title}}<br />
+                  <table *ngIf="project.sectors.length > 0" class="table table-bordered">
+                    <tr>
+                      <th>Sector</th>
+                      <th>Funds %</th>
+                      <th>Action</th>
+                    </tr>
+                    <tr *ngFor="let sector of project.sectors">
+                      <td>
+                        {{sector.sectorName}}
+                      </td>
+                      <td>
+                        {{sector.fundPercentage}}
+                      </td>
+                      <td>
+                        <button id="asector-{{project.id}}-{{sector.id}}" (click)="selectIATISector($event)" class="btn btn-success btn-sm">Enter</button>
+                      </td>
+                    </tr>
+                  </table>
+                  <span *ngIf="project.sectors.length == 0">No sectors avaialble</span>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
+
+      <div class="col-md-12">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Sectors from IATI</h5>
+            <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+              <tr *ngFor="let project of iatiProjects">
+                <td>
+                  <b>Project: </b>{{project.title}}<br />
+                  <table *ngIf="project.sectors.length > 0" class="table table-bordered">
+                    <tr>
+                      <th>Sector</th>
+                      <th>Funds %</th>
+                      <th>Action</th>
+                    </tr>
+                    <tr *ngFor="let sector of project.sectors">
+                      <td>
+                        {{sector.sectorName}}
+                      </td>
+                      <td>
+                        {{sector.fundPercentage}}
+                      </td>
+                      <td>
+                        <button id="isector-{{project.id}}-{{sector.code}}" (click)="selectIATISector($event)" class="btn btn-success btn-sm">Enter</button>
+                      </td>
+                    </tr>
+                  </table>
+                  <span *ngIf="project.sectors.length == 0">No sectors avaialble</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <!--Data entry box-->
+
+    <!--Selected Sectors List-->
     <div class="col-md-6 col-sm-6">
       <div class="card card-signin my-5">
         <div class="card-body iati-box">
@@ -187,5 +251,6 @@
 
   </div>
   <!--End of data entry tab-->
+  <!--End of Sectors Tab-->
 
 </div>

@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./project-entry.component.css']
 })
 export class ProjectEntryComponent implements OnInit {
+  activeProjectId: number = 0;
   btnProjectText: string = 'Save Project';
   isProjectBtnDisabled: boolean = false;
   requestNo: number = 0;
@@ -19,6 +20,7 @@ export class ProjectEntryComponent implements OnInit {
   isForEdit: boolean = false;
   errorMessage: string = '';
   selectedProjects: any = [];
+  selectedProjectSectors: any = [];
   currentTab: string = 'project';
   iatiProjects: any = [];
   aimsProjects: any = [];
@@ -146,10 +148,11 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   manageTabsDisplay(tabIdentity) {
-    for(var i=0; i < this.displayTabs; i++) {
+    for(var i=0; i < this.displayTabs.length; i++) {
       var tab = this.displayTabs[i];
       if (tab.identity == tabIdentity) {
         tab.visible = true;
+        this.currentTab = tabIdentity;
       } else {
         tab.visible = false;
       }
@@ -178,7 +181,7 @@ export class ProjectEntryComponent implements OnInit {
           if (!this.isError) {
             var message = 'Project' + Messages.RECORD_UPDATED;
             this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('projects');
+            this.activeProjectId = data;
           } else {
           }
         },
