@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RegistrationModel } from '../models/registration';
 import { RequestModel } from '../models/request-model';
+import { Settings } from '../config/settings';
 
 @Injectable({
     providedIn: 'root'
@@ -50,6 +51,10 @@ export class StoreService {
 
   getCurrentRequestId() {
     return this.requestNumber;
+  }
+
+  getCurrencyList() {
+    return Settings.currencies;
   }
 
   handleError<T> (operation = 'operation', result?: T) {

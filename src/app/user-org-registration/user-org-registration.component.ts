@@ -71,13 +71,7 @@ export class UserOrgRegistrationComponent implements OnInit {
     
     this.loadOrganizations();
   }
-
-  /*displayFn(org: any) {
-    if (org) {
-      return org.organizationName;
-    }
-  }*/
-
+  
   displayFn(organization?: Organization): string | undefined {
     if (organization) {
       this.selectedOrganizationId = organization.id;
@@ -86,17 +80,6 @@ export class UserOrgRegistrationComponent implements OnInit {
     }
     return organization ? organization.organizationName : undefined;
   }
-
-  /*fillOrganizationTypes() {
-    this.organizationService.getOrganizationTypes().subscribe(
-      data => {
-        this.organizationTypes = data;
-      },
-      error => {
-        console.log("Request Failed: ", error);
-      }
-    );
-  }*/
 
   private filterOrganizations(value: string): Organization[] {
     if (typeof value != "string") {

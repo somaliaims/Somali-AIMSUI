@@ -48,5 +48,10 @@ export const Settings = {
             canDoSMTPSettings: false,
             canDoIATISettings: false
         }
-    }
+    },
+    currencies: [
+        'Eur',
+        'USD',
+        'TL'
+    ]
 }

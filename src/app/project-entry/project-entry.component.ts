@@ -5,6 +5,9 @@ import { ProjectService } from '../services/project.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Messages } from '../config/messages';
 import { Router } from '@angular/router';
+import { SectorService } from '../services/sector.service';
+import { Sector } from '../models/sector-model';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-project-entry',
@@ -13,19 +16,34 @@ import { Router } from '@angular/router';
 })
 export class ProjectEntryComponent implements OnInit {
   activeProjectId: number = 0;
+  selectedSectorId: number = 0;
+  selectedParentSectorId: number = 0;
   btnProjectText: string = 'Save Project';
+  btnProjectSectorText: string = 'Save Sector';
   isProjectBtnDisabled: boolean = false;
+  isProjectBtnSectorDisabled: boolean = false;
   requestNo: number = 0;
   isError: boolean = false;
+  infoMessage: string = '';
+  showMessage: boolean = false;
   isForEdit: boolean = false;
   errorMessage: string = '';
+  startDateModel: NgbDateStruct;
+  currentTab: string = 'project';
+  sectorSelectionForm: FormGroup;
+  sectorInput = new FormControl();
+  parentSectorInput = new FormControl();
+
   selectedProjects: any = [];
   selectedProjectSectors: any = [];
-  currentTab: string = 'project';
   iatiProjects: any = [];
   aimsProjects: any = [];
-  startDateModel: NgbDateStruct;
+  currencyList: any = [];
+  sectorsList: any = [];
+  currentProjectSectorsList: any = [];
+
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
+  sectorModel = { projectId: null, sectorId: 0, sectorName: '', parentId: 0, fundPercentage: 0.0, currency: '', exchangeRate: 0.0 };
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -37,19 +55,32 @@ export class ProjectEntryComponent implements OnInit {
 
 
   constructor(private storeService: StoreService, private iatiService: IATIService,
-    private projectService: ProjectService, private router: Router) { }
+    private projectService: ProjectService, private sectorService: SectorService, 
+    private router: Router, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.sectorSelectionForm = this.fb.group({
+      sectorInput: null,
+      parentSectorInput: null
+    });
+
+    this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
+    if (this.infoMessage !== null && this.infoMessage !== '') {
+      this.showMessage = true;
+    }
+
     var projects = localStorage.getItem('selected-projects');
     if (projects)
     {
       var parsedProjects = JSON.parse(projects);
       this.selectedProjects = parsedProjects;
-      
+      this.currencyList = this.storeService.getCurrencyList();
+
       //Load iati projects
       var filteredIATI = this.selectedProjects.filter(function(project) {
         return project.type == 'IATI';
       });
+
       var iatiIdsArr = [];
       filteredIATI.forEach(function(project) {
         var obj = { identifier: project.identifier };
@@ -75,6 +106,8 @@ export class ProjectEntryComponent implements OnInit {
         this.isError = true;
       }
     });
+
+    this.loadSectorsList();
   }
 
   loadIATIProjectsForIds(modelArr: any) {
@@ -101,6 +134,17 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
+  loadSectorsList() {
+    this.sectorService.getSectorsList().subscribe(
+      data => {
+        this.sectorsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
   enterProjectAIMS(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
@@ -115,11 +159,29 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   enterProjectIATI(e) {
-    var id = e.target.id.split[1];
+    var id = e.target.id.split('-')[1];
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
     if (selectedProject) {
       this.model.title = selectedProject[0].title;
       this.model.description = selectedProject[0].description;
+    }
+  }
+
+  enterIATISector(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var code = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var sectors = selectProject[0].sectors;
+      if (sectors && sectors.length > 0) {
+        var selectSector = sectors.filter(s => s.code == code);
+        if (selectSector && selectSector.length > 0) {
+          this.sectorModel.sectorName = selectSector[0].sectorName;
+          this.sectorModel.fundPercentage = selectSector[0].fundPercentage;
+        }
+      }
     }
   }
 
@@ -159,6 +221,25 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  /*Project sectors functions*/
+  displaySectorFn(sector?: Sector): string | undefined {
+    if (sector) {
+      this.selectedSectorId = sector.id;
+    } else {
+      this.selectedSectorId = 0;
+    }
+    return sector ? sector.sectorName : undefined;
+  }
+
+  private filterSectors(value: string): Sector[] {
+    if (typeof value != "string") {
+    } else {
+      const filterValue = value.toLowerCase();
+      return this.sectorsList.filter(sector => sector.sectorName.toLowerCase().indexOf(filterValue) !== -1);
+    }
+  }
+  /*End of project sectors functions*/
+
   /* Saving different section of project */
   saveProject() {
     var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' + 
@@ -180,8 +261,9 @@ export class ProjectEntryComponent implements OnInit {
         data => {
           if (!this.isError) {
             var message = 'Project' + Messages.RECORD_UPDATED;
-            this.storeService.newInfoMessage(message);
+            this.infoMessage = message;
             this.activeProjectId = data;
+            this.showMessage = true;
           } else {
           }
         },
@@ -197,7 +279,10 @@ export class ProjectEntryComponent implements OnInit {
           this.resetProjectEntry();
           if (!this.isError) {
             var message = 'New project' + Messages.NEW_RECORD;
+            this.infoMessage = message;
+            this.showMessage = true;
             this.storeService.newInfoMessage(message);
+            localStorage.setItem('active-project', data);
           } else {
           }
         },
@@ -207,6 +292,58 @@ export class ProjectEntryComponent implements OnInit {
           this.isError = true;
         }
       );
+    }
+  }
+
+  saveProjectSector() {
+    var activeProject = localStorage.getItem('active-project');
+    var projectId = 0;
+    var sectorName = this.sectorInput.value;
+    if (activeProject && activeProject != "0") {
+      projectId = parseInt(activeProject);
+      this.sectorModel.projectId = projectId;
+    }
+
+    var getSector = this.sectorsList.filter(sector => sector.sectorName == sectorName);
+    if (this.selectedSectorId == 0 && getSector.length == 0) {
+      var sectorModel = {
+        sectorName: sectorName,
+        parentId: 0
+      }
+
+      this.sectorService.addSector(sectorModel).subscribe(
+        data => {
+          this.sectorModel.sectorId = data;
+          this.selectedSectorId = data;
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    } else {
+      var projectSectorModel = {
+        projectId: projectId,
+        sectorId: this.selectedSectorId,
+        fundPercentage: this.sectorModel.fundPercentage,
+        currency: this.sectorModel.currency,
+        exchangeRate: this.sectorModel.exchangeRate
+      };
+      this.projectService.addProjectSector(projectSectorModel).subscribe(
+        data => {
+          var sectorObj = {
+            projectId: projectId,
+            sectorId: data,
+            sectorName: this.sectorModel.sectorName,
+            fundPercentage: this.sectorModel.fundPercentage,
+            currency: this.sectorModel.currency,
+            exchangeRate: this.sectorModel.exchangeRate
+          };
+          this.currentProjectSectorsList.push(sectorObj);
+        },
+        error => {
+
+        }
+      )
     }
   }
 

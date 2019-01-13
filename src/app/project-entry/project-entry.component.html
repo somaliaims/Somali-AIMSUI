@@ -62,7 +62,7 @@
                 <td>
                   <span class="float-left">
                     <b>Project Title: </b>{{project.title}}<br />
-                    <b>Description: </b>{{project.description}}<br />
+                    <b>Start Date: </b>{{project.startDate}}<br />
                   </span>
                   <span class="float-right">
                     <button id="aims-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectAIMS($event)">Enter</button>
@@ -83,7 +83,7 @@
                 <td>
                   <span class="float-left">
                     <b>Project Title: </b>{{project.title}}<br />
-                    <b>Description: </b>{{project.description}}<br />
+                    <b>Currency: </b>{{project.defaultCurrency}}<br />
                   </span>
                   <span class="float-right">
                     <button id="iati-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectIATI($event)">Enter</button>
@@ -103,27 +103,16 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">New Project</h5>
+            
             <form class="form-signin" (ngSubmit)="saveProject()" #projectForm="ngForm">
-
               <div class="form-group">
                 <label for="title">Project Title</label>
-                <input type="text" class="form-control" id="title" [(ngModel)]="model.title" name="title" #title="ngModel"
+                <input type="text" class="form-control" id="title" maxlength="1000" [(ngModel)]="model.title" name="title" #title="ngModel"
                   required>
-
-                <div *ngIf="isSearchingProjects">
-                  <div>Looking for matches...</div>
-                </div>
-                <div *ngIf="isSearchedResults">
-                  <div *ngIf="matchingProjects.length > 0" class="margin-top-10">
-                    <button type="button" class="btn btn-success btn-sm" (click)="openMatchingProjects()">{{matchingProjects.length}}
-                      matches found</button>
-                  </div>
-                </div>
                 <div [hidden]="title.valid" class="alert alert-danger">
                   Project Title is required
                 </div>
               </div>
-
               <div class="form-group">
                 <label for="title">Start Date</label>
                 <div class="input-group">
@@ -149,12 +138,12 @@
               <div class="form-group">
                 <label for="title">Description</label>
                 <textarea class="form-control" id="description" [(ngModel)]="model.description" name="description"
-                  #description="ngModel" rows="7" maxlength="800">
+                  #description="ngModel" rows="7" maxlength="10000">
                       </textarea>
               </div>
-
               <button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectText}}</button>
             </form>
+
           </div>
         </div>
       </div>
@@ -191,7 +180,7 @@
                         {{sector.fundPercentage}}
                       </td>
                       <td>
-                        <button id="asector-{{project.id}}-{{sector.id}}" (click)="selectIATISector($event)" class="btn btn-success btn-sm">Enter</button>
+                        <button id="asector-{{project.id}}-{{sector.id}}" (click)="enterAIMSSector($event)" class="btn btn-success btn-sm">Enter</button>
                       </td>
                     </tr>
                   </table>
@@ -225,7 +214,7 @@
                         {{sector.fundPercentage}}
                       </td>
                       <td>
-                        <button id="isector-{{project.id}}-{{sector.code}}" (click)="selectIATISector($event)" class="btn btn-success btn-sm">Enter</button>
+                        <button id="isector-{{project.id}}-{{sector.code}}" (click)="enterIATISector($event)" class="btn btn-success btn-sm">Enter</button>
                       </td>
                     </tr>
                   </table>
@@ -241,12 +230,76 @@
 
     <!--Selected Sectors List-->
     <div class="col-md-6 col-sm-6">
+
       <div class="card card-signin my-5">
-        <div class="card-body iati-box">
+        <div class="card-body">
           <h5 class="card-title text-center">Manage Sectors</h5>
+          <form class="form-signin" [formGroup]='sectorSelectionForm'>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Enter/Select Sector" aria-label="Sector Name" [matAutocomplete]="auto" [formControl]="sectorInput">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySectorFn.bind(this)">
+                <mat-option *ngFor="let sector of sectorsList" [value]="sector">
+                  <span>{{sector.sectorName}}</span>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+
+          <form class="form-signin" (ngSubmit)="saveProjectSector()" #projectForm="ngForm">
+          
+            <div class="form-group">
+              <label for="fundPercentage">Funds Perdentage</label>
+              <input type="text" class="form-control" id="fundPercentage" [(ngModel)]="sectorModel.fundPercentage" name="fundPercentage"
+                #fundPercentage="ngModel" required>
+              <div [hidden]="fundPercentage.valid" class="alert alert-danger">
+                Funds percentage is required
+              </div>
+            </div>
+          
+            <div class="form-group">
+              <label for="currency">Currency</label>
+              <select class="form-control" id="currency" [(ngModel)]="sectorModel.currency" name="currency" #currency="ngModel"
+                required>
+                <option *ngFor="let currency of currencyList" [value]="currency">{{currency}}</option>
+              </select>
+              <div [hidden]="currency.valid" class="alert alert-danger">
+                Currency is required
+              </div>
+            </div>
+          
+            <div class="form-group">
+              <label for="exchangeRate">Exchange Rate</label>
+              <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="sectorModel.exchangeRate" name="exchangeRate"
+                maxlength="9" #exchangeRate="ngModel" />
+            </div>
+          
+            <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectSectorText}}</button>
+          </form>
 
         </div>
       </div>
+
+      <div class="card card-signin">
+        <div class="card-body iati-box">
+            <h5 class="card-title text-center">Project Sectors</h5>
+            <table class="table table-bordered">
+              <tr>
+                <th>Sector</th>
+                <th>Fund %</th>
+                <th>Currency</th>
+                <th>Ex. Rate</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let sector of currentProjectSectors">
+                <td>{{sector.sectorName}}</td>
+                <td>{{sector.fundPercentage}}</td>
+                <td>{{sector.currency}}</td>
+                <td>{{sector.exchangeRate}}</td>
+              </tr>
+            </table>
+        </div>
+      </div>
+
     </div>
 
   </div>

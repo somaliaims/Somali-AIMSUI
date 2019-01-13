@@ -20,7 +20,6 @@
           <h5 class="card-title text-center">Funder</h5>
 
           <form class="form-signin" [formGroup]='funderSelectionForm'>
-
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Funder" aria-label="Funder" [matAutocomplete]="auto" [formControl]="userInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
