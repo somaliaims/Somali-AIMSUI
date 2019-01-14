@@ -236,7 +236,7 @@
           <h5 class="card-title text-center">Manage Sectors</h5>
           <form class="form-signin" [formGroup]='sectorSelectionForm'>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Enter/Select Sector" aria-label="Sector Name" [matAutocomplete]="auto" [formControl]="sectorInput">
+              <input matInput placeholder="{{sectorPlaceHolder}}" aria-label="Sector Name" [matAutocomplete]="auto" [formControl]="sectorInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySectorFn.bind(this)">
                 <mat-option *ngFor="let sector of sectorsList" [value]="sector">
                   <span>{{sector.sectorName}}</span>
@@ -247,6 +247,15 @@
 
           <form class="form-signin" (ngSubmit)="saveProjectSector()" #projectForm="ngForm">
           
+            <div *ngIf="isSectorVisible" class="form-group">
+              <label for="sectorName">New Sector</label>
+              <input type="text" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName" name="sectorName"
+                #sectorName="ngModel" required>
+              <div [hidden]="sectorName.valid" class="alert alert-danger">
+                Sector name is required
+              </div>
+            </div>
+
             <div class="form-group">
               <label for="fundPercentage">Funds Perdentage</label>
               <input type="text" class="form-control" id="fundPercentage" [(ngModel)]="sectorModel.fundPercentage" name="fundPercentage"
@@ -307,3 +316,5 @@
   <!--End of Sectors Tab-->
 
 </div>
+
+<info-modal message="{{infoMessage}}"></info-modal>

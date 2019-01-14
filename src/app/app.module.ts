@@ -49,6 +49,7 @@ import { ModalComponent } from './modal/modal.component';
 import { NewProjectComponent } from './new-project/new-project.component';
 import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 import { ProjectEntryComponent } from './project-entry/project-entry.component';
+import { InfoModalComponent } from './info-modal/info-modal.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { ProjectEntryComponent } from './project-entry/project-entry.component';
     NewProjectComponent,
     ProjectReportComponent,
     ProjectEntryComponent,
+    InfoModalComponent,
   ],
   imports: [
     BrowserModule,

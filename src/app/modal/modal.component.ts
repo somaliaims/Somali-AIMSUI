@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, OnDestroy, Injectable } from '@angular/core';
  
 import { ModalService } from '../services/modal.service';
  
@@ -15,6 +15,9 @@ import { ModalService } from '../services/modal.service';
     styleUrls: []
 })
  
+@Injectable({
+    providedIn: 'root'
+})
 export class ModalComponent implements OnInit, OnDestroy {
     @Input() id: string;
     private element: any;

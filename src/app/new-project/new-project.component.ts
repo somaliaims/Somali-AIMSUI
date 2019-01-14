@@ -53,6 +53,7 @@ export class NewProjectComponent implements OnInit {
       }
     });
     localStorage.setItem('selected-projects', null);
+    localStorage.setItem('active-project', '0');
   }
 
   loadIATIProjects() {
