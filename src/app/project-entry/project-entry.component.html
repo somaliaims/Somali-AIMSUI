@@ -234,7 +234,7 @@
       <div class="card card-signin my-5">
         <div class="card-body">
           <h5 class="card-title text-center">Manage Sectors</h5>
-          <form class="form-signin" [formGroup]='sectorSelectionForm'>
+          <form *ngIf="sectorsList.length > 0" class="form-signin" [formGroup]='sectorSelectionForm'>
             <mat-form-field class="example-full-width">
               <input matInput placeholder="{{sectorPlaceHolder}}" aria-label="Sector Name" [matAutocomplete]="auto" [formControl]="sectorInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySectorFn.bind(this)">
@@ -245,7 +245,7 @@
             </mat-form-field>
           </form>
 
-          <form class="form-signin" (ngSubmit)="saveProjectSector()" #projectForm="ngForm">
+          <form class="form-signin" (ngSubmit)="saveProjectSector()" #projectSectorForm="ngForm">
           
             <div *ngIf="isSectorVisible" class="form-group">
               <label for="sectorName">New Sector</label>
@@ -305,7 +305,7 @@
                 <td>{{sector.currency}}</td>
                 <td>{{sector.exchangeRate}}</td>
                 <td>
-                  <a class="btn btn-danger btn-sm" href="#" (click)="removeSector()"><i class="fa fa-trash"></i></a>
+                  <a id="dsec-{{activeProjectId}}-{{sector.id}}" class="btn btn-danger btn-sm" href="#" (click)="deleteProjectSector($event)"><i class="fa fa-trash"></i></a>
                 </td>
               </tr>
             </table>

@@ -9,6 +9,7 @@ import { SectorService } from '../services/sector.service';
 import { Sector } from '../models/sector-model';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-project-entry',
@@ -62,6 +63,7 @@ export class ProjectEntryComponent implements OnInit {
     private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent) { }
 
   ngOnInit() {
+    this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
     if (projectId && projectId != '0') {
       this.isForEdit = true;
@@ -78,6 +80,11 @@ export class ProjectEntryComponent implements OnInit {
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;
+
+      setTimeout(() => {
+        this.storeService.newInfoMessage('');
+        this.showMessage = false;
+      }, Settings.displayMessageTime);
     }
 
     var projects = localStorage.getItem('selected-projects');
@@ -378,6 +385,14 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
+    var projectSectorModel = {
+      projectId: projectId,
+      sectorId: this.selectedSectorId,
+      fundsPercentage: this.sectorModel.fundsPercentage,
+      currency: this.sectorModel.currency,
+      exchangeRate: this.sectorModel.exchangeRate
+    };
+
     var dbSector = this.sectorInput.value;
     var searchSector = '';
     if (dbSector) {
@@ -393,27 +408,32 @@ export class ProjectEntryComponent implements OnInit {
       if (this.selectedSectorId != 0 && getSector.length > 0) {
         sectorModel.parentId = this.selectedSectorId;
       }
-
       this.sectorService.addSector(sectorModel).subscribe(
         data => {
           this.sectorModel.sectorId = data;
           this.selectedSectorId = data;
+          projectSectorModel.sectorId = data;
+          this.addProjectSector(projectSectorModel);
         },
         error => {
           console.log(error);
         }
       )
+    } else {
+      this.addProjectSector(projectSectorModel);
+    }
+  }
+
+  addProjectSector(model: any) {
+    var activeProject = localStorage.getItem('active-project');
+    var projectId = 0;
+    
+    if (activeProject && activeProject != '0') {
+      projectId = parseInt(activeProject);
+      this.sectorModel.projectId = projectId;
     }
 
-    var projectSectorModel = {
-      projectId: projectId,
-      sectorId: this.selectedSectorId,
-      fundsPercentage: this.sectorModel.fundsPercentage,
-      currency: this.sectorModel.currency,
-      exchangeRate: this.sectorModel.exchangeRate
-    };
-
-    this.projectService.addProjectSector(projectSectorModel).subscribe(
+    this.projectService.addProjectSector(model).subscribe(
       data => {
         var sectorObj = {
           projectId: projectId,
@@ -427,6 +447,21 @@ export class ProjectEntryComponent implements OnInit {
         this.resetSectorEntry();
       },
       error => {
+      }
+    )
+  }
+
+  deleteProjectSector(e) {
+    var arr = e.target.value.split('-');
+    var projectId = arr[1];
+    var sectorId = arr[2];
+
+    this.projectService.deleteProjectSector(projectId, sectorId).subscribe(
+      data => {
+        this.currentProjectSectorsList = this.currentProjectSectorsList.filter(s => s.id != sectorId);
+      },
+      error => {
+
       }
     )
   }

@@ -7,6 +7,7 @@ import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { IATIService } from '../services/iati.service';
 import { ModalService } from '../services/modal.service';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-new-project',
@@ -16,6 +17,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 export class NewProjectComponent implements OnInit {
 
   @Input()
+  displayTime: number = Settings.displayMessageTime;
   isProjectLoaded: boolean = false;
   isIATILoading: boolean = false;
   isBtnDisabled: boolean = false;
@@ -33,7 +35,6 @@ export class NewProjectComponent implements OnInit {
   isError: boolean = false;
   isSearchingProjects: boolean = false;
   isSearchedResults: boolean = false;
-  displayTime: number = 5000;
   startDateModel: NgbDateStruct;
   projectIdCounter: number = 0;
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
@@ -45,6 +46,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.requestNo = this.storeService.getCurrentRequestId();
     this.loadIATIProjects();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
