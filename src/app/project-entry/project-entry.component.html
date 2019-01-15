@@ -177,7 +177,7 @@
                         {{sector.sectorName}}
                       </td>
                       <td>
-                        {{sector.fundPercentage}}
+                        {{sector.fundsPercentage}}
                       </td>
                       <td>
                         <button id="asector-{{project.id}}-{{sector.id}}" (click)="enterAIMSSector($event)" class="btn btn-success btn-sm">Enter</button>
@@ -211,7 +211,7 @@
                         {{sector.sectorName}}
                       </td>
                       <td>
-                        {{sector.fundPercentage}}
+                        {{sector.fundsPercentage}}
                       </td>
                       <td>
                         <button id="isector-{{project.id}}-{{sector.code}}" (click)="enterIATISector($event)" class="btn btn-success btn-sm">Enter</button>
@@ -257,10 +257,10 @@
             </div>
 
             <div class="form-group">
-              <label for="fundPercentage">Funds Perdentage</label>
-              <input type="text" class="form-control" id="fundPercentage" [(ngModel)]="sectorModel.fundPercentage" name="fundPercentage"
-                #fundPercentage="ngModel" required>
-              <div [hidden]="fundPercentage.valid" class="alert alert-danger">
+              <label for="fundsPercentage">Funds Perdentage</label>
+              <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="sectorModel.fundsPercentage" name="fundsPercentage"
+                #fundsPercentage="ngModel" required>
+              <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
                 Funds percentage is required
               </div>
             </div>
@@ -299,11 +299,14 @@
                 <th>Ex. Rate</th>
                 <th>Action</th>
               </tr>
-              <tr *ngFor="let sector of currentProjectSectors">
-                <td>{{sector.sectorName}}</td>
-                <td>{{sector.fundPercentage}}</td>
+              <tr *ngFor="let sector of currentProjectSectorsList">
+                <td>{{sector.sector}}</td>
+                <td>{{sector.fundsPercentage}}</td>
                 <td>{{sector.currency}}</td>
                 <td>{{sector.exchangeRate}}</td>
+                <td>
+                  <a class="btn btn-danger btn-sm" href="#" (click)="removeSector()"><i class="fa fa-trash"></i></a>
+                </td>
               </tr>
             </table>
         </div>

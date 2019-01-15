@@ -33,6 +33,12 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('Project')));
     }
 
+    getProjectProfileReport(id: string) {
+      var url = this.urlHelper.getProjectProfileReport(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Profile')));
+    }
+
     getProjectTitle(id: string) {
       var url = this.urlHelper.getProjectTitle(id);
       return this.httpClient.get(url, httpOptions).pipe(

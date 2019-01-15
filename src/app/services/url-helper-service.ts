@@ -174,6 +174,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.addProjectFunder);
     }
 
+    getProjectProfileReport(id) {
+        return (this.BASE_URL + urlsList.urls.getProjectProfileReport + id);
+    }
+
     deleteProjectFunderUrl(projectId: string, funderId: string) {
         return (this.BASE_URL + urlsList.urls.deleteProjectFunder + projectId + '/' + funderId);
     }

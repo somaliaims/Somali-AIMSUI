@@ -47,7 +47,7 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectSectorsList: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
-  sectorModel = { projectId: null, sectorId: 0, sectorName: '', parentId: 0, fundPercentage: 0.0, currency: '', exchangeRate: 0.0 };
+  sectorModel = { projectId: null, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -67,6 +67,7 @@ export class ProjectEntryComponent implements OnInit {
       this.isForEdit = true;
       this.activeProjectId = parseInt(projectId);
       this.btnProjectText = 'Edit Project';
+      this.loadProjectData(this.activeProjectId);
     }
 
     this.sectorSelectionForm = this.fb.group({
@@ -163,8 +164,8 @@ export class ProjectEntryComponent implements OnInit {
       this.model.description = selectedProject[0].description;
       var sDate = new Date(selectedProject[0].startDate);
       var eDate = new Date(selectedProject[0].endDate);
-      this.model.startDate = { year: sDate.getFullYear(), month: sDate.getMonth(), day: sDate.getDay() };
-      this.model.endDate = { year: eDate.getFullYear(), month: eDate.getMonth(), day: eDate.getDay() };
+      this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
+      this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
     }
   }
 
@@ -192,7 +193,7 @@ export class ProjectEntryComponent implements OnInit {
         if (selectSector && selectSector.length > 0) {
           this.isSectorVisible = true;
           this.sectorModel.sectorName = selectSector[0].sectorName;
-          this.sectorModel.fundPercentage = selectSector[0].fundPercentage;
+          this.sectorModel.fundsPercentage = selectSector[0].fundsPercentage;
         }
       }
     }
@@ -213,10 +214,46 @@ export class ProjectEntryComponent implements OnInit {
           this.isSectorVisible = true;
           var sectorObj = { id: selectProject[0].id, sectorName: selectSector[0].sectorName }
           this.sectorInput.setValue(sectorObj);
-          this.sectorModel.fundPercentage = selectSector[0].fundPercentage;
+          this.sectorModel.fundsPercentage = selectSector[0].fundsPercentage;
         }
       }
     }
+  }
+
+  loadProjectData(id: number) {
+    this.projectService.getProjectProfileReport(id.toString()).subscribe(
+      result => {
+        if (result.projectProfile) {
+          var data = result.projectProfile;
+          //Setting project data
+          this.model.title = data.title;
+          this.model.description = data.description;
+          var sDate = new Date(data.startDate);
+          var eDate = new Date(data.endDate);
+          this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
+          this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
+          
+          //Setting sectors data
+          if (data.sectors && data.sectors.length > 0) {
+            this.currentProjectSectorsList = data.sectors;
+          }
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  loadProjectSectors(id) {
+    this.projectService.getProjectSectors(id).subscribe(
+      data => {
+
+      },
+      error => {
+
+      }
+    )
   }
 
   showProjects() {
@@ -371,7 +408,7 @@ export class ProjectEntryComponent implements OnInit {
     var projectSectorModel = {
       projectId: projectId,
       sectorId: this.selectedSectorId,
-      fundPercentage: this.sectorModel.fundPercentage,
+      fundsPercentage: this.sectorModel.fundsPercentage,
       currency: this.sectorModel.currency,
       exchangeRate: this.sectorModel.exchangeRate
     };
@@ -381,8 +418,8 @@ export class ProjectEntryComponent implements OnInit {
         var sectorObj = {
           projectId: projectId,
           sectorId: data,
-          sectorName: this.sectorModel.sectorName,
-          fundPercentage: this.sectorModel.fundPercentage,
+          sector: this.sectorModel.sectorName,
+          fundsPercentage: this.sectorModel.fundsPercentage,
           currency: this.sectorModel.currency,
           exchangeRate: this.sectorModel.exchangeRate
         };
@@ -405,7 +442,7 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorPlaceHolder = 'Enter/Select Sector';
     this.sectorModel.currency = '';
     this.sectorModel.exchangeRate = 0.00;
-    this.sectorModel.fundPercentage = 0.00;
+    this.sectorModel.fundsPercentage = 0.00;
     this.sectorModel.parentId = 0;
     this.sectorModel.projectId = 0;
     this.sectorModel.sectorId = 0;
