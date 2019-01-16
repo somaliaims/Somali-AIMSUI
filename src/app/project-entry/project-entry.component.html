@@ -1,295 +1,300 @@
 <div class="container-fluid view-area">
-  <div class="row">
 
-    <div class="col-md-12">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">New Project Selection</a>
-        </li>
-        <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#" class="nav-link text-info"
-            (click)="showProjects()" data-toggle="tab">Project Entry</a>
-        </li>
-        <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'sector', 'text-info': currentTab != 'sector'}" href="#" class="nav-link text-info"
-            (click)="showSectors()" data-toggle="tab">Sectors</a>
-        </li>
-        <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'location', 'text-info': currentTab != 'location'}" href="#" class="nav-link text-info"
-            (click)="showLocations()" data-toggle="tab">Locations</a>
-        </li>
-        <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'document', 'text-info': currentTab != 'document'}" href="#" class="nav-link text-info"
-            (click)="showDocuments()" data-toggle="tab">Documents</a>
-        </li>
-        <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#" class="nav-link text-info"
-            (click)="showFunders()" data-toggle="tab">Funders</a>
-        </li>
-        <li class="nav-item">
-          <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#"
-            class="nav-link text-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
-        </li>
-      </ul>
+  <block-ui>
+    <div class="row">
+
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">New Project Selection</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#" class="nav-link text-info"
+              (click)="showProjects()" data-toggle="tab">Project Entry</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'sector', 'text-info': currentTab != 'sector'}" href="#" class="nav-link text-info"
+              (click)="showSectors()" data-toggle="tab">Sectors</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'location', 'text-info': currentTab != 'location'}" href="#" class="nav-link text-info"
+              (click)="showLocations()" data-toggle="tab">Locations</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'document', 'text-info': currentTab != 'document'}" href="#" class="nav-link text-info"
+              (click)="showDocuments()" data-toggle="tab">Documents</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#" class="nav-link text-info"
+              (click)="showFunders()" data-toggle="tab">Funders</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#"
+              class="nav-link text-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
 
-  <div class="row text-center">
-    <div *ngIf="isError" class="alert alert-danger alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Error!</strong> {{errorMessage}}
+    <div class="row text-center">
+      <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Error!</strong> {{errorMessage}}
+      </div>
     </div>
-  </div>
 
-  <div class="row text-center">
-    <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Information!</strong> {{infoMessage}}
+    <div class="row text-center">
+      <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Information!</strong> {{infoMessage}}
+      </div>
     </div>
-  </div>
 
-  <!--Data entry tab for projects-->
-  <div *ngIf="currentTab == 'project'" class="row">
+    <!--Data entry tab for projects-->
+    <div *ngIf="currentTab == 'project'" class="row">
 
-    <div class="col-md-6">
+      <div class="col-md-6">
 
-      <div class="col-md-12 col-sm-12">
-        <div class="card card-signin my-5">
-          <div class="card-body iati-box">
-            <h5 class="card-title text-center">Selected AIMS Projects</h5>
-            <table class="table table-bordered">
-              <tr *ngFor="let project of aimsProjects">
-                <td>
-                  <span class="float-left">
-                    <b>Project Title: </b>{{project.title}}<br />
-                    <b>Start Date: </b>{{project.startDate}}<br />
-                  </span>
-                  <span class="float-right">
-                    <button id="aims-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectAIMS($event)">Enter</button>
-                  </span>
-                </td>
-              </tr>
-            </table>
+        <div class="col-md-12 col-sm-12">
+          <div class="card card-signin my-5">
+            <div class="card-body iati-box">
+              <h5 class="card-title text-center">Selected AIMS Projects</h5>
+              <table class="table table-bordered">
+                <tr *ngFor="let project of aimsProjects">
+                  <td>
+                    <span class="float-left">
+                      <b>Project Title: </b>{{project.title}}<br />
+                      <b>Start Date: </b>{{project.startDate}}<br />
+                    </span>
+                    <span class="float-right">
+                      <button id="aims-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectAIMS($event)">Enter</button>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-12 col-sm-12">
-        <div class="card card-signin my-5">
-          <div class="card-body iati-box">
-            <h5 class="card-title text-center">Selected IATI Projects</h5>
-            <table class="table table-bordered">
-              <tr *ngFor="let project of iatiProjects">
-                <td>
-                  <span class="float-left">
-                    <b>Project Title: </b>{{project.title}}<br />
-                    <b>Currency: </b>{{project.defaultCurrency}}<br />
-                  </span>
-                  <span class="float-right">
-                    <button id="iati-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectIATI($event)">Enter</button>
-                  </span>
-                </td>
-              </tr>
-            </table>
+        <div class="col-md-12 col-sm-12">
+          <div class="card card-signin my-5">
+            <div class="card-body iati-box">
+              <h5 class="card-title text-center">Selected IATI Projects</h5>
+              <table class="table table-bordered">
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <span class="float-left">
+                      <b>Project Title: </b>{{project.title}}<br />
+                      <b>Currency: </b>{{project.defaultCurrency}}<br />
+                    </span>
+                    <span class="float-right">
+                      <button id="iati-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectIATI($event)">Enter</button>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
+
+      </div>
+
+      <div class="col-md-6">
+        <!--Data entry box-->
+        <div class="col-md-12 col-sm-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">New Project</h5>
+
+              <form class="form-signin" (ngSubmit)="saveProject()" #projectForm="ngForm">
+                <div class="form-group">
+                  <label for="title">Project Title</label>
+                  <input type="text" class="form-control" id="title" maxlength="1000" [(ngModel)]="model.title" name="title"
+                    #title="ngModel" required>
+                  <div [hidden]="title.valid" class="alert alert-danger">
+                    Project Title is required
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="title">Start Date</label>
+                  <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="startDate" [(ngModel)]="model.startDate"
+                      ngbDatepicker #s="ngbDatepicker" required>
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="title">End Date</label>
+                  <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="endDate" [(ngModel)]="model.endDate"
+                      ngbDatepicker #e="ngbDatepicker" required>
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="title">Description</label>
+                  <textarea class="form-control" id="description" [(ngModel)]="model.description" name="description"
+                    #description="ngModel" rows="7" maxlength="10000">
+                      </textarea>
+                </div>
+                <button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                  type="submit">{{btnProjectText}}</button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
+    <!--End of data entry tab-->
 
-    <div class="col-md-6">
-      <!--Data entry box-->
-      <div class="col-md-12 col-sm-12">
+    <!--Sectors tab for projects-->
+    <div *ngIf="currentTab == 'sector'" class="row">
+
+      <div class="col-md-6 col-sm-6">
+
+        <div class="col-md-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Sectors from AIMS</h5>
+              <table class="table table-bordered">
+                <tr *ngFor="let project of aimsProjects">
+                  <td>
+                    <b>Project Title: </b>{{project.title}}<br />
+                    <table *ngIf="project.sectors.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Sector</th>
+                        <th>Funds %</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let sector of project.sectors">
+                        <td>
+                          {{sector.sectorName}}
+                        </td>
+                        <td>
+                          {{sector.fundsPercentage}}
+                        </td>
+                        <td>
+                          <button id="asector-{{project.id}}-{{sector.id}}" (click)="enterAIMSSector($event)" class="btn btn-success btn-sm">Enter</button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span *ngIf="project.sectors.length == 0">No sectors available</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Sectors from IATI</h5>
+              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <b>Project: </b>{{project.title}}<br />
+                    <table *ngIf="project.sectors.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Sector</th>
+                        <th>Funds %</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let sector of project.sectors">
+                        <td>
+                          {{sector.sectorName}}
+                        </td>
+                        <td>
+                          {{sector.fundsPercentage}}
+                        </td>
+                        <td>
+                          <button id="isector-{{project.id}}-{{sector.code}}" (click)="enterIATISector($event)" class="btn btn-success btn-sm">Enter</button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span *ngIf="project.sectors.length == 0">No sectors avaialble</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!--Selected Sectors List-->
+      <div class="col-md-6 col-sm-6">
+
         <div class="card card-signin my-5">
           <div class="card-body">
-            <h5 class="card-title text-center">New Project</h5>
-            
-            <form class="form-signin" (ngSubmit)="saveProject()" #projectForm="ngForm">
+            <h5 class="card-title text-center">Manage Sectors</h5>
+            <form *ngIf="sectorsList.length > 0" class="form-signin" [formGroup]='sectorSelectionForm'>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="{{sectorPlaceHolder}}" aria-label="Sector Name" [matAutocomplete]="auto"
+                  [formControl]="sectorInput">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySectorFn.bind(this)">
+                  <mat-option *ngFor="let sector of sectorsList" [value]="sector">
+                    <span>{{sector.sectorName}}</span>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+
+            <form class="form-signin" (ngSubmit)="saveProjectSector()" #projectSectorForm="ngForm">
+
+              <div *ngIf="isSectorVisible" class="form-group">
+                <label for="sectorName">New Sector</label>
+                <input type="text" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName" name="sectorName"
+                  #sectorName="ngModel" required>
+                <div [hidden]="sectorName.valid" class="alert alert-danger">
+                  Sector name is required
+                </div>
+              </div>
+
               <div class="form-group">
-                <label for="title">Project Title</label>
-                <input type="text" class="form-control" id="title" maxlength="1000" [(ngModel)]="model.title" name="title" #title="ngModel"
+                <label for="fundsPercentage">Funds Perdentage</label>
+                <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="sectorModel.fundsPercentage"
+                  name="fundsPercentage" #fundsPercentage="ngModel" required>
+                <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
+                  Funds percentage is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="currency">Currency</label>
+                <select class="form-control" id="currency" [(ngModel)]="sectorModel.currency" name="currency" #currency="ngModel"
                   required>
-                <div [hidden]="title.valid" class="alert alert-danger">
-                  Project Title is required
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="title">Start Date</label>
-                <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="startDate" [(ngModel)]="model.startDate"
-                    ngbDatepicker #s="ngbDatepicker" required>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
-                  </div>
+                  <option *ngFor="let currency of currencyList" [value]="currency">{{currency}}</option>
+                </select>
+                <div [hidden]="currency.valid" class="alert alert-danger">
+                  Currency is required
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="title">End Date</label>
-                <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="endDate" [(ngModel)]="model.endDate"
-                    ngbDatepicker #e="ngbDatepicker" required>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
-                  </div>
-                </div>
+                <label for="exchangeRate">Exchange Rate</label>
+                <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="sectorModel.exchangeRate" name="exchangeRate"
+                  maxlength="9" #exchangeRate="ngModel" />
               </div>
 
-              <div class="form-group">
-                <label for="title">Description</label>
-                <textarea class="form-control" id="description" [(ngModel)]="model.description" name="description"
-                  #description="ngModel" rows="7" maxlength="10000">
-                      </textarea>
-              </div>
-              <button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectText}}</button>
+              <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">{{btnProjectSectorText}}</button>
             </form>
 
           </div>
         </div>
-      </div>
 
-    </div>
-
-  </div>
-  <!--End of data entry tab-->
-
-  <!--Sectors tab for projects-->
-  <div *ngIf="currentTab == 'sector'" class="row">
-
-    <div class="col-md-6 col-sm-6">
-
-      <div class="col-md-12">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-            <h5 class="card-title text-center">Sectors from AIMS</h5>
-            <table class="table table-bordered">
-              <tr *ngFor="let project of aimsProjects">
-                <td>
-                  <b>Project Title: </b>{{project.title}}<br />
-                  <table *ngIf="project.sectors.length > 0" class="table table-bordered">
-                    <tr>
-                      <th>Sector</th>
-                      <th>Funds %</th>
-                      <th>Action</th>
-                    </tr>
-                    <tr *ngFor="let sector of project.sectors">
-                      <td>
-                        {{sector.sectorName}}
-                      </td>
-                      <td>
-                        {{sector.fundsPercentage}}
-                      </td>
-                      <td>
-                        <button id="asector-{{project.id}}-{{sector.id}}" (click)="enterAIMSSector($event)" class="btn btn-success btn-sm">Enter</button>
-                      </td>
-                    </tr>
-                  </table>
-                  <span *ngIf="project.sectors.length == 0">No sectors avaialble</span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-            <h5 class="card-title text-center">Sectors from IATI</h5>
-            <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-              <tr *ngFor="let project of iatiProjects">
-                <td>
-                  <b>Project: </b>{{project.title}}<br />
-                  <table *ngIf="project.sectors.length > 0" class="table table-bordered">
-                    <tr>
-                      <th>Sector</th>
-                      <th>Funds %</th>
-                      <th>Action</th>
-                    </tr>
-                    <tr *ngFor="let sector of project.sectors">
-                      <td>
-                        {{sector.sectorName}}
-                      </td>
-                      <td>
-                        {{sector.fundsPercentage}}
-                      </td>
-                      <td>
-                        <button id="isector-{{project.id}}-{{sector.code}}" (click)="enterIATISector($event)" class="btn btn-success btn-sm">Enter</button>
-                      </td>
-                    </tr>
-                  </table>
-                  <span *ngIf="project.sectors.length == 0">No sectors avaialble</span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!--Selected Sectors List-->
-    <div class="col-md-6 col-sm-6">
-
-      <div class="card card-signin my-5">
-        <div class="card-body">
-          <h5 class="card-title text-center">Manage Sectors</h5>
-          <form *ngIf="sectorsList.length > 0" class="form-signin" [formGroup]='sectorSelectionForm'>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="{{sectorPlaceHolder}}" aria-label="Sector Name" [matAutocomplete]="auto" [formControl]="sectorInput">
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySectorFn.bind(this)">
-                <mat-option *ngFor="let sector of sectorsList" [value]="sector">
-                  <span>{{sector.sectorName}}</span>
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-
-          <form class="form-signin" (ngSubmit)="saveProjectSector()" #projectSectorForm="ngForm">
-          
-            <div *ngIf="isSectorVisible" class="form-group">
-              <label for="sectorName">New Sector</label>
-              <input type="text" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName" name="sectorName"
-                #sectorName="ngModel" required>
-              <div [hidden]="sectorName.valid" class="alert alert-danger">
-                Sector name is required
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="fundsPercentage">Funds Perdentage</label>
-              <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="sectorModel.fundsPercentage" name="fundsPercentage"
-                #fundsPercentage="ngModel" required>
-              <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
-                Funds percentage is required
-              </div>
-            </div>
-          
-            <div class="form-group">
-              <label for="currency">Currency</label>
-              <select class="form-control" id="currency" [(ngModel)]="sectorModel.currency" name="currency" #currency="ngModel"
-                required>
-                <option *ngFor="let currency of currencyList" [value]="currency">{{currency}}</option>
-              </select>
-              <div [hidden]="currency.valid" class="alert alert-danger">
-                Currency is required
-              </div>
-            </div>
-          
-            <div class="form-group">
-              <label for="exchangeRate">Exchange Rate</label>
-              <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="sectorModel.exchangeRate" name="exchangeRate"
-                maxlength="9" #exchangeRate="ngModel" />
-            </div>
-          
-            <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectSectorText}}</button>
-          </form>
-
-        </div>
-      </div>
-
-      <div class="card card-signin">
-        <div class="card-body iati-box">
+        <div class="card card-signin">
+          <div class="card-body iati-box">
             <h5 class="card-title text-center">Project Sectors</h5>
             <table class="table table-bordered">
               <tr>
@@ -311,14 +316,168 @@
                 </td>
               </tr>
             </table>
+          </div>
         </div>
+
       </div>
 
     </div>
+    <!--End of data entry tab-->
+    <!--End of Sectors Tab-->
 
-  </div>
-  <!--End of data entry tab-->
-  <!--End of Sectors Tab-->
+    <!--Locations tab for projects-->
+    <div *ngIf="currentTab == 'location'" class="row">
+
+        <div class="col-md-6 col-sm-6">
+  
+          <div class="col-md-12">
+            <div class="card card-signin my-5">
+              <div class="card-body">
+                <h5 class="card-title text-center">Locations from AIMS</h5>
+                <table class="table table-bordered">
+                  <tr *ngFor="let project of aimsProjects">
+                    <td>
+                      <b>Project Title: </b>{{project.title}}<br />
+                      <table *ngIf="project.locations.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Location</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let location of project.locations">
+                          <td>
+                            {{location.location}}
+                          </td>
+                          <td>
+                            <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)" class="btn btn-success btn-sm">Enter</button>
+                          </td>
+                        </tr>
+                      </table>
+                      <span *ngIf="project.locations.length == 0">No locations avaialble</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-12">
+            <div class="card card-signin my-5">
+              <div class="card-body">
+                <h5 class="card-title text-center">Locations from IATI</h5>
+                <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                  <tr *ngFor="let project of iatiProjects">
+                    <td>
+                      <b>Project: </b>{{project.title}}<br />
+                      <table *ngIf="project.locations.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Location</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let location of project.locations">
+                          <td>
+                            {{location.location}}
+                          </td>
+                          <td>
+                            <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATISector($event)" class="btn btn-success btn-sm">Enter</button>
+                          </td>
+                        </tr>
+                      </table>
+                      <span *ngIf="project.locations.length == 0">No locations avaialble</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+  
+        <!--Selected Locations List-->
+        <div class="col-md-6 col-sm-6">
+  
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Manage Locations</h5>
+              <form *ngIf="locationsList.length > 0" class="form-signin" [formGroup]='locationSelectionForm'>
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="{{locationPlaceHolder}}" aria-label="Location Name" [matAutocomplete]="auto"
+                    [formControl]="locationInput">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayLocationFn.bind(this)">
+                    <mat-option *ngFor="let location of locationsList" [value]="location">
+                      <span>{{location.location}}</span>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </form>
+  
+              <form class="form-signin" (ngSubmit)="saveProjectLocation()" #projectLocationForm="ngForm">
+  
+                <div class="form-group">
+                  <label for="fundsPercentage">Funds Perdentage</label>
+                  <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="locationModel.fundsPercentage"
+                    name="fundsPercentage" #fundsPercentage="ngModel" required>
+                  <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
+                    Funds percentage is required
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label for="currency">Currency</label>
+                  <select class="form-control" id="currency" [(ngModel)]="sectorModel.currency" name="currency" #currency="ngModel"
+                    required>
+                    <option *ngFor="let currency of currencyList" [value]="currency">{{currency}}</option>
+                  </select>
+                  <div [hidden]="currency.valid" class="alert alert-danger">
+                    Currency is required
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label for="exchangeRate">Exchange Rate</label>
+                  <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="sectorModel.exchangeRate" name="exchangeRate"
+                    maxlength="9" #exchangeRate="ngModel" />
+                </div>
+  
+                <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                  type="submit">{{btnProjectLocationText}}</button>
+              </form>
+  
+            </div>
+          </div>
+  
+          <div class="card card-signin">
+            <div class="card-body iati-box">
+              <h5 class="card-title text-center">Project Sectors</h5>
+              <table class="table table-bordered">
+                <tr>
+                  <th>Sector</th>
+                  <th>Fund %</th>
+                  <th>Currency</th>
+                  <th>Ex. Rate</th>
+                  <th>Action</th>
+                </tr>
+                <tr *ngFor="let sector of currentProjectSectorsList">
+                  <td>{{sector.sector}}</td>
+                  <td>{{sector.fundsPercentage}}</td>
+                  <td>{{sector.currency}}</td>
+                  <td>{{sector.exchangeRate}}</td>
+                  <td>
+                    <button id="dsec-{{activeProjectId}}-{{sector.sectorId}}" (click)="deleteProjectSector($event)" class="btn btn-danger btn-sm">
+                      <i id="idsec-{{activeProjectId}}-{{sector.sectorId}}" class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+  
+        </div>
+  
+      </div>
+      <!--End of data entry tab-->
+      <!--End of Locations Tab-->
+
+  </block-ui>
 
 </div>
 

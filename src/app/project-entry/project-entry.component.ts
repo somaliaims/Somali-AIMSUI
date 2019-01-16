@@ -11,6 +11,7 @@ import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { LocationService } from '../services/location.service';
 
 @Component({
   selector: 'app-project-entry',
@@ -20,9 +21,11 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 export class ProjectEntryComponent implements OnInit {
   activeProjectId: number = 0;
   selectedSectorId: number = 0;
+  selectedLocationId: number = 0;
   selectedParentSectorId: number = 0;
   btnProjectText: string = 'Save Project';
   btnProjectSectorText: string = 'Save Sector';
+  btnProjectLocationText: string = 'Save Location';
   sectorPlaceHolder: string = 'Enter/Select Sector';
   isProjectBtnDisabled: boolean = false;
   isProjectBtnSectorDisabled: boolean = false;
@@ -37,11 +40,11 @@ export class ProjectEntryComponent implements OnInit {
   currentTab: string = 'project';
   sectorSelectionForm: FormGroup;
   sectorInput = new FormControl();
+  locationSelectionForm: FormGroup;
+  locationInput = new FormControl();
   parentSectorInput = new FormControl();
   sectorEntryType: string = null;
-
-  //Overlay UI blocker
-  @BlockUI() blockUI: NgBlockUI;
+  locationEntryType: string = null;
 
   selectedProjects: any = [];
   selectedProjectSectors: any = [];
@@ -49,10 +52,12 @@ export class ProjectEntryComponent implements OnInit {
   aimsProjects: any = [];
   currencyList: any = [];
   sectorsList: any = [];
+  locationsList: any = [];
   currentProjectSectorsList: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
   sectorModel = { projectId: null, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
+  locationModel = { projectId: null, locationId: 0, location, fundsPercentage: 0.0, currency: 0.0, exchangeRate: 0.0 };
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -62,9 +67,13 @@ export class ProjectEntryComponent implements OnInit {
     { visible: false, identity: 'implementer' }
   ];
 
+  //Overlay UI blocker
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private sectorService: SectorService, 
-    private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent) { }
+    private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent,
+    private locationService: LocationService) { }
 
   ngOnInit() {
     this.requestNo = this.storeService.getCurrentRequestId();
@@ -131,6 +140,7 @@ export class ProjectEntryComponent implements OnInit {
     });
 
     this.loadSectorsList();
+    this.loadLocationsList();
   }
 
   loadIATIProjectsForIds(modelArr: any) {
@@ -161,6 +171,17 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorService.getSectorsList().subscribe(
       data => {
         this.sectorsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  loadLocationsList() {
+    this.locationService.getLocationsList().subscribe(
+      data => {
+        this.locationsList = data;
       },
       error => {
         console.log(error);
@@ -253,17 +274,6 @@ export class ProjectEntryComponent implements OnInit {
       },
       error => {
         console.log(error);
-      }
-    )
-  }
-
-  loadProjectSectors(id) {
-    this.projectService.getProjectSectors(id).subscribe(
-      data => {
-
-      },
-      error => {
-
       }
     )
   }
@@ -384,6 +394,7 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  /** Managing sectors */
   saveProjectSector() {
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
@@ -490,6 +501,57 @@ export class ProjectEntryComponent implements OnInit {
         this.blockUI.stop();
       }
     )
+  }
+  /**End of managing sectors */
+
+  /**Managing Locations */
+  saveProjectLocation() {
+    var activeProject = localStorage.getItem('active-project');
+    var projectId = 0;
+    
+    if (activeProject && activeProject != '0') {
+      projectId = parseInt(activeProject);
+      this.locationModel.projectId = projectId;
+    } else {
+      //Need to show dialog here
+      return false;
+    }
+
+    var projectLocationModel = {
+      projectId: projectId,
+      locationId: this.selectedLocationId,
+      fundsPercentage: this.sectorModel.fundsPercentage,
+      currency: this.sectorModel.currency,
+      exchangeRate: this.sectorModel.exchangeRate
+    };
+
+    var dbLocation = this.locationInput.value;
+    var searchLocation = '';
+    if (dbLocation) {
+      searchLocation = dbLocation.location;
+    }
+    var getLocation = this.locationsList.filter(location => location.location == searchLocation);
+
+    this.blockUI.start('Saving Location...');
+    if (this.locationEntryType == 'iati') {
+      var locationModel = {
+        location: this.locationModel.location,
+      };
+
+      this.locationService.addLocation(locationModel).subscribe(
+        data => {
+          this.sectorModel.sectorId = data;
+          this.selectedSectorId = data;
+          projectLocationModel.locationId = data;
+          this.addProjectSector(projectLocationModel);
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    } else {
+      this.addProjectSector(projectLocationModel);
+    }
   }
 
   /*Reset form states*/
