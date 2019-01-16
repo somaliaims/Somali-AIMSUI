@@ -10,6 +10,7 @@ import { Sector } from '../models/sector-model';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Settings } from '../config/settings';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-project-entry',
@@ -38,6 +39,9 @@ export class ProjectEntryComponent implements OnInit {
   sectorInput = new FormControl();
   parentSectorInput = new FormControl();
   sectorEntryType: string = null;
+
+  //Overlay UI blocker
+  @BlockUI() blockUI: NgBlockUI;
 
   selectedProjects: any = [];
   selectedProjectSectors: any = [];
@@ -68,6 +72,7 @@ export class ProjectEntryComponent implements OnInit {
     if (projectId && projectId != '0') {
       this.isForEdit = true;
       this.activeProjectId = parseInt(projectId);
+      this.model.id = this.activeProjectId;
       this.btnProjectText = 'Edit Project';
       this.loadProjectData(this.activeProjectId);
     }
@@ -335,7 +340,8 @@ export class ProjectEntryComponent implements OnInit {
     this.isProjectBtnDisabled = true;
     if (this.isForEdit) {
       this.btnProjectText = 'Updating...';
-      this.projectService.updateProject(this.model.id, model).subscribe(
+      this.blockUI.start('Updating Project...');
+      this.projectService.updateProject(this.activeProjectId, model).subscribe(
         data => {
           if (!this.isError) {
             var message = 'Project' + Messages.RECORD_UPDATED;
@@ -344,14 +350,17 @@ export class ProjectEntryComponent implements OnInit {
             this.infoModal.openModal();
           } else {
           }
+          this.blockUI.stop();
         },
         error => {
           this.isError = true;
           this.errorMessage = error;
+          this.blockUI.stop();
         }
       );
     } else {
       this.btnProjectText = 'Saving...';
+      this.blockUI.start('Saving Project');
       this.projectService.addProject(model).subscribe(
         data => {
           this.resetProjectEntry();
@@ -363,11 +372,13 @@ export class ProjectEntryComponent implements OnInit {
             this.btnProjectText = 'Edit Project';
           } else {
           }
+          this.blockUI.stop();
         },
         error => {
           this.resetProjectEntry();
           this.errorMessage = error;
           this.isError = true;
+          this.blockUI.stop();
         }
       );
     }
@@ -399,6 +410,8 @@ export class ProjectEntryComponent implements OnInit {
       searchSector = dbSector.sectorName;
     }
     var getSector = this.sectorsList.filter(sector => sector.sectorName == searchSector);
+
+    this.blockUI.start('Saving Sector...');
     if (this.sectorEntryType == 'iati') {
       var sectorModel = {
         sectorName: this.sectorModel.sectorName,
@@ -408,6 +421,7 @@ export class ProjectEntryComponent implements OnInit {
       if (this.selectedSectorId != 0 && getSector.length > 0) {
         sectorModel.parentId = this.selectedSectorId;
       }
+
       this.sectorService.addSector(sectorModel).subscribe(
         data => {
           this.sectorModel.sectorId = data;
@@ -437,7 +451,7 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         var sectorObj = {
           projectId: projectId,
-          sectorId: data,
+          sectorId: model.sectorId,
           sector: this.sectorModel.sectorName,
           fundsPercentage: this.sectorModel.fundsPercentage,
           currency: this.sectorModel.currency,
@@ -445,23 +459,35 @@ export class ProjectEntryComponent implements OnInit {
         };
         this.currentProjectSectorsList.push(sectorObj);
         this.resetSectorEntry();
+        this.blockUI.stop();
+        var message = 'New sector' + Messages.NEW_RECORD;
+        this.infoMessage = message;
+        this.infoModal.openModal();
       },
       error => {
+        console.log(error);
+        this.blockUI.stop();
       }
     )
   }
 
   deleteProjectSector(e) {
-    var arr = e.target.value.split('-');
+    var arr = e.target.id.split('-');
     var projectId = arr[1];
     var sectorId = arr[2];
 
+    this.blockUI.start('Removing Sector...');
     this.projectService.deleteProjectSector(projectId, sectorId).subscribe(
       data => {
-        this.currentProjectSectorsList = this.currentProjectSectorsList.filter(s => s.id != sectorId);
+        this.currentProjectSectorsList = this.currentProjectSectorsList.filter(s => s.sectorId != sectorId);
+        this.blockUI.stop();
+        var message = 'Selected sector ' + Messages.RECORD_DELETED;
+        this.infoMessage = message;
+        this.infoModal.openModal();
       },
       error => {
-
+        console.log(error);
+        this.blockUI.stop();
       }
     )
   }
