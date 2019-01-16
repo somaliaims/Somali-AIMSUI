@@ -398,7 +398,7 @@
           <div class="card card-signin my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Manage Locations</h5>
-              <form *ngIf="locationsList.length > 0" class="form-signin" [formGroup]='locationSelectionForm'>
+              <form class="form-signin" [formGroup]='locationSelectionForm'>
                 <mat-form-field class="example-full-width">
                   <input matInput placeholder="{{locationPlaceHolder}}" aria-label="Location Name" [matAutocomplete]="auto"
                     [formControl]="locationInput">

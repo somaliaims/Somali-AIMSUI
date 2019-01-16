@@ -7,6 +7,7 @@ import { Messages } from '../config/messages';
 import { Router } from '@angular/router';
 import { SectorService } from '../services/sector.service';
 import { Sector } from '../models/sector-model';
+import { Location } from '../models/location-model';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Settings } from '../config/settings';
@@ -27,8 +28,10 @@ export class ProjectEntryComponent implements OnInit {
   btnProjectSectorText: string = 'Save Sector';
   btnProjectLocationText: string = 'Save Location';
   sectorPlaceHolder: string = 'Enter/Select Sector';
+  locationPlaceHolder: string = 'Enter/Select Location';
   isProjectBtnDisabled: boolean = false;
   isProjectBtnSectorDisabled: boolean = false;
+  isProjectLocationBtnDisabled: boolean = false;
   isSectorVisible: boolean = false;
   requestNo: number = 0;
   isError: boolean = false;
@@ -54,10 +57,11 @@ export class ProjectEntryComponent implements OnInit {
   sectorsList: any = [];
   locationsList: any = [];
   currentProjectSectorsList: any = [];
+  currentProjectLocationsList: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
   sectorModel = { projectId: null, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
-  locationModel = { projectId: null, locationId: 0, location, fundsPercentage: 0.0, currency: 0.0, exchangeRate: 0.0 };
+  locationModel = { projectId: null, locationId: 0, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -89,6 +93,10 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorSelectionForm = this.fb.group({
       sectorInput: null,
       parentSectorInput: null
+    });
+
+    this.locationSelectionForm = this.fb.group({
+      locationInput: null,
     });
 
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
@@ -314,7 +322,7 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
-  /*Project sectors functions*/
+  /*Project sectors filtering and display functions*/
   displaySectorFn(sector?: Sector): string | undefined {
     if (sector) {
       this.selectedSectorId = sector.id;
@@ -331,7 +339,26 @@ export class ProjectEntryComponent implements OnInit {
       return this.sectorsList.filter(sector => sector.sectorName.toLowerCase().indexOf(filterValue) !== -1);
     }
   }
-  /*End of project sectors functions*/
+  /*End of project sectors filtering and display functions*/
+
+  /*Project locations filtering and display functions*/
+  displayLocationFn(location?: Location): string | undefined {
+    if (location) {
+      this.selectedLocationId = location.id;
+    } else {
+      this.selectedLocationId = 0;
+    }
+    return location ? location.location : undefined;
+  }
+
+  private filterLocations(value: string): Location[] {
+    if (typeof value != "string") {
+    } else {
+      const filterValue = value.toLowerCase();
+      return this.locationsList.filter(location => location.location.toLowerCase().indexOf(filterValue) !== -1);
+    }
+  }
+  /*End of project locations filtering and display functions*/
 
   /* Saving different section of project */
   saveProject() {
@@ -531,27 +558,64 @@ export class ProjectEntryComponent implements OnInit {
       searchLocation = dbLocation.location;
     }
     var getLocation = this.locationsList.filter(location => location.location == searchLocation);
-
+    if (getLocation && getLocation.length > 0) {
+      projectLocationModel.locationId = getLocation[0].id;
+    }
     this.blockUI.start('Saving Location...');
-    if (this.locationEntryType == 'iati') {
+    if (this.locationEntryType == null || this.locationEntryType == 'iati') {
       var locationModel = {
-        location: this.locationModel.location,
+        location: dbLocation,
+        latitude: this.locationModel.latitude,
+        longitude: this.locationModel.longitude
       };
 
       this.locationService.addLocation(locationModel).subscribe(
         data => {
-          this.sectorModel.sectorId = data;
-          this.selectedSectorId = data;
+          this.locationModel.locationId = data;
+          this.selectedLocationId = data;
           projectLocationModel.locationId = data;
-          this.addProjectSector(projectLocationModel);
+          this.addProjectLocation(projectLocationModel);
         },
         error => {
           console.log(error);
         }
       )
     } else {
-      this.addProjectSector(projectLocationModel);
+      this.addProjectLocation(projectLocationModel);
     }
+  }
+
+  addProjectLocation(model: any) {
+    var activeProject = localStorage.getItem('active-project');
+    var projectId = 0;
+    
+    if (activeProject && activeProject != '0') {
+      projectId = parseInt(activeProject);
+      this.locationModel.projectId = projectId;
+    }
+
+    this.projectService.addProjectLocation(model).subscribe(
+      data => {
+        var locationObj = {
+          projectId: projectId,
+          sectorId: model.sectorId,
+          location: this.locationModel.location,
+          fundsPercentage: this.sectorModel.fundsPercentage,
+          currency: this.sectorModel.currency,
+          exchangeRate: this.sectorModel.exchangeRate
+        };
+        this.currentProjectLocationsList.push(locationObj);
+        this.resetLocationEntry();
+        this.blockUI.stop();
+        var message = 'New location' + Messages.NEW_RECORD;
+        this.infoMessage = message;
+        this.infoModal.openModal();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
   }
 
   /*Reset form states*/
@@ -570,6 +634,15 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorModel.projectId = 0;
     this.sectorModel.sectorId = 0;
     this.sectorModel.sectorName = '';
+  }
+
+  resetLocationEntry() {
+    this.locationModel.currency = '';
+    this.locationModel.exchangeRate = 0.00;
+    this.locationModel.fundsPercentage = 0.00;
+    this.locationModel.projectId = 0;
+    this.locationModel.locationId = 0;
+    this.locationModel.location = '';
   }
 
 }
