@@ -19,10 +19,10 @@
     </div>
     <form class="form-signin margin-top-10" #projectForm="ngForm">
       <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
-        <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (change)="filterMatchingProjects($event)"
-          [(ngModel)]="model.title" name="title" #title="ngModel" required>
+        <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (input)="filterMatchingProjects($event)"
+          [(ngModel)]="model.title" (change)="searchAIMSProject()" name="title" #title="ngModel" required>
         <span class="input-group-btn">
-          <button class="btn btn-info" (click)="proceedToDataEntry()">Proceed</button>
+          <button [class.disable]='isSearchingProjects' class="btn btn-info" (click)="proceedToDataEntry()">Proceed</button>
         </span>
       </div>
     </form>

@@ -37,6 +37,10 @@ export class NewProjectComponent implements OnInit {
   isSearchedResults: boolean = false;
   startDateModel: NgbDateStruct;
   projectIdCounter: number = 0;
+  timerCounter: number = 0;
+  timeoutForSearch: number = 2000;
+  isAIMSSearchInProgress: boolean = false;
+  timer: any = null;
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
@@ -79,14 +83,18 @@ export class NewProjectComponent implements OnInit {
     )
   }
 
+  startTimer() {
+    this.timer = setInterval(() => {
+      this.timerCounter++;
+    }, 1000);
+  }
+
   filterMatchingProjects(e) {
-    this.searchProjects();
     this.isIATILoading = true;
     var str = e.target.value.toLowerCase();
     if (this.iatiProjects.length > 0) {
       this.filteredIatiProjects = this.iatiProjects.filter(project =>
         project.title.toLowerCase().indexOf(str) != -1);
-      
     }
     this.isIATILoading = false;
   }
@@ -123,7 +131,7 @@ export class NewProjectComponent implements OnInit {
     }
   }
 
-  searchProjects() {
+  searchAIMSProject() {
     if (this.model.title != null) {
       this.isSearchingProjects = true;
       

@@ -47,7 +47,7 @@ export class ProjectEntryComponent implements OnInit {
   locationInput = new FormControl();
   parentSectorInput = new FormControl();
   sectorEntryType: string = null;
-  locationEntryType: string = null;
+  locationEntryType: string = 'aims';
 
   selectedProjects: any = [];
   selectedProjectSectors: any = [];
@@ -61,7 +61,7 @@ export class ProjectEntryComponent implements OnInit {
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
   sectorModel = { projectId: null, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
-  locationModel = { projectId: null, locationId: 0, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
+  locationModel = { projectId: null, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -261,6 +261,45 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  enterIATILocation(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var location = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var locations = selectProject[0].locations;
+      this.locationEntryType = 'iati';
+      var selectLocation = locations.filter(s => s.name == location);
+      if (selectLocation && selectLocation.length > 0) {
+        this.locationModel.location = selectLocation[0].name;
+        this.locationModel.latitude = selectLocation[0].latitude;
+        this.locationModel.longitude = selectLocation[0].longitude;
+      }
+    }
+  }
+
+  enterAIMSLocation(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var locationId = arr[2];
+
+    var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var locations = selectProject[0].locations;
+      if (locations && locations.length > 0) {
+        var selectLocation = locations.filter(l => l.id == locationId);
+        if (selectLocation && selectLocation.length > 0) {
+          this.locationEntryType = 'aims';
+          var dbLocation = this.locationsList.filter(l => l.location == selectLocation[0].name);
+          if (dbLocation) {
+            this.locationModel.locationId = dbLocation[0].id;
+          }
+        }
+      }
+    }
+  }
+
   loadProjectData(id: number) {
     this.projectService.getProjectProfileReport(id.toString()).subscribe(
       result => {
@@ -277,6 +316,10 @@ export class ProjectEntryComponent implements OnInit {
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
             this.currentProjectSectorsList = data.sectors;
+          }
+
+          if (data.locations && data.locations.length > 0) {
+            this.currentProjectLocationsList = data.locations;
           }
         }
       },
@@ -546,25 +589,29 @@ export class ProjectEntryComponent implements OnInit {
 
     var projectLocationModel = {
       projectId: projectId,
-      locationId: this.selectedLocationId,
-      fundsPercentage: this.sectorModel.fundsPercentage,
-      currency: this.sectorModel.currency,
-      exchangeRate: this.sectorModel.exchangeRate
+      locationId: this.locationModel.locationId,
+      fundsPercentage: this.locationModel.fundsPercentage,
     };
 
-    var dbLocation = this.locationInput.value;
-    var searchLocation = '';
-    if (dbLocation) {
-      searchLocation = dbLocation.location;
+    var searchLocation = this.locationModel.location;
+    if (searchLocation != '') {
+      var getLocation = this.locationsList.filter(location => location.location == searchLocation);
+      if (getLocation && getLocation.length > 0) {
+        projectLocationModel.locationId = getLocation[0].id;
+      }
     }
-    var getLocation = this.locationsList.filter(location => location.location == searchLocation);
-    if (getLocation && getLocation.length > 0) {
-      projectLocationModel.locationId = getLocation[0].id;
+
+    if (this.locationModel.locationId != 0 || this.locationModel.locationId != null) {
+      var getLocation = this.locationsList.filter(location => location.id == this.locationModel.locationId);
+      if (getLocation && getLocation.length > 0) {
+        this.locationModel.location = getLocation[0].location;
+      }
     }
+    
     this.blockUI.start('Saving Location...');
-    if (this.locationEntryType == null || this.locationEntryType == 'iati') {
+    if (this.locationEntryType == 'iati' && projectLocationModel.locationId <= 0) {
       var locationModel = {
-        location: dbLocation,
+        location: searchLocation,
         latitude: this.locationModel.latitude,
         longitude: this.locationModel.longitude
       };
@@ -597,12 +644,11 @@ export class ProjectEntryComponent implements OnInit {
     this.projectService.addProjectLocation(model).subscribe(
       data => {
         var locationObj = {
+          id: this.locationModel.locationId,
           projectId: projectId,
           sectorId: model.sectorId,
           location: this.locationModel.location,
-          fundsPercentage: this.sectorModel.fundsPercentage,
-          currency: this.sectorModel.currency,
-          exchangeRate: this.sectorModel.exchangeRate
+          fundsPercentage: this.locationModel.fundsPercentage,
         };
         this.currentProjectLocationsList.push(locationObj);
         this.resetLocationEntry();
@@ -617,6 +663,28 @@ export class ProjectEntryComponent implements OnInit {
       }
     )
   }
+
+  deleteProjectLocation(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var locationId = arr[2];
+
+    this.blockUI.start('Removing Location...');
+    this.projectService.deleteProjectLocation(projectId, locationId).subscribe(
+      data => {
+        this.currentProjectLocationsList = this.currentProjectLocationsList.filter(l => l.id != locationId);
+        this.blockUI.stop();
+        var message = 'Selected location ' + Messages.RECORD_DELETED;
+        this.infoMessage = message;
+        this.infoModal.openModal();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+  /**End of managing project locations */
 
   /*Reset form states*/
   resetProjectEntry() {
@@ -637,8 +705,6 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   resetLocationEntry() {
-    this.locationModel.currency = '';
-    this.locationModel.exchangeRate = 0.00;
     this.locationModel.fundsPercentage = 0.00;
     this.locationModel.projectId = 0;
     this.locationModel.locationId = 0;

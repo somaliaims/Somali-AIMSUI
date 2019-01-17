@@ -375,10 +375,10 @@
                         </tr>
                         <tr *ngFor="let location of project.locations">
                           <td>
-                            {{location.location}}
+                            {{location.name}}
                           </td>
                           <td>
-                            <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATISector($event)" class="btn btn-success btn-sm">Enter</button>
+                            <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATILocation($event)" class="btn btn-success btn-sm">Enter</button>
                           </td>
                         </tr>
                       </table>
@@ -398,7 +398,7 @@
           <div class="card card-signin my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Manage Locations</h5>
-              <form class="form-signin" [formGroup]='locationSelectionForm'>
+              <!--<form class="form-signin" [formGroup]='locationSelectionForm'>
                 <mat-form-field class="example-full-width">
                   <input matInput placeholder="{{locationPlaceHolder}}" aria-label="Location Name" [matAutocomplete]="auto"
                     [formControl]="locationInput">
@@ -408,10 +408,30 @@
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
-              </form>
+              </form>-->
   
               <form class="form-signin" (ngSubmit)="saveProjectLocation()" #projectLocationForm="ngForm">
-  
+                
+                <div *ngIf="locationEntryType == 'aims'" class="form-group">
+                  <label for="locationId">AIMS Locations</label>
+                  <select class="form-control" id="locationId" [(ngModel)]="locationModel.locationId" name="locationId"
+                    #locationId="ngModel" required>
+                    <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
+                  </select>
+                  <div [hidden]="locationId.valid" class="alert alert-danger">
+                    Location is required
+                  </div>
+                </div>
+
+                <div *ngIf="locationEntryType == 'iati'" class="form-group">
+                  <label for="location">New Location</label>
+                  <input type="text" class="form-control" id="location" [(ngModel)]="locationModel.location"
+                    name="location" #location="ngModel" required>
+                  <div [hidden]="location.valid" class="alert alert-danger">
+                    Location is required
+                  </div>
+                </div>
+
                 <div class="form-group">
                   <label for="fundsPercentage">Funds Perdentage</label>
                   <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="locationModel.fundsPercentage"
@@ -420,25 +440,21 @@
                     Funds percentage is required
                   </div>
                 </div>
-  
+
                 <div class="form-group">
-                  <label for="currency">Currency</label>
-                  <select class="form-control" id="currency" [(ngModel)]="sectorModel.currency" name="currency" #currency="ngModel"
-                    required>
-                    <option *ngFor="let currency of currencyList" [value]="currency">{{currency}}</option>
-                  </select>
-                  <div [hidden]="currency.valid" class="alert alert-danger">
-                    Currency is required
-                  </div>
+                  <label for="latitude">Latitude</label>
+                  <input type="number" class="form-control" id="latitude" [(ngModel)]="locationModel.latitude"
+                    name="latitude" #latitude="ngModel" maxlength="10" required>
                 </div>
-  
+
                 <div class="form-group">
-                  <label for="exchangeRate">Exchange Rate</label>
-                  <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="sectorModel.exchangeRate" name="exchangeRate"
-                    maxlength="9" #exchangeRate="ngModel" />
+                  <label for="longitude">Longitude</label>
+                  <input type="number" class="form-control" id="longitude" [(ngModel)]="locationModel.longitude"
+                    name="latitude" #longitude="ngModel" maxlength="10" required>
                 </div>
+                
   
-                <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                <button [class.disable]="isProjectLocationBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                   type="submit">{{btnProjectLocationText}}</button>
               </form>
   
@@ -447,23 +463,19 @@
   
           <div class="card card-signin">
             <div class="card-body iati-box">
-              <h5 class="card-title text-center">Project Sectors</h5>
+              <h5 class="card-title text-center">Project Locations</h5>
               <table class="table table-bordered">
                 <tr>
-                  <th>Sector</th>
+                  <th>Location</th>
                   <th>Fund %</th>
-                  <th>Currency</th>
-                  <th>Ex. Rate</th>
                   <th>Action</th>
                 </tr>
-                <tr *ngFor="let sector of currentProjectSectorsList">
-                  <td>{{sector.sector}}</td>
-                  <td>{{sector.fundsPercentage}}</td>
-                  <td>{{sector.currency}}</td>
-                  <td>{{sector.exchangeRate}}</td>
+                <tr *ngFor="let location of currentProjectLocationsList">
+                  <td>{{location.location}}</td>
+                  <td>{{location.fundsPercentage}}</td>
                   <td>
-                    <button id="dsec-{{activeProjectId}}-{{sector.sectorId}}" (click)="deleteProjectSector($event)" class="btn btn-danger btn-sm">
-                      <i id="idsec-{{activeProjectId}}-{{sector.sectorId}}" class="fa fa-trash"></i>
+                    <button id="dloc-{{activeProjectId}}-{{location.id}}" (click)="deleteProjectLocation($event)" class="btn btn-danger btn-sm">
+                      <i id="idloc-{{activeProjectId}}-{{location.id}}" class="fa fa-trash"></i>
                     </button>
                   </td>
                 </tr>
