@@ -441,13 +441,13 @@
                   </div>
                 </div>
 
-                <div class="form-group">
+                <div *ngIf="locationEntryType == 'iati'" class="form-group">
                   <label for="latitude">Latitude</label>
                   <input type="number" class="form-control" id="latitude" [(ngModel)]="locationModel.latitude"
                     name="latitude" #latitude="ngModel" maxlength="10" required>
                 </div>
 
-                <div class="form-group">
+                <div *ngIf="locationEntryType == 'iati'" class="form-group">
                   <label for="longitude">Longitude</label>
                   <input type="number" class="form-control" id="longitude" [(ngModel)]="locationModel.longitude"
                     name="latitude" #longitude="ngModel" maxlength="10" required>
@@ -468,11 +468,15 @@
                 <tr>
                   <th>Location</th>
                   <th>Fund %</th>
+                  <th>Latitude</th>
+                  <th>Longitude</th>
                   <th>Action</th>
                 </tr>
                 <tr *ngFor="let location of currentProjectLocationsList">
                   <td>{{location.location}}</td>
                   <td>{{location.fundsPercentage}}</td>
+                  <td>{{location.latitude}}</td>
+                  <td>{{location.longitude}}</td>
                   <td>
                     <button id="dloc-{{activeProjectId}}-{{location.id}}" (click)="deleteProjectLocation($event)" class="btn btn-danger btn-sm">
                       <i id="idloc-{{activeProjectId}}-{{location.id}}" class="fa fa-trash"></i>

@@ -291,7 +291,7 @@ export class ProjectEntryComponent implements OnInit {
         var selectLocation = locations.filter(l => l.id == locationId);
         if (selectLocation && selectLocation.length > 0) {
           this.locationEntryType = 'aims';
-          var dbLocation = this.locationsList.filter(l => l.location == selectLocation[0].name);
+          var dbLocation = this.locationsList.filter(l => l.location == selectLocation[0].location);
           if (dbLocation) {
             this.locationModel.locationId = dbLocation[0].id;
           }
@@ -648,6 +648,8 @@ export class ProjectEntryComponent implements OnInit {
           projectId: projectId,
           sectorId: model.sectorId,
           location: this.locationModel.location,
+          latitude: this.locationModel.latitude,
+          longitude: this.locationModel.longitude,
           fundsPercentage: this.locationModel.fundsPercentage,
         };
         this.currentProjectLocationsList.push(locationObj);
