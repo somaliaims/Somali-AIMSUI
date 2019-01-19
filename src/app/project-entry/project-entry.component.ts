@@ -14,6 +14,7 @@ import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { LocationService } from '../services/location.service';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { OrganizationService } from '../services/organization-service';
 
 @Component({
   selector: 'app-project-entry',
@@ -61,6 +62,7 @@ export class ProjectEntryComponent implements OnInit {
   currencyList: any = [];
   sectorsList: any = [];
   locationsList: any = [];
+  organizationsList: any = [];
   currentProjectSectorsList: any = [];
   currentProjectLocationsList: any = [];
   currentProjectDocumentsList: any = [];
@@ -84,7 +86,8 @@ export class ProjectEntryComponent implements OnInit {
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private sectorService: SectorService, 
     private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent,
-    private locationService: LocationService, private securityService: SecurityHelperService) { }
+    private locationService: LocationService, private securityService: SecurityHelperService,
+    private organizationService: OrganizationService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -202,6 +205,17 @@ export class ProjectEntryComponent implements OnInit {
     this.locationService.getLocationsList().subscribe(
       data => {
         this.locationsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  loadOrganizationsList() {
+    this.organizationService.getOrganizationsList().subscribe(
+      data => {
+        this.organizationsList = data;
       },
       error => {
         console.log(error);
