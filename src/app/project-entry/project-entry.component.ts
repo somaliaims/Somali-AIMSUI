@@ -13,6 +13,7 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { LocationService } from '../services/location.service';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-project-entry',
@@ -27,11 +28,13 @@ export class ProjectEntryComponent implements OnInit {
   btnProjectText: string = 'Save Project';
   btnProjectSectorText: string = 'Save Sector';
   btnProjectLocationText: string = 'Save Location';
+  btnProjectDocumentText: string = 'Save Document';
   sectorPlaceHolder: string = 'Enter/Select Sector';
   locationPlaceHolder: string = 'Enter/Select Location';
   isProjectBtnDisabled: boolean = false;
   isProjectBtnSectorDisabled: boolean = false;
   isProjectLocationBtnDisabled: boolean = false;
+  isProjectDocumentBtnDisabled: boolean = false;
   isSectorVisible: boolean = false;
   requestNo: number = 0;
   isError: boolean = false;
@@ -48,7 +51,9 @@ export class ProjectEntryComponent implements OnInit {
   parentSectorInput = new FormControl();
   sectorEntryType: string = null;
   locationEntryType: string = 'aims';
+  documentEntryType: string = 'aims';
 
+  permissions: any = [];
   selectedProjects: any = [];
   selectedProjectSectors: any = [];
   iatiProjects: any = [];
@@ -58,10 +63,12 @@ export class ProjectEntryComponent implements OnInit {
   locationsList: any = [];
   currentProjectSectorsList: any = [];
   currentProjectLocationsList: any = [];
+  currentProjectDocumentsList: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
   sectorModel = { projectId: null, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
   locationModel = { projectId: null, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
+  documentModel = { id: 0, projectId: null, documentTitle: null, documentUrl: null };
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -77,9 +84,14 @@ export class ProjectEntryComponent implements OnInit {
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private sectorService: SectorService, 
     private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent,
-    private locationService: LocationService) { }
+    private locationService: LocationService, private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditProject) {
+      this.router.navigateByUrl('projects');
+    }
+
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
     if (projectId && projectId != '0') {
@@ -300,6 +312,46 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  enterIATIDocument(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var documentId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var documents = selectProject[0].documents;
+      this.documentEntryType = 'iati';
+      var selectDocument = documents.filter(d => d.id == documentId);
+      if (selectDocument && selectDocument.length > 0) {
+        this.documentModel.id = selectDocument[0].id;
+        this.documentModel.documentTitle = selectDocument[0].documentTitle;
+        this.documentModel.documentUrl = selectDocument[0].documentUrl;
+      }
+    }
+  }
+
+  enterAIMSDocument(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var documentId = arr[2];
+
+    var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var documents = selectProject[0].documents;
+      if (documents && documents.length > 0) {
+        var selectDocument = documents.filter(d => d.id == documentId);
+        if (selectDocument && selectDocument.length > 0) {
+          this.locationEntryType = 'aims';
+          var dbDocument = documents.filter(d => d.id == documentId);
+          if (dbDocument) {
+            this.documentModel.documentTitle = dbDocument[0].documentTitle;
+            this.documentModel.documentUrl = dbDocument[0].documentUrl;
+          }
+        }
+      }
+    }
+  }
+
   loadProjectData(id: number) {
     this.projectService.getProjectProfileReport(id.toString()).subscribe(
       result => {
@@ -320,6 +372,10 @@ export class ProjectEntryComponent implements OnInit {
 
           if (data.locations && data.locations.length > 0) {
             this.currentProjectLocationsList = data.locations;
+          }
+
+          if (data.documents && data.documents.length > 0) {
+            this.currentProjectDocumentsList = data.documents;
           }
         }
       },
@@ -428,7 +484,9 @@ export class ProjectEntryComponent implements OnInit {
             this.infoMessage = message;
             this.activeProjectId = data;
             this.infoModal.openModal();
+            this.resetProjectEntry();
           } else {
+            this.resetProjectEntry();
           }
           this.blockUI.stop();
         },
@@ -688,9 +746,70 @@ export class ProjectEntryComponent implements OnInit {
   }
   /**End of managing project locations */
 
+
+  /**Managing Locations */
+  saveProjectDocument() {
+    var activeProject = localStorage.getItem('active-project');
+    var projectId = 0;
+    
+    if (activeProject && activeProject != '0') {
+      projectId = parseInt(activeProject);
+      this.documentModel.projectId = projectId;
+    } else {
+      //Need to show dialog here
+      return false;
+    }
+    
+    var model = {
+      id: 0,
+      projectId: this.documentModel.projectId,
+      documentTitle: this.documentModel.documentTitle,
+      documentUrl: this.documentModel.documentUrl
+    }
+    this.blockUI.start('Saving Document...');
+    this.projectService.addProjectDocument(model).subscribe(
+      data => {
+        model.id = data;
+        this.currentProjectDocumentsList.push(model);
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+
+
+  deleteProjectDocument(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var documentId = arr[2];
+
+    this.blockUI.start('Removing Document...');
+    this.projectService.deleteProjectDocument(documentId).subscribe(
+      data => {
+        this.currentProjectDocumentsList = this.currentProjectDocumentsList.filter(d => d.id != documentId);
+        this.blockUI.stop();
+        var message = 'Selected document ' + Messages.RECORD_DELETED;
+        this.infoMessage = message;
+        this.infoModal.openModal();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+  /**End of managing project documents */
+
   /*Reset form states*/
   resetProjectEntry() {
-    this.btnProjectText = 'Save Project';
+    if (this.activeProjectId != null && this.activeProjectId != 0) {
+      this.btnProjectText = 'Edit Project';
+    } else {
+      this.btnProjectText = 'Save Project';
+    }
     this.isProjectBtnDisabled = false;
   }
 

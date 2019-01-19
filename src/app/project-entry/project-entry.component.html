@@ -493,6 +493,142 @@
       <!--End of data entry tab-->
       <!--End of Locations Tab-->
 
+    <!--Documents tab for projects-->
+    <div *ngIf="currentTab == 'document'" class="row">
+
+      <div class="col-md-6 col-sm-6">
+
+        <div class="col-md-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Documents from AIMS</h5>
+              <table class="table table-bordered">
+                <tr *ngFor="let project of aimsProjects">
+                  <td>
+                    <b>Project Title: </b>{{project.title}}<br />
+                    <table *ngIf="project.documents.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Document Title</th>
+                        <th>Url</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let document of project.documents">
+                        <td>
+                          {{document.documentTitle}}
+                        </td>
+                        <td>
+                          {{document.documentUrl}}
+                        </td>
+                        <td>
+                          <button id="aDocument-{{activeProjectId}}-{{document.id}}" (click)="enterAIMSDocument($event)" class="btn btn-success btn-sm">Enter</button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span *ngIf="project.documents.length == 0">No documents avaialble</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Documents from IATI</h5>
+              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <b>Project: </b>{{project.title}}<br />
+                    <table *ngIf="project.documents.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Document Title</th>
+                        <th>Document Url</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let document of project.documents">
+                        <td>
+                          {{document.documentTitle}}
+                        </td>
+                        <td>
+                          {{document.documentUrl}}
+                        </td>
+                        <td>
+                          <button id="ddocument-{{document.id}}" (click)="enterIATIDocument($event)" class="btn btn-success btn-sm">Enter</button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span *ngIf="project.documents.length == 0">No documents available</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!--Selected Documents List-->
+      <div class="col-md-6 col-sm-6">
+
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Manage Documents</h5>
+            <form class="form-signin" (ngSubmit)="saveProjectDocument()" #projectDocumentForm="ngForm">
+              
+              <div class="form-group">
+                <label for="documentTitle">Document Title</label>
+                <input type="text" class="form-control" id="documentTitle" [(ngModel)]="documentModel.documentTitle"
+                  name="documentTitle" #documentTitle="ngModel" required>
+                <div [hidden]="documentTitle.valid" class="alert alert-danger">
+                  Document Title is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="documentUrl">Document Url</label>
+                <input type="text" class="form-control" id="documentUrl" [(ngModel)]="documentModel.documentUrl"
+                  name="documentUrl" #documentUrl="ngModel" required>
+                <div [hidden]="documentUrl.valid" class="alert alert-danger">
+                  Document url is required
+                </div>
+              </div>
+
+              <button [class.disable]="isProjectDocumentBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">Save Document</button>
+            </form>
+
+          </div>
+        </div>
+
+        <div class="card card-signin">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Project Documents</h5>
+            <table class="table table-bordered">
+              <tr>
+                <th>Document Title</th>
+                <th>Url</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let document of currentProjectDocumentsList">
+                <td>{{document.documentTitle}}</td>
+                <td>{{document.documentUrl}}</td>
+                <td>
+                  <button id="ddocument-{{activeProjectId}}-{{document.id}}" (click)="deleteProjectDocument($event)" class="btn btn-danger btn-sm">
+                    <i id="idocument-{{activeProjectId}}-{{document.id}}" class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!--End of data entry tab-->
+    <!--End of Locations Tab-->
+
   </block-ui>
 
 </div>

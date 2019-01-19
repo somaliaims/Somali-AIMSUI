@@ -27,10 +27,6 @@ export class NewProjectComponent implements OnInit {
   counter: number = 0;
   btnText: string = 'Add Project';
   errorMessage: string = '';
-  iatiProjects: any = [];
-  filteredIatiProjects: any = [];
-  matchingProjects: any = [];
-  selectedProjects: any = [];
   requestNo: number = 0;
   isError: boolean = false;
   isSearchingProjects: boolean = false;
@@ -41,15 +37,27 @@ export class NewProjectComponent implements OnInit {
   timeoutForSearch: number = 2000;
   isAIMSSearchInProgress: boolean = false;
   timer: any = null;
+
+  permissions: any = [];
+  iatiProjects: any = [];
+  filteredIatiProjects: any = [];
+  matchingProjects: any = [];
+  selectedProjects: any = [];
+
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
     private storeService: StoreService, private iatiService: IATIService,
-    private modalService: ModalService) {
+    private modalService: ModalService, private securityService: SecurityHelperService) {
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditProject) {
+      this.router.navigateByUrl('projects');
+    }
+
     this.requestNo = this.storeService.getCurrentRequestId();
     this.loadIATIProjects();
     this.storeService.currentRequestTrack.subscribe(model => {
