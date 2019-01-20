@@ -73,7 +73,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
-  funderModel = { id: 0, projectId: 0, funderName: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
+  funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -380,7 +380,7 @@ export class ProjectEntryComponent implements OnInit {
       this.funderEntryType = 'iati';
       var selectFunder = funders.filter(f => f.id == funderId);
       if (selectFunder && selectFunder.length > 0) {
-        this.funderModel.funderName = selectFunder[0].name;
+        this.funderModel.funder = selectFunder[0].name;
       }
     }
   }
@@ -430,6 +430,10 @@ export class ProjectEntryComponent implements OnInit {
 
           if (data.documents && data.documents.length > 0) {
             this.currentProjectDocumentsList = data.documents;
+          }
+
+          if (data.funders && data.funders.length > 0) {
+            this.currentProjectFundersList = data.funders;
           }
         }
       },
@@ -873,6 +877,7 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Saving Funder...');
     var model = {
       id: 0,
+      funder: this.funderModel.funder,
       projectId: this.funderModel.projectId,
       funderId: this.funderModel.funderId,
       amount: this.funderModel.amount,
@@ -881,12 +886,12 @@ export class ProjectEntryComponent implements OnInit {
     }
 
     if (this.funderEntryType == 'iati') {
-      if (this.funderModel.funderName == null || this.funderModel.funderName.length == 0) {
+      if (this.funderModel.funder == null || this.funderModel.funder.length == 0) {
         //Show error dialog
         return false;
       } else {
         var funderModel = {
-          Name: this.funderModel.funderName
+          Name: this.funderModel.funder
         }
         this.organizationService.addOrganization(funderModel).subscribe(
           data => {
@@ -899,6 +904,10 @@ export class ProjectEntryComponent implements OnInit {
         )
       }
     } else {
+      var selectedFunder = this.organizationsList.filter(f => f.id == this.funderModel.funderId);
+      if (selectedFunder && selectedFunder.length > 0) {
+        this.funderModel.funder = selectedFunder[0].organizationName;
+      }
       this.addProjectFunder(model);
     }
   }
