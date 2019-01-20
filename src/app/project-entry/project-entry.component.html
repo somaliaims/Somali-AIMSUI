@@ -671,7 +671,7 @@
                           {{funder.name}}
                         </td>
                         <td>
-                          <button id="dfunder-{{funder.id}}" (click)="enterIATIDocument($event)" class="btn btn-success btn-sm">Enter</button>
+                          <button id="dfunder-{{project.id}}-{{funder.id}}" (click)="enterIATIFunder($event)" class="btn btn-success btn-sm">Enter</button>
                         </td>
                       </tr>
                     </table>
@@ -693,14 +693,23 @@
             <h5 class="card-title text-center">Manage Funders</h5>
             <form class="form-signin" (ngSubmit)="saveProjectFunder()" #projectFunderForm="ngForm">
               
-              <div class="form-group">
-                <label for="funderId">AIMS Locations</label>
+              <div *ngIf="funderEntryType == 'aims'" class="form-group">
+                <label for="funderId">AIMS Funders</label>
                 <select class="form-control" id="funderId" [(ngModel)]="funderModel.funderId" name="funderId"
                   #funderId="ngModel" required>
                   <option *ngFor="let funder of organizationsList" [value]="funder.id">{{funder.organizationName}}</option>
                 </select>
                 <div [hidden]="funderId.valid" class="alert alert-danger">
                   Funder is required
+                </div>
+              </div>
+
+              <div *ngIf="funderEntryType == 'iati'" class="form-group">
+                <label for="funderName">New Funder</label>
+                <input type="text" maxlength="200" class="form-control" id="funderName" [(ngModel)]="funderModel.funderName"
+                  name="funderName" readonly="readonly" #funderName="ngModel" required>
+                <div [hidden]="funderName.valid" class="alert alert-danger">
+                  Funder Name is required
                 </div>
               </div>
 
@@ -739,19 +748,23 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project Documents</h5>
+            <h5 class="card-title text-center">Project Funders</h5>
             <table class="table table-bordered">
               <tr>
-                <th>Document Title</th>
-                <th>Url</th>
+                <th>Funder</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>ExchangeRate</th>
                 <th>Action</th>
               </tr>
-              <tr *ngFor="let document of currentProjectDocumentsList">
-                <td>{{document.documentTitle}}</td>
-                <td>{{document.documentUrl}}</td>
+              <tr *ngFor="let funder of currentProjectFundersList">
+                <td>{{funder.organizationName}}</td>
+                <td>{{funder.amount}}</td>
+                <td>{{funder.currency}}</td>
+                <td>{{funder.exchangeRate}}</td>
                 <td>
-                  <button id="ddocument-{{activeProjectId}}-{{document.id}}" (click)="deleteProjectDocument($event)" class="btn btn-danger btn-sm">
-                    <i id="idocument-{{activeProjectId}}-{{document.id}}" class="fa fa-trash"></i>
+                  <button id="dfunder-{{activeProjectId}}-{{funder.id}}" (click)="deleteProjectFunder($event)" class="btn btn-danger btn-sm">
+                    <i id="ifunder-{{activeProjectId}}-{{funder.id}}" class="fa fa-trash"></i>
                   </button>
                 </td>
               </tr>

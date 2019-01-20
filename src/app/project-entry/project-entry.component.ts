@@ -53,6 +53,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorEntryType: string = null;
   locationEntryType: string = 'aims';
   documentEntryType: string = 'aims';
+  funderEntryType: string = 'aims';
 
   permissions: any = [];
   selectedProjects: any = [];
@@ -66,11 +67,13 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectSectorsList: any = [];
   currentProjectLocationsList: any = [];
   currentProjectDocumentsList: any = [];
+  currentProjectFundersList: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
-  sectorModel = { projectId: null, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
-  locationModel = { projectId: null, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
-  documentModel = { id: 0, projectId: null, documentTitle: null, documentUrl: null };
+  sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
+  locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
+  documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
+  funderModel = { id: 0, projectId: 0, funderName: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -360,6 +363,43 @@ export class ProjectEntryComponent implements OnInit {
           if (dbDocument) {
             this.documentModel.documentTitle = dbDocument[0].documentTitle;
             this.documentModel.documentUrl = dbDocument[0].documentUrl;
+          }
+        }
+      }
+    }
+  }
+
+  enterIATIFunder(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var funderId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var funders = selectProject[0].participatingOrganizations;
+      this.funderEntryType = 'iati';
+      var selectFunder = funders.filter(f => f.id == funderId);
+      if (selectFunder && selectFunder.length > 0) {
+        this.funderModel.funderName = selectFunder[0].name;
+      }
+    }
+  }
+
+  enterAIMSFunder(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var funderId = arr[2];
+
+    var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var funders = selectProject[0].funders;
+      if (funders && funders.length > 0) {
+        var selectFunder = funders.filter(f => f.id == funderId);
+        if (selectFunder && selectFunder.length > 0) {
+          this.funderEntryType = 'aims';
+          var dbFunder = funders.filter(f => f.id == funderId);
+          if (dbFunder) {
+            this.funderModel.funderId = dbFunder[0].funderId;
           }
         }
       }
@@ -761,7 +801,7 @@ export class ProjectEntryComponent implements OnInit {
   /**End of managing project locations */
 
 
-  /**Managing Locations */
+  /**Managing Documents */
   saveProjectDocument() {
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
@@ -816,6 +856,89 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
   /**End of managing project documents */
+
+  /**Managing Funders */
+  saveProjectFunder() {
+    var activeProject = localStorage.getItem('active-project');
+    var projectId = 0;
+    
+    if (activeProject && activeProject != '0') {
+      projectId = parseInt(activeProject);
+      this.funderModel.projectId = projectId;
+    } else {
+      //Need to show dialog here
+      return false;
+    }
+    
+    this.blockUI.start('Saving Funder...');
+    var model = {
+      id: 0,
+      projectId: this.funderModel.projectId,
+      funderId: this.funderModel.funderId,
+      amount: this.funderModel.amount,
+      currency: this.funderModel.currency,
+      exchangeRate: this.funderModel.exchangeRate
+    }
+
+    if (this.funderEntryType == 'iati') {
+      if (this.funderModel.funderName == null || this.funderModel.funderName.length == 0) {
+        //Show error dialog
+        return false;
+      } else {
+        var funderModel = {
+          Name: this.funderModel.funderName
+        }
+        this.organizationService.addOrganization(funderModel).subscribe(
+          data => {
+            model.funderId = data;
+            this.addProjectFunder(model);
+          },
+          error => {
+            console.log(error);
+          }
+        )
+      }
+    } else {
+      this.addProjectFunder(model);
+    }
+  }
+
+  addProjectFunder(model: any) {
+    this.projectService.addProjectFunder(model).subscribe(
+      data => {
+        model.id = data;
+        this.currentProjectFundersList.push(model);
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+
+  deleteProjectFunder(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var funderId = arr[2];
+
+    this.blockUI.start('Removing Funder...');
+    this.projectService.deleteProjectFunder(projectId, funderId).subscribe(
+      data => {
+        this.currentProjectFundersList = this.currentProjectFundersList.filter(f => f.id != funderId);
+        this.blockUI.stop();
+        var message = 'Selected funder ' + Messages.RECORD_DELETED;
+        this.infoMessage = message;
+        this.infoModal.openModal();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
+  /**End of managing project documents */
+
 
   /*Reset form states*/
   resetProjectEntry() {
