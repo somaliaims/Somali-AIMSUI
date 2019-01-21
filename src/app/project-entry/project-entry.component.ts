@@ -10,6 +10,7 @@ import { Sector } from '../models/sector-model';
 import { Location } from '../models/location-model';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { ProjectInfoModalComponent } from '../project-info-modal/project-info-modal.component';
 import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { LocationService } from '../services/location.service';
@@ -56,6 +57,17 @@ export class ProjectEntryComponent implements OnInit {
   locationEntryType: string = 'aims';
   documentEntryType: string = 'aims';
   funderEntryType: string = 'aims';
+  viewProject: any = {
+    title: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    sectors: [],
+    locations: [],
+    documents: [],
+    funders: [],
+    implementors: []
+  };
 
   permissions: any = [];
   selectedProjects: any = [];
@@ -92,7 +104,8 @@ export class ProjectEntryComponent implements OnInit {
     private projectService: ProjectService, private sectorService: SectorService, 
     private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent,
     private locationService: LocationService, private securityService: SecurityHelperService,
-    private organizationService: OrganizationService) { }
+    private organizationService: OrganizationService,
+    private projectInfoModal: ProjectInfoModalComponent) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -272,6 +285,22 @@ export class ProjectEntryComponent implements OnInit {
     if (selectedProject) {
       this.model.description = selectedProject[0].description;
     }
+  }
+
+  viewAIMSProject(e) {
+    var projectId = e.target.id.split('-')[1];
+    if (projectId && projectId != 0) {
+      var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+      if (selectProject && selectProject.length > 0) {
+        this.viewProject = selectProject[0];
+        this.projectInfoModal.openModal();
+      }
+    }
+    return false;
+  }
+
+  viewIATIProject(e) {
+    
   }
 
   enterIATISector(e) {

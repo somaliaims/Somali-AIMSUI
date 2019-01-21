@@ -50,6 +50,8 @@ import { NewProjectComponent } from './new-project/new-project.component';
 import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 import { ProjectEntryComponent } from './project-entry/project-entry.component';
 import { InfoModalComponent } from './info-modal/info-modal.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { ProjectInfoModalComponent } from './project-info-modal/project-info-modal.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +93,8 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
     ProjectReportComponent,
     ProjectEntryComponent,
     InfoModalComponent,
+    TruncatePipe,
+    ProjectInfoModalComponent,
   ],
   imports: [
     BrowserModule,

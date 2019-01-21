@@ -66,7 +66,7 @@
                 <tr *ngFor="let project of aimsProjects">
                   <td>
                     <span class="float-left">
-                      <b>Project Title: </b>{{project.title}}<br />
+                      <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details" id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View Details</a><br />
                       <b>Start Date: </b>{{project.startDate}}<br />
                       <span class="badge badge-warning">AIMS</span>
                     </span>
@@ -84,7 +84,7 @@
                 <tr *ngFor="let project of iatiProjects">
                   <td>
                     <span class="float-left">
-                      <b>Project Title: </b>{{project.title}}<br />
+                      <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details" id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View Details</a><br />
                       <b>Currency: </b>{{project.defaultCurrency}}<br />
                       <span class="badge badge-warning">IATI</span>
                     </span>
@@ -813,3 +813,4 @@
 </div>
 
 <info-modal message="{{infoMessage}}"></info-modal>
+<project-info-modal project="{{viewProject}}"></project-info-modal>
