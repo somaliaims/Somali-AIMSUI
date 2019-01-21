@@ -58,25 +58,50 @@
         <div class="col-md-12 col-sm-12">
           <div class="card card-signin my-5">
             <div class="card-body iati-box">
-              <h5 class="card-title text-center">Selected AIMS Projects</h5>
+              <h6 class="card-title text-center">Selected Projects</h6>
               <table class="table table-bordered">
+                <tr *ngIf="isAimsLoading">
+                  <span class="text-info">Wait loading aims data...</span>
+                </tr>
                 <tr *ngFor="let project of aimsProjects">
                   <td>
                     <span class="float-left">
                       <b>Project Title: </b>{{project.title}}<br />
                       <b>Start Date: </b>{{project.startDate}}<br />
+                      <span class="badge badge-warning">AIMS</span>
                     </span>
                     <span class="float-right">
-                      <button id="aims-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectAIMS($event)">Enter</button>
+                      <button id="aimst-{{project.id}}" class="btn btn-primary btn-sm" (click)="enterProjectTitleAIMS($event)">Title >></button>
+                      &nbsp;
+                      <button id="aimsd-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectDescAIMS($event)">Description >></button>
                     </span>
                   </td>
                 </tr>
+
+                <tr *ngIf="isIatiLoading">
+                  <span class="text-info">Wait loading iati data...</span>
+                </tr>
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <span class="float-left">
+                      <b>Project Title: </b>{{project.title}}<br />
+                      <b>Currency: </b>{{project.defaultCurrency}}<br />
+                      <span class="badge badge-warning">IATI</span>
+                    </span>
+                    <span class="float-right">
+                        <button id="iatit-{{project.id}}" class="btn btn-primary btn-sm" (click)="enterProjectTitleIATI($event)">Title >></button>
+                        &nbsp;
+                      <button id="iatid-{{project.id}}" class="btn btn-success btn-sm" (click)="enterProjectDescIATI($event)">Description >></button>
+                    </span>
+                  </td>
+                </tr>
+
               </table>
             </div>
           </div>
         </div>
 
-        <div class="col-md-12 col-sm-12">
+        <!--<div class="col-md-12 col-sm-12">
           <div class="card card-signin my-5">
             <div class="card-body iati-box">
               <h5 class="card-title text-center">Selected IATI Projects</h5>
@@ -95,7 +120,7 @@
               </table>
             </div>
           </div>
-        </div>
+        </div>-->
 
       </div>
 
@@ -104,7 +129,7 @@
         <div class="col-md-12 col-sm-12">
           <div class="card card-signin my-5">
             <div class="card-body">
-              <h5 class="card-title text-center">New Project</h5>
+              <h6 class="card-title text-center">New Project</h6>
 
               <form class="form-signin" (ngSubmit)="saveProject()" #projectForm="ngForm">
                 <div class="form-group">
@@ -328,159 +353,161 @@
     <!--Locations tab for projects-->
     <div *ngIf="currentTab == 'location'" class="row">
 
-        <div class="col-md-6 col-sm-6">
-  
-          <div class="col-md-12">
-            <div class="card card-signin my-5">
-              <div class="card-body">
-                <h5 class="card-title text-center">Locations from AIMS</h5>
-                <table class="table table-bordered">
-                  <tr *ngFor="let project of aimsProjects">
-                    <td>
-                      <b>Project Title: </b>{{project.title}}<br />
-                      <table *ngIf="project.locations.length > 0" class="table table-bordered">
-                        <tr>
-                          <th>Location</th>
-                          <th>Action</th>
-                        </tr>
-                        <tr *ngFor="let location of project.locations">
-                          <td>
-                            {{location.location}}
-                          </td>
-                          <td>
-                            <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)" class="btn btn-success btn-sm">Enter</button>
-                          </td>
-                        </tr>
-                      </table>
-                      <span *ngIf="project.locations.length == 0">No locations available</span>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-  
-          <div class="col-md-12">
-            <div class="card card-signin my-5">
-              <div class="card-body">
-                <h5 class="card-title text-center">Locations from IATI</h5>
-                <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-                  <tr *ngFor="let project of iatiProjects">
-                    <td>
-                      <b>Project: </b>{{project.title}}<br />
-                      <table *ngIf="project.locations.length > 0" class="table table-bordered">
-                        <tr>
-                          <th>Location</th>
-                          <th>Action</th>
-                        </tr>
-                        <tr *ngFor="let location of project.locations">
-                          <td>
-                            {{location.name}}
-                          </td>
-                          <td>
-                            <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATILocation($event)" class="btn btn-success btn-sm">Enter</button>
-                          </td>
-                        </tr>
-                      </table>
-                      <span *ngIf="project.locations.length == 0">No locations available</span>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-  
-        </div>
-  
-        <!--Selected Locations List-->
-        <div class="col-md-6 col-sm-6">
-  
+      <div class="col-md-6 col-sm-6">
+
+        <div class="col-md-12">
           <div class="card card-signin my-5">
             <div class="card-body">
-              <h5 class="card-title text-center">Manage Locations</h5>
-  
-              <form class="form-signin" (ngSubmit)="saveProjectLocation()" #projectLocationForm="ngForm">
-                
-                <div *ngIf="locationEntryType == 'aims'" class="form-group">
-                  <label for="locationId">AIMS Locations</label>
-                  <select class="form-control" id="locationId" [(ngModel)]="locationModel.locationId" name="locationId"
-                    #locationId="ngModel" required>
-                    <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
-                  </select>
-                  <div [hidden]="locationId.valid" class="alert alert-danger">
-                    Location is required
-                  </div>
-                </div>
-
-                <div *ngIf="locationEntryType == 'iati'" class="form-group">
-                  <label for="location">New Location</label>
-                  <input type="text" class="form-control" id="location" [(ngModel)]="locationModel.location"
-                    name="location" #location="ngModel" required>
-                  <div [hidden]="location.valid" class="alert alert-danger">
-                    Location is required
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="fundsPercentage">Funds Perdentage</label>
-                  <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="locationModel.fundsPercentage"
-                    name="fundsPercentage" #fundsPercentage="ngModel" required>
-                  <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
-                    Funds percentage is required
-                  </div>
-                </div>
-
-                <div *ngIf="locationEntryType == 'iati'" class="form-group">
-                  <label for="latitude">Latitude</label>
-                  <input type="number" class="form-control" id="latitude" [(ngModel)]="locationModel.latitude"
-                    name="latitude" #latitude="ngModel" maxlength="10" required>
-                </div>
-
-                <div *ngIf="locationEntryType == 'iati'" class="form-group">
-                  <label for="longitude">Longitude</label>
-                  <input type="number" class="form-control" id="longitude" [(ngModel)]="locationModel.longitude"
-                    name="latitude" #longitude="ngModel" maxlength="10" required>
-                </div>
-                
-  
-                <button [class.disable]="isProjectLocationBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-                  type="submit">{{btnProjectLocationText}}</button>
-              </form>
-  
-            </div>
-          </div>
-  
-          <div class="card card-signin">
-            <div class="card-body iati-box">
-              <h5 class="card-title text-center">Project Locations</h5>
+              <h5 class="card-title text-center">Locations from AIMS</h5>
               <table class="table table-bordered">
-                <tr>
-                  <th>Location</th>
-                  <th>Fund %</th>
-                  <th>Latitude</th>
-                  <th>Longitude</th>
-                  <th>Action</th>
-                </tr>
-                <tr *ngFor="let location of currentProjectLocationsList">
-                  <td>{{location.location}}</td>
-                  <td>{{location.fundsPercentage}}</td>
-                  <td>{{location.latitude}}</td>
-                  <td>{{location.longitude}}</td>
+                <tr *ngFor="let project of aimsProjects">
                   <td>
-                    <button id="dloc-{{activeProjectId}}-{{location.id}}" (click)="deleteProjectLocation($event)" class="btn btn-danger btn-sm">
-                      <i id="idloc-{{activeProjectId}}-{{location.id}}" class="fa fa-trash"></i>
-                    </button>
+                    <b>Project Title: </b>{{project.title}}<br />
+                    <table *ngIf="project.locations.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Location</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let location of project.locations">
+                        <td>
+                          {{location.location}}
+                        </td>
+                        <td>
+                          <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)"
+                            class="btn btn-success btn-sm">Enter</button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span *ngIf="project.locations.length == 0">No locations available</span>
                   </td>
                 </tr>
               </table>
             </div>
           </div>
-  
         </div>
-  
+
+        <div class="col-md-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Locations from IATI</h5>
+              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <b>Project: </b>{{project.title}}<br />
+                    <table *ngIf="project.locations.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Location</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let location of project.locations">
+                        <td>
+                          {{location.name}}
+                        </td>
+                        <td>
+                          <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATILocation($event)"
+                            class="btn btn-success btn-sm">Enter</button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span *ngIf="project.locations.length == 0">No locations available</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <!--End of data entry tab-->
-      <!--End of Locations Tab-->
+
+      <!--Selected Locations List-->
+      <div class="col-md-6 col-sm-6">
+
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Manage Locations</h5>
+
+            <form class="form-signin" (ngSubmit)="saveProjectLocation()" #projectLocationForm="ngForm">
+
+              <div *ngIf="locationEntryType == 'aims'" class="form-group">
+                <label for="locationId">AIMS Locations</label>
+                <select class="form-control" id="locationId" [(ngModel)]="locationModel.locationId" name="locationId"
+                  #locationId="ngModel" required>
+                  <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
+                </select>
+                <div [hidden]="locationId.valid" class="alert alert-danger">
+                  Location is required
+                </div>
+              </div>
+
+              <div *ngIf="locationEntryType == 'iati'" class="form-group">
+                <label for="location">New Location</label>
+                <input type="text" class="form-control" id="location" [(ngModel)]="locationModel.location" name="location"
+                  #location="ngModel" required>
+                <div [hidden]="location.valid" class="alert alert-danger">
+                  Location is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="fundsPercentage">Funds Perdentage</label>
+                <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="locationModel.fundsPercentage"
+                  name="fundsPercentage" #fundsPercentage="ngModel" required>
+                <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
+                  Funds percentage is required
+                </div>
+              </div>
+
+              <div *ngIf="locationEntryType == 'iati'" class="form-group">
+                <label for="latitude">Latitude</label>
+                <input type="number" class="form-control" id="latitude" [(ngModel)]="locationModel.latitude" name="latitude"
+                  #latitude="ngModel" maxlength="10" required>
+              </div>
+
+              <div *ngIf="locationEntryType == 'iati'" class="form-group">
+                <label for="longitude">Longitude</label>
+                <input type="number" class="form-control" id="longitude" [(ngModel)]="locationModel.longitude" name="latitude"
+                  #longitude="ngModel" maxlength="10" required>
+              </div>
+
+
+              <button [class.disable]="isProjectLocationBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">{{btnProjectLocationText}}</button>
+            </form>
+
+          </div>
+        </div>
+
+        <div class="card card-signin">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Project Locations</h5>
+            <table class="table table-bordered">
+              <tr>
+                <th>Location</th>
+                <th>Fund %</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let location of currentProjectLocationsList">
+                <td>{{location.location}}</td>
+                <td>{{location.fundsPercentage}}</td>
+                <td>{{location.latitude}}</td>
+                <td>{{location.longitude}}</td>
+                <td>
+                  <button id="dloc-{{activeProjectId}}-{{location.id}}" (click)="deleteProjectLocation($event)" class="btn btn-danger btn-sm">
+                    <i id="idloc-{{activeProjectId}}-{{location.id}}" class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!--End of data entry tab-->
+    <!--End of Locations Tab-->
 
     <!--Documents tab for projects-->
     <div *ngIf="currentTab == 'document'" class="row">
@@ -509,7 +536,8 @@
                           {{document.documentUrl}}
                         </td>
                         <td>
-                          <button id="aDocument-{{activeProjectId}}-{{document.id}}" (click)="enterAIMSDocument($event)" class="btn btn-success btn-sm">Enter</button>
+                          <button id="aDocument-{{activeProjectId}}-{{document.id}}" (click)="enterAIMSDocument($event)"
+                            class="btn btn-success btn-sm">Enter</button>
                         </td>
                       </tr>
                     </table>
@@ -564,7 +592,7 @@
           <div class="card-body">
             <h5 class="card-title text-center">Manage Documents</h5>
             <form class="form-signin" (ngSubmit)="saveProjectDocument()" #projectDocumentForm="ngForm">
-              
+
               <div class="form-group">
                 <label for="documentTitle">Document Title</label>
                 <input type="text" class="form-control" id="documentTitle" [(ngModel)]="documentModel.documentTitle"
@@ -576,8 +604,8 @@
 
               <div class="form-group">
                 <label for="documentUrl">Document Url</label>
-                <input type="text" class="form-control" id="documentUrl" [(ngModel)]="documentModel.documentUrl"
-                  name="documentUrl" #documentUrl="ngModel" required>
+                <input type="text" class="form-control" id="documentUrl" [(ngModel)]="documentModel.documentUrl" name="documentUrl"
+                  #documentUrl="ngModel" required>
                 <div [hidden]="documentUrl.valid" class="alert alert-danger">
                   Document url is required
                 </div>
@@ -603,7 +631,8 @@
                 <td>{{document.documentTitle}}</td>
                 <td>{{document.documentUrl}}</td>
                 <td>
-                  <button id="ddocument-{{activeProjectId}}-{{document.id}}" (click)="deleteProjectDocument($event)" class="btn btn-danger btn-sm">
+                  <button id="ddocument-{{activeProjectId}}-{{document.id}}" (click)="deleteProjectDocument($event)"
+                    class="btn btn-danger btn-sm">
                     <i id="idocument-{{activeProjectId}}-{{document.id}}" class="fa fa-trash"></i>
                   </button>
                 </td>
@@ -641,7 +670,8 @@
                           {{funder.name}}
                         </td>
                         <td>
-                          <button id="aFunder-{{activeProjectId}}-{{funder.id}}" (click)="enterAIMSFunder($event)" class="btn btn-success btn-sm">Enter</button>
+                          <button id="aFunder-{{activeProjectId}}-{{funder.id}}" (click)="enterAIMSFunder($event)"
+                            class="btn btn-success btn-sm">Enter</button>
                         </td>
                       </tr>
                     </table>
@@ -692,11 +722,11 @@
           <div class="card-body">
             <h5 class="card-title text-center">Manage Funders</h5>
             <form class="form-signin" (ngSubmit)="saveProjectFunder()" #projectFunderForm="ngForm">
-              
+
               <div *ngIf="funderEntryType == 'aims'" class="form-group">
                 <label for="funderId">AIMS Funders</label>
-                <select class="form-control" id="funderId" [(ngModel)]="funderModel.funderId" name="funderId"
-                  #funderId="ngModel" required>
+                <select class="form-control" id="funderId" [(ngModel)]="funderModel.funderId" name="funderId" #funderId="ngModel"
+                  required>
                   <option *ngFor="let funder of organizationsList" [value]="funder.id">{{funder.organizationName}}</option>
                 </select>
                 <div [hidden]="funderId.valid" class="alert alert-danger">

@@ -11,9 +11,9 @@
         <li class="nav-item">
           <a class="nav-link active btn-info" data-toggle="tab">Projects List</a>
         </li>
-        <li *ngIf="permissions.canEditProject" class="nav-item">
+        <!--<li *ngIf="permissions.canEditProject" class="nav-item">
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">Create New</a>
-        </li>
+        </li>-->
       </ul>
     </div>
     <div class="col-md-6">
@@ -51,10 +51,18 @@
           <td>{{project.startDate}}</td>
           <td>{{project.endDate}}</td>
           <td>
-            <a title="View Details" (click)="viewDetails(project.id)" class="btn btn-primary"><i class="fa fa-eye color-white"></i></a>
-            &nbsp;
-            <a *ngIf="permissions.canEditProject" title="Edit" (click)="edit(project.id)" class="btn btn-success"><i
-                class="fa fa-edit color-white"></i></a>
+            <table class="no-borders">
+              <tr>
+                <td>
+                    <a title="View Details" (click)="viewDetails(project.id)" class="btn btn-primary"><i class="fa fa-eye color-white"></i></a>
+                    &nbsp;
+                </td>
+                <td>
+                    <a *ngIf="permissions.canEditProject" title="Edit" (click)="edit(project.id)" class="btn btn-success"><i
+                      class="fa fa-edit color-white"></i></a>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       </table>

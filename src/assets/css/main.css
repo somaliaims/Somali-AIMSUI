@@ -141,6 +141,11 @@ html {
     opacity: 0.4;   
   }
 
+  table.no-borders td {
+    border-color: transparent !important;
+    padding: 2px;
+  }
+
   /*Css for calendar button on ng-datepicker*/
   button.calendar, button.calendar:active {
     width: 2.75rem;

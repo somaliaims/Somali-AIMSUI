@@ -3,10 +3,10 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/projects']">Projects List</a>
+          <a class="nav-link active btn-info" data-toggle="tab">New Project</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">New Project</a>
+          <a href="#" class="nav-link text-info" data-toggle="tab" (click)="proceedToDataEntry()">Next</a>
         </li>
       </ul>
     </div>
@@ -20,10 +20,10 @@
     <form class="form-signin margin-top-10" #projectForm="ngForm">
       <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
         <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (input)="filterMatchingProjects($event)"
-          [(ngModel)]="model.title" (change)="searchAIMSProject()" name="title" #title="ngModel" required>
-        <span class="input-group-btn">
+          [(ngModel)]="model.title" name="title" #title="ngModel" required>
+        <!--<span class="input-group-btn">
           <button [class.disable]='isSearchingProjects' class="btn btn-info" (click)="proceedToDataEntry()">Proceed</button>
-        </span>
+        </span>-->
       </div>
     </form>
   </div>
@@ -66,12 +66,12 @@
     <div class="card card-signin my-5">
       <div class="card-body iati-box">
         <h5 class="card-title text-center">Matches from AIMS</h5>
-        <div *ngIf="isSearchingProjects">
-          Wait looking for matches from AIMS...
+        <div *ngIf="isAIMSLoading">
+          Loading AIMS projects...
         </div>
-        <div *ngIf="!isSearchingProjects">
-          <table *ngIf="matchingProjects.length > 0" class="table table-bordered">
-            <tr *ngFor="let project of matchingProjects">
+        <div *ngIf="!isAIMSLoading">
+          <table *ngIf="filteredAIMSProjects.length > 0" class="table table-bordered">
+            <tr *ngFor="let project of filteredAIMSProjects">
               <td>
                 <span class="float-left">
                   <b>Project Title: </b>{{project.title}}<br />
@@ -86,7 +86,7 @@
               </td>
             </tr>
           </table>
-          <span *ngIf="matchingProjects.length == 0" class="text-info">
+          <span *ngIf="filteredAIMSProjects.length == 0" class="text-info">
             No matches from AIMS
           </span>
         </div>
@@ -109,7 +109,7 @@
                   <span class="float-right">
                     <button type="button" id="selected-{{project.id}}" class="btn btn-info btn-sm" (click)="showSelectedProjectDescription($event)">Description</button>
                     &nbsp;
-                    <button type="button" id="{{project.id}}" class="btn btn-success btn-sm" (click)="removeSelectedProject($event)">Delete</button>
+                    <button type="button" id="{{project.id}}" class="btn btn-success btn-sm" (click)="removeSelectedProject($event)">De-Select</button>
                   </span>
                 </td>
               </tr>

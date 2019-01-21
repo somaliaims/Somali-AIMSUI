@@ -37,6 +37,8 @@ export class ProjectEntryComponent implements OnInit {
   isProjectLocationBtnDisabled: boolean = false;
   isProjectDocumentBtnDisabled: boolean = false;
   isSectorVisible: boolean = false;
+  isAimsLoading: boolean = false;
+  isIatiLoading: boolean = false;
   requestNo: number = 0;
   isError: boolean = false;
   infoMessage: string = '';
@@ -170,25 +172,31 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   loadIATIProjectsForIds(modelArr: any) {
+    this.isIatiLoading = true;
     this.iatiService.extractProjectsByIds(modelArr).subscribe(
       data => {
         this.iatiProjects = data;
         console.log(this.iatiProjects);
+        this.isIatiLoading = false;
       },
       error => {
         console.log(error);
+        this.isIatiLoading = false;
       }
     )
   }
 
   loadAIMSProjectsForIds(modelArr: any) {
+    this.isAimsLoading = true;
     this.projectService.extractProjectsByIds(modelArr).subscribe(
       data => {
         this.aimsProjects = data;
         console.log(this.aimsProjects);
+        this.isAimsLoading = false;
       },
       error => {
         console.log(error);
+        this.isAimsLoading = false;
       }
     )
   }
@@ -226,11 +234,22 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
-  enterProjectAIMS(e) {
+  enterProjectTitleAIMS(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
       this.model.title = selectedProject[0].title;
+      var sDate = new Date(selectedProject[0].startDate);
+      var eDate = new Date(selectedProject[0].endDate);
+      this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
+      this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
+    }
+  }
+
+  enterProjectDescAIMS(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
       this.model.description = selectedProject[0].description;
       var sDate = new Date(selectedProject[0].startDate);
       var eDate = new Date(selectedProject[0].endDate);
@@ -239,11 +258,18 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
-  enterProjectIATI(e) {
+  enterProjectTitleIATI(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
     if (selectedProject) {
       this.model.title = selectedProject[0].title;
+    }
+  }
+
+  enterProjectDescIATI(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.iatiProjects.filter(p => p.id == id);
+    if (selectedProject) {
       this.model.description = selectedProject[0].description;
     }
   }

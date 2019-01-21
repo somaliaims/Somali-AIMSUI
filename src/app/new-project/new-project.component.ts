@@ -20,6 +20,7 @@ export class NewProjectComponent implements OnInit {
   displayTime: number = Settings.displayMessageTime;
   isProjectLoaded: boolean = false;
   isIATILoading: boolean = false;
+  isAIMSLoading: boolean = false;
   isBtnDisabled: boolean = false;
   isTextReadOnly: boolean = true;
   selectedProjectDescription: string = '';
@@ -41,8 +42,9 @@ export class NewProjectComponent implements OnInit {
   permissions: any = [];
   iatiProjects: any = [];
   filteredIatiProjects: any = [];
-  matchingProjects: any = [];
+  filteredAIMSProjects: any = [];
   selectedProjects: any = [];
+  aimsProjects: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
 
@@ -60,6 +62,7 @@ export class NewProjectComponent implements OnInit {
 
     this.requestNo = this.storeService.getCurrentRequestId();
     this.loadIATIProjects();
+    this.loadAIMSProjects();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
@@ -91,13 +94,12 @@ export class NewProjectComponent implements OnInit {
     )
   }
 
-  startTimer() {
-    this.timer = setInterval(() => {
-      this.timerCounter++;
-    }, 1000);
-  }
-
   filterMatchingProjects(e) {
+    this.filterAIMSMatchingProjects(e);
+    this.filterIATIMatchingProjects(e);
+  }
+  
+  filterIATIMatchingProjects(e) {
     this.isIATILoading = true;
     var str = e.target.value.toLowerCase();
     if (this.iatiProjects.length > 0) {
@@ -105,6 +107,16 @@ export class NewProjectComponent implements OnInit {
         project.title.toLowerCase().indexOf(str) != -1);
     }
     this.isIATILoading = false;
+  }
+
+  filterAIMSMatchingProjects(e) {
+    this.isAIMSLoading = true;
+    var str = e.target.value.toLowerCase();
+    if (this.aimsProjects.length > 0) {
+      this.filteredAIMSProjects = this.aimsProjects.filter(project =>
+        project.title.toLowerCase().indexOf(str) != -1);
+    }
+    this.isAIMSLoading = false;
   }
 
   selectIATIProject(e) {
@@ -125,8 +137,8 @@ export class NewProjectComponent implements OnInit {
 
   selectAIMSProject(e) {
     var id = e.target.id.split('-')[1];
-    var selectedProject = this.matchingProjects.filter(
-      iati => iati.id == id
+    var selectedProject = this.filteredAIMSProjects.filter(
+      aims => aims.id == id
     );
 
     if (selectedProject.length && selectedProject.length > 0) {
@@ -147,7 +159,7 @@ export class NewProjectComponent implements OnInit {
         data => {
           this.isSearchingProjects = false;
           if (data && data.length) {
-            this.matchingProjects = data
+            this.filteredAIMSProjects = data
             this.isSearchingProjects = false;
           } else {
             setTimeout(() => {
@@ -160,6 +172,21 @@ export class NewProjectComponent implements OnInit {
         }
       );
     } 
+  }
+
+  loadAIMSProjects() {
+    this.isAIMSLoading = true;
+    this.projectService.getProjectsList().subscribe(
+      data => {
+        this.aimsProjects = data;
+        this.filteredAIMSProjects = data;
+        this.isAIMSLoading = false;
+      },
+      error => {
+        console.log(error);
+        this.isAIMSLoading = false;
+      }
+    )
   }
 
   showProjectProfile(e) {
@@ -181,7 +208,7 @@ export class NewProjectComponent implements OnInit {
 
   showAIMSProjectDescription(e) {
     var id = e.target.id.split('-')[1];
-    var project = this.matchingProjects.filter(project => project.id == id);
+    var project = this.filteredAIMSProjects.filter(project => project.id == id);
     if (project && project.length) {
       this.selectedProjectDescription = project[0].description;
     }
