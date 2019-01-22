@@ -937,7 +937,6 @@ export class ProjectEntryComponent implements OnInit {
     
     this.blockUI.start('Saving Funder...');
     var model = {
-      id: 0,
       funder: this.funderModel.funder,
       projectId: this.funderModel.projectId,
       funderId: this.funderModel.funderId,
@@ -976,13 +975,14 @@ export class ProjectEntryComponent implements OnInit {
   addProjectFunder(model: any) {
     this.projectService.addProjectFunder(model).subscribe(
       data => {
-        model.id = data;
         this.currentProjectFundersList.push(model);
         this.blockUI.stop();
+        this.resetFunderEntry();
       },
       error => {
         console.log(error);
         this.blockUI.stop();
+        this.resetFunderEntry();
       }
     )
   }
@@ -995,7 +995,7 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Removing Funder...');
     this.projectService.deleteProjectFunder(projectId, funderId).subscribe(
       data => {
-        this.currentProjectFundersList = this.currentProjectFundersList.filter(f => f.id != funderId);
+        this.currentProjectFundersList = this.currentProjectFundersList.filter(f => f.funderId != funderId);
         this.blockUI.stop();
         var message = 'Selected funder ' + Messages.RECORD_DELETED;
         this.infoMessage = message;
@@ -1037,6 +1037,14 @@ export class ProjectEntryComponent implements OnInit {
     this.locationModel.projectId = 0;
     this.locationModel.locationId = 0;
     this.locationModel.location = '';
+  }
+
+  resetFunderEntry() {
+    this.funderModel.funder = '';
+    this.funderModel.funderId = null;
+    this.funderModel.currency = null;
+    this.funderModel.amount = 0.00;
+    this.funderModel.exchangeRate = 0.00;
   }
 
 }
