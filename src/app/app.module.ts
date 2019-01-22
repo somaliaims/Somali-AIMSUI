@@ -42,7 +42,7 @@ import { ViewProjectComponent } from './view-project/view-project.component';
 import { ProjectLocationComponent } from './project-location/project-location.component';
 import { ProjectSectorComponent } from './project-sector/project-sector.component';
 import { ProjectFunderComponent } from './project-funder/project-funder.component';
-import { ProjectImplementorComponent } from './project-implementor/project-implementor.component';
+import { ProjectImplementerComponent } from './project-implementer/project-implementer.component';
 import { ProjectDisbursementComponent } from './project-disbursement/project-disbursement.component';
 import { ProjectDocumentComponent } from './project-document/project-document.component';
 import { ModalComponent } from './modal/modal.component';
@@ -85,7 +85,7 @@ import { ProjectInfoModalComponent } from './project-info-modal/project-info-mod
     ProjectLocationComponent,
     ProjectSectorComponent,
     ProjectFunderComponent,
-    ProjectImplementorComponent,
+    ProjectImplementerComponent,
     ProjectDisbursementComponent,
     ProjectDocumentComponent,
     ModalComponent,

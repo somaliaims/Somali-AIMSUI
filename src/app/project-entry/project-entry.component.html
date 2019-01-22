@@ -813,4 +813,12 @@
 </div>
 
 <info-modal message="{{infoMessage}}"></info-modal>
-<project-info-modal project="{{viewProject}}"></project-info-modal>
+<project-info-modal 
+  [project]="viewProject" 
+  [locations]="viewProjectLocations"
+  [sectors]="viewProjectSectors"
+  [funders]="viewProjectFunders"
+  [implementers]="viewProjectImplementers"
+  [documents]="viewProjectDocuments"
+  >
+</project-info-modal>

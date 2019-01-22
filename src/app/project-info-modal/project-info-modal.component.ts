@@ -18,12 +18,18 @@ export class ProjectInfoModalComponent implements OnInit {
     description: '',
     startDate: '',
     endDate: '',
-    sectors: [],
-    locations: [],
-    documents: [],
-    funders: [],
-    implementors: []
   };
+  @Input()
+  sectors: any = [];
+  @Input()
+  locations: any = [];
+  @Input()
+  funders: any = [];
+  @Input()
+  implementers: any = [];
+  @Input()
+  documents: any = [];
+
   constructor(private modalService: ModalService) { }
 
   ngOnInit() {

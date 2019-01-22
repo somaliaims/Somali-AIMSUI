@@ -209,7 +209,7 @@
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isImplementorLoading">
                 <div class="col-md-12">
-                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading implementors...</span>
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading implementers...</span>
                 </div>
               </div>
 
@@ -219,16 +219,16 @@
                   <th>Implementor</th>
                   <th>Actions</th>
                 </tr>
-                <tr *ngFor="let implementor of projectImplementors">
-                  <td>{{implementor.implementorId}}</td>
-                  <td>{{implementor.implementor}}</td>
+                <tr *ngFor="let implementer of projectImplementors">
+                  <td>{{implementer.implementerId}}</td>
+                  <td>{{implementer.implementer}}</td>
                   <td>
-                    <a title="Remove Implementor" (click)="deleteProjectImplementor(projectId, implementor.implementorId)" class="btn btn-danger"><i
+                    <a title="Remove Implementor" (click)="deleteProjectImplementor(projectId, implementer.implementerId)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
                   </td>
                 </tr>
               </table>
-              <p *ngIf="projectImplementors.length == 0 && !isImplementorLoading">No project implementors found.</p>
+              <p *ngIf="projectImplementors.length == 0 && !isImplementorLoading">No project implementers found.</p>
             </div>
           </div>
         </div>

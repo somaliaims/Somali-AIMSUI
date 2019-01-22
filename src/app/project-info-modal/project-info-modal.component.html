@@ -29,86 +29,117 @@
               </tr>
             </table>
 
-            <h6>Project Locations</h6>
-            <table class="table table-stripped">
-              <tr>
-                <th>Location</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>Actions</th>
-              </tr>
-              <tr *ngFor="let location of project.locations">
-                <td>{{location.location}}</td>
-                <td>{{location.latitude}}</td>
-                <td>{{location.longitude}}</td>
-                <td>
-                  <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)" class="btn btn-danger"><i
-                      class="fa fa-trash color-white"></i></a>
-                </td>
-              </tr>
-            </table>
+            <div class="col-md-12 margin-top-10">
+              <h6>Project Locations</h6>
+              <table *ngIf="locations.length > 0" class="table table-stripped">
+                <tr>
+                  <th>Location</th>
+                  <th>Latitude</th>
+                  <th>Longitude</th>
+                  <th>Actions</th>
+                </tr>
+                <tr *ngFor="let location of locations">
+                  <td>{{location.location}}</td>
+                  <td>{{location.latitude}}</td>
+                  <td>{{location.longitude}}</td>
+                  <td>
+                    <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)" class="btn btn-danger"><i
+                        class="fa fa-trash color-white"></i></a>
+                  </td>
+                </tr>
+              </table>
+              <span class="text-info"><i>No locations found</i></span>
+            </div>
 
-            <h6>Project Sectors</h6>
-            <table class="table table-stripped">
-              <tr>
-                <th>Sector</th>
-                <th>Funds Percentage</th>
-                <th>Currency</th>
-                <th>Exchange Rate</th>
-              </tr>
-              <tr *ngFor="let sector of project.sectors">
-                <td>{{sector.sector}}</td>
-                <td>{{sector.fundsPercentage}}</td>
-                <td>{{sector.currency}}</td>
-                <td>{{sector.exchangeRate}}</td>
-              </tr>
-            </table>
+            <div class="col-md-12 margin-top-10">
+              <h6>Project Sectors</h6>
+              <table class="table table-stripped">
+                <tr>
+                  <th>Sector</th>
+                  <th>Funds Percentage</th>
+                  <th>Currency</th>
+                  <th>Exchange Rate</th>
+                </tr>
+                <tr *ngFor="let sector of sectors">
+                  <td>{{sector.sector}}</td>
+                  <td>{{sector.fundsPercentage}}</td>
+                  <td>{{sector.currency}}</td>
+                  <td>{{sector.exchangeRate}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="sectors.length == 0">
+                <i>No sectors found</i>
+              </span>
+            </div>
 
-            <h6>Project Funders</h6>
-            <table class="table table-stripped">
-              <tr>
-                <th>Funder</th>
-                <th>Amount</th>
-                <th>Currency</th>
-                <th>Exchange Rate</th>
-              </tr>
-              <tr *ngFor="let funder of project.funders">
-                <td>{{funder.funder}}</td>
-                <td>{{funder.amount}}</td>
-                <td>{{funder.currency}}</td>
-                <td>{{funder.exchangeRate}}</td>
-              </tr>
-            </table>
 
-            <h6>Project Implementors</h6>
-            <table class="table table-stripped">
-              <tr>
-                <th>Id</th>
-                <th>Implementor</th>
-              </tr>
-              <tr *ngFor="let implementor of project.implementors">
-                <td>{{implementor.implementorId}}</td>
-                <td>{{implementor.implementor}}</td>
-              </tr>
-            </table>
+            <div class="col-md-12 margin-top-10">
+              <h6>Project Funders</h6>
+              <table class="table table-stripped">
+                <tr>
+                  <th>Funder</th>
+                  <th>Amount</th>
+                  <th>Currency</th>
+                  <th>Exchange Rate</th>
+                </tr>
+                <tr *ngFor="let funder of funders">
+                  <td>{{funder.funder}}</td>
+                  <td>{{funder.amount}}</td>
+                  <td>{{funder.currency}}</td>
+                  <td>{{funder.exchangeRate}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="funders.length == 0">
+                <i>No funders found</i>
+              </span>
+            </div>
 
-            <h6>Project Documents</h6>
-            <table class="table table-stripped">
-              <tr>
-                <th>Document Title</th>
-                <th>Url</th>
-              </tr>
-              <tr *ngFor="let document of project.documents">
-                <td>{{document.documentTitle}}</td>
-                <td>{{document.documentUrl}}</td>
-              </tr>
-            </table>
+            <div class="col-md-12 margin-top-10">
+              <h6>Project Implementors</h6>
+              <table class="table table-stripped">
+                <tr>
+                  <th>Id</th>
+                  <th>Implementor</th>
+                </tr>
+                <tr *ngFor="let implementer of implementers">
+                  <td>{{implementer.implementerId}}</td>
+                  <td>{{implementer.implementer}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="implementers.length == 0">
+                <i>No implementers found</i>
+              </span>
+            </div>
+
+
+            <div class="col-md-12 margin-top-10">
+              <h6>Project Documents</h6>
+              <table class="table table-stripped">
+                <tr>
+                  <th>Document Title</th>
+                  <th>Url</th>
+                </tr>
+                <tr *ngFor="let document of documents">
+                  <td>{{document.documentTitle}}</td>
+                  <td>{{document.documentUrl}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="documents.length == 0">
+                <i>No documents found</i>
+              </span>
+            </div>
 
           </div>
         </div>
       </div>
     </div>
+
+    <div class="col-md-12 margin-top-10">
+      <span class="float-right">
+        <button class="btn btn-danger" (click)="closeModal();">Close View</button>
+      </span>
+    </div>
+
   </div>
 
-  <button class="btn btn-info" (click)="closeModal();">Close</button>
 </jw-modal>

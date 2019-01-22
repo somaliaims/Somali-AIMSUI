@@ -57,17 +57,7 @@ export class ProjectEntryComponent implements OnInit {
   locationEntryType: string = 'aims';
   documentEntryType: string = 'aims';
   funderEntryType: string = 'aims';
-  viewProject: any = {
-    title: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    sectors: [],
-    locations: [],
-    documents: [],
-    funders: [],
-    implementors: []
-  };
+  viewProject: any = {};
 
   permissions: any = [];
   selectedProjects: any = [];
@@ -82,6 +72,11 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectLocationsList: any = [];
   currentProjectDocumentsList: any = [];
   currentProjectFundersList: any = [];
+  viewProjectLocations: any = [];
+  viewProjectSectors: any = [];
+  viewProjectDocuments: any = [];
+  viewProjectFunders: any = [];
+  viewProjectImplementers: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
@@ -292,7 +287,18 @@ export class ProjectEntryComponent implements OnInit {
     if (projectId && projectId != 0) {
       var selectProject = this.aimsProjects.filter(p => p.id == projectId);
       if (selectProject && selectProject.length > 0) {
-        this.viewProject = selectProject[0];
+        var projectData = selectProject[0];
+        var project = {
+          title : projectData.title,
+          description: projectData.description,
+          startDate: projectData.startDate,
+          endDate: projectData.endDate
+        }
+        this.viewProject = projectData;
+        this.viewProjectLocations = projectData.locations;
+        this.viewProjectSectors = projectData.sectors;
+        this.viewProjectImplementers = projectData.implementers;
+        this.viewProjectDocuments = projectData.documents;
         this.projectInfoModal.openModal();
       }
     }

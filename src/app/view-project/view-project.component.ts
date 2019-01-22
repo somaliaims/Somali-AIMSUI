@@ -99,7 +99,7 @@ export class ViewProjectComponent implements OnInit {
   }
 
   addProjectImplementor() {
-    this.router.navigateByUrl('project-implementor/' + this.projectId);
+    this.router.navigateByUrl('project-implementer/' + this.projectId);
   }
 
   addProjectDisbursement() {
@@ -237,11 +237,11 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
-  deleteProjectImplementor(projectId, implementorId) {
+  deleteProjectImplementor(projectId, implementerId) {
     this.blockUI.start('Working...');
-    this.projectService.deleteProjectImplementor(projectId, implementorId).subscribe(
+    this.projectService.deleteProjectImplementor(projectId, implementerId).subscribe(
       data => {
-        this.projectImplementors = this.projectImplementors.filter(i => i.implementorId != implementorId);
+        this.projectImplementors = this.projectImplementors.filter(i => i.implementerId != implementerId);
         this.blockUI.stop();
       },
       error => {

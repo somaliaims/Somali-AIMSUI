@@ -19,13 +19,13 @@
           </div>
           <h5 class="card-title text-center">Implementor</h5>
 
-          <form class="form-signin" (ngSubmit)="saveProjectImplementor()" [formGroup]='implementorSelectionForm'>
+          <form class="form-signin" (ngSubmit)="saveProjectImplementor()" [formGroup]='implementerSelectionForm'>
 
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Implementor" aria-label="Implementor" [matAutocomplete]="auto" [formControl]="userInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
-                <mat-option *ngFor="let implementor of filteredOrganizations | async" [value]="implementor">
-                  <span>{{implementor.organizationName}}</span>
+                <mat-option *ngFor="let implementer of filteredOrganizations | async" [value]="implementer">
+                  <span>{{implementer.organizationName}}</span>
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>

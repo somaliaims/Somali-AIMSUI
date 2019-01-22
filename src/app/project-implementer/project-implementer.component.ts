@@ -10,11 +10,11 @@ import { startWith, map } from 'rxjs/operators';
 import { Messages } from '../config/messages';
 
 @Component({
-  selector: 'app-project-implementor',
-  templateUrl: './project-implementor.component.html',
-  styleUrls: ['./project-implementor.component.css']
+  selector: 'app-project-implementer',
+  templateUrl: './project-implementer.component.html',
+  styleUrls: ['./project-implementer.component.css']
 })
-export class ProjectImplementorComponent implements OnInit {
+export class ProjectImplementerComponent implements OnInit {
 
   @Input()
   isBtnDisabled: boolean = false;
@@ -26,7 +26,7 @@ export class ProjectImplementorComponent implements OnInit {
   isError: boolean = false;
   isLoading: boolean = false;
   model = { projectId: 0, organizationId: null };
-  implementorSelectionForm: FormGroup;
+  implementerSelectionForm: FormGroup;
   userInput = new FormControl();
   filteredOrganizations: Observable<Organization[]>;
 
@@ -54,7 +54,7 @@ export class ProjectImplementorComponent implements OnInit {
       }
     });
 
-    this.implementorSelectionForm = this.fb.group({
+    this.implementerSelectionForm = this.fb.group({
       userInput: null,
     });
   }
@@ -106,7 +106,7 @@ export class ProjectImplementorComponent implements OnInit {
       this.projectService.addProjectImplementor(model).subscribe(
         data => {
           if (!this.isError) {
-            var message = 'New project implementor ' + Messages.NEW_RECORD;
+            var message = 'New project implementer ' + Messages.NEW_RECORD;
             this.storeService.newInfoMessage(message);
             this.router.navigateByUrl('view-project/' + this.model.projectId);
           } else {

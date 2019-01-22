@@ -119,7 +119,7 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('Delete Project Funder')));
     }
 
-    //Project implementor functions
+    //Project implementer functions
     addProjectImplementor(model: any) {
       var url  = this.urlHelper.addProjectImplementorUrl();
         return this.httpClient.post(url,
@@ -133,8 +133,8 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('Project Implementors')));
     }
 
-    deleteProjectImplementor(projectId: string, implementorId: string) {
-      var url  = this.urlHelper.deleteProjectImplementorUrl(projectId, implementorId);
+    deleteProjectImplementor(projectId: string, implementerId: string) {
+      var url  = this.urlHelper.deleteProjectImplementorUrl(projectId, implementerId);
         return this.httpClient.delete(url, httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Delete Project Implementor')));
     }
