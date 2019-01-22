@@ -10,7 +10,15 @@
           </li>
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#" class="nav-link text-info"
-              (click)="showProjects()" data-toggle="tab">Project Entry</a>
+              (click)="showProjects()" data-toggle="tab">Name/Description</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#" class="nav-link text-info"
+              (click)="showFunders()" data-toggle="tab">Funders/Financing</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#"
+              class="nav-link text-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
           </li>
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'sector', 'text-info': currentTab != 'sector'}" href="#" class="nav-link text-info"
@@ -25,12 +33,8 @@
               (click)="showDocuments()" data-toggle="tab">Documents</a>
           </li>
           <li class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#" class="nav-link text-info"
-              (click)="showFunders()" data-toggle="tab">Funders</a>
-          </li>
-          <li class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#"
-              class="nav-link text-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
+            <a [ngClass]="{'btn-info': currentTab == 'custom', 'text-info': currentTab != 'custom'}" href="#" class="nav-link text-info"
+              (click)="showCustomFields()" data-toggle="tab">Custom Fields</a>
           </li>
         </ul>
       </div>

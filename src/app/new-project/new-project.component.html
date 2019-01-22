@@ -21,9 +21,9 @@
       <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
         <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (input)="filterMatchingProjects($event)"
           [(ngModel)]="model.title" name="title" #title="ngModel" required>
-        <!--<span class="input-group-btn">
-          <button [class.disable]='isSearchingProjects' class="btn btn-info" (click)="proceedToDataEntry()">Proceed</button>
-        </span>-->
+        <span class="input-group-btn">
+          <button [class.disable]='isSearchingProjects' class="btn btn-info btn-lg" (click)="proceedToDataEntry()">Next >></button>
+        </span>
       </div>
     </form>
   </div>
@@ -136,7 +136,9 @@
           </div>            
         </div>
       </div>
-      <button class="btn btn-primary" (click)="closeModal('project-description');">Close</button>
+      <span class="float-right">
+        <button class="btn btn-danger" (click)="closeModal('project-description');">Close</button>
+      </span>
     </div>
   </div>
 </jw-modal>
