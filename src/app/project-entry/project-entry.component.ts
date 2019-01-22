@@ -31,12 +31,16 @@ export class ProjectEntryComponent implements OnInit {
   btnProjectSectorText: string = 'Save Sector';
   btnProjectLocationText: string = 'Save Location';
   btnProjectDocumentText: string = 'Save Document';
+  btnProjectFunderText: string = 'Save Funder';
+  btnProjectImplementerText: string = 'Save Implementer';
   sectorPlaceHolder: string = 'Enter/Select Sector';
   locationPlaceHolder: string = 'Enter/Select Location';
   isProjectBtnDisabled: boolean = false;
   isProjectBtnSectorDisabled: boolean = false;
   isProjectLocationBtnDisabled: boolean = false;
   isProjectDocumentBtnDisabled: boolean = false;
+  isProjectFunderBtnDisabled: boolean = false;
+  isProjectImplementerBtnDisabled: boolean = false;
   isSectorVisible: boolean = false;
   isAimsLoading: boolean = false;
   isIatiLoading: boolean = false;
@@ -57,6 +61,7 @@ export class ProjectEntryComponent implements OnInit {
   locationEntryType: string = 'aims';
   documentEntryType: string = 'aims';
   funderEntryType: string = 'aims';
+  implementerEntryType: string = 'aims';
   viewProject: any = {};
 
   permissions: any = [];
@@ -72,6 +77,7 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectLocationsList: any = [];
   currentProjectDocumentsList: any = [];
   currentProjectFundersList: any = [];
+  currentProjectImplementersList: any = [];
   viewProjectLocations: any = [];
   viewProjectSectors: any = [];
   viewProjectDocuments: any = [];
@@ -83,6 +89,8 @@ export class ProjectEntryComponent implements OnInit {
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
+  implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
+  
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
@@ -177,6 +185,7 @@ export class ProjectEntryComponent implements OnInit {
 
     this.loadSectorsList();
     this.loadLocationsList();
+    this.loadOrganizationsList();
   }
 
   loadIATIProjectsForIds(modelArr: any) {
@@ -467,6 +476,43 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  enterIATIImplementer(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var implementerId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var implementers = selectProject[0].participatingOrganizations;
+      this.implementerEntryType = 'iati';
+      var selectImplementer = implementers.filter(i => i.id == implementerId);
+      if (selectImplementer && selectImplementer.length > 0) {
+        this.implementerModel.implementer = selectImplementer[0].name;
+      }
+    }
+  }
+
+  enterAIMSImplementer(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var implementerId = arr[2];
+
+    var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var implementers = selectProject[0].implementers;
+      if (implementers && implementers.length > 0) {
+        var selectImplementer = implementers.filter(i => i.id == implementerId);
+        if (selectImplementer && selectImplementer.length > 0) {
+          this.implementerEntryType = 'aims';
+          var dbImplementer = implementers.filter(i => i.id == implementerId);
+          if (dbImplementer) {
+            this.implementerModel.implementerId = dbImplementer[0].implementerId;
+          }
+        }
+      }
+    }
+  }
+
   loadProjectData(id: number) {
     this.projectService.getProjectProfileReport(id.toString()).subscribe(
       result => {
@@ -495,6 +541,10 @@ export class ProjectEntryComponent implements OnInit {
 
           if (data.funders && data.funders.length > 0) {
             this.currentProjectFundersList = data.funders;
+          }
+
+          if (data.implementers && data.implementers.length > 0) {
+            this.currentProjectImplementersList = data.implementers;
           }
         }
       },
@@ -1007,6 +1057,91 @@ export class ProjectEntryComponent implements OnInit {
       }
     )
   }
+  /**End of managing project funders */
+
+  /**Managing Implementers */
+  saveProjectImplementer() {
+    var activeProject = localStorage.getItem('active-project');
+    var projectId = 0;
+    
+    if (activeProject && activeProject != '0') {
+      projectId = parseInt(activeProject);
+      this.implementerModel.projectId = projectId;
+    } else {
+      //Need to show dialog here
+      return false;
+    }
+    
+    this.blockUI.start('Saving Implementer...');
+    var model = {
+      implementer: this.implementerModel.implementer,
+      projectId: this.implementerModel.projectId,
+      implementerId: this.implementerModel.implementerId,
+    }
+
+    if (this.implementerEntryType == 'iati') {
+      if (this.implementerModel.implementer == null || this.implementerModel.implementer.length == 0) {
+        //Show error dialog
+        return false;
+      } else {
+        var orgModel = {
+          Name: this.implementerModel.implementer
+        }
+        this.organizationService.addOrganization(orgModel).subscribe(
+          data => {
+            model.implementerId = data;
+            this.addProjectImplementer(model);
+          },
+          error => {
+            console.log(error);
+          }
+        )
+      }
+    } else {
+      var selectImplementer = this.organizationsList.filter(i => i.id == this.implementerModel.implementerId);
+      if (selectImplementer && selectImplementer.length > 0) {
+        //this.implementerModel.implementer = selectImplementer[0].organizationName;
+        model.implementer = selectImplementer[0].organizationName;
+      }
+      this.addProjectImplementer(model);
+    }
+  }
+
+  addProjectImplementer(model: any) {
+    this.projectService.addProjectImplementer(model).subscribe(
+      data => {
+        this.currentProjectImplementersList.push(model);
+        this.blockUI.stop();
+        this.resetImplementerEntry();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+        this.resetImplementerEntry();
+      }
+    )
+  }
+
+  deleteProjectImplementer(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var implementerId = arr[2];
+
+    this.blockUI.start('Removing Implementer...');
+    this.projectService.deleteProjectImplementer(projectId, implementerId).subscribe(
+      data => {
+        this.currentProjectImplementersList = this.currentProjectImplementersList.filter(i => i.implementerId != implementerId);
+        this.blockUI.stop();
+        var message = 'Selected implementer ' + Messages.RECORD_DELETED;
+        this.infoMessage = message;
+        this.infoModal.openModal();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
   /**End of managing project documents */
 
 
@@ -1045,6 +1180,11 @@ export class ProjectEntryComponent implements OnInit {
     this.funderModel.currency = null;
     this.funderModel.amount = 0.00;
     this.funderModel.exchangeRate = 0.00;
+  }
+
+  resetImplementerEntry() {
+    this.implementerModel.implementer = '';
+    this.implementerModel.implementerId = null;
   }
 
 }

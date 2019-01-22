@@ -182,16 +182,16 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteProjectFunder + projectId + '/' + funderId);
     }
 
-    getProjectImplementorsUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.getProjectImplementorsUrl + id);
+    getProjectImplementersUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectImplementersUrl + id);
     }
 
-    addProjectImplementorUrl() {
-        return (this.BASE_URL + urlsList.urls.addProjectImplementor);
+    addProjectImplementerUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectImplementer);
     }
 
-    deleteProjectImplementorUrl(projectId: string, implementorId: string) {
-        return (this.BASE_URL + urlsList.urls.deleteProjectImplementor + projectId + '/' + implementorId);
+    deleteProjectImplementerUrl(projectId: string, implementerId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectImplementer + projectId + '/' + implementerId);
     }
 
     getProjectDisbursementsUrl(id: string) {

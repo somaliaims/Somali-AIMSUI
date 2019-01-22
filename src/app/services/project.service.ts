@@ -120,23 +120,23 @@ export class ProjectService {
     }
 
     //Project implementer functions
-    addProjectImplementor(model: any) {
-      var url  = this.urlHelper.addProjectImplementorUrl();
+    addProjectImplementer(model: any) {
+      var url  = this.urlHelper.addProjectImplementerUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('New Project Implementor')));
+                catchError(this.storeService.handleError<any>('New Project Implementer')));
     }
 
-    getProjectImplementors(id: string) {
-      var url = this.urlHelper.getProjectImplementorsUrl(id);
+    getProjectImplementers(id: string) {
+      var url = this.urlHelper.getProjectImplementersUrl(id);
       return this.httpClient.get(url, httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('Project Implementors')));
+        catchError(this.storeService.handleError<any>('Project Implementers')));
     }
 
-    deleteProjectImplementor(projectId: string, implementerId: string) {
-      var url  = this.urlHelper.deleteProjectImplementorUrl(projectId, implementerId);
+    deleteProjectImplementer(projectId: string, implementerId: string) {
+      var url  = this.urlHelper.deleteProjectImplementerUrl(projectId, implementerId);
         return this.httpClient.delete(url, httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('Delete Project Implementor')));
+                catchError(this.storeService.handleError<any>('Delete Project Implementer')));
     }
 
     //Project disbursements functions

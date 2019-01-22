@@ -808,6 +808,135 @@
     <!--End of data entry tab-->
     <!--End of Funders Tab-->
 
+    <!--Implementers tab for projects-->
+    <div *ngIf="currentTab == 'implementer'" class="row">
+
+      <div class="col-md-6 col-sm-6">
+
+        <div class="col-md-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Implementers from AIMS</h5>
+              <table class="table table-bordered">
+                <tr *ngFor="let project of aimsProjects">
+                  <td>
+                    <b>Project Title: </b>{{project.title}}<br />
+                    <table *ngIf="project.implementers.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Implementer Name</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let implementer of project.implementers">
+                        <td>
+                          {{implementer.name}}
+                        </td>
+                        <td>
+                          <button id="aImplementer-{{activeProjectId}}-{{implementer.id}}" (click)="enterAIMSImplementer($event)"
+                            class="btn btn-success btn-sm">Enter</button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span *ngIf="project.implementers.length == 0">No implementers found.</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Implementers from IATI</h5>
+              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <b>Project: </b>{{project.title}}<br />
+                    <table *ngIf="project.participatingOrganizations.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Funder Name</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let implementer of project.participatingOrganizations">
+                        <td>
+                          {{implementer.name}}
+                        </td>
+                        <td>
+                          <button id="dimplementer-{{project.id}}-{{implementer.id}}" (click)="enterIATIImplementer($event)" class="btn btn-success btn-sm">Enter</button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span *ngIf="project.participatingOrganizations.length == 0">No implementers found.</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!--Selected Implementers List-->
+      <div class="col-md-6 col-sm-6">
+
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h6 class="card-title text-center">Manage Implementers</h6>
+            <form class="form-signin" (ngSubmit)="saveProjectImplementer()" #projectImplementerForm="ngForm">
+
+              <div *ngIf="implementerEntryType == 'aims'" class="form-group">
+                <label for="implementerId">AIMS Implementers</label>
+                <select class="form-control" id="implementerId" [(ngModel)]="implementerModel.implementerId" name="implementerId" #implementerId="ngModel"
+                  required>
+                  <option *ngFor="let implementer of organizationsList" [value]="implementer.id">{{implementer.organizationName}}</option>
+                </select>
+                <div [hidden]="implementerId.valid" class="alert alert-danger">
+                  Implementer is required
+                </div>
+              </div>
+
+              <div *ngIf="implementerEntryType == 'iati'" class="form-group">
+                <label for="implementer">New Implementer</label>
+                <input type="text" maxlength="200" class="form-control" id="implementer" [(ngModel)]="implementerModel.implementer"
+                  name="implementer" readonly="readonly" #implementer="ngModel" required>
+                <div [hidden]="implementer.valid" class="alert alert-danger">
+                  Implementer Name is required
+                </div>
+              </div>
+
+              <button [class.disable]="isProjectImplementerBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">Save Implementer</button>
+            </form>
+
+          </div>
+        </div>
+
+        <div class="card card-signin">
+          <div class="card-body iati-box">
+            <h6 class="card-title text-center">Project Implementers</h6>
+            <table class="table table-bordered">
+              <tr>
+                <th>Implementer</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let implementer of currentProjectImplementersList">
+                <td>{{implementer.implementer}}</td>
+                <td>
+                  <button id="dimplementer-{{activeProjectId}}-{{implementer.implementerId}}" (click)="deleteProjectImplementer($event)" class="btn btn-danger btn-sm">
+                    <i id="iimplementer-{{activeProjectId}}-{{implementer.implementerId}}" class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!--End of data entry tab-->
+    <!--End of Implementers Tab-->
+
   </block-ui>
 
 </div>

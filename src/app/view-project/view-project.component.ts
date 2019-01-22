@@ -160,7 +160,7 @@ export class ViewProjectComponent implements OnInit {
   }
 
   loadProjectImplementors(id) {
-    this.projectService.getProjectImplementors(id).subscribe(
+    this.projectService.getProjectImplementers(id).subscribe(
       data => {
         this.hideImplementorLoader();
         this.projectImplementors = data;
@@ -239,7 +239,7 @@ export class ViewProjectComponent implements OnInit {
 
   deleteProjectImplementor(projectId, implementerId) {
     this.blockUI.start('Working...');
-    this.projectService.deleteProjectImplementor(projectId, implementerId).subscribe(
+    this.projectService.deleteProjectImplementer(projectId, implementerId).subscribe(
       data => {
         this.projectImplementors = this.projectImplementors.filter(i => i.implementerId != implementerId);
         this.blockUI.stop();

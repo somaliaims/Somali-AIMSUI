@@ -103,7 +103,7 @@ export class ProjectImplementerComponent implements OnInit {
 
     this.isBtnDisabled = true;
       this.btnText = 'Saving...';
-      this.projectService.addProjectImplementor(model).subscribe(
+      this.projectService.addProjectImplementer(model).subscribe(
         data => {
           if (!this.isError) {
             var message = 'New project implementer ' + Messages.NEW_RECORD;
