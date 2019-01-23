@@ -16,6 +16,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { LocationService } from '../services/location.service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { OrganizationService } from '../services/organization-service';
+import { ProjectiInfoModalComponent } from '../projecti-info-modal/projecti-info-modal.component';
 
 @Component({
   selector: 'app-project-entry',
@@ -83,6 +84,7 @@ export class ProjectEntryComponent implements OnInit {
   viewProjectDocuments: any = [];
   viewProjectFunders: any = [];
   viewProjectImplementers: any = [];
+  viewParticipatingOrganizations: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
@@ -108,7 +110,8 @@ export class ProjectEntryComponent implements OnInit {
     private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent,
     private locationService: LocationService, private securityService: SecurityHelperService,
     private organizationService: OrganizationService,
-    private projectInfoModal: ProjectInfoModalComponent) { }
+    private projectInfoModal: ProjectInfoModalComponent,
+    private projectIATIInfoModal: ProjectiInfoModalComponent) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -315,7 +318,25 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   viewIATIProject(e) {
-    
+    var projectId = e.target.id.split('-')[1];
+    if (projectId && projectId != 0) {
+      var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+      if (selectProject && selectProject.length > 0) {
+        var projectData = selectProject[0];
+        var project = {
+          title : projectData.title,
+          description: projectData.description,
+          defaultCurrency: projectData.defaultCurrency,
+        }
+        this.viewProject = project;
+        this.viewProjectLocations = projectData.locations;
+        this.viewProjectSectors = projectData.sectors;
+        this.viewParticipatingOrganizations = projectData.participatingOrganizations;
+        this.viewProjectDocuments = projectData.documents;
+        this.projectIATIInfoModal.openModal();
+      }
+    }
+    return false;
   }
 
   enterIATISector(e) {
