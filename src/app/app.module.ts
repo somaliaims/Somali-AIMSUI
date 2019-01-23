@@ -53,6 +53,7 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ProjectInfoModalComponent } from './project-info-modal/project-info-modal.component';
 import { ProjectiInfoModalComponent } from './projecti-info-modal/projecti-info-modal.component';
+import { ErrorModalComponent } from './error-modal/error-modal.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { ProjectiInfoModalComponent } from './projecti-info-modal/projecti-info-
     TruncatePipe,
     ProjectInfoModalComponent,
     ProjectiInfoModalComponent,
+    ErrorModalComponent,
   ],
   imports: [
     BrowserModule,

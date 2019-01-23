@@ -17,6 +17,7 @@ import { LocationService } from '../services/location.service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { OrganizationService } from '../services/organization-service';
 import { ProjectiInfoModalComponent } from '../projecti-info-modal/projecti-info-modal.component';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 @Component({
   selector: 'app-project-entry',
@@ -111,7 +112,8 @@ export class ProjectEntryComponent implements OnInit {
     private locationService: LocationService, private securityService: SecurityHelperService,
     private organizationService: OrganizationService,
     private projectInfoModal: ProjectInfoModalComponent,
-    private projectIATIInfoModal: ProjectiInfoModalComponent) { }
+    private projectIATIInfoModal: ProjectiInfoModalComponent,
+    private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -721,7 +723,8 @@ export class ProjectEntryComponent implements OnInit {
       projectId = parseInt(activeProject);
       this.sectorModel.projectId = projectId;
     } else {
-      //Need to show dialog here
+      this.errorMessage = 'There is no created project. Create/Save a project first and sector for the project';
+      this.errorModal.openModal();
       return false;
     }
 

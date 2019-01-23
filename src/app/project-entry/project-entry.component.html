@@ -463,11 +463,13 @@
         <div class="col-md-12">
           <div class="card card-signin my-5">
             <div class="card-body">
-              <h5 class="card-title text-center">Documents from AIMS</h5>
+              <h5 class="card-title text-center">Documents List</h5>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title}}<br />
+                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details" id="aproject-{{project.id}}"
+                        (click)="viewAIMSProject($event)" class="text-info">View Details</a><br />
+                      <span class="badge badge-warning">AIMS</span>
                     <table *ngIf="project.documents.length > 0" class="table table-bordered">
                       <tr>
                         <th>Document Title</th>
@@ -487,22 +489,17 @@
                         </td>
                       </tr>
                     </table>
-                    <span *ngIf="project.documents.length == 0">No documents available</span>
+                    <div class="text-info" *ngIf="project.documents.length == 0"><i>No documents available</i></div>
                   </td>
                 </tr>
               </table>
-            </div>
-          </div>
-        </div>
 
-        <div class="col-md-12">
-          <div class="card card-signin my-5">
-            <div class="card-body">
-              <h5 class="card-title text-center">Documents from IATI</h5>
               <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
                 <tr *ngFor="let project of iatiProjects">
                   <td>
-                    <b>Project: </b>{{project.title}}<br />
+                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details" id="iproject-{{project.id}}"
+                        (click)="viewIATIProject($event)" class="text-info">View Details</a><br />
+                      <span class="badge badge-warning">IATI</span>
                     <table *ngIf="project.documents.length > 0" class="table table-bordered">
                       <tr>
                         <th>Document Title</th>
@@ -513,7 +510,7 @@
                         <td>
                           {{document.documentTitle}}
                         </td>
-                        <td>
+                        <td class="dont-break-out">
                           {{document.documentUrl}}
                         </td>
                         <td>
@@ -521,7 +518,7 @@
                         </td>
                       </tr>
                     </table>
-                    <span *ngIf="project.documents.length == 0">No documents available</span>
+                    <div class="text-info" *ngIf="project.documents.length == 0"><i>No documents available</i></div>
                   </td>
                 </tr>
               </table>
@@ -887,6 +884,7 @@
 </div>
 
 <info-modal message="{{infoMessage}}"></info-modal>
+<error-modal message="{{errorMessage}}"></error-modal>
 
 <project-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors" [funders]="viewProjectFunders"
   [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments">
