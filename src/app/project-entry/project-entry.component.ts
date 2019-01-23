@@ -87,7 +87,7 @@ export class ProjectEntryComponent implements OnInit {
   viewParticipatingOrganizations: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
-  sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0, currency: '', exchangeRate: 0.0 };
+  sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
@@ -729,8 +729,6 @@ export class ProjectEntryComponent implements OnInit {
       projectId: projectId,
       sectorId: this.selectedSectorId,
       fundsPercentage: this.sectorModel.fundsPercentage,
-      currency: this.sectorModel.currency,
-      exchangeRate: this.sectorModel.exchangeRate
     };
 
     var dbSector = this.sectorInput.value;
@@ -783,8 +781,6 @@ export class ProjectEntryComponent implements OnInit {
           sectorId: model.sectorId,
           sector: this.sectorModel.sectorName,
           fundsPercentage: this.sectorModel.fundsPercentage,
-          currency: this.sectorModel.currency,
-          exchangeRate: this.sectorModel.exchangeRate
         };
         this.currentProjectSectorsList.push(sectorObj);
         this.resetSectorEntry();
@@ -1179,8 +1175,6 @@ export class ProjectEntryComponent implements OnInit {
   resetSectorEntry() {
     this.isSectorVisible = false;
     this.sectorPlaceHolder = 'Enter/Select Sector';
-    this.sectorModel.currency = '';
-    this.sectorModel.exchangeRate = 0.00;
     this.sectorModel.fundsPercentage = 0.00;
     this.sectorModel.parentId = 0;
     this.sectorModel.projectId = 0;
