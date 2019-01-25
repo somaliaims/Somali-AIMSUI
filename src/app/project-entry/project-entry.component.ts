@@ -64,6 +64,7 @@ export class ProjectEntryComponent implements OnInit {
   documentEntryType: string = 'aims';
   funderEntryType: string = 'aims';
   implementerEntryType: string = 'aims';
+  disbursementEntryType: string = 'aims';
   viewProject: any = {};
 
   permissions: any = [];
@@ -80,12 +81,15 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectDocumentsList: any = [];
   currentProjectFundersList: any = [];
   currentProjectImplementersList: any = [];
+  currentProjectDisbursementsList: any = [];
+
   viewProjectLocations: any = [];
   viewProjectSectors: any = [];
   viewProjectDocuments: any = [];
   viewProjectFunders: any = [];
   viewProjectImplementers: any = [];
   viewParticipatingOrganizations: any = [];
+  viewProjectDisbursements: any = [];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
@@ -93,7 +97,7 @@ export class ProjectEntryComponent implements OnInit {
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
-  disbursementModel = { id: 0, projectId: 0, startingMonth: null, startingYear: null, endingMonth: null, endingYear: null };
+  disbursementModel = { id: 0, projectId: 0, startingMonth: null, startingYear: null, endingMonth: null, endingYear: null, amount: 0.0 };
 
   displayTabs: any = [
     { visible: true, identity: 'project' },
@@ -539,6 +543,51 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  enterIATIDisbursement(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var disbursementId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var transactions = selectProject[0].transactions;
+      this.disbursementEntryType = 'iati';
+      var selectTransaction = transactions.filter(i => i.id == disbursementId);
+      if (selectTransaction && selectTransaction.length > 0) {
+        this.disbursementModel.amount = selectTransaction[0].amount;
+        var dated = selectTransaction[0].dated;
+        if (dated && dated.length > 0) {
+          var dateArr = dated.split('-');
+          var year = dateArr[0];
+          var month = dateArr[1];
+
+          this.disbursementModel.startingYear = year;
+          this.disbursementModel.startingMonth = month;
+        }
+      }
+    }
+  }
+
+  enterAIMSDisbursement(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var disbursementId = arr[2];
+
+    var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var disbursements = selectProject[0].disbursements;
+      this.disbursementEntryType = 'aims';
+      var selectTransaction = disbursements.filter(i => i.id == disbursementId);
+      if (selectTransaction && selectTransaction.length > 0) {
+        this.disbursementModel.amount = selectTransaction[0].amount;
+        this.disbursementModel.startingYear = selectTransaction[0].startingYear;
+        this.disbursementModel.startingMonth = selectTransaction[0].startingMonth;
+        this.disbursementModel.endingYear = selectTransaction[0].endingYear;
+        this.disbursementModel.endingMonth = selectTransaction[0].endingMonth;
+      }
+    }
+  }
+
   loadProjectData(id: number) {
     this.projectService.getProjectProfileReport(id.toString()).subscribe(
       result => {
@@ -571,6 +620,10 @@ export class ProjectEntryComponent implements OnInit {
 
           if (data.implementers && data.implementers.length > 0) {
             this.currentProjectImplementersList = data.implementers;
+          }
+
+          if (data.disbursements && data.disbursements.length > 0) {
+            this.currentProjectDocumentsList = data.disbursements;
           }
         }
       },

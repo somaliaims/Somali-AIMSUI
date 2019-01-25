@@ -920,7 +920,7 @@
                         </td>
                       </tr>
                     </table>
-                    <div class="text-info" *ngIf="project.sectors.length == 0"><i>No sectors available</i></div>
+                    <div class="text-info" *ngIf="project.disburements.length == 0"><i>No disbursements available</i></div>
                   </td>
                 </tr>
               </table>
@@ -932,6 +932,29 @@
                         (click)="viewIATIProject($event)" class="text-info">View Details</a><br />
                       <span class="badge badge-warning">IATI</span>
                     <table  class="table table-bordered">
+                        <tr>
+                            <th>Type</th>
+                            <th>Currency</th>
+                            <th>Amount</th>
+                            <th>Dated</th>
+                          </tr>
+                          <tr *ngFor="let disbursement of project.disbursements">
+                            <td>
+                              {{disbursement.transactionType}}
+                            </td>
+                            <td>
+                              {{disbursement.currency}}
+                            </td>
+                            <td>
+                              {{disbursement.amount}}
+                            </td>
+                            <td>
+                              {{disbursement.dated}}
+                            </td>
+                            <td>
+                              <button id="idisbursement-{{disbursement.id}}" (click)="enterIATIDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
+                            </td>
+                          </tr>
                     </table>
               </table>
 
@@ -987,10 +1010,10 @@
               
               <div class="form-group">
                 <label for="text"> </label>
-                <input type="number" class="form-control" id="percentage" [(ngModel)]="disbursementModel.percentage" name="percentage"
-                  #percentage="ngModel" required>
-                <div [hidden]="percentage.valid" class="alert alert-danger">
-                  Fund percentage is required
+                <input type="number" class="form-control" id="amount" [(ngModel)]="disbursementModel.amount" name="amount"
+                  #amount="ngModel" required>
+                <div [hidden]="amount.valid" class="alert alert-danger">
+                  Amount is required
                 </div>
               </div>
           
