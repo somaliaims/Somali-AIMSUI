@@ -33,6 +33,10 @@
               (click)="showDocuments()" data-toggle="tab">Documents</a>
           </li>
           <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'disbursement', 'text-info': currentTab != 'disbursement'}" href="#" class="nav-link text-info"
+              (click)="showDisbursements()" data-toggle="tab">Disbursements</a>
+          </li>
+          <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'custom', 'text-info': currentTab != 'custom'}" href="#" class="nav-link text-info"
               (click)="showCustomFields()" data-toggle="tab">Custom Fields</a>
           </li>
@@ -878,6 +882,151 @@
     </div>
     <!--End of data entry tab-->
     <!--End of Implementers Tab-->
+
+    <!--Disbursements tab for projects-->
+    <div *ngIf="currentTab == 'sector'" class="row">
+
+      <div class="col-md-6 col-sm-6">
+
+        <div class="col-md-12">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Disbursements List</h5>
+              <table class="table table-bordered">
+                <tr *ngFor="let project of aimsProjects">
+                  <td>
+                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details" id="aproject-{{project.id}}"
+                        (click)="viewAIMSProject($event)" class="text-info">View Details</a><br />
+                      <span class="badge badge-warning">AIMS</span>
+                    <table *ngIf="project.disburements.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Starting Month/Year</th>
+                        <th>Ending Month/Year</th>
+                        <th>Percentage</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let disbursement of project.disbursements">
+                        <td>
+                          {{disbursement.startingYear}} / {{disburements.startingMonth}}
+                        </td>
+                        <td>
+                          {{disbursement.startingYear}} / {{disburements.startingMonth}}
+                        </td>
+                        <td>
+                          {{disbursement.percentage}}
+                        </td>
+                        <td>
+                          <button id="adisbursement-{{disbursement.id}}" (click)="enterAIMSDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
+                        </td>
+                      </tr>
+                    </table>
+                    <div class="text-info" *ngIf="project.sectors.length == 0"><i>No sectors available</i></div>
+                  </td>
+                </tr>
+              </table>
+
+              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details" id="iproject-{{project.id}}"
+                        (click)="viewIATIProject($event)" class="text-info">View Details</a><br />
+                      <span class="badge badge-warning">IATI</span>
+                    <table  class="table table-bordered">
+                    </table>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!--Selected Sectors List-->
+      <div class="col-md-6 col-sm-6">
+
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Manage Disbursements</h5>
+            <form class="form-signin" (ngSubmit)="saveProjectDisbursement()" #disbursementForm="ngForm">
+              <div class="form-group">
+                <label for="startingYear">Starting Year/Month</label>
+                <select class="form-control" id="startingYear" [(ngModel)]="disbursementModel.startingYear" name="startingYear"
+                  #startingYear="ngModel" required>
+                  <option *ngFor="let year of yearsList" [value]="year">{{year}}</option>
+                </select>
+                <select class="form-control" id="startingMonth" [(ngModel)]="disbursementModel.startingMonth" name="startingMonth"
+                  #startingMonth="ngModel" required>
+                  <option *ngFor="let month of monthsList" [value]="month.value">{{month.key}}</option>
+                </select>
+                <div [hidden]="startingYear.valid" class="alert alert-danger">
+                  Starting Year is required
+                </div>
+                <div [hidden]="startingMonth.valid" class="alert alert-danger">
+                  Starting Month is required
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label for="endingYear">Ending Year/Month</label>
+                <select class="form-control" id="endingYear" [(ngModel)]="disbursementModel.endingYear" name="endingYear" #endingYear="ngModel"
+                  required>
+                  <option *ngFor="let year of endingYearsList" [value]="year">{{year}}</option>
+                </select>
+                <select class="form-control" id="endingMonth" [(ngModel)]="disbursementModel.endingMonth" name="endingMonth" #endingMonth="ngModel"
+                  required>
+                  <option *ngFor="let month of monthsList" [value]="month.value">{{month.key}}</option>
+                </select>
+              
+                <div [hidden]="endingYear.valid" class="alert alert-danger">
+                  Ending Year is required
+                </div>
+                <div [hidden]="endingMonth.valid" class="alert alert-danger">
+                  Ending Month is required
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="text"> </label>
+                <input type="number" class="form-control" id="percentage" [(ngModel)]="disbursementModel.percentage" name="percentage"
+                  #percentage="ngModel" required>
+                <div [hidden]="percentage.valid" class="alert alert-danger">
+                  Fund percentage is required
+                </div>
+              </div>
+          
+              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+            </form>
+
+          </div>
+        </div>
+
+        <div class="card card-signin">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Project Sectors</h5>
+            <table class="table table-bordered">
+              <tr>
+                <th>Sector</th>
+                <th>Fund %</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let sector of currentProjectSectorsList">
+                <td>{{sector.sector}}</td>
+                <td>{{sector.fundsPercentage}}</td>
+                <td>
+                  <button id="dsec-{{activeProjectId}}-{{sector.sectorId}}" (click)="deleteProjectSector($event)" class="btn btn-danger btn-sm">
+                    <i id="idsec-{{activeProjectId}}-{{sector.sectorId}}" class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!--End of data entry tab-->
+    <!--End of Sectors Tab-->
 
   </block-ui>
 

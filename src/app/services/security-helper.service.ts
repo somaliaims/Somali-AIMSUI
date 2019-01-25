@@ -61,6 +61,18 @@ export class SecurityHelperService {
     return permissions;
   }
 
+  addSlashes(str: string) {
+    return str.replace(/\\/g, '\\\\').
+        replace(/\//g, '\\/').
+        replace(/\u0008/g, '\\b').
+        replace(/\t/g, '\\t').
+        replace(/\n/g, '\\n').
+        replace(/\f/g, '\\f').
+        replace(/\r/g, '\\r').
+        replace(/'/g, '\\\'').
+        replace(/"/g, '\\"');
+ }
+
   clearLoginSession() {
     localStorage.setItem('token', null);
     localStorage.setItem('displayName', null);

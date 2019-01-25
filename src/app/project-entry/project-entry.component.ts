@@ -93,14 +93,16 @@ export class ProjectEntryComponent implements OnInit {
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
-  
+  disbursementModel = { id: 0, projectId: 0, startingMonth: null, startingYear: null, endingMonth: null, endingYear: null };
+
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'sector' },
     { visible: false, identity: 'location' },
     { visible: false, identity: 'document' },
     { visible: false, identity: 'funder' },
-    { visible: false, identity: 'implementer' }
+    { visible: false, identity: 'implementer' },
+    { visible: false, identity: 'disbursement' }
   ];
 
   //Overlay UI blocker
@@ -164,9 +166,10 @@ export class ProjectEntryComponent implements OnInit {
 
       var iatiIdsArr = [];
       filteredIATI.forEach(function(project) {
-        var obj = { identifier: project.identifier };
+        //var idStr = this.securityService.addSlashes(project.identifier);
+        var obj = { identifier:  project.identifier};
         iatiIdsArr.push(obj);
-      });
+      }.bind(this));
       this.loadIATIProjectsForIds(iatiIdsArr);
 
       //Load aims projects
@@ -599,6 +602,10 @@ export class ProjectEntryComponent implements OnInit {
 
   showDocuments() {
     this.manageTabsDisplay('document');
+  }
+
+  showDisbursements() {
+    this.manageTabsDisplay('disbursement');
   }
 
   manageTabsDisplay(tabIdentity) {
