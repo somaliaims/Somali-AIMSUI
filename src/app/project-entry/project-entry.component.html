@@ -884,7 +884,7 @@
     <!--End of Implementers Tab-->
 
     <!--Disbursements tab for projects-->
-    <div *ngIf="currentTab == 'sector'" class="row">
+    <div *ngIf="currentTab == 'disbursement'" class="row">
 
       <div class="col-md-6 col-sm-6">
 
@@ -898,7 +898,7 @@
                     <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details" id="aproject-{{project.id}}"
                         (click)="viewAIMSProject($event)" class="text-info">View Details</a><br />
                       <span class="badge badge-warning">AIMS</span>
-                    <table *ngIf="project.disburements.length > 0" class="table table-bordered">
+                    <table *ngIf="project.disbursements.length > 0" class="table table-bordered">
                       <tr>
                         <th>Starting Month/Year</th>
                         <th>Ending Month/Year</th>
@@ -920,7 +920,7 @@
                         </td>
                       </tr>
                     </table>
-                    <div class="text-info" *ngIf="project.disburements.length == 0"><i>No disbursements available</i></div>
+                    <div class="text-info" *ngIf="project.disbursements.length == 0"><i>No disbursements available</i></div>
                   </td>
                 </tr>
               </table>
@@ -938,7 +938,7 @@
                             <th>Amount</th>
                             <th>Dated</th>
                           </tr>
-                          <tr *ngFor="let disbursement of project.disbursements">
+                          <tr *ngFor="let disbursement of project.transactions">
                             <td>
                               {{disbursement.transactionType}}
                             </td>
