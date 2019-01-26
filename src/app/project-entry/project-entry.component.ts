@@ -654,7 +654,7 @@ export class ProjectEntryComponent implements OnInit {
           }
 
           if (data.disbursements && data.disbursements.length > 0) {
-            this.currentProjectDocumentsList = data.disbursements;
+            this.currentProjectDisbursementsList = data.disbursements;
           }
         }
       },
@@ -921,7 +921,8 @@ export class ProjectEntryComponent implements OnInit {
       projectId = parseInt(activeProject);
       this.locationModel.projectId = projectId;
     } else {
-      //Need to show dialog here
+      this.errorMessage = Messages.PROJECT_DEPENDENCY;
+      this.errorModal.openModal();
       return false;
     }
 
@@ -1036,7 +1037,8 @@ export class ProjectEntryComponent implements OnInit {
       projectId = parseInt(activeProject);
       this.documentModel.projectId = projectId;
     } else {
-      //Need to show dialog here
+      this.errorMessage = Messages.PROJECT_DEPENDENCY;
+      this.errorModal.openModal();
       return false;
     }
     
@@ -1092,7 +1094,8 @@ export class ProjectEntryComponent implements OnInit {
       projectId = parseInt(activeProject);
       this.funderModel.projectId = projectId;
     } else {
-      //Need to show dialog here
+      this.errorMessage = Messages.PROJECT_DEPENDENCY;
+      this.errorModal.openModal();
       return false;
     }
     
@@ -1108,7 +1111,8 @@ export class ProjectEntryComponent implements OnInit {
 
     if (this.funderEntryType == 'iati') {
       if (this.funderModel.funder == null || this.funderModel.funder.length == 0) {
-        //Show error dialog
+        this.errorMessage = Messages.PROJECT_DEPENDENCY;
+        this.errorModal.openModal();
         return false;
       } else {
         var funderModel = {
@@ -1179,7 +1183,8 @@ export class ProjectEntryComponent implements OnInit {
       projectId = parseInt(activeProject);
       this.implementerModel.projectId = projectId;
     } else {
-      //Need to show dialog here
+      this.errorMessage = Messages.PROJECT_DEPENDENCY;
+      this.errorModal.openModal();
       return false;
     }
     
@@ -1192,7 +1197,8 @@ export class ProjectEntryComponent implements OnInit {
 
     if (this.implementerEntryType == 'iati') {
       if (this.implementerModel.implementer == null || this.implementerModel.implementer.length == 0) {
-        //Show error dialog
+        this.errorMessage = 'Provide a valid name for Implementer';
+        this.errorModal.openModal();
         return false;
       } else {
         var orgModel = {
@@ -1265,7 +1271,7 @@ export class ProjectEntryComponent implements OnInit {
       projectId = parseInt(activeProject);
       this.disbursementModel.projectId = projectId;
     } else {
-      //Need to show dialog here
+      this.errorMessage = Messages.PROJECT_DEPENDENCY;
       this.errorModal.openModal();
       return false;
     }
@@ -1278,6 +1284,14 @@ export class ProjectEntryComponent implements OnInit {
       endingMonth: this.disbursementModel.endingMonth,
       projectId: this.disbursementModel.projectId,
       amount: this.disbursementModel.amount
+    }
+
+    var isDisbursementExists = this.currentProjectDisbursementsList.filter(d => d.projectId == model.projectId
+      && d.startingYear == model.startingYear && d.startingMonth == model.startingMonth);
+
+    if (isDisbursementExists.length > 0) {
+      this.errorMessage = 'Project disbursement' + Messages.ENTITY_EXISTS;
+      this.errorModal.openModal();
     }
     this.addProjectDisbursement(model);    
   }
@@ -1300,12 +1314,13 @@ export class ProjectEntryComponent implements OnInit {
   deleteProjectDisbursement(e) {
     var arr = e.target.id.split('-');
     var projectId = arr[1];
-    var disbursementId = arr[2];
+    var startingYear = arr[2];
+    var startingMonth = arr[3];
 
-    this.blockUI.start('Removing Implementer...');
-    this.projectService.deleteProjectDisbursement(projectId, this.disbursementModel.startingYear).subscribe(
+    this.blockUI.start('Removing Disbursement...');
+    this.projectService.deleteProjectDisbursement(projectId, startingYear, startingMonth).subscribe(
       data => {
-        this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(i => i.id != disbursementId);
+        this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(d => (d.startingYear != startingYear && d.startingMonth != startingMonth));
         this.blockUI.stop();
         var message = 'Selected Disbursement ' + Messages.RECORD_DELETED;
         this.infoMessage = message;

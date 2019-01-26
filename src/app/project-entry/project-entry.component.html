@@ -44,12 +44,12 @@
       </div>
     </div>
 
-    <div class="row text-center">
+    <!--<div class="row text-center">
       <div *ngIf="isError" class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>Error!</strong> {{errorMessage}}
       </div>
-    </div>
+    </div>-->
 
     <div class="row text-center">
       <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
@@ -931,12 +931,13 @@
                     <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details" id="iproject-{{project.id}}"
                         (click)="viewIATIProject($event)" class="text-info">View Details</a><br />
                       <span class="badge badge-warning">IATI</span>
-                    <table  class="table table-bordered">
+                    <table *ngIf="project.transactions.length != 0"  class="table table-bordered">
                         <tr>
                             <th>Type</th>
                             <th>Currency</th>
                             <th>Amount</th>
                             <th>Dated</th>
+                            <th>Action</th>
                           </tr>
                           <tr *ngFor="let disbursement of project.transactions">
                             <td>
@@ -956,6 +957,7 @@
                             </td>
                           </tr>
                     </table>
+                    <div class="text-info" *ngIf="project.transactions.length == 0"><i>No disbursements available</i></div>
               </table>
 
             </div>
@@ -964,7 +966,7 @@
 
       </div>
 
-      <!--Selected Sectors List-->
+      <!--Selected Disbursements List-->
       <div class="col-md-6 col-sm-6">
 
         <div class="card card-signin my-5">
@@ -1040,19 +1042,21 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project Sectors</h5>
+            <h5 class="card-title text-center">Project Disbursements</h5>
             <table class="table table-bordered">
               <tr>
-                <th>Sector</th>
-                <th>Fund %</th>
+                <th>Starting Year/Month</th>
+                <th>Ending Year/Month</th>
+                <th>Amount</th>
                 <th>Action</th>
               </tr>
-              <tr *ngFor="let sector of currentProjectSectorsList">
-                <td>{{sector.sector}}</td>
-                <td>{{sector.fundsPercentage}}</td>
+              <tr *ngFor="let disbursement of currentProjectDisbursementsList">
+                <td>{{disbursement.startingYear}}/{{disbursement.startingMonth}}</td>
+                <td>{{disbursement.endingYear}}/{{disbursement.endingMonth}}</td>
+                <td>{{disbursement.amount}}</td>
                 <td>
-                  <button id="dsec-{{activeProjectId}}-{{sector.sectorId}}" (click)="deleteProjectSector($event)" class="btn btn-danger btn-sm">
-                    <i id="idsec-{{activeProjectId}}-{{sector.sectorId}}" class="fa fa-trash"></i>
+                  <button id="ddis-{{activeProjectId}}-{{disbursement.startingYear}}-{{disbursement.startingMonth}}" (click)="deleteProjectDisbursement($event)" class="btn btn-danger btn-sm">
+                    <i id="idis-{{activeProjectId}}-{{disbursement.startingYear}}-{{disbursement.startingMonth}}" class="fa fa-trash"></i>
                   </button>
                 </td>
               </tr>

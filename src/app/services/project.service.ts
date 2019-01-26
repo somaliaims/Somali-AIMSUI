@@ -153,8 +153,8 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('Project Disbursements')));
     }
 
-    deleteProjectDisbursement(projectId: string, startingYear: string) {
-      var url  = this.urlHelper.deleteProjectDisbursementUrl(projectId, startingYear);
+    deleteProjectDisbursement(projectId: string, startingYear: string, startingMonth: string) {
+      var url  = this.urlHelper.deleteProjectDisbursementUrl(projectId, startingYear, startingMonth);
         return this.httpClient.delete(url, httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Delete Project Disbursement')));
     }
