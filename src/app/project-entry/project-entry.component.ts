@@ -90,6 +90,23 @@ export class ProjectEntryComponent implements OnInit {
   viewProjectImplementers: any = [];
   viewParticipatingOrganizations: any = [];
   viewProjectDisbursements: any = [];
+  yearsList: any = [];
+  endingYearsList: any = [];
+
+  monthsList: any = [
+    {key: 'January', value: 1},
+    {key: 'February', value: 2},
+    {key: 'March', value: 3},
+    {key: 'April', value: 4},
+    {key: 'May', value: 5},
+    {key: 'June', value: 6},
+    {key: 'July', value: 7},
+    {key: 'August', value: 8},
+    {key: 'September', value: 9},
+    {key: 'October', value: 10},
+    {key: 'November', value: 11},
+    {key: 'December', value: 12}
+  ];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
@@ -194,6 +211,20 @@ export class ProjectEntryComponent implements OnInit {
         this.isError = true;
       }
     });
+
+    var currentDate = new Date();
+    var currentYear = currentDate.getFullYear();
+    var lowerLimit = currentYear - 20;
+    var upperLimit = currentYear + 10;
+
+    for(var y=currentYear; y >= lowerLimit; y--) {
+      this.yearsList.push(y);
+    }
+
+    lowerLimit = currentYear - 5;
+    for(var y=lowerLimit; y <= upperLimit; y++) {
+      this.endingYearsList.push(y);
+    }
 
     this.loadSectorsList();
     this.loadLocationsList();
@@ -562,7 +593,7 @@ export class ProjectEntryComponent implements OnInit {
           var month = dateArr[1];
 
           this.disbursementModel.startingYear = year;
-          this.disbursementModel.startingMonth = month;
+          this.disbursementModel.startingMonth = parseInt(month);
         }
       }
     }
@@ -1222,6 +1253,70 @@ export class ProjectEntryComponent implements OnInit {
       }
     )
   }
+  /**End of managing project implementer */
+
+
+  /**Managing Disbursements */
+  saveProjectDisbursement() {
+    var activeProject = localStorage.getItem('active-project');
+    var projectId = 0;
+    
+    if (activeProject && activeProject != '0') {
+      projectId = parseInt(activeProject);
+      this.disbursementModel.projectId = projectId;
+    } else {
+      //Need to show dialog here
+      this.errorModal.openModal();
+      return false;
+    }
+    
+    this.blockUI.start('Saving Disbursement...');
+    var model = {
+      startingYear: this.disbursementModel.startingYear,
+      startingMonth: this.disbursementModel.startingMonth,
+      endingYear: this.disbursementModel.endingYear,
+      endingMonth: this.disbursementModel.endingMonth,
+      projectId: this.disbursementModel.projectId,
+      amount: this.disbursementModel.amount
+    }
+    this.addProjectDisbursement(model);    
+  }
+
+  addProjectDisbursement(model: any) {
+    this.projectService.addProjectDisbursement(model).subscribe(
+      data => {
+        this.currentProjectDisbursementsList.push(model);
+        this.blockUI.stop();
+        this.resetDisbursementEntry();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+        this.resetDisbursementEntry();
+      }
+    )
+  }
+
+  deleteProjectDisbursement(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var disbursementId = arr[2];
+
+    this.blockUI.start('Removing Implementer...');
+    this.projectService.deleteProjectDisbursement(projectId, this.disbursementModel.startingYear).subscribe(
+      data => {
+        this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(i => i.id != disbursementId);
+        this.blockUI.stop();
+        var message = 'Selected Disbursement ' + Messages.RECORD_DELETED;
+        this.infoMessage = message;
+        this.infoModal.openModal();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
   /**End of managing project documents */
 
 
@@ -1263,6 +1358,14 @@ export class ProjectEntryComponent implements OnInit {
   resetImplementerEntry() {
     this.implementerModel.implementer = '';
     this.implementerModel.implementerId = null;
+  }
+
+  resetDisbursementEntry() {
+    this.disbursementModel.startingYear = null;
+    this.disbursementModel.startingMonth = null;
+    this.disbursementModel.endingYear = null;
+    this.disbursementModel.endingMonth = null;
+    this.disbursementModel.amount = 0.00;
   }
 
 }
