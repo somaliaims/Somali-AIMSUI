@@ -52,5 +52,6 @@ export const urls = {
 	iatiMatchingActivities: "IATI/GetMatchingActivities",
 	iatiProjects: "IATI/GetProjects",
 	iatiProjectsByIds: "IATI/ExtractProjectsByIds",
-	aimsProjectsByIds: "Project/ExtractProjectsByIds"
+	aimsProjectsByIds: "Project/ExtractProjectsByIds",
+	sectorProjectsReport: "Report/GetSectorWiseProjects"
 };

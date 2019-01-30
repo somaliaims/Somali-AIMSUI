@@ -692,6 +692,12 @@ export class ProjectEntryComponent implements OnInit {
     this.manageTabsDisplay('disbursement');
   }
 
+  showCustomFields() {
+    this.manageTabsDisplay('customFields');
+  }
+
+  
+
   manageTabsDisplay(tabIdentity) {
     for(var i=0; i < this.displayTabs.length; i++) {
       var tab = this.displayTabs[i];
@@ -1275,8 +1281,7 @@ export class ProjectEntryComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
-    
-    this.blockUI.start('Saving Disbursement...');
+
     var model = {
       startingYear: this.disbursementModel.startingYear,
       startingMonth: this.disbursementModel.startingMonth,
@@ -1292,7 +1297,9 @@ export class ProjectEntryComponent implements OnInit {
     if (isDisbursementExists.length > 0) {
       this.errorMessage = 'Project disbursement' + Messages.ENTITY_EXISTS;
       this.errorModal.openModal();
+      return false;
     }
+    this.blockUI.start('Saving Disbursement...');
     this.addProjectDisbursement(model);    
   }
 

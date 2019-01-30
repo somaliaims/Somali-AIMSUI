@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SectorService } from 'src/app/services/sector.service';
-import { LocationService } from 'src/app/services/location.service';
+import { ReportService } from 'src/app/services/report.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-project-report',
@@ -8,34 +8,46 @@ import { LocationService } from 'src/app/services/location.service';
   styleUrls: ['./project-report.component.css']
 })
 export class ProjectReportComponent implements OnInit {
-  sectors: any = [];
-  locations: any = [];
+  reportDataList: any = [];
+  //Overlay UI blocker
+  @BlockUI() blockUI: NgBlockUI;
 
-  constructor(private sectorService: SectorService, private locationService: LocationService) { }
+  constructor(private reportService: ReportService) { }
 
   ngOnInit() {
   }
 
-  getSectorsList() {
-    this.sectorService.getSectorsList().subscribe(
+  getSectorProjectsReport() {
+    this.blockUI.start('Wait loading...');
+    this.reportService.getSectorProjectsReport().subscribe(
       data => {
-        this.sectors = data;
+        this.reportDataList = data;
+        this.blockUI.stop();
       },
       error => {
         console.log(error);
+        this.blockUI.stop();
       }
-    )
+    );
   }
 
-  getLocationsList() {
-    this.locationService.getLocationsList().subscribe(
-      data => {
-        this.locations = data;
-      },
-      error => {
-        console.log(error);
-      }
-    )
+  formatFunders(funders: any = null) {
+    var fundersStr = '';
+    if (funders && funders.length > 0) {
+      var funderNames = funders.map(f => f.funder);
+      fundersStr = funderNames.join(', ');
+    }
+    return fundersStr;
   }
+
+  formatImplementers(implementers: any = null) {
+    var implementersStr = '';
+    if (implementers && implementers.length > 0) {
+      var implementerNames = implementers.map(i => i.implementer);
+      implementersStr = implementerNames.join(', ');
+    }
+    return implementersStr;
+  }
+
 
 }

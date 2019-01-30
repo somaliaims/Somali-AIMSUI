@@ -251,9 +251,9 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
-  deleteProjectDisbursement(projectId, startingYear) {
+  deleteProjectDisbursement(projectId, startingYear, startingMonth) {
     this.blockUI.start('Working...');
-    this.projectService.deleteProjectDisbursement(projectId, startingYear).subscribe(
+    this.projectService.deleteProjectDisbursement(projectId, startingYear, startingMonth).subscribe(
       data => {
         this.projectDisbursements = this.projectDisbursements.filter(d => d.projectId != projectId 
           && d.startingYear != startingYear);
