@@ -33,6 +33,7 @@ import { ProjectDisbursementComponent } from './project-disbursement/project-dis
 import { ProjectDocumentComponent } from './project-document/project-document.component';
 import { NewProjectComponent } from './new-project/new-project.component';
 import { ProjectEntryComponent } from './project-entry/project-entry.component';
+import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -77,7 +78,8 @@ export const routes: Routes = [
   { path: 'project-implementer/:{id}', component: ProjectImplementerComponent },
   { path: 'project-disbursement/:{id}', component: ProjectDisbursementComponent },
   { path: 'project-document/:{id}', component: ProjectDocumentComponent },
-  { path: 'project-entry', component: ProjectEntryComponent}
+  { path: 'project-entry', component: ProjectEntryComponent},
+  { path: 'project-report', component: ProjectReportComponent}
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

@@ -131,6 +131,10 @@ html {
     padding: 10px !important;
   }
 
+  .margin-left-5 {
+    margin-left: 5px;
+  }
+
   .iati-box {
     max-height: 620px;
     overflow-y: auto;

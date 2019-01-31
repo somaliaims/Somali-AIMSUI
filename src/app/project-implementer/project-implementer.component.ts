@@ -18,7 +18,7 @@ export class ProjectImplementerComponent implements OnInit {
 
   @Input()
   isBtnDisabled: boolean = false;
-  btnText: string = 'Add Project Implementor';
+  btnText: string = 'Add Project Implementer';
   errorMessage: string = '';
   organizations: any = [];
   requestNo: number = 0;
@@ -39,7 +39,7 @@ export class ProjectImplementerComponent implements OnInit {
     if (this.route.snapshot.data) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Add Implementor';
+        this.btnText = 'Add Implementer';
         this.model.projectId = id;
         this.loadOrganizations();
       } else {
@@ -90,7 +90,7 @@ export class ProjectImplementerComponent implements OnInit {
     return organization ? organization.organizationName : undefined;
   }
 
-  saveProjectImplementor() {
+  saveProjectImplementer() {
     if (this.selectedOrganizationId == 0) {
       return false;
     }
@@ -98,7 +98,7 @@ export class ProjectImplementerComponent implements OnInit {
     this.model.organizationId = this.selectedOrganizationId;
     var model = {
       ProjectId: this.model.projectId,
-      ImplementorId: this.model.organizationId,
+      ImplementerId: this.model.organizationId,
     };
 
     this.isBtnDisabled = true;
@@ -123,7 +123,7 @@ export class ProjectImplementerComponent implements OnInit {
 
   resetFormState() {
     this.isBtnDisabled = false;
-    this.btnText = 'Add Implementor';
+    this.btnText = 'Add Implementer';
   }
 
 }

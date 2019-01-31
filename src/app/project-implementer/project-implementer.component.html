@@ -6,7 +6,7 @@
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/view-project/', model.projectId]">Back to Project Details</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Create New Implementor</a>
+          <a class="nav-link active btn-info" data-toggle="tab">Create New Implementer</a>
         </li>
       </ul>
     </div>
@@ -17,12 +17,12 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Error!</strong> {{errorMessage}}
           </div>
-          <h5 class="card-title text-center">Implementor</h5>
+          <h5 class="card-title text-center">Implementer</h5>
 
-          <form class="form-signin" (ngSubmit)="saveProjectImplementor()" [formGroup]='implementerSelectionForm'>
+          <form class="form-signin" (ngSubmit)="saveProjectImplementer()" [formGroup]='implementerSelectionForm'>
 
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Implementor" aria-label="Implementor" [matAutocomplete]="auto" [formControl]="userInput">
+              <input matInput placeholder="Implementer" aria-label="Implementer" [matAutocomplete]="auto" [formControl]="userInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
                 <mat-option *ngFor="let implementer of filteredOrganizations | async" [value]="implementer">
                   <span>{{implementer.organizationName}}</span>

@@ -1,65 +1,79 @@
 <div class="container-fluid view-area">
-<block-ui>
+  <block-ui>
 
-  <div class="row text-center">
-    <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Information!</strong> {{infoMessage}}
+    <div class="row text-center">
+      <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Information!</strong> {{infoMessage}}
+      </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-6">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/reports-panel']">Reports Panel</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Sector Projects Report</a>
-        </li>
-      </ul>
-    </div>
-    <div class="col-md-6">
-      <button class="btn btn-info btn-lg" (click)="getSectorProjectsReport()">Load Report</button>
-    </div>
-  </div>
-
-  <div class="row">
-    <iframe id="rpt-sector-project">
-      <div class="row">
-        <div *ngIf="reportDataList && reportDataList.length > 0" class="col-md-12 text-center">
-              <h5>{{reportDataList.reportSettings.title}}</h5>
-        </div>
-
-        <table class="table table-bordered">
-          <tr>
-            <th>Project Name</th>
-            <th>Funders</th>
-            <th>Implementers</th>
-            <th>Total Cost</th>
-            <th>Disbursements</th>
-          </tr>
-          <tr *ngFor="let sectorProject of reportDataList.sectorProjectsList">
-
-            <table class="table table-bordered">
-              <tr>
-                <td colspan="5"><b>{{sectorProject.sectorName}}</b></td>
-              </tr>
-              <tr *ngFor="let project of sectorProject.projects">
-                <td>{{project.title}}</td>
-                <td>{{formatFunders(project.funders)}}</td>
-                <td>{{formatImplementers(project.Implementers)}}</td>
-                <td>{{project.totalCost}}</td>
-                <td>0.0</td>
-              </tr>
-            </table>
-            
-          </tr>
-        </table>
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/reports-panel']">Reports Panel</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Sector Projects Report</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <form class="form-signin margin-top-10" #projectReportForm="ngForm">
+          <div class="input-group">
+            <select placeholder="Year" class="form-control" id="year" [(ngModel)]="reportModel.year" name="year" #year="ngModel"
+              required>
+              <option *ngFor="let year of yearsList" [value]="year">{{year}}</option>
+            </select>
+            <span class="input-group-btn">
+              <button class="btn btn-info" (click)="getSectorProjectsReport()">Load Report</button>
+              <button class="btn btn-success margin-left-5" (click)="printReport()">Print</button>
+            </span>
+          </div>
+        </form>
 
       </div>
-    </iframe>
-  </div>
+    </div>
 
-</block-ui>
+    <div class="row margin-top-10">
+      <div id="rpt-sector-project" class="col-md-12">
+        <div class="row">
+          <div *ngIf="reportDataList && reportDataList.length > 0" class="col-md-12 text-center">
+            <h3>{{reportDataList.reportSettings.title}}</h3>
+          </div>
+
+          <div class="col-md-12">
+            <table class="table table-bordered">
+
+              <tr *ngFor="let sectorProject of reportDataList.sectorProjectsList">
+                <table class="table table-bordered">
+                  <tr>
+                    <td colspan="5"><b>{{sectorProject.sectorName}}</b></td>
+                  </tr>
+                  <tr>
+                    <th>Project Name</th>
+                    <th>Funders</th>
+                    <th>Implementers</th>
+                    <th>Total Cost</th>
+                    <th>Disbursements</th>
+                  </tr>
+                  <tr *ngFor="let project of sectorProject.projects">
+                    <td>{{project.title}}</td>
+                    <td>{{formatFunders(project.funders)}}</td>
+                    <td>{{formatImplementers(project.implementers)}}</td>
+                    <td>{{project.totalCost}}</td>
+                    <td>0.0</td>
+                  </tr>
+                </table>
+              </tr>
+            </table>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </block-ui>
 </div>

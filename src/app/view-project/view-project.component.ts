@@ -3,6 +3,7 @@ import { ProjectService } from '../services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-view-project',
@@ -17,11 +18,12 @@ export class ViewProjectComponent implements OnInit {
   isLocationLoading: boolean = true;
   isSectorLoading: boolean = true;
   isFunderLoading: boolean = true;
-  isImplementorLoading: boolean = true;
+  isImplementerLoading: boolean = true;
   isDisbursementLoading: boolean = true;
   isDocumentLoading: boolean = true;
   projectId: number = 0;
   delayTime: number = 2000;
+  permissions: any = {};
   monthStrings: any = { 
     "1": "January", "2": "February", "3": "March", "4": "April", "5": "May", "6": "June",
     "7": "July", "8": "August", "9": "September", "10": "October", "11": "November", "12": "December" 
@@ -32,7 +34,7 @@ export class ViewProjectComponent implements OnInit {
   projectLocations: any = [];
   projectSectors: any = [];
   projectFunders: any = [];
-  projectImplementors: any = [];
+  projectImplementers: any = [];
   projectDisbursements: any = [];
   projectDocuments: any = [];
 
@@ -41,9 +43,10 @@ export class ViewProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router,
-    private storeService: StoreService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
     if (this.route.snapshot.data) {
       var id = this.route.snapshot.params["{id}"];
       this.projectId = id;
@@ -63,7 +66,7 @@ export class ViewProjectComponent implements OnInit {
         }, (this.delayTime + 2));
 
         setTimeout(() => {
-          this.loadProjectImplementors(id);
+          this.loadProjectImplementers(id);
         }, (this.delayTime + 3));
 
         setTimeout(() => {
@@ -98,7 +101,7 @@ export class ViewProjectComponent implements OnInit {
     this.router.navigateByUrl('project-funder/' + this.projectId);
   }
 
-  addProjectImplementor() {
+  addProjectImplementer() {
     this.router.navigateByUrl('project-implementer/' + this.projectId);
   }
 
@@ -159,11 +162,11 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
-  loadProjectImplementors(id) {
+  loadProjectImplementers(id) {
     this.projectService.getProjectImplementers(id).subscribe(
       data => {
-        this.hideImplementorLoader();
-        this.projectImplementors = data;
+        this.hideImplementerLoader();
+        this.projectImplementers = data;
       },
       error => {
         console.log(error);
@@ -237,11 +240,11 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
-  deleteProjectImplementor(projectId, implementerId) {
+  deleteProjectImplementer(projectId, implementerId) {
     this.blockUI.start('Working...');
     this.projectService.deleteProjectImplementer(projectId, implementerId).subscribe(
       data => {
-        this.projectImplementors = this.projectImplementors.filter(i => i.implementerId != implementerId);
+        this.projectImplementers = this.projectImplementers.filter(i => i.implementerId != implementerId);
         this.blockUI.stop();
       },
       error => {
@@ -296,8 +299,8 @@ export class ViewProjectComponent implements OnInit {
     this.isFunderLoading = false;
   }
 
-  hideImplementorLoader() {
-    this.isImplementorLoading = false;
+  hideImplementerLoader() {
+    this.isImplementerLoading = false;
   }
 
   hideDisbursementLoader() {
