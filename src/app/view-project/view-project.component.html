@@ -125,15 +125,11 @@
                 <tr>
                   <th>Sector</th>
                   <th>Funds Percentage</th>
-                  <th>Currency</th>
-                  <th>Exchange Rate</th>
                   <th>Actions</th>
                 </tr>
                 <tr *ngFor="let sector of projectSectors">
                   <td>{{sector.sector}}</td>
                   <td>{{sector.fundsPercentage}}</td>
-                  <td>{{sector.currency}}</td>
-                  <td>{{sector.exchangeRate}}</td>
                   <td>
                     <a title="Remove Sector" (click)="deleteProjectSector(projectId, sector.sectorId)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
@@ -259,13 +255,13 @@
                 <tr>
                   <th>Starting Month/Year</th>
                   <th>Ending Month/Year</th>
-                  <th>Percentage</th>
+                  <th>Amount</th>
                   <th>Actions</th>
                 </tr>
                 <tr *ngFor="let disbursement of projectDisbursements">
                   <td>{{monthStrings[disbursement.startingMonth]}}, {{disbursement.startingYear}}</td>
                   <td>{{monthStrings[disbursement.endingMonth]}}, {{disbursement.endingYear}}</td>
-                  <td>{{disbursement.percentage}}</td>
+                  <td>{{disbursement.amount}}</td>
                   <td>
                     <a title="Remove Disbursement" (click)="deleteProjectDisbursement(disbursement.projectId, disbursement.startingYear, disbursement.startingMonth)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>

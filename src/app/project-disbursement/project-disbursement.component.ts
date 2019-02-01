@@ -37,7 +37,7 @@ export class ProjectDisbursementComponent implements OnInit {
   ];
     
   model = { projectId: 0, disbursementId: null, startingYear: null, startingMonth: null,
-    endingYear: null, endingMonth: null,  percentage: null };
+    endingYear: null, endingMonth: null,  amount: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router,
@@ -93,7 +93,7 @@ export class ProjectDisbursementComponent implements OnInit {
     var model = {
       ProjectId: this.model.projectId,
       DisbursementId: this.model.disbursementId,
-      Percentage: this.model.percentage,
+      Amount: this.model.amount,
       StartingYear: this.model.startingYear,
       StartingMonth: this.model.startingMonth,
       EndingYear: this.model.endingYear,

@@ -25,7 +25,7 @@ export class ProjectSectorComponent implements OnInit {
   selectedSectorId: number = 0;
   isError: boolean = false;
   isLoading: boolean = false;
-  model = { projectId: 0, sectorId: null, fundsPercentage: null, currency: null, exchangeRate: null };
+  model = { projectId: 0, sectorId: null, fundsPercentage: null };
   sectorSelectionForm: FormGroup;
   userInput = new FormControl();
   filteredSectors: Observable<Sector[]>;
@@ -101,8 +101,6 @@ export class ProjectSectorComponent implements OnInit {
       ProjectId: this.model.projectId,
       SectorId: this.model.sectorId,
       FundsPercentage: this.model.fundsPercentage,
-      Currency: this.model.currency,
-      ExchangeRate: this.model.exchangeRate
     };
 
     this.isBtnDisabled = true;

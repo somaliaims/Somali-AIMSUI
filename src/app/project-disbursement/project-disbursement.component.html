@@ -66,10 +66,10 @@
 
             <div class="form-group">
               <label for="text"> </label>
-              <input type="number" class="form-control" id="percentage" [(ngModel)]="model.percentage" name="percentage"
-                #percentage="ngModel" required>
-              <div [hidden]="percentage.valid" class="alert alert-danger">
-                 Fund percentage is required
+              <input type="number" class="form-control" id="amount" [(ngModel)]="model.amount" name="amount"
+                #amount="ngModel" required>
+              <div [hidden]="amount.valid" class="alert alert-danger">
+                 Fund amount is required
               </div>
             </div>
         

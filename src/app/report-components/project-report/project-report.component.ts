@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReportService } from 'src/app/services/report.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from 'src/app/services/store-service';
+import { SectorService } from 'src/app/services/sector.service';
 
 @Component({
   selector: 'app-project-report',
@@ -11,12 +12,14 @@ import { StoreService } from 'src/app/services/store-service';
 export class ProjectReportComponent implements OnInit {
   reportDataList: any = [];
   yearsList: any = [];
+  sectorsList: any = [];
 
   reportModel: any = { year: null };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 
-  constructor(private reportService: ReportService, private storeService: StoreService) { }
+  constructor(private reportService: ReportService, private storeService: StoreService,
+    private sectorService: SectorService) { }
 
   ngOnInit() {
     var currentDate = new Date();
@@ -27,6 +30,7 @@ export class ProjectReportComponent implements OnInit {
     for(var y=currentYear; y >= lowerLimit; y--) {
       this.yearsList.push(y);
     }
+    this.loadSectors();
   }
 
   getSectorProjectsReport() {
@@ -59,6 +63,17 @@ export class ProjectReportComponent implements OnInit {
       implementersStr = implementerNames.join(', ');
     }
     return implementersStr;
+  }
+
+  loadSectors() {
+    this.sectorService.getSectorsList().subscribe(
+      data => {
+        this.sectorsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   printReport() {

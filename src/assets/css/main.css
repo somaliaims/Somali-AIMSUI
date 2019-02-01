@@ -150,6 +150,15 @@ html {
     padding: 2px;
   }
 
+  /*
+  Reports CSS
+  */
+  .report-subtitle {
+    font-size: 18px;
+    font-style: italic;
+    font-weight: bold;
+  }
+
   /*Css for calendar button on ng-datepicker*/
   button.calendar, button.calendar:active {
     width: 2.75rem;

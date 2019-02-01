@@ -43,24 +43,6 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="text">Currency</label>
-              <input type="text" class="form-control" maxlength="4" id="currency" [(ngModel)]="model.currency" name="currency"
-                #currency="ngModel" required>
-              <div [hidden]="currency.valid" class="alert alert-danger">
-                Currency is required
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="text">Exchange Rate</label>
-              <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate" name="percentage"
-                #exchangeRate="ngModel" required>
-              <div [hidden]="exchangeRate.valid" class="alert alert-danger">
-                Exchange rate is required
-              </div>
-            </div>
-
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>
         </div>
