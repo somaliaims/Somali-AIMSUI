@@ -13,7 +13,15 @@ export class ProjectReportComponent implements OnInit {
   reportDataList: any = [];
   yearsList: any = [];
   sectorsList: any = [];
-
+  barChartOptions:any = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  barChartLabels:string[] = [];
+  barChartType:string = 'bar';
+  barChartLegend:boolean = true;
+  barChartData:any[] = [
+  ];
   reportModel: any = { year: null };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -38,6 +46,13 @@ export class ProjectReportComponent implements OnInit {
     this.reportService.getSectorProjectsReport().subscribe(
       data => {
         this.reportDataList = data;
+        if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+          var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
+          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          this.barChartLabels = sectorNames;
+          var chartData = {data: sectorProjects};
+          this.barChartData.push(chartData);
+        }
         this.blockUI.stop();
       },
       error => {
@@ -78,6 +93,14 @@ export class ProjectReportComponent implements OnInit {
 
   printReport() {
     this.storeService.printReport('rpt-sector-project', 'SectorWise Projects List');
+  }
+
+  public chartClicked(e:any):void {
+    console.log(e);
+  }
+ 
+  public chartHovered(e:any):void {
+    console.log(e);
   }
 
 }

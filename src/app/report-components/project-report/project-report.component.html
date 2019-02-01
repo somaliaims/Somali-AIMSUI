@@ -79,6 +79,15 @@
 
           </div>
 
+          <div *ngIf="barChartLabels.length > 0" class="col-md-12">
+          
+            <div style="display: block">
+              <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            </div>
+          
+          </div>
+
         </div>
       </div>
     </div>
