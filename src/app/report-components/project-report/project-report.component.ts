@@ -13,10 +13,24 @@ export class ProjectReportComponent implements OnInit {
   reportDataList: any = [];
   yearsList: any = [];
   sectorsList: any = [];
-  barChartOptions:any = {
+  barChartOptions: any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
   };
+  chartColors: any = [
+    {
+      backgroundColor: [
+        "#FF7360", "#6FC8CE", "#4cc6bb", "#fdd100", "#123ea9"
+      ]
+    }
+  ];
   barChartLabels:string[] = [];
   barChartType:string = 'bar';
   barChartLegend:boolean = true;
@@ -50,7 +64,7 @@ export class ProjectReportComponent implements OnInit {
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
           var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
           this.barChartLabels = sectorNames;
-          var chartData = {data: sectorProjects};
+          var chartData = {data: sectorProjects, label: 'Sector Projects'};
           this.barChartData.push(chartData);
         }
         this.blockUI.stop();
