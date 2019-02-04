@@ -4,5 +4,6 @@ export const Messages = {
     RECORD_UPDATED: ' updated successfully',
     RECORD_DELETED: ' deleted successfully',
     PROJECT_DEPENDENCY: 'You need to create and save a project before this action.',
-    ENTITY_EXISTS: ' already exists'
+    ENTITY_EXISTS: ' already exists',
+    ALREADY_IN_LIST: ' is already added to list.'
 }

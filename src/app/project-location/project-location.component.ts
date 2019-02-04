@@ -61,7 +61,7 @@ export class ProjectLocationComponent implements OnInit {
     var model = {
       ProjectId: this.model.projectId,
       LocationId: this.model.locationId,
-      Percentage: this.model.percentage,
+      FundsPercentage: this.model.percentage,
     };
 
     this.isBtnDisabled = true;

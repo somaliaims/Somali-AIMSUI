@@ -352,11 +352,15 @@
                     <table *ngIf="project.locations.length > 0" class="table table-bordered">
                       <tr>
                         <th>Location</th>
+                        <th>Funds %</th>
                         <th>Action</th>
                       </tr>
                       <tr *ngFor="let location of project.locations">
                         <td>
                           {{location.location}}
+                        </td>
+                        <td>
+                          {{location.fundsPercentage}}
                         </td>
                         <td>
                           <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)"
@@ -440,6 +444,9 @@
 
               <button [class.disable]="isProjectLocationBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">{{btnProjectLocationText}}</button>
+
+                <button [class.disable]="isProjectLocationBtnDisabled" class="btn btn-lg btn-warning btn-block text-uppercase"
+                type="button" (click)="resetLocationEntry()">Reset Location</button>
             </form>
 
           </div>

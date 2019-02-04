@@ -452,10 +452,8 @@ export class ProjectEntryComponent implements OnInit {
         var selectLocation = locations.filter(l => l.id == locationId);
         if (selectLocation && selectLocation.length > 0) {
           this.locationEntryType = 'aims';
-          var dbLocation = this.locationsList.filter(l => l.location == selectLocation[0].location);
-          if (dbLocation) {
-            this.locationModel.locationId = dbLocation[0].id;
-          }
+          this.locationModel.locationId = selectLocation[0].id;
+          this.locationModel.fundsPercentage = selectLocation[0].fundsPercentage;
         }
       }
     }
@@ -835,7 +833,7 @@ export class ProjectEntryComponent implements OnInit {
     if (this.sectorModel.sectorId != null && this.sectorModel.sectorId != 0) {
       var isSectorExists = this.currentProjectSectorsList.filter(s => s.sectorId == this.sectorModel.sectorId);
       if (isSectorExists.length > 0) {
-        this.errorMessage = 'Selected sector is already added to list.';
+        this.errorMessage = 'Selected sector' + Messages.ALREADY_IN_LIST;
         this.errorModal.openModal();
         return false;
       }
@@ -844,7 +842,7 @@ export class ProjectEntryComponent implements OnInit {
     if (this.sectorModel.sectorName != null && this.sectorModel.sectorName != '') {
       var isSectorExists = this.currentProjectSectorsList.filter(s => s.sector.toLowerCase() == this.sectorModel.sectorName.toLowerCase());
       if (isSectorExists.length > 0) {
-        this.errorMessage = 'Selected sector is already added to list.';
+        this.errorMessage = 'Selected sector' + Messages.ALREADY_IN_LIST;
         this.errorModal.openModal();
         return false;
       }
@@ -940,6 +938,10 @@ export class ProjectEntryComponent implements OnInit {
 
   /**Managing Locations */
   saveProjectLocation() {
+    if (this.locationModel.locationId == null && this.locationModel.location == '') {
+      return false;
+    }
+    
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
     
@@ -971,6 +973,14 @@ export class ProjectEntryComponent implements OnInit {
       if (getLocation && getLocation.length > 0) {
         this.locationModel.location = getLocation[0].location;
       }
+    }
+
+    var isLocationExists = this.currentProjectLocationsList.filter(l => l.location.toLowerCase() == this.locationModel.location.toLowerCase()
+    || l.id == this.locationModel.locationId);
+    if (isLocationExists.length > 0) {
+      this.errorMessage = 'Selected location' + Messages.ALREADY_IN_LIST;
+      this.errorModal.openModal();
+      return false;
     }
     
     this.blockUI.start('Saving Location...');
@@ -1384,9 +1394,10 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   resetLocationEntry() {
+    this.locationEntryType = 'aims';
     this.locationModel.fundsPercentage = 0.00;
     this.locationModel.projectId = 0;
-    this.locationModel.locationId = 0;
+    this.locationModel.locationId = null;
     this.locationModel.location = '';
   }
 
