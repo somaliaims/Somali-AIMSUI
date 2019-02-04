@@ -1,13 +1,5 @@
 <div class="container-fluid view-area">
   <block-ui>
-
-    <div class="row text-center">
-      <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Information!</strong> {{infoMessage}}
-      </div>
-    </div>
-
     <div class="row">
       <div class="col-md-6">
         <ul class="nav nav-tabs">
@@ -22,13 +14,13 @@
       <div class="col-md-6">
         <form class="form-signin margin-top-10" #projectReportForm="ngForm">
           <div class="input-group">
-            <select placeholder="Sector" class="form-control" id="sectorId" [(ngModel)]="reportModel.sectorId" name="sectorId" #sectorId="ngModel"
-              required>
+            <select placeholder="Sector" class="form-control" id="sectorId" [(ngModel)]="reportModel.sectorId" name="sectorId" #sectorId="ngModel">
+              <option value="0">-- Select Sector --</option>
               <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}</option>
             </select>
             &nbsp;
-            <select placeholder="Year" class="form-control" id="year" [(ngModel)]="reportModel.year" name="year" #year="ngModel"
-              required>
+            <select placeholder="Year" class="form-control" id="year" [(ngModel)]="reportModel.year" name="year" #year="ngModel">
+              <option value="0">-- Select Year --</option>
               <option *ngFor="let year of yearsList" [value]="year">{{year}}</option>
             </select>
             <span class="input-group-btn">
@@ -87,7 +79,7 @@
             [chartType]="barChartType" [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
         </div>
       </div>
-      
+
     </div>
 
   </block-ui>

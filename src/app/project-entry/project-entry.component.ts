@@ -179,7 +179,7 @@ export class ProjectEntryComponent implements OnInit {
       var parsedProjects = JSON.parse(projects);
       this.selectedProjects = parsedProjects;
       this.currencyList = this.storeService.getCurrencyList();
-
+      console.log(this.selectedProjects);
       //Load iati projects
       var filteredIATI = this.selectedProjects.filter(function(project) {
         return project.type == 'IATI';
@@ -525,12 +525,14 @@ export class ProjectEntryComponent implements OnInit {
     if (selectProject && selectProject.length > 0) {
       var funders = selectProject[0].funders;
       if (funders && funders.length > 0) {
-        var selectFunder = funders.filter(f => f.id == funderId);
+        var selectFunder = funders.filter(f => f.funderId == funderId);
         if (selectFunder && selectFunder.length > 0) {
           this.funderEntryType = 'aims';
-          var dbFunder = funders.filter(f => f.id == funderId);
+          var dbFunder = funders.filter(f => f.funderId == funderId);
           if (dbFunder) {
             this.funderModel.funderId = dbFunder[0].funderId;
+            this.funderModel.amount = dbFunder[0].amount;
+            this.funderModel.exchangeRate = dbFunder[0].exchangeRate;
           }
         }
       }
@@ -755,6 +757,12 @@ export class ProjectEntryComponent implements OnInit {
     var endDate = this.model.endDate.year + '-' + this.model.endDate.month + '-' + 
           this.model.endDate.day;
 
+    if (startDate > endDate) {
+      this.errorMessage = 'Start date cannot be greater than end date';
+      this.errorModal.openModal();
+      return;
+    }
+
     var model = {
       Title: this.model.title,
       StartDate: startDate,
@@ -771,7 +779,6 @@ export class ProjectEntryComponent implements OnInit {
           if (!this.isError) {
             var message = 'Project' + Messages.RECORD_UPDATED;
             this.infoMessage = message;
-            this.activeProjectId = data;
             this.infoModal.openModal();
             this.resetProjectEntry();
           } else {
@@ -791,12 +798,14 @@ export class ProjectEntryComponent implements OnInit {
       this.projectService.addProject(model).subscribe(
         data => {
           this.resetProjectEntry();
+          this.activeProjectId = data;
           if (!this.isError) {
             var message = 'New project' + Messages.NEW_RECORD;
             this.infoMessage = message;
             localStorage.setItem('active-project', data);
             this.infoModal.openModal();
             this.btnProjectText = 'Edit Project';
+            this.currentTab = 'funder';
           } else {
           }
           this.blockUI.stop();
@@ -1370,6 +1379,7 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   resetFunderEntry() {
+    this.funderEntryType = 'aims';
     this.funderModel.funder = '';
     this.funderModel.funderId = null;
     this.funderModel.currency = null;

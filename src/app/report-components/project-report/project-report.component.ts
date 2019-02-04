@@ -36,7 +36,7 @@ export class ProjectReportComponent implements OnInit {
   barChartLegend:boolean = true;
   barChartData:any[] = [
   ];
-  reportModel: any = { year: null };
+  reportModel: any = { year: 0, sectorId: 0 };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 

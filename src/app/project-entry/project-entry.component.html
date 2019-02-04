@@ -12,31 +12,31 @@
             <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#" class="nav-link text-info"
               (click)="showProjects()" data-toggle="tab">Name/Description</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#" class="nav-link text-info"
               (click)="showFunders()" data-toggle="tab">Funders/Financing</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#"
               class="nav-link text-info" (click)="showImplementers()" data-toggle="tab">Implementers</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'sector', 'text-info': currentTab != 'sector'}" href="#" class="nav-link text-info"
               (click)="showSectors()" data-toggle="tab">Sectors</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'location', 'text-info': currentTab != 'location'}" href="#" class="nav-link text-info"
               (click)="showLocations()" data-toggle="tab">Locations</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'document', 'text-info': currentTab != 'document'}" href="#" class="nav-link text-info"
               (click)="showDocuments()" data-toggle="tab">Documents</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'disbursement', 'text-info': currentTab != 'disbursement'}" href="#" class="nav-link text-info"
               (click)="showDisbursements()" data-toggle="tab">Disbursements</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'custom', 'text-info': currentTab != 'custom'}" href="#" class="nav-link text-info"
               (click)="showCustomFields()" data-toggle="tab">Custom Fields</a>
           </li>
@@ -616,10 +616,10 @@
                       </tr>
                       <tr *ngFor="let funder of project.funders">
                         <td>
-                          {{funder.name}}
+                          {{funder.funder}}
                         </td>
                         <td>
-                          <button id="aFunder-{{activeProjectId}}-{{funder.id}}" (click)="enterAIMSFunder($event)"
+                          <button id="aFunder-{{project.id}}-{{funder.funderId}}" (click)="enterAIMSFunder($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
                       </tr>
@@ -665,7 +665,7 @@
 
         <div class="card card-signin my-5">
           <div class="card-body">
-            <h5 class="card-title text-center">Manage Funders</h5>
+            <h5 class="text-center">Manage Funders</h5>
             <form class="form-signin" (ngSubmit)="saveProjectFunder()" #projectFunderForm="ngForm">
 
               <div *ngIf="funderEntryType == 'aims'" class="form-group">
@@ -716,6 +716,8 @@
 
               <button [class.disable]="isProjectFunderBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Save Funder</button>
+                <button [class.disable]="isProjectFunderBtnDisabled" class="btn btn-lg btn-warning btn-block text-uppercase"
+                type="button" (click)="resetFunderEntry()">Reset Funder</button>
             </form>
 
           </div>
