@@ -59,7 +59,7 @@ export class ProjectEntryComponent implements OnInit {
   locationSelectionForm: FormGroup;
   locationInput = new FormControl();
   parentSectorInput = new FormControl();
-  sectorEntryType: string = null;
+  sectorEntryType: string = 'aims';
   locationEntryType: string = 'aims';
   documentEntryType: string = 'aims';
   funderEntryType: string = 'aims';
@@ -109,7 +109,7 @@ export class ProjectEntryComponent implements OnInit {
   ];
 
   model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
-  sectorModel = { projectId: 0, sectorId: 0, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
+  sectorModel = { projectId: 0, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
@@ -409,13 +409,14 @@ export class ProjectEntryComponent implements OnInit {
     if (selectProject && selectProject.length > 0) {
       var sectors = selectProject[0].sectors;
       if (sectors && sectors.length > 0) {
-        var selectSector = sectors.filter(s => s.id == sectorId);
+        var selectSector = sectors.filter(s => s.sectorId == sectorId);
         if (selectSector && selectSector.length > 0) {
           this.sectorEntryType = 'aims';
           this.isSectorVisible = true;
           var sectorObj = { id: selectProject[0].id, sectorName: selectSector[0].sectorName }
           this.sectorInput.setValue(sectorObj);
           this.sectorModel.fundsPercentage = selectSector[0].fundsPercentage;
+          this.sectorModel.sectorId = selectSector[0].sectorId;
         }
       }
     }
@@ -831,18 +832,29 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
+    if (this.sectorModel.sectorId != null && this.sectorModel.sectorId != 0) {
+      var isSectorExists = this.currentProjectSectorsList.filter(s => s.sectorId == this.sectorModel.sectorId);
+      if (isSectorExists.length > 0) {
+        this.errorMessage = 'Selected sector is already added to list.';
+        this.errorModal.openModal();
+        return false;
+      }
+    }
+
+    if (this.sectorModel.sectorName != null && this.sectorModel.sectorName != '') {
+      var isSectorExists = this.currentProjectSectorsList.filter(s => s.sector.toLowerCase() == this.sectorModel.sectorName.toLowerCase());
+      if (isSectorExists.length > 0) {
+        this.errorMessage = 'Selected sector is already added to list.';
+        this.errorModal.openModal();
+        return false;
+      }
+    }
+
     var projectSectorModel = {
       projectId: projectId,
-      sectorId: this.selectedSectorId,
+      sectorId: this.sectorModel.sectorId,
       fundsPercentage: this.sectorModel.fundsPercentage,
     };
-
-    var dbSector = this.sectorInput.value;
-    var searchSector = '';
-    if (dbSector) {
-      searchSector = dbSector.sectorName;
-    }
-    var getSector = this.sectorsList.filter(sector => sector.sectorName == searchSector);
 
     this.blockUI.start('Saving Sector...');
     if (this.sectorEntryType == 'iati') {
@@ -850,11 +862,6 @@ export class ProjectEntryComponent implements OnInit {
         sectorName: this.sectorModel.sectorName,
         parentId: 0
       };
-
-      if (this.selectedSectorId != 0 && getSector.length > 0) {
-        sectorModel.parentId = this.selectedSectorId;
-      }
-
       this.sectorService.addSector(sectorModel).subscribe(
         data => {
           this.sectorModel.sectorId = data;
@@ -888,6 +895,13 @@ export class ProjectEntryComponent implements OnInit {
           sector: this.sectorModel.sectorName,
           fundsPercentage: this.sectorModel.fundsPercentage,
         };
+
+        if (sectorObj.sector == "") {
+          var selectSector = this.sectorsList.filter(s => s.id == sectorObj.sectorId);
+          if (selectSector && selectSector.length > 0) {
+            sectorObj.sector = selectSector[0].sectorName;
+          }
+        }
         this.currentProjectSectorsList.push(sectorObj);
         this.resetSectorEntry();
         this.blockUI.stop();
@@ -1359,12 +1373,13 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   resetSectorEntry() {
+    this.sectorEntryType = 'aims';
     this.isSectorVisible = false;
     this.sectorPlaceHolder = 'Enter/Select Sector';
     this.sectorModel.fundsPercentage = 0.00;
     this.sectorModel.parentId = 0;
     this.sectorModel.projectId = 0;
-    this.sectorModel.sectorId = 0;
+    this.sectorModel.sectorId = null;
     this.sectorModel.sectorName = '';
   }
 

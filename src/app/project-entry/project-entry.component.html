@@ -197,13 +197,13 @@
                       </tr>
                       <tr *ngFor="let sector of project.sectors">
                         <td>
-                          {{sector.sectorName}}
+                          {{sector.sector}}
                         </td>
                         <td>
                           {{sector.fundsPercentage}}
                         </td>
                         <td>
-                          <button id="asector-{{project.id}}-{{sector.id}}" (click)="enterAIMSSector($event)" class="btn btn-success btn-sm">Enter >></button>
+                          <button id="asector-{{project.id}}-{{sector.sectorId}}" (click)="enterAIMSSector($event)" class="btn btn-success btn-sm">Enter >></button>
                         </td>
                       </tr>
                     </table>
@@ -253,7 +253,7 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Manage Sectors</h5>
-            <form *ngIf="sectorsList.length > 0" class="form-signin" [formGroup]='sectorSelectionForm'>
+            <!--<form *ngIf="sectorsList.length > 0" class="form-signin" [formGroup]='sectorSelectionForm'>
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="{{sectorPlaceHolder}}" aria-label="Sector Name" [matAutocomplete]="auto"
                   [formControl]="sectorInput">
@@ -263,11 +263,22 @@
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-            </form>
+            </form>-->
 
             <form class="form-signin" (ngSubmit)="saveProjectSector()" #projectSectorForm="ngForm">
 
-              <div *ngIf="isSectorVisible" class="form-group">
+              <div *ngIf="sectorEntryType == 'aims'" class="form-group">
+                <label for="sectorId">AIMS Sector</label>
+                <select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
+                  #sectorId="ngModel" required>
+                  <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}</option>
+                </select>
+                <div [hidden]="sectorId.valid" class="alert alert-danger">
+                  Sector is required
+                </div>
+              </div>
+
+              <div *ngIf="sectorEntryType == 'iati'" class="form-group">
                 <label for="sectorName">New Sector</label>
                 <input type="text" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName" name="sectorName"
                   #sectorName="ngModel" required>
@@ -287,6 +298,9 @@
               
               <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">{{btnProjectSectorText}}</button>
+
+              <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-warning btn-block text-uppercase"
+                type="button" (click)="resetSectorEntry()">Reset Sector</button>
             </form>
 
           </div>
