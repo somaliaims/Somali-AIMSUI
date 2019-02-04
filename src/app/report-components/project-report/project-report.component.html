@@ -18,7 +18,7 @@
         <form class="form-signin margin-top-10" #projectReportForm="ngForm">
           <div class="input-group">
             <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="reportModel.sectorsList" [(ngModel)]="reportModel.selectedSectors"
-              [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" name="selectedSectors"
+              [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" name="selectedSectors"
               #selectedSectors="ngModel">
             </ng-multiselect-dropdown>
             &nbsp;

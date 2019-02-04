@@ -15,9 +15,14 @@ export class ReportService {
     private storeService: StoreService) { }
 
 
-    getSectorProjectsReport(sectorsIds: any = null, year: any = null) {
+    getSectorProjectsReport(sectorsIds: any = [], year: any = 0) {
+      var model = {
+        year: year,
+        sectorIds: sectorsIds
+      };
       var url = this.urlHelper.getSectorProjectsReportUrl();
-      return this.httpClient.get(url, httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('Sector Projects')));
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Projects By Ids')));
     }
 }

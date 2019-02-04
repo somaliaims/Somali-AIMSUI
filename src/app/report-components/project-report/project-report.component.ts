@@ -68,16 +68,18 @@ export class ProjectReportComponent implements OnInit {
   }
 
   getSectorProjectsReport() {
+    this.barChartLabels = [];
+    this.barChartData = [];
     this.blockUI.start('Wait loading...');
-    this.reportService.getSectorProjectsReport().subscribe(
+    this.reportService.getSectorProjectsReport(this.selectedSectors, this.reportModel.year).subscribe(
       data => {
         this.reportDataList = data;
         if (this.reportDataList && this.reportDataList.sectorProjectsList) {
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
           var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-          this.barChartLabels = sectorNames;
           var chartData = {data: sectorProjects, label: 'Sector Projects'};
           this.barChartData.push(chartData);
+          this.barChartLabels = sectorNames;
         }
         this.blockUI.stop();
       },
@@ -123,18 +125,32 @@ export class ProjectReportComponent implements OnInit {
   }
 
   public chartClicked(e:any):void {
-    console.log(e);
   }
  
   public chartHovered(e:any):void {
-    console.log(e);
   }
 
   onItemSelect(item: any) {
-    console.log(item);
+    var id = item.id;
+    if (this.selectedSectors.indexOf(id) == -1) {
+      this.selectedSectors.push(id);
+    }
   }
+
+  onItemDeSelect(item: any) {
+    var id = item.id;
+    var index = this.selectedSectors.indexOf(id);
+    this.selectedSectors.splice(index, 1);
+  }
+
   onSelectAll(items: any) {
-    console.log(items);
+    items.forEach(function (item) {
+      var id = item.id;
+      if (this.selectedSectors.indexOf(id) == -1) {
+        this.selectedSectors.push(id);
+      }
+    }.bind(this))
   }
 
 }
+ 
