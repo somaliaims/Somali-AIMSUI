@@ -10,9 +10,11 @@ import { SectorService } from 'src/app/services/sector.service';
   styleUrls: ['./project-report.component.css']
 })
 export class ProjectReportComponent implements OnInit {
+  sectorsList: any = [];
   reportDataList: any = [];
   yearsList: any = [];
-  sectorsList: any = [];
+  selectedSectors: any = [];
+  dropdownSettings: any = {};
   barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -36,7 +38,7 @@ export class ProjectReportComponent implements OnInit {
   barChartLegend:boolean = true;
   barChartData:any[] = [
   ];
-  reportModel: any = { year: 0, sectorId: 0 };
+  reportModel: any = { year: 0, sectorsList: null, selectedSectors: null };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 
@@ -53,6 +55,16 @@ export class ProjectReportComponent implements OnInit {
       this.yearsList.push(y);
     }
     this.loadSectors();
+
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'sectorName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
   }
 
   getSectorProjectsReport() {
@@ -97,7 +109,8 @@ export class ProjectReportComponent implements OnInit {
   loadSectors() {
     this.sectorService.getSectorsList().subscribe(
       data => {
-        this.sectorsList = data;
+        this.reportModel.sectorsList = data;
+        console.log(this.sectorsList);
       },
       error => {
         console.log(error);
@@ -115,6 +128,13 @@ export class ProjectReportComponent implements OnInit {
  
   public chartHovered(e:any):void {
     console.log(e);
+  }
+
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
   }
 
 }

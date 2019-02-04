@@ -247,7 +247,7 @@ export class UrlHelperService {
     }
 
     //Reports url
-    getSectorProjectsReportsUrl() {
+    getSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);
     }
 

@@ -564,13 +564,10 @@ export class ProjectEntryComponent implements OnInit {
     if (selectProject && selectProject.length > 0) {
       var implementers = selectProject[0].implementers;
       if (implementers && implementers.length > 0) {
-        var selectImplementer = implementers.filter(i => i.id == implementerId);
-        if (selectImplementer && selectImplementer.length > 0) {
+        var dbImplementer = implementers.filter(i => i.implementerId == implementerId);
+        if (dbImplementer && dbImplementer.length > 0) {
           this.implementerEntryType = 'aims';
-          var dbImplementer = implementers.filter(i => i.id == implementerId);
-          if (dbImplementer) {
-            this.implementerModel.implementerId = dbImplementer[0].implementerId;
-          }
+          this.implementerModel.implementerId = dbImplementer[0].implementerId;
         }
       }
     }
@@ -1388,6 +1385,7 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   resetImplementerEntry() {
+    this.implementerEntryType = 'aims';
     this.implementerModel.implementer = '';
     this.implementerModel.implementerId = null;
   }

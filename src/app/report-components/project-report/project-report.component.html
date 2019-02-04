@@ -1,7 +1,7 @@
 <div class="container-fluid view-area">
   <block-ui>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/reports-panel']">Reports Panel</a>
@@ -11,13 +11,16 @@
           </li>
         </ul>
       </div>
-      <div class="col-md-6">
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
         <form class="form-signin margin-top-10" #projectReportForm="ngForm">
           <div class="input-group">
-            <select placeholder="Sector" class="form-control" id="sectorId" [(ngModel)]="reportModel.sectorId" name="sectorId" #sectorId="ngModel">
-              <option value="0">-- Select Sector --</option>
-              <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}</option>
-            </select>
+            <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="reportModel.sectorsList" [(ngModel)]="reportModel.selectedSectors"
+              [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" name="selectedSectors"
+              #selectedSectors="ngModel">
+            </ng-multiselect-dropdown>
             &nbsp;
             <select placeholder="Year" class="form-control" id="year" [(ngModel)]="reportModel.year" name="year" #year="ngModel">
               <option value="0">-- Select Year --</option>
@@ -29,7 +32,6 @@
             </span>
           </div>
         </form>
-
       </div>
     </div>
 

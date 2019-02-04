@@ -15,8 +15,8 @@ export class ReportService {
     private storeService: StoreService) { }
 
 
-    getSectorProjectsReport() {
-      var url = this.urlHelper.getSectorProjectsReportsUrl();
+    getSectorProjectsReport(sectorsIds: any = null, year: any = null) {
+      var url = this.urlHelper.getSectorProjectsReportUrl();
       return this.httpClient.get(url, httpOptions).pipe(
         catchError(this.storeService.handleError<any>('Sector Projects')));
     }

@@ -9,6 +9,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import { BlockUIModule } from 'ng-block-ui';
 import { ChartsModule } from 'ng2-charts';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
@@ -116,7 +117,8 @@ import { ErrorModalComponent } from './error-modal/error-modal.component';
     NgxPaginationModule,
     NgbDatepickerModule,
     BlockUIModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     { 

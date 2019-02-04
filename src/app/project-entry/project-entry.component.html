@@ -778,10 +778,10 @@
                       </tr>
                       <tr *ngFor="let implementer of project.implementers">
                         <td>
-                          {{implementer.name}}
+                          {{implementer.implementer}}
                         </td>
                         <td>
-                          <button id="aImplementer-{{activeProjectId}}-{{implementer.id}}" (click)="enterAIMSImplementer($event)"
+                          <button id="aImplementer-{{project.id}}-{{implementer.implementerId}}" (click)="enterAIMSImplementer($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
                       </tr>
@@ -853,6 +853,8 @@
 
               <button [class.disable]="isProjectImplementerBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Save Implementer</button>
+                <button [class.disable]="isProjectImplementerBtnDisabled" class="btn btn-lg btn-warning btn-block text-uppercase"
+                type="button" (click)="resetImplementerEntry()">Reset Implementer</button>
             </form>
 
           </div>
