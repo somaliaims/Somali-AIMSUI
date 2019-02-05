@@ -600,13 +600,15 @@ export class ProjectEntryComponent implements OnInit {
   enterAIMSDisbursement(e) {
     var arr = e.target.id.split('-');
     var projectId = arr[1];
-    var disbursementId = arr[2];
+    var startingYear = arr[2];
+    var startingMonth = arr[3];
 
     var selectProject = this.aimsProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
       var disbursements = selectProject[0].disbursements;
       this.disbursementEntryType = 'aims';
-      var selectTransaction = disbursements.filter(i => i.id == disbursementId);
+      var selectTransaction = disbursements.filter(i => i.startingYear == startingYear && 
+        i.startingMonth == startingMonth);
       if (selectTransaction && selectTransaction.length > 0) {
         this.disbursementModel.amount = selectTransaction[0].amount;
         this.disbursementModel.startingYear = selectTransaction[0].startingYear;

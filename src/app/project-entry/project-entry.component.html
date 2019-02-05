@@ -929,21 +929,21 @@
                       <tr>
                         <th>Starting Month/Year</th>
                         <th>Ending Month/Year</th>
-                        <th>Percentage</th>
+                        <th>Amount</th>
                         <th>Action</th>
                       </tr>
                       <tr *ngFor="let disbursement of project.disbursements">
                         <td>
-                          {{disbursement.startingYear}} / {{disburements.startingMonth}}
+                          {{disbursement.startingYear}} / {{disbursement.startingMonth}}
                         </td>
                         <td>
-                          {{disbursement.startingYear}} / {{disburements.startingMonth}}
+                          {{disbursement.endingYear}} / {{disbursement.endingMonth}}
                         </td>
                         <td>
-                          {{disbursement.percentage}}
+                          {{disbursement.amount}}
                         </td>
                         <td>
-                          <button id="adisbursement-{{disbursement.id}}" (click)="enterAIMSDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
+                          <button id="adisbursement-{{project.id}}-{{disbursement.startingYear}}-{{disbursement.startingMonth}}" (click)="enterAIMSDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
                         </td>
                       </tr>
                     </table>
