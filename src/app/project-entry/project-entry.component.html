@@ -124,7 +124,7 @@
             <div class="card-body">
               <h6 class="card-title text-center">New Project</h6>
 
-              <form class="form-signin" (ngSubmit)="saveProject()" #projectForm="ngForm">
+              <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject()" #projectForm="ngForm">
                 <div class="form-group">
                   <label for="title">Project Title</label>
                   <input type="text" class="form-control" id="title" maxlength="1000" [(ngModel)]="model.title" name="title"
@@ -265,7 +265,7 @@
               </mat-form-field>
             </form>-->
 
-            <form class="form-signin" (ngSubmit)="saveProjectSector()" #projectSectorForm="ngForm">
+            <form class="form-signin" (ngSubmit)="projectSectorForm.form.valid && saveProjectSector()" #projectSectorForm="ngForm">
 
               <div *ngIf="sectorEntryType == 'aims'" class="form-group">
                 <label for="sectorId">AIMS Sector</label>
@@ -411,7 +411,7 @@
           <div class="card-body">
             <h5 class="card-title text-center">Manage Locations</h5>
 
-            <form class="form-signin" (ngSubmit)="saveProjectLocation()" #projectLocationForm="ngForm">
+            <form class="form-signin" (ngSubmit)="projectLocationForm.form.valid && saveProjectLocation()" #projectLocationForm="ngForm">
 
               <div *ngIf="locationEntryType == 'aims'" class="form-group">
                 <label for="locationId">AIMS Locations</label>
@@ -509,7 +509,7 @@
                           {{document.documentUrl}}
                         </td>
                         <td>
-                          <button id="aDocument-{{activeProjectId}}-{{document.id}}" (click)="enterAIMSDocument($event)"
+                          <button id="aDocument-{{project.id}}-{{document.id}}" (click)="enterAIMSDocument($event)"
                             class="btn btn-success btn-sm">Enter</button>
                         </td>
                       </tr>
@@ -559,7 +559,7 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Manage Documents</h5>
-            <form class="form-signin" (ngSubmit)="saveProjectDocument()" #projectDocumentForm="ngForm">
+            <form class="form-signin" name="dForm" (ngSubmit)="projectDocumentForm.form.valid && saveProjectDocument()" #projectDocumentForm="ngForm">
 
               <div class="form-group">
                 <label for="documentTitle">Document Title</label>
@@ -581,6 +581,8 @@
 
               <button [class.disable]="isProjectDocumentBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Save Document</button>
+                <button [class.disable]="isProjectDocumentBtnDisabled" class="btn btn-lg btn-warning btn-block text-uppercase"
+                type="submit" (click)="resetDocumentEntry()">Reset Document</button>
             </form>
 
           </div>
@@ -687,7 +689,7 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="text-center">Manage Funders</h5>
-            <form class="form-signin" (ngSubmit)="saveProjectFunder()" #projectFunderForm="ngForm">
+            <form class="form-signin" (ngSubmit)="projectFunderForm.form.valid && saveProjectFunder()" #projectFunderForm="ngForm">
 
               <div *ngIf="funderEntryType == 'aims'" class="form-group">
                 <label for="funderId">AIMS Funders</label>
@@ -850,7 +852,7 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h6 class="card-title text-center">Manage Implementers</h6>
-            <form class="form-signin" (ngSubmit)="saveProjectImplementer()" #projectImplementerForm="ngForm">
+            <form class="form-signin" (ngSubmit)="projectImplementerForm.form.valid && saveProjectImplementer()" #projectImplementerForm="ngForm">
 
               <div *ngIf="implementerEntryType == 'aims'" class="form-group">
                 <label for="implementerId">AIMS Implementers</label>
@@ -997,7 +999,7 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Manage Disbursements</h5>
-            <form class="form-signin" (ngSubmit)="saveProjectDisbursement()" #disbursementForm="ngForm">
+            <form class="form-signin" (ngSubmit)="disbursementForm.form.valid && saveProjectDisbursement()" #disbursementForm="ngForm">
               
               <div class="form-group">
                 <label for="startingYear">Starting Year/Month</label>

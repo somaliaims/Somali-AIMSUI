@@ -694,8 +694,6 @@ export class ProjectEntryComponent implements OnInit {
     this.manageTabsDisplay('customFields');
   }
 
-  
-
   manageTabsDisplay(tabIdentity) {
     for(var i=0; i < this.displayTabs.length; i++) {
       var tab = this.displayTabs[i];
@@ -1077,6 +1075,12 @@ export class ProjectEntryComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
+
+    if (this.documentModel.documentTitle == null || this.documentModel.documentTitle == '' 
+    || this.documentModel.documentUrl == null || this.documentModel.documentUrl == '') {
+
+      return false;
+    }
     
     var model = {
       id: 0,
@@ -1089,7 +1093,11 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         model.id = data;
         this.currentProjectDocumentsList.push(model);
+        this.resetDocumentEntry();
         this.blockUI.stop();
+        var message = 'New document ' + Messages.NEW_RECORD;
+        this.infoMessage = message;
+        this.infoModal.openModal();
       },
       error => {
         console.log(error);
@@ -1422,6 +1430,11 @@ export class ProjectEntryComponent implements OnInit {
     this.disbursementModel.endingYear = null;
     this.disbursementModel.endingMonth = null;
     this.disbursementModel.amount = 0.00;
+  }
+
+  resetDocumentEntry() {
+    this.documentModel.documentTitle = null;
+    this.documentModel.documentUrl = null;
   }
 
 }
