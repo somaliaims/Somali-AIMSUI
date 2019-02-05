@@ -1062,6 +1062,7 @@
               </div>
           
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save Disbursement</button>
+              <button [class.disable]="isBtnDisabled" (click)="resetDisbursementEntry()" class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Reset Disbursement</button>
             </form>
 
           </div>

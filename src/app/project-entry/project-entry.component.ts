@@ -1427,6 +1427,7 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   resetDisbursementEntry() {
+    this.disbursementEntryType = 'aims';
     this.disbursementModel.startingYear = null;
     this.disbursementModel.startingMonth = null;
     this.disbursementModel.endingYear = null;
