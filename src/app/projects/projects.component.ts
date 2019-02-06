@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { SectorService } from '../services/sector.service';
+import { OrganizationService } from '../services/organization-service';
 
 @Component({
   selector: 'app-projects',
@@ -12,6 +14,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 })
 export class ProjectsComponent implements OnInit {
 
+  isSearchVisible = false;
   projectsList: any = null;
   criteria: string = null;
   isLoading: boolean = true;
@@ -19,9 +22,18 @@ export class ProjectsComponent implements OnInit {
   showMessage: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
   permissions: any = {};
-
+  sectorsSettings: any = [];
+  selectedSectors: any = []; 
+  selectedOrganizations: any = [];
+  organizationsSettings: any = [];
+  model: any = { title: '', organizationIds: [], startDate: null, endDate: null, 
+  sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: []
+  }
+  sectorsList: any = [];
+  organizationsList: any = [];
   constructor(private projectService: ProjectService, private router: Router,
-    private storeService: StoreService, private securityService: SecurityHelperService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService,
+    private sectorService: SectorService, private organizationService: OrganizationService) { }
 
   ngOnInit() {
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
@@ -35,6 +47,28 @@ export class ProjectsComponent implements OnInit {
 
     this.permissions = this.securityService.getUserPermissions();
     this.getProjectsList();
+    this.getSectorsList();
+    this.getOrganizationsList();
+
+    this.sectorsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'sectorName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
+
+    this.organizationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'organizationName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
   }
 
   getProjectsList() {
@@ -50,6 +84,29 @@ export class ProjectsComponent implements OnInit {
         console.log("Request Failed: ", error);
       }
     );
+  }
+
+  getSectorsList() {
+    this.sectorService.getSectorsList().subscribe(
+      data => {
+        this.sectorsList = data;
+        console.log(this.sectorsList);
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  getOrganizationsList() {
+    this.organizationService.getOrganizationsList().subscribe(
+      data => {
+        this.organizationsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   searchProjects() {
@@ -80,4 +137,56 @@ export class ProjectsComponent implements OnInit {
     this.router.navigateByUrl('/view-project/' + id);
   }
 
+  onSectorSelect(item: any) {
+    var id = item.id;
+    if (this.selectedOrganizations.indexOf(id) == -1) {
+      this.selectedOrganizations.push(id);
+    }
+  }
+
+  onSectorDeSelect(item: any) {
+    var id = item.id;
+    var index = this.selectedSectors.indexOf(id);
+    this.selectedSectors.splice(index, 1);
+  }
+
+  onSectorSelectAll(items: any) {
+    items.forEach(function (item) {
+      var id = item.id;
+      if (this.selectedSectors.indexOf(id) == -1) {
+        this.selectedSectors.push(id);
+      }
+    }.bind(this))
+  }
+
+  onOrganizationSelect(item: any) {
+    var id = item.id;
+    if (this.selectedOrganizations.indexOf(id) == -1) {
+      this.selectedOrganizations.push(id);
+    }
+  }
+
+  onOrganizationDeSelect(item: any) {
+    var id = item.id;
+    var index = this.selectedSectors.indexOf(id);
+    this.selectedSectors.splice(index, 1);
+  }
+
+  onOrganizationSelectAll(items: any) {
+    items.forEach(function (item) {
+      var id = item.id;
+      if (this.selectedOrganizations.indexOf(id) == -1) {
+        this.selectedOrganizations.push(id);
+      }
+    }.bind(this))
+  }
+
+  showSearchOptions() {
+    this.isSearchVisible = true;
+    return false;
+  }
+
+  hideSearchOptions() {
+    this.isSearchVisible = false;
+  }
 }

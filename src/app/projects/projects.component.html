@@ -21,7 +21,63 @@
         <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="criteria"
           aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-outline-info" (click)="searchProjects()" type="button"><i class="fa fa-search"></i></button>
+          <button title="Search" class="btn btn-info" (click)="searchProjects()" type="button"><i class="fa fa-search"></i></button>&nbsp;
+          <button title="Advanced Search" class="btn btn-warning" (click)="showSearchOptions()" type="buttton">Advanced Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isSearchVisible" class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <form class="form-signin" (ngSubmit)="searchProjects()" #searchForm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="model.title" name="title" #title="ngModel"
+                  aria-describedby="basic-addon2">
+              </div>
+              <div class="col-md-6">
+                <table>
+                  <tr>
+                    <td>Start Date:&nbsp;</td>
+                    <td>
+                        <input class="form-control" placeholder="Start Date" type="date" name="startDate" [(ngModel)]="model.startDate"
+                        ngbDatepicker #s="ngbDatepicker" required>
+                    </td>
+                    <td>&nbsp;End Date:&nbsp;</td>
+                    <td>
+                        <input class="form-control" placeholder="End Date" type="date" name="endDate" [(ngModel)]="model.endDate"
+                        ngbDatepicker #e="ngbDatepicker" required>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="row margin-top-10">
+              <div *ngIf="sectorsList.length > 0" class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
+                  [settings]="sectorsSettings"  name="selectedSectors"
+                  #selectedSectors="ngModel">
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
+                  [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
+                  #selectedOrganizations="ngModel">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="row margin-top-10">
+              <div class="col-md-12">
+                <span class="float-right">
+                    <button class="btn btn-danger" (click)="hideSearchOptions()">Close Search</button>&nbsp;
+                    <button class="btn btn-info" (click)="searchProjects()">Search Projects</button>
+                </span>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -57,10 +113,10 @@
                     <a title="View Details" (click)="viewDetails(project.id)" class="btn btn-primary"><i class="fa fa-eye color-white"></i></a>
                     &nbsp;
                 </td>
-                <td>
+                <!-- <td>
                     <a *ngIf="permissions.canEditProject" title="Edit" (click)="edit(project.id)" class="btn btn-success"><i
                       class="fa fa-edit color-white"></i></a>
-                </td>
+                </td> -->
               </tr>
             </table>
           </td>

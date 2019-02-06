@@ -68,9 +68,9 @@
               <span class="float-left">
                 Project Locations
               </span>
-              <span *ngIf="permissions.canEditProject" class="float-right">
+              <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectLocation()">Add Project Location</button>
-              </span>
+              </span>-->
             </div>
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isLocationLoading">
@@ -83,16 +83,15 @@
                   <th>Location</th>
                   <th>Latitude</th>
                   <th>Longitude</th>
-                  <th>Actions</th>
                 </tr>
                 <tr *ngFor="let location of projectLocations">
                   <td>{{location.location}}</td>
                   <td>{{location.latitude}}</td>
                   <td>{{location.longitude}}</td>
-                  <td>
+                  <!-- <td>
                     <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
-                  </td>
+                  </td> -->
                 </tr>
               </table>
               <p *ngIf="projectLocations.length == 0 && !isLocationLoading">No project locations found.</p>
@@ -110,9 +109,9 @@
               <span class="float-left">
                 Project Sectors
               </span>
-              <span *ngIf="permissions.canEditProject" class="float-right">
+              <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectSector()">Add Project Sector</button>
-              </span>
+              </span>-->
             </div>
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isSectorLoading">
@@ -125,15 +124,14 @@
                 <tr>
                   <th>Sector</th>
                   <th>Funds Percentage</th>
-                  <th>Actions</th>
                 </tr>
                 <tr *ngFor="let sector of projectSectors">
                   <td>{{sector.sector}}</td>
                   <td>{{sector.fundsPercentage}}</td>
-                  <td>
+                  <!-- <td>
                     <a title="Remove Sector" (click)="deleteProjectSector(projectId, sector.sectorId)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
-                  </td>
+                  </td> -->
                 </tr>
               </table>
               <p *ngIf="projectSectors.length == 0 && !isSectorLoading">No project sectors found.</p>
@@ -152,9 +150,9 @@
               <span class="float-left">
                 Project Funders
               </span>
-              <span *ngIf="permissions.canEditProject" class="float-right">
+              <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectFunder()">Add Project Funder</button>
-              </span>
+              </span>-->
             </div>
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isFunderLoading">
@@ -169,17 +167,16 @@
                   <th>Amount</th>
                   <th>Currency</th>
                   <th>Exchange Rate</th>
-                  <th>Actions</th>
                 </tr>
                 <tr *ngFor="let funder of projectFunders">
                   <td>{{funder.funder}}</td>
                   <td>{{funder.amount}}</td>
                   <td>{{funder.currency}}</td>
                   <td>{{funder.exchangeRate}}</td>
-                  <td>
+                  <!-- <td>
                     <a title="Remove Funder" (click)="deleteProjectFunder(projectId, funder.funderId)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
-                  </td>
+                  </td> -->
                 </tr>
               </table>
               <p *ngIf="projectFunders.length == 0 && !isFunderLoading">No project funders found.</p>
@@ -198,9 +195,9 @@
               <span class="float-left">
                 Project Implementers
               </span>
-              <span *ngIf="permissions.canEditProject" class="float-right">
+              <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectImplementer()">Add Project Implementer</button>
-              </span>
+              </span>-->
             </div>
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isImplementerLoading">
@@ -213,15 +210,14 @@
                 <tr>
                   <th>Id</th>
                   <th>Implementer</th>
-                  <th>Actions</th>
                 </tr>
                 <tr *ngFor="let implementer of projectImplementers">
                   <td>{{implementer.implementerId}}</td>
                   <td>{{implementer.implementer}}</td>
-                  <td>
+                  <!-- <td>
                     <a title="Remove Implementer" (click)="deleteProjectImplementer(projectId, implementer.implementerId)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
-                  </td>
+                  </td> -->
                 </tr>
               </table>
               <p *ngIf="projectImplementers.length == 0 && !isImplementerLoading">No project implementers found.</p>
@@ -240,9 +236,9 @@
               <span class="float-left">
                 Project Disbursements
               </span>
-              <span *ngIf="permissions.canEditProject" class="float-right">
+              <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectDisbursement()">Add Project Disbursement</button>
-              </span>
+              </span>-->
             </div>
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isDisbursementLoading">
@@ -256,16 +252,15 @@
                   <th>Starting Month/Year</th>
                   <th>Ending Month/Year</th>
                   <th>Amount</th>
-                  <th>Actions</th>
                 </tr>
                 <tr *ngFor="let disbursement of projectDisbursements">
                   <td>{{monthStrings[disbursement.startingMonth]}}, {{disbursement.startingYear}}</td>
                   <td>{{monthStrings[disbursement.endingMonth]}}, {{disbursement.endingYear}}</td>
                   <td>{{disbursement.amount}}</td>
-                  <td>
+                  <!-- <td>
                     <a title="Remove Disbursement" (click)="deleteProjectDisbursement(disbursement.projectId, disbursement.startingYear, disbursement.startingMonth)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
-                  </td>
+                  </td> -->
                 </tr>
               </table>
               <p *ngIf="projectDisbursements.length == 0 && !isDisbursementLoading">No project disbursements found.</p>
@@ -284,9 +279,9 @@
               <span class="float-left">
                 Project Documents
               </span>
-              <span *ngIf="permissions.canEditProject" class="float-right">
+              <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectDocument()">Add Project Document</button>
-              </span>
+              </span>-->
             </div>
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isDocumentLoading">
@@ -299,15 +294,14 @@
                 <tr>
                   <th>Document Title</th>
                   <th>Url</th>
-                  <th>Actions</th>
                 </tr>
                 <tr *ngFor="let document of projectDocuments">
                   <td>{{document.documentTitle}}</td>
                   <td>{{document.documentUrl}}</td>
-                  <td>
+                  <!-- <td>
                     <a title="Remove Document" (click)="deleteProjectDocument(document.id)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
-                  </td>
+                  </td> -->
                 </tr>
               </table>
               <p *ngIf="projectDocuments.length == 0 && !isDocumentLoading">No project documents found.</p>

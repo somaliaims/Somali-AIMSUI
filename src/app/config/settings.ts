@@ -26,6 +26,7 @@ export const Settings = {
             canEditSectorType: true,
             canEditSectorCategory: true,
             canEditSectorSubCategory: true,
+            canEditSector: true,
             canEditProject: true,
             canDoSMTPSettings: true,
             canDoIATISettings: true
@@ -35,6 +36,7 @@ export const Settings = {
             canEditSectorType: true,
             canEditSectorCategory: true,
             canEditSectorSubCategory: true,
+            canEditSector: true,
             canEditProject: true,
             canDoSMTPSettings: true,
             canDoIATISettings: true
