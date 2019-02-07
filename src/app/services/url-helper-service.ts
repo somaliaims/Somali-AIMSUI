@@ -246,6 +246,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.aimsProjectsByIds);
     }
 
+    getSearchProjectsViewUrl() {
+        return (this.BASE_URL + urlsList.urls.searchProjectsViewByCriteria);
+    }
+
     //Reports url
     getSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);

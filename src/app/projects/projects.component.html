@@ -1,128 +1,137 @@
 <div class="container-fluid view-area">
-  <div class="row text-center">
-    <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Information!</strong> {{infoMessage}}
+  <block-ui>
+
+    <div class="row text-center">
+      <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Information!</strong> {{infoMessage}}
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Projects List</a>
-        </li>
-        <!--<li *ngIf="permissions.canEditProject" class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">Create New</a>
-        </li>-->
-      </ul>
-    </div>
-    <div class="col-md-6">
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="criteria"
-          aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button title="Search" class="btn btn-info" (click)="searchProjects()" type="button"><i class="fa fa-search"></i></button>&nbsp;
-          <button title="Advanced Search" class="btn btn-warning" (click)="showSearchOptions()" type="buttton">Advanced Search</button>
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Projects List</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="criteria"
+            aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button title="Search" class="btn btn-info" (click)="searchProjects()" type="button"><i class="fa fa-search"></i></button>&nbsp;
+            <button title="Advanced Search" class="btn btn-warning" (click)="showSearchOptions()" type="buttton">Advanced
+              Search</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div *ngIf="isSearchVisible" class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <form class="form-signin" (ngSubmit)="searchProjects()" #searchForm="ngForm">
-            <div class="row">
-              <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="model.title" name="title" #title="ngModel"
-                  aria-describedby="basic-addon2">
-              </div>
-              <div class="col-md-6">
-                <table>
-                  <tr>
-                    <td>Start Date:&nbsp;</td>
-                    <td>
+    <div *ngIf="isSearchVisible" class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form class="form-signin" (ngSubmit)="searchProjects()" #searchForm="ngForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="model.title"
+                    name="title" #title="ngModel" aria-describedby="basic-addon2">
+                </div>
+                <div class="col-md-6">
+                  <table>
+                    <tr>
+                      <td>Start Date:&nbsp;</td>
+                      <td>
                         <input class="form-control" placeholder="Start Date" type="date" name="startDate" [(ngModel)]="model.startDate"
-                        ngbDatepicker #s="ngbDatepicker" required>
-                    </td>
-                    <td>&nbsp;End Date:&nbsp;</td>
-                    <td>
+                          ngbDatepicker #s="ngbDatepicker" required>
+                      </td>
+                      <td>&nbsp;End Date:&nbsp;</td>
+                      <td>
                         <input class="form-control" placeholder="End Date" type="date" name="endDate" [(ngModel)]="model.endDate"
-                        ngbDatepicker #e="ngbDatepicker" required>
-                    </td>
-                  </tr>
-                </table>
+                          ngbDatepicker #e="ngbDatepicker" required>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
               </div>
-            </div>
-            <div class="row margin-top-10">
-              <div *ngIf="sectorsList.length > 0" class="col-md-6">
+              <div class="row margin-top-10">
+                <div *ngIf="sectorsList.length > 0" class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
-                  [settings]="sectorsSettings"  name="selectedSectors" (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)" (onSelectAll)="onSectorSelectAll($event)"
-                  #selectedSectors="ngModel">
-                </ng-multiselect-dropdown>
+                    [settings]="sectorsSettings" name="selectedSectors" (onSelect)="onSectorSelect($event)"
+                    (onDeSelect)="onSectorDeSelect($event)" (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList"
+                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)"
+                    (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
+                    #selectedOrganizations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
               </div>
-              <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
-                  [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
-                  #selectedOrganizations="ngModel">
-                </ng-multiselect-dropdown>
-              </div>
-            </div>
-            <div class="row margin-top-10">
-              <div class="col-md-12">
-                <span class="float-right">
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'" [data]="locationsList" [(ngModel)]="model.selectedLocations"
+                    [settings]="locationsSettings" (onSelect)="onLocationSelect($event)" (onDeSelect)="onLocationDeSelect($event)"
+                    (onSelectAll)="onLocationSelectAll($event)" name="selectedLocations" #selectedLocations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-6">
+                  <span class="float-right">
                     <button class="btn btn-danger" (click)="hideSearchOptions()">Close Search</button>&nbsp;
-                    <button class="btn btn-info" (click)="searchProjects()">Search Projects</button>
-                </span>
+                    <button class="btn btn-info" (click)="advancedSearchProjects()">Search Projects</button>
+                  </span>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row text-center" *ngIf="isLoading">
-    <div class="col-md-12">
-      <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+    <div class="row text-center" *ngIf="isLoading">
+      <div class="col-md-12">
+        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+      </div>
     </div>
-  </div>
 
-  <div *ngIf="!isLoading" class="row">
-    <div class="col margin-top-10">
-      <table class="table table-bordered table-stripped">
-        <tr>
-          <th>Project Title</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Actions</th>
-        </tr>
-        <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
-          <td>
-            <a title="View Details" class="text-info" [routerLink]="['/view-project', project.id]">
-              {{project.title}}
-            </a>
-          </td>
-          <td>{{project.startDate}}</td>
-          <td>{{project.endDate}}</td>
-          <td>
-            <table class="no-borders">
-              <tr>
-                <td>
+    <div *ngIf="!isLoading" class="row">
+      <div class="col margin-top-10">
+        <table class="table table-bordered table-stripped">
+          <tr>
+            <th>Project Title</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+          </tr>
+          <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+            <td>
+              <a title="View Details" class="text-info" [routerLink]="['/view-project', project.id]">
+                {{project.title}}
+              </a>
+            </td>
+            <td>{{project.startDate}}</td>
+            <td>{{project.endDate}}</td>
+            <td>
+              <table class="no-borders">
+                <tr>
+                  <td>
                     <a title="View Details" (click)="viewDetails(project.id)" class="btn btn-primary"><i class="fa fa-eye color-white"></i></a>
                     &nbsp;
-                </td>
-                <!-- <td>
+                  </td>
+                  <!-- <td>
                     <a *ngIf="permissions.canEditProject" title="Edit" (click)="edit(project.id)" class="btn btn-success"><i
                       class="fa fa-edit color-white"></i></a>
                 </td> -->
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-      <pagination-controls (pageChange)="p=$event"></pagination-controls>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <pagination-controls (pageChange)="p=$event"></pagination-controls>
+      </div>
     </div>
-  </div>
+
+  </block-ui>
 </div>
