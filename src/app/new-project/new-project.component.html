@@ -5,7 +5,7 @@
         <li class="nav-item">
           <a class="nav-link active btn-info" data-toggle="tab">New Project</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="!isIATILoading" class="nav-item">
           <a href="#" class="nav-link text-info" data-toggle="tab" (click)="proceedToDataEntry()">Next</a>
         </li>
       </ul>

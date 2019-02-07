@@ -41,17 +41,25 @@
           <li class="nav-item"> 
             <a class="nav-link" [routerLink]="['/projects']">View Projects</a>
           </li>
-          <li class="nav-item"> 
+          <li class="nav-item">
             <a class="nav-link" [routerLink]="['/reports-panel']">View Reports</a>
           </li>
-          <li *ngIf="isLoggedIn" class="nav-item"> 
-            <a class="nav-link" [routerLink]="['/new-project']">Data Entry</a>
-          </li>
           <!--<li *ngIf="isLoggedIn" class="nav-item"> 
-            <a class="nav-link" [routerLink]="['/management']">Management</a>
-          </li>-->
-          <!--<li class="nav-item"> <a class="nav-link" [routerLink]="['/notification']">Notifications</a>
+                      <a class="nav-link" [routerLink]="['/new-project']">Data Entry</a>
                     </li>-->
+          <!--<li *ngIf="isLoggedIn" class="nav-item"> 
+                      <a class="nav-link" [routerLink]="['/management']">Management</a>
+                    </li>-->
+          <!--<li class="nav-item"> <a class="nav-link" [routerLink]="['/notification']">Notifications</a>
+                              </li>-->
+          
+          <li *ngIf="isLoggedIn" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Data Entry</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" [routerLink]="['/new-project']">Enter Data</a>
+              <a class="dropdown-item" [routerLink]="['/envelope-data']">Funding Envelope Data</a>
+            </div>
+          </li>
           <li *ngIf="isLoggedIn" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
             <div class="dropdown-menu">
@@ -59,7 +67,6 @@
               <a class="dropdown-item" [routerLink]="['/locations']">Locations</a>
               <a class="dropdown-item" [routerLink]="['/sectors']">Sectors</a>
               <a class="dropdown-item" [routerLink]="['/projects']">Projects</a>
-              <a class="dropdown-item" [routerLink]="['/envelope-data']">Funding Envelope Data</a>
               <div class="dropdown-divider"></div>
               <h5 class="dropdown-header">Users & Organizations Management</h5>
               <a class="dropdown-item" [routerLink]="['/users-management']">Users</a>

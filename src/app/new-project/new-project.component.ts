@@ -19,7 +19,7 @@ export class NewProjectComponent implements OnInit {
   @Input()
   displayTime: number = Settings.displayMessageTime;
   isProjectLoaded: boolean = false;
-  isIATILoading: boolean = false;
+  isIATILoading: boolean = true;
   isAIMSLoading: boolean = false;
   isBtnDisabled: boolean = false;
   isTextReadOnly: boolean = true;
