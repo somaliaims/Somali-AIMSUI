@@ -139,15 +139,17 @@ export class ProjectsComponent implements OnInit {
 
   onSectorSelect(item: any) {
     var id = item.id;
-    if (this.selectedOrganizations.indexOf(id) == -1) {
-      this.selectedOrganizations.push(id);
+    if (this.selectedSectors.indexOf(id) == -1) {
+      this.selectedSectors.push(id);
     }
+    console.log(this.selectedSectors);
   }
 
   onSectorDeSelect(item: any) {
     var id = item.id;
     var index = this.selectedSectors.indexOf(id);
     this.selectedSectors.splice(index, 1);
+    console.log(this.selectedSectors);
   }
 
   onSectorSelectAll(items: any) {
@@ -164,12 +166,14 @@ export class ProjectsComponent implements OnInit {
     if (this.selectedOrganizations.indexOf(id) == -1) {
       this.selectedOrganizations.push(id);
     }
+    console.log(this.selectedOrganizations);
   }
 
   onOrganizationDeSelect(item: any) {
     var id = item.id;
     var index = this.selectedSectors.indexOf(id);
     this.selectedSectors.splice(index, 1);
+    console.log(this.selectedSectors);
   }
 
   onOrganizationSelectAll(items: any) {
@@ -178,7 +182,8 @@ export class ProjectsComponent implements OnInit {
       if (this.selectedOrganizations.indexOf(id) == -1) {
         this.selectedOrganizations.push(id);
       }
-    }.bind(this))
+    }.bind(this));
+    console.log(this.selectedOrganizations);
   }
 
   showSearchOptions() {

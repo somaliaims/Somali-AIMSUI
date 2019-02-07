@@ -58,7 +58,7 @@
             <div class="row margin-top-10">
               <div *ngIf="sectorsList.length > 0" class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
-                  [settings]="sectorsSettings"  name="selectedSectors"
+                  [settings]="sectorsSettings"  name="selectedSectors" (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)" (onSelectAll)="onSectorSelectAll($event)"
                   #selectedSectors="ngModel">
                 </ng-multiselect-dropdown>
               </div>
