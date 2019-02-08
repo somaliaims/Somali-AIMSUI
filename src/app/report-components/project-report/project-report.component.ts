@@ -3,6 +3,9 @@ import { ReportService } from 'src/app/services/report.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from 'src/app/services/store-service';
 import { SectorService } from 'src/app/services/sector.service';
+import { FinancialYearService } from 'src/app/services/financial-year.service';
+import { OrganizationService } from 'src/app/services/organization-service';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'app-project-report',
@@ -10,10 +13,18 @@ import { SectorService } from 'src/app/services/sector.service';
   styleUrls: ['./project-report.component.css']
 })
 export class ProjectReportComponent implements OnInit {
-  sectorsList: any = [];
-  reportDataList: any = [];
+  sectorsSettings: any = [];
+  selectedSectors: any = []; 
+  selectedOrganizations: any = [];
+  selectedLocations: any = [];
+  organizationsSettings: any = [];
+  locationsSettings: any = [];
   yearsList: any = [];
-  selectedSectors: any = [];
+  sectorsList: any = [];
+  organizationsList: any = [];
+  locationsList: any = [];
+
+  reportDataList: any = [];
   dropdownSettings: any = {};
   barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -38,36 +49,55 @@ export class ProjectReportComponent implements OnInit {
   barChartLegend:boolean = true;
   barChartData:any[] = [
   ];
-  reportModel: any = { year: 0, sectorsList: null, selectedSectors: null };
+  model: any = { title: '', organizationIds: [], startingYear: 0, endingYear: 0, 
+  sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
+  selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [] };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private reportService: ReportService, private storeService: StoreService,
-    private sectorService: SectorService) { }
+    private sectorService: SectorService, private fyService: FinancialYearService,
+    private organizationService: OrganizationService, private locationService: LocationService) { }
 
   ngOnInit() {
-    var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
-    var lowerLimit = currentYear - 20;
-    var upperLimit = currentYear + 10;
+    
+    this.getSectorsList();
+    this.getLocationsList();
+    this.getOrganizationsList();
+    this.loadFinancialYears();
 
-    for(var y=currentYear; y >= lowerLimit; y--) {
-      this.yearsList.push(y);
-    }
-    this.loadSectors();
-
-    this.dropdownSettings = {
+    this.sectorsSettings = {
       singleSelection: false,
       idField: 'id',
       textField: 'sectorName',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.organizationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'organizationName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.locationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'location',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
       allowSearchFilter: true
     };
   }
 
-  getSectorProjectsReport() {
+  /*getSectorProjectsReport() {
     this.barChartLabels = [];
     this.barChartData = [];
     this.blockUI.start('Wait loading...');
@@ -88,7 +118,7 @@ export class ProjectReportComponent implements OnInit {
         this.blockUI.stop();
       }
     );
-  }
+  }*/
 
   formatFunders(funders: any = null) {
     var fundersStr = '';
@@ -108,16 +138,27 @@ export class ProjectReportComponent implements OnInit {
     return implementersStr;
   }
 
-  loadSectors() {
+  /*loadSectors() {
     this.sectorService.getSectorsList().subscribe(
       data => {
-        this.reportModel.sectorsList = data;
+        this.model.sectorsList = data;
         console.log(this.sectorsList);
       },
       error => {
         console.log(error);
       }
     )
+  }*/
+
+  loadFinancialYears() {
+    this.fyService.getYearsList().subscribe(
+      data => {
+        this.yearsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   printReport() {
@@ -130,26 +171,103 @@ export class ProjectReportComponent implements OnInit {
   public chartHovered(e:any):void {
   }
 
-  onItemSelect(item: any) {
+  getSectorsList() {
+    this.sectorService.getSectorsList().subscribe(
+      data => {
+        this.sectorsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  getLocationsList() {
+    this.locationService.getLocationsList().subscribe(
+      data => {
+        this.locationsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  getOrganizationsList() {
+    this.organizationService.getOrganizationsList().subscribe(
+      data => {
+        this.organizationsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  onSectorSelect(item: any) {
     var id = item.id;
     if (this.selectedSectors.indexOf(id) == -1) {
       this.selectedSectors.push(id);
     }
   }
 
-  onItemDeSelect(item: any) {
+  onSectorDeSelect(item: any) {
     var id = item.id;
     var index = this.selectedSectors.indexOf(id);
     this.selectedSectors.splice(index, 1);
   }
 
-  onSelectAll(items: any) {
+  onSectorSelectAll(items: any) {
     items.forEach(function (item) {
       var id = item.id;
       if (this.selectedSectors.indexOf(id) == -1) {
         this.selectedSectors.push(id);
       }
     }.bind(this))
+  }
+
+  onOrganizationSelect(item: any) {
+    var id = item.id;
+    if (this.selectedOrganizations.indexOf(id) == -1) {
+      this.selectedOrganizations.push(id);
+    }
+  }
+
+  onOrganizationDeSelect(item: any) {
+    var id = item.id;
+    var index = this.selectedOrganizations.indexOf(id);
+    this.selectedOrganizations.splice(index, 1);
+  }
+
+  onOrganizationSelectAll(items: any) {
+    items.forEach(function (item) {
+      var id = item.id;
+      if (this.selectedOrganizations.indexOf(id) == -1) {
+        this.selectedOrganizations.push(id);
+      }
+    }.bind(this));
+  }
+
+  onLocationSelect(item: any) {
+    var id = item.id;
+    if (this.selectedLocations.indexOf(id) == -1) {
+      this.selectedLocations.push(id);
+    }
+  }
+
+  onLocationDeSelect(item: any) {
+    var id = item.id;
+    var index = this.selectedLocations.indexOf(id);
+    this.selectedLocations.splice(index, 1);
+  }
+
+  onLocationSelectAll(items: any) {
+    items.forEach(function (item) {
+      var id = item.id;
+      if (this.selectedLocations.indexOf(id) == -1) {
+        this.selectedLocations.push(id);
+      }
+    }.bind(this));
   }
 
 }

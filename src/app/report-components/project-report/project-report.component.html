@@ -15,25 +15,124 @@
 
     <div class="row">
       <div class="col-md-12">
-        <form class="form-signin margin-top-10" #projectReportForm="ngForm">
-          <div class="input-group">
-            <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="reportModel.sectorsList" [(ngModel)]="reportModel.selectedSectors"
-              [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" name="selectedSectors"
-              #selectedSectors="ngModel">
-            </ng-multiselect-dropdown>
-            &nbsp;
-            <select placeholder="Year" class="form-control" id="year" [(ngModel)]="reportModel.year" name="year" #year="ngModel">
-              <option value="0">-- Select Year --</option>
-              <option *ngFor="let year of yearsList" [value]="year">{{year}}</option>
-            </select>
-            <span class="input-group-btn">
-              <button class="btn btn-info" (click)="getSectorProjectsReport()">Load Report</button>
-              <button class="btn btn-success margin-left-5" (click)="printReport()">Print</button>
-            </span>
+        <div class="card">
+          <div class="card-body">
+            <form class="form-signin" (ngSubmit)="searchProjects()" #searchForm="ngForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="model.title"
+                    name="title" #title="ngModel" aria-describedby="basic-addon2">
+                </div>
+                <div class="col-md-6">
+                  <table>
+                    <tr>
+                      <td>
+                        Financial Years From/To:&nbsp;
+                      </td>
+                      <td>
+                        <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
+                          name="startingYear" #startingYear="ngModel" required>
+                          <option value="0">--Starting Year--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                        </select>
+                      </td>
+                      <td>&nbsp;&nbsp;</td>
+                      <td>
+                        <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
+                          #endingYear="ngModel" required>
+                          <option value="0">--Ending Year--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList"
+                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                    (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList"
+                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
+                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
+                    (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
+                    #selectedOrganizations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'" [data]="locationsList"
+                    [(ngModel)]="model.selectedLocations" [settings]="locationsSettings"
+                    (onSelect)="onLocationSelect($event)" (onDeSelect)="onLocationDeSelect($event)"
+                    (onSelectAll)="onLocationSelectAll($event)" name="selectedLocations" #selectedLocations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-6">
+                  <span class="float-right">
+                    <button class="btn btn-success" (click)="hideSearchOptions()">Get Report</button>&nbsp;
+                    <button class="btn btn-info" (click)="advancedSearchProjects()">Print Report</button>
+                  </span>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
+
+
+    <!--<form class="form-signin margin-top-10" #projectReportForm="ngForm">
+      <div class="row">
+          <div class="col-md-6">
+            <div class="input-group">
+              <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="reportModel.sectorsList"
+                [(ngModel)]="reportModel.selectedSectors" [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"
+                (onSelectAll)="onSelectAll($event)" name="selectedSectors" #selectedSectors="ngModel">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <table>
+              <tr>
+                <td>
+                  From/To Financial Years:&nbsp;
+                </td>
+                <td>
+                  <select placeholder="Starting Year" class="form-control" id="startingYear"
+                    [(ngModel)]="reportModel.startingYear" name="startingYear" #startingYear="ngModel">
+                    <option value="0">-- Starting Year --</option>
+                    <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                  </select>
+                </td>
+                <td>
+                  <select placeholder="Ending Year" class="form-control" id="endingYear"
+                    [(ngModel)]="reportModel.endingYear" name="endingYear" #endingYear="ngModel">
+                    <option value="0">-- Ending Year --</option>
+                    <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-md-12">
+              <span class="input-group-btn float-right">
+                <button class="btn btn-info" (click)="getSectorProjectsReport()">Load Report</button>
+                <button class="btn btn-success margin-left-5" (click)="printReport()">Print</button>
+              </span>
+            </div>
+      </div>
+    </form>-->
 
     <div class="row margin-top-10">
       <div id="rpt-sector-project" class="col-md-12">
@@ -77,8 +176,9 @@
 
       <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-10">
         <div style="display: block">
-          <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
-            [chartType]="barChartType" [colors]="chartColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType" [colors]="chartColors"
+            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
         </div>
       </div>
 
