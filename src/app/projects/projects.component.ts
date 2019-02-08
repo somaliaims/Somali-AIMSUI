@@ -8,6 +8,7 @@ import { SectorService } from '../services/sector.service';
 import { OrganizationService } from '../services/organization-service';
 import { LocationService } from '../services/location.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { FinancialYearService } from '../services/financial-year.service';
 
 @Component({
   selector: 'app-projects',
@@ -17,9 +18,9 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 export class ProjectsComponent implements OnInit {
 
   isSearchVisible = false;
-  projectsList: any = null;
+  projectsList: any = [];
   criteria: string = null;
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   infoMessage: string = null;
   showMessage: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
@@ -30,14 +31,15 @@ export class ProjectsComponent implements OnInit {
   selectedLocations: any = [];
   organizationsSettings: any = [];
   locationsSettings: any = [];
-
-  model: any = { title: '', organizationIds: [], startDate: null, endDate: null, 
-  sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
-  selectedLocations: []
-  }
+  yearsList: any = [];
   sectorsList: any = [];
   organizationsList: any = [];
   locationsList: any = [];
+
+  model: any = { title: '', organizationIds: [], startingYear: 0, endingYear: 0, 
+  sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
+  selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: []
+  }
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -45,7 +47,7 @@ export class ProjectsComponent implements OnInit {
   constructor(private projectService: ProjectService, private router: Router,
     private storeService: StoreService, private securityService: SecurityHelperService,
     private sectorService: SectorService, private organizationService: OrganizationService,
-    private locationService: LocationService) { }
+    private locationService: LocationService, private fyService: FinancialYearService) { }
 
   ngOnInit() {
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
@@ -62,6 +64,7 @@ export class ProjectsComponent implements OnInit {
     this.getSectorsList();
     this.getOrganizationsList();
     this.getLocationsList();
+    this.getFinancialYearsList();
 
     this.sectorsSettings = {
       singleSelection: false,
@@ -99,17 +102,27 @@ export class ProjectsComponent implements OnInit {
     this.blockUI.start('Loading Projects...');
     this.projectService.getProjectsList().subscribe(
       data => {
-        this.isLoading = false;
         if (data && data.length) {
           this.projectsList = data;
-          this.blockUI.stop();
         }
+        this.blockUI.stop();
       },
       error => {
         this.blockUI.stop();
         console.log(error);
       }
     );
+  }
+
+  getFinancialYearsList() {
+    this.fyService.getYearsList().subscribe(
+      data => {
+        this.yearsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   getSectorsList() {
@@ -165,23 +178,10 @@ export class ProjectsComponent implements OnInit {
   }
 
   advancedSearchProjects() {
-    var startDate = null;
-    var endDate = null;
-
-    if (this.model.startDate != null) {
-      startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' + 
-          this.model.startDate.day;
-    }
-    
-    if (this.model.endDate != null) {
-      endDate = this.model.endDate.year + '-' + this.model.endDate.month + '-' + 
-          this.model.endDate.day;
-    }
-
     var searchModel = {
       title: this.model.title,
-      startDate: startDate,
-      endDate: endDate,
+      startingYear: this.model.startingYear,
+      endingYear: this.model.endingYear,
       organizationIds: this.selectedOrganizations,
       sectorIds: this.selectedSectors,
       locationIds: this.selectedLocations

@@ -41,22 +41,27 @@
                 <div class="col-md-6">
                   <table>
                     <tr>
-                      <td>Start Date:&nbsp;</td>
                       <td>
-                        <input class="form-control" placeholder="Start Date" type="date" name="startDate" [(ngModel)]="model.startDate"
-                          ngbDatepicker #s="ngbDatepicker" required>
+                        <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear" name="startingYear"
+                          #startingYear="ngModel" required>
+                          <option value="0">--Select Starting Year--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                        </select>
                       </td>
-                      <td>&nbsp;End Date:&nbsp;</td>
+                      <td>&nbsp;&nbsp;</td>
                       <td>
-                        <input class="form-control" placeholder="End Date" type="date" name="endDate" [(ngModel)]="model.endDate"
-                          ngbDatepicker #e="ngbDatepicker" required>
+                        <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
+                          #endingYear="ngModel" required>
+                          <option value="0">--Select Ending Year--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                        </select>
                       </td>
                     </tr>
                   </table>
                 </div>
               </div>
               <div class="row margin-top-10">
-                <div *ngIf="sectorsList.length > 0" class="col-md-6">
+                <div class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
                     [settings]="sectorsSettings" name="selectedSectors" (onSelect)="onSectorSelect($event)"
                     (onDeSelect)="onSectorDeSelect($event)" (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
@@ -96,7 +101,7 @@
       </div>
     </div>
 
-    <div *ngIf="!isLoading" class="row">
+    <div *ngIf="projectsList.length > 0" class="row">
       <div class="col margin-top-10">
         <table class="table table-bordered table-stripped">
           <tr>
@@ -130,6 +135,11 @@
           </tr>
         </table>
         <pagination-controls (pageChange)="p=$event"></pagination-controls>
+      </div>
+    </div>
+    <div *ngIf="projectsList.length == 0" class="row">
+      <div class="col-md-12 margin-top-10">
+          <p class="text-info"><i>No projects to show</i></p>
       </div>
     </div>
 

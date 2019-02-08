@@ -1188,6 +1188,9 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         this.currentProjectFundersList.push(model);
         this.blockUI.stop();
+        var message = 'New funder ' + Messages.NEW_RECORD;
+        this.infoMessage = message;
+        this.infoModal.openModal();
         this.resetFunderEntry();
       },
       error => {
@@ -1348,6 +1351,9 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         this.currentProjectDisbursementsList.push(model);
         this.blockUI.stop();
+        var message = 'New disbursement ' + Messages.NEW_RECORD;
+        this.infoMessage = message;
+        this.infoModal.openModal();
         this.resetDisbursementEntry();
       },
       error => {

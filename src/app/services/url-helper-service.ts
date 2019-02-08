@@ -250,6 +250,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.searchProjectsViewByCriteria);
     }
 
+    getFinancialYearsUrl() {
+        return (this.BASE_URL + urlsList.urls.getFinancialYears);
+    }
+
     //Reports url
     getSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);
