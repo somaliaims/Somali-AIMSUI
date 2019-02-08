@@ -25,4 +25,11 @@ export class ReportService {
         JSON.stringify(model), httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Projects By Ids')));
     }
+
+    searchProjectsByCriteriaReport(model: any) {
+      var url = this.urlHelper.getSearchProjectsReportUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Projects Report by Sectors')));
+    }
 }

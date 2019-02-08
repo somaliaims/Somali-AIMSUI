@@ -57,7 +57,8 @@ export class ProjectReportComponent implements OnInit {
 
   constructor(private reportService: ReportService, private storeService: StoreService,
     private sectorService: SectorService, private fyService: FinancialYearService,
-    private organizationService: OrganizationService, private locationService: LocationService) { }
+    private organizationService: OrganizationService, private locationService: LocationService,
+    ) { }
 
   ngOnInit() {
     
@@ -119,6 +120,38 @@ export class ProjectReportComponent implements OnInit {
       }
     );
   }*/
+
+  searchProjectsByCriteriaReport() {
+    this.barChartLabels = [];
+    this.barChartData = [];
+    var searchModel = {
+      title: this.model.title,
+      startingYear: this.model.startingYear,
+      endingYear: this.model.endingYear,
+      organizationIds: this.selectedOrganizations,
+      sectorIds: this.selectedSectors,
+      locationIds: this.selectedLocations
+    };    
+
+    this.blockUI.start('Searching Projects...');
+    this.reportService.searchProjectsByCriteriaReport(searchModel).subscribe(
+      data => {
+        this.reportDataList = data;
+        if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+          var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
+          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          var chartData = {data: sectorProjects, label: 'Sector Projects'};
+          this.barChartData.push(chartData);
+          this.barChartLabels = sectorNames;
+        }
+        this.blockUI.stop();
+      },
+      error => {
+        console.log(error);
+        this.blockUI.stop();
+      }
+    )
+  }
 
   formatFunders(funders: any = null) {
     var fundersStr = '';

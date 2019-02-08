@@ -17,7 +17,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <form class="form-signin" (ngSubmit)="searchProjects()" #searchForm="ngForm">
+            <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
               <div class="row">
                 <div class="col-md-6">
                   <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="model.title"
@@ -75,8 +75,8 @@
                 </div>
                 <div class="col-md-6">
                   <span class="float-right">
-                    <button class="btn btn-success" (click)="hideSearchOptions()">Get Report</button>&nbsp;
-                    <button class="btn btn-info" (click)="advancedSearchProjects()">Print Report</button>
+                    <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
+                    <button class="btn btn-warning" (click)="printReport()">Print Report</button>
                   </span>
                 </div>
               </div>

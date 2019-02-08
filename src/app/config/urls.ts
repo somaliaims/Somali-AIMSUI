@@ -55,5 +55,6 @@ export const urls = {
 	aimsProjectsByIds: "Project/ExtractProjectsByIds",
 	sectorProjectsReport: "Report/GetSectorWiseProjects",
 	searchProjectsViewByCriteria: "Project/SearchProjectsViewByCriteria",
+	searchProjectsByCriteriaReport: "Report/SearchProjectsByCriteria",
 	getFinancialYears: "FinancialYear"
 };
