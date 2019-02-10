@@ -29,7 +29,6 @@ export class LocationsComponent implements OnInit {
       this.showMessage = true;
     }
     setTimeout(() => {
-      this.storeService.newInfoMessage('');
       this.showMessage = false;
     }, Settings.displayMessageTime);
 

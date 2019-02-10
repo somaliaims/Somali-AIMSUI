@@ -14,6 +14,7 @@ export class OrganizationsComponent implements OnInit {
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
+  pagingSize: number = Settings.rowsPerPage;
 
   constructor(private organizationService: OrganizationService, private router: Router,
     private storeService: StoreService) { }

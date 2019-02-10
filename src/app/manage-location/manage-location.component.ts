@@ -20,7 +20,7 @@ export class ManageLocationComponent implements OnInit {
   locationTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
-  model = { id: 0, location: '', latitude: '', longitude: '' };
+  model = { id: 0, location: '', latitude: 0.00, longitude: 0.00 };
 
   constructor(private locationService: LocationService, private route: ActivatedRoute,
     private router: Router, private storeService: StoreService) {
@@ -45,6 +45,7 @@ export class ManageLocationComponent implements OnInit {
           }
         );
       }
+      this.requestNo = this.storeService.getNewRequestNumber();
     }
 
     this.storeService.currentRequestTrack.subscribe(model => {

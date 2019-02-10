@@ -33,7 +33,7 @@
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
                           name="startingYear" #startingYear="ngModel" required>
                           <option value="0">--Starting Year--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
                       </td>
                       <td>&nbsp;&nbsp;</td>
@@ -41,7 +41,7 @@
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
                           #endingYear="ngModel" required>
                           <option value="0">--Ending Year--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
                       </td>
                     </tr>

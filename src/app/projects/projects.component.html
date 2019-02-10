@@ -32,7 +32,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <form class="form-signin" (ngSubmit)="searchProjects()" #searchForm="ngForm">
+            <form class="form-signin" #searchForm="ngForm">
               <div class="row">
                 <div class="col-md-6">
                   <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="model.title"
@@ -45,7 +45,7 @@
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear" name="startingYear"
                           #startingYear="ngModel" required>
                           <option value="0">--Select Starting Year--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
                       </td>
                       <td>&nbsp;&nbsp;</td>
@@ -53,7 +53,7 @@
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
                           #endingYear="ngModel" required>
                           <option value="0">--Select Ending Year--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.id">{{year.financialYear}}</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
                       </td>
                     </tr>

@@ -26,7 +26,7 @@ export class ProjectsComponent implements OnInit {
   pagingSize: number = Settings.rowsPerPage;
   permissions: any = {};
   sectorsSettings: any = [];
-  selectedSectors: any = []; 
+  selectedSectors: any = [];
   selectedOrganizations: any = [];
   selectedLocations: any = [];
   organizationsSettings: any = [];
@@ -36,9 +36,10 @@ export class ProjectsComponent implements OnInit {
   organizationsList: any = [];
   locationsList: any = [];
 
-  model: any = { title: '', organizationIds: [], startingYear: 0, endingYear: 0, 
-  sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
-  selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: []
+  model: any = {
+    title: '', organizationIds: [], startingYear: 0, endingYear: 0,
+    sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
+    selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: []
   }
 
   //Overlay UI blocker
@@ -105,6 +106,7 @@ export class ProjectsComponent implements OnInit {
         if (data && data.length) {
           this.projectsList = data;
         }
+
         this.blockUI.stop();
       },
       error => {
@@ -166,6 +168,8 @@ export class ProjectsComponent implements OnInit {
           if (data && data.length) {
             this.projectsList = data;
             this.blockUI.stop();
+          } else {
+            this.projectsList = [];
           }
         },
         error => {
@@ -185,14 +189,14 @@ export class ProjectsComponent implements OnInit {
       organizationIds: this.selectedOrganizations,
       sectorIds: this.selectedSectors,
       locationIds: this.selectedLocations
-    };    
+    };
 
     this.criteria = null;
     this.blockUI.start('Searching Projects...');
     this.projectService.searchProjectsViewByCriteria(searchModel).subscribe(
       data => {
-        this.projectsList = data;
         this.blockUI.stop();
+        this.projectsList = data;
       },
       error => {
         console.log(error);
