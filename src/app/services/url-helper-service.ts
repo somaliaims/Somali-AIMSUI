@@ -254,6 +254,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getFinancialYears);
     }
 
+    getIATISettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.getIatiSettings);
+    }
+
+    setIATISettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.setIatiSettings);
+    }
+
     //Reports url
     getSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);

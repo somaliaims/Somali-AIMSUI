@@ -55,6 +55,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { ProjectInfoModalComponent } from './project-info-modal/project-info-modal.component';
 import { ProjectiInfoModalComponent } from './projecti-info-modal/projecti-info-modal.component';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
+import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import { ErrorModalComponent } from './error-modal/error-modal.component';
     ProjectInfoModalComponent,
     ProjectiInfoModalComponent,
     ErrorModalComponent,
+    IatiSettingsComponent,
   ],
   imports: [
     BrowserModule,

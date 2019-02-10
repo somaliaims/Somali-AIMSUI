@@ -5,5 +5,7 @@ export const Messages = {
     RECORD_DELETED: ' deleted successfully',
     PROJECT_DEPENDENCY: 'You need to create and save a project before this action.',
     ENTITY_EXISTS: ' already exists',
-    ALREADY_IN_LIST: ' is already added to list.'
+    ALREADY_IN_LIST: ' is already added to list.',
+    INVALID_INPUT: 'Data is not in valid format for submission',
+    SAVED_SUCCESSFULLY: ' saved successfully'
 }

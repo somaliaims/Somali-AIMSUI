@@ -1,6 +1,6 @@
 export const urls = {
-	baseUrl: "http://104.140.103.166:7000/api/",
-	//baseUrl: "http://localhost:60815/api/",
+	//baseUrl: "http://104.140.103.166:7000/api/",
+	baseUrl: "http://localhost:60815/api/",
 	getToken: "User/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
@@ -51,6 +51,8 @@ export const urls = {
 	iatiOrganizations: "IATI/GetOrganizations",
 	iatiMatchingActivities: "IATI/GetMatchingActivities",
 	iatiProjects: "IATI/GetProjects",
+	getIatiSettings: "IATI/GetIATISettings",
+	setIatiSettings: "IATI/SetIATISettings",
 	iatiProjectsByIds: "IATI/ExtractProjectsByIds",
 	aimsProjectsByIds: "Project/ExtractProjectsByIds",
 	sectorProjectsReport: "Report/GetSectorWiseProjects",

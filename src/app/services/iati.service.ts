@@ -37,11 +37,24 @@ export class IATIService {
         catchError(this.storeService.handleError<any>('IATI Projects')));
     }
 
+    getIATISettings() {
+      var url = this.urlHelper.getIATISettingsUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('IATI Settings')));
+    }
+
     extractProjectsByIds(model: any) {
       var url = this.urlHelper.extractProjectsByIds();
       return this.httpClient.post(url,
         JSON.stringify(model), httpOptions).pipe(
             catchError(this.storeService.handleError<any>('IATI Projects by Ids')));
+    }
+
+    setIATISettings(model: any) {
+      var url = this.urlHelper.setIATISettingsUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('IATI Settings')));
     }
 
 }
