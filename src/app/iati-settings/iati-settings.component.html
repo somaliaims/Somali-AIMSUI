@@ -6,7 +6,7 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">IATI Settings</a>
+            <a class="nav-link active btn-info" data-toggle="tab">SMTP Settings</a>
           </li>
         </ul>
       </div>
@@ -19,7 +19,7 @@
             </div>
             <h5 class="card-title text-center">IATI Settings</h5>
 
-            <form class="form-signin" (ngSubmit)="saveIATISettings()" #iatiForm="ngForm">
+            <form class="form-signin" (ngSubmit)="iatiForm.form.valid && saveIATISettings()" #iatiForm="ngForm">
 
               <div class="form-group">
                 <label for="baseUrl">Base Url</label>
@@ -30,14 +30,14 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label for="countryCode">Country Code</label>
                 <input type="text" maxlength="3" class="form-control" id="countryCode" [(ngModel)]="model.countryCode"
                   name="countryCode" #countryCode="ngModel">
                 <div [hidden]="countryCode.valid" class="alert alert-danger">
                   Country Code is required
                 </div>
-              </div>
+              </div> -->
 
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">{{btnText}}</button>

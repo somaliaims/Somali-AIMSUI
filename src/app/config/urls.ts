@@ -58,5 +58,6 @@ export const urls = {
 	sectorProjectsReport: "Report/GetSectorWiseProjects",
 	searchProjectsViewByCriteria: "Project/SearchProjectsViewByCriteria",
 	searchProjectsByCriteriaReport: "Report/SearchProjectsByCriteria",
-	getFinancialYears: "FinancialYear"
+	getFinancialYears: "FinancialYear",
+	smtpSettings: "SMTPSettings"
 };

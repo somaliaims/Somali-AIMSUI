@@ -56,6 +56,7 @@ import { ProjectInfoModalComponent } from './project-info-modal/project-info-mod
 import { ProjectiInfoModalComponent } from './projecti-info-modal/projecti-info-modal.component';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
 import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
+import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
     ProjectiInfoModalComponent,
     ErrorModalComponent,
     IatiSettingsComponent,
+    SmtpSettingsComponent,
   ],
   imports: [
     BrowserModule,

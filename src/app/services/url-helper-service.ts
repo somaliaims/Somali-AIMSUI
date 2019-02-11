@@ -262,6 +262,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.setIatiSettings);
     }
 
+    getSMTPSettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.smtpSettings);
+    }
+
     //Reports url
     getSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);

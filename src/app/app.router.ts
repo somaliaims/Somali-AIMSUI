@@ -35,6 +35,7 @@ import { NewProjectComponent } from './new-project/new-project.component';
 import { ProjectEntryComponent } from './project-entry/project-entry.component';
 import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
+import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -81,7 +82,8 @@ export const routes: Routes = [
   { path: 'project-document/:{id}', component: ProjectDocumentComponent },
   { path: 'project-entry', component: ProjectEntryComponent },
   { path: 'project-report', component: ProjectReportComponent },
-  { path: 'iati-settings', component: IatiSettingsComponent }
+  { path: 'iati-settings', component: IatiSettingsComponent },
+  { path: 'smtp-settings', component: SmtpSettingsComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

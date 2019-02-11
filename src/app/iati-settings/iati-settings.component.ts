@@ -17,7 +17,7 @@ export class IatiSettingsComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   infoMessage: string = null;
-  model = { baseUrl: null, countryCode: null };
+  model = { baseUrl: null };
   
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -33,25 +33,28 @@ export class IatiSettingsComponent implements OnInit {
     this.iatiService.getIATISettings().subscribe(
       data => {
         this.model.baseUrl = data.baseUrl;
-        this.model.countryCode = data.countryCode;
       }
     )
   }
 
   saveIATISettings() {
-    if (this.model.baseUrl == null || this.model.countryCode == null) {
+    if (this.model.baseUrl == null) {
       this.errorMessage = Messages.INVALID_INPUT;
       this.errorModal.openModal();
       return false;
     }
 
+    this.blockUI.start('Saving IATI Settings');
     this.iatiService.setIATISettings(this.model).subscribe(
       data => {
         this.infoMessage = 'IATI Settings' + Messages.SAVED_SUCCESSFULLY;
+        this.blockUI.stop();
         this.infoModal.openModal();
       },
       error => {
-        console.log(error);
+        this.blockUI.stop();
+        this.errorMessage = 'An error occurred: ' + error;
+        this.errorModal.openModal();
       }
     )
   }
