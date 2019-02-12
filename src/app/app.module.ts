@@ -38,7 +38,7 @@ import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
 import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
-import { UserPasswordForgotComponent } from './user-password-forgot/user-password-forgot.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ViewProjectComponent } from './view-project/view-project.component';
 import { ProjectLocationComponent } from './project-location/project-location.component';
 import { ProjectSectorComponent } from './project-sector/project-sector.component';
@@ -85,7 +85,7 @@ import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
     ManageSectorComponent,
     ManageProjectComponent,
     UserPasswordChangeComponent,
-    UserPasswordForgotComponent,
+    ForgotPasswordComponent,
     ViewProjectComponent,
     ProjectLocationComponent,
     ProjectSectorComponent,

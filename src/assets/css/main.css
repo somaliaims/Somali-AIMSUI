@@ -138,6 +138,7 @@ html {
   .iati-box {
     max-height: 620px;
     overflow-y: auto;
+    overflow-x: hidden; 
   }
 
   .disabledDiv {

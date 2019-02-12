@@ -51,9 +51,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.editUser);
     }
 
-    getSendUserPassword(email: string) {
-        return (this.BASE_URL + urlsList.urls.sendUserPassword);
+    getResetPasswordUrl(email: string) {
+        return (this.BASE_URL + urlsList.urls.resetPasswordRequest);
     }
+    
     getOrganizationUrl() {
         return (this.BASE_URL + urlsList.urls.organizationUrl);
     }
