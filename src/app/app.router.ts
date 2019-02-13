@@ -21,7 +21,7 @@ import { SectorSubCategoriesComponent } from './sector-subcategories/sector-subc
 import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/manage-sector-subcategory.component';
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
-import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
+import { PasswordChangeComponent } from './password-change/password-change.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
 import { ViewProjectComponent } from './view-project/view-project.component';
@@ -36,6 +36,7 @@ import { ProjectEntryComponent } from './project-entry/project-entry.component';
 import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
+import { ManageAccountComponent } from './manage-account/manage-account.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -44,7 +45,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'user-registration', component: UserRegistrationComponent},
   { path: 'user-org-registration', component: UserOrgRegistrationComponent },
-  { path: 'user-password-change', component: UserPasswordChangeComponent },
+  { path: 'password-change', component: PasswordChangeComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'projects', component: ProjectsComponent },
   { path: 'reports-panel', component: ReportsPanelComponent},
@@ -83,7 +84,8 @@ export const routes: Routes = [
   { path: 'project-entry', component: ProjectEntryComponent },
   { path: 'project-report', component: ProjectReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
-  { path: 'smtp-settings', component: SmtpSettingsComponent }
+  { path: 'smtp-settings', component: SmtpSettingsComponent },
+  { path: 'manage-account', component: ManageAccountComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

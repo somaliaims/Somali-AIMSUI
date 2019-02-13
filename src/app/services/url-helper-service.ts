@@ -47,8 +47,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getOrganization + id);
     }
 
-    getEditUserUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.editUser);
+    getEditUserPasswordUrl() {
+        return (this.BASE_URL + urlsList.urls.editUserPassword);
+    }
+
+    getDeleteAccountUrl() {
+        return (this.BASE_URL + urlsList.urls.deleteUserAccount);
     }
 
     getResetPasswordUrl(email: string) {

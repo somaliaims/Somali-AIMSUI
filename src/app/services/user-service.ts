@@ -37,10 +37,20 @@ export class UserService {
     }
 
     editUserPassword(id: string, password: string) {
-      var url = this.urlHelper.getEditUserUrl(id);
-      return this.httpClient.get(url, httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('User password edit')));
+      var url = this.urlHelper.getEditUserPasswordUrl();
+      var model = { userId: id, password: password };
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Change User Password')));
     }
+
+    deleteUserAccount(email: string, password: string) {
+        var url = this.urlHelper.getDeleteAccountUrl();
+        var model = { email: email, password: password };
+        return this.httpClient.post(url,
+          JSON.stringify(model), httpOptions).pipe(
+              catchError(this.storeService.handleError<any>('User Account Deletion')));
+      }
 
     resetPasswordRequest(model: any) {
       var url = this.urlHelper.getResetPasswordUrl(model);

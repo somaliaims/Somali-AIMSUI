@@ -37,7 +37,7 @@ import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/ma
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
-import { UserPasswordChangeComponent } from './user-password-change/user-password-change.component';
+import { PasswordChangeComponent } from './password-change/password-change.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ViewProjectComponent } from './view-project/view-project.component';
 import { ProjectLocationComponent } from './project-location/project-location.component';
@@ -57,6 +57,7 @@ import { ProjectiInfoModalComponent } from './projecti-info-modal/projecti-info-
 import { ErrorModalComponent } from './error-modal/error-modal.component';
 import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
+import { ManageAccountComponent } from './manage-account/manage-account.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,7 @@ import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
     SectorsComponent,
     ManageSectorComponent,
     ManageProjectComponent,
-    UserPasswordChangeComponent,
+    PasswordChangeComponent,
     ForgotPasswordComponent,
     ViewProjectComponent,
     ProjectLocationComponent,
@@ -104,6 +105,7 @@ import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
     ErrorModalComponent,
     IatiSettingsComponent,
     SmtpSettingsComponent,
+    ManageAccountComponent,
   ],
   imports: [
     BrowserModule,

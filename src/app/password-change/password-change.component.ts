@@ -6,11 +6,11 @@ import { UserService } from '../services/user-service';
 
 
 @Component({
-  selector: 'app-userpasswordchange',
-  templateUrl: './user-password-change.component.html',
-  styleUrls: ['./user-password-change.component.css']
+  selector: 'password-change',
+  templateUrl: './password-change.component.html',
+  styleUrls: ['./password-change.component.css']
 })
-export class UserPasswordChangeComponent{
+export class PasswordChangeComponent{
   public frmChangePassword: FormGroup;
   btnText: string = 'Save';
   isBtnDisabled: boolean = false;

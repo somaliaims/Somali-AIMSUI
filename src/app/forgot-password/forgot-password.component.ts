@@ -14,7 +14,7 @@ export class ForgotPasswordComponent{
   model: any = { email: null };
   isBtnDisabled: boolean = false;
   isInfo: boolean = false;
-  successMessage: string = '';
+  infoMessage: string = '';
   isError: boolean = false;
   errorMessage: string = '';
 
@@ -24,12 +24,12 @@ export class ForgotPasswordComponent{
   sendPasswordResetLink() {
     this.isError = false;
     this.isInfo = false;
-    this.btnText = 'Checking and setting...';
+    this.btnText = 'Checking and Resetting...';
     this.isBtnDisabled = true;
     this.userService.resetPasswordRequest(this.model).subscribe(
       data => {
         if (data.success) {
-          this.successMessage = Messages.PASSWORD_RESET_SENT;
+          this.infoMessage = Messages.PASSWORD_RESET_SENT;
           this.isInfo = true;
           this.resetFormStatus();
         } else {
