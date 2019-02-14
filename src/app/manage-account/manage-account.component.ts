@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user-service';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Router } from '@angular/router';
+import { StoreService } from '../services/store-service';
+import { Messages } from '../config/messages';
+import { ModalService } from '../services/modal.service';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'manage-account',
@@ -9,50 +12,93 @@ import { Router } from '@angular/router';
   styleUrls: ['./manage-account.component.css']
 })
 export class ManageAccountComponent implements OnInit {
-  model = { userId: null, password: null };
-  dModel = { email: null, password: null };
-  tab: string = 'password';
+  model = { password: null };
+  dModel = { password: null };
+  currentTab: string = 'password';
+  btnPasswordText: string = 'Save New Password';
+  btnAccountText: string = 'Delete Account';
+  isBtnDisabled: boolean = false;
+  isInfo: boolean = false;
+  isError: boolean = false;
+  infoMessage: string = '';
+  errorMessage: string = '';
 
-  constructor(private userService: UserService, private router: Router) { }
-  //Overlay UI blocker
-  @BlockUI() blockUI: NgBlockUI;
+  constructor(private userService: UserService, private router: Router,
+    private storeService: StoreService, private modalService: ModalService,
+    private securityService: SecurityHelperService) { }
 
   ngOnInit() {
   }
 
   showPasswordTab() {
-    this.tab = 'password';
+    this.currentTab = 'password';
     return false;
   }
 
   showAccountTab() {
-    this.tab = 'account';
+    this.currentTab = 'account';
     return false;
   }
 
   changePassword() {
-    this.blockUI.start('Changing Password...');
-    this.userService.editUserPassword(this.model.userId, this.model.password).subscribe(
+    this.isBtnDisabled = true;
+    this.btnPasswordText = 'Updating Password...';
+    this.userService.editUserPassword(this.model.password).subscribe(
       data => {
-        this.blockUI.stop();
+        this.infoMessage = Messages.PASSWORD_UPDATED;
+        this.isInfo = true;
+        this.resetFormsState();
       },
       error => {
-        this.blockUI.stop();
+        this.resetFormsState();
       }
     )
+  }
+
+  confirmDeleteAccount() {
+    this.modalService.open('confirmation-modal');
   }
 
   deleteAccount() {
-    this.userService.deleteUserAccount(this.dModel.email, this.dModel.password).subscribe(
+    this.modalService.close('confirmation-modal');
+    this.isBtnDisabled = true;
+    this.btnAccountText = 'Deleting Account...';
+    this.userService.deleteUserAccount(this.dModel.password).subscribe(
       data => {
-        this.router.navigateByUrl('home');
+
+        if (data.success) {
+          this.storeService
+            .newInfoMessage(Messages.ACCOUNT_DELETED);
+          this.btnAccountText = 'Setting Environment...';
+          this.securityService.clearLoginSession();
+
+          setTimeout(() => {
+            this.router.navigateByUrl('home');
+            location.reload();
+          }, 2000);
+        } else {
+          this.errorMessage = data.message;
+          this.isError = true;
+          this.resetFormsState();
+        }
       },
       error => {
-        
+        this.resetFormsState();
+        console.log(error);
       }
     )
   }
 
+  closeModal() {
+    this.modalService.close('confirmation-modal');
+  }
 
+  resetFormsState() {
+    this.btnAccountText = 'Delete Account';
+    this.btnPasswordText = 'Save New Password';
+    this.model.password = null;
+    this.dModel.password = null;
+    this.isBtnDisabled = false;
+  }
 
 }

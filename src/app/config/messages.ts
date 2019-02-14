@@ -9,5 +9,7 @@ export const Messages = {
     INVALID_INPUT: 'Data is not in valid format for submission',
     SAVED_SUCCESSFULLY: ' saved successfully',
     PASSWORD_RESET_SENT: 'Password reset link sent to the provided email Id',
-    EMAIL_NOT_FOUND: 'We could not find the provided email id in our records'
+    EMAIL_NOT_FOUND: 'We could not find the provided email id in our records',
+    PASSWORD_UPDATED: 'Your password updated successfully. You must login with new password on next login.',
+    ACCOUNT_DELETED: 'Your account is deleted successfully. In order to use AIMS again, register again with your Organization'
 }
