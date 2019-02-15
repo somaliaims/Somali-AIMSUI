@@ -60,5 +60,9 @@ export const urls = {
 	searchProjectsViewByCriteria: "Project/SearchProjectsViewByCriteria",
 	searchProjectsByCriteriaReport: "Report/SearchProjectsByCriteria",
 	getFinancialYears: "FinancialYear",
-	smtpSettings: "SMTPSettings"
+	smtpSettings: "SMTPSettings",
+	notificationsCount: "Notification/GetCount",
+	notifications: "Notification",
+	markNotificationsRead: "Notification/MarkNotificationsRead",
+	deleteNotifications: "Notification/DeleteNotifications"
 };

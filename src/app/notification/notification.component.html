@@ -1,25 +1,42 @@
 <div class="container view-area">
   <div class="row">
-    <h4>Your Notifications</h4>
-  </div>
-  <div class="row">
     <div class="row text-center" *ngIf="isLoading">
       <div class="col-md-12">
         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
       </div>
     </div>
     <div class="row" *ngFor="let notification of notifications">
-      <div class="col-md-9">
-        {{notification.message}}<br>
-        {{notification.dated}}
-      </div>
-      <div *ngIf="notification.notificationType == 1" class="col-md-3">
-        <button class="btn btn-primary btn-sm" (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header text-white bg-info">Notifications</div>
+          <div class="card-body">
+            <table class="table table-stripped">
+              <tr>
+                <td>
+                  <span class="text-info">
+                    {{notification.message}}
+                  </span><br>
+                  <span class="badge badge-warning">
+                    {{notification.dated}}
+                  </span>
+                </td>
+              
+                <td *ngIf="notification.notificationType == 1">
+                    <button class="btn btn-info"
+                      (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-md-12" *ngIf="showNoFound">
-      No notifications found.
-    </div>
-  </div>
 
+    <div class="col-md-12" *ngIf="notifications.length == 0">
+      <span class="text-info">
+        <i>No notifications found.</i>
+      </span>
+    </div>
+
+  </div>
 </div>

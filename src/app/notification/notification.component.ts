@@ -20,7 +20,6 @@ export class NotificationComponent implements OnInit {
   }
 
   getNotifications() {
-    
     this.notificationService.getUserNotifications().subscribe( data => {
       this.isLoading = false;
       if (data && data.length) {

@@ -35,8 +35,20 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationTypesList);
     }
 
-    userNotificationsUrl() {
-        return (this.BASE_URL + urlsList.urls.userNotificationsList);
+    getNotificationsUrl() {
+        return (this.BASE_URL + urlsList.urls.notifications);
+    }
+
+    getNotificationsCountUrl() {
+        return (this.BASE_URL + urlsList.urls.notificationsCount);
+    }
+
+    markNotificationsReadUrl() {
+        return (this.BASE_URL + urlsList.urls.markNotificationsRead);
+    }
+
+    deleteNotificationsUrl() {
+        return (this.BASE_URL + urlsList.urls.deleteNotifications);
     }
 
     userAccountActivationUrl() {
