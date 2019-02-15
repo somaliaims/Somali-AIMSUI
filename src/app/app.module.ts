@@ -58,6 +58,7 @@ import { ErrorModalComponent } from './error-modal/error-modal.component';
 import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import { ManageAccountComponent } from './manage-account/manage-account.componen
     IatiSettingsComponent,
     SmtpSettingsComponent,
     ManageAccountComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

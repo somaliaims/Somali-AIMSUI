@@ -67,8 +67,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteUserAccount);
     }
 
-    getResetPasswordUrl(email: string) {
+    getResetPasswordRequestUrl(email: string) {
         return (this.BASE_URL + urlsList.urls.resetPasswordRequest);
+    }
+
+    getResetPasswordUrl() {
+        return (this.BASE_URL + urlsList.urls.resetPassword);
     }
     
     getOrganizationUrl() {

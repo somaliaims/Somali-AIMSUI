@@ -16,13 +16,13 @@
                   <span class="text-info">
                     {{notification.message}}
                   </span><br>
-                  <span class="badge badge-warning">
-                    {{notification.dated}}
+                  <span class="text-info">
+                    <b><i>Dated: {{notification.dated}}</i></b>
                   </span>
                 </td>
               
                 <td *ngIf="notification.notificationType == 1">
-                    <button class="btn btn-info"
+                    <button class="btn btn-success"
                       (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
                 </td>
               </tr>

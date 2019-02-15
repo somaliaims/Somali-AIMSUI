@@ -12,18 +12,18 @@ import { StoreService } from './store-service';
     providedIn: 'root'
 })
 export class UserService {
-    customersObservable : Observable<UserModel[]>;
-    constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService, 
-        private storeService: StoreService) { 
+    customersObservable: Observable<UserModel[]>;
+    constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService,
+        private storeService: StoreService) {
     }
 
     private extractData(res: Response) {
         let body = res;
-        return body || { };
-      }
+        return body || {};
+    }
 
     authenticateUser(email: string, password: string) {
-        var url  = this.urlHelper.userTokenUrl();
+        var url = this.urlHelper.userTokenUrl();
         var model = { "Email": email, "Password": password };
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
@@ -37,30 +37,37 @@ export class UserService {
     }
 
     editUserPassword(password: string) {
-      var url = this.urlHelper.getEditUserPasswordUrl();
-      var model = { password: password };
-      return this.httpClient.post(url,
-        JSON.stringify(model), httpOptions).pipe(
-            catchError(this.storeService.handleError<any>('Change User Password')));
+        var url = this.urlHelper.getEditUserPasswordUrl();
+        var model = { password: password };
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Change User Password')));
     }
 
     deleteUserAccount(password: string) {
         var url = this.urlHelper.getDeleteAccountUrl();
         var model = { password: password };
         return this.httpClient.post(url,
-          JSON.stringify(model), httpOptions).pipe(
-              catchError(this.storeService.handleError<any>('User Account Deletion')));
-      }
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('User Account Deletion')));
+    }
+
+    resetPassword(model: any) {
+        var url = this.urlHelper.getResetPasswordUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Reset Password')));
+    }
 
     resetPasswordRequest(model: any) {
-      var url = this.urlHelper.getResetPasswordUrl(model);
-      return this.httpClient.post(url,
-        JSON.stringify(model), httpOptions).pipe(
-            catchError(this.storeService.handleError<any>('Authentication')));
+        var url = this.urlHelper.getResetPasswordRequestUrl(model);
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Reset Password Request')));
     }
 
     registerUser(model: RegistrationModel) {
-        var url  = this.urlHelper.userRegistrationUrl();
+        var url = this.urlHelper.userRegistrationUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('User registration')));
