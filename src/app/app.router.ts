@@ -37,6 +37,7 @@ import { ProjectReportComponent } from './report-components/project-report/proje
 import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -47,6 +48,7 @@ export const routes: Routes = [
   { path: 'user-org-registration', component: UserOrgRegistrationComponent },
   { path: 'password-change', component: PasswordChangeComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent},
   { path: 'projects', component: ProjectsComponent },
   { path: 'reports-panel', component: ReportsPanelComponent},
   { path: 'management', component: ManagementComponent },
@@ -85,7 +87,7 @@ export const routes: Routes = [
   { path: 'project-report', component: ProjectReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
-  { path: 'manage-account', component: ManageAccountComponent }
+  { path: 'manage-account', component: ManageAccountComponent },
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

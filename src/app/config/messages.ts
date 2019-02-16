@@ -10,6 +10,7 @@ export const Messages = {
     SAVED_SUCCESSFULLY: ' saved successfully',
     PASSWORD_RESET_SENT: 'Password reset link sent to the provided email Id',
     EMAIL_NOT_FOUND: 'We could not find the provided email id in our records',
+    INVALID_ATTEMPT: 'You made an invalid attempt for this action',
     PASSWORD_UPDATED: 'Your password updated successfully. You must login with new password on next login.',
     ACCOUNT_DELETED: 'Your account is deleted successfully. In order to use AIMS again, register again with your Organization'
 }

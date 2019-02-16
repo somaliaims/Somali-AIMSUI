@@ -60,7 +60,7 @@ export class UserService {
     }
 
     resetPasswordRequest(model: any) {
-        var url = this.urlHelper.getResetPasswordRequestUrl(model);
+        var url = this.urlHelper.getResetPasswordRequestUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Reset Password Request')));

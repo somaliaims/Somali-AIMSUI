@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user-service';
-import { ActivatedRoute, Router } from '@angular/router/src';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Messages } from '../config/messages';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-reset-password',
@@ -13,26 +15,43 @@ export class ResetPasswordComponent implements OnInit {
   errorMessage: string = '';
   isInfo: boolean = false;
   infoMessage: string = '';
+  btnText: string = 'Update Password';
+  isBtnDisabled: boolean = false;
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private userService: UserService, private route: ActivatedRoute, 
+    private router: Router, private storeService: StoreService) { }
 
   ngOnInit() {
-    var token = this.route.snapshot.params["{token}"];
+    var params = this.route.snapshot.queryParams; 
+    var token = null;
+
+    if (params && params.token) {
+      token = params.token;
+    }
+    
     if (token != null) {
       this.model.token = token;
     }
   }
 
   resetPassword() {
-    this.userService.resetPassword(this.model).subscribe(
+    if (this.model.token == null) {
+      this.errorMessage = Messages.INVALID_ATTEMPT;
+      this.isError = true;
+      return false;
+    }
+    
+    var model = { newPassword: this.model.password, token: this.model.token };
+    this.isBtnDisabled = true;
+    this.btnText = 'Resetting Password...';
+    this.userService.resetPassword(model).subscribe(
       data => {
-        if (data.success) {
-          this.infoMessage = '';
-          this.isInfo = true;
-          setTimeout(() => {
-            this.router.navigateByUrl('login');
+        if (data) {
+          this.btnText = 'Redirecting...';
+            this.router.navigateByUrl('home');
             location.reload();
-          }, 2000);
+        } else {
+          this.isBtnDisabled = false;
         }
       },
       error => {
@@ -40,6 +59,11 @@ export class ResetPasswordComponent implements OnInit {
         this.isError = true;
       }
     )
+  }
+
+  resetFormStatus() {
+    this.btnText = 'Reset Password';
+    this.isBtnDisabled = false;
   }
 
 }
