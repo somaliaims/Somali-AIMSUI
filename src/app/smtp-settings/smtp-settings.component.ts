@@ -44,7 +44,7 @@ export class SmtpSettingsComponent implements OnInit {
     this.blockUI.start('Saving Settings...');
     this.smtpService.saveSMTPSettings(this.model).subscribe(
       data => {
-        this.infoMessage = 'SMTP Settings' + Messages.SAVED_SUCCESSFULLY;
+        this.infoMessage = 'Email Settings' + Messages.SAVED_SUCCESSFULLY;
         this.infoModal.openModal();
         this.model.password = null;
         this.blockUI.stop();

@@ -37,14 +37,12 @@
   <div class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
-        <th>Id</th>
         <th>Location Name</th>
         <th>Latitude</th>
         <th>Longitude</th>
         <th *ngIf="permissions.canEditLocation">Actions</th>
       </tr>
       <tr *ngFor="let loc of locationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
-        <td>{{loc.id}}</td>
         <td>{{loc.location}}</td>
         <td>{{loc.latitude}}</td>
         <td>{{loc.longitude}}</td>

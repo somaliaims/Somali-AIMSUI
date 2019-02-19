@@ -3,6 +3,7 @@ import { UserService } from '../services/user-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Messages } from '../config/messages';
 import { StoreService } from '../services/store-service';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -19,7 +20,8 @@ export class ResetPasswordComponent implements OnInit {
   isBtnDisabled: boolean = false;
 
   constructor(private userService: UserService, private route: ActivatedRoute, 
-    private router: Router, private storeService: StoreService) { }
+    private router: Router, private storeService: StoreService, 
+    private modalService: ModalService) { }
 
   ngOnInit() {
     var params = this.route.snapshot.queryParams; 
@@ -46,10 +48,10 @@ export class ResetPasswordComponent implements OnInit {
     this.btnText = 'Resetting Password...';
     this.userService.resetPassword(model).subscribe(
       data => {
-        if (data) {
-          this.btnText = 'Redirecting...';
-            this.router.navigateByUrl('home');
-            location.reload();
+        if (data.success) {
+            this.btnText = 'Redirecting...';
+            this.infoMessage = Messages.PASSWORD_UPDATED;
+            this.modalService.open('message-modal');
         } else {
           this.isBtnDisabled = false;
         }
@@ -59,6 +61,12 @@ export class ResetPasswordComponent implements OnInit {
         this.isError = true;
       }
     )
+  }
+
+  closeModalAndNavigate() {
+    this.modalService.close('message-modal');
+    this.router.navigateByUrl('login');
+    location.reload();
   }
 
   resetFormStatus() {
