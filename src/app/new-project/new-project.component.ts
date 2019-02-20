@@ -248,4 +248,16 @@ export class NewProjectComponent implements OnInit {
     this.router.navigateByUrl('project-entry');
   }
 
+  proceedConfirmation() {
+    if (this.selectedProjects.length == 0) {
+      this.modalService.open('confirmation-modal');
+    } else {
+      this.proceedToDataEntry();
+    }
+  }
+
+  closeConfirmationModal() {
+    this.modalService.close('confirmation-modal');
+  }
+
 }
