@@ -9,6 +9,9 @@ import { OrganizationService } from '../services/organization-service';
 import { LocationService } from '../services/location.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { FinancialYearService } from '../services/financial-year.service';
+import { Observable } from 'rxjs';
+import { ReactiveFormsModule, FormControl, FormsModule } from "@angular/forms";
+import { debounceTime, distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-projects',
@@ -35,6 +38,7 @@ export class ProjectsComponent implements OnInit {
   sectorsList: any = [];
   organizationsList: any = [];
   locationsList: any = [];
+  searchField: FormControl;
 
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0,
@@ -96,6 +100,22 @@ export class ProjectsComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+
+    this.searchField = new FormControl();
+    this.searchField.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      tap(_ => (this.isLoading = true)),
+      switchMap(term => this.projectService.filterProjects(term)),
+      tap(_ => (this.isLoading = false))
+    ).subscribe(
+      data => {
+        this.projectsList = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
 
   }
 
@@ -160,26 +180,27 @@ export class ProjectsComponent implements OnInit {
     )
   }
 
-  searchProjects() {
-    this.blockUI.start('Searching Projects...');
+  /*searchProjects() {
+    //this.blockUI.start('Searching Projects...');
+    
     if (this.criteria != null) {
       this.projectService.filterProjects(this.criteria).subscribe(
         data => {
           if (data && data.length) {
             this.projectsList = data;
-            this.blockUI.stop();
+            //this.blockUI.stop();
           } else {
             this.projectsList = [];
           }
         },
         error => {
-          this.blockUI.stop();
+          //this.blockUI.stop();
         }
       );
     } else {
       this.getProjectsList();
     }
-  }
+  }*/
 
   advancedSearchProjects() {
     var searchModel = {
