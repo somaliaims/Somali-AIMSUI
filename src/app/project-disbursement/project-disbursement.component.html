@@ -1,0 +1,82 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/view-project/', model.projectId]">Back to Project</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Project Disbursement</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">New Project Disbursement</h5>
+
+          <form class="form-signin" (ngSubmit)="saveProjectDisbursement()" #disbursementForm="ngForm">
+            <div class="form-group">
+              <label for="startingYear">Starting Year</label>
+              <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear" name="startingYear"
+                #startingYear="ngModel" required>
+                <option *ngFor="let year of yearsList" [value]="year">{{year}}</option>
+              </select>
+              <div [hidden]="startingYear.valid" class="alert alert-danger">
+                Starting Year is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="startingMonth">Starting Month</label>
+              <select class="form-control" id="startingMonth" [(ngModel)]="model.startingMonth" name="startingMonth"
+                #startingMonth="ngModel" required>
+                <option *ngFor="let month of monthsList" [value]="month.value">{{month.key}}</option>
+              </select>
+              <div [hidden]="startingMonth.valid" class="alert alert-danger">
+                Starting Month is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="endingYear">Ending Year</label>
+              <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
+                #endingYear="ngModel" required>
+                <option *ngFor="let year of endingYearsList" [value]="year">{{year}}</option>
+              </select>
+              <div [hidden]="endingYear.valid" class="alert alert-danger">
+                Ending Year is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="endingMonth">Ending Month</label>
+              <select class="form-control" id="endingMonth" [(ngModel)]="model.endingMonth" name="endingMonth"
+                #endingMonth="ngModel" required>
+                <option *ngFor="let month of monthsList" [value]="month.value">{{month.key}}</option>
+              </select>
+              <div [hidden]="endingMonth.valid" class="alert alert-danger">
+                Ending Month is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="text"> </label>
+              <input type="number" class="form-control" id="amount" [(ngModel)]="model.amount" name="amount"
+                #amount="ngModel" required>
+              <div [hidden]="amount.valid" class="alert alert-danger">
+                 Fund amount is required
+              </div>
+            </div>
+        
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

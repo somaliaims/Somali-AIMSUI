@@ -1,11 +1,13 @@
-<ngx-smart-modal class="" #infoModal identifier="infoModal">
-  <div class="modal-header">
-    <h4 class="modal-title">Information</h4>
+<jw-modal id="info-modal">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-info text-white">Information Message</div>
+          <div class="card-body text-info">
+              {{message}}
+          </div>
+        </div><br />
+        <button class="btn btn-info" (click)="closeModal();">Close</button>
+    </div>
   </div>
-  <div class="modal-body">
-    <p>{{message}}</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" (click)="infoModal.close()">Ok</button>
-  </div>
-</ngx-smart-modal>
+</jw-modal>

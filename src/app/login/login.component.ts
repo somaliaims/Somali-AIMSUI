@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     var isLoggedIn = localStorage.getItem('isLoggedIn');
     if (isLoggedIn == 'true') {
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('home');
     }
 
     this.model = new LoginModel('', '');
@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit {
     this.requestNo = this.storeService.getNewRequestNumber();
 
     this.userService.authenticateUser(this.model.Email, this.model.Password).subscribe( data => {
-      console.log(data);
       if (data) {
         if (data.token) {
           this.securityService.storeLoginData(data);

@@ -1,10 +1,13 @@
-<ngx-smart-modal class="" #ErrorModal identifier="errorModal">
-  <div class="modal-header">
-    <h4 class="modal-title">Error</h4>
+<jw-modal id="error-modal">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-danger text-white">Error Message</div>
+          <div class="card-body text-danger">
+              {{message}}
+          </div>
+        </div><br />
+        <button class="btn btn-danger" (click)="closeModal();">Close</button>
+    </div>
   </div>
-  <div class="modal-body">
-    <p></p>
-  </div>
-  <div class="modal-footer">
-  </div>
-</ngx-smart-modal>
+</jw-modal>

@@ -11,7 +11,7 @@
       <li class="nav-item">
         <a class="nav-link active btn-info" data-toggle="tab" >Sectors List</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="permissions.canEditSector" class="nav-item">
         <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-sector']">Create New</a>
       </li>
     </ul>
@@ -38,16 +38,14 @@
     <table class="table table-bordered table-stripped">
       <tr>
         <th>Id</th>
-        <th>Category</th>
-        <th>Sub-Category</th>
         <th>Sector Name</th>
+        <th>Parent Sector</th>
         <th>Actions</th>
       </tr>
-      <tr *ngFor="let sector of sectorsList | paginate: { itemsPerPage: 2, currentPage: p }">
+      <tr *ngFor="let sector of sectorsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
         <td>{{sector.id}}</td>
-        <td>{{sector.category}}</td>
-        <td>{{sector.subCategory}}</td>
         <td>{{sector.sectorName}}</td>
+        <td>{{sector.parentSector}}</td>
         <td>
           <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
         </td>

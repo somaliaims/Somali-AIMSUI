@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,31 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'aims-ui';
   isLoggedIn: boolean = false;
+  permissions: any = {};
+  notificationsCount: number = 0;
 
-  constructor(private securityService: SecurityHelperService, private router: Router) {
+  constructor(private securityService: SecurityHelperService, private router: Router,
+    private notificationService: NotificationService) {
     this.isLoggedIn = (localStorage.getItem('isLoggedIn') == 'true');
+
+    if (this.isLoggedIn) {
+      this.getNotificationsCount();
+    }
+  }
+
+  ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+  }
+
+  getNotificationsCount() {
+    this.notificationService.getNotificationsCount().subscribe(
+      data => {
+        this.notificationsCount = data;
+      },
+      error => {
+        //To do something
+      }
+    )
   }
 
   logout(e) {

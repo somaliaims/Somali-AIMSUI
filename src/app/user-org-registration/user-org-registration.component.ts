@@ -1,13 +1,14 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { switchMap, debounceTime, tap, finalize } from 'rxjs/operators';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { switchMap, debounceTime, tap, finalize, startWith, map } from 'rxjs/operators';
 import { OrganizationService } from '../services/organization-service';
 import { StoreService } from '../services/store-service';
 import { RegistrationModel } from '../models/registration';
 import { UserService } from '../services/user-service';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Router } from '@angular/router';
 import { Messages } from '../config/messages';
+import { Organization } from '../models/organization-model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-org-registration',
@@ -16,7 +17,9 @@ import { Messages } from '../config/messages';
 })
 export class UserOrgRegistrationComponent implements OnInit {
 
-  filteredOrganizations: any = [];
+  organizations: any = [];
+  userInput = new FormControl();
+  filteredOrganizations: Observable<Organization[]>;
   organizationTypes: any = [];
   organizationType: string = null;
   usersForm: FormGroup;
@@ -28,6 +31,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   btnRegisterText: string = 'Register';
   isShowType: boolean = false;
   delaySeconds: number = 2000;
+  selectedOrganizationId: number = 0;
   //isOrgTypeVisible: boolean = true;
   validationMessage: string = '';
   requestNo: number = 0;
@@ -36,7 +40,7 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
-    private modalService: NgxSmartModalService, private router: Router,
+    private router: Router,
     private zone: NgZone) {
 
   }
@@ -61,40 +65,39 @@ export class UserOrgRegistrationComponent implements OnInit {
       }
     });
 
-
     this.usersForm = this.fb.group({
       userInput: null,
-      organizationType: null
     });
-
-    this.usersForm
-      .get('userInput')
-      .valueChanges
-      .pipe(
-        debounceTime(300),
-        tap(() => this.isLoading = true),
-        switchMap(value => this.organizationService.searchOrganizations({ name: value }, 1)
-          .pipe(
-            finalize(() => this.isLoading = false),
-          )
-        )
-      )
-      .subscribe(organizations => {
-        this.filteredOrganizations = organizations;
-      });
-    this.fillOrganizationTypes();
+    
+    this.loadOrganizations();
+  }
+  
+  displayFn(organization?: Organization): string | undefined {
+    if (organization) {
+      this.selectedOrganizationId = organization.id;
+    } else {
+      this.selectedOrganizationId = 0;
+    }
+    return organization ? organization.organizationName : undefined;
   }
 
-  displayFn(org: any) {
-    if (org) {
-      return org.organizationName;
+  private filterOrganizations(value: string): Organization[] {
+    if (typeof value != "string") {
+    } else {
+      const filterValue = value.toLowerCase();
+      return this.organizations.filter(organization => organization.organizationName.toLowerCase().indexOf(filterValue) !== -1);
     }
   }
 
-  fillOrganizationTypes() {
-    this.organizationService.getOrganizationTypes().subscribe(
+  loadOrganizations() {
+    this.organizationService.getOrganizationsList().subscribe(
       data => {
-        this.organizationTypes = data;
+        this.organizations = data;
+        this.filteredOrganizations = this.userInput.valueChanges
+      .pipe(
+        startWith(''),
+        map(organization => organization ? this.filterOrganizations(organization) : this.organizations.slice())
+      );
       },
       error => {
         console.log("Request Failed: ", error);
@@ -103,23 +106,19 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   registerUser() {
-    var orgValue = this.usersForm.get('userInput').value;
-    if (!orgValue.id) {
-      this.model.OrganizationName = orgValue;
-      //this.model.OrganizationTypeId = this.usersForm.get('organizationType').value;
-
+    if (this.selectedOrganizationId == 0) {
+      this.model.OrganizationName = this.userInput.value;
       if (this.model.OrganizationName.length == 0) {
         //Need to show a dialog message here
-        this.modalService.getModal('info-modal').open();
+        console.log('error');
         return false;
-      } else if (this.model.IsNewOrganization && this.model.OrganizationTypeId == null) {
+      } else if (this.model.IsNewOrganization) {
         return false;
       }
       this.model.IsNewOrganization = true;
       this.model.OrganizationId = '0';
-    } else if (orgValue.id && orgValue.id != 0) {
-      this.model.OrganizationId = orgValue.id;
-      //this.model.OrganizationTypeId = '0';
+    } else if (this.selectedOrganizationId != 0) {
+      this.model.OrganizationId = this.selectedOrganizationId.toString();
     }
 
     this.requestNo = this.storeService.getNewRequestNumber();
