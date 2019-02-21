@@ -1,0 +1,10 @@
+.close-modal {
+
+position:fixed;
+z-index:999;
+right:750px;
+}
+
+.jw-modal {
+	width: 200px;
+}
