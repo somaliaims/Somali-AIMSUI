@@ -152,7 +152,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   resetModel() {
-    this.model = new RegistrationModel('', '', '', '', '', '', '', false);
+    this.model = new RegistrationModel('', '', '', '', '', '', false);
   }
 
 }
