@@ -29,6 +29,7 @@ export class ProjectEntryComponent implements OnInit {
   selectedSectorId: number = 0;
   selectedLocationId: number = 0;
   selectedParentSectorId: number = 0;
+  sectorTotalPercentage: number = 0;
   btnProjectText: string = 'Save Project';
   btnProjectSectorText: string = 'Save Sector';
   btnProjectLocationText: string = 'Save Location';
@@ -635,6 +636,7 @@ export class ProjectEntryComponent implements OnInit {
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
             this.currentProjectSectorsList = data.sectors;
+            this.sectorTotalPercentage = this.calculateSectorPercentage();
           }
 
           if (data.locations && data.locations.length > 0) {
@@ -830,15 +832,6 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    /*if (this.sectorModel.sectorId != null && this.sectorModel.sectorId != 0) {
-      var isSectorExists = this.currentProjectSectorsList.filter(s => s.sectorId == this.sectorModel.sectorId);
-      if (isSectorExists.length > 0) {
-        this.errorMessage = 'Selected sector' + Messages.ALREADY_IN_LIST;
-        this.errorModal.openModal();
-        return false;
-      }
-    }*/
-
     if (this.sectorModel.fundsPercentage <= 0) {
       this.errorMessage = 'Funds Percentage' + Messages.CANNOT_BE_ZERO;
       this.errorModal.openModal();
@@ -855,8 +848,7 @@ export class ProjectEntryComponent implements OnInit {
     }
 
     if (this.currentProjectSectorsList.length > 0) {
-      var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
-      var percentageEntered = percentageList.reduce(this.storeService.sumValues);
+      var percentageEntered = this.calculateSectorPercentage();
       var enteredPercentage = this.sectorModel.fundsPercentage;
       var percentageTotal = parseInt(percentageEntered) + parseInt(enteredPercentage.toString());
 
@@ -928,6 +920,7 @@ export class ProjectEntryComponent implements OnInit {
           this.currentProjectSectorsList.push(sectorObj);
         }
         
+        this.sectorTotalPercentage = this.calculateSectorPercentage();
         this.resetSectorEntry();
         this.blockUI.stop();
         var message = 'New sector' + Messages.NEW_RECORD;
@@ -955,6 +948,7 @@ export class ProjectEntryComponent implements OnInit {
         var message = 'Selected sector ' + Messages.RECORD_DELETED;
         this.infoMessage = message;
         this.infoModal.openModal();
+        this.sectorTotalPercentage = this.calculateSectorPercentage();
       },
       error => {
         console.log(error);
@@ -1415,6 +1409,10 @@ export class ProjectEntryComponent implements OnInit {
   }
   /**End of managing project documents */
 
+  calculateSectorPercentage() {
+    var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
+    return percentageList.reduce(this.storeService.sumValues);
+  }
 
   /*Reset form states*/
   resetProjectEntry() {

@@ -2,12 +2,20 @@
 
   <!--Loading project data -->
   <div class="row">
+    <div class="col-md-12">
+      <span class="float-right margin-right-15">
+        <button class="btn btn-danger" (click)="closeModal();">Close View</button>
+      </span>
+    </div>
+  </div>
+  <div class="row">
     <div class="col margin-top-10">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-
-            <h6 class="text-info"><b>Project Data</b></h6>
+            <span class="float-left">
+              <h6 class="text-info"><b>Project Data</b></h6>
+            </span>
             <table class="table table-stripped">
               <tr>
                 <td><b>Id: </b></td>
@@ -43,8 +51,8 @@
                   <td>{{location.latitude}}</td>
                   <td>{{location.longitude}}</td>
                   <td>
-                    <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)" class="btn btn-danger"><i
-                        class="fa fa-trash color-white"></i></a>
+                    <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)"
+                      class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
                   </td>
                 </tr>
               </table>
@@ -135,7 +143,7 @@
     </div>
 
     <div class="col-md-12 margin-top-10">
-      <span class="float-right">
+      <span class="float-right margin-right-15">
         <button class="btn btn-danger" (click)="closeModal();">Close View</button>
       </span>
     </div>
