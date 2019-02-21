@@ -86,4 +86,8 @@ export class StoreService {
     return true;
   }
 
+  sumValues(prev, next){
+    return parseInt(prev) + parseInt(next);
+  }
+
 }

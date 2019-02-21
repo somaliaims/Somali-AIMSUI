@@ -44,13 +44,6 @@
       </div>
     </div>
 
-    <!--<div class="row text-center">
-      <div *ngIf="isError" class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Error!</strong> {{errorMessage}}
-      </div>
-    </div>-->
-
     <div class="row text-center">
       <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -129,7 +122,7 @@
                   <label for="title">Project Title</label>
                   <input type="text" class="form-control" id="title" maxlength="1000" [(ngModel)]="model.title" name="title"
                     #title="ngModel" required>
-                  <div [hidden]="title.valid" class="alert alert-danger">
+                  <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
                     Project Title is required
                   </div>
                 </div>
@@ -253,18 +246,7 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Manage Sectors</h5>
-            <!--<form *ngIf="sectorsList.length > 0" class="form-signin" [formGroup]='sectorSelectionForm'>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="{{sectorPlaceHolder}}" aria-label="Sector Name" [matAutocomplete]="auto"
-                  [formControl]="sectorInput">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySectorFn.bind(this)">
-                  <mat-option *ngFor="let sector of sectorsList" [value]="sector">
-                    <span>{{sector.sectorName}}</span>
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </form>-->
-
+            
             <form class="form-signin" (ngSubmit)="projectSectorForm.form.valid && saveProjectSector()" #projectSectorForm="ngForm">
 
               <div *ngIf="sectorEntryType == 'aims'" class="form-group">
@@ -273,7 +255,7 @@
                   #sectorId="ngModel" required>
                   <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}</option>
                 </select>
-                <div [hidden]="sectorId.valid" class="alert alert-danger">
+                <div *ngIf="projectSectorForm.submitted" [hidden]="sectorId.valid" class="alert alert-danger">
                   Sector is required
                 </div>
               </div>
@@ -282,17 +264,17 @@
                 <label for="sectorName">New Sector</label>
                 <input type="text" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName" name="sectorName"
                   #sectorName="ngModel" required>
-                <div [hidden]="sectorName.valid" class="alert alert-danger">
+                <div *ngIf="projectSectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
                   Sector name is required
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="fundsPercentage">Funds Perdentage</label>
-                <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="sectorModel.fundsPercentage"
-                  name="fundsPercentage" #fundsPercentage="ngModel" required>
-                <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
-                  Funds percentage is required
+                <input type="number" class="form-control" id="fundsPercentage" [(ngModel)]="sectorModel.fundsPercentage"
+                  name="fundsPercentage" #fundsPercentage="ngModel" min="1" max="100" required>
+                <div *ngIf="projectSectorForm.submitted" [hidden]="fundsPercentage.value > 0" class="alert alert-danger">
+                  Valid values for funds percentage are 1 - 100
                 </div>
               </div>
               
@@ -419,7 +401,7 @@
                   #locationId="ngModel" required>
                   <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
                 </select>
-                <div [hidden]="locationId.valid" class="alert alert-danger">
+                <div *ngIf="projectLocationForm.submitted" [hidden]="locationId.valid" class="alert alert-danger">
                   Location is required
                 </div>
               </div>
@@ -428,16 +410,16 @@
                 <label for="location">New Location</label>
                 <input type="text" class="form-control" id="location" [(ngModel)]="locationModel.location" name="location"
                   #location="ngModel" required>
-                <div [hidden]="location.valid" class="alert alert-danger">
+                <div *ngIf="projectLocationForm.submitted" [hidden]="location.valid" class="alert alert-danger">
                   Location is required
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="fundsPercentage">Funds Perdentage</label>
-                <input type="text" class="form-control" id="fundsPercentage" [(ngModel)]="locationModel.fundsPercentage"
-                  name="fundsPercentage" #fundsPercentage="ngModel" required>
-                <div [hidden]="fundsPercentage.valid" class="alert alert-danger">
+                <input type="number" class="form-control" id="fundsPercentage" [(ngModel)]="locationModel.fundsPercentage"
+                  name="fundsPercentage" #fundsPercentage="ngModel" min="1" max="100" required>
+                <div *ngIf="projectLocationForm.submitted" [hidden]="fundsPercentage.valid" class="alert alert-danger">
                   Funds percentage is required
                 </div>
               </div>
@@ -473,7 +455,6 @@
             </table>
           </div>
         </div>
-
       </div>
 
     </div>
@@ -565,16 +546,16 @@
                 <label for="documentTitle">Document Title</label>
                 <input type="text" class="form-control" id="documentTitle" [(ngModel)]="documentModel.documentTitle"
                   name="documentTitle" #documentTitle="ngModel" required>
-                <div [hidden]="documentTitle.valid" class="alert alert-danger">
+                <div *ngIf="projectDocumentForm.submitted" [hidden]="documentTitle.valid" class="alert alert-danger">
                   Document Title is required
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="documentUrl">Document Url</label>
-                <input type="text" class="form-control" id="documentUrl" [(ngModel)]="documentModel.documentUrl" name="documentUrl"
+                <input type="url" class="form-control" id="documentUrl" [(ngModel)]="documentModel.documentUrl" name="documentUrl"
                   #documentUrl="ngModel" required>
-                <div [hidden]="documentUrl.valid" class="alert alert-danger">
+                <div *ngIf="projectDocumentForm.submitted" [hidden]="documentUrl.valid" class="alert alert-danger">
                   Document url is required
                 </div>
               </div>
@@ -697,7 +678,7 @@
                   required>
                   <option *ngFor="let funder of organizationsList" [value]="funder.id">{{funder.organizationName}}</option>
                 </select>
-                <div [hidden]="funderId.valid" class="alert alert-danger">
+                <div *ngIf="projectFunderForm.submitted" [hidden]="funderId.valid" class="alert alert-danger">
                   Funder is required
                 </div>
               </div>
@@ -706,7 +687,7 @@
                 <label for="funder">New Funder</label>
                 <input type="text" maxlength="200" class="form-control" id="funder" [(ngModel)]="funderModel.funder"
                   name="funder" readonly="readonly" #funder="ngModel" required>
-                <div [hidden]="funder.valid" class="alert alert-danger">
+                <div *ngIf="projectFunderForm.submitted" [hidden]="funder.valid" class="alert alert-danger">
                   Funder Name is required
                 </div>
               </div>
@@ -714,8 +695,8 @@
               <div class="form-group">
                 <label for="documentUrl">Amount</label>
                 <input type="number" maxlength="10" class="form-control" id="amount" [(ngModel)]="funderModel.amount"
-                  name="amount" #amount="ngModel" required>
-                <div [hidden]="amount.valid" class="alert alert-danger">
+                  name="amount" #amount="ngModel" min="1" max="100" required>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.valid" class="alert alert-danger">
                   Amount is required
                 </div>
               </div>
@@ -726,15 +707,15 @@
                   required>
                   <option *ngFor="let currency of currencyList" [value]="currency">{{currency}}</option>
                 </select>
-                <div [hidden]="currency.valid" class="alert alert-danger">
+                <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
                   Currency is required
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="exchangeRate">Exchange Rate</label>
+                <label for="exchangeRate">1 USD</label>
                 <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="funderModel.exchangeRate" name="exchangeRate"
-                  maxlength="9" #exchangeRate="ngModel" />
+                  maxlength="9" min="1" max="1000" #exchangeRate="ngModel" />
               </div>
 
               <button [class.disable]="isProjectFunderBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
@@ -754,7 +735,7 @@
                 <th>Funder</th>
                 <th>Amount</th>
                 <th>Currency</th>
-                <th>ExchangeRate</th>
+                <th>Exchange Rate</th>
                 <th>Action</th>
               </tr>
               <tr *ngFor="let funder of currentProjectFundersList">
@@ -860,7 +841,7 @@
                   #implementerId="ngModel" required>
                   <option *ngFor="let implementer of organizationsList" [value]="implementer.id">{{implementer.organizationName}}</option>
                 </select>
-                <div [hidden]="implementerId.valid" class="alert alert-danger">
+                <div *ngIf="projectImplementerForm.submitted" [hidden]="implementerId.valid" class="alert alert-danger">
                   Implementer is required
                 </div>
               </div>
@@ -869,7 +850,7 @@
                 <label for="implementer">New Implementer</label>
                 <input type="text" maxlength="200" class="form-control" id="implementer" [(ngModel)]="implementerModel.implementer"
                   name="implementer" readonly="readonly" #implementer="ngModel" required>
-                <div [hidden]="implementer.valid" class="alert alert-danger">
+                <div *ngIf="projectImplementerForm.submitted" [hidden]="implementer.valid" class="alert alert-danger">
                   Implementer Name is required
                 </div>
               </div>
@@ -1010,7 +991,7 @@
                       #startingYear="ngModel" required>
                       <option *ngFor="let year of yearsList" [value]="year">{{year}}</option>
                     </select>
-                    <div [hidden]="startingYear.valid" class="alert alert-danger">
+                    <div *ngIf="disbursementForm.submitted" [hidden]="startingYear.valid" class="alert alert-danger">
                       Starting Year is required
                     </div>
                   </div>
@@ -1020,7 +1001,7 @@
                       #startingMonth="ngModel" required>
                       <option *ngFor="let month of monthsList" [value]="month.value">{{month.key}}</option>
                     </select>
-                    <div [hidden]="startingMonth.valid" class="alert alert-danger">
+                    <div *ngIf="disbursementForm.submitted" [hidden]="startingMonth.valid" class="alert alert-danger">
                       Starting Month is required
                     </div>
                   </div>
@@ -1036,7 +1017,7 @@
                       #endingYear="ngModel" required>
                       <option *ngFor="let year of endingYearsList" [value]="year">{{year}}</option>
                     </select>
-                    <div [hidden]="endingYear.valid" class="alert alert-danger">
+                    <div *ngIf="disbursementForm.submitted" [hidden]="endingYear.valid" class="alert alert-danger">
                       Ending Year is required
                     </div>
                   </div>
@@ -1045,7 +1026,7 @@
                       #endingMonth="ngModel" required>
                       <option *ngFor="let month of monthsList" [value]="month.value">{{month.key}}</option>
                     </select>
-                    <div [hidden]="endingMonth.valid" class="alert alert-danger">
+                    <div *ngIf="disbursementForm.submitted" [hidden]="endingMonth.valid" class="alert alert-danger">
                       Ending Month is required
                     </div>
                   </div>
@@ -1055,9 +1036,9 @@
               <div class="form-group">
                 <label for="text">Amount</label>
                 <input type="number" class="form-control" id="amount" [(ngModel)]="disbursementModel.amount" name="amount"
-                  #amount="ngModel" maxlength="10" required>
-                <div [hidden]="amount.valid" class="alert alert-danger">
-                  Amount is required
+                  #amount="ngModel" maxlength="10" min="1" required>
+                <div *ngIf="disbursementForm.submitted" [hidden]="amount.valid" class="alert alert-danger">
+                  Enter valid amount
                 </div>
               </div>
           

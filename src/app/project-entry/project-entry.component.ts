@@ -839,10 +839,29 @@ export class ProjectEntryComponent implements OnInit {
       }
     }
 
+    if (this.sectorModel.fundsPercentage <= 0) {
+      this.errorMessage = 'Funds Percentage' + Messages.CANNOT_BE_ZERO;
+      this.errorModal.openModal();
+      return false;
+    }
+
     if (this.sectorModel.sectorName != null && this.sectorModel.sectorName != '') {
       var isSectorExists = this.currentProjectSectorsList.filter(s => s.sector.toLowerCase() == this.sectorModel.sectorName.toLowerCase());
       if (isSectorExists.length > 0) {
         this.errorMessage = 'Selected sector' + Messages.ALREADY_IN_LIST;
+        this.errorModal.openModal();
+        return false;
+      }
+    }
+
+    if (this.currentProjectSectorsList.length > 0) {
+      var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
+      var percentageEntered = percentageList.reduce(this.storeService.sumValues);
+      var enteredPercentage = this.sectorModel.fundsPercentage;
+      var percentageTotal = parseInt(percentageEntered) + parseInt(enteredPercentage.toString());
+
+      if (percentageTotal > 100) {
+        this.errorMessage = Messages.INVALID_PERCENTAGE;
         this.errorModal.openModal();
         return false;
       }
