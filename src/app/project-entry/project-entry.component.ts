@@ -830,14 +830,14 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    if (this.sectorModel.sectorId != null && this.sectorModel.sectorId != 0) {
+    /*if (this.sectorModel.sectorId != null && this.sectorModel.sectorId != 0) {
       var isSectorExists = this.currentProjectSectorsList.filter(s => s.sectorId == this.sectorModel.sectorId);
       if (isSectorExists.length > 0) {
         this.errorMessage = 'Selected sector' + Messages.ALREADY_IN_LIST;
         this.errorModal.openModal();
         return false;
       }
-    }
+    }*/
 
     if (this.sectorModel.fundsPercentage <= 0) {
       this.errorMessage = 'Funds Percentage' + Messages.CANNOT_BE_ZERO;
@@ -919,7 +919,15 @@ export class ProjectEntryComponent implements OnInit {
             sectorObj.sector = selectSector[0].sectorName;
           }
         }
-        this.currentProjectSectorsList.push(sectorObj);
+
+        var fetchExistingSector = this.currentProjectSectorsList.filter(s => s.sectorId == model.sectorId);
+        if (fetchExistingSector.length > 0) {
+          var oldPercentage = parseInt(fetchExistingSector[0].fundsPercentage);
+          fetchExistingSector[0].fundsPercentage = oldPercentage + parseInt(model.fundsPercentage);
+        } else {
+          this.currentProjectSectorsList.push(sectorObj);
+        }
+        
         this.resetSectorEntry();
         this.blockUI.stop();
         var message = 'New sector' + Messages.NEW_RECORD;
@@ -927,8 +935,9 @@ export class ProjectEntryComponent implements OnInit {
         this.infoModal.openModal();
       },
       error => {
-        console.log(error);
+        this.errorMessage = error;
         this.blockUI.stop();
+        this.errorModal.openModal();
       }
     )
   }
