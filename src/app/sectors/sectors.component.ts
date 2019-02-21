@@ -3,6 +3,7 @@ import { SectorService } from '../services/sector.service';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-sectors',
@@ -16,11 +17,14 @@ export class SectorsComponent implements OnInit {
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
+  pagingSize: number = Settings.rowsPerPage;
+  permissions: any = {};
 
   constructor(private sectorService: SectorService, private router: Router,
-    private storeService: StoreService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;

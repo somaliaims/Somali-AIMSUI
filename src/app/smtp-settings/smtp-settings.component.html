@@ -1,0 +1,79 @@
+<div class="container-fluid view-area">
+
+  <block-ui>
+
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Email Settings</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Error!</strong> {{errorMessage}}
+            </div>
+            <h5 class="card-title text-center">Email Settings</h5>
+
+            <form class="form-signin" (ngSubmit)="smtpForm.form.valid && saveSMTPSettings()" #smtpForm="ngForm">
+
+              <div class="form-group">
+                <label for="host">SMTP Host</label>
+                <input type="url" class="form-control" id="host" [(ngModel)]="model.host" name="host"
+                  #host="ngModel" maxlength="50" required>
+                <div [hidden]="host.valid" class="alert alert-danger">
+                  Host is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="port">Port</label>
+                <input pattern="\d*" maxlength="3" class="form-control" id="port" [(ngModel)]="model.port"
+                  name="port" #port="ngModel" required>
+                <div [hidden]="port.valid" class="alert alert-danger">
+                  Port is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Admin Email</label>
+                <input type="email" maxlength="255" class="form-control" id="adminEmail" [(ngModel)]="model.adminEmail"
+                  name="adminEmail" #adminEmail="ngModel" required>
+                <div [hidden]="adminEmail.valid" class="alert alert-danger">
+                  Admin Email is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" maxlength="255" class="form-control" id="username" [(ngModel)]="model.username"
+                  name="username" #username="ngModel" required>
+                <div [hidden]="username.valid" class="alert alert-danger">
+                  Username is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" maxlength="50" class="form-control" id="password" [(ngModel)]="model.password"
+                  name="password" #password="ngModel"> <small class="text-info"><i>(Leave blank if you do not want to change)</i></small>
+              </div>
+
+              <button class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">{{btnText}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </block-ui>
+
+</div>
+
+<info-modal message="{{infoMessage}}"></info-modal>
+<error-modal message="{{errorMessage}}"></error-modal>

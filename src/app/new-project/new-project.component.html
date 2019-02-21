@@ -1,0 +1,160 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">New Project</a>
+        </li>
+        <!--<li *ngIf="!isIATILoading" class="nav-item">
+          <a href="#" class="nav-link text-info" data-toggle="tab" (click)="proceedToDataEntry()">Next</a>
+        </li>-->
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-12 col-sm-12">
+    <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Error!</strong> {{errorMessage}}
+    </div>
+    <form class="form-signin margin-top-10" #projectForm="ngForm">
+      <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+        <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (input)="filterMatchingProjects($event)"
+          [(ngModel)]="model.title" name="title" #title="ngModel" required>
+        <span class="input-group-btn">
+          <button [class.disable]='isSearchingProjects' class="btn btn-info btn-lg" (click)="proceedConfirmation()">Next >></button>
+        </span>
+      </div>
+    </form>
+  </div>
+
+  <div class="row">
+    <!--IATI Activity Box-->
+    <div class="col-md-4 col-sm-6">
+      <div class="card card-signin my-5">
+        <div class="card-body iati-box">
+          <h5 class="card-title text-center">Projects from IATI</h5>
+          <div *ngIf="isIATILoading">
+            Loading IATI projects...
+          </div>
+          <div *ngIf="!isIATILoading">
+            <table *ngIf="filteredIatiProjects.length > 0" class="table table-bordered">
+              <tr *ngFor="let project of filteredIatiProjects">
+                <td>
+                  <span class="float-left">
+                    <b>Project Title: </b>{{project.title}}<br />
+                    <b>Currency: </b>{{project.defaultCurrency}}<br />
+                  </span>
+                  <span class="float-right margin-right-15">
+                    <button id="{{project.id}}" title="Show Project Description" class="btn btn-info btn-sm" (click)="showProjectDescription($event)">Description</button>
+                    &nbsp;
+                    <button type="button" id="{{project.id}}" class="btn btn-success btn-sm" (click)="selectIATIProject($event)">Select</button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+            <span *ngIf="filteredIatiProjects.length == 0" class="text-info">
+              No matches from IATI.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!--Projects box from AIMS-->
+  <div class="col-md-4 col-sm-6">
+    <div class="card card-signin my-5">
+      <div class="card-body iati-box">
+        <h5 class="card-title text-center">Matches from AIMS</h5>
+        <div *ngIf="isAIMSLoading">
+          Loading AIMS projects...
+        </div>
+        <div *ngIf="!isAIMSLoading">
+          <table *ngIf="filteredAIMSProjects.length > 0" class="table table-bordered">
+            <tr *ngFor="let project of filteredAIMSProjects">
+              <td>
+                <span class="float-left">
+                  <b>Project Title: </b>{{project.title}}<br />
+                  <b>Start Date: </b>{{project.startDate}}<br />
+                  <b>End Date: </b>{{project.endDate}}<br />
+                </span>
+                <span class="float-right margin-right-15">
+                    <button type="button" id="aims-{{project.id}}" class="btn btn-info btn-sm" (click)="showAIMSProjectDescription($event)">Description</button>
+                    &nbsp;
+                    <button type="button" id="saims-{{project.id}}" class="btn btn-success btn-sm" (click)="selectAIMSProject($event)">Select</button>
+                </span>
+              </td>
+            </tr>
+          </table>
+          <span *ngIf="filteredAIMSProjects.length == 0" class="text-info">
+            No matches from AIMS
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Selected projects box-->
+  <div class="col-md-4 col-sm-6">
+      <div class="card card-signin my-5">
+        <div class="card-body iati-box">
+          <h5 class="card-title text-center">Selected Projects</h5>
+          <div>
+            <table class="table table-bordered">
+              <tr *ngFor="let project of selectedProjects">
+                <td>
+                  <span class="float-left">
+                    <b>Title: </b>{{project.title}}<br />
+                  </span>
+                  <span class="float-right">
+                    <button type="button" id="selected-{{project.id}}" class="btn btn-info btn-sm" (click)="showSelectedProjectDescription($event)">Description</button>
+                    &nbsp;
+                    <button type="button" id="{{project.id}}" class="btn btn-success btn-sm" (click)="removeSelectedProject($event)">De-Select</button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!--End of Boxes row-->
+
+</div>
+
+
+<jw-modal id="project-description">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">Project Description</h5>
+          <div>
+            {{selectedProjectDescription}}
+          </div>            
+        </div>
+      </div>
+      <span class="float-right">
+        <button class="btn btn-danger" (click)="closeModal('project-description');">Close</button>
+      </span>
+    </div>
+  </div>
+</jw-modal>
+
+<jw-modal id="confirmation-modal">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">Confirmation Message</div>
+            <div class="card-body text-info">
+                You have not selected any of the projects. Are you sure you want to proceed?
+            </div>
+          </div><br />
+          <button class="btn btn-info" (click)="proceedToDataEntry();">Yes Proceed</button>
+          &nbsp;
+          <button class="btn btn-danger" (click)="closeConfirmationModal();">No</button>
+      </div>
+    </div>
+  </jw-modal>

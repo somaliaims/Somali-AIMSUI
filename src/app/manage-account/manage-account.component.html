@@ -1,0 +1,94 @@
+<div class="container-fluid view-area">
+
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a href="#" [ngClass]="{'btn-info': currentTab == 'password', 'text-info': currentTab != 'password'}"
+              class="nav-link" data-toggle="tab" (click)='showPasswordTab()'>Change Password</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" [ngClass]="{'btn-info': currentTab == 'account', 'text-info': currentTab != 'account'}"
+              class="nav-link" data-toggle="tab" (click)='showAccountTab()'>Delete Account</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Error!</strong> {{errorMessage}}
+            </div>
+            <div *ngIf="isInfo" class="alert alert-info alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Information!</strong> {{infoMessage}}
+            </div>
+
+            <div *ngIf="currentTab == 'password'" class="col-md-12">
+              <h5 class="card-title text-center">Change Password</h5>
+              <form class="form-signin" (ngSubmit)="accountForm.form.valid && changePassword()" #accountForm="ngForm">
+
+                <div class="form-group">
+                  <label for="password">Enter New Password</label>
+                  <input type="password" class="form-control" id="password" [(ngModel)]="model.password" name="location"
+                    #password="ngModel" required>
+                  <div [hidden]="password.valid" class="alert alert-danger">
+                    Password is required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm Password</label>
+                  <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="model.confirmPassword"
+                    name="confirmPassword" #confirmPassword="ngModel" required>
+                  <div [hidden]="model.password == model.confirmPassword" class="alert alert-danger">
+                    Passwords do not match
+                  </div>
+                </div>
+
+                <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnPasswordText}}</button>
+              </form>
+            </div>
+
+            <div *ngIf="currentTab == 'account'">
+              <h5 class="card-title text-center">Delete Account</h5>
+              <form class="form-signin" (ngSubmit)="dAccountForm.form.valid && confirmDeleteAccount()" #dAccountForm="ngForm">
+
+                <div class="form-group">
+                  <label for="password">Enter Current Password</label>
+                  <input type="password" class="form-control" id="password" [(ngModel)]="dModel.password"
+                    name="password" #password="ngModel" required>
+                  <div [hidden]="password.valid" class="alert alert-danger">
+                    Password is required
+                  </div>
+                </div>
+
+                <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnAccountText}}</button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </block-ui>
+</div>
+
+<jw-modal id="confirmation-modal">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-info text-white">Confirmation Message</div>
+          <div class="card-body text-info">
+              Are you sure you want to delete your account? You will not be able undo this action.
+          </div>
+        </div><br />
+        <button class="btn btn-info" (click)="deleteAccount()">Yes Delete Account</button>
+        &nbsp;
+        <button class="btn btn-danger" (click)="closeModal();">No</button>
+    </div>
+  </div>
+</jw-modal>

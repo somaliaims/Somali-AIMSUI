@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OrganizationService } from '../services/organization-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Messages } from '../config/messages';
 import { StoreService } from '../services/store-service';
+import { IATIService } from '../services/iati.service';
 
 @Component({
   selector: 'manage-organization',
@@ -20,15 +20,16 @@ export class ManageOrganizationComponent implements OnInit {
   organizationTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
-  model = { id: 0, organizationName: '', organizationTypeId: 1 };
+  iatiOrganizations: any = [];
+  filteredIATIOrganizations: any = [];
+  model = { id: 0, organizationName: '' };
 
   constructor(private organizationService: OrganizationService, private route: ActivatedRoute,
-    private router: Router, private modalService: NgxSmartModalService,
+    private router: Router, 
     private storeService: StoreService) {
   }
 
   ngOnInit() {
-    this.fillOrganizationTypes();
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
@@ -39,7 +40,7 @@ export class ManageOrganizationComponent implements OnInit {
           data => {
             this.model.id = data.id;
             this.model.organizationName = data.organizationName;
-            this.model.organizationTypeId = data.organizationTypeId;
+            //this.model.organizationTypeId = data.organizationTypeId;
           },
           error => {
             console.log("Request Failed: ", error);
@@ -57,20 +58,20 @@ export class ManageOrganizationComponent implements OnInit {
   }
 
   fillOrganizationTypes() {
-    this.organizationService.getOrganizationTypes().subscribe(
+    /*this.organizationService.getOrganizationTypes().subscribe(
       data => {
         this.organizationTypes = data;
       },
       error => {
         console.log("Request Failed: ", error);
       }
-    );
+    );*/
   }
 
   saveOrganization() {
     var model = {
       Name: this.model.organizationName,
-      TypeId: this.model.organizationTypeId
+      //TypeId: this.model.organizationTypeId
     };
 
     this.isBtnDisabled = true;

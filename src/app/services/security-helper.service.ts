@@ -8,6 +8,11 @@ import {Settings} from '../config/settings';
 
 export class SecurityHelperService {
   secretKey: string;
+  userTypes: any = {
+    "SuperAdmin": "1",
+    "Manager": "2",
+    "Standard": "3"
+  }
 
   constructor() {
     this.secretKey = Settings.secretKey;
@@ -41,8 +46,38 @@ export class SecurityHelperService {
     return null;
   }
 
+  getUserPermissions() {
+    var userType = localStorage.getItem("userType");
+    var permissions = {};
+    if (userType == this.userTypes.Standard) {
+      permissions = Settings.permissions.standard;
+    } else if (userType == this.userTypes.SuperAdmin) {
+      permissions = Settings.permissions.superAdmin;
+    } else if (userType == this.userTypes.Manager) {
+      permissions = Settings.permissions.manager;
+    } else {
+      permissions = Settings.permissions.guest;
+    }
+    return permissions;
+  }
+
+  addSlashes(str: string) {
+    return str.replace(/\\/g, '\\\\').
+        replace(/\//g, '\\/').
+        replace(/\u0008/g, '\\b').
+        replace(/\t/g, '\\t').
+        replace(/\n/g, '\\n').
+        replace(/\f/g, '\\f').
+        replace(/\r/g, '\\r').
+        replace(/'/g, '\\\'').
+        replace(/"/g, '\\"');
+ }
+
   clearLoginSession() {
-    localStorage.clear();
+    localStorage.setItem('token', null);
+    localStorage.setItem('displayName', null);
+    localStorage.setItem('organizationId', null);
+    localStorage.setItem('userType', null);
     localStorage.setItem('isLoggedIn', false.toString());
   }
   

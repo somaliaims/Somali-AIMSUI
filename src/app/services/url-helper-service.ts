@@ -35,8 +35,20 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationTypesList);
     }
 
-    userNotificationsUrl() {
-        return (this.BASE_URL + urlsList.urls.userNotificationsList);
+    getNotificationsUrl() {
+        return (this.BASE_URL + urlsList.urls.notifications);
+    }
+
+    getNotificationsCountUrl() {
+        return (this.BASE_URL + urlsList.urls.notificationsCount);
+    }
+
+    markNotificationsReadUrl() {
+        return (this.BASE_URL + urlsList.urls.markNotificationsRead);
+    }
+
+    deleteNotificationsUrl() {
+        return (this.BASE_URL + urlsList.urls.deleteNotifications);
     }
 
     userAccountActivationUrl() {
@@ -47,6 +59,22 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getOrganization + id);
     }
 
+    getEditUserPasswordUrl() {
+        return (this.BASE_URL + urlsList.urls.editUserPassword);
+    }
+
+    getDeleteAccountUrl() {
+        return (this.BASE_URL + urlsList.urls.deleteUserAccount);
+    }
+
+    getResetPasswordRequestUrl() {
+        return (this.BASE_URL + urlsList.urls.resetPasswordRequest);
+    }
+
+    getResetPasswordUrl() {
+        return (this.BASE_URL + urlsList.urls.resetPassword);
+    }
+    
     getOrganizationUrl() {
         return (this.BASE_URL + urlsList.urls.organizationUrl);
     }
@@ -133,6 +161,139 @@ export class UrlHelperService {
 
     getProjectUrl() {
         return (this.BASE_URL + urlsList.urls.projectsUrl);
+    }
+
+    getProjectLocationsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectLocationsUrl + id);
+    }
+
+    addProjectLocationUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectLocation);
+    }
+
+    deleteProjectLocationUrl(projectId: string, locationId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectLocation + projectId + '/' + locationId);
+    }
+
+    getProjectSectorsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectSectorsUrl + id);
+    }
+
+    addProjectSectorUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectSector);
+    }
+
+    deleteProjectSectorUrl(projectId: string, locationId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectSector + projectId + '/' + locationId);
+    }
+
+    getProjectFundersUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectFundersUrl + id);
+    }
+
+    addProjectFunderUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectFunder);
+    }
+
+    getProjectProfileReport(id) {
+        return (this.BASE_URL + urlsList.urls.getProjectProfileReport + id);
+    }
+
+    deleteProjectFunderUrl(projectId: string, funderId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectFunder + projectId + '/' + funderId);
+    }
+
+    getProjectImplementersUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectImplementersUrl + id);
+    }
+
+    addProjectImplementerUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectImplementer);
+    }
+
+    deleteProjectImplementerUrl(projectId: string, implementerId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectImplementer + projectId + '/' + implementerId);
+    }
+
+    getProjectDisbursementsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectDisbursementUrl + id);
+    }
+
+    addProjectDisbursementUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectDisbursement);
+    }
+
+    deleteProjectDisbursementUrl(projectId: string, startingYear: string, startingMonth: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectDisbursement + projectId + '/' + startingYear + '/' + startingMonth);
+    }
+
+    getProjectDocumentsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectDocumentUrl + id);
+    }
+
+    addProjectDocumentUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectDocument);
+    }
+
+    deleteProjectDocumentUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectDocument + id);
+    }
+
+    getIATIActivitiesUrl() {
+        return (this.BASE_URL + urlsList.urls.iatiActivities);
+    }
+
+    getFilteredIATIActivitiesUrl(criteria: string) {
+        return (this.BASE_URL + urlsList.urls.iatiMatchingActivities + '/' + criteria);
+    }
+
+    getIATIOrganizationsUrl() {
+        return (this.BASE_URL + urlsList.urls.iatiOrganizations);
+    }
+
+    getIATIProjectsUrl() {
+        return (this.BASE_URL + urlsList.urls.iatiProjects);
+    }
+
+    getProjectTitle(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectTitle + id);
+    }
+
+    extractProjectsByIds() {
+        return (this.BASE_URL + urlsList.urls.iatiProjectsByIds);
+    }
+
+    extractAIMSProjectsByIds() {
+        return (this.BASE_URL + urlsList.urls.aimsProjectsByIds);
+    }
+
+    getSearchProjectsViewUrl() {
+        return (this.BASE_URL + urlsList.urls.searchProjectsViewByCriteria);
+    }
+
+    getFinancialYearsUrl() {
+        return (this.BASE_URL + urlsList.urls.getFinancialYears);
+    }
+
+    getIATISettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.getIatiSettings);
+    }
+
+    setIATISettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.setIatiSettings);
+    }
+
+    getSMTPSettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.smtpSettings);
+    }
+
+    //Reports url
+    getSectorProjectsReportUrl() {
+        return (this.BASE_URL + urlsList.urls.sectorProjectsReport);
+    }
+
+    getSearchProjectsReportUrl() {
+        return (this.BASE_URL + urlsList.urls.searchProjectsByCriteriaReport);
     }
 
 }

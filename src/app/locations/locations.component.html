@@ -11,7 +11,7 @@
       <li class="nav-item">
         <a class="nav-link active btn-info" data-toggle="tab" >Locations List</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="permissions.canEditLocation" class="nav-item">
         <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-location']">Create New</a>
       </li>
     </ul>
@@ -37,18 +37,16 @@
   <div class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
-        <th>Id</th>
         <th>Location Name</th>
         <th>Latitude</th>
         <th>Longitude</th>
-        <th>Actions</th>
+        <th *ngIf="permissions.canEditLocation">Actions</th>
       </tr>
-      <tr *ngFor="let loc of locationsList | paginate: { itemsPerPage: 2, currentPage: p }">
-        <td>{{loc.id}}</td>
+      <tr *ngFor="let loc of locationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
         <td>{{loc.location}}</td>
         <td>{{loc.latitude}}</td>
         <td>{{loc.longitude}}</td>
-        <td>
+        <td *ngIf="permissions.canEditLocation">
           <a title="Edit" (click)="edit(loc.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
         </td>
       </tr>

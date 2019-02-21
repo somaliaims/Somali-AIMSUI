@@ -19,13 +19,6 @@
                 </div>
                 
                 <div *ngIf="isEmailOk">
-                  <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="Name" required [(ngModel)]="model.Name" [elFocus]="isNameFocus" name="Name" #Name="ngModel">
-                    <div [hidden]="Name.valid || Name.pristine" class="alert alert-danger">
-                      Name is required
-                    </div>
-                  </div>
         
                   <div class="form-group">
                     <label for="password">Password</label>
@@ -52,7 +45,7 @@
                       Select a user type
                     </div>
                   </div>-->
-                  <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Proceed</button>
+                  <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Proceed</button>
                 </div>
                 
               </form>

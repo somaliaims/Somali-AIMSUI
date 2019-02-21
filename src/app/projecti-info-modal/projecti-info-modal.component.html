@@ -1,0 +1,102 @@
+<jw-modal id="projecti-info-modal">
+
+  <!--Loading project data -->
+  <div class="row">
+    <div class="col margin-top-10">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+
+            <h6 class="text-info"><b>Project Data</b></h6>
+            <table class="table table-stripped">
+              <tr>
+                <td><b>Title: </b></td>
+                <td>{{project.title}}</td>
+                <td><b>Currency: </b></td>
+                <td>{{project.defaultCurrency}}</td>
+              </tr>
+              <tr>
+                <td><b>Description: </b></td>
+                <td colspan="3">{{project.description}}</td>
+              </tr>
+            </table>
+
+            <div class="col-md-12 margin-top-10">
+              <h6 class="text-info"><b>Project Locations</b></h6>
+              <table *ngIf="locations.length > 0" class="table table-stripped">
+                <tr>
+                  <th>Location</th>
+                </tr>
+                <tr *ngFor="let location of locations">
+                  <td>{{location.name}}</td>
+                </tr>
+              </table>
+              <span class="text-info"><i>No locations found</i></span>
+            </div>
+
+            <div class="col-md-12 margin-top-10">
+              <h6 class="text-info"><b>Project Sectors</b></h6>
+              <table class="table table-stripped">
+                <tr>
+                  <th>Sector Name</th>
+                  <th>Funds Percentage</th>
+                </tr>
+                <tr *ngFor="let sector of sectors">
+                  <td>{{sector.sectorName}}</td>
+                  <td>{{sector.fundsPercentage}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="sectors.length == 0">
+                <i>No sectors found</i>
+              </span>
+            </div>
+
+
+            <div class="col-md-12 margin-top-10">
+              <h6 class="text-info"><b>Participating Organizations</b></h6>
+              <table class="table table-stripped">
+                <tr>
+                  <th>Organization</th>
+                  <th>Role</th>
+                </tr>
+                <tr *ngFor="let org of participatingOrganizations">
+                  <td>{{org.name}}</td>
+                  <td>{{org.role}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="participatingOrganizations.length == 0">
+                <i>No organizations found</i>
+              </span>
+            </div>
+
+            <div class="col-md-12 margin-top-10">
+              <h6 class="text-info"><b>Project Documents</b></h6>
+              <table class="table table-stripped">
+                <tr>
+                  <th>Document Title</th>
+                  <th>Url</th>
+                </tr>
+                <tr *ngFor="let document of documents">
+                  <td>{{document.documentTitle}}</td>
+                  <td>{{document.documentUrl}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="documents.length == 0">
+                <i>No documents found</i>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 margin-top-10">
+      <span class="float-right">
+        <button class="btn btn-danger" (click)="closeModal();">Close View</button>
+      </span>
+    </div>
+
+  </div>
+
+</jw-modal>

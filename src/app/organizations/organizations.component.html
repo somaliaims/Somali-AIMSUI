@@ -37,15 +37,11 @@
     <div class="col margin-top-10">
       <table class="table table-bordered table-stripped">
         <tr>
-          <th>Id</th>
           <th>Organization Name</th>
-          <th>Type</th>
           <th>Actions</th>
         </tr>
-        <tr *ngFor="let org of organizationsList | paginate: { itemsPerPage: 2, currentPage: p }">
-          <td>{{org.id}}</td>
+        <tr *ngFor="let org of organizationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{org.organizationName}}</td>
-          <td>{{org.typeName}}</td>
           <td>
             <a title="Edit" (click)="edit(org.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
           </td>

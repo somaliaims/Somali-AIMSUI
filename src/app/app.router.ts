@@ -5,7 +5,7 @@ import { UserRegistrationComponent } from './user-registration/user-registration
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { ReportsComponent } from './reports/reports.component';
+import { ReportsPanelComponent } from './reports-panel/reports-panel.component';
 import { ManagementComponent } from './management/management.component';
 import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -21,8 +21,23 @@ import { SectorSubCategoriesComponent } from './sector-subcategories/sector-subc
 import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/manage-sector-subcategory.component';
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
-import { ProjectTypesComponent } from './project-types/project-types.component';
-import { ManageProjecttypeComponent } from './manage-projecttype/manage-projecttype.component';
+import { PasswordChangeComponent } from './password-change/password-change.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ManageProjectComponent } from './manage-project/manage-project.component';
+import { ViewProjectComponent } from './view-project/view-project.component';
+import { ProjectLocationComponent } from './project-location/project-location.component';
+import { ProjectSectorComponent } from './project-sector/project-sector.component';
+import { ProjectFunderComponent } from './project-funder/project-funder.component';
+import { ProjectImplementerComponent } from './project-implementer/project-implementer.component';
+import { ProjectDisbursementComponent } from './project-disbursement/project-disbursement.component';
+import { ProjectDocumentComponent } from './project-document/project-document.component';
+import { NewProjectComponent } from './new-project/new-project.component';
+import { ProjectEntryComponent } from './project-entry/project-entry.component';
+import { ProjectReportComponent } from './report-components/project-report/project-report.component';
+import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
+import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
+import { ManageAccountComponent } from './manage-account/manage-account.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -31,8 +46,11 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'user-registration', component: UserRegistrationComponent},
   { path: 'user-org-registration', component: UserOrgRegistrationComponent },
+  { path: 'password-change', component: PasswordChangeComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent},
   { path: 'projects', component: ProjectsComponent },
-  { path: 'reports', component: ReportsComponent},
+  { path: 'reports-panel', component: ReportsPanelComponent},
   { path: 'management', component: ManagementComponent },
   { path: 'data-entry', component: DataEntryComponent },
   { path: 'notification', component: NotificationComponent },
@@ -54,10 +72,22 @@ export const routes: Routes = [
   { path: 'sectors', component: SectorsComponent },
   { path: 'manage-sector', component: ManageSectorComponent },
   { path: 'manage-sector/:{id}', component: ManageSectorComponent, data: { isForEdit: true } },
-  { path: 'project-types', component: ProjectTypesComponent },
-  { path: 'manage-projecttype/:{id}', component: ManageProjecttypeComponent, data: { isForEdit: true } },
-  { path: 'manage-projecttype', component: ManageProjecttypeComponent },
   { path: 'projects', component: ProjectsComponent },
+  { path: 'manage-project/:{id}', component: ManageProjectComponent, data: { isForEdit: true } },
+  { path: 'manage-project', component: ManageProjectComponent },
+  { path: 'new-project', component: NewProjectComponent},
+  { path: 'view-project/:{id}', component: ViewProjectComponent },
+  { path: 'project-location/:{id}', component: ProjectLocationComponent },
+  { path: 'project-sector/:{id}', component: ProjectSectorComponent },
+  { path: 'project-funder/:{id}', component: ProjectFunderComponent },
+  { path: 'project-implementer/:{id}', component: ProjectImplementerComponent },
+  { path: 'project-disbursement/:{id}', component: ProjectDisbursementComponent },
+  { path: 'project-document/:{id}', component: ProjectDocumentComponent },
+  { path: 'project-entry', component: ProjectEntryComponent },
+  { path: 'project-report', component: ProjectReportComponent },
+  { path: 'iati-settings', component: IatiSettingsComponent },
+  { path: 'smtp-settings', component: SmtpSettingsComponent },
+  { path: 'manage-account', component: ManageAccountComponent },
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);
