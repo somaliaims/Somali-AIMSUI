@@ -18,10 +18,8 @@
             </span>
             <table class="table table-stripped">
               <tr>
-                <td><b>Id: </b></td>
-                <td>{{project.id}}</td>
                 <td><b>Title: </b></td>
-                <td>{{project.title}}</td>
+                <td colspan="3">{{project.title}}</td>
               </tr>
               <tr>
                 <td><b>Start Date: </b></td>
@@ -102,11 +100,9 @@
               <h6 class="text-info"><b>Project Implementers</b></h6>
               <table class="table table-stripped">
                 <tr>
-                  <th>Id</th>
                   <th>Implementor</th>
                 </tr>
                 <tr *ngFor="let implementer of implementers">
-                  <td>{{implementer.implementerId}}</td>
                   <td>{{implementer.implementer}}</td>
                 </tr>
               </table>

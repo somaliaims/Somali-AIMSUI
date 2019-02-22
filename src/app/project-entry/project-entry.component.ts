@@ -349,6 +349,7 @@ export class ProjectEntryComponent implements OnInit {
       endDate: endDate
     }
     this.viewProject = project;
+    this.viewProjectFunders = this.currentProjectFundersList;
     this.viewProjectLocations = this.currentProjectLocationsList;
     this.viewProjectSectors = this.currentProjectSectorsList;
     this.viewProjectImplementers = this.currentProjectImplementersList;
@@ -369,6 +370,7 @@ export class ProjectEntryComponent implements OnInit {
           endDate: projectData.endDate
         }
         this.viewProject = projectData;
+        this.viewProjectFunders = projectData.funders;
         this.viewProjectLocations = projectData.locations;
         this.viewProjectSectors = projectData.sectors;
         this.viewProjectImplementers = projectData.implementers;
@@ -1231,6 +1233,7 @@ export class ProjectEntryComponent implements OnInit {
   addProjectFunder(model: any) {
     this.projectService.addProjectFunder(model).subscribe(
       data => {
+        model.funder = this.funderModel.funder;
         this.currentProjectFundersList.push(model);
         this.blockUI.stop();
         var message = 'New funder ' + Messages.NEW_RECORD;
