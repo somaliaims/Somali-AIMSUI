@@ -65,14 +65,10 @@
                 <tr>
                   <th>Sector</th>
                   <th>Funds Percentage</th>
-                  <th>Currency</th>
-                  <th>Exchange Rate</th>
                 </tr>
                 <tr *ngFor="let sector of sectors">
                   <td>{{sector.sector}}</td>
                   <td>{{sector.fundsPercentage}}</td>
-                  <td>{{sector.currency}}</td>
-                  <td>{{sector.exchangeRate}}</td>
                 </tr>
               </table>
               <span class="text-info" *ngIf="sectors.length == 0">

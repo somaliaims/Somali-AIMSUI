@@ -124,7 +124,8 @@ export class ProjectEntryComponent implements OnInit {
     { visible: false, identity: 'document' },
     { visible: false, identity: 'funder' },
     { visible: false, identity: 'implementer' },
-    { visible: false, identity: 'disbursement' }
+    { visible: false, identity: 'disbursement' },
+    { visible: false, identity: 'customFields' }
   ];
 
   //Overlay UI blocker
@@ -333,6 +334,26 @@ export class ProjectEntryComponent implements OnInit {
     if (selectedProject) {
       this.model.description = selectedProject[0].description;
     }
+  }
+
+  viewCurrentProject() {
+    var startDate = this.model.startDate.day + '/' + this.model.startDate.month + '/' +
+      this.model.startDate.year;
+    var endDate = this.model.endDate.day + '/' + this.model.endDate.month + '/' +
+    this.model.endDate.year;
+
+    var project = {
+      title : this.model.title,
+      description: this.model.description,
+      startDate: startDate,
+      endDate: endDate
+    }
+    this.viewProject = project;
+    this.viewProjectLocations = this.currentProjectLocationsList;
+    this.viewProjectSectors = this.currentProjectSectorsList;
+    this.viewProjectImplementers = this.currentProjectImplementersList;
+    this.viewProjectDocuments = this.currentProjectDocumentsList;
+    this.projectInfoModal.openModal();
   }
 
   viewAIMSProject(e) {
@@ -775,10 +796,12 @@ export class ProjectEntryComponent implements OnInit {
       this.projectService.updateProject(this.activeProjectId, model).subscribe(
         data => {
           if (!this.isError) {
-            var message = 'Project' + Messages.RECORD_UPDATED;
-            this.infoMessage = message;
-            this.infoModal.openModal();
+            //var message = 'Project' + Messages.RECORD_UPDATED;
+            //this.infoMessage = message;
+            //this.infoModal.openModal();
             this.resetProjectEntry();
+            this.blockUI.stop();
+            this.currentTab = 'funder';
           } else {
             this.resetProjectEntry();
           }
@@ -791,8 +814,8 @@ export class ProjectEntryComponent implements OnInit {
         }
       );
     } else {
-      this.btnProjectText = 'Saving...';
-      this.blockUI.start('Saving Project');
+      //this.btnProjectText = 'Saving...';
+      this.blockUI.start('Saving Project...');
       this.projectService.addProject(model).subscribe(
         data => {
           this.resetProjectEntry();
@@ -801,7 +824,7 @@ export class ProjectEntryComponent implements OnInit {
             var message = 'New project' + Messages.NEW_RECORD;
             this.infoMessage = message;
             localStorage.setItem('active-project', data);
-            this.infoModal.openModal();
+            //this.infoModal.openModal();
             this.btnProjectText = 'Edit Project';
             this.currentTab = 'funder';
           } else {
@@ -1470,6 +1493,10 @@ export class ProjectEntryComponent implements OnInit {
   resetDocumentEntry() {
     this.documentModel.documentTitle = null;
     this.documentModel.documentUrl = null;
+  }
+
+  finishProject() {
+    this.router.navigateByUrl('new-project');
   }
 
 }

@@ -139,6 +139,10 @@ html {
     margin-right: 15px !important;
   }
 
+  .margin-bottom-0 {
+    margin-bottom: 0px;
+  }
+
   .iati-box {
     max-height: 620px;
     overflow-y: auto;
@@ -153,6 +157,10 @@ html {
   table.no-borders td {
     border-color: transparent !important;
     padding: 2px;
+  }
+
+  .active-link {
+    color: #fff !important;
   }
 
   /*
