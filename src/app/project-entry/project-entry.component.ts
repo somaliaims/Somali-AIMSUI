@@ -857,8 +857,8 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    if (this.sectorModel.fundsPercentage <= 0) {
-      this.errorMessage = 'Funds Percentage' + Messages.CANNOT_BE_ZERO;
+    if (this.sectorModel.fundsPercentage <= 0 || this.sectorModel.fundsPercentage > 100) {
+      this.errorMessage = 'Funds percentage ' + Messages.PERCENTAGE_RANGE;
       this.errorModal.openModal();
       return false;
     }
@@ -1192,6 +1192,12 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
     
+    if (this.funderModel.amount <= 0) {
+      this.errorMessage = "Funder amount " + Messages.CANNOT_BE_ZERO;
+      this.errorModal.openModal();
+      return false;
+    }
+
     this.blockUI.start('Saving Funder...');
     var model = {
       funder: this.funderModel.funder,

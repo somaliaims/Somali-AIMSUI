@@ -631,7 +631,7 @@
               </div>
 
               <button [class.disable]="isProjectDocumentBtnDisabled"
-                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save document</button>
+                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Add Document</button>
               <button [class.disable]="isProjectDocumentBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="submit"
                 (click)="resetDocumentEntry()">Reset document</button>
@@ -781,7 +781,7 @@
 
               <div class="form-group">
                 <label for="documentUrl">Amount</label>
-                <input type="number" maxlength="10" class="form-control" id="amount" [(ngModel)]="funderModel.amount"
+                <input type="number" class="form-control" id="amount" [(ngModel)]="funderModel.amount"
                   name="amount" #amount="ngModel" min="1" max="100" required>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="amount.valid" class="alert alert-danger">
                   Amount is required
@@ -806,7 +806,7 @@
               </div>
 
               <button [class.disable]="isProjectFunderBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-                type="submit">Save Funder</button>
+                type="submit">Add Funder</button>
               <button [class.disable]="isProjectFunderBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button" (click)="resetFunderEntry()">Reset
                 Funder</button>
@@ -960,7 +960,7 @@
               </div>
 
               <button [class.disable]="isProjectImplementerBtnDisabled"
-                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save Implementer</button>
+                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Add Implementer</button>
               <button [class.disable]="isProjectImplementerBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button"
                 (click)="resetImplementerEntry()">Reset Implementer</button>
@@ -1165,7 +1165,7 @@
               </div>
 
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-                type="submit">Save Disbursement</button>
+                type="submit">Add Disbursement</button>
               <button [class.disable]="isBtnDisabled" (click)="resetDisbursementEntry()"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Reset Disbursement</button>
             </form>
@@ -1235,7 +1235,7 @@
 
 
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-                type="submit">Save Field</button>
+                type="submit">Add Field</button>
               <button [class.disable]="isBtnDisabled" (click)="resetCustomFieldEntry()"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Reset Form</button>
             </form>
