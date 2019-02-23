@@ -10,6 +10,7 @@ export const Messages = {
     SAVED_SUCCESSFULLY: ' saved successfully',
     PASSWORD_RESET_SENT: 'Password reset link sent to the provided email Id',
     EMAIL_NOT_FOUND: 'We could not find the provided email id in our records',
+    PERCENTAGE_RANGE: ' must have value between 1 and 100',
     INVALID_ATTEMPT: 'You made an invalid attempt for this action',
     CANNOT_BE_ZERO: 'cannot be less than or equal to zero',
     INVALID_PERCENTAGE: 'Percentage total cannot be greater than 100%',

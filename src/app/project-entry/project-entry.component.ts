@@ -31,11 +31,11 @@ export class ProjectEntryComponent implements OnInit {
   selectedParentSectorId: number = 0;
   sectorTotalPercentage: number = 0;
   btnProjectText: string = 'Save Project';
-  btnProjectSectorText: string = 'Save Sector';
-  btnProjectLocationText: string = 'Save Location';
-  btnProjectDocumentText: string = 'Save Document';
-  btnProjectFunderText: string = 'Save Funder';
-  btnProjectImplementerText: string = 'Save Implementer';
+  btnProjectSectorText: string = 'Add Sector';
+  btnProjectLocationText: string = 'Add Location';
+  btnProjectDocumentText: string = 'Add Document';
+  btnProjectFunderText: string = 'Add Funder';
+  btnProjectImplementerText: string = 'Add Implementer';
   sectorPlaceHolder: string = 'Enter/Select Sector';
   locationPlaceHolder: string = 'Enter/Select Location';
   isProjectBtnDisabled: boolean = false;
@@ -988,6 +988,12 @@ export class ProjectEntryComponent implements OnInit {
     if (this.locationModel.locationId == null && this.locationModel.location == '') {
       return false;
     }
+
+    if (this.locationModel.fundsPercentage <= 0) {
+      this.errorMessage = 'Funds percentage ' + Messages.PERCENTAGE_RANGE;
+      this.errorModal.openModal();
+      return false;
+    }
     
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
@@ -1194,6 +1200,12 @@ export class ProjectEntryComponent implements OnInit {
     
     if (this.funderModel.amount <= 0) {
       this.errorMessage = "Funder amount " + Messages.CANNOT_BE_ZERO;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    if (this.funderModel.exchangeRate <= 0) {
+      this.errorMessage = "Exchange rate for USD " + Messages.CANNOT_BE_ZERO;
       this.errorModal.openModal();
       return false;
     }

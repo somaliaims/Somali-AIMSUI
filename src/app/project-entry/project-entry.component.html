@@ -473,8 +473,8 @@
                 <input type="number" class="form-control" id="fundsPercentage"
                   [(ngModel)]="locationModel.fundsPercentage" name="fundsPercentage" #fundsPercentage="ngModel" min="1"
                   max="100" required>
-                <div *ngIf="projectLocationForm.submitted" [hidden]="fundsPercentage.valid" class="alert alert-danger">
-                  Funds percentage is required
+                <div *ngIf="projectLocationForm.submitted" [hidden]="fundsPercentage.value > 0" class="alert alert-danger">
+                  Valid values for funds percentage are 1 - 100
                 </div>
               </div>
 
@@ -783,8 +783,8 @@
                 <label for="documentUrl">Amount</label>
                 <input type="number" class="form-control" id="amount" [(ngModel)]="funderModel.amount"
                   name="amount" #amount="ngModel" min="1" max="100" required>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.valid" class="alert alert-danger">
-                  Amount is required
+                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value > 0" class="alert alert-danger">
+                  Amount must not be zero or less
                 </div>
               </div>
 
@@ -803,6 +803,9 @@
                 <label for="exchangeRate">1 USD</label>
                 <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="funderModel.exchangeRate"
                   name="exchangeRate" maxlength="9" min="1" max="1000" #exchangeRate="ngModel" />
+                  <div *ngIf="projectFunderForm.submitted" [hidden]="exchangeRate.value > 0" class="alert alert-danger">
+                    Exchange for USD must not be zero or less
+                  </div>
               </div>
 
               <button [class.disable]="isProjectFunderBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
