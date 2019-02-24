@@ -53,6 +53,8 @@ export class ResetPasswordComponent implements OnInit {
             this.infoMessage = Messages.PASSWORD_UPDATED;
             this.modalService.open('message-modal');
         } else {
+          this.errorMessage = 'Something went wrong with your request';
+          this.isError = true;
           this.isBtnDisabled = false;
         }
       },

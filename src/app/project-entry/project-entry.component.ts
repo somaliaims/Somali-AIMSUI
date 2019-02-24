@@ -29,12 +29,13 @@ export class ProjectEntryComponent implements OnInit {
   selectedSectorId: number = 0;
   selectedLocationId: number = 0;
   selectedParentSectorId: number = 0;
+  sectorTotalPercentage: number = 0;
   btnProjectText: string = 'Save Project';
-  btnProjectSectorText: string = 'Save Sector';
-  btnProjectLocationText: string = 'Save Location';
-  btnProjectDocumentText: string = 'Save Document';
-  btnProjectFunderText: string = 'Save Funder';
-  btnProjectImplementerText: string = 'Save Implementer';
+  btnProjectSectorText: string = 'Add Sector';
+  btnProjectLocationText: string = 'Add Location';
+  btnProjectDocumentText: string = 'Add Document';
+  btnProjectFunderText: string = 'Add Funder';
+  btnProjectImplementerText: string = 'Add Implementer';
   sectorPlaceHolder: string = 'Enter/Select Sector';
   locationPlaceHolder: string = 'Enter/Select Location';
   isProjectBtnDisabled: boolean = false;
@@ -123,7 +124,8 @@ export class ProjectEntryComponent implements OnInit {
     { visible: false, identity: 'document' },
     { visible: false, identity: 'funder' },
     { visible: false, identity: 'implementer' },
-    { visible: false, identity: 'disbursement' }
+    { visible: false, identity: 'disbursement' },
+    { visible: false, identity: 'customFields' }
   ];
 
   //Overlay UI blocker
@@ -334,6 +336,27 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  viewCurrentProject() {
+    var startDate = this.model.startDate.day + '/' + this.model.startDate.month + '/' +
+      this.model.startDate.year;
+    var endDate = this.model.endDate.day + '/' + this.model.endDate.month + '/' +
+    this.model.endDate.year;
+
+    var project = {
+      title : this.model.title,
+      description: this.model.description,
+      startDate: startDate,
+      endDate: endDate
+    }
+    this.viewProject = project;
+    this.viewProjectFunders = this.currentProjectFundersList;
+    this.viewProjectLocations = this.currentProjectLocationsList;
+    this.viewProjectSectors = this.currentProjectSectorsList;
+    this.viewProjectImplementers = this.currentProjectImplementersList;
+    this.viewProjectDocuments = this.currentProjectDocumentsList;
+    this.projectInfoModal.openModal();
+  }
+
   viewAIMSProject(e) {
     var projectId = e.target.id.split('-')[1];
     if (projectId && projectId != 0) {
@@ -347,6 +370,7 @@ export class ProjectEntryComponent implements OnInit {
           endDate: projectData.endDate
         }
         this.viewProject = projectData;
+        this.viewProjectFunders = projectData.funders;
         this.viewProjectLocations = projectData.locations;
         this.viewProjectSectors = projectData.sectors;
         this.viewProjectImplementers = projectData.implementers;
@@ -635,6 +659,7 @@ export class ProjectEntryComponent implements OnInit {
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
             this.currentProjectSectorsList = data.sectors;
+            this.sectorTotalPercentage = this.calculateSectorPercentage();
           }
 
           if (data.locations && data.locations.length > 0) {
@@ -773,10 +798,12 @@ export class ProjectEntryComponent implements OnInit {
       this.projectService.updateProject(this.activeProjectId, model).subscribe(
         data => {
           if (!this.isError) {
-            var message = 'Project' + Messages.RECORD_UPDATED;
-            this.infoMessage = message;
-            this.infoModal.openModal();
+            //var message = 'Project' + Messages.RECORD_UPDATED;
+            //this.infoMessage = message;
+            //this.infoModal.openModal();
             this.resetProjectEntry();
+            this.blockUI.stop();
+            this.currentTab = 'funder';
           } else {
             this.resetProjectEntry();
           }
@@ -789,8 +816,8 @@ export class ProjectEntryComponent implements OnInit {
         }
       );
     } else {
-      this.btnProjectText = 'Saving...';
-      this.blockUI.start('Saving Project');
+      //this.btnProjectText = 'Saving...';
+      this.blockUI.start('Saving Project...');
       this.projectService.addProject(model).subscribe(
         data => {
           this.resetProjectEntry();
@@ -799,7 +826,7 @@ export class ProjectEntryComponent implements OnInit {
             var message = 'New project' + Messages.NEW_RECORD;
             this.infoMessage = message;
             localStorage.setItem('active-project', data);
-            this.infoModal.openModal();
+            //this.infoModal.openModal();
             this.btnProjectText = 'Edit Project';
             this.currentTab = 'funder';
           } else {
@@ -830,17 +857,8 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    if (this.sectorModel.sectorId != null && this.sectorModel.sectorId != 0) {
-      var isSectorExists = this.currentProjectSectorsList.filter(s => s.sectorId == this.sectorModel.sectorId);
-      if (isSectorExists.length > 0) {
-        this.errorMessage = 'Selected sector' + Messages.ALREADY_IN_LIST;
-        this.errorModal.openModal();
-        return false;
-      }
-    }
-
-    if (this.sectorModel.fundsPercentage <= 0) {
-      this.errorMessage = 'Funds Percentage' + Messages.CANNOT_BE_ZERO;
+    if (this.sectorModel.fundsPercentage <= 0 || this.sectorModel.fundsPercentage > 100) {
+      this.errorMessage = 'Funds percentage ' + Messages.PERCENTAGE_RANGE;
       this.errorModal.openModal();
       return false;
     }
@@ -855,8 +873,7 @@ export class ProjectEntryComponent implements OnInit {
     }
 
     if (this.currentProjectSectorsList.length > 0) {
-      var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
-      var percentageEntered = percentageList.reduce(this.storeService.sumValues);
+      var percentageEntered = this.calculateSectorPercentage();
       var enteredPercentage = this.sectorModel.fundsPercentage;
       var percentageTotal = parseInt(percentageEntered) + parseInt(enteredPercentage.toString());
 
@@ -919,7 +936,16 @@ export class ProjectEntryComponent implements OnInit {
             sectorObj.sector = selectSector[0].sectorName;
           }
         }
-        this.currentProjectSectorsList.push(sectorObj);
+
+        var fetchExistingSector = this.currentProjectSectorsList.filter(s => s.sectorId == model.sectorId);
+        if (fetchExistingSector.length > 0) {
+          var oldPercentage = parseInt(fetchExistingSector[0].fundsPercentage);
+          fetchExistingSector[0].fundsPercentage = oldPercentage + parseInt(model.fundsPercentage);
+        } else {
+          this.currentProjectSectorsList.push(sectorObj);
+        }
+        
+        this.sectorTotalPercentage = this.calculateSectorPercentage();
         this.resetSectorEntry();
         this.blockUI.stop();
         var message = 'New sector' + Messages.NEW_RECORD;
@@ -927,8 +953,9 @@ export class ProjectEntryComponent implements OnInit {
         this.infoModal.openModal();
       },
       error => {
-        console.log(error);
+        this.errorMessage = error;
         this.blockUI.stop();
+        this.errorModal.openModal();
       }
     )
   }
@@ -946,6 +973,7 @@ export class ProjectEntryComponent implements OnInit {
         var message = 'Selected sector ' + Messages.RECORD_DELETED;
         this.infoMessage = message;
         this.infoModal.openModal();
+        this.sectorTotalPercentage = this.calculateSectorPercentage();
       },
       error => {
         console.log(error);
@@ -958,6 +986,12 @@ export class ProjectEntryComponent implements OnInit {
   /**Managing Locations */
   saveProjectLocation() {
     if (this.locationModel.locationId == null && this.locationModel.location == '') {
+      return false;
+    }
+
+    if (this.locationModel.fundsPercentage <= 0) {
+      this.errorMessage = 'Funds percentage ' + Messages.PERCENTAGE_RANGE;
+      this.errorModal.openModal();
       return false;
     }
     
@@ -1164,6 +1198,18 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
     
+    if (this.funderModel.amount <= 0) {
+      this.errorMessage = "Funder amount " + Messages.CANNOT_BE_ZERO;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    if (this.funderModel.exchangeRate <= 0) {
+      this.errorMessage = "Exchange rate for USD " + Messages.CANNOT_BE_ZERO;
+      this.errorModal.openModal();
+      return false;
+    }
+
     this.blockUI.start('Saving Funder...');
     var model = {
       funder: this.funderModel.funder,
@@ -1205,6 +1251,7 @@ export class ProjectEntryComponent implements OnInit {
   addProjectFunder(model: any) {
     this.projectService.addProjectFunder(model).subscribe(
       data => {
+        model.funder = this.funderModel.funder;
         this.currentProjectFundersList.push(model);
         this.blockUI.stop();
         var message = 'New funder ' + Messages.NEW_RECORD;
@@ -1406,6 +1453,10 @@ export class ProjectEntryComponent implements OnInit {
   }
   /**End of managing project documents */
 
+  calculateSectorPercentage() {
+    var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
+    return percentageList.reduce(this.storeService.sumValues);
+  }
 
   /*Reset form states*/
   resetProjectEntry() {
@@ -1463,6 +1514,10 @@ export class ProjectEntryComponent implements OnInit {
   resetDocumentEntry() {
     this.documentModel.documentTitle = null;
     this.documentModel.documentUrl = null;
+  }
+
+  finishProject() {
+    this.router.navigateByUrl('new-project');
   }
 
 }

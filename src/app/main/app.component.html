@@ -35,14 +35,14 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse">☰</button>
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
-          <li class="nav-item active"> 
-            <a class="nav-link" [routerLink]="['/home']">Home</a>
+          <li class="nav-item"> 
+            <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active-link">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/projects']">View Projects</a>
+            <a class="nav-link" [routerLink]="['/projects']" routerLinkActive="active-link">View Projects</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">View
+            <a class="nav-link dropdown-toggle" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"  data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">View
               Reports</a>
             <div class="dropdown-menu">
               <h5 class="dropdown-header">Projects</h5>
@@ -62,8 +62,8 @@
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Data Entry</a>
             <div class="dropdown-menu">
               <h5 class="dropdown-header">Data Entry</h5>
-              <a class="dropdown-item" [routerLink]="['/new-project']">Enter Data</a>
-              <a class="dropdown-item" [routerLink]="['/envelope-data']">Funding Envelope Data</a>
+              <a class="dropdown-item" [routerLink]="['/new-project']">Add/edit Project Data</a>
+              <a class="dropdown-item" [routerLink]="['/envelope-data']">Add/edit Envelope Data</a>
             </div>
           </li>
           <li *ngIf="isLoggedIn" class="nav-item dropdown">
