@@ -84,7 +84,7 @@ export const routes: Routes = [
   { path: 'project-disbursement/:{id}', component: ProjectDisbursementComponent },
   { path: 'project-document/:{id}', component: ProjectDocumentComponent },
   { path: 'project-entry', component: ProjectEntryComponent },
-  { path: 'project-report', component: ProjectReportComponent },
+  { path: 'sectors-report', component: ProjectReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
   { path: 'manage-account', component: ManageAccountComponent },

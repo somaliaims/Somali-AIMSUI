@@ -52,8 +52,23 @@ export const Settings = {
         }
     },
     currencies: [
-        'Eur',
+        'EUR',
         'USD',
-        'TL'
+        'TL',
+        'SOS',
+        'GBP',
+        'JPY',
+        'DKK',
+        'SEK',
+        'CAD',
+        'SDR',
+        'UIA',
+        'QAR',
+        'SAR',
+        'TRY',
+        'CHF',
+        'CNY',
+        'NOK',
+        'AUD'
     ]
 }

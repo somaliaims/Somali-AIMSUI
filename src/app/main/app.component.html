@@ -45,8 +45,11 @@
             <a class="nav-link dropdown-toggle" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"  data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">View
               Reports</a>
             <div class="dropdown-menu">
-              <h5 class="dropdown-header">Projects</h5>
-              <a class="dropdown-item" [routerLink]="['/project-report']">Projects Report</a>
+              <a class="dropdown-item" [routerLink]="['/sectors-report']">Sectors Report</a>
+              <a class="dropdown-item" [routerLink]="['/locations-report']">Locations Report</a>
+              <a class="dropdown-item" [routerLink]="['/sectors-report']">Budget Report</a>
+              <a class="dropdown-item" [routerLink]="['/project-profile']">Project Profile</a>
+              <a class="dropdown-item" [routerLink]="['/sectors-report']">Excel Report</a>
             </div>
           </li>
           <!--<li *ngIf="isLoggedIn" class="nav-item"> 
