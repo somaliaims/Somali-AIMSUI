@@ -18,6 +18,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { OrganizationService } from '../services/organization-service';
 import { ProjectiInfoModalComponent } from '../projecti-info-modal/projecti-info-modal.component';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { CurrencyService } from '../services/currency.service';
 
 @Component({
   selector: 'app-project-entry',
@@ -143,7 +144,8 @@ export class ProjectEntryComponent implements OnInit {
     private organizationService: OrganizationService,
     private projectInfoModal: ProjectInfoModalComponent,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
-    private errorModal: ErrorModalComponent) { }
+    private errorModal: ErrorModalComponent,
+    private currencyService: CurrencyService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -185,7 +187,7 @@ export class ProjectEntryComponent implements OnInit {
     {
       var parsedProjects = JSON.parse(projects);
       this.selectedProjects = parsedProjects;
-      this.currencyList = this.storeService.getCurrencyList();
+      
       console.log(this.selectedProjects);
       //Load iati projects
       var filteredIATI = this.selectedProjects.filter(function(project) {
@@ -194,7 +196,6 @@ export class ProjectEntryComponent implements OnInit {
 
       var iatiIdsArr = [];
       filteredIATI.forEach(function(project) {
-        //var idStr = this.securityService.addSlashes(project.identifier);
         var obj = { identifier:  project.identifier};
         iatiIdsArr.push(obj);
       }.bind(this));
@@ -218,6 +219,12 @@ export class ProjectEntryComponent implements OnInit {
         this.isError = true;
       }
     });
+
+    this.currencyService.getCurrenciesList().subscribe(
+      data => {
+        this.currencyList = data;
+      }
+    )
 
     var currentDate = new Date();
     var currentYear = currentDate.getFullYear();

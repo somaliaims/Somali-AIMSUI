@@ -25,7 +25,7 @@ export class ManageCurrencyComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.requestNo = this.storeService.getNewRequestNumber();
+    this.requestNo = this.storeService.getNewRequestNumber();
 
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -36,25 +36,25 @@ export class ManageCurrencyComponent implements OnInit {
   }
 
   saveCurrency(frm: any) {
-      this.entryForm = frm;
-      this.btnText = 'Saving...';
-      this.isBtnDisabled = true;
-      this.currencyService.addCurrency(this.model).subscribe(
-        data => {
-          if (!this.isError) {
-            //var message = 'New currency' + Messages.NEW_RECORD;
-            //this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('currencies');
-          } else {
-            this.resetFormState();
-          }
-        },
-        error => {
-          this.errorMessage = error;
-          this.isError = true;
+    this.entryForm = frm;
+    this.btnText = 'Saving...';
+    this.isBtnDisabled = true;
+    this.currencyService.addCurrency(this.model).subscribe(
+      data => {
+        if (!this.isError) {
+          //var message = 'New currency' + Messages.NEW_RECORD;
+          //this.storeService.newInfoMessage(message);
+          this.router.navigateByUrl('currencies');
+        } else {
           this.resetFormState();
         }
-      );
+      },
+      error => {
+        this.errorMessage = error;
+        this.isError = true;
+        this.resetFormState();
+      }
+    );
   }
 
   resetFormState() {

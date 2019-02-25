@@ -69,4 +69,7 @@ export class CurrenciesComponent implements OnInit {
     }
   }
 
+  delete(id: string) {
+    
+  }
 }

@@ -799,7 +799,7 @@
                 <label for="currency">Currency</label>
                 <select class="form-control" id="currency" [(ngModel)]="funderModel.currency" name="currency"
                   #currency="ngModel" required>
-                  <option *ngFor="let currency of currencyList" [value]="currency">{{currency}}</option>
+                  <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currency}}</option>
                 </select>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
                   Currency is required
