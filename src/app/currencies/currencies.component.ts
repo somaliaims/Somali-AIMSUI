@@ -1,27 +1,25 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { LocationService } from '../services/location.service';
+import { Component, OnInit } from '@angular/core';
+import { CurrencyService } from '../services/currency.service';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
-import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
-  selector: 'app-locations',
-  templateUrl: './locations.component.html',
-  styleUrls: ['./locations.component.css']
+  selector: 'app-currencies',
+  templateUrl: './currencies.component.html',
+  styleUrls: ['./currencies.component.css']
 })
-export class LocationsComponent implements OnInit {
+export class CurrenciesComponent implements OnInit {
 
-  permissions: any = {};
-  locationsList: any = null;
+  currenciesList: any = null;
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
 
-  constructor(private locationService: LocationService, private router: Router,
-    private storeService: StoreService, private securityService: SecurityHelperService) { }
+  constructor(private currencyService: CurrencyService, private router: Router,
+    private storeService: StoreService) { }
 
   ngOnInit() {
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
@@ -29,19 +27,19 @@ export class LocationsComponent implements OnInit {
       this.showMessage = true;
     }
     setTimeout(() => {
+      this.storeService.newInfoMessage('');
       this.showMessage = false;
     }, Settings.displayMessageTime);
 
-    this.permissions = this.securityService.getUserPermissions();
-    this.getLocationsList();
+    this.getCurrenciesList();
   }
 
-  getLocationsList() {
-    this.locationService.getLocationsList().subscribe(
+  getCurrenciesList() {
+    this.currencyService.getCurrenciesList().subscribe(
       data => {
         this.isLoading = false;
         if (data && data.length) {
-          this.locationsList = data;
+          this.currenciesList = data;
         }
       },
       error => {
@@ -51,15 +49,15 @@ export class LocationsComponent implements OnInit {
     );
   }
 
-  searchLocations() {
+  searchCurrencies() {
     if (this.criteria != null) {
       this.isLoading = true;
       
-      this.locationService.filterLocations(this.criteria).subscribe(
+      this.currencyService.searchCurrencies(this.criteria).subscribe(
         data => {
           this.isLoading = false;
           if (data && data.length) {
-            this.locationsList = data
+            this.currenciesList = data
           }
         },
         error => {
@@ -67,12 +65,8 @@ export class LocationsComponent implements OnInit {
         }
       );
     } else {
-      this.getLocationsList();
+      this.getCurrenciesList();
     }
-  }
-
-  edit(id: string) {
-    this.router.navigateByUrl('/manage-location/' + id);
   }
 
 }

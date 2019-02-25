@@ -79,6 +79,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationUrl);
     }
 
+    getCurrencyUrl() {
+        return (this.BASE_URL + urlsList.urls.getCurrency);
+    }
+
+    getSearchCurrencyUrl(criteria: string) {
+        return (this.BASE_URL + urlsList.urls.getCurrency + '/' + criteria);
+    }
+
     getSingleLocationUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getLocation + id);
     }

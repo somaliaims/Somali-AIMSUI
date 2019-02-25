@@ -1,6 +1,6 @@
 export const urls = {
-	baseUrl: "http://104.140.103.166:7000/api/",
-	//baseUrl: "http://localhost:60815/api/",
+	//baseUrl: "http://104.140.103.166:7000/api/",
+	baseUrl: "http://localhost:60815/api/",
 	getToken: "User/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
@@ -65,5 +65,6 @@ export const urls = {
 	notificationsCount: "Notification/GetCount",
 	notifications: "Notification",
 	markNotificationsRead: "Notification/MarkNotificationsRead",
-	deleteNotifications: "Notification/DeleteNotifications"
+	deleteNotifications: "Notification/DeleteNotifications",
+	getCurrency: "Currency",
 };

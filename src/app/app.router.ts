@@ -1,4 +1,4 @@
-import { ModuleWithProviders }  from '@angular/core';
+import { ModuleWithProviders, Component }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
@@ -38,6 +38,7 @@ import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { CurrenciesComponent } from './currencies/currencies.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -88,6 +89,7 @@ export const routes: Routes = [
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
   { path: 'manage-account', component: ManageAccountComponent },
+  { path: 'currencies', component: CurrenciesComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

@@ -59,6 +59,7 @@ import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { CurrenciesComponent } from './currencies/currencies.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     SmtpSettingsComponent,
     ManageAccountComponent,
     ResetPasswordComponent,
+    CurrenciesComponent,
   ],
   imports: [
     BrowserModule,
