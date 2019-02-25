@@ -31,6 +31,8 @@ export class ProjectEntryComponent implements OnInit {
   selectedParentSectorId: number = 0;
   sectorTotalPercentage: number = 0;
   locationTotalPercentage: number = 0;
+  totalFunds: number = 0;
+  totalDisbursements: number = 0;
   btnProjectText: string = 'Save Project';
   btnProjectSectorText: string = 'Add Sector';
   btnProjectLocationText: string = 'Add Location';
@@ -716,6 +718,8 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   showDisbursements() {
+    this.totalFunds = this.calculateProjectFunding();
+    this.totalDisbursements = this.calculateProjectDisbursement();
     this.manageTabsDisplay('disbursement');
   }
 
@@ -1419,6 +1423,16 @@ export class ProjectEntryComponent implements OnInit {
       amount: this.disbursementModel.amount
     }
 
+    var totalFund = this.calculateProjectFunding();
+    var totalDisbursement = this.calculateProjectDisbursement();
+    totalDisbursement += this.disbursementModel.amount;
+
+    if (totalDisbursement > totalFund) {
+      this.errorMessage = Messages.INVALID_DISBURSEMENT;
+      this.errorModal.openModal();
+      return false;
+    }
+
     var isDisbursementExists = this.currentProjectDisbursementsList.filter(d => d.projectId == model.projectId
       && d.year == model.year && d.month == model.month);
 
@@ -1439,6 +1453,7 @@ export class ProjectEntryComponent implements OnInit {
         var message = 'New disbursement ' + Messages.NEW_RECORD;
         this.infoMessage = message;
         this.infoModal.openModal();
+        this.totalDisbursements = this.calculateProjectDisbursement();
         this.resetDisbursementEntry();
         this.resetDataEntryValidation();
       },
@@ -1452,17 +1467,18 @@ export class ProjectEntryComponent implements OnInit {
   deleteProjectDisbursement(e) {
     var arr = e.target.id.split('-');
     var projectId = arr[1];
-    var startingYear = arr[2];
-    var startingMonth = arr[3];
+    var year = arr[2];
+    var month = arr[3];
 
     this.blockUI.start('Removing Disbursement...');
-    this.projectService.deleteProjectDisbursement(projectId, startingYear, startingMonth).subscribe(
+    this.projectService.deleteProjectDisbursement(projectId, year, month).subscribe(
       data => {
-        this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(d => (d.startingYear != startingYear && d.startingMonth != startingMonth));
+        this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(d => (d.year != year && d.month != month));
         this.blockUI.stop();
         var message = 'Selected Disbursement ' + Messages.RECORD_DELETED;
         this.infoMessage = message;
         this.infoModal.openModal();
+        this.totalDisbursements = this.calculateProjectDisbursement();
       },
       error => {
         console.log(error);
@@ -1474,12 +1490,22 @@ export class ProjectEntryComponent implements OnInit {
 
   calculateSectorPercentage() {
     var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
-    return percentageList.reduce(this.storeService.sumValues);
+    return percentageList.reduce(this.storeService.sumValues, 0);
   }
 
   calculateLocationPercentage() {
     var percentageList = this.currentProjectLocationsList.map(s => parseInt(s.fundsPercentage));
-    return percentageList.reduce(this.storeService.sumValues);
+    return percentageList.reduce(this.storeService.sumValues, 0);
+  }
+
+  calculateProjectFunding() {
+    var amountsList = this.currentProjectFundersList.map(f => parseInt(f.amount));
+    return amountsList.reduce(this.storeService.sumValues, 0);
+  }
+
+  calculateProjectDisbursement() {
+    var amountsList = this.currentProjectDisbursementsList.map(d => parseInt(d.amount));
+    return amountsList.reduce(this.storeService.sumValues, 0);
   }
 
   /*Reset form states*/
