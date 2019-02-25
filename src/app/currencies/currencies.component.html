@@ -38,6 +38,7 @@
     <table class="table table-bordered table-stripped">
       <tr>
         <th>Currency Name</th>
+        <th>Action</th>
       </tr>
       <tr *ngFor="let currency of currenciesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
         <td>{{currency.currency}}</td>

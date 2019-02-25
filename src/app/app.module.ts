@@ -60,6 +60,7 @@ import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { CurrenciesComponent } from './currencies/currencies.component';
+import { ManageCurrencyComponent } from './manage-currency/manage-currency.component';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { CurrenciesComponent } from './currencies/currencies.component';
     ManageAccountComponent,
     ResetPasswordComponent,
     CurrenciesComponent,
+    ManageCurrencyComponent,
   ],
   imports: [
     BrowserModule,

@@ -19,7 +19,7 @@
           </div>
           <h5 class="card-title text-center">Location</h5>
 
-          <form class="form-signin" (ngSubmit)="saveLocation()" #locationForm="ngForm">
+          <form class="form-signin" (ngSubmit)="locationForm.form.valid && saveLocation()" #locationForm="ngForm">
 
             <div class="form-group">
               <label for="location">Location Name</label>

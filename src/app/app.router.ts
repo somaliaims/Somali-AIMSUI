@@ -39,6 +39,7 @@ import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { CurrenciesComponent } from './currencies/currencies.component';
+import { ManageCurrencyComponent } from './manage-currency/manage-currency.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -89,7 +90,8 @@ export const routes: Routes = [
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
   { path: 'manage-account', component: ManageAccountComponent },
-  { path: 'currencies', component: CurrenciesComponent }
+  { path: 'currencies', component: CurrenciesComponent },
+  { path: 'manage-currency', component: ManageCurrencyComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);
