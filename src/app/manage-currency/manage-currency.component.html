@@ -19,13 +19,13 @@
           </div>
           <h5 class="card-title text-center">Currency</h5>
 
-          <form class="form-signin" (ngSubmit)="currencyForm.form.submitted && saveCurrency()" #currencyForm="ngForm">
+          <form class="form-signin" (ngSubmit)="currencyForm.form.valid && saveCurrency(currencyForm)" #currencyForm="ngForm">
 
             <div class="form-group">
               <label for="currency">Currency Name</label>
               <input type="text" class="form-control" id="currency" [(ngModel)]="model.currency" name="currency"
-                #currency="ngModel" required>
-              <div *ngIf="" [hidden]="currency.valid" class="alert alert-danger">
+                #currency="ngModel" maxlength="3" required>
+              <div *ngIf="currencyForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
                 Currency Name is required
               </div>
             </div>

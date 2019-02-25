@@ -25,7 +25,7 @@
               <label for="location">Location Name</label>
               <input type="text" class="form-control" id="location" [(ngModel)]="model.location" name="location"
                 #location="ngModel" required>
-              <div [hidden]="location.valid" class="alert alert-danger">
+              <div *ngIf="locationForm.submitted" [hidden]="location.valid" class="alert alert-danger">
                 Location Name is required
               </div>
             </div>
@@ -34,7 +34,7 @@
               <label for="latitude">Latitude</label>
               <input type="number" class="form-control" id="latitude" [(ngModel)]="model.latitude" name="latitude"
                 #latitude="ngModel">
-              <div [hidden]="latitude.valid" class="alert alert-danger">
+              <div *ngIf="locationForm.submitted" [hidden]="latitude.valid" class="alert alert-danger">
                 Enter valid value for latitude
               </div>
             </div>
@@ -43,7 +43,7 @@
               <label for="longitude">Longitude</label>
               <input type="number" class="form-control" id="longitude" [(ngModel)]="model.longitude" name="longitude"
                 #longitude="ngModel">
-              <div [hidden]="longitude.valid" class="alert alert-danger">
+              <div *ngIf="locationForm.submitted" [hidden]="longitude.valid" class="alert alert-danger">
                 Enter valid value for longitude
               </div>
             </div>
