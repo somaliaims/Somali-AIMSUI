@@ -33,4 +33,10 @@ export class CurrencyService {
                 catchError(this.storeService.handleError<any>('New Currency')));
     }
 
+    deleteCurrency(id: string) {
+        var url  = this.urlHelper.getDeleteCurrencyUrl(id);
+          return this.httpClient.delete(url, httpOptions).pipe(
+                  catchError(this.storeService.handleError<any>('Delete Currency')));
+      }
+
 }

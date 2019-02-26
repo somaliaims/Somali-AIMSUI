@@ -87,6 +87,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getCurrency + '/' + criteria);
     }
 
+    getDeleteCurrencyUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getCurrency + '/' + id);
+    }
+
     getSingleLocationUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getLocation + id);
     }
