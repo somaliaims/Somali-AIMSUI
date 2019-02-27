@@ -3,6 +3,7 @@ import { OrganizationService } from '../services/organization-service';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
+import { SecurityHelperService } from '../services/security-helper.service';
 @Component({
   selector: 'app-organizations',
   templateUrl: './organizations.component.html',
@@ -15,11 +16,17 @@ export class OrganizationsComponent implements OnInit {
   infoMessage: string = null;
   showMessage: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
+  permissions: any = {};
 
   constructor(private organizationService: OrganizationService, private router: Router,
-    private storeService: StoreService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditOrganization) {
+      this.router.navigateByUrl('home');
+    }
+
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;

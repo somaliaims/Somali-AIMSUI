@@ -28,6 +28,7 @@ import { startWith, map } from 'rxjs/operators';
   templateUrl: './project-entry.component.html',
   styleUrls: ['./project-entry.component.css']
 })
+
 export class ProjectEntryComponent implements OnInit {
   filteredOrganizations: Observable<Organization[]>;
   activeProjectId: number = 0;
@@ -61,7 +62,6 @@ export class ProjectEntryComponent implements OnInit {
   infoMessage: string = '';
   showMessage: boolean = false;
   isForEdit: boolean = false;
-  aimsSector: boolean = false;
   errorMessage: string = '';
   startDateModel: NgbDateStruct;
   currentTab: string = 'project';
@@ -445,7 +445,6 @@ export class ProjectEntryComponent implements OnInit {
     var projectId = arr[1];
     var code = arr[2];
     this.sectorPlaceHolder = 'Select Parent Sector';
-    this.aimsSector = false;
 
     var selectProject = this.iatiProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
@@ -1610,7 +1609,6 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorModel.projectId = 0;
     this.sectorModel.sectorId = null;
     this.sectorModel.sectorName = '';
-    this.aimsSector = false;
   }
 
   resetLocationEntry() {

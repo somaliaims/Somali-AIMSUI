@@ -13,6 +13,8 @@ export const Settings = {
     displayMessageTime: 10000,
     permissions: {
         standard: {
+            canEditCurrency: false,
+            canEditOrganization: false,
             canEditLocation: false,
             canEditSectorType: false,
             canEditSectorCategory: false,
@@ -22,6 +24,8 @@ export const Settings = {
             canDoIATISettings: false
         },
         manager: {
+            canEditCurrency: true,
+            canEditOrganization: true,
             canEditLocation: true,
             canEditSectorType: true,
             canEditSectorCategory: true,
@@ -32,6 +36,8 @@ export const Settings = {
             canDoIATISettings: true
         },
         superAdmin: {
+            canEditCurrency: true,
+            canEditOrganization: true,
             canEditLocation: true,
             canEditSectorType: true,
             canEditSectorCategory: true,
@@ -42,6 +48,8 @@ export const Settings = {
             canDoIATISettings: true
         },
         guest: {
+            canEditCurrency: false,
+            canEditOrganization: false,
             canEditLocation: false,
             canEditSectorType: false,
             canEditSectorCategory: false,

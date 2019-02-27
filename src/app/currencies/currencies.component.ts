@@ -7,6 +7,7 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Messages } from '../config/messages';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-currencies',
@@ -23,13 +24,19 @@ export class CurrenciesComponent implements OnInit {
   showMessage: boolean = false;
   statusMessage: string = 'Wait deleting...';
   pagingSize: number = Settings.rowsPerPage;
+  permissions: any = {};
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private currencyService: CurrencyService, private router: Router,
     private storeService: StoreService, private infoModal: InfoModalComponent,
-    private errorModal: ErrorModalComponent) { }
+    private errorModal: ErrorModalComponent,
+    private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditCurrency) {
+      this.router.navigateByUrl('home');
+    }
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;

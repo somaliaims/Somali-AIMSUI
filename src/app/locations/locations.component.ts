@@ -24,6 +24,11 @@ export class LocationsComponent implements OnInit {
     private storeService: StoreService, private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditLocation) {
+      this.router.navigateByUrl('home');
+    }
+
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;
