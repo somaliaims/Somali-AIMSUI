@@ -308,17 +308,6 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
-  /*loadOrganizationsList() {
-    this.organizationService.getOrganizationsList().subscribe(
-      data => {
-        this.organizationsList = data;
-      },
-      error => {
-        console.log(error);
-      }
-    )
-  }*/
-
   private filterOrganizations(value: string): any[] {
     if (typeof value != "string") {
     } else {
@@ -1253,6 +1242,7 @@ export class ProjectEntryComponent implements OnInit {
 
   /**Managing Funders */
   saveProjectFunder(frm: any) {
+    var isNewFunder = false;
     this.currentEntryForm = frm;
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
@@ -1266,6 +1256,34 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
     
+    if (this.selectedFunderId != 0) {
+      this.funderModel.funderId = this.selectedFunderId;
+      var funderExists = this.currentProjectFundersList.filter(f => f.funderId == this.selectedFunderId);
+      if (funderExists.length > 0) {
+        if (this.funderInput.value != funderExists[0].funder) {
+          this.funderModel.funderId = 0;
+          this.funderModel.funder = this.funderInput.value;
+          isNewFunder = true;
+        } else {
+          this.errorMessage = 'Selected funder ' + Messages.ALREADY_IN_LIST;
+          this.errorModal.openModal();
+          return false;
+        }
+      }
+    } else if (this.funderEntryType == 'aims' && this.selectedFunderId == 0) {
+      isNewFunder = true;
+      this.funderModel.funderId = 0;
+    }
+
+    if (this.funderEntryType == 'aims' && this.selectedFunderId == 0) {
+      this.funderModel.funder = this.funderInput.value;
+      if (this.funderModel.funder.length < 3) {
+        this.errorMessage = 'Either select from list or enter valid name for funder (Min length of 3)';
+        this.errorModal.openModal();
+        return false;
+      }
+    }
+
     if (this.funderModel.amount <= 0) {
       this.errorMessage = "Funder amount " + Messages.CANNOT_BE_ZERO;
       this.errorModal.openModal();
@@ -1288,8 +1306,8 @@ export class ProjectEntryComponent implements OnInit {
       exchangeRate: this.funderModel.exchangeRate
     }
 
-    if (this.funderEntryType == 'iati') {
-      if (this.funderModel.funder == null || this.funderModel.funder.length == 0) {
+    if (this.funderEntryType == 'iati' || isNewFunder) {
+      if (!isNewFunder && (this.funderModel.funder == null || this.funderModel.funder.length == 0)) {
         this.errorMessage = Messages.PROJECT_DEPENDENCY;
         this.errorModal.openModal();
         return false;
@@ -1319,14 +1337,19 @@ export class ProjectEntryComponent implements OnInit {
   addProjectFunder(model: any) {
     this.projectService.addProjectFunder(model).subscribe(
       data => {
-        model.funder = this.funderModel.funder;
-        this.currentProjectFundersList.push(model);
-        this.blockUI.stop();
-        var message = 'New funder ' + Messages.NEW_RECORD;
-        this.infoMessage = message;
-        this.infoModal.openModal();
-        this.resetFunderEntry();
-        this.resetDataEntryValidation();
+        if (data.success) {
+          model.funder = this.funderModel.funder;
+          this.currentProjectFundersList.push(model);
+          this.blockUI.stop();
+          var message = 'New funder ' + Messages.NEW_RECORD;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+          this.resetFunderEntry();
+          this.resetDataEntryValidation();
+        } else {
+          this.errorMessage = data.message;
+          this.errorModal.openModal();
+        }
       },
       error => {
         console.log(error);
@@ -1596,6 +1619,8 @@ export class ProjectEntryComponent implements OnInit {
     this.funderModel.currency = null;
     this.funderModel.amount = 0.00;
     this.funderModel.exchangeRate = 0.00;
+    this.selectedFunderId = 0;
+    this.funderInput.setValue(null);
   }
 
   resetImplementerEntry() {

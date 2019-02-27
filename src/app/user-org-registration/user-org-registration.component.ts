@@ -32,7 +32,6 @@ export class UserOrgRegistrationComponent implements OnInit {
   isShowType: boolean = false;
   delaySeconds: number = 2000;
   selectedOrganizationId: number = 0;
-  //isOrgTypeVisible: boolean = true;
   validationMessage: string = '';
   requestNo: number = 0;
   isError: boolean = false;
