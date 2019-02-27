@@ -61,6 +61,7 @@ export class ProjectEntryComponent implements OnInit {
   infoMessage: string = '';
   showMessage: boolean = false;
   isForEdit: boolean = false;
+  aimsSector: boolean = false;
   errorMessage: string = '';
   startDateModel: NgbDateStruct;
   currentTab: string = 'project';
@@ -444,6 +445,7 @@ export class ProjectEntryComponent implements OnInit {
     var projectId = arr[1];
     var code = arr[2];
     this.sectorPlaceHolder = 'Select Parent Sector';
+    this.aimsSector = false;
 
     var selectProject = this.iatiProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
@@ -589,9 +591,15 @@ export class ProjectEntryComponent implements OnInit {
           this.funderEntryType = 'aims';
           var dbFunder = funders.filter(f => f.funderId == funderId);
           if (dbFunder) {
+            var funderObj = {
+              id: dbFunder[0].funderId,
+              organizationName: dbFunder[0].funder
+            };
+            this.funderModel.funder = dbFunder[0].funder;
             this.funderModel.funderId = dbFunder[0].funderId;
             this.funderModel.amount = dbFunder[0].amount;
             this.funderModel.exchangeRate = dbFunder[0].exchangeRate;
+            this.funderInput.setValue(funderObj);
           }
         }
       }
@@ -1602,6 +1610,7 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorModel.projectId = 0;
     this.sectorModel.sectorId = null;
     this.sectorModel.sectorName = '';
+    this.aimsSector = false;
   }
 
   resetLocationEntry() {

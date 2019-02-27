@@ -792,6 +792,12 @@
                 </div>
               </div>-->
 
+              <div *ngIf="aimsSector" class="form-group">
+                <label for="funder">New Funder</label>
+                <input type="text" maxlength="200" class="form-control" id="funder" [(ngModel)]="funderModel.funder"
+                  name="funder" readonly="readonly" #funder="ngModel" required>
+              </div>
+
               <div *ngIf="funderEntryType == 'iati'" class="form-group">
                 <label for="funder">New Funder</label>
                 <input type="text" maxlength="200" class="form-control" id="funder" [(ngModel)]="funderModel.funder"
