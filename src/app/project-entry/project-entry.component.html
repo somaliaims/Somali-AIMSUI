@@ -762,10 +762,25 @@
                 </span>
               </div>
             </div>
+
+            <div *ngIf="funderEntryType == 'aims'" class="row">
+              <form class="example-form" [formGroup]='funderForm'>
+                <div class="form-group">
+                    <mat-form-field class="example-full-width margin-left-15">
+                        <input matInput placeholder="Enter/Select Funder" aria-label="Funder" [matAutocomplete]="auto" [formControl]="funderInput">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunder.bind(this)">
+                          <mat-option *ngFor="let org of filteredOrganizations | async" [value]="org">
+                            <span>{{org.organizationName}}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                </div>
+              </form>
+            </div>
             <form class="form-signin" (ngSubmit)="projectFunderForm.form.valid && saveProjectFunder(projectFunderForm)"
               #projectFunderForm="ngForm">
 
-              <div *ngIf="funderEntryType == 'aims'" class="form-group">
+              <!--<div *ngIf="funderEntryType == 'aims'" class="form-group">
                 <label for="funderId">AIMS Funders</label>
                 <select class="form-control" id="funderId" [(ngModel)]="funderModel.funderId" name="funderId"
                   #funderId="ngModel" required>
@@ -775,7 +790,7 @@
                 <div *ngIf="projectFunderForm.submitted" [hidden]="funderId.valid" class="alert alert-danger">
                   Funder is required
                 </div>
-              </div>
+              </div>-->
 
               <div *ngIf="funderEntryType == 'iati'" class="form-group">
                 <label for="funder">New Funder</label>

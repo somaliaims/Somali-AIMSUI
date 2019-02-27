@@ -19,6 +19,9 @@ import { OrganizationService } from '../services/organization-service';
 import { ProjectiInfoModalComponent } from '../projecti-info-modal/projecti-info-modal.component';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { CurrencyService } from '../services/currency.service';
+import { Organization } from '../models/organization-model';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-entry',
@@ -26,8 +29,10 @@ import { CurrencyService } from '../services/currency.service';
   styleUrls: ['./project-entry.component.css']
 })
 export class ProjectEntryComponent implements OnInit {
+  filteredOrganizations: Observable<Organization[]>;
   activeProjectId: number = 0;
   selectedSectorId: number = 0;
+  selectedFunderId: number = 0;
   selectedLocationId: number = 0;
   selectedParentSectorId: number = 0;
   sectorTotalPercentage: number = 0;
@@ -62,8 +67,10 @@ export class ProjectEntryComponent implements OnInit {
   sectorSelectionForm: FormGroup;
   sectorInput = new FormControl();
   locationSelectionForm: FormGroup;
+  funderForm: FormGroup;
   locationInput = new FormControl();
   parentSectorInput = new FormControl();
+  funderInput = new FormControl();
   sectorEntryType: string = 'aims';
   locationEntryType: string = 'aims';
   documentEntryType: string = 'aims';
@@ -166,6 +173,10 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorSelectionForm = this.fb.group({
       sectorInput: null,
       parentSectorInput: null
+    });
+
+    this.funderForm = this.fb.group({
+      funderInput: null,
     });
 
     this.locationSelectionForm = this.fb.group({
@@ -297,7 +308,7 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
-  loadOrganizationsList() {
+  /*loadOrganizationsList() {
     this.organizationService.getOrganizationsList().subscribe(
       data => {
         this.organizationsList = data;
@@ -306,6 +317,30 @@ export class ProjectEntryComponent implements OnInit {
         console.log(error);
       }
     )
+  }*/
+
+  private filterOrganizations(value: string): any[] {
+    if (typeof value != "string") {
+    } else {
+      const filterValue = value.toLowerCase();
+      return this.organizationsList.filter(organization => organization.organizationName.toLowerCase().indexOf(filterValue) !== -1);
+    }
+  }
+
+  loadOrganizationsList() {
+    this.organizationService.getOrganizationsList().subscribe(
+      data => {
+        this.organizationsList = data;
+        this.filteredOrganizations = this.funderInput.valueChanges
+      .pipe(
+        startWith(''),
+        map(organization => organization ? this.filterOrganizations(organization) : this.organizationsList.slice())
+      );
+      },
+      error => {
+        console.log("Request Failed: ", error);
+      }
+    );
   }
 
   enterProjectTitleAIMS(e) {
@@ -748,6 +783,16 @@ export class ProjectEntryComponent implements OnInit {
         tab.visible = false;
       }
     }
+  }
+
+  /*Project funders display functions*/
+  displayFunder(organization?: any): string | undefined {
+    if (organization) {
+      this.selectedFunderId = organization.id;
+    } else {
+      this.selectedFunderId = 0;
+    }
+    return organization ? organization.organizationName : undefined;
   }
 
   /*Project sectors filtering and display functions*/
