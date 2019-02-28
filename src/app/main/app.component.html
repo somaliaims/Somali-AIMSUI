@@ -1,33 +1,3 @@
-<!--<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom navbar-custom-background box-shadow">
-  <h5 class="my-0 mr-md-auto font-brand">AIMS Somalia</h5>
-  <h5 class="my-0 font-brand">AIMS Somalia</h5>
-  <nav class="navbar navbar-expand-sm">
-    <ul class="navbar-nav">
-      <li class="nav-item ten-px-left-padding">
-        <a class="nav-link anchor-menu" [routerLink]="['/home']">Home</a>
-      </li>
-      <li class="nav-item five-px-left-padding">
-        <a class="nav-link anchor-menu" [routerLink]="['/projects']">View Projects</a>
-      </li>
-      <li class="nav-item five-px-left-padding">
-        <a class="nav-link anchor-menu" [routerLink]="['/reports']">View Reports</a>
-      </li>
-      <li *ngIf="isLoggedIn" class="nav-item five-px-left-padding">
-        <a class="nav-link anchor-menu" [routerLink]="['/data-entry']">Data Entry</a>
-      </li>
-      <li *ngIf="isLoggedIn" class="nav-item five-px-left-padding">
-        <a class="nav-link anchor-menu" [routerLink]="['/management']">Management</a>
-      </li>
-    </ul>
-  </nav>
-  
-  <div class="ml-md-auto">
-    <a *ngIf="!isLoggedIn" class="btn btn-outline-primary sign-in-btn" [routerLink]="['/login']">Login</a>
-    <button *ngIf="isLoggedIn" class="btn btn-outline-primary sign-in-btn" (click)="logout($event)">Logout</button>
-  </div>
-  
-</div>-->
-
 <div class="container-fluid">
   <div class="row">
     <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-info">
@@ -52,15 +22,6 @@
               <a class="dropdown-item" [routerLink]="['/sectors-report']">Excel Report</a>
             </div>
           </li>
-          <!--<li *ngIf="isLoggedIn" class="nav-item"> 
-                      <a class="nav-link" [routerLink]="['/new-project']">Data Entry</a>
-                    </li>-->
-          <!--<li *ngIf="isLoggedIn" class="nav-item"> 
-                      <a class="nav-link" [routerLink]="['/management']">Management</a>
-                    </li>-->
-          <!--<li class="nav-item"> <a class="nav-link" [routerLink]="['/notification']">Notifications</a>
-                              </li>-->
-          
           <li *ngIf="isLoggedIn" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Data Entry</a>
             <div class="dropdown-menu">
@@ -72,18 +33,19 @@
           <li *ngIf="isLoggedIn" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
             <div class="dropdown-menu">
-              <h5 class="dropdown-header">Field Management</h5>
-              <a class="dropdown-item" [routerLink]="['/locations']">Locations</a>
-              <a class="dropdown-item" [routerLink]="['/sectors']">Sectors</a>
-              <a class="dropdown-item" [routerLink]="['/currencies']">Currencies</a>
+              <h5 *ngIf="permissions.canManage" class="dropdown-header">Field Management</h5>
+              <a *ngIf="permissions.canEditLocation" class="dropdown-item" [routerLink]="['/locations']">Locations</a>
+              <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sectors']">Sectors</a>
+              <a *ngIf="permissions.canEditCurrency" class="dropdown-item" [routerLink]="['/currencies']">Currencies</a>
               <div class="dropdown-divider"></div>
-              <h5 class="dropdown-header">Users & Organizations Management</h5>
+              <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & Organizations Management</h5>
+              <h5 *ngIf="!permissions.canManage" class="dropdown-header">User Management</h5>
               <a class="dropdown-item" [routerLink]="['/manage-account']">Account Management</a>
-              <a class="dropdown-item" [routerLink]="['/organizations']">Organizations</a>
+              <a *ngIf="permissions.canEditOrganization" class="dropdown-item" [routerLink]="['/organizations']">Organizations</a>
               <div class="dropdown-divider"></div>
-              <h5 class="dropdown-header">AIMS Management</h5>
-              <a class="dropdown-item" [routerLink]="['/smtp-settings']">Email Settings</a>
-              <a class="dropdown-item" [routerLink]="['/iati-settings']">IATI Settings</a>
+              <h5 *ngIf="permissions.canManage" class="dropdown-header">AIMS Management</h5>
+              <a *ngIf="permissions.canDoSMTPSettings" class="dropdown-item" [routerLink]="['/smtp-settings']">Email Settings</a>
+              <a *ngIf="permissions.canDoIATISettings" class="dropdown-item" [routerLink]="['/iati-settings']">IATI Settings</a>
             </div>
           </li>
           <!--<li *ngIf="isLoggedIn" class="nav-item active"> 

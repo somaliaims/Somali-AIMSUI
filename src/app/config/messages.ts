@@ -14,7 +14,7 @@ export const Messages = {
     INVALID_ATTEMPT: 'You made an invalid attempt for this action',
     CANNOT_BE_ZERO: 'cannot be less than or equal to zero',
     INVALID_PERCENTAGE: 'Percentage total cannot be greater than 100%',
-    INVALID_DISBURSEMENT: 'Dibursements cannot be greater than total funds',
+    INVALID_DISBURSEMENT: 'You cannot add more disbursements than the project total value. Please increase the project funding amount before adding more disbursements.',
     PASSWORD_UPDATED: 'Your password updated successfully. You must login with new password on next login.',
     ACCOUNT_DELETED: 'Your account is deleted successfully. In order to use AIMS again, register again with your Organization'
 }
