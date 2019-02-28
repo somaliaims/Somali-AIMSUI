@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { ModalService } from '../services/modal.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-locations',
@@ -18,10 +20,15 @@ export class LocationsComponent implements OnInit {
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
+  errorMessage: string = '';
+  isError: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
-
+  selectedLocationId: number = 0;
+  @BlockUI() blockUI: NgBlockUI;
+  
   constructor(private locationService: LocationService, private router: Router,
-    private storeService: StoreService, private securityService: SecurityHelperService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService,
+    private modalService: ModalService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -78,6 +85,31 @@ export class LocationsComponent implements OnInit {
 
   edit(id: string) {
     this.router.navigateByUrl('/manage-location/' + id);
+  }
+
+  showConfirmation(id: number) {
+    this.selectedLocationId = id;
+    this.modalService.open('confirmation-modal');
+  }
+
+  closeModal() {
+    this.modalService.close('confirmation-modal');
+  }
+
+  deleteLocation() {
+    this.modalService.close('confirmation-modal');
+    this.blockUI.start('Deleting location...');
+    this.locationService.deleteLocation(this.selectedLocationId).subscribe(
+      data => {
+        this.locationsList = this.locationsList.filter(l => l.id != this.selectedLocationId);
+        this.blockUI.stop();
+      },
+      error => {
+        this.blockUI.stop();
+        this.errorMessage = error;
+        this.isError = true;
+      }
+    );
   }
 
 }

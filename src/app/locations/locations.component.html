@@ -43,6 +43,8 @@
         <td>{{loc.longitude}}</td>
         <td *ngIf="permissions.canEditLocation">
           <a title="Edit" (click)="edit(loc.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
+          &nbsp;
+          <a title="Delete" (click)="showConfirmation(loc.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
         </td>
       </tr>
     </table>
@@ -50,3 +52,19 @@
   </div>
 </div>
 </div>
+
+<jw-modal id="confirmation-modal">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-info text-white">Confirmation Message</div>
+          <div class="card-body text-info">
+              Are you sure you want to delete selected location? This action cannot be undone.
+          </div>
+        </div><br />
+        <button class="btn btn-info" (click)="deleteLocation()">Yes Delete Location</button>
+        &nbsp;
+        <button class="btn btn-danger" (click)="closeModal();">No</button>
+    </div>
+  </div>
+</jw-modal>

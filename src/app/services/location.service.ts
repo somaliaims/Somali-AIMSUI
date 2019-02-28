@@ -46,4 +46,10 @@ export class LocationService {
                 catchError(this.storeService.handleError<any>('Update Location')));
     }
 
+    deleteLocation(id: number) {
+      var url = this.urlHelper.getLocationUrl() + '/' + id;
+      return this.httpClient.delete(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Delete Location')));
+    }
+
 }
