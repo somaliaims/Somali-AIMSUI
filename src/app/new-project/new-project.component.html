@@ -12,17 +12,20 @@
     </div>
   </div>
 
-  <div class="col-md-12 col-sm-12">
+  <div class="col-md-14 col-sm-12">
     <div *ngIf="isError" class="alert alert-danger alert-dismissible">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <strong>Error!</strong> {{errorMessage}}
     </div>
     <form class="form-signin margin-top-10" #projectForm="ngForm">
-      <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+      <div class="input-group col-md-14" [ngClass]="{disabledDiv: isTextReadOnly}">
         <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (input)="filterMatchingProjects($event)"
-          [(ngModel)]="model.title" name="title" #title="ngModel" required>
+          [(ngModel)]="model.title" name="title" #title="ngModel" onkeypress="return event.keyCode != 13;" required>
         <span class="input-group-btn">
-          <button [class.disable]='isSearchingProjects' class="btn btn-info btn-lg" (click)="proceedConfirmation()">Next >></button>
+          <button class="btn btn-outline-secondary btn-lg" type="button">
+            <i class="fa fa-search"></i>
+          </button>
+          <button [class.disable]='isSearchingProjects' class="btn btn-info btn-lg pull-right" style="margin-left: 400px;"(click)="proceedConfirmation()">Next >></button>
         </span>
       </div>
     </form>
