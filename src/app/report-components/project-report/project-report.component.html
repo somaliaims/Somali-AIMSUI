@@ -115,6 +115,11 @@
                       Planned: {{project.plannedDisbursements}}
                     </td>
                   </tr>
+                  <tr *ngIf="sectorProject.projects.length == 0">
+                    <td>
+                      <span class="text-info"><i>No projects found</i></span>
+                    </td>
+                  </tr>
                 </table>
               </tr>
             </table>

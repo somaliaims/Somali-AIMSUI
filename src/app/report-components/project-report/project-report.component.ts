@@ -127,7 +127,6 @@ export class ProjectReportComponent implements OnInit {
           var chartData = {data: sectorProjects, label: 'Sector Projects'};
           this.barChartData.push(chartData);
           this.barChartLabels = sectorNames;
-          console.log(sectorNames);
         }
         this.blockUI.stop();
       },
