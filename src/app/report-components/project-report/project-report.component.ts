@@ -34,7 +34,13 @@ export class ProjectReportComponent implements OnInit {
         ticks: {
           beginAtZero: true
         }
-      }]
+      }],
+      xAxes: [{
+        beginAtZero: true,
+        ticks: {
+           autoSkip: false
+        }
+    }],
     }
   };
   chartColors: any = [
@@ -98,29 +104,6 @@ export class ProjectReportComponent implements OnInit {
     };
   }
 
-  /*getSectorProjectsReport() {
-    this.barChartLabels = [];
-    this.barChartData = [];
-    this.blockUI.start('Wait loading...');
-    this.reportService.getSectorProjectsReport(this.selectedSectors, this.reportModel.year).subscribe(
-      data => {
-        this.reportDataList = data;
-        if (this.reportDataList && this.reportDataList.sectorProjectsList) {
-          var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
-          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-          var chartData = {data: sectorProjects, label: 'Sector Projects'};
-          this.barChartData.push(chartData);
-          this.barChartLabels = sectorNames;
-        }
-        this.blockUI.stop();
-      },
-      error => {
-        console.log(error);
-        this.blockUI.stop();
-      }
-    );
-  }*/
-
   searchProjectsByCriteriaReport() {
     this.barChartLabels = [];
     this.barChartData = [];
@@ -133,6 +116,7 @@ export class ProjectReportComponent implements OnInit {
       locationIds: this.selectedLocations
     };    
 
+    this.resetSearchResults();
     this.blockUI.start('Searching Projects...');
     this.reportService.searchProjectsByCriteriaReport(searchModel).subscribe(
       data => {
@@ -143,6 +127,7 @@ export class ProjectReportComponent implements OnInit {
           var chartData = {data: sectorProjects, label: 'Sector Projects'};
           this.barChartData.push(chartData);
           this.barChartLabels = sectorNames;
+          console.log(sectorNames);
         }
         this.blockUI.stop();
       },
@@ -151,6 +136,12 @@ export class ProjectReportComponent implements OnInit {
         this.blockUI.stop();
       }
     )
+  }
+
+  resetSearchResults() {
+    this.barChartData = [];
+    this.barChartLabels = [];
+    this.reportDataList = [];
   }
 
   formatFunders(funders: any = null) {
@@ -170,18 +161,6 @@ export class ProjectReportComponent implements OnInit {
     }
     return implementersStr;
   }
-
-  /*loadSectors() {
-    this.sectorService.getSectorsList().subscribe(
-      data => {
-        this.model.sectorsList = data;
-        console.log(this.sectorsList);
-      },
-      error => {
-        console.log(error);
-      }
-    )
-  }*/
 
   loadFinancialYears() {
     this.fyService.getYearsList().subscribe(
@@ -248,6 +227,8 @@ export class ProjectReportComponent implements OnInit {
     var id = item.id;
     var index = this.selectedSectors.indexOf(id);
     this.selectedSectors.splice(index, 1);
+
+    this.searchProjectsByCriteriaReport();
   }
 
   onSectorSelectAll(items: any) {
@@ -270,6 +251,8 @@ export class ProjectReportComponent implements OnInit {
     var id = item.id;
     var index = this.selectedOrganizations.indexOf(id);
     this.selectedOrganizations.splice(index, 1);
+
+    this.searchProjectsByCriteriaReport();
   }
 
   onOrganizationSelectAll(items: any) {
@@ -292,6 +275,8 @@ export class ProjectReportComponent implements OnInit {
     var id = item.id;
     var index = this.selectedLocations.indexOf(id);
     this.selectedLocations.splice(index, 1);
+
+    this.searchProjectsByCriteriaReport();
   }
 
   onLocationSelectAll(items: any) {
