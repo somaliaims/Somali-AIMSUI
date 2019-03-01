@@ -32,13 +32,11 @@
   <div class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
-        <th>Id</th>
         <th>Sector Name</th>
         <th>Parent Sector</th>
         <th>Actions</th>
       </tr>
       <tr *ngFor="let sector of sectorsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
-        <td>{{sector.id}}</td>
         <td>{{sector.sectorName}}</td>
         <td>{{sector.parentSector}}</td>
         <td>
