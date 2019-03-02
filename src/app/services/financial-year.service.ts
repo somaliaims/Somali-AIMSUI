@@ -21,4 +21,11 @@ export class FinancialYearService {
       catchError(this.storeService.handleError<any>('Financial Years')));
   }
 
+  addYear(model: any) {
+    var url  = this.urlHelper.getFinancialYearsUrl();
+      return this.httpClient.post(url,
+          JSON.stringify(model), httpOptions).pipe(
+              catchError(this.storeService.handleError<any>('New Financial Year')));
+  }
+
 }

@@ -40,6 +40,8 @@ import { ManageAccountComponent } from './manage-account/manage-account.componen
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { CurrenciesComponent } from './currencies/currencies.component';
 import { ManageCurrencyComponent } from './manage-currency/manage-currency.component';
+import { FinancialYearsComponent } from './financial-years/financial-years.component';
+import { ManageYearComponent } from './manage-year/manage-year.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -91,7 +93,9 @@ export const routes: Routes = [
   { path: 'smtp-settings', component: SmtpSettingsComponent },
   { path: 'manage-account', component: ManageAccountComponent },
   { path: 'currencies', component: CurrenciesComponent },
-  { path: 'manage-currency', component: ManageCurrencyComponent }
+  { path: 'manage-currency', component: ManageCurrencyComponent },
+  { path: 'financial-years', component: FinancialYearsComponent },
+  { path: 'manage-year', component:  ManageYearComponent}
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

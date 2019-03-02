@@ -61,6 +61,8 @@ import { ManageAccountComponent } from './manage-account/manage-account.componen
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { CurrenciesComponent } from './currencies/currencies.component';
 import { ManageCurrencyComponent } from './manage-currency/manage-currency.component';
+import { FinancialYearsComponent } from './financial-years/financial-years.component';
+import { ManageYearComponent } from './manage-year/manage-year.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +114,8 @@ import { ManageCurrencyComponent } from './manage-currency/manage-currency.compo
     ResetPasswordComponent,
     CurrenciesComponent,
     ManageCurrencyComponent,
+    FinancialYearsComponent,
+    ManageYearComponent,
   ],
   imports: [
     BrowserModule,

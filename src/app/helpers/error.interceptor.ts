@@ -21,7 +21,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             else if (err.status == 400) {
             } else if (err.status == 404) {
             }*/
-            const error = err.error || err.message || err.statusText;
+            const error = err.message || err.statusText;
             model.errorMessage = error;
             this.storeService.newRequestTrack(model);
             return throwError(error);
