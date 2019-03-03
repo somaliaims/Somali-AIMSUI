@@ -19,12 +19,12 @@
           </div>
           <h5 class="card-title text-center">Organization</h5>
 
-          <form class="form-signin" (ngSubmit)="saveOrganization()" #organizationForm="ngForm">
+          <form class="form-signin" (ngSubmit)="organizationForm.form.valid && saveOrganization()" #organizationForm="ngForm">
             <div class="form-group">
               <label for="text">Organization Name</label>
               <input type="text" class="form-control" id="organizationName" [(ngModel)]="model.organizationName" name="organizationName"
                 #organizationName="ngModel" required>
-              <div [hidden]="organizationName.valid" class="alert alert-danger">
+              <div *ngIf="organizationForm.submitted" [hidden]="organizationName.valid" class="alert alert-danger">
                 Organization Name is required
               </div>
             </div>

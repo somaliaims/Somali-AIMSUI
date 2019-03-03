@@ -13,7 +13,7 @@
                   <label for="email">Email</label>
                   <input type="email" class="form-control" id="Email" [(ngModel)]="model.Email" name="Email" #Email="ngModel"
                     required email>
-                  <div [hidden]="Email.valid" class="alert alert-danger">
+                  <div *ngIf="loginForm.submitted" [hidden]="Email.valid" class="alert alert-danger">
                     Enter valid email address
                   </div>
                 </div>
@@ -22,7 +22,7 @@
                   <label for="password">Password</label>
                   <input type="password" class="form-control" id="Password" [(ngModel)]="model.Password" name="Password"
                     #Password="ngModel" required>
-                  <div [hidden]="Password.valid" class="alert alert-danger">
+                  <div *ngIf="loginForm.submitted" [hidden]="Password.valid" class="alert alert-danger">
                     Password is required
                   </div>
                 </div>
