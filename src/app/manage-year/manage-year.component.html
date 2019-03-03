@@ -1,0 +1,36 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/financial-years']">Financial Years List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">Financial Year</h5>
+          <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveFinancialYear()" #yearForm="ngForm">
+            <div class="form-group">
+              <label for="year">Financial Year</label>
+              <input type="text" pattern="\d*" onKeyPress="if(this.value.length==4) return false;" class="form-control" id="year" [(ngModel)]="model.year" name="year"
+                #year="ngModel" required>
+              <div *ngIf="yearForm.submitted" [hidden]="year.valid" class="alert alert-danger">
+                Enter valid financial year
+              </div>
+            </div>
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

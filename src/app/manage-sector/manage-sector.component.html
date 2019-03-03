@@ -19,7 +19,7 @@
           </div>
           <h5 class="card-title text-center">Sector</h5>
 
-          <form class="form-signin" (ngSubmit)="saveSector()" #sectorForm="ngForm">
+          <form class="form-signin" (ngSubmit)="sectorForm.form.valid && saveSector()" #sectorForm="ngForm">
 
             <div class="form-group">
               <label for="sectorTypeId">Parent Sector</label>
@@ -33,11 +33,10 @@
               <label for="text"> Name</label>
               <input type="text" class="form-control" id="sectorName" [(ngModel)]="model.sectorName" name="sectorName"
                 #sectorName="ngModel" required>
-              <div [hidden]="sectorName.valid" class="alert alert-danger">
+              <div *ngIf="sectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
                  Sector Name is required
               </div>
             </div>
-
         
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>

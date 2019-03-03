@@ -75,7 +75,7 @@ export class NewProjectComponent implements OnInit {
 
   loadIATIProjects() {
     this.isIATILoading = true;
-    var projectTitle = 'Enter project title to proceed';
+    var projectTitle = 'Enter keywords to search existing and source projects';
     this.iatiService.getProjects().subscribe(
       data => {
         this.iatiProjects = data;

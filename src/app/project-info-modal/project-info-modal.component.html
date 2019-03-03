@@ -54,7 +54,7 @@
                   </td>
                 </tr>
               </table>
-              <span class="text-info"><i>No locations found</i></span>
+              <span *ngIf="locations.length == 0" class="text-info"><i>No locations found</i></span>
             </div>
 
             <div class="col-md-12 margin-top-10">

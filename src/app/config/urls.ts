@@ -24,6 +24,7 @@ export const urls = {
 	sectorSubCategoriesUrl: "SectorSubCategory",
 	getSectorSubCategory: "SectorSubCategory/GetById/",
 	sectorsUrl: "Sector",
+	financialYearsUrl: "FinancialYear",
 	getSector: "Sector/GetById/",
 	projectTypesUrl: "ProjectType",
 	getProjectType: "ProjectType/GetById/",
@@ -65,5 +66,6 @@ export const urls = {
 	notificationsCount: "Notification/GetCount",
 	notifications: "Notification",
 	markNotificationsRead: "Notification/MarkNotificationsRead",
-	deleteNotifications: "Notification/DeleteNotifications"
+	deleteNotifications: "Notification/DeleteNotifications",
+	getCurrency: "Currency",
 };

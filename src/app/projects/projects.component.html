@@ -107,7 +107,6 @@
             <th>Project Title</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Actions</th>
           </tr>
           <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>
@@ -117,20 +116,6 @@
             </td>
             <td>{{project.startDate}}</td>
             <td>{{project.endDate}}</td>
-            <td>
-              <table class="no-borders">
-                <tr>
-                  <td>
-                    <a title="View Details" (click)="viewDetails(project.id)" class="btn btn-primary"><i class="fa fa-eye color-white"></i></a>
-                    &nbsp;
-                  </td>
-                  <!-- <td>
-                    <a *ngIf="permissions.canEditProject" title="Edit" (click)="edit(project.id)" class="btn btn-success"><i
-                      class="fa fa-edit color-white"></i></a>
-                </td> -->
-                </tr>
-              </table>
-            </td>
           </tr>
         </table>
         <pagination-controls (pageChange)="p=$event"></pagination-controls>

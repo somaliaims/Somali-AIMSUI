@@ -1,0 +1,39 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/currencies']">Currencies List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">Currency</h5>
+
+          <form class="form-signin" (ngSubmit)="currencyForm.form.valid && saveCurrency(currencyForm)" #currencyForm="ngForm">
+
+            <div class="form-group">
+              <label for="currency">Currency Name</label>
+              <input type="text" class="form-control" id="currency" [(ngModel)]="model.currency" name="currency"
+                #currency="ngModel" maxlength="3" required>
+              <div *ngIf="currencyForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
+                Currency Name is required
+              </div>
+            </div>
+
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
