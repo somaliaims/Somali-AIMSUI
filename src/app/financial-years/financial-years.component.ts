@@ -17,6 +17,7 @@ export class FinancialYearsComponent implements OnInit {
   financialYearsList: any = [];
   pagingSize: number = Settings.rowsPerPage;
   selectedYearId: number = 0;
+  criteria: string = '';
 
   constructor(private securityService: SecurityHelperService, private storeService: StoreService,
     private financialYearService: FinancialYearService, private router: Router) { }
@@ -44,6 +45,10 @@ export class FinancialYearsComponent implements OnInit {
         console.log("Request Failed: ", error);
       }
     );
+  }
+
+  searchFinancialYears() {
+    
   }
 
 }
