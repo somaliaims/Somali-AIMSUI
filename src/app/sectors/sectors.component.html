@@ -4,10 +4,10 @@
   <div class="col-md-6">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link active btn-info" data-toggle="tab" >Sectors List</a>
+        <a class="nav-link active btn-info" data-toggle="tab" >Sectors list</a>
       </li>
       <li *ngIf="permissions.canEditSector" class="nav-item">
-        <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-sector']">Create New</a>
+        <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-sector']">Create new</a>
       </li>
     </ul>
   </div>
@@ -32,8 +32,9 @@
   <div class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
-        <th>Sector Name</th>
-        <th>Parent Sector</th>
+        <th>Id</th>
+        <th>Sector name</th>
+        <th>Parent sector</th>
         <th>Actions</th>
       </tr>
       <tr *ngFor="let sector of sectorsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">

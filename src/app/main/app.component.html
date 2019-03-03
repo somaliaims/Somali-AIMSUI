@@ -9,44 +9,46 @@
             <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active-link">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/projects']" routerLinkActive="active-link">View Projects</a>
+            <a class="nav-link" [routerLink]="['/projects']" routerLinkActive="active-link">View projects</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"  data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">View
-              Reports</a>
+              reports</a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" [routerLink]="['/sectors-report']">Sectors Report</a>
-              <a class="dropdown-item" [routerLink]="['/locations-report']">Locations Report</a>
-              <a class="dropdown-item" [routerLink]="['/sectors-report']">Budget Report</a>
-              <a class="dropdown-item" [routerLink]="['/project-profile']">Project Profile</a>
-              <a class="dropdown-item" [routerLink]="['/sectors-report']">Excel Report</a>
+              <h5 class="dropdown-header">Projects</h5>
+              <a class="dropdown-item" [routerLink]="['/project-report']">Projects report</a>
+              <a class="dropdown-item" [routerLink]="['/sectors-report']">Sectors report</a>
+              <a class="dropdown-item" [routerLink]="['/locations-report']">Locations report</a>
+              <a class="dropdown-item" [routerLink]="['/sectors-report']">Budget report</a>
+              <a class="dropdown-item" [routerLink]="['/project-profile']">Project profile</a>
+              <a class="dropdown-item" [routerLink]="['/sectors-report']">Excel report</a>
             </div>
           </li>
           <li *ngIf="isLoggedIn" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Data Entry</a>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Data entry</a>
             <div class="dropdown-menu">
-              <h5 class="dropdown-header">Data Entry</h5>
-              <a class="dropdown-item" [routerLink]="['/new-project']">Add/edit Project Data</a>
-              <a class="dropdown-item" [routerLink]="['/envelope-data']">Add/edit Envelope Data</a>
+              <h5 class="dropdown-header">Data entry</h5>
+              <a class="dropdown-item" [routerLink]="['/new-project']">Add/edit project data</a>
+              <a class="dropdown-item" [routerLink]="['/envelope-data']">Add/edit envelope data</a>
             </div>
           </li>
           <li *ngIf="isLoggedIn" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
             <div class="dropdown-menu">
-              <h5 *ngIf="permissions.canManage" class="dropdown-header">Field Management</h5>
+              <h5 *ngIf="permissions.canManage" class="dropdown-header">Field management</h5>
               <a *ngIf="permissions.canEditLocation" class="dropdown-item" [routerLink]="['/locations']">Locations</a>
               <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sectors']">Sectors</a>
               <a *ngIf="permissions.canEditCurrency" class="dropdown-item" [routerLink]="['/currencies']">Currencies</a>
-              <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial Years</a>
+              <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial years</a>
               <div class="dropdown-divider"></div>
-              <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & Organizations Management</h5>
-              <h5 *ngIf="!permissions.canManage" class="dropdown-header">User Management</h5>
-              <a class="dropdown-item" [routerLink]="['/manage-account']">Account Management</a>
+              <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & Organizations management</h5>
+              <h5 *ngIf="!permissions.canManage" class="dropdown-header">User management</h5>
+              <a class="dropdown-item" [routerLink]="['/manage-account']">Account management</a>
               <a *ngIf="permissions.canEditOrganization" class="dropdown-item" [routerLink]="['/organizations']">Organizations</a>
               <div class="dropdown-divider"></div>
               <h5 *ngIf="permissions.canManage" class="dropdown-header">AIMS Management</h5>
-              <a *ngIf="permissions.canDoSMTPSettings" class="dropdown-item" [routerLink]="['/smtp-settings']">Email Settings</a>
-              <a *ngIf="permissions.canDoIATISettings" class="dropdown-item" [routerLink]="['/iati-settings']">IATI Settings</a>
+              <a *ngIf="permissions.canDoSMTPSettings" class="dropdown-item" [routerLink]="['/smtp-settings']">Email settings</a>
+              <a *ngIf="permissions.canDoIATISettings" class="dropdown-item" [routerLink]="['/iati-settings']">IATI settings</a>
             </div>
           </li>
           <!--<li *ngIf="isLoggedIn" class="nav-item active"> 
@@ -54,8 +56,8 @@
           </li>-->
         </ul>
         <ul class="nav navbar-nav ml-auto">
-          <li *ngIf="!isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="['/login']">Log In</a>
-          <li *ngIf="isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="" (click)="logout($event)">Log Out</a>
+          <li *ngIf="!isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="['/login']">Log in</a>
+          <li *ngIf="isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="" (click)="logout($event)">Log out</a>
         </ul>
       </div>
     </nav>
