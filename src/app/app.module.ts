@@ -59,6 +59,10 @@ import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { CurrenciesComponent } from './currencies/currencies.component';
+import { ManageCurrencyComponent } from './manage-currency/manage-currency.component';
+import { FinancialYearsComponent } from './financial-years/financial-years.component';
+import { ManageYearComponent } from './manage-year/manage-year.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +112,10 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     SmtpSettingsComponent,
     ManageAccountComponent,
     ResetPasswordComponent,
+    CurrenciesComponent,
+    ManageCurrencyComponent,
+    FinancialYearsComponent,
+    ManageYearComponent,
   ],
   imports: [
     BrowserModule,

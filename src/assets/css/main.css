@@ -135,6 +135,14 @@ html {
     margin-left: 5px;
   }
 
+  .margin-left-10 {
+    margin-left: 10px !important;
+  }
+
+  .margin-left-15 {
+    margin-left: 15px !important;
+  }
+
   .margin-right-15 {
     margin-right: 15px !important;
   }

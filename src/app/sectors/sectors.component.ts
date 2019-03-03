@@ -25,6 +25,10 @@ export class SectorsComponent implements OnInit {
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditSector) {
+      this.router.navigateByUrl('home');
+    }
+
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;
