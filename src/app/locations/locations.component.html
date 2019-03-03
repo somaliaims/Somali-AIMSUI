@@ -9,10 +9,10 @@
   <div class="col-md-6">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link active btn-info" data-toggle="tab" >Locations List</a>
+        <a class="nav-link active btn-info" data-toggle="tab" >Locations list</a>
       </li>
       <li *ngIf="permissions.canEditLocation" class="nav-item">
-        <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-location']">Create New</a>
+        <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-location']">Create new</a>
       </li>
     </ul>
   </div>
@@ -37,7 +37,7 @@
   <div class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
-        <th>Location Name</th>
+        <th>Location anme</th>
         <th>Latitude</th>
         <th>Longitude</th>
         <th *ngIf="permissions.canEditLocation">Actions</th>

@@ -29,7 +29,7 @@
                   </div>
         
                   <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
+                    <label for="confirmPassword">Confirm password</label>
                     <input type="password" class="form-control" id="ConfirmPassword" [(ngModel)]="model.ConfirmPassword" required [(ngModel)]="model.ConfirmPassword" name="ConfirmPassword" #ConfirmPassword="ngModel">
                     <div [hidden]="model.Password == model.ConfirmPassword || model.ConfirmPassword.length == 0" class="alert alert-danger">
                       Passwords do not match

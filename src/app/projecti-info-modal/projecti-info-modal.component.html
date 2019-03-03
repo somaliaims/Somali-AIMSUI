@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-12">
       <span class="float-right margin-right-15">
-        <button class="btn btn-danger" (click)="closeModal();">Close View</button>
+        <button class="btn btn-danger" (click)="closeModal();">Close view</button>
       </span>
     </div>
   </div>
@@ -14,7 +14,7 @@
         <div class="card">
           <div class="card-body">
 
-            <h6 class="text-info"><b>Project Data</b></h6>
+            <h6 class="text-info"><b>Project data</b></h6>
             <table class="table table-stripped">
               <tr>
                 <td><b>Title: </b></td>
@@ -29,7 +29,7 @@
             </table>
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project Locations</b></h6>
+              <h6 class="text-info"><b>Project locations</b></h6>
               <table *ngIf="locations.length > 0" class="table table-stripped">
                 <tr>
                   <th>Location</th>
@@ -42,11 +42,11 @@
             </div>
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project Sectors</b></h6>
+              <h6 class="text-info"><b>Project sectors</b></h6>
               <table class="table table-stripped">
                 <tr>
-                  <th>Sector Name</th>
-                  <th>Funds Percentage</th>
+                  <th>Sector name</th>
+                  <th>Funds percentage</th>
                 </tr>
                 <tr *ngFor="let sector of sectors">
                   <td>{{sector.sectorName}}</td>
@@ -60,7 +60,7 @@
 
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Participating Organizations</b></h6>
+              <h6 class="text-info"><b>Participating organizations</b></h6>
               <table class="table table-stripped">
                 <tr>
                   <th>Organization</th>
@@ -77,10 +77,10 @@
             </div>
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project Documents</b></h6>
+              <h6 class="text-info"><b>Project documents</b></h6>
               <table class="table table-stripped">
                 <tr>
-                  <th>Document Title</th>
+                  <th>Document title</th>
                   <th>Url</th>
                 </tr>
                 <tr *ngFor="let document of documents">
@@ -100,7 +100,7 @@
 
     <div class="col-md-12 margin-top-10">
       <span class="float-right margin-right-15">
-        <button class="btn btn-danger" (click)="closeModal();">Close View</button>
+        <button class="btn btn-danger" (click)="closeModal();">Close view</button>
       </span>
     </div>
 

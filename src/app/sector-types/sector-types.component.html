@@ -9,10 +9,10 @@
   <div class="col-md-6">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link active btn-info" data-toggle="tab" >Sector Types List</a>
+        <a class="nav-link active btn-info" data-toggle="tab" >Sector types list</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-sectortype']">Create New</a>
+        <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-sectortype']">Create new</a>
       </li>
     </ul>
   </div>
@@ -38,7 +38,7 @@
     <table class="table table-bordered table-stripped">
       <tr>
         <th>Id</th>
-        <th>Sector Type Name</th>
+        <th>Sector type name</th>
         <th>Actions</th>
       </tr>
       <tr *ngFor="let sector of sectorTypesList | paginate: { itemsPerPage: 2, currentPage: p }">
