@@ -11,7 +11,7 @@
       <div class="col-md-6">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Projects List</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Projects list</a>
           </li>
         </ul>
       </div>
@@ -21,7 +21,7 @@
           <div class="input-group-append">
             <!--<button title="Search" class="btn btn-info" (click)="searchProjects()" type="button"><i class="fa fa-search"></i></button>-->&nbsp;
             <button title="Advanced Search" class="btn btn-warning" (click)="showSearchOptions()" type="buttton">Advanced
-              Search</button>
+              search</button>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
                       <td>
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear" name="startingYear"
                           #startingYear="ngModel" required>
-                          <option value="0">--Select Starting Year--</option>
+                          <option value="0">--Select starting year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
                       </td>
@@ -51,7 +51,7 @@
                       <td>
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
                           #endingYear="ngModel" required>
-                          <option value="0">--Select Ending Year--</option>
+                          <option value="0">--Select ending year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
                       </td>
@@ -83,8 +83,8 @@
                 </div>
                 <div class="col-md-6">
                   <span class="float-right">
-                    <button class="btn btn-danger" (click)="hideSearchOptions()">Close Search</button>&nbsp;
-                    <button class="btn btn-info" (click)="advancedSearchProjects()">Search Projects</button>
+                    <button class="btn btn-danger" (click)="hideSearchOptions()">Close search</button>&nbsp;
+                    <button class="btn btn-info" (click)="advancedSearchProjects()">Search projects</button>
                   </span>
                 </div>
               </div>
@@ -104,9 +104,9 @@
       <div class="col margin-top-10">
         <table class="table table-bordered table-stripped">
           <tr>
-            <th>Project Title</th>
-            <th>Start Date</th>
-            <th>End Date</th>
+            <th>Project title</th>
+            <th>Start date</th>
+            <th>End date</th>
           </tr>
           <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>

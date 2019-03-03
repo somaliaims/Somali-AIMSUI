@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-12">
       <span class="float-right margin-right-15">
-        <button class="btn btn-danger" (click)="closeModal();">Close View</button>
+        <button class="btn btn-danger" (click)="closeModal();">Close view</button>
       </span>
     </div>
   </div>
@@ -14,7 +14,7 @@
         <div class="card">
           <div class="card-body">
             <span class="float-left">
-              <h6 class="text-info"><b>Project Data</b></h6>
+              <h6 class="text-info"><b>Project data</b></h6>
             </span>
             <table class="table table-stripped">
               <tr>
@@ -22,9 +22,9 @@
                 <td colspan="3">{{project.title}}</td>
               </tr>
               <tr>
-                <td><b>Start Date: </b></td>
+                <td><b>Start date: </b></td>
                 <td>{{project.startDate}}</td>
-                <td><b>End Date: </b></td>
+                <td><b>End date: </b></td>
                 <td>{{project.endDate}}</td>
               </tr>
               <tr>
@@ -36,7 +36,7 @@
             </table>
 
             <div class="col-md-12 margin-top-10">
-              <h6>Project Locations</h6>
+              <h6>Project locations</h6>
               <table *ngIf="locations.length > 0" class="table table-stripped">
                 <tr>
                   <th>Location</th>
@@ -58,11 +58,11 @@
             </div>
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project Sectors</b></h6>
+              <h6 class="text-info"><b>Project sectors</b></h6>
               <table class="table table-stripped">
                 <tr>
                   <th>Sector</th>
-                  <th>Funds Percentage</th>
+                  <th>Funds percentage</th>
                 </tr>
                 <tr *ngFor="let sector of sectors">
                   <td>{{sector.sector}}</td>
@@ -76,13 +76,13 @@
 
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project Funders</b></h6>
+              <h6 class="text-info"><b>Project funders</b></h6>
               <table class="table table-stripped">
                 <tr>
                   <th>Funder</th>
                   <th>Amount</th>
                   <th>Currency</th>
-                  <th>Exchange Rate</th>
+                  <th>Exchange rate</th>
                 </tr>
                 <tr *ngFor="let funder of funders">
                   <td>{{funder.funder}}</td>
@@ -97,7 +97,7 @@
             </div>
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project Implementers</b></h6>
+              <h6 class="text-info"><b>Project implementers</b></h6>
               <table class="table table-stripped">
                 <tr>
                   <th>Implementor</th>
@@ -113,10 +113,10 @@
 
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project Documents</b></h6>
+              <h6 class="text-info"><b>Project documents</b></h6>
               <table class="table table-stripped">
                 <tr>
-                  <th>Document Title</th>
+                  <th>Document title</th>
                   <th>Url</th>
                 </tr>
                 <tr *ngFor="let document of documents">
@@ -136,7 +136,7 @@
 
     <div class="col-md-12 margin-top-10">
       <span class="float-right margin-right-15">
-        <button class="btn btn-danger" (click)="closeModal();">Close View</button>
+        <button class="btn btn-danger" (click)="closeModal();">Close view</button>
       </span>
     </div>
 
