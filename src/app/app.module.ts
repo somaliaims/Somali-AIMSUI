@@ -137,9 +137,9 @@ import { ManageYearComponent } from './manage-year/manage-year.component';
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
-    { 
+    /*{ 
       provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true,
-    }
+    }*/
   ],
   bootstrap: [AppComponent]
 })

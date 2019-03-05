@@ -59,11 +59,18 @@ export class StoreService {
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.log(error); // log to console instead
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
-      // Let the app keep running by returning an empty result.
+      var currentRequestNo = this.getCurrentRequestId();
+      var model = new RequestModel(currentRequestNo, error.status, '');
+
+      var errorMessage = '';
+      if (error.error) {
+        errorMessage = error.error;
+      } else {
+        errorMessage = error.message || error.statusText;
+      }
+      model.errorMessage = errorMessage;
+      model.errorStatus = error.status;
+      this.newRequestTrack(model);
       return of(result as T);
     };
   }

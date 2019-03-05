@@ -85,7 +85,7 @@ export class NewProjectComponent implements OnInit {
           this.iatiProjects = data;
           this.filteredIatiProjects = data;
         }
-          this.isProjectLoaded = true;
+        this.isProjectLoaded = true;
           this.isTextReadOnly = false;
           this.inputTextHolder = projectTitle;
           this.isIATILoading = false;
@@ -164,7 +164,7 @@ export class NewProjectComponent implements OnInit {
       this.projectService.filterProjects(this.model.title).subscribe(
         data => {
           this.isSearchingProjects = false;
-          if (data) {
+          if (data && data.length) {
             this.filteredAIMSProjects = data
             this.isSearchingProjects = false;
           } else {

@@ -108,25 +108,25 @@ export class ProjectEntryComponent implements OnInit {
   endingYearsList: any = [];
 
   monthsList: any = [
-    {key: 'January', value: 1},
-    {key: 'February', value: 2},
-    {key: 'March', value: 3},
-    {key: 'April', value: 4},
-    {key: 'May', value: 5},
-    {key: 'June', value: 6},
-    {key: 'July', value: 7},
-    {key: 'August', value: 8},
-    {key: 'September', value: 9},
-    {key: 'October', value: 10},
-    {key: 'November', value: 11},
-    {key: 'December', value: 12}
+    { key: 'January', value: 1 },
+    { key: 'February', value: 2 },
+    { key: 'March', value: 3 },
+    { key: 'April', value: 4 },
+    { key: 'May', value: 5 },
+    { key: 'June', value: 6 },
+    { key: 'July', value: 7 },
+    { key: 'August', value: 8 },
+    { key: 'September', value: 9 },
+    { key: 'October', value: 10 },
+    { key: 'November', value: 11 },
+    { key: 'December', value: 12 }
   ];
 
-  model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
+  model = { id: 0, title: '', startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
-  funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00};
+  funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00 };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
   disbursementModel = { id: 0, projectId: 0, month: null, year: null, amount: 0.0 };
 
@@ -139,14 +139,14 @@ export class ProjectEntryComponent implements OnInit {
     { visible: false, identity: 'implementer' },
     { visible: false, identity: 'disbursement' },
     { visible: false, identity: 'customFields' },
-    { visible: false, identity: 'finish'}
+    { visible: false, identity: 'finish' }
   ];
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private storeService: StoreService, private iatiService: IATIService,
-    private projectService: ProjectService, private sectorService: SectorService, 
+    private projectService: ProjectService, private sectorService: SectorService,
     private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent,
     private locationService: LocationService, private securityService: SecurityHelperService,
     private organizationService: OrganizationService,
@@ -169,7 +169,7 @@ export class ProjectEntryComponent implements OnInit {
       this.model.id = this.activeProjectId;
       this.btnProjectText = 'Edit Project';
       this.loadProjectData(this.activeProjectId);
-    } 
+    }
 
     this.sectorSelectionForm = this.fb.group({
       sectorInput: null,
@@ -183,54 +183,44 @@ export class ProjectEntryComponent implements OnInit {
     this.locationSelectionForm = this.fb.group({
       locationInput: null,
     });
-
-    this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
-    if (this.infoMessage !== null && this.infoMessage !== '') {
-      this.showMessage = true;
-
-      setTimeout(() => {
-        this.storeService.newInfoMessage('');
-        this.showMessage = false;
-      }, Settings.displayMessageTime);
-    }
+    
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.errorModal.openModal();
+      }
+    });
 
     var projects = localStorage.getItem('selected-projects');
-    if (projects)
-    {
+    if (projects) {
       var parsedProjects = JSON.parse(projects);
       this.selectedProjects = parsedProjects;
-      
+
       console.log(this.selectedProjects);
       //Load iati projects
-      var filteredIATI = this.selectedProjects.filter(function(project) {
+      var filteredIATI = this.selectedProjects.filter(function (project) {
         return project.type == 'IATI';
       });
 
       var iatiIdsArr = [];
-      filteredIATI.forEach(function(project) {
-        var obj = { identifier:  project.identifier};
+      filteredIATI.forEach(function (project) {
+        var obj = { identifier: project.identifier };
         iatiIdsArr.push(obj);
       }.bind(this));
       this.loadIATIProjectsForIds(iatiIdsArr);
 
       //Load aims projects
-      var filteredAIMS = this.selectedProjects.filter(function(project) {
+      var filteredAIMS = this.selectedProjects.filter(function (project) {
         return project.type == 'AIMS';
       });
       var aimsIdsArr = [];
-      filteredAIMS.forEach(function(project) {
+      filteredAIMS.forEach(function (project) {
         var id = project.identifier;
         aimsIdsArr.push(id);
       });
       this.loadAIMSProjectsForIds(aimsIdsArr);
     }
-
-    this.storeService.currentRequestTrack.subscribe(model => {
-      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
-        this.errorMessage = model.errorMessage;
-        this.isError = true;
-      }
-    });
 
     this.currencyService.getCurrenciesList().subscribe(
       data => {
@@ -243,12 +233,12 @@ export class ProjectEntryComponent implements OnInit {
     var lowerLimit = currentYear - 20;
     var upperLimit = currentYear + 10;
 
-    for(var y=currentYear; y >= lowerLimit; y--) {
+    for (var y = currentYear; y >= lowerLimit; y--) {
       this.yearsList.push(y);
     }
 
     lowerLimit = currentYear - 5;
-    for(var y=lowerLimit; y <= upperLimit; y++) {
+    for (var y = lowerLimit; y <= upperLimit; y++) {
       this.endingYearsList.push(y);
     }
 
@@ -322,10 +312,10 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         this.organizationsList = data;
         this.filteredOrganizations = this.funderInput.valueChanges
-      .pipe(
-        startWith(''),
-        map(organization => organization ? this.filterOrganizations(organization) : this.organizationsList.slice())
-      );
+          .pipe(
+            startWith(''),
+            map(organization => organization ? this.filterOrganizations(organization) : this.organizationsList.slice())
+          );
       },
       error => {
         console.log("Request Failed: ", error);
@@ -377,10 +367,10 @@ export class ProjectEntryComponent implements OnInit {
     var startDate = this.model.startDate.day + '/' + this.model.startDate.month + '/' +
       this.model.startDate.year;
     var endDate = this.model.endDate.day + '/' + this.model.endDate.month + '/' +
-    this.model.endDate.year;
+      this.model.endDate.year;
 
     var project = {
-      title : this.model.title,
+      title: this.model.title,
       description: this.model.description,
       startDate: startDate,
       endDate: endDate
@@ -401,7 +391,7 @@ export class ProjectEntryComponent implements OnInit {
       if (selectProject && selectProject.length > 0) {
         var projectData = selectProject[0];
         var project = {
-          title : projectData.title,
+          title: projectData.title,
           description: projectData.description,
           startDate: projectData.startDate,
           endDate: projectData.endDate
@@ -425,7 +415,7 @@ export class ProjectEntryComponent implements OnInit {
       if (selectProject && selectProject.length > 0) {
         var projectData = selectProject[0];
         var project = {
-          title : projectData.title,
+          title: projectData.title,
           description: projectData.description,
           defaultCurrency: projectData.defaultCurrency,
         }
@@ -674,7 +664,7 @@ export class ProjectEntryComponent implements OnInit {
     if (selectProject && selectProject.length > 0) {
       var disbursements = selectProject[0].disbursements;
       this.disbursementEntryType = 'aims';
-      var selectTransaction = disbursements.filter(i => i.year == year && 
+      var selectTransaction = disbursements.filter(i => i.year == year &&
         i.month == month);
       if (selectTransaction && selectTransaction.length > 0) {
         this.disbursementModel.amount = selectTransaction[0].amount;
@@ -696,7 +686,7 @@ export class ProjectEntryComponent implements OnInit {
           var eDate = new Date(data.endDate);
           this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
           this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
-          
+
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
             this.currentProjectSectorsList = data.sectors;
@@ -724,9 +714,6 @@ export class ProjectEntryComponent implements OnInit {
             this.currentProjectDisbursementsList = data.disbursements;
           }
         }
-      },
-      error => {
-        console.log(error);
       }
     )
   }
@@ -770,7 +757,7 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   manageTabsDisplay(tabIdentity) {
-    for(var i=0; i < this.displayTabs.length; i++) {
+    for (var i = 0; i < this.displayTabs.length; i++) {
       var tab = this.displayTabs[i];
       if (tab.identity == tabIdentity) {
         tab.visible = true;
@@ -832,10 +819,10 @@ export class ProjectEntryComponent implements OnInit {
   /* Saving different section of project */
   saveProject(frm: any) {
     this.currentEntryForm = frm;
-    var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' + 
-          this.model.startDate.day;
-    var endDate = this.model.endDate.year + '-' + this.model.endDate.month + '-' + 
-          this.model.endDate.day;
+    var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
+      this.model.startDate.day;
+    var endDate = this.model.endDate.year + '-' + this.model.endDate.month + '-' +
+      this.model.endDate.day;
 
     if (startDate > endDate) {
       this.errorMessage = 'Start date cannot be greater than end date';
@@ -856,7 +843,7 @@ export class ProjectEntryComponent implements OnInit {
       this.blockUI.start('Updating Project...');
       this.projectService.updateProject(this.activeProjectId, model).subscribe(
         data => {
-          if (!this.isError) {
+          if (data) {
             this.resetProjectEntry();
             this.blockUI.stop();
             this.currentTab = 'funder';
@@ -876,15 +863,14 @@ export class ProjectEntryComponent implements OnInit {
       this.blockUI.start('Saving Project...');
       this.projectService.addProject(model).subscribe(
         data => {
-          this.resetProjectEntry();
-          this.activeProjectId = data;
-          if (!this.isError) {
+          if (data) {
+            this.resetProjectEntry();
+            this.activeProjectId = data;
             var message = 'New project' + Messages.NEW_RECORD;
             this.infoMessage = message;
             localStorage.setItem('active-project', data);
             this.btnProjectText = 'Edit Project';
             this.currentTab = 'funder';
-          } else {
           }
           this.blockUI.stop();
         },
@@ -903,7 +889,7 @@ export class ProjectEntryComponent implements OnInit {
     this.currentEntryForm = frm;
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
-    
+
     if (activeProject && activeProject != '0') {
       projectId = parseInt(activeProject);
       this.sectorModel.projectId = projectId;
@@ -954,13 +940,17 @@ export class ProjectEntryComponent implements OnInit {
       };
       this.sectorService.addSector(sectorModel).subscribe(
         data => {
-          this.sectorModel.sectorId = data;
-          this.selectedSectorId = data;
-          projectSectorModel.sectorId = data;
-          this.addProjectSector(projectSectorModel);
+          if (data) {
+            this.sectorModel.sectorId = data;
+            this.selectedSectorId = data;
+            projectSectorModel.sectorId = data;
+            this.addProjectSector(projectSectorModel);
+          } else {
+            this.blockUI.stop();
+          }
         },
         error => {
-          console.log(error);
+          this.blockUI.stop();
         }
       )
     } else {
@@ -971,7 +961,7 @@ export class ProjectEntryComponent implements OnInit {
   addProjectSector(model: any) {
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
-    
+
     if (activeProject && activeProject != '0') {
       projectId = parseInt(activeProject);
       this.sectorModel.projectId = projectId;
@@ -979,35 +969,37 @@ export class ProjectEntryComponent implements OnInit {
 
     this.projectService.addProjectSector(model).subscribe(
       data => {
-        var sectorObj = {
-          projectId: projectId,
-          sectorId: model.sectorId,
-          sector: this.sectorModel.sectorName,
-          fundsPercentage: this.sectorModel.fundsPercentage,
-        };
+        if (data) {
+          var sectorObj = {
+            projectId: projectId,
+            sectorId: model.sectorId,
+            sector: this.sectorModel.sectorName,
+            fundsPercentage: this.sectorModel.fundsPercentage,
+          };
 
-        if (sectorObj.sector == "") {
-          var selectSector = this.sectorsList.filter(s => s.id == sectorObj.sectorId);
-          if (selectSector && selectSector.length > 0) {
-            sectorObj.sector = selectSector[0].sectorName;
+          if (sectorObj.sector == "") {
+            var selectSector = this.sectorsList.filter(s => s.id == sectorObj.sectorId);
+            if (selectSector && selectSector.length > 0) {
+              sectorObj.sector = selectSector[0].sectorName;
+            }
           }
-        }
 
-        var fetchExistingSector = this.currentProjectSectorsList.filter(s => s.sectorId == model.sectorId);
-        if (fetchExistingSector.length > 0) {
-          var oldPercentage = parseInt(fetchExistingSector[0].fundsPercentage);
-          fetchExistingSector[0].fundsPercentage = oldPercentage + parseInt(model.fundsPercentage);
-        } else {
-          this.currentProjectSectorsList.push(sectorObj);
+          var fetchExistingSector = this.currentProjectSectorsList.filter(s => s.sectorId == model.sectorId);
+          if (fetchExistingSector.length > 0) {
+            var oldPercentage = parseInt(fetchExistingSector[0].fundsPercentage);
+            fetchExistingSector[0].fundsPercentage = oldPercentage + parseInt(model.fundsPercentage);
+          } else {
+            this.currentProjectSectorsList.push(sectorObj);
+          }
+
+          this.sectorTotalPercentage = this.calculateSectorPercentage();
+          this.resetSectorEntry();
+          var message = 'New sector' + Messages.NEW_RECORD;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+          this.resetDataEntryValidation();
         }
-        
-        this.sectorTotalPercentage = this.calculateSectorPercentage();
-        this.resetSectorEntry();
         this.blockUI.stop();
-        var message = 'New sector' + Messages.NEW_RECORD;
-        this.infoMessage = message;
-        this.infoModal.openModal();
-        this.resetDataEntryValidation();
       },
       error => {
         this.errorMessage = error;
@@ -1025,15 +1017,16 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Removing Sector...');
     this.projectService.deleteProjectSector(projectId, sectorId).subscribe(
       data => {
-        this.currentProjectSectorsList = this.currentProjectSectorsList.filter(s => s.sectorId != sectorId);
+        if (data) {
+          this.currentProjectSectorsList = this.currentProjectSectorsList.filter(s => s.sectorId != sectorId);
+          var message = 'Selected sector ' + Messages.RECORD_DELETED;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+          this.sectorTotalPercentage = this.calculateSectorPercentage();
+        }
         this.blockUI.stop();
-        var message = 'Selected sector ' + Messages.RECORD_DELETED;
-        this.infoMessage = message;
-        this.infoModal.openModal();
-        this.sectorTotalPercentage = this.calculateSectorPercentage();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -1052,10 +1045,10 @@ export class ProjectEntryComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
-    
+
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
-    
+
     if (activeProject && activeProject != '0') {
       projectId = parseInt(activeProject);
       this.locationModel.projectId = projectId;
@@ -1087,13 +1080,13 @@ export class ProjectEntryComponent implements OnInit {
     }
 
     var isLocationExists = this.currentProjectLocationsList.filter(l => l.location.toLowerCase() == this.locationModel.location.toLowerCase()
-    || l.id == this.locationModel.locationId);
+      || l.id == this.locationModel.locationId);
     if (isLocationExists.length > 0) {
       this.errorMessage = 'Selected location' + Messages.ALREADY_IN_LIST;
       this.errorModal.openModal();
       return false;
     }
-    
+
     this.blockUI.start('Saving Location...');
     if (this.locationEntryType == 'iati' && projectLocationModel.locationId <= 0) {
       var locationModel = {
@@ -1104,13 +1097,14 @@ export class ProjectEntryComponent implements OnInit {
 
       this.locationService.addLocation(locationModel).subscribe(
         data => {
-          this.locationModel.locationId = data;
-          this.selectedLocationId = data;
-          projectLocationModel.locationId = data;
-          this.addProjectLocation(projectLocationModel);
-        },
-        error => {
-          console.log(error);
+          if (data) {
+            this.locationModel.locationId = data;
+            this.selectedLocationId = data;
+            projectLocationModel.locationId = data;
+            this.addProjectLocation(projectLocationModel);
+          } else {
+            this.blockUI.stop();
+          }
         }
       )
     } else {
@@ -1121,7 +1115,7 @@ export class ProjectEntryComponent implements OnInit {
   addProjectLocation(model: any) {
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
-    
+
     if (activeProject && activeProject != '0') {
       projectId = parseInt(activeProject);
       this.locationModel.projectId = projectId;
@@ -1129,26 +1123,27 @@ export class ProjectEntryComponent implements OnInit {
 
     this.projectService.addProjectLocation(model).subscribe(
       data => {
-        var locationObj = {
-          id: this.locationModel.locationId,
-          projectId: projectId,
-          sectorId: model.sectorId,
-          location: this.locationModel.location,
-          latitude: this.locationModel.latitude,
-          longitude: this.locationModel.longitude,
-          fundsPercentage: this.locationModel.fundsPercentage,
-        };
-        this.currentProjectLocationsList.push(locationObj);
-        this.locationTotalPercentage = this.calculateLocationPercentage();
-        this.resetLocationEntry();
+        if (data) {
+          var locationObj = {
+            id: this.locationModel.locationId,
+            projectId: projectId,
+            sectorId: model.sectorId,
+            location: this.locationModel.location,
+            latitude: this.locationModel.latitude,
+            longitude: this.locationModel.longitude,
+            fundsPercentage: this.locationModel.fundsPercentage,
+          };
+          this.currentProjectLocationsList.push(locationObj);
+          this.locationTotalPercentage = this.calculateLocationPercentage();
+          this.resetLocationEntry();
+          var message = 'New location' + Messages.NEW_RECORD;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+          this.resetDataEntryValidation();
+        }
         this.blockUI.stop();
-        var message = 'New location' + Messages.NEW_RECORD;
-        this.infoMessage = message;
-        this.infoModal.openModal();
-        this.resetDataEntryValidation();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -1162,15 +1157,16 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Removing Location...');
     this.projectService.deleteProjectLocation(projectId, locationId).subscribe(
       data => {
-        this.currentProjectLocationsList = this.currentProjectLocationsList.filter(l => l.id != locationId);
+        if (data) {
+          this.currentProjectLocationsList = this.currentProjectLocationsList.filter(l => l.id != locationId);
+          var message = 'Selected location ' + Messages.RECORD_DELETED;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+          this.locationTotalPercentage = this.calculateLocationPercentage();
+        }
         this.blockUI.stop();
-        var message = 'Selected location ' + Messages.RECORD_DELETED;
-        this.infoMessage = message;
-        this.infoModal.openModal();
-        this.locationTotalPercentage = this.calculateLocationPercentage();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -1183,7 +1179,7 @@ export class ProjectEntryComponent implements OnInit {
     this.currentEntryForm = frm;
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
-    
+
     if (activeProject && activeProject != '0') {
       projectId = parseInt(activeProject);
       this.documentModel.projectId = projectId;
@@ -1193,12 +1189,12 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    if (this.documentModel.documentTitle == null || this.documentModel.documentTitle == '' 
-    || this.documentModel.documentUrl == null || this.documentModel.documentUrl == '') {
+    if (this.documentModel.documentTitle == null || this.documentModel.documentTitle == ''
+      || this.documentModel.documentUrl == null || this.documentModel.documentUrl == '') {
 
       return false;
     }
-    
+
     var model = {
       id: 0,
       projectId: this.documentModel.projectId,
@@ -1208,17 +1204,18 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Saving Document...');
     this.projectService.addProjectDocument(model).subscribe(
       data => {
-        model.id = data;
-        this.currentProjectDocumentsList.push(model);
-        this.resetDocumentEntry();
+        if (data) {
+          model.id = data;
+          this.currentProjectDocumentsList.push(model);
+          this.resetDocumentEntry();
+          var message = 'New document ' + Messages.NEW_RECORD;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+          this.resetDataEntryValidation();
+        }
         this.blockUI.stop();
-        var message = 'New document ' + Messages.NEW_RECORD;
-        this.infoMessage = message;
-        this.infoModal.openModal();
-        this.resetDataEntryValidation();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -1233,11 +1230,13 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Removing Document...');
     this.projectService.deleteProjectDocument(documentId).subscribe(
       data => {
-        this.currentProjectDocumentsList = this.currentProjectDocumentsList.filter(d => d.id != documentId);
+        if (data) {
+          this.currentProjectDocumentsList = this.currentProjectDocumentsList.filter(d => d.id != documentId);
+          var message = 'Selected document ' + Messages.RECORD_DELETED;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+        }
         this.blockUI.stop();
-        var message = 'Selected document ' + Messages.RECORD_DELETED;
-        this.infoMessage = message;
-        this.infoModal.openModal();
       },
       error => {
         console.log(error);
@@ -1253,7 +1252,7 @@ export class ProjectEntryComponent implements OnInit {
     this.currentEntryForm = frm;
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
-    
+
     if (activeProject && activeProject != '0') {
       projectId = parseInt(activeProject);
       this.funderModel.projectId = projectId;
@@ -1262,7 +1261,7 @@ export class ProjectEntryComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
-    
+
     if (this.selectedFunderId != 0) {
       this.funderModel.funderId = this.selectedFunderId;
       var funderExists = this.currentProjectFundersList.filter(f => f.funderId == this.selectedFunderId);
@@ -1324,8 +1323,12 @@ export class ProjectEntryComponent implements OnInit {
         }
         this.organizationService.addOrganization(funderModel).subscribe(
           data => {
-            model.funderId = data;
-            this.addProjectFunder(model);
+            if (data) {
+              model.funderId = data;
+              this.addProjectFunder(model);
+            } else {
+              this.blockUI.stop();
+            }
           },
           error => {
             console.log(error);
@@ -1344,22 +1347,18 @@ export class ProjectEntryComponent implements OnInit {
   addProjectFunder(model: any) {
     this.projectService.addProjectFunder(model).subscribe(
       data => {
-        if (data.success) {
+        if (data) {
           model.funder = this.funderModel.funder;
           this.currentProjectFundersList.push(model);
-          this.blockUI.stop();
           var message = 'New funder ' + Messages.NEW_RECORD;
           this.infoMessage = message;
           this.infoModal.openModal();
           this.resetFunderEntry();
           this.resetDataEntryValidation();
-        } else {
-          this.errorMessage = data.message;
-          this.errorModal.openModal();
-        }
+        } 
+        this.blockUI.stop();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
         this.resetFunderEntry();
       }
@@ -1374,14 +1373,15 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Removing Funder...');
     this.projectService.deleteProjectFunder(projectId, funderId).subscribe(
       data => {
-        this.currentProjectFundersList = this.currentProjectFundersList.filter(f => f.funderId != funderId);
+        if (data) {
+          this.currentProjectFundersList = this.currentProjectFundersList.filter(f => f.funderId != funderId);
+          var message = 'Selected funder ' + Messages.RECORD_DELETED;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+        }
         this.blockUI.stop();
-        var message = 'Selected funder ' + Messages.RECORD_DELETED;
-        this.infoMessage = message;
-        this.infoModal.openModal();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -1393,7 +1393,7 @@ export class ProjectEntryComponent implements OnInit {
     this.currentEntryForm = frm;
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
-    
+
     if (activeProject && activeProject != '0') {
       projectId = parseInt(activeProject);
       this.implementerModel.projectId = projectId;
@@ -1402,7 +1402,7 @@ export class ProjectEntryComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
-    
+
     this.blockUI.start('Saving Implementer...');
     var model = {
       implementer: this.implementerModel.implementer,
@@ -1421,11 +1421,15 @@ export class ProjectEntryComponent implements OnInit {
         }
         this.organizationService.addOrganization(orgModel).subscribe(
           data => {
-            model.implementerId = data;
+            if (data) {
+              model.implementerId = data;
             this.addProjectImplementer(model);
+            } else {
+              this.blockUI.stop();
+            }
           },
           error => {
-            console.log(error);
+            this.blockUI.stop();
           }
         )
       }
@@ -1441,15 +1445,15 @@ export class ProjectEntryComponent implements OnInit {
   addProjectImplementer(model: any) {
     this.projectService.addProjectImplementer(model).subscribe(
       data => {
-        this.currentProjectImplementersList.push(model);
+        if (data) {
+          this.currentProjectImplementersList.push(model);
+          this.resetImplementerEntry();
+          this.resetDataEntryValidation();
+        }
         this.blockUI.stop();
-        this.resetImplementerEntry();
-        this.resetDataEntryValidation();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
-        this.resetImplementerEntry();
       }
     )
   }
@@ -1462,14 +1466,15 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Removing Implementer...');
     this.projectService.deleteProjectImplementer(projectId, implementerId).subscribe(
       data => {
-        this.currentProjectImplementersList = this.currentProjectImplementersList.filter(i => i.implementerId != implementerId);
+        if (data) {
+          this.currentProjectImplementersList = this.currentProjectImplementersList.filter(i => i.implementerId != implementerId);
+          var message = 'Selected implementer ' + Messages.RECORD_DELETED;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+        }
         this.blockUI.stop();
-        var message = 'Selected implementer ' + Messages.RECORD_DELETED;
-        this.infoMessage = message;
-        this.infoModal.openModal();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -1482,7 +1487,7 @@ export class ProjectEntryComponent implements OnInit {
     this.currentEntryForm = frm;
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
-    
+
     if (activeProject && activeProject != '0') {
       projectId = parseInt(activeProject);
       this.disbursementModel.projectId = projectId;
@@ -1524,23 +1529,24 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
     this.blockUI.start('Saving Disbursement...');
-    this.addProjectDisbursement(model);    
+    this.addProjectDisbursement(model);
   }
 
   addProjectDisbursement(model: any) {
     this.projectService.addProjectDisbursement(model).subscribe(
       data => {
-        this.currentProjectDisbursementsList.push(model);
+        if (data) {
+          this.currentProjectDisbursementsList.push(model);
+          var message = 'New disbursement ' + Messages.NEW_RECORD;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+          this.totalDisbursements = this.calculateProjectDisbursement();
+          this.resetDisbursementEntry();
+          this.resetDataEntryValidation();
+        }
         this.blockUI.stop();
-        var message = 'New disbursement ' + Messages.NEW_RECORD;
-        this.infoMessage = message;
-        this.infoModal.openModal();
-        this.totalDisbursements = this.calculateProjectDisbursement();
-        this.resetDisbursementEntry();
-        this.resetDataEntryValidation();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -1555,15 +1561,16 @@ export class ProjectEntryComponent implements OnInit {
     this.blockUI.start('Removing Disbursement...');
     this.projectService.deleteProjectDisbursement(projectId, year, month).subscribe(
       data => {
-        this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(d => (d.year != year && d.month != month));
+        if (data) {
+          this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(d => (d.year != year && d.month != month));
+          var message = 'Selected Disbursement ' + Messages.RECORD_DELETED;
+          this.infoMessage = message;
+          this.infoModal.openModal();
+          this.totalDisbursements = this.calculateProjectDisbursement();
+        }
         this.blockUI.stop();
-        var message = 'Selected Disbursement ' + Messages.RECORD_DELETED;
-        this.infoMessage = message;
-        this.infoModal.openModal();
-        this.totalDisbursements = this.calculateProjectDisbursement();
       },
       error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
