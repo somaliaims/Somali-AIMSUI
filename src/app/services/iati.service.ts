@@ -33,8 +33,7 @@ export class IATIService {
 
     getProjects() {
       var url = this.urlHelper.getIATIProjectsUrl();
-      return this.httpClient.get(url, httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('IATI Projects')));
+      return this.httpClient.get(url, httpOptions);
     }
 
     getIATISettings() {

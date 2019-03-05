@@ -3,11 +3,12 @@ import { ProjectService } from '../services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
-import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { IATIService } from '../services/iati.service';
 import { ModalService } from '../services/modal.service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Settings } from '../config/settings';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 @Component({
   selector: 'app-new-project',
@@ -46,12 +47,13 @@ export class NewProjectComponent implements OnInit {
   selectedProjects: any = [];
   aimsProjects: any = [];
 
-  model = { id: 0, title: '',  startDate: null, endDate: null, description: null };
+  model = { id: 0, title: '', startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
     private storeService: StoreService, private iatiService: IATIService,
-    private modalService: ModalService, private securityService: SecurityHelperService) {
+    private modalService: ModalService, private securityService: SecurityHelperService,
+    private errorModal: ErrorModalComponent) {
   }
 
   ngOnInit() {
@@ -63,10 +65,11 @@ export class NewProjectComponent implements OnInit {
     this.requestNo = this.storeService.getCurrentRequestId();
     this.loadIATIProjects();
     this.loadAIMSProjects();
+
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
-        this.isError = true;
+        this.errorModal.openModal();
       }
     });
     localStorage.setItem('selected-projects', null);
@@ -78,12 +81,15 @@ export class NewProjectComponent implements OnInit {
     var projectTitle = 'Enter keywords to search existing and source projects';
     this.iatiService.getProjects().subscribe(
       data => {
-        this.iatiProjects = data;
-        this.filteredIatiProjects = data;
-        this.isProjectLoaded = true;
-        this.isTextReadOnly = false;
-        this.inputTextHolder = projectTitle;
-        this.isIATILoading = false;
+        if (data) {
+          this.iatiProjects = data;
+          this.filteredIatiProjects = data;
+        }
+          this.isProjectLoaded = true;
+          this.isTextReadOnly = false;
+          this.inputTextHolder = projectTitle;
+          this.isIATILoading = false;
+
       },
       error => {
         this.isProjectLoaded = true;
@@ -98,7 +104,7 @@ export class NewProjectComponent implements OnInit {
     this.filterAIMSMatchingProjects(e);
     this.filterIATIMatchingProjects(e);
   }
-  
+
   filterIATIMatchingProjects(e) {
     this.isIATILoading = true;
     var str = e.target.value.toLowerCase();
@@ -127,7 +133,7 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var iatiProject = {id: this.projectIdCounter, title: '', identifier: '', description: '', type: 'IATI'};
+      var iatiProject = { id: this.projectIdCounter, title: '', identifier: '', description: '', type: 'IATI' };
       iatiProject.title = selectedProject[0].title;
       iatiProject.description = selectedProject[0].description;
       iatiProject.identifier = selectedProject[0].iatiIdentifier;
@@ -143,7 +149,7 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var aimsProject = {id: this.projectIdCounter, identifier: '', title: '', description: '', type: 'AIMS'};
+      var aimsProject = { id: this.projectIdCounter, identifier: '', title: '', description: '', type: 'AIMS' };
       aimsProject.title = selectedProject[0].title;
       aimsProject.description = selectedProject[0].description;
       aimsProject.identifier = selectedProject[0].id;
@@ -154,11 +160,11 @@ export class NewProjectComponent implements OnInit {
   searchAIMSProject() {
     if (this.model.title != null) {
       this.isSearchingProjects = true;
-      
+
       this.projectService.filterProjects(this.model.title).subscribe(
         data => {
           this.isSearchingProjects = false;
-          if (data && data.length) {
+          if (data) {
             this.filteredAIMSProjects = data
             this.isSearchingProjects = false;
           } else {
@@ -171,7 +177,7 @@ export class NewProjectComponent implements OnInit {
           this.isSearchingProjects = false;
         }
       );
-    } 
+    }
   }
 
   loadAIMSProjects() {
