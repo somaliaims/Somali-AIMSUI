@@ -128,7 +128,7 @@ export class ProjectEntryComponent implements OnInit {
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00 };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
-  disbursementModel = { id: 0, projectId: 0, month: null, year: null, amount: 0.0 };
+  disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0 };
 
   displayTabs: any = [
     { visible: true, identity: 'project' },
@@ -643,12 +643,7 @@ export class ProjectEntryComponent implements OnInit {
         this.disbursementModel.amount = selectTransaction[0].amount;
         var dated = selectTransaction[0].dated;
         if (dated && dated.length > 0) {
-          var dateArr = dated.split('-');
-          var year = dateArr[0];
-          var month = dateArr[1];
-
-          this.disbursementModel.year = year;
-          this.disbursementModel.month = parseInt(month);
+          this.disbursementModel.dated = dated;
         }
       }
     }
@@ -657,19 +652,16 @@ export class ProjectEntryComponent implements OnInit {
   enterAIMSDisbursement(e) {
     var arr = e.target.id.split('-');
     var projectId = arr[1];
-    var year = arr[2];
-    var month = arr[3];
+    var id = arr[2];
 
     var selectProject = this.aimsProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
       var disbursements = selectProject[0].disbursements;
       this.disbursementEntryType = 'aims';
-      var selectTransaction = disbursements.filter(i => i.year == year &&
-        i.month == month);
+      var selectTransaction = disbursements.filter(i => i.id == id);
       if (selectTransaction && selectTransaction.length > 0) {
         this.disbursementModel.amount = selectTransaction[0].amount;
-        this.disbursementModel.year = selectTransaction[0].year;
-        this.disbursementModel.month = selectTransaction[0].month;
+        this.disbursementModel.dated = selectTransaction[0].dated;
       }
     }
   }
@@ -994,9 +986,6 @@ export class ProjectEntryComponent implements OnInit {
 
           this.sectorTotalPercentage = this.calculateSectorPercentage();
           this.resetSectorEntry();
-          var message = 'New sector' + Messages.NEW_RECORD;
-          this.infoMessage = message;
-          this.infoModal.openModal();
           this.resetDataEntryValidation();
         }
         this.blockUI.stop();
@@ -1019,9 +1008,6 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           this.currentProjectSectorsList = this.currentProjectSectorsList.filter(s => s.sectorId != sectorId);
-          var message = 'Selected sector ' + Messages.RECORD_DELETED;
-          this.infoMessage = message;
-          this.infoModal.openModal();
           this.sectorTotalPercentage = this.calculateSectorPercentage();
         }
         this.blockUI.stop();
@@ -1136,9 +1122,6 @@ export class ProjectEntryComponent implements OnInit {
           this.currentProjectLocationsList.push(locationObj);
           this.locationTotalPercentage = this.calculateLocationPercentage();
           this.resetLocationEntry();
-          var message = 'New location' + Messages.NEW_RECORD;
-          this.infoMessage = message;
-          this.infoModal.openModal();
           this.resetDataEntryValidation();
         }
         this.blockUI.stop();
@@ -1159,9 +1142,6 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           this.currentProjectLocationsList = this.currentProjectLocationsList.filter(l => l.id != locationId);
-          var message = 'Selected location ' + Messages.RECORD_DELETED;
-          this.infoMessage = message;
-          this.infoModal.openModal();
           this.locationTotalPercentage = this.calculateLocationPercentage();
         }
         this.blockUI.stop();
@@ -1208,9 +1188,6 @@ export class ProjectEntryComponent implements OnInit {
           model.id = data;
           this.currentProjectDocumentsList.push(model);
           this.resetDocumentEntry();
-          var message = 'New document ' + Messages.NEW_RECORD;
-          this.infoMessage = message;
-          this.infoModal.openModal();
           this.resetDataEntryValidation();
         }
         this.blockUI.stop();
@@ -1232,9 +1209,6 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           this.currentProjectDocumentsList = this.currentProjectDocumentsList.filter(d => d.id != documentId);
-          var message = 'Selected document ' + Messages.RECORD_DELETED;
-          this.infoMessage = message;
-          this.infoModal.openModal();
         }
         this.blockUI.stop();
       },
@@ -1350,9 +1324,6 @@ export class ProjectEntryComponent implements OnInit {
         if (data) {
           model.funder = this.funderModel.funder;
           this.currentProjectFundersList.push(model);
-          var message = 'New funder ' + Messages.NEW_RECORD;
-          this.infoMessage = message;
-          this.infoModal.openModal();
           this.resetFunderEntry();
           this.resetDataEntryValidation();
         } 
@@ -1375,9 +1346,6 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           this.currentProjectFundersList = this.currentProjectFundersList.filter(f => f.funderId != funderId);
-          var message = 'Selected funder ' + Messages.RECORD_DELETED;
-          this.infoMessage = message;
-          this.infoModal.openModal();
         }
         this.blockUI.stop();
       },
@@ -1468,9 +1436,6 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           this.currentProjectImplementersList = this.currentProjectImplementersList.filter(i => i.implementerId != implementerId);
-          var message = 'Selected implementer ' + Messages.RECORD_DELETED;
-          this.infoMessage = message;
-          this.infoModal.openModal();
         }
         this.blockUI.stop();
       },
@@ -1503,9 +1468,15 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
+    if (this.disbursementModel.dated == null) {
+      this.errorMessage = Messages.INVALID_DATE;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    var dModel = this.disbursementModel;
     var model = {
-      year: this.disbursementModel.year,
-      month: this.disbursementModel.month,
+      dated: dModel.dated.year + '-' + dModel.dated.month + '-' + dModel.dated.day,
       projectId: this.disbursementModel.projectId,
       amount: this.disbursementModel.amount
     }
@@ -1519,15 +1490,6 @@ export class ProjectEntryComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
-
-    var isDisbursementExists = this.currentProjectDisbursementsList.filter(d => d.projectId == model.projectId
-      && d.year == model.year && d.month == model.month);
-
-    if (isDisbursementExists.length > 0) {
-      this.errorMessage = 'Project disbursement' + Messages.ENTITY_EXISTS;
-      this.errorModal.openModal();
-      return false;
-    }
     this.blockUI.start('Saving Disbursement...');
     this.addProjectDisbursement(model);
   }
@@ -1537,9 +1499,6 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           this.currentProjectDisbursementsList.push(model);
-          var message = 'New disbursement ' + Messages.NEW_RECORD;
-          this.infoMessage = message;
-          this.infoModal.openModal();
           this.totalDisbursements = this.calculateProjectDisbursement();
           this.resetDisbursementEntry();
           this.resetDataEntryValidation();
@@ -1554,18 +1513,13 @@ export class ProjectEntryComponent implements OnInit {
 
   deleteProjectDisbursement(e) {
     var arr = e.target.id.split('-');
-    var projectId = arr[1];
-    var year = arr[2];
-    var month = arr[3];
+    var id = arr[1];
 
     this.blockUI.start('Removing Disbursement...');
-    this.projectService.deleteProjectDisbursement(projectId, year, month).subscribe(
+    this.projectService.deleteProjectDisbursement(id).subscribe(
       data => {
         if (data) {
-          this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(d => (d.year != year && d.month != month));
-          var message = 'Selected Disbursement ' + Messages.RECORD_DELETED;
-          this.infoMessage = message;
-          this.infoModal.openModal();
+          this.currentProjectDisbursementsList = this.currentProjectDisbursementsList.filter(d => (d.id != id));
           this.totalDisbursements = this.calculateProjectDisbursement();
         }
         this.blockUI.stop();
@@ -1645,8 +1599,7 @@ export class ProjectEntryComponent implements OnInit {
 
   resetDisbursementEntry() {
     this.disbursementEntryType = 'aims';
-    this.disbursementModel.year = null;
-    this.disbursementModel.month = null;
+    this.disbursementModel.dated = null;
     this.disbursementModel.amount = 0.00;
   }
 

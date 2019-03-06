@@ -66,6 +66,7 @@ export class NewProjectComponent implements OnInit {
     this.loadIATIProjects();
     this.loadAIMSProjects();
 
+    this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
@@ -86,10 +87,9 @@ export class NewProjectComponent implements OnInit {
           this.filteredIatiProjects = data;
         }
         this.isProjectLoaded = true;
-          this.isTextReadOnly = false;
-          this.inputTextHolder = projectTitle;
-          this.isIATILoading = false;
-
+        this.isTextReadOnly = false;
+        this.inputTextHolder = projectTitle;
+        this.isIATILoading = false;
       },
       error => {
         this.isProjectLoaded = true;

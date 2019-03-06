@@ -8,6 +8,7 @@ export const Messages = {
     ALREADY_IN_LIST: ' is already added to list.',
     INVALID_INPUT: 'Data is not in valid format for submission',
     SAVED_SUCCESSFULLY: ' saved successfully',
+    INVALID_DATE: 'Enter valid date',
     PASSWORD_RESET_SENT: 'Password reset link sent to the provided email Id',
     EMAIL_NOT_FOUND: 'We could not find the provided email id in our records',
     PERCENTAGE_RANGE: ' must have value between 1 and 100',

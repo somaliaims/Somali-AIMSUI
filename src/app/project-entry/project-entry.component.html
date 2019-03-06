@@ -1128,31 +1128,16 @@
             </div>
             <form class="form-signin" (ngSubmit)="disbursementForm.form.valid && saveProjectDisbursement(disbursementForm)"
               #disbursementForm="ngForm">
+
               <div class="form-group">
-                <label for="year">Year/Month</label>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <select placeholder="Year" class="form-control" id="year"
-                      [(ngModel)]="disbursementModel.year" name="year" #year="ngModel" required>
-                      <option *ngFor="let year of yearsList" [value]="year">{{year}}</option>
-                    </select>
-                    <div *ngIf="disbursementForm.submitted" [hidden]="year.valid" class="alert alert-danger">
-                      Starting Year is required
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <select class="form-control" id="month" [(ngModel)]="disbursementModel.month"
-                      name="month" #month="ngModel" required>
-                      <option *ngFor="let month of monthsList" [value]="month.value">{{month.key}}</option>
-                    </select>
-                    <div *ngIf="disbursementForm.submitted" [hidden]="month.valid" class="alert alert-danger">
-                      Starting Month is required
-                    </div>
+                <label for="title">Date </label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="date"
+                    [(ngModel)]="model.date" ngbDatepicker #s="ngbDatepicker" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
                   </div>
                 </div>
-
               </div>
 
               <div class="form-group">
@@ -1178,17 +1163,17 @@
             <h5 class="card-title text-center">Project Disbursements</h5>
             <table class="table table-bordered">
               <tr>
-                <th>Year/Month</th>
+                <th>Dated</th>
                 <th>Amount</th>
                 <th>Action</th>
               </tr>
               <tr *ngFor="let disbursement of currentProjectDisbursementsList">
-                <td>{{disbursement.year}}/{{disbursement.month}}</td>
+                <td>{{disbursement.dated}}</td>
                 <td>{{disbursement.amount}}</td>
                 <td>
-                  <button id="ddis-{{activeProjectId}}-{{disbursement.year}}-{{disbursement.month}}"
+                  <button id="ddis-{{activeProjectId}}-{{disbursement.id}}"
                     (click)="deleteProjectDisbursement($event)" class="btn btn-danger btn-sm">
-                    <i id="idis-{{activeProjectId}}-{{disbursement.year}}-{{disbursement.month}}"
+                    <i id="idis-{{activeProjectId}}-{{disbursement.id}}"
                       class="fa fa-trash"></i>
                   </button>
                 </td>

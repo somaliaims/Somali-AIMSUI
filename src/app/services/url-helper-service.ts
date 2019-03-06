@@ -235,8 +235,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.addProjectDisbursement);
     }
 
-    deleteProjectDisbursementUrl(projectId: string, startingYear: string, startingMonth: string) {
-        return (this.BASE_URL + urlsList.urls.deleteProjectDisbursement + projectId + '/' + startingYear + '/' + startingMonth);
+    deleteProjectDisbursementUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectDisbursement + id);
     }
 
     getProjectDocumentsUrl(id: string) {
