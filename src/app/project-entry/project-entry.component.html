@@ -853,7 +853,7 @@
               </tr>
               <tr *ngFor="let funder of currentProjectFundersList">
                 <td>{{funder.funder}}</td>
-                <td>{{funder.amount}}</td>
+                <td>{{funder.amount | number:0}}</td>
                 <td>{{funder.currency}}</td>
                 <td>{{funder.exchangeRate}}</td>
                 <td>
@@ -1048,7 +1048,7 @@
                           {{disbursement.year}} / {{disbursement.month}}
                         </td>
                         <td>
-                          {{disbursement.amount}}
+                          {{disbursement.amount | number:0}}
                         </td>
                         <td>
                           <button
@@ -1086,7 +1086,7 @@
                           {{disbursement.currency}}
                         </td>
                         <td>
-                          {{disbursement.amount}}
+                          {{disbursement.amount | number:0}}
                         </td>
                         <td>
                           {{disbursement.dated}}
@@ -1181,7 +1181,7 @@
               </tr>
               <tr *ngFor="let disbursement of currentProjectDisbursementsList">
                 <td>{{disbursement.year}}/{{disbursement.month}}</td>
-                <td>{{disbursement.amount}}</td>
+                <td>{{disbursement.amount | number:0}}</td>
                 <td>
                   <button id="ddis-{{activeProjectId}}-{{disbursement.year}}-{{disbursement.month}}"
                     (click)="deleteProjectDisbursement($event)" class="btn btn-danger btn-sm">

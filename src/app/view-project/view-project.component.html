@@ -165,7 +165,7 @@
                 </tr>
                 <tr *ngFor="let funder of projectFunders">
                   <td>{{funder.funder}}</td>
-                  <td>{{funder.amount}}</td>
+                  <td>{{funder.amount | number:0}}</td>
                   <td>{{funder.currency}}</td>
                   <td>{{funder.exchangeRate}}</td>
                   <!-- <td>
@@ -251,7 +251,7 @@
                 <tr *ngFor="let disbursement of projectDisbursements">
                   <td>{{monthStrings[disbursement.startingMonth]}}, {{disbursement.startingYear}}</td>
                   <td>{{monthStrings[disbursement.endingMonth]}}, {{disbursement.endingYear}}</td>
-                  <td>{{disbursement.amount}}</td>
+                  <td>{{disbursement.amount | number:0}}</td>
                   <!-- <td>
                     <a title="Remove Disbursement" (click)="deleteProjectDisbursement(disbursement.projectId, disbursement.startingYear, disbursement.startingMonth)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
