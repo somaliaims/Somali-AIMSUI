@@ -1513,7 +1513,8 @@ export class ProjectEntryComponent implements OnInit {
 
   deleteProjectDisbursement(e) {
     var arr = e.target.id.split('-');
-    var id = arr[1];
+    var projectId = arr[1];
+    var id = arr[2];
 
     this.blockUI.start('Removing Disbursement...');
     this.projectService.deleteProjectDisbursement(id).subscribe(

@@ -1132,11 +1132,14 @@
               <div class="form-group">
                 <label for="title">Date </label>
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="date"
-                    [(ngModel)]="model.date" ngbDatepicker #s="ngbDatepicker" required>
+                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
+                    [(ngModel)]="disbursementModel.dated" ngbDatepicker #s="ngbDatepicker" required>
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
                   </div>
+                </div>
+                <div *ngIf="disbursementForm.submitted" [hidden]="s.valid" class="alert alert-danger">
+                  Enter valid date
                 </div>
               </div>
 
