@@ -299,6 +299,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.smtpSettings);
     }
 
+    getUserSubscriptionsUrl() {
+        return (this.BASE_URL + urlsList.urls.userSubscriptionsUrl);
+    }
+
     //Reports url
     getSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);

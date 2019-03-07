@@ -1,3 +1,37 @@
-<p>
-  user-subscription works!
-</p>
+<div class="container-fluid view-area">
+
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Report Subscriptions Settings</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row text-center" *ngIf="isLoading">
+    <div class="col-md-12">
+      <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading" class="row">
+    <div class="col-md-12 margin-top-10">
+      <div class="row">
+        <div *ngFor="let report of reportNames" class="col-md-3 margin-left-10 card bg-light">
+          <div class="card-body">
+            <input type="checkbox" value="report.id" (change)="manageSubscription($event)"
+              [checked]="checkIfReportSubscribedTo(report.id)" />&nbsp;{{report.title}}
+          </div>
+        </div>
+      </div>
+
+      <div class="offset-md-4 col-md-4 margin-top-10">
+          <button class="margin-top-10 btn btn-lg btn-info btn-block text-uppercase" (click)="saveSubscriptions()">Save
+            Subscriptions</button>
+      </div>
+
+    </div>
+  </div>
+</div>

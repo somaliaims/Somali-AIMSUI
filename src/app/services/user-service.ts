@@ -70,6 +70,12 @@ export class UserService {
         var url = this.urlHelper.userRegistrationUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('User registration')));
+                catchError(this.storeService.handleError<any>('User Registration')));
+    }
+
+    getUserSubscriptions() {
+        var url = this.urlHelper.getUserSubscriptionsUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('User Subscription')));
     }
 }

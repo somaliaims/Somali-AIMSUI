@@ -68,4 +68,6 @@ export const urls = {
 	markNotificationsRead: "Notification/MarkNotificationsRead",
 	deleteNotifications: "Notification/DeleteNotifications",
 	getCurrency: "Currency",
+	reportNamesUrl: "ReportName",
+	userSubscriptionsUrl: "ReportSubscription"
 };
