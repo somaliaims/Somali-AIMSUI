@@ -63,6 +63,7 @@ import { CurrenciesComponent } from './currencies/currencies.component';
 import { ManageCurrencyComponent } from './manage-currency/manage-currency.component';
 import { FinancialYearsComponent } from './financial-years/financial-years.component';
 import { ManageYearComponent } from './manage-year/manage-year.component';
+import { UserSubscriptionComponent } from './user-subscription/user-subscription.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { ManageYearComponent } from './manage-year/manage-year.component';
     ManageCurrencyComponent,
     FinancialYearsComponent,
     ManageYearComponent,
+    UserSubscriptionComponent,
   ],
   imports: [
     BrowserModule,

@@ -308,4 +308,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.searchProjectsByCriteriaReport);
     }
 
+    getReportNamesUrl() {
+        return (this.BASE_URL + urlsList.urls.reportNamesUrl);
+    }
+
 }
