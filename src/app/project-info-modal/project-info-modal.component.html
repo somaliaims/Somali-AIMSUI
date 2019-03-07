@@ -86,7 +86,7 @@
                 </tr>
                 <tr *ngFor="let funder of funders">
                   <td>{{funder.funder}}</td>
-                  <td>{{funder.amount}}</td>
+                  <td>{{funder.amount | number:0}}</td>
                   <td>{{funder.currency}}</td>
                   <td>{{funder.exchangeRate}}</td>
                 </tr>
