@@ -69,5 +69,6 @@ export const urls = {
 	deleteNotifications: "Notification/DeleteNotifications",
 	getCurrency: "Currency",
 	reportNamesUrl: "ReportName",
-	userSubscriptionsUrl: "ReportSubscription"
+	userSubscriptionsUrl: "ReportSubscription",
+	subscribeToReports: "ReportSubscription/Subscribe"
 };

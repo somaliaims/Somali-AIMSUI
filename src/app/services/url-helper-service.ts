@@ -316,4 +316,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.reportNamesUrl);
     }
 
+    getSubscribeToReportsUrl() {
+        return (this.BASE_URL + urlsList.urls.subscribeToReports);
+    }
+
 }

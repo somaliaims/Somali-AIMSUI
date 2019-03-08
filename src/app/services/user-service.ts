@@ -78,4 +78,11 @@ export class UserService {
         return this.httpClient.get(url, httpOptions).pipe(
             catchError(this.storeService.handleError<any>('User Subscription')));
     }
+
+    saveReportSubscriptions(model:any) {
+        var url = this.urlHelper.getSubscribeToReportsUrl();
+        return this.httpClient.post(url, 
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Report Subscriptions')));
+    }
 }
