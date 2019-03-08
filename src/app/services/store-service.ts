@@ -88,8 +88,6 @@ export class StoreService {
 
     mywindow.document.close();
     mywindow.focus()
-    //mywindow.print();
-    //mywindow.close();
     return true;
   }
 

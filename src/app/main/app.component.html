@@ -41,10 +41,10 @@
               <a *ngIf="permissions.canEditCurrency" class="dropdown-item" [routerLink]="['/currencies']">Currencies</a>
               <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial years</a>
               <div class="dropdown-divider"></div>
-              <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & Organizations management</h5>
+              <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & organizations management</h5>
               <h5 *ngIf="!permissions.canManage" class="dropdown-header">User management</h5>
               <a class="dropdown-item" [routerLink]="['/manage-account']">Account management</a>
-              <a class="dropdown-item" [routerLink]="['/user-subscriptions']">Report subscriptions</a>
+              <!--<a class="dropdown-item" [routerLink]="['/user-subscriptions']">Report subscriptions</a>-->
               <a *ngIf="permissions.canEditOrganization" class="dropdown-item" [routerLink]="['/organizations']">Organizations</a>
               <div class="dropdown-divider"></div>
               <h5 *ngIf="permissions.canManage" class="dropdown-header">AIMS management</h5>

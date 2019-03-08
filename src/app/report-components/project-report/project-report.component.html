@@ -73,6 +73,7 @@
                 <div class="col-md-6">
                   <span class="float-right">
                     <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
+                    <!--<button type="button" class="btn btn-success" (click)="generatePDF()">Get PDF</button>&nbsp;-->
                     <button type="button" class="btn btn-warning" (click)="printReport()">Print Report</button>
                   </span>
                 </div>
@@ -126,15 +127,18 @@
           </div>
 
         </div>
+
+        <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-10">
+          <div style="display: block">
+            <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+              [legend]="barChartLegend" [chartType]="barChartType" [colors]="chartColors"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+
       </div>
 
-      <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-10">
-        <div style="display: block">
-          <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [legend]="barChartLegend" [chartType]="barChartType" [colors]="chartColors"
-            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-        </div>
-      </div>
+      
 
     </div>
 
