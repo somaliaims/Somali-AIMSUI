@@ -83,7 +83,7 @@ export class StoreService {
     mywindow.document.write("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" type=\"text/css\" />");
     mywindow.document.write('<style>@page { size: auto;  margin: 10mm; }</style></head><body onload="window.print();window.close()">');
     mywindow.document.write(content);
-    mywindow.document.write("<div class=\"col-md-6\"><img src='" + canvas.toDataURL() + "'/></div>");
+    mywindow.document.write("<img src='" + canvas.toDataURL() + "'/>");
     mywindow.document.write('</body></html>');
 
     mywindow.document.close();

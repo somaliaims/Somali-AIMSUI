@@ -172,6 +172,32 @@ html {
   }
 
   /*
+  For printing
+  */
+  @media print {
+    .canvas-container {
+        max-width: 100%;
+        padding-bottom: 50%; /* Canvas is 2000x1000, this will set the height to 50% of width */
+        position: relative;
+    }
+    canvas{
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+    }
+
+    img {
+      object-fit: fill;
+    }
+}
+/**
+End printing
+*/
+
+  /*
   Reports CSS
   */
   .report-subtitle {

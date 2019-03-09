@@ -129,7 +129,7 @@
         </div>
 
         <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-10">
-          <div style="display: block">
+          <div style="display: block;" class="canvas-container">
             <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
               [legend]="barChartLegend" [chartType]="barChartType" [colors]="chartColors"
               (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>

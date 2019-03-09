@@ -22,7 +22,6 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
 import { ProjectsComponent } from './projects/projects.component';
 import { ReportsPanelComponent } from './reports-panel/reports-panel.component';
 import { ManagementComponent } from './management/management.component';
-import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { ManageOrganizationComponent } from './manage-organization/manage-organization.component';
@@ -76,7 +75,6 @@ import { UserSubscriptionComponent } from './user-subscription/user-subscription
     ProjectsComponent,
     ReportsPanelComponent,
     ManagementComponent,
-    DataEntryComponent,
     NotificationComponent,
     OrganizationsComponent,
     ManageOrganizationComponent,

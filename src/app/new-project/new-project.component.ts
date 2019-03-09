@@ -235,6 +235,14 @@ export class NewProjectComponent implements OnInit {
     this.openModal('project-description');
   }
 
+  countAIMSProjects() {
+    if (this.selectedProjects.length == 0)
+      return 0;
+    
+    var aimsProjects = this.selectedProjects.filter(p => p.type == 'AIMS');
+    return aimsProjects.length;
+  }
+
   removeSelectedProject(e) {
     var id = e.target.id;
     this.selectedProjects = this.selectedProjects.filter(p => p.id != id);

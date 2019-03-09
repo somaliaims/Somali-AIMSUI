@@ -7,7 +7,6 @@ import { HomeComponent } from './home/home.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ReportsPanelComponent } from './reports-panel/reports-panel.component';
 import { ManagementComponent } from './management/management.component';
-import { DataEntryComponent } from './data-entry/data-entry.component';
 import { NotificationComponent } from './notification/notification.component';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { ManageOrganizationComponent } from './manage-organization/manage-organization.component';
@@ -57,7 +56,6 @@ export const routes: Routes = [
   { path: 'projects', component: ProjectsComponent },
   { path: 'reports-panel', component: ReportsPanelComponent},
   { path: 'management', component: ManagementComponent },
-  { path: 'data-entry', component: DataEntryComponent },
   { path: 'notification', component: NotificationComponent },
   { path: 'organizations', component: OrganizationsComponent },
   { path: 'manage-organization/:{id}', component: ManageOrganizationComponent, data: { isForEdit: true } },
