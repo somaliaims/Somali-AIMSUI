@@ -243,6 +243,18 @@ export class NewProjectComponent implements OnInit {
     return aimsProjects.length;
   }
 
+  editProject() {
+    var aimsProject = this.selectedProjects.filter(p => p.type == 'AIMS');
+    if (aimsProject.length > 0) {
+      var id = aimsProject[0].identifier;
+      localStorage.setItem('active-project', id);
+      this.selectedProjects = this.selectedProjects.filter(p => p.identifier != id);
+      var projects = JSON.stringify(this.selectedProjects);
+      localStorage.setItem("selected-projects", projects);
+      this.router.navigateByUrl('project-entry');
+    }
+  }
+
   removeSelectedProject(e) {
     var id = e.target.id;
     this.selectedProjects = this.selectedProjects.filter(p => p.id != id);

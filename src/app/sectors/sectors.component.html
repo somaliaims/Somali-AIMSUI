@@ -32,14 +32,11 @@
   <div class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
-        <th>Id</th>
         <th>Sector name</th>
-        <th>Parent sector</th>
         <th>Actions</th>
       </tr>
       <tr *ngFor="let sector of sectorsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
         <td>{{sector.sectorName}}</td>
-        <td>{{sector.parentSector}}</td>
         <td>
           <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
         </td>
