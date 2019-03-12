@@ -148,7 +148,7 @@
                   <label for="title">Start date</label>
                   <div class="input-group">
                     <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="startDate"
-                      [(ngModel)]="model.startDate" ngbDatepicker #s="ngbDatepicker" required>
+                      [(ngModel)]="model.startDate" [maxDate]="calendarMaxDate" ngbDatepicker #s="ngbDatepicker" required>
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
                     </div>
