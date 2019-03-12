@@ -1,102 +1,105 @@
 <div class="container-fluid view-area">
-  <div class="row">
-    <div class="col-md-12">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sectors']">Sector Categories List</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="row">
-
-    <div class="col-sm-12 col-md-6">
-      <div class="card card-signin my-5">
-        <div class="card-body">
-          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Error!</strong> {{errorMessage}}
-          </div>
-          <h5 class="card-title text-center">Sector</h5>
-
-          <form class="form-signin" (ngSubmit)="sectorForm.form.valid && saveSector()" #sectorForm="ngForm">
-
-            <div class="form-group">
-              <label for="sectorTypeId">Parent Sector</label>
-              <select class="form-control" id="parentId" [(ngModel)]="model.parentId" name="parentId"
-                #parentId="ngModel">
-                <option *ngFor="let sector of sectors" [value]="sector.id">{{sector.sectorName}}</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="text"> Name</label>
-              <input type="text" class="form-control" id="sectorName" [(ngModel)]="model.sectorName" name="sectorName"
-                #sectorName="ngModel" required>
-              <div *ngIf="sectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
-                Sector Name is required
-              </div>
-            </div>
-
-            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-              type="submit">{{btnText}}</button>
-          </form>
-        </div>
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sectors']">Sectors List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <div class="col-md-6 col-sm-12">
-      <div [class.disable]="isDvDisabled" class="card card-signin my-5">
-        <div class="card-body">
-          <h5 class="card-title text-center">New Child Sector</h5>
-          <form class="form-signin" (ngSubmit)="childSectorForm.form.valid && saveChildSector()" #childSectorForm="ngForm">
+    <div class="row">
 
-            <div class="form-group">
-              <label for="title">Select Child Sector </label>
-              <select class="form-control" id="childSectorId" [(ngModel)]="childModel.childSectorId" name="childSectorId"
-                #childSectorId="ngModel" required>
-                <option *ngFor="let sector of sectors" [value]="sector.id">{{sector.sectorName}}</option>
-              </select>
-              <div *ngIf="childSectorForm.submitted" [hidden]="childSectorId.valid" class="alert alert-danger">
-                Sector is required
-              </div>
+      <div class="col-sm-12 col-md-6">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Error!</strong> {{errorMessage}}
             </div>
+            <h5 class="card-title text-center">Sector</h5>
 
-            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-              type="submit">Add Child Sector</button>
-          </form>
-        </div>
-      </div>
+            <form class="form-signin" (ngSubmit)="sectorForm.form.valid && saveSector()" #sectorForm="ngForm">
 
-      <div class="card card-signin">
-        <div class="card-body iati-box">
-          <h5 class="card-title text-center">Child Sectors</h5>
-          <table *ngIf="sectorChildren.length > 0" class="table table-bordered">
-            <tr>
-              <th>Sector</th>
-              <th>Action</th>
-            </tr>
-            <tr ngFor="let sector of sectorChildren">
-              <td>{{sector.sectorName}}</td>
-              <td>
-                <a title="Remove from Child" (click)="delete(sector.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
-              </td>
-            </tr>
-          </table>
-          <div class="text-info" *ngIf="sectorChildren.length == 0">
-            <i>No children sectors available</i>
+              <div class="form-group">
+                <label for="sectorTypeId">Parent Sector</label>
+                <select class="form-control" id="parentId" [(ngModel)]="model.parentId" name="parentId"
+                  #parentId="ngModel">
+                  <option *ngFor="let sector of sectors" [value]="sector.id">{{sector.sectorName}}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="text"> Name</label>
+                <input type="text" class="form-control" id="sectorName" [(ngModel)]="model.sectorName" name="sectorName"
+                  #sectorName="ngModel" required>
+                <div *ngIf="sectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
+                  Sector Name is required
+                </div>
+              </div>
+
+              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">{{btnText}}</button>
+            </form>
           </div>
         </div>
       </div>
 
+      <div class="col-md-6 col-sm-12">
+        <div [class.disable]="isDvDisabled" class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">New Child Sector</h5>
+            <form class="form-signin" (ngSubmit)="childSectorForm.form.valid && saveChildSector()"
+              #childSectorForm="ngForm">
+
+              <div class="form-group">
+                <label for="title">Select Child Sector </label>
+                <select class="form-control" id="childSectorId" [(ngModel)]="childModel.childSectorId"
+                  name="childSectorId" #childSectorId="ngModel" required>
+                  <option *ngFor="let sector of sectors" [value]="sector.id">{{sector.sectorName}}</option>
+                </select>
+                <div *ngIf="childSectorForm.submitted" [hidden]="childSectorId.valid" class="alert alert-danger">
+                  Sector is required
+                </div>
+              </div>
+
+              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">Add Child Sector</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card card-signin">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Child Sectors</h5>
+            <table *ngIf="sectorChildren.length > 0" class="table table-bordered">
+              <tr>
+                <th>Sector</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let sector of sectorChildren">
+                <td>{{sector.sectorName}}</td>
+                <td>
+                  <a title="Remove from Child" (click)="removeChildSector(sector.id)" class="btn btn-danger"><i
+                      class="fa fa-trash color-white"></i></a>
+                </td>
+              </tr>
+            </table>
+            <div class="text-info" *ngIf="sectorChildren.length == 0">
+              <i>No children sectors available</i>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-  </div>
-
+  </block-ui>
 </div>
 
 <error-modal message={{errorMessage}}></error-modal>

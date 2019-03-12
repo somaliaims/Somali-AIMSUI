@@ -63,7 +63,6 @@ export class ManageSectorComponent implements OnInit {
     });
   }
 
-
   getSectors() {
     this.sectorService.getSectorsList().subscribe(
       data => {
@@ -178,7 +177,7 @@ export class ManageSectorComponent implements OnInit {
 
   removeChildSector(id) {
     this.blockUI.start('Removing sector child...');
-    this.sectorService.setChild(this.model.id.toString(), id).subscribe(
+    this.sectorService.removeChild(this.model.id.toString(), id).subscribe(
       data => {
         if (data) {
           var sector = this.sectors.filter(s => s.id == id);
