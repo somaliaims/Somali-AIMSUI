@@ -111,6 +111,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorTypesUrl + '/' + criteria);
     }
 
+    getSectorChildrenUrl(id: string) {
+        return(this.BASE_URL + urlsList.urls.sectorChildren + id);
+    }
+
     getSectorTypeUrl() {
         return (this.BASE_URL + urlsList.urls.sectorTypesUrl);
     }

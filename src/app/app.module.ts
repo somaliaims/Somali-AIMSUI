@@ -29,10 +29,6 @@ import { LocationsComponent } from './locations/locations.component';
 import { ManageLocationComponent } from './manage-location/manage-location.component';
 import { SectorTypesComponent } from './sector-types/sector-types.component';
 import { ManageSectortypeComponent } from './manage-sectortype/manage-sectortype.component';
-import { SectorCategoriesComponent } from './sector-categories/sector-categories.component';
-import { ManageSectorCategoryComponent } from './manage-sector-category/manage-sectorcategory.component';
-import { SectorSubCategoriesComponent } from './sector-subcategories/sector-subcategories.component';
-import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/manage-sector-subcategory.component';
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { ManageProjectComponent } from './manage-project/manage-project.component';
@@ -82,10 +78,6 @@ import { UserSubscriptionComponent } from './user-subscription/user-subscription
     ManageLocationComponent,
     SectorTypesComponent,
     ManageSectortypeComponent,
-    SectorCategoriesComponent,
-    ManageSectorCategoryComponent,
-    SectorSubCategoriesComponent,
-    ManageSectorSubCategoryComponent,
     SectorsComponent,
     ManageSectorComponent,
     ManageProjectComponent,

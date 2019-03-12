@@ -75,8 +75,21 @@
       <div class="card card-signin">
         <div class="card-body iati-box">
           <h5 class="card-title text-center">Child Sectors</h5>
-          <table class="table table-bordered">
+          <table *ngIf="sectorChildren.length > 0" class="table table-bordered">
+            <tr>
+              <th>Sector</th>
+              <th>Action</th>
+            </tr>
+            <tr ngFor="let sector of sectorChildren">
+              <td>{{sector.sectorName}}</td>
+              <td>
+                <a title="Remove from Child" (click)="delete(sector.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+              </td>
+            </tr>
           </table>
+          <div class="text-info" *ngIf="sectorChildren.length == 0">
+            <i>No children sectors available</i>
+          </div>
         </div>
       </div>
 

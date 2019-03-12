@@ -24,6 +24,7 @@ export const urls = {
 	sectorSubCategoriesUrl: "SectorSubCategory",
 	getSectorSubCategory: "SectorSubCategory/GetById/",
 	sectorsUrl: "Sector",
+	sectorChildren: "Sector/GetChildren/",
 	financialYearsUrl: "FinancialYear",
 	getSector: "Sector/GetById/",
 	projectTypesUrl: "ProjectType",

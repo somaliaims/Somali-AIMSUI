@@ -14,10 +14,6 @@ import { LocationsComponent } from './locations/locations.component';
 import { ManageLocationComponent } from './manage-location/manage-location.component';
 import { SectorTypesComponent } from './sector-types/sector-types.component';
 import { ManageSectortypeComponent } from './manage-sectortype/manage-sectortype.component';
-import { SectorCategoriesComponent } from './sector-categories/sector-categories.component';
-import { ManageSectorCategoryComponent } from './manage-sector-category/manage-sectorcategory.component';
-import { SectorSubCategoriesComponent } from './sector-subcategories/sector-subcategories.component';
-import { ManageSectorSubCategoryComponent } from './manage-sector-subcategory/manage-sector-subcategory.component';
 import { SectorsComponent } from './sectors/sectors.component';
 import { ManageSectorComponent } from './manage-sector/manage-sector.component';
 import { PasswordChangeComponent } from './password-change/password-change.component';
@@ -66,12 +62,6 @@ export const routes: Routes = [
   { path: 'sector-types', component: SectorTypesComponent },
   { path: 'manage-sectortype/:{id}', component: ManageSectortypeComponent, data: { isForEdit: true } },
   { path: 'manage-sectortype', component: ManageSectortypeComponent },
-  { path: 'sector-categories', component: SectorCategoriesComponent },
-  { path: 'manage-sectorcategory/:{id}', component: ManageSectorCategoryComponent, data: { isForEdit: true } },
-  { path: 'manage-sectorcategory', component: ManageSectorCategoryComponent },
-  { path: 'sector-subcategories', component: SectorSubCategoriesComponent },
-  { path: 'manage-sectorsubcategory/:{id}', component: ManageSectorSubCategoryComponent, data: { isForEdit: true } },
-  { path: 'manage-sectorsubcategory', component: ManageSectorSubCategoryComponent },
   { path: 'sectors', component: SectorsComponent },
   { path: 'manage-sector', component: ManageSectorComponent },
   { path: 'manage-sector/:{id}', component: ManageSectorComponent, data: { isForEdit: true } },

@@ -22,6 +22,12 @@ export class SectorService {
       catchError(this.storeService.handleError<any>('Sectors')));
   }
 
+  getSectorChildren(id: string) {
+    var url = this.urlHelper.getSectorChildrenUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sector Children')));
+  }
+
   searchSectors(filter: { name: string } = { name: '' }, page = 1): Observable<Sector[]> {
     var url = this.urlHelper.getSearchSectorsUrl(name);
     return this.httpClient.get<Sector[]>(url)

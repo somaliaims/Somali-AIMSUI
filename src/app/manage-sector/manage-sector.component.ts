@@ -3,9 +3,6 @@ import { SectorService } from '../services/sector.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
-import { SectorTypeService } from '../services/sector-types.service';
-import { SectorCategoryService } from '../services/sector-category-service';
-import { SectorSubCategoryService } from '../services/sector-subcategory-service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
@@ -25,10 +22,7 @@ export class ManageSectorComponent implements OnInit {
   errorMessage: string = '';
   sectors: any = [];
   sectorTypes: any = [];
-  categories: any = [];
-  filteredCategories: any = [];
-  subCategories: any = [];
-  filteredSubCategories: any = [];
+  sectorChildren: any = [];
   requestNo: number = 0;
   isError: boolean = false;
   model = { id: 0, sectorName: null, parentId: 0 };
@@ -55,6 +49,7 @@ export class ManageSectorComponent implements OnInit {
         this.isForEdit = true;
         this.sectorId = id;
         this.loadSectorData();
+        this.getSectorChildren(id);
         this.isDvDisabled = false;
       }
     }
@@ -71,7 +66,22 @@ export class ManageSectorComponent implements OnInit {
   getSectors() {
     this.sectorService.getSectorsList().subscribe(
       data => {
-        this.sectors = data;
+        if (data) {
+          this.sectors = data;
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  getSectorChildren(id: string) {
+    this.sectorService.getSectorChildren(id).subscribe(
+      data => {
+        if (data) {
+          this.sectorChildren = data;
+        }
       },
       error => {
         console.log(error);
