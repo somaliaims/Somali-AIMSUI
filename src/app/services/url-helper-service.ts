@@ -119,6 +119,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorTypesUrl);
     }
 
+    setSectorChildUrl(sectorId: string, childId: string) {
+        return (this.BASE_URL + urlsList.urls.setSectorChild + sectorId + '/' + childId);
+    }
+
+    removeSectorChildUrl(sectorId: string, childId: string) {
+        return (this.BASE_URL + urlsList.urls.removeSectorChild + sectorId + '/' + childId);
+    }
+
     getSingleSectorCategoryUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getSectorCategory + id);
     }

@@ -69,4 +69,16 @@ export class SectorService {
         catchError(this.storeService.handleError<any>('Update Sector')));
   }
 
+  setChild(sectorId: string, childId: string) {
+    var url = this.urlHelper.setSectorChildUrl(sectorId, childId);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sector Child')));
+  }
+
+  removeChild(sectorId: string, childId: string) {
+    var url = this.urlHelper.removeSectorChildUrl(sectorId, childId);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sector Child')));
+  }
+
 }

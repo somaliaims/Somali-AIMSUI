@@ -27,6 +27,8 @@ export const urls = {
 	sectorChildren: "Sector/GetChildren/",
 	financialYearsUrl: "FinancialYear",
 	getSector: "Sector/GetById/",
+	setSectorChild: "Sector/SetChild/",
+	removeSectorChild: "Sector/RemoveChild/",
 	projectTypesUrl: "ProjectType",
 	getProjectType: "ProjectType/GetById/",
 	projectsUrl: "Project",

@@ -5,6 +5,7 @@ import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 @Component({
   selector: 'app-manage-sector',
@@ -31,7 +32,7 @@ export class ManageSectorComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private sectorService: SectorService, private route: ActivatedRoute,
-    private router: Router,
+    private router: Router, private errorModal: ErrorModalComponent,
     private storeService: StoreService, private securityService: SecurityHelperService) {
   }
 
@@ -149,16 +150,18 @@ export class ManageSectorComponent implements OnInit {
   }
 
   saveChildSector() {
-    var model = {
-      parentSectorId: this.model.id,
-      childSector: this.childModel.childSectorId
-    };
-
-    this.blockUI.start('Saving sector...');
-    this.sectorService.addSector(model).subscribe(
+    this.blockUI.start('Saving sector child...');
+    this.sectorService.setChild(this.model.id.toString(), this.childModel.childSectorId).subscribe(
       data => {
         if (data) {
-
+          var sector = this.sectors.filter(s => s.id == this.childModel.childSectorId);
+          if (sector && sector.length > 0) {
+            var newChild = {
+              id: sector[0].id,
+              sectorName: sector[0].sectorName
+            }
+            this.sectorChildren.push(newChild);
+          }
         } else {
           this.resetFormState();
         }
@@ -166,7 +169,34 @@ export class ManageSectorComponent implements OnInit {
       },
       error => {
         this.errorMessage = error;
-        this.isError = true;
+        this.errorModal.openModal();
+        this.resetFormState();
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  removeChildSector(id) {
+    this.blockUI.start('Removing sector child...');
+    this.sectorService.setChild(this.model.id.toString(), id).subscribe(
+      data => {
+        if (data) {
+          var sector = this.sectors.filter(s => s.id == id);
+          if (sector && sector.length > 0) {
+            var newChild = {
+              id: sector[0].id,
+              sectorName: sector[0].sectorName
+            }
+            this.sectorChildren = this.sectorChildren.filter(s => s.id != id);
+          }
+        } else {
+          this.resetFormState();
+        }
+        this.blockUI.stop();
+      },
+      error => {
+        this.errorMessage = error;
+        this.errorModal.openModal();
         this.resetFormState();
         this.blockUI.stop();
       }

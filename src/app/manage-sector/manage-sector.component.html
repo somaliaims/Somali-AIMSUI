@@ -59,7 +59,7 @@
               <label for="title">Select Child Sector </label>
               <select class="form-control" id="childSectorId" [(ngModel)]="childModel.childSectorId" name="childSectorId"
                 #childSectorId="ngModel" required>
-                <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}</option>
+                <option *ngFor="let sector of sectors" [value]="sector.id">{{sector.sectorName}}</option>
               </select>
               <div *ngIf="childSectorForm.submitted" [hidden]="childSectorId.valid" class="alert alert-danger">
                 Sector is required
@@ -98,3 +98,5 @@
   </div>
 
 </div>
+
+<error-modal message={{errorMessage}}></error-modal>
