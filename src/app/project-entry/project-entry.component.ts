@@ -162,9 +162,7 @@ export class ProjectEntryComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
-    var currentDate = new Date();
-    var proposedYear = currentDate.getFullYear() + 50;
-    this.calendarMaxDate = {year: proposedYear, month: 12, day: 31};
+    this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
     if (projectId && projectId != '0') {

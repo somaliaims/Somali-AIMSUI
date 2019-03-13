@@ -11,6 +11,7 @@ import { Settings } from '../config/settings';
 export class StoreService {
 
   private requestNumber: number = 0;
+  private yearGap: number = 50;
   private messageSource = new BehaviorSubject<RegistrationModel>(null);
   currentRegistration = this.messageSource.asObservable();
 
@@ -93,6 +94,17 @@ export class StoreService {
 
   sumValues(prev, next){
     return parseInt(prev) + parseInt(next);
+  }
+
+  getCalendarUpperLimit() {
+    var dated = new Date();
+    var proposedYear = dated.getFullYear() + this.yearGap;
+    var calendarMaxLimit = { year: proposedYear, month: 12, day: 31};
+    return calendarMaxLimit;
+  }
+
+  getCalendarLowerLimit() {
+
   }
 
 }

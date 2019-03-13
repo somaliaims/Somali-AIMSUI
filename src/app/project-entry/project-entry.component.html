@@ -159,7 +159,7 @@
                   <label for="title">End date</label>
                   <div class="input-group">
                     <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="endDate"
-                      [(ngModel)]="model.endDate" ngbDatepicker #e="ngbDatepicker" required>
+                      [(ngModel)]="model.endDate" [maxDate]="calendarMaxDate" ngbDatepicker #e="ngbDatepicker" required>
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
                     </div>
