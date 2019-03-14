@@ -73,5 +73,6 @@ export const urls = {
 	getCurrency: "Currency",
 	reportNamesUrl: "ReportName",
 	userSubscriptionsUrl: "ReportSubscription",
-	subscribeToReports: "ReportSubscription/Subscribe"
+	subscribeToReports: "ReportSubscription/Subscribe",
+	exchangeRateUrl: "ExchangeRate"
 };

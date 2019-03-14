@@ -4,6 +4,7 @@ import { UserService } from '../services/user-service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
+import { CurrencyService } from '../services/currency.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
   requestNo: number = 0;
 
   constructor(private userService: UserService, private securityService: SecurityHelperService,
-    private router: Router, private storeService: StoreService) { }
+    private router: Router, private storeService: StoreService,
+    private currencyService: CurrencyService) { }
 
   ngOnInit() {
     var isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -53,22 +55,33 @@ export class LoginComponent implements OnInit {
     this.isBtnDisabled = true;
     this.requestNo = this.storeService.getNewRequestNumber();
 
-    this.userService.authenticateUser(this.model.Email, this.model.Password).subscribe( data => {
+    this.userService.authenticateUser(this.model.Email, this.model.Password).subscribe(data => {
       if (data) {
         if (data.token) {
+          this.getExchangeRates();
           this.securityService.storeLoginData(data);
-            location.reload();
+          location.reload();
         } else {
-            this.errorMessage = 'Username/Password entered is incorrect';
-            this.isError = true;
-            this.resetDefaultStatus();
+          this.errorMessage = 'Username/Password entered is incorrect';
+          this.isError = true;
+          this.resetDefaultStatus();
         }
-      } 
+      }
     },
-    error => {
-      console.log("Request Failed: ", error);
-      this.resetDefaultStatus();
-    });
+      error => {
+        console.log("Request Failed: ", error);
+        this.resetDefaultStatus();
+      });
+  }
+
+  getExchangeRates() {
+    this.currencyService.getExchangeRatesList().subscribe(
+      data => {
+        if (data) {
+          this.storeService.storeExchangeRates(data.rates);
+        }
+      }
+    )
   }
 
   resetDefaultStatus() {

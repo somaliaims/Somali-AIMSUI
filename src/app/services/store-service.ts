@@ -107,4 +107,12 @@ export class StoreService {
 
   }
 
+  storeExchangeRates(rates) {
+    localStorage.setItem('ratesList', rates);
+  }
+
+  clearExchangeRates() {
+    localStorage.removeItem('ratesList');
+  }
+
 }
