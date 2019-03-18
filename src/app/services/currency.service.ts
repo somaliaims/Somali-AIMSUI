@@ -26,6 +26,12 @@ export class CurrencyService {
             catchError(this.storeService.handleError<any>('Exchange Rates')));
     }
 
+    getExchangeRatesForDate(dated: string) {
+        var url = this.urlHelper.getExchangeRatesForDateUrl(dated);
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Exchange Rates')));
+    }
+
     searchCurrencies(criteria: string) {
         var url = this.urlHelper.getSearchCurrencyUrl(criteria);
         return this.httpClient.get(url, httpOptions).pipe(
@@ -40,9 +46,9 @@ export class CurrencyService {
     }
 
     deleteCurrency(id: string) {
-        var url  = this.urlHelper.getDeleteCurrencyUrl(id);
-          return this.httpClient.delete(url, httpOptions).pipe(
-                  catchError(this.storeService.handleError<any>('Delete Currency')));
-      }
+        var url = this.urlHelper.getDeleteCurrencyUrl(id);
+        return this.httpClient.delete(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Delete Currency')));
+    }
 
 }

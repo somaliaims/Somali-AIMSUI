@@ -83,6 +83,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getCurrency);
     }
 
+    getExchangeRatesUrl() {
+        return (this.BASE_URL + urlsList.urls.exchangeRateUrl)
+    }
+
+    getExchangeRatesForDateUrl(dated: string) {
+        return (this.BASE_URL + urlsList.urls.exchangeRateForDate + dated);
+    }
+
     getSearchCurrencyUrl(criteria: string) {
         return (this.BASE_URL + urlsList.urls.getCurrency + '/' + criteria);
     }

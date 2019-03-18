@@ -111,6 +111,10 @@ export class StoreService {
     localStorage.setItem('ratesList', rates);
   }
 
+  getCachedRatesList() {
+    return localStorage.getItem('ratesList');
+  }
+
   clearExchangeRates() {
     localStorage.removeItem('ratesList');
   }

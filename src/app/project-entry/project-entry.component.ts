@@ -48,6 +48,7 @@ export class ProjectEntryComponent implements OnInit {
   btnProjectImplementerText: string = 'Add Implementer';
   sectorPlaceHolder: string = 'Enter/Select Sector';
   locationPlaceHolder: string = 'Enter/Select Location';
+  exRatePlaceHolder: string = 'Exchange rate';
   isProjectBtnDisabled: boolean = false;
   isProjectBtnSectorDisabled: boolean = false;
   isProjectLocationBtnDisabled: boolean = false;
@@ -57,6 +58,7 @@ export class ProjectEntryComponent implements OnInit {
   isSectorVisible: boolean = false;
   isAimsLoading: boolean = false;
   isIatiLoading: boolean = false;
+  isExRateReadonly: boolean = false;
   requestNo: number = 0;
   isError: boolean = false;
   infoMessage: string = '';
@@ -97,6 +99,7 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectFundersList: any = [];
   currentProjectImplementersList: any = [];
   currentProjectDisbursementsList: any = [];
+  exchangeRatesList: any = [];
 
   viewProjectLocations: any = [];
   viewProjectSectors: any = [];
@@ -127,7 +130,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorModel = { projectId: 0, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
-  funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: 0.00 };
+  funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
   disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0 };
 
@@ -222,6 +225,7 @@ export class ProjectEntryComponent implements OnInit {
         aimsIdsArr.push(id);
       });
       this.loadAIMSProjectsForIds(aimsIdsArr);
+      this.getExchangeRatesList();
     }
 
     this.currencyService.getCurrenciesList().subscribe(
@@ -1542,6 +1546,32 @@ export class ProjectEntryComponent implements OnInit {
   calculateLocationPercentage() {
     var percentageList = this.currentProjectLocationsList.map(s => parseInt(s.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
+  }
+
+  getExchangeRatesList() {
+    this.currencyService.getExchangeRatesList().subscribe(
+      data => {
+        if (data) {
+          this.exchangeRatesList = data.rates;
+        }
+      }
+    );
+  }
+
+  getCurrencyExchangeRate() {
+    this.exRatePlaceHolder = 'Fetching latest rate...';
+    this.isExRateReadonly = true;
+    var currency = this.funderModel.currency;
+    var foundRate = this.exchangeRatesList.filter(e => e.currency == currency);
+    if (foundRate.length > 0) {
+      var proposedRate = foundRate[0].rate;
+      if (proposedRate < 1) {
+        this.funderModel.exchangeRate = (1 / proposedRate).toFixed(2);
+      } else {
+        this.funderModel.exchangeRate = proposedRate;
+      }
+    } 
+    this.isExRateReadonly = false;
   }
 
   calculateProjectFunding() {

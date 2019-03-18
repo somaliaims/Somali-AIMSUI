@@ -816,7 +816,7 @@
               <div class="form-group">
                 <label for="currency">Currency</label>
                 <select class="form-control" id="currency" [(ngModel)]="funderModel.currency" name="currency"
-                  #currency="ngModel" required>
+                  #currency="ngModel" (change)="getCurrencyExchangeRate()" required>
                   <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currency}}</option>
                 </select>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
@@ -826,7 +826,7 @@
 
               <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 USD</label>
-                <input type="number" class="form-control" id="exchangeRate" [(ngModel)]="funderModel.exchangeRate"
+                <input type="number" [readonly]="isExRateReadonly" class="form-control" id="exchangeRate" [(ngModel)]="funderModel.exchangeRate"
                   name="exchangeRate" maxlength="9" min="1" max="1000" #exchangeRate="ngModel" />
                   <div *ngIf="projectFunderForm.submitted" [hidden]="exchangeRate.value > 0" class="alert alert-danger">
                     Exchange for USD must not be zero or less

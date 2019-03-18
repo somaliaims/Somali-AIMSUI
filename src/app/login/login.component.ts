@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
     this.userService.authenticateUser(this.model.Email, this.model.Password).subscribe(data => {
       if (data) {
         if (data.token) {
-          this.getExchangeRates();
+          //this.getExchangeRates();
           this.securityService.storeLoginData(data);
           location.reload();
         } else {
