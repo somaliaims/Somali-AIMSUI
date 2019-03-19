@@ -201,8 +201,6 @@ export class ProjectEntryComponent implements OnInit {
     if (projects) {
       var parsedProjects = JSON.parse(projects);
       this.selectedProjects = parsedProjects;
-
-      console.log(this.selectedProjects);
       //Load iati projects
       var filteredIATI = this.selectedProjects.filter(function (project) {
         return project.type == 'IATI';
