@@ -75,6 +75,10 @@ html {
     margin-top: 10px !important;
   }
 
+  .margin-top-5 {
+    margin-top: 5px !important;
+  }
+
   .disable {
     pointer-events: none !important;
     opacity: 0.5 !important;

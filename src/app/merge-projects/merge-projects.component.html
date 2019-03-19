@@ -73,19 +73,36 @@
             <table class="table table-bordered">
               <tr *ngFor="let project of selectedProjects">
                 <td>
-                  <span class="float-left">
+                  <div class="float-left">
                     <b>Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                    id="iproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-                    Details</a><br />
-                  </span>
-                  <span class="float-right">
+                      id="iproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+                      Details</a><br />
+                  </div>
+                  <div class="float-left">
+                    <table>
+                      <tr>
+                        <td class="text-right">
+                          <b>Start Date: </b>{{project.startDate}}&nbsp;<button id="btnsdate-{{project.id}}"
+                            (click)="enterStartDate($event)" class="btn btn-sm btn-primary">>></button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-right">
+                          <b>End Date: </b>{{project.endDate}}&nbsp;<button id="btnsdate-{{project.id}}"
+                            (click)="enterEndDate($event)" class="btn btn-sm btn-primary">>></button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="float-right margin-top-5">
                     <button type="button" id="{{project.id}}" class="btn btn-success btn-sm"
                       (click)="deSelectForMerge($event)">De-Select</button>&nbsp;
-                    <button type="button" id="selected-{{project.id}}" class="btn btn-info btn-sm" (click)="enterTitle($event)">Title
+                    <button type="button" id="selected-{{project.id}}" class="btn btn-info btn-sm"
+                      (click)="enterTitle($event)">Title
                       >></button>&nbsp;
                     <button type="button" id="selected-{{project.id}}" class="btn btn-warning btn-sm"
                       (click)="enterDescription($event)">Description >></button>&nbsp;
-                  </span>
+                  </div>
                 </td>
               </tr>
             </table>
