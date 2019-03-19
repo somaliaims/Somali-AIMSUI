@@ -14,9 +14,11 @@ export class MergeProjectsComponent implements OnInit {
   filteredIatiProjects: any = [];
   filteredAIMSProjects: any = [];
   selectedProjects: any = [];
+  sourceProjects: any = [];
   aimsProjects: any = [];
   isIatiLoading: boolean = true;
   isAimsLoading: boolean = true;
+  model: any = { id: 0, title: '', startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private iatiService: IATIService) { }
 
@@ -56,7 +58,7 @@ export class MergeProjectsComponent implements OnInit {
     this.isIatiLoading = true;
     this.iatiService.extractProjectsByIds(modelArr).subscribe(
       data => {
-        this.iatiProjects = data;
+        this.sourceProjects = data;
         this.isIatiLoading = false;
       },
       error => {
@@ -66,18 +68,46 @@ export class MergeProjectsComponent implements OnInit {
     )
   }
 
+  selectForMerge(e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.aimsProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      this.selectedProjects.push(project);
+    }
+    this.aimsProjects = this.aimsProjects.filter(p => p.id != id);
+  }
+
+  deSelectForMerge(e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.selectedProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      this.aimsProjects.push(project);
+    }
+    this.selectedProjects = this.selectedProjects.filter(p => p.id != id);
+  }
+
   loadAIMSProjectsForIds(modelArr: any) {
     this.isAimsLoading = true;
     this.projectService.extractProjectsByIds(modelArr).subscribe(
       data => {
-        this.aimsProjects = data;
-        this.selectedProjects = this.aimsProjects;
+        this.selectedProjects = data;
         this.isAimsLoading = false;
       },
       error => {
         this.isAimsLoading = false;
       }
     )
+  }
+
+  mergeAndSaveProject() {
+    var Ids = this.selectedProjects.map(p => p.id);
+    var model = {
+      
+    };
+  }
+
+  proceedDataEntry() {
+
   }
 
 }

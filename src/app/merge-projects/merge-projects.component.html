@@ -10,84 +10,65 @@
   </div>
 
   <div class="row">
-
-    <div class="col-md-12 margin-top-10">
-      <div class="float-right">
-        <table>
-          <tr>
-            <td>
-                <button [class.disable]='isSearchingProjects' class="btn btn-info btn-lg float-right"
-                (click)="proceedConfirmation()">Proceed with Merge</button>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
     <!--IATI Activity Box-->
-    <div class="col-md-6">
+    <div class="col-md-4 col-sm-12">
 
-      <div class="col-md-12 col-sm-12">
-        <div class="card card-signin my-5">
-          <div class="card-body iati-box">
-            <h5 class="card-title text-center">Source projects</h5>
-            <table class="table table-bordered">
-              <tr *ngIf="isAimsLoading">
-                <span class="text-info">Wait loading aims data...</span>
-              </tr>
-              <tr *ngFor="let project of aimsProjects">
-                <td>
-                  <span class="float-left">
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-                    <b>Start Date: </b>{{project.startDate}}<br />
-                    <span class="badge badge-warning">AIMS</span>
-                  </span>
-                  <span class="float-right">
-                    <button id="aimst-{{project.id}}" class="btn btn-primary btn-sm"
-                      (click)="viewProjectAIMS($event)">View detail</button>
-                    &nbsp;
-                    <button id="aimsd-{{project.id}}" class="btn btn-success btn-sm"
-                      (click)="mergeProject($event)">Merge
-                      >></button>
-                  </span>
-                </td>
-              </tr>
+      <div class="card card-signin my-5">
+        <div class="card-body iati-box">
+          <h5 class="card-title text-center">Source projects</h5>
+          <table class="table table-bordered">
+            <tr *ngIf="isAimsLoading">
+              <span class="text-info">Wait loading aims data...</span>
+            </tr>
+            <tr *ngFor="let project of aimsProjects">
+              <td>
+                <span class="float-left">
+                  <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+                    Details</a><br />
+                  <b>Start Date: </b>{{project.startDate}}<br />
+                  <span class="badge badge-warning">AIMS</span>
+                </span>
+                <span class="float-right">
+                  <button id="aimst-{{project.id}}" class="btn btn-primary btn-sm"
+                    (click)="viewProjectAIMS($event)">View detail</button>&nbsp;
+                  <button id="aimsd-{{project.id}}" class="btn btn-success btn-sm"
+                    (click)="selectForMerge($event)">Merge
+                    >></button>
+                </span>
+              </td>
+            </tr>
 
-              <tr *ngIf="isIatiLoading">
-                <span class="text-info">Wait loading iati data...</span>
-              </tr>
-              <tr *ngFor="let project of iatiProjects">
-                <td>
-                  <span class="float-left">
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a><br />
-                    <b>Currency: </b>{{project.defaultCurrency}}<br />
-                    <span class="badge badge-warning">IATI</span>
-                  </span>
-                  <span class="float-right">
-                    <button id="iatit-{{project.id}}" class="btn btn-success btn-sm"
-                      (click)="viewProjectIATI($event)">View detail</button>
-                  </span>
-                </td>
-              </tr>
+            <tr *ngIf="isIatiLoading">
+              <span class="text-info">Wait loading iati data...</span>
+            </tr>
+            <tr *ngFor="let project of sourceProjects">
+              <td>
+                <span class="float-left">
+                  <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
+                    Details</a><br />
+                  <b>Currency: </b>{{project.defaultCurrency}}<br />
+                  <span class="badge badge-warning">IATI</span>
+                </span>
+                <span class="float-right">
+                  <button id="iatit-{{project.id}}" class="btn btn-success btn-sm"
+                    (click)="viewProjectIATI($event)">View detail</button>
+                </span>
+              </td>
+            </tr>
 
-            </table>
-          </div>
+          </table>
         </div>
       </div>
 
     </div>
 
     <!--Selected projects box-->
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-4 col-sm-12">
       <div class="card card-signin my-5">
         <div class="card-body iati-box">
-          <h5 class="card-title text-center">Selected Projects</h5>
+          <h5 class="card-title text-center">Selected AIMS projects</h5>
           <div>
             <table class="table table-bordered">
               <tr *ngFor="let project of selectedProjects">
@@ -100,7 +81,7 @@
                       (click)="showSelectedProjectDescription($event)">Description</button>
                     &nbsp;
                     <button type="button" id="{{project.id}}" class="btn btn-success btn-sm"
-                      (click)="removeSelectedProject($event)">De-Select</button>
+                      (click)="deSelectForMerge($event)">De-Select</button>
                   </span>
                 </td>
               </tr>
@@ -110,10 +91,70 @@
       </div>
     </div>
 
+    <div class="col-md-4 col-sm-12">
+      <div class="card card-signin my-5">
+        <div class="card-body iati-box">
+          <h5 class="card-title text-center">New Project Detail</h5>
+
+          <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject()" #projectForm="ngForm">
+            <div class="row">
+              <div class="col-md-12">
+                <span class="float-left">
+                  <h5 class="card-title">New project</h5>
+                </span>
+                <span class="float-right">
+                  <button class="btn btn-info" [class.disable]="isProjectBtnDisabled"
+                    class="btn btn-info btn-block text-uppercase" type="submit">Merge and Next >></button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="title">Project title</label>
+              <input type="text" class="form-control" id="title" maxlength="1000" [(ngModel)]="model.title" name="title"
+                #title="ngModel" required>
+              <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
+                Project title is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="title">Start date</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="startDate"
+                  [(ngModel)]="model.startDate" [maxDate]="calendarMaxDate" ngbDatepicker #s="ngbDatepicker" required>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="title">End date</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="endDate"
+                  [(ngModel)]="model.endDate" [maxDate]="calendarMaxDate" ngbDatepicker #e="ngbDatepicker" required>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="title">Description</label>
+              <textarea class="form-control" id="description" [(ngModel)]="model.description" name="description"
+                #description="ngModel" rows="7" maxlength="10000">
+                    </textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
   </div>
   <!--End of Boxes row-->
-
 </div>
+
 
 <error-modal message={{errorMessage}}></error-modal>
 
