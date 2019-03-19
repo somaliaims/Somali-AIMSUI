@@ -255,6 +255,12 @@ export class NewProjectComponent implements OnInit {
     }
   }
 
+  mergeProjects() {
+    var projects = JSON.stringify(this.selectedProjects);
+    localStorage.setItem("merge-projects", projects);
+    this.router.navigateByUrl('merge-projects');
+  }
+
   removeSelectedProject(e) {
     var id = e.target.id;
     this.selectedProjects = this.selectedProjects.filter(p => p.id != id);

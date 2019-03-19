@@ -262,7 +262,6 @@ export class ProjectEntryComponent implements OnInit {
         this.isIatiLoading = false;
       },
       error => {
-        console.log(error);
         this.isIatiLoading = false;
       }
     )
@@ -273,7 +272,6 @@ export class ProjectEntryComponent implements OnInit {
     this.projectService.extractProjectsByIds(modelArr).subscribe(
       data => {
         this.aimsProjects = data;
-        console.log(this.aimsProjects);
         this.isAimsLoading = false;
       },
       error => {
@@ -564,10 +562,12 @@ export class ProjectEntryComponent implements OnInit {
     var selectProject = this.iatiProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
       var funders = selectProject[0].participatingOrganizations;
-      this.funderEntryType = 'iati';
       var selectFunder = funders.filter(f => f.id == funderId);
       if (selectFunder && selectFunder.length > 0) {
-        this.funderModel.funder = selectFunder[0].name;
+        if (selectFunder[0].name) {
+          this.funderModel.funder = selectFunder[0].name;
+        this.funderEntryType = 'iati';
+        }
       }
     }
   }

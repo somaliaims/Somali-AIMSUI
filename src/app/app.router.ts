@@ -38,6 +38,7 @@ import { ManageCurrencyComponent } from './manage-currency/manage-currency.compo
 import { FinancialYearsComponent } from './financial-years/financial-years.component';
 import { ManageYearComponent } from './manage-year/manage-year.component';
 import { UserSubscriptionComponent } from './user-subscription/user-subscription.component';
+import { MergeProjectsComponent } from './merge-projects/merge-projects.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -85,7 +86,8 @@ export const routes: Routes = [
   { path: 'manage-currency', component: ManageCurrencyComponent },
   { path: 'financial-years', component: FinancialYearsComponent },
   { path: 'manage-year', component:  ManageYearComponent},
-  { path: 'user-subscriptions', component: UserSubscriptionComponent }
+  { path: 'user-subscriptions', component: UserSubscriptionComponent },
+  { path: 'merge-projects', component: MergeProjectsComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);
