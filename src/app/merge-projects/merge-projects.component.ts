@@ -7,6 +7,7 @@ import { Messages } from '../config/messages';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from '../services/store-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-merge-projects',
@@ -47,7 +48,7 @@ export class MergeProjectsComponent implements OnInit {
   constructor(private projectService: ProjectService, private iatiService: IATIService,
     private projectInfoModal: ProjectInfoModalComponent, private storeService: StoreService,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
-    private errorModal: ErrorModalComponent) { }
+    private errorModal: ErrorModalComponent, private router: Router) { }
 
   ngOnInit() {
     var projects = localStorage.getItem('merge-projects');
@@ -245,6 +246,7 @@ export class MergeProjectsComponent implements OnInit {
           localStorage.setItem('active-project', data);
           localStorage.setItem('selected-projects', projects);
           this.blockUI.stop();
+          this.router.navigateByUrl('project-entry');
         }
       }
     )
