@@ -52,6 +52,13 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('New Project')));
     }
 
+    mergeProjects(model: any) {
+      var url = this.urlHelper.getMergeProjectsUrl();
+      return this.httpClient.post(url, JSON.stringify(model), httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Merge Projects'))
+      );
+    }
+
     searchProjectsViewByCriteria(model: any) {
       var url  = this.urlHelper.getSearchProjectsViewUrl();
         return this.httpClient.post(url,

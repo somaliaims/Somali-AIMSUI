@@ -3,6 +3,8 @@ import { ProjectService } from '../services/project.service';
 import { IATIService } from '../services/iati.service';
 import { ProjectInfoModalComponent } from '../project-info-modal/project-info-modal.component';
 import { ProjectiInfoModalComponent } from '../projecti-info-modal/projecti-info-modal.component';
+import { Messages } from '../config/messages';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 @Component({
   selector: 'app-merge-projects',
@@ -11,6 +13,8 @@ import { ProjectiInfoModalComponent } from '../projecti-info-modal/projecti-info
 })
 export class MergeProjectsComponent implements OnInit {
 
+  isProjectBtnDisabled: boolean = true;
+  errorMessage: string = '';
   permissions: any = [];
   iatiProjects: any = [];
   filteredIatiProjects: any = [];
@@ -34,7 +38,8 @@ export class MergeProjectsComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private iatiService: IATIService,
     private projectInfoModal: ProjectInfoModalComponent,
-    private projectIATIInfoModal: ProjectiInfoModalComponent) { }
+    private projectIATIInfoModal: ProjectiInfoModalComponent,
+    private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
     var projects = localStorage.getItem('merge-projects');
@@ -74,10 +79,11 @@ export class MergeProjectsComponent implements OnInit {
       data => {
         this.sourceProjects = data;
         this.isIatiLoading = false;
+        this.isProjectBtnDisabled = false;
       },
       error => {
-        console.log(error);
         this.isIatiLoading = false;
+        this.isProjectBtnDisabled = false;
       }
     )
   }
@@ -114,6 +120,20 @@ export class MergeProjectsComponent implements OnInit {
     if (project.length > 0) {
       this.model.description = project[0].description;
     }
+  }
+
+  enterStartDate(e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.selectedProjects.filter(p => p.id == id);
+    var sDate = new Date(project[0].startDate);
+    this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
+  }
+
+  enterEndDate(e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.selectedProjects.filter(p => p.id == id);
+    var eDate = new Date(project[0].endDate);
+    this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
   }
 
   loadAIMSProjectsForIds(modelArr: any) {
@@ -176,14 +196,30 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   mergeAndSaveProject() {
+    if (this.selectedProjects.length <= 1) {
+      this.errorMessage = Messages.INVALID_PROJECT_MERGE;
+      this.errorModal.openModal();
+      return false;
+    }
+
     var Ids = this.selectedProjects.map(p => p.id);
     var model = {
-      
+      title: this.model.title,
+      description: this.model.description,
+      startDate: this.model.startDate,
+      endDate: this.model.endDate,
+      projectsIds: Ids
     };
-  }
 
-  proceedDataEntry() {
-
+    this.projectService.mergeProjects(model).subscribe(
+      data => {
+        if (data) {
+          var projects = JSON.stringify(this.sourceProjects);
+          localStorage.setItem('active-project', data);
+          localStorage.setItem('selected-projects', projects);
+        }
+      }
+    )
   }
 
 }
