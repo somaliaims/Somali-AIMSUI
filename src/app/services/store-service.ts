@@ -104,7 +104,7 @@ export class StoreService {
   }
 
   getCalendarLowerLimit() {
-
+    
   }
 
   storeExchangeRates(rates) {

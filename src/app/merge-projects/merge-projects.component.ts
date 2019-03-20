@@ -5,12 +5,16 @@ import { ProjectInfoModalComponent } from '../project-info-modal/project-info-mo
 import { ProjectiInfoModalComponent } from '../projecti-info-modal/projecti-info-modal.component';
 import { Messages } from '../config/messages';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-merge-projects',
   templateUrl: './merge-projects.component.html',
   styleUrls: ['./merge-projects.component.css']
 })
+
+
 export class MergeProjectsComponent implements OnInit {
 
   isProjectBtnDisabled: boolean = true;
@@ -34,18 +38,29 @@ export class MergeProjectsComponent implements OnInit {
 
   isIatiLoading: boolean = true;
   isAimsLoading: boolean = true;
+  requestNo: number = 0;
   model: any = { id: 0, title: '', startDate: null, endDate: null, description: null };
 
+  //Overlay UI blocker
+  @BlockUI() blockUI: NgBlockUI;
+
   constructor(private projectService: ProjectService, private iatiService: IATIService,
-    private projectInfoModal: ProjectInfoModalComponent,
+    private projectInfoModal: ProjectInfoModalComponent, private storeService: StoreService,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
     var projects = localStorage.getItem('merge-projects');
     if (projects) {
+      this.requestNo = this.storeService.getNewRequestNumber();
+      this.storeService.currentRequestTrack.subscribe(model => {
+        if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+          this.errorMessage = model.errorMessage;
+          this.errorModal.openModal();
+        }
+      });
+
       var parsedProjects = JSON.parse(projects);
-      //this.selectedProjects = parsedProjects;
       //Load iati projects
       var filteredIATI = parsedProjects.filter(function (project) {
         return project.type == 'IATI';
@@ -202,12 +217,24 @@ export class MergeProjectsComponent implements OnInit {
       return false;
     }
 
+    var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
+      this.model.startDate.day;
+    var endDate = this.model.endDate.year + '-' + this.model.endDate.month + '-' +
+      this.model.endDate.day;
+
+    if (startDate > endDate) {
+      this.errorMessage = Messages.INVALID_STARTEND_DATE;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    this.blockUI.start('Merging projects...');
     var Ids = this.selectedProjects.map(p => p.id);
     var model = {
       title: this.model.title,
       description: this.model.description,
-      startDate: this.model.startDate,
-      endDate: this.model.endDate,
+      startDate: startDate,
+      endDate: endDate,
       projectsIds: Ids
     };
 
@@ -217,6 +244,7 @@ export class MergeProjectsComponent implements OnInit {
           var projects = JSON.stringify(this.sourceProjects);
           localStorage.setItem('active-project', data);
           localStorage.setItem('selected-projects', projects);
+          this.blockUI.stop();
         }
       }
     )

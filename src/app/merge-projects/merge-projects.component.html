@@ -5,7 +5,10 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Merge Projects</a>
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">New project selection</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Merge projects</a>
           </li>
         </ul>
       </div>
@@ -118,7 +121,8 @@
           <div class="card-body iati-box">
             <h5 class="card-title text-center">New Project Detail</h5>
 
-            <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject()" #projectForm="ngForm">
+            <form class="form-signin" (ngSubmit)="projectForm.form.valid && mergeAndSaveProject()"
+              #projectForm="ngForm">
               <div class="row">
                 <div class="col-md-12">
                   <span class="float-left">

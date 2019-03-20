@@ -175,6 +175,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getProjectType + id);
     }
 
+    getMergeProjectsUrl() {
+        return (this.BASE_URL + urlsList.urls.mergeProjects);
+    }
+
     getSearchProjectTypesUrl(criteria: string) {
         return (this.BASE_URL + urlsList.urls.projectTypesUrl + '/' + criteria);
     }
