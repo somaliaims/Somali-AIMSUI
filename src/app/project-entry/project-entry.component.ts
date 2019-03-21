@@ -11,7 +11,6 @@ import { Location } from '../models/location-model';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ProjectInfoModalComponent } from '../project-info-modal/project-info-modal.component';
-import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { LocationService } from '../services/location.service';
 import { SecurityHelperService } from '../services/security-helper.service';
@@ -445,8 +444,12 @@ export class ProjectEntryComponent implements OnInit {
         this.sectorEntryType = 'iati';
         var selectSector = sectors.filter(s => s.code == code);
         if (selectSector && selectSector.length > 0) {
-          this.isSectorVisible = true;
-          this.sectorModel.sectorName = selectSector[0].sectorName;
+          if (selectSector[0].sectorName.length > 0) {
+            this.isSectorVisible = true;
+            this.sectorModel.sectorName = selectSector[0].sectorName;
+          } else {
+            this.sectorEntryType = 'aims';
+          }
           this.sectorModel.fundsPercentage = selectSector[0].fundsPercentage;
         }
       }
@@ -486,9 +489,14 @@ export class ProjectEntryComponent implements OnInit {
       this.locationEntryType = 'iati';
       var selectLocation = locations.filter(s => s.name == location);
       if (selectLocation && selectLocation.length > 0) {
-        this.locationModel.location = selectLocation[0].name;
-        this.locationModel.latitude = selectLocation[0].latitude;
-        this.locationModel.longitude = selectLocation[0].longitude;
+        if (selectLocation[0].name.length > 0) {
+          this.locationModel.location = selectLocation[0].name;
+          this.locationModel.latitude = selectLocation[0].latitude;
+          this.locationModel.longitude = selectLocation[0].longitude;
+        } else {
+          this.locationEntryType = 'aims';
+        }
+
       }
     }
   }
@@ -1072,7 +1080,7 @@ export class ProjectEntryComponent implements OnInit {
     var isLocationExists = this.currentProjectLocationsList.filter(l => l.location.toLowerCase() == this.locationModel.location.toLowerCase()
       || l.id == this.locationModel.locationId);
     if (isLocationExists.length > 0) {
-      this.errorMessage = 'Selected location' + Messages.ALREADY_IN_LIST;
+      this.errorMessage = 'Selected location (' + this.locationModel.location + ')' + Messages.ALREADY_IN_LIST;
       this.errorModal.openModal();
       return false;
     }
@@ -1098,6 +1106,7 @@ export class ProjectEntryComponent implements OnInit {
         }
       )
     } else {
+      projectLocationModel.locationId = this.locationModel.locationId;
       this.addProjectLocation(projectLocationModel);
     }
   }
@@ -1117,7 +1126,7 @@ export class ProjectEntryComponent implements OnInit {
           var locationObj = {
             id: this.locationModel.locationId,
             projectId: projectId,
-            sectorId: model.sectorId,
+            locationId: model.locationId,
             location: this.locationModel.location,
             latitude: this.locationModel.latitude,
             longitude: this.locationModel.longitude,
