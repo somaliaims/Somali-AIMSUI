@@ -329,10 +329,6 @@ export class ProjectEntryComponent implements OnInit {
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
       this.model.title = selectedProject[0].title;
-      var sDate = new Date(selectedProject[0].startDate);
-      var eDate = new Date(selectedProject[0].endDate);
-      this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
-      this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
     }
   }
 
@@ -341,9 +337,23 @@ export class ProjectEntryComponent implements OnInit {
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
       this.model.description = selectedProject[0].description;
+    }
+  }
+
+  enterStartDate(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
       var sDate = new Date(selectedProject[0].startDate);
-      var eDate = new Date(selectedProject[0].endDate);
       this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
+    }
+  }
+
+  enterEndDate(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      var eDate = new Date(selectedProject[0].endDate);
       this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
     }
   }

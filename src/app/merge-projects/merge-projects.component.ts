@@ -109,7 +109,7 @@ export class MergeProjectsComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var project = this.aimsProjects.filter(p => p.id == id);
     if (project.length > 0) {
-      this.selectedProjects.push(project);
+      this.selectedProjects.push(project[0]);
     }
     this.aimsProjects = this.aimsProjects.filter(p => p.id != id);
   }
@@ -124,7 +124,7 @@ export class MergeProjectsComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var project = this.selectedProjects.filter(p => p.id == id);
     if (project.length > 0) {
-      this.aimsProjects.push(project);
+      this.aimsProjects.push(project[0]);
     }
     this.selectedProjects = this.selectedProjects.filter(p => p.id != id);
   }

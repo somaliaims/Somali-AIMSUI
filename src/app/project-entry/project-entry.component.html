@@ -69,18 +69,24 @@
                 <tr *ngFor="let project of aimsProjects">
                   <td>
                     <span class="float-left">
-                      <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                         id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
                         Details</a><br />
-                      <b>Start Date: </b>{{project.startDate}}<br />
+                      
+                      <div class="margin-top-5">
+                        <b>Start date: </b>{{project.startDate}}&nbsp;<button id="btnsdate-{{project.id}}" (click)="enterStartDate($event)" class="btn btn-sm btn-success">>></button><br />
+                      </div>
+                      <div class="margin-top-5">
+                        <b>End date: </b>{{project.endDate}}&nbsp;<button id="btnedate-{{project.id}}" (click)="enterEndDate($event)" class="btn btn-sm btn-success">>></button><br />
+                      </div>
                       <span class="badge badge-warning">AIMS</span>
                     </span>
                     <span class="float-right">
-                      <button id="aimst-{{project.id}}" class="btn btn-primary btn-sm"
+                      <button id="aimst-{{project.id}}" class="btn btn-info btn-sm"
                         (click)="enterProjectTitleAIMS($event)">Title
                         >></button>
                       &nbsp;
-                      <button id="aimsd-{{project.id}}" class="btn btn-success btn-sm"
+                      <button id="aimsd-{{project.id}}" class="btn btn-warning btn-sm"
                         (click)="enterProjectDescAIMS($event)">Description
                         >></button>
                     </span>
@@ -100,11 +106,11 @@
                       <span class="badge badge-warning">IATI</span>
                     </span>
                     <span class="float-right">
-                      <button id="iatit-{{project.id}}" class="btn btn-primary btn-sm"
+                      <button id="iatit-{{project.id}}" class="btn btn-info btn-sm"
                         (click)="enterProjectTitleIATI($event)">Title
                         >></button>
                       &nbsp;
-                      <button id="iatid-{{project.id}}" class="btn btn-success btn-sm"
+                      <button id="iatid-{{project.id}}" class="btn btn-warning btn-sm"
                         (click)="enterProjectDescIATI($event)">Description
                         >></button>
                     </span>
