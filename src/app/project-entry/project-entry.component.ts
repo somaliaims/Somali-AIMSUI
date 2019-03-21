@@ -655,7 +655,9 @@ export class ProjectEntryComponent implements OnInit {
         this.disbursementModel.amount = selectTransaction[0].amount;
         var dated = selectTransaction[0].dated;
         if (dated && dated.length > 0) {
-          this.disbursementModel.dated = dated;
+          var dateArr = dated.split('-');
+          var dateFormatted = {year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2])};
+          this.disbursementModel.dated = dateFormatted;
         }
       }
     }
@@ -673,7 +675,12 @@ export class ProjectEntryComponent implements OnInit {
       var selectTransaction = disbursements.filter(i => i.id == id);
       if (selectTransaction && selectTransaction.length > 0) {
         this.disbursementModel.amount = selectTransaction[0].amount;
-        this.disbursementModel.dated = selectTransaction[0].dated;
+        var dated = selectTransaction[0].dated;
+        if (dated && dated.length > 0) {
+          var dateArr = dated.split('-');
+          var dateFormatted = {year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2])};
+          this.disbursementModel.dated = dateFormatted;
+        }
       }
     }
   }
