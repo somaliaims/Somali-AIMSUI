@@ -8,6 +8,7 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from '../services/store-service';
 import { Router } from '@angular/router';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-merge-projects',
@@ -114,6 +115,12 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   deSelectForMerge(e) {
+    if (this.selectedProjects.length < 3) {
+      this.errorMessage = Messages.ATLEAST_PROJECT_MERGE;
+      this.errorModal.openModal();
+      return false;
+    }
+
     var id = e.target.id.split('-')[1];
     var project = this.selectedProjects.filter(p => p.id == id);
     if (project.length > 0) {
@@ -242,7 +249,20 @@ export class MergeProjectsComponent implements OnInit {
     this.projectService.mergeProjects(model).subscribe(
       data => {
         if (data) {
-          var projects = JSON.stringify(this.sourceProjects);
+          var projectsList: any = [];
+          this.sourceProjects.forEach(function(p) {
+            var project = { identifier: p.identifier, type: 'IATI' };
+            projectsList.push(project);
+          });
+
+          this.aimsProjects.forEach(function (p) {
+            projectsList.push({
+              identifier: p.identifier,
+              type: 'AIMS'
+            })
+          });
+
+          var projects = JSON.stringify(projectsList);
           localStorage.setItem('active-project', data);
           localStorage.setItem('selected-projects', projects);
           this.blockUI.stop();

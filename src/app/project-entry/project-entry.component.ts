@@ -1081,8 +1081,8 @@ export class ProjectEntryComponent implements OnInit {
     if (this.locationEntryType == 'iati' && projectLocationModel.locationId <= 0) {
       var locationModel = {
         location: searchLocation,
-        latitude: this.locationModel.latitude,
-        longitude: this.locationModel.longitude
+        latitude: 0.00,
+        longitude: 0.00
       };
 
       this.locationService.addLocation(locationModel).subscribe(
