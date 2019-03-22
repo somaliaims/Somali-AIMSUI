@@ -19,7 +19,8 @@ export class ManageSectorComponent implements OnInit {
   isBtnDisabled: boolean = false;
   isDvDisabled: boolean = true;
   sectorId: number = 0;
-  btnText: string = 'Add Sector';
+  btnText: string = 'Add sector';
+  sectorTabText: string = 'New sector';
   errorMessage: string = '';
   sectors: any = [];
   sectorTypes: any = [];
@@ -47,6 +48,7 @@ export class ManageSectorComponent implements OnInit {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
         this.btnText = 'Edit Sector';
+        this.sectorTabText = 'Edit sector';
         this.isForEdit = true;
         this.sectorId = id;
         this.loadSectorData();

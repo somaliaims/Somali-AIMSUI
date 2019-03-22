@@ -9,6 +9,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from '../services/store-service';
 import { Router } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-merge-projects',
@@ -38,6 +39,7 @@ export class MergeProjectsComponent implements OnInit {
   viewParticipatingOrganizations: any = [];
   viewProjectDisbursements: any = [];
 
+  calendarMaxDate: any = {};
   isIatiLoading: boolean = true;
   isAimsLoading: boolean = true;
   requestNo: number = 0;
@@ -49,9 +51,16 @@ export class MergeProjectsComponent implements OnInit {
   constructor(private projectService: ProjectService, private iatiService: IATIService,
     private projectInfoModal: ProjectInfoModalComponent, private storeService: StoreService,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
-    private errorModal: ErrorModalComponent, private router: Router) { }
+    private errorModal: ErrorModalComponent, private router: Router,
+    private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditProject) {
+      this.router.navigateByUrl('projects');
+    }
+
+    this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     var projects = localStorage.getItem('merge-projects');
     if (projects) {
       this.requestNo = this.storeService.getNewRequestNumber();
@@ -87,6 +96,8 @@ export class MergeProjectsComponent implements OnInit {
 
       this.loadIATIProjectsForIds(iatiIdsArr);
       this.loadAIMSProjectsForIds(aimsIdsArr);
+    } else {
+      this.router.navigateByUrl('new-entry');
     }
   }
 

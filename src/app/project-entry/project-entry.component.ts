@@ -173,7 +173,7 @@ export class ProjectEntryComponent implements OnInit {
       this.model.id = this.activeProjectId;
       this.btnProjectText = 'Edit Project';
       this.loadProjectData(this.activeProjectId);
-    }
+    } 
 
     this.sectorSelectionForm = this.fb.group({
       sectorInput: null,

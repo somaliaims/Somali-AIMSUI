@@ -38,7 +38,7 @@
                 Project</button>
             </td>
             <td>
-                <button [class.disable]='isSearchingProjects' class="btn btn-info btn-lg float-right"
+                <button [class.disable]='isIATILoading || isSearchingProjects' class="btn btn-info btn-lg float-right"
                 (click)="proceedConfirmation()">Proceed</button>
             </td>
           </tr>
