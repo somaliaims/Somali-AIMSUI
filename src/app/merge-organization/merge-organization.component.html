@@ -1,0 +1,118 @@
+<div class="container-fluid view-area">
+  <block-ui>
+
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Merge organizations</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 margin-top-10">
+        <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
+            (input)="filterOrganizations()" [(ngModel)]="model.title" name="title" #title="ngModel"
+            onkeypress="return event.keyCode != 13;" required>
+          <span class="input-group-btn">
+            <button class="btn btn-outline-info btn-lg" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-md-6 margin-top-10">
+        <div class="float-right">
+          <table>
+            <tr>
+              <td>
+                <button [class.disable]='isSearchingOrganizations || (selectedOrganizations.length < 2)'
+                  class="btn btn-warning btn-lg pull-right float-right" (click)="mergeOrganizations()">Merge
+                  Organizations</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!--IATI Activity Box-->
+      <div class="col-md-6 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Organizations listing</h5>
+            <div *ngIf="isLoading">
+              Loading organizations...
+            </div>
+            <table *ngIf="filteredOrganizationsList.length > 0" class="table table-bordered">
+              <tr *ngFor="let organization of filteredOrganizationsList">
+                <td>
+                  <span class="float-left">
+                    {{organization.organizationName}}
+                  </span>
+                  <span class="float-right margin-right-15">
+                    <button type="button" id="select-{{organization.id}}" class="btn btn-success btn-sm"
+                      (click)="selectOrganization($event)">Select >></button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+            <span *ngIf="filteredOrganizationsList.length == 0" class="text-info">
+              No organizations to show
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--Organizations box from AIMS-->
+      <div class="col-md-6 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <form class="form-signin" (ngSubmit)="organizationForm.form.valid && mergeAndSaveProject()"
+              #organizationForm="ngForm">
+              <div class="form-group">
+                <label for="name">New name for merge</label>
+                <input type="text" placeholder="Enter new name for merged organizations" class="form-control" id="name" maxlength="200" [(ngModel)]="model.name" name="name"
+                  #title="ngModel" required>
+                <div *ngIf="organizationForm.submitted" [hidden]="name.valid" class="alert alert-danger">
+                  New name for merge is required
+                </div>
+              </div>
+
+            </form>
+
+            <h5 class="card-title text-center">Selected organizations</h5>
+            <div>
+              <table *ngIf="selectedOrganizations.length > 0" class="table table-bordered">
+                <tr *ngFor="let organization of selectedOrganizations">
+                  <td>
+                    <span class="float-left">
+                      {{organization.organizationName}}<br />
+                    </span>
+                    <span class="float-right margin-right-15">
+                      <button type="button" id="dselect-{{organization.id}}" class="btn btn-success btn-sm"
+                        (click)="deSelectOrganization($event)">De-select</button>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+              <span *ngIf="selectedOrganizations.length == 0" class="text-info">
+                No organizations to show
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!--End of Boxes row-->
+
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>

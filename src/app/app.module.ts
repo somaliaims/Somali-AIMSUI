@@ -60,6 +60,7 @@ import { FinancialYearsComponent } from './financial-years/financial-years.compo
 import { ManageYearComponent } from './manage-year/manage-year.component';
 import { UserSubscriptionComponent } from './user-subscription/user-subscription.component';
 import { MergeProjectsComponent } from './merge-projects/merge-projects.component';
+import { MergeOrganizationComponent } from './merge-organization/merge-organization.component';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { MergeProjectsComponent } from './merge-projects/merge-projects.componen
     ManageYearComponent,
     UserSubscriptionComponent,
     MergeProjectsComponent,
+    MergeOrganizationComponent,
   ],
   imports: [
     BrowserModule,

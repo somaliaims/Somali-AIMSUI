@@ -15,6 +15,7 @@ export const urls = {
 	searchOrganizations: "Organization/",
 	getOrganization: "Organization/GetById/",
 	organizationUrl: "Organization",
+	mergeOrganization: "Organization/Merge",
 	locationUrl: "Location",
 	getLocation: "Location/GetById/",
 	sectorTypesUrl: "SectorTypes",

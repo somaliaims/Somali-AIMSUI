@@ -17,6 +17,7 @@ export const Messages = {
     INVALID_PERCENTAGE: 'Percentage total cannot be greater than 100%',
     INVALID_STARTEND_DATE: 'Start date cannot be greater than end date',
     ATLEAST_PROJECT_MERGE: 'At least two projects are required for merge',
+    ATLEAST_ORGANIZATION_MERGE: 'At least two organizations are required for merge',
     INVALID_PROJECT_MERGE: 'Two or more projects must be selected to complete the merge process',
     INVALID_DISBURSEMENT: 'You cannot add more disbursements than the project total value. Please increase the project funding amount before adding more disbursements.',
     PASSWORD_UPDATED: 'Your password updated successfully. You must login with new password on next login.',

@@ -60,6 +60,13 @@ export class OrganizationService {
                 catchError(this.storeService.handleError<any>('New Organization')));
     }
 
+    mergeOrganizations(model: any) {
+      var url  = this.urlHelper.getMergeOrganizationsUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Merge Organizations')));
+    }
+
     updateOrganization(id: number, model: any) {
       var url  = this.urlHelper.getOrganizationUrl() + '/' + id;
         return this.httpClient.put(url,

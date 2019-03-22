@@ -39,6 +39,7 @@ import { FinancialYearsComponent } from './financial-years/financial-years.compo
 import { ManageYearComponent } from './manage-year/manage-year.component';
 import { UserSubscriptionComponent } from './user-subscription/user-subscription.component';
 import { MergeProjectsComponent } from './merge-projects/merge-projects.component';
+import { MergeOrganizationComponent } from './merge-organization/merge-organization.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -87,7 +88,8 @@ export const routes: Routes = [
   { path: 'financial-years', component: FinancialYearsComponent },
   { path: 'manage-year', component:  ManageYearComponent},
   { path: 'user-subscriptions', component: UserSubscriptionComponent },
-  { path: 'merge-projects', component: MergeProjectsComponent }
+  { path: 'merge-projects', component: MergeProjectsComponent },
+  { path: 'merge-organizations', component: MergeOrganizationComponent}
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

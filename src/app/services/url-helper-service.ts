@@ -27,6 +27,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationsList);
     }
 
+    getMergeOrganizationsUrl() {
+        return (this.BASE_URL + urlsList.urls.mergeOrganization);
+    }
+
     organizationsFilterUrl(criteria: string) {
         return (this.BASE_URL + urlsList.urls.searchOrganizations + criteria);
     }
