@@ -45,6 +45,8 @@ export class NewProjectComponent implements OnInit {
   filteredIatiProjects: any = [];
   filteredAIMSProjects: any = [];
   selectedProjects: any = [];
+  selectedAIMSProjects: any = [];
+  selectedIATIProjects: any = [];
   aimsProjects: any = [];
 
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
@@ -133,11 +135,15 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var iatiProject = { id: this.projectIdCounter, title: '', identifier: '', description: '', type: 'IATI' };
+      var iatiProject = { id: this.projectIdCounter, pid: 0, title: '', identifier: '', description: '', type: 'IATI' };
       iatiProject.title = selectedProject[0].title;
       iatiProject.description = selectedProject[0].description;
       iatiProject.identifier = selectedProject[0].iatiIdentifier;
+      iatiProject.pid = selectedProject[0].id;
       this.addProject(iatiProject);
+      this.selectedIATIProjects.push(selectedProject[0]);
+      this.filteredIatiProjects = this.filteredIatiProjects.filter(p => p.id != id);
+      this.iatiProjects = this.iatiProjects.filter(p => p.id != id);
     }
   }
 
@@ -149,11 +155,15 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var aimsProject = { id: this.projectIdCounter, identifier: '', title: '', description: '', type: 'AIMS' };
+      var aimsProject = { id: this.projectIdCounter, pid: 0, identifier: '', title: '',  description: '', type: 'AIMS' };
       aimsProject.title = selectedProject[0].title;
       aimsProject.description = selectedProject[0].description;
       aimsProject.identifier = selectedProject[0].id;
+      aimsProject.pid = selectedProject[0].id;
       this.addProject(aimsProject);
+      this.selectedAIMSProjects.push(selectedProject[0]);
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(p => p.id != id);
+      this.aimsProjects = this.aimsProjects.filter(p => p.id != id);
     }
   }
 
@@ -263,7 +273,26 @@ export class NewProjectComponent implements OnInit {
 
   removeSelectedProject(e) {
     var id = e.target.id;
-    this.selectedProjects = this.selectedProjects.filter(p => p.id != id);
+    var projectArr = this.selectedProjects.filter(p => p.pid == id);
+    if (projectArr.length > 0) {
+      var project = projectArr[0];
+      if (project.type == 'AIMS') {
+        var aimsProject = this.selectedAIMSProjects.filter(p => p.id == id);
+        if (aimsProject.length > 0) {
+          this.filteredAIMSProjects.push(aimsProject[0]);
+          this.aimsProjects.push(aimsProject[0]);
+        }
+        this.selectedAIMSProjects = this.selectedAIMSProjects.filter(p => p.id != id);
+      } else {
+        var iatiProject = this.selectedIATIProjects.filter(p => p.id == id);
+        if (iatiProject.length > 0) {
+          this.filteredIatiProjects.push(iatiProject[0]);
+          this.iatiProjects.push(iatiProject[0]);
+        }
+        this.selectedIATIProjects = this.selectedIATIProjects.filter(p => p.id != id);
+      }
+    }
+    this.selectedProjects = this.selectedProjects.filter(p => p.pid != id);
   }
 
   openModal(id: string) {
