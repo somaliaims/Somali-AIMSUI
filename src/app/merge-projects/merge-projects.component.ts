@@ -10,6 +10,8 @@ import { StoreService } from '../services/store-service';
 import { Router } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-merge-projects',
@@ -22,6 +24,7 @@ export class MergeProjectsComponent implements OnInit {
 
   isProjectBtnDisabled: boolean = true;
   errorMessage: string = '';
+  infoMessage: string = '';
   permissions: any = [];
   iatiProjects: any = [];
   filteredIatiProjects: any = [];
@@ -52,6 +55,7 @@ export class MergeProjectsComponent implements OnInit {
     private projectInfoModal: ProjectInfoModalComponent, private storeService: StoreService,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private errorModal: ErrorModalComponent, private router: Router,
+    private modalService: ModalService,
     private securityService: SecurityHelperService) { }
 
   ngOnInit() {
@@ -277,10 +281,20 @@ export class MergeProjectsComponent implements OnInit {
           localStorage.setItem('active-project', data);
           localStorage.setItem('selected-projects', projects);
           this.blockUI.stop();
-          this.router.navigateByUrl('project-entry');
+          this.modalService.open('confirmation-modal');
         }
       }
     )
+  }
+
+  proceedToDataEntry() {
+    this.modalService.close('confirmation-modal');
+    this.router.navigateByUrl('project-entry');
+  }
+
+  closeConfirmationModal() {
+    this.modalService.close('confirmation-modal');
+    this.router.navigateByUrl('new-project');
   }
 
 }
