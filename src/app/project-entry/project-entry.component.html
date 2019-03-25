@@ -787,18 +787,6 @@
             <form class="form-signin" (ngSubmit)="projectFunderForm.form.valid && saveProjectFunder(projectFunderForm)"
               #projectFunderForm="ngForm">
 
-              <!--<div *ngIf="funderEntryType == 'aims'" class="form-group">
-                <label for="funderId">AIMS Funders</label>
-                <select class="form-control" id="funderId" [(ngModel)]="funderModel.funderId" name="funderId"
-                  #funderId="ngModel" required>
-                  <option *ngFor="let funder of organizationsList" [value]="funder.id">{{funder.organizationName}}
-                  </option>
-                </select>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="funderId.valid" class="alert alert-danger">
-                  Funder is required
-                </div>
-              </div>-->
-
               <div *ngIf="funderEntryType == 'iati'" class="form-group">
                 <label for="funder">New Funder</label>
                 <input type="text" maxlength="200" class="form-control" id="funder" [(ngModel)]="funderModel.funder"
