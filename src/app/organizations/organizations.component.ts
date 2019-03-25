@@ -78,4 +78,8 @@ export class OrganizationsComponent implements OnInit {
     this.router.navigateByUrl('/manage-organization/' + id);
   }
 
+  delete(id: string) {
+    this.router.navigateByUrl('/delete-organization/' + id);
+  }
+
 }

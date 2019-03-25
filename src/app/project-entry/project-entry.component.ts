@@ -328,7 +328,7 @@ export class ProjectEntryComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
-      this.model.title = selectedProject[0].title;
+      this.model.title = selectedProject[0].title.trim();
     }
   }
 
@@ -336,7 +336,7 @@ export class ProjectEntryComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
-      this.model.description = selectedProject[0].description;
+      this.model.description = selectedProject[0].description.trim();
     }
   }
 
@@ -362,7 +362,7 @@ export class ProjectEntryComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
     if (selectedProject) {
-      this.model.title = selectedProject[0].title;
+      this.model.title = selectedProject[0].title.trim();
     }
   }
 
@@ -370,7 +370,7 @@ export class ProjectEntryComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
     if (selectedProject) {
-      this.model.description = selectedProject[0].description;
+      this.model.description = selectedProject[0].description.trim();
     }
   }
 

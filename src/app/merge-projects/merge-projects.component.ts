@@ -148,7 +148,7 @@ export class MergeProjectsComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var project = this.selectedProjects.filter(p => p.id == id);
     if (project.length > 0) {
-      this.model.title = project[0].title;
+      this.model.title = project[0].title.trim();
     }
   }
 
@@ -156,7 +156,7 @@ export class MergeProjectsComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var project = this.selectedProjects.filter(p => p.id == id);
     if (project.length > 0) {
-      this.model.description = project[0].description;
+      this.model.description = project[0].description.trim();
     }
   }
 
@@ -294,7 +294,7 @@ export class MergeProjectsComponent implements OnInit {
 
   closeConfirmationModal() {
     this.modalService.close('confirmation-modal');
-    this.router.navigateByUrl('new-project');
+    this.router.navigateByUrl('home');
   }
 
 }
