@@ -40,6 +40,7 @@ import { ManageYearComponent } from './manage-year/manage-year.component';
 import { UserSubscriptionComponent } from './user-subscription/user-subscription.component';
 import { MergeProjectsComponent } from './merge-projects/merge-projects.component';
 import { MergeOrganizationComponent } from './merge-organization/merge-organization.component';
+import { DeleteOrganizationComponent } from './delete-organization/delete-organization.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -56,6 +57,7 @@ export const routes: Routes = [
   { path: 'management', component: ManagementComponent },
   { path: 'notification', component: NotificationComponent },
   { path: 'organizations', component: OrganizationsComponent },
+  { path: 'delete-organization/:{id}', component: DeleteOrganizationComponent },
   { path: 'manage-organization/:{id}', component: ManageOrganizationComponent, data: { isForEdit: true } },
   { path: 'manage-organization', component: ManageOrganizationComponent },
   { path: 'locations', component: LocationsComponent },

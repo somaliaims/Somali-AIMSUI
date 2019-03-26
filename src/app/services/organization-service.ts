@@ -60,6 +60,20 @@ export class OrganizationService {
                 catchError(this.storeService.handleError<any>('New Organization')));
     }
 
+    getOrganizationProjects(id: string) {
+      var url = this.urlHelper.getOrganizationProjectsUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Organization Projects'))
+      );
+    }
+
+    deleteOrganization(id: string, newId: string) {
+      var url = this.urlHelper.deleteOrganizationUrl(id, newId);
+      return this.httpClient.delete(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Delete Organization'))
+      );
+    }
+
     mergeOrganizations(model: any) {
       var url  = this.urlHelper.getMergeOrganizationsUrl();
         return this.httpClient.post(url,

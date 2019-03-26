@@ -19,25 +19,24 @@
       <div class="col-md-6 col-sm-6">
         <div class="card card-signin my-5">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Organizations listing</h5>
+            <h5 class="card-title text-center">Effected projects list</h5>
             <div *ngIf="isLoading">
-              Loading organizations...
+              Loading projects...
             </div>
-            <table *ngIf="filteredOrganizationsList.length > 0" class="table table-bordered">
-              <tr *ngFor="let organization of filteredOrganizationsList">
+            <table *ngIf="projectsList.length > 0" class="table table-bordered">
+              <tr *ngFor="let project of projectsList; let number = index">
                 <td>
                   <span class="float-left">
-                    {{organization.organizationName}}
-                  </span>
-                  <span class="float-right margin-right-15">
-                    <button type="button" id="select-{{organization.id}}" class="btn btn-success btn-sm"
-                      (click)="selectOrganization($event)">Select >></button>
+                    <!--{{project.title | truncate}} <a href="#" title="View Project Details"
+                      id="aproject-{{project.id}}" (click)="viewProjectDetail($event)" class="text-info">View
+                      Details</a><br />-->
+                      {{number + 1}}. {{project.title}}
                   </span>
                 </td>
               </tr>
             </table>
-            <span *ngIf="filteredOrganizationsList.length == 0" class="text-info">
-              No organizations to show
+            <span *ngIf="projectsList.length == 0" class="text-info">
+              No projects to show
             </span>
           </div>
         </div>
@@ -47,49 +46,39 @@
       <div class="col-md-6 col-sm-6">
         <div class="card card-signin my-5">
           <div class="card-body iati-box">
-            <form class="form-signin" (ngSubmit)="organizationForm.form.valid && mergeAndSaveProject()"
+            <form class="form-signin" (ngSubmit)="organizationForm.form.valid && deleteAndMergeOrganization()"
               #organizationForm="ngForm">
               <div class="form-group">
-                <label for="name">New name for merge</label>
-                <input type="text" placeholder="Enter new name for merged organizations" class="form-control" id="name" maxlength="200" [(ngModel)]="model.name" name="name"
-                  #title="ngModel" required>
-                <div *ngIf="organizationForm.submitted" [hidden]="name.valid" class="alert alert-danger">
-                  New name for merge is required
-                </div>
-              </div>
-
-            </form>
-
-            <h5 class="card-title text-center">Delete confirmation</h5>
-            <form class="form-signin" (ngSubmit)="projectForm.form.valid && mergeAndSaveProject()"
-              #projectForm="ngForm">
-            <div class="form-group">
-              <label for="organization">New organization for mapping</label>
-              <select class="form-control" id="organizationId" [(ngModel)]="model.organizationId" name="organizationId"
-                  #organizationId="ngModel" required>
-                  <option *ngFor="let organization of organizationsList" [value]="organization.id">{{organization.organizationName}}
-                  </option>
+                <label for="name">New mapping organization</label>
+                <select class="form-control" id="organizationId" [(ngModel)]="model.organizationId"
+                  name="organizationId" #organizationId="ngModel" required>
+                  <option *ngFor="let org of organizationsList" [value]="org.id">
+                    {{org.organizationName}}</option>
                 </select>
-              <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
-                Project title is required
+                <!--<div *ngIf="organizationForm.submitted" [hidden]="organizationId.valid" class="alert alert-danger">
+                  Organization is required
+                </div>-->
               </div>
-            </div>
-            <div class="form-group">
-              <p class="text-info">
-                You can assign the new organization to effected project/s. If you do not assign the project
-                and delete without assign, the select organization will be deleted for all the effected projects.
-                Please review the settings before delete, as this action cannot be undone.
-              </p>
-            </div>
 
-            <button class="btn btn-lg btn-danger btn-block text-uppercase"
-                type="submit">Delete Now</button>
-            </form>
+              <h5 class="card-title text-center">Delete confirmation</h5>
+                <div class="form-group">
+                  <p class="text-info">
+                    You can assign the new organization to effected project/s. If you do not assign the project
+                    and delete without assign, the select organization will be deleted for all the effected projects.
+                    Please review the settings before delete, as this action cannot be undone.
+                  </p>
+                </div>
+                <button class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
+              </form>
           </div>
         </div>
       </div>
-
     </div>
 
-    </block-ui>
-  </div>
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>
+<project-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
+  [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments">
+</project-info-modal>

@@ -31,6 +31,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.mergeOrganization);
     }
 
+    deleteOrganizationUrl(id: string, newId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteOrganization + id + '/' + newId);
+    }
+
+    getOrganizationProjectsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.organizationProjects + id);
+    }
+
     organizationsFilterUrl(criteria: string) {
         return (this.BASE_URL + urlsList.urls.searchOrganizations + criteria);
     }
