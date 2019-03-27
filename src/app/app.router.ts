@@ -41,6 +41,7 @@ import { UserSubscriptionComponent } from './user-subscription/user-subscription
 import { MergeProjectsComponent } from './merge-projects/merge-projects.component';
 import { MergeOrganizationComponent } from './merge-organization/merge-organization.component';
 import { DeleteOrganizationComponent } from './delete-organization/delete-organization.component';
+import { DeleteLocationComponent } from './delete-location/delete-location.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -62,6 +63,7 @@ export const routes: Routes = [
   { path: 'manage-organization', component: ManageOrganizationComponent },
   { path: 'locations', component: LocationsComponent },
   { path: 'manage-location/:{id}', component: ManageLocationComponent, data: { isForEdit: true } },
+  { path: 'delete-location/:{id}', component: DeleteLocationComponent },
   { path: 'manage-location', component: ManageLocationComponent },
   { path: 'sector-types', component: SectorTypesComponent },
   { path: 'manage-sectortype/:{id}', component: ManageSectortypeComponent, data: { isForEdit: true } },

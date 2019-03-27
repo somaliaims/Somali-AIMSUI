@@ -87,29 +87,12 @@ export class LocationsComponent implements OnInit {
     this.router.navigateByUrl('/manage-location/' + id);
   }
 
-  showConfirmation(id: number) {
-    this.selectedLocationId = id;
-    this.modalService.open('confirmation-modal');
-  }
-
   closeModal() {
     this.modalService.close('confirmation-modal');
   }
 
-  deleteLocation() {
-    this.modalService.close('confirmation-modal');
-    this.blockUI.start('Deleting location...');
-    this.locationService.deleteLocation(this.selectedLocationId).subscribe(
-      data => {
-        this.locationsList = this.locationsList.filter(l => l.id != this.selectedLocationId);
-        this.blockUI.stop();
-      },
-      error => {
-        this.blockUI.stop();
-        this.errorMessage = error;
-        this.isError = true;
-      }
-    );
+  delete(id) {
+    this.router.navigateByUrl('delete-location/' + id);
   }
 
 }

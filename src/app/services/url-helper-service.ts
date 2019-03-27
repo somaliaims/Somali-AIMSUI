@@ -115,6 +115,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getLocation + id);
     }
 
+    getLocationProjectsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.locationProjects + id);
+    }
+
     getSearchLocationsUrl(criteria: string) {
         return (this.BASE_URL + urlsList.urls.locationUrl + '/' + criteria);
     }

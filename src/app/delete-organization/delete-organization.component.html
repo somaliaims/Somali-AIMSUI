@@ -68,7 +68,7 @@
                     Please review the settings before delete, as this action cannot be undone.
                   </p>
                 </div>
-                <button class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
+                <button [class.disable]="isLoading" class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
               </form>
           </div>
         </div>

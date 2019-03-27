@@ -5,10 +5,10 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Delete/Re-assing organization</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Delete/Re-assing location</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/organizations']">Organizations list</a>
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/locations']">Locations list</a>
           </li>
         </ul>
       </div>
@@ -30,7 +30,7 @@
                     <!--{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="aproject-{{project.id}}" (click)="viewProjectDetail($event)" class="text-info">View
                       Details</a><br />-->
-                      {{number + 1}}. {{project.title}}
+                      <span class="badge badge-info">{{number + 1}}</span> {{project.title}}
                   </span>
                 </td>
               </tr>
@@ -42,33 +42,30 @@
         </div>
       </div>
 
-      <!--Organizations box from AIMS-->
+      <!--Locations box from AIMS-->
       <div class="col-md-6 col-sm-6">
         <div class="card card-signin my-5">
           <div class="card-body iati-box">
-            <form class="form-signin" (ngSubmit)="organizationForm.form.valid && deleteAndMergeOrganization()"
-              #organizationForm="ngForm">
+            <form class="form-signin" (ngSubmit)="locationForm.form.valid && deleteAndMergeLocation()"
+              #locationForm="ngForm">
               <div class="form-group">
-                <label for="name">New mapping organization</label>
-                <select class="form-control" id="organizationId" [(ngModel)]="model.organizationId"
-                  name="organizationId" #organizationId="ngModel" required>
-                  <option *ngFor="let org of organizationsList" [value]="org.id">
-                    {{org.organizationName}}</option>
+                <label for="name">New mapping location</label>
+                <select class="form-control" id="locationId" [(ngModel)]="model.locationId"
+                  name="locationId" #locationId="ngModel" required>
+                  <option *ngFor="let loc of locationsList" [value]="loc.id">
+                    {{loc.location}}</option>
                 </select>
-                <!--<div *ngIf="organizationForm.submitted" [hidden]="organizationId.valid" class="alert alert-danger">
-                  Organization is required
-                </div>-->
               </div>
 
               <h5 class="card-title text-center">Delete confirmation</h5>
                 <div class="form-group">
                   <p class="text-info">
-                    You can assign the new organization to effected project/s. If you do not assign the project
-                    and delete without assign, the select organization will be deleted for all the effected projects.
+                    You can assign the new location to effected project/s. If you do not assign the project
+                    and delete without assign, the select location will be deleted for all the effected projects.
                     Please review the settings before delete, as this action cannot be undone.
                   </p>
                 </div>
-                <button class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
+                <button [class.disable]="isLoading" class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
               </form>
           </div>
         </div>
@@ -79,6 +76,3 @@
 </div>
 
 <error-modal message={{errorMessage}}></error-modal>
-<project-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
-  [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments">
-</project-info-modal>

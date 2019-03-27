@@ -18,6 +18,7 @@ export class DeleteLocationComponent implements OnInit {
   requestNo: number = 0;
   errorMessage: string = null;
   model: any = { locationId: 0};
+  isLoading: boolean = true;
 
   constructor(private locationService: LocationService, private route: ActivatedRoute,
     private storeService: StoreService, private errorModal: ErrorModalComponent,
@@ -35,6 +36,9 @@ export class DeleteLocationComponent implements OnInit {
         this.errorModal.openModal();
       }
     });
+
+    this.getLocationsList();
+    this.getLocationProjects();
   }
 
   getLocationsList() {
@@ -51,7 +55,10 @@ export class DeleteLocationComponent implements OnInit {
   getLocationProjects() {
     this.locationService.getLocationProjects(this.id).subscribe(
       data => {
-        this.projectsList = data;
+        if (data) {
+          this.projectsList = data;
+        }
+        this.isLoading = false;
       }
     )
   }

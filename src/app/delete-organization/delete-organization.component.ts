@@ -18,6 +18,7 @@ export class DeleteOrganizationComponent implements OnInit {
   requestNo: number = 0;
   id: string = null;
   errorMessage: string = null;
+  isLoading: boolean = true;
 
   viewProject: any = [];
   viewProjectLocations: any = [];
@@ -64,7 +65,10 @@ export class DeleteOrganizationComponent implements OnInit {
   getOrganizationProjects() {
     this.organizationService.getOrganizationProjects(this.id).subscribe(
       data => {
-        this.projectsList = data;
+        if (data) {
+          this.projectsList = data;
+        }
+        this.isLoading = false;
       }
     )
   }
