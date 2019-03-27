@@ -46,10 +46,18 @@ export class LocationService {
                 catchError(this.storeService.handleError<any>('Update Location')));
     }
 
-    deleteLocation(id: number) {
-      var url = this.urlHelper.getLocationUrl() + '/' + id;
+    getLocationProjects(id: string) {
+      var url = this.urlHelper.getLocationProjectsUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Location Projects'))
+      );
+    }
+
+    deleteLocation(id: string, newId: string) {
+      var url = this.urlHelper.deleteLocationUrl(id, newId);
       return this.httpClient.delete(url, httpOptions).pipe(
-            catchError(this.storeService.handleError<any>('Delete Location')));
+        catchError(this.storeService.handleError<any>('Delete Location'))
+      );
     }
 
 }

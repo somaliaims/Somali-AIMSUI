@@ -123,6 +123,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.locationUrl);
     }
 
+    deleteLocationUrl(id: string, newId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteLocation + id + '/' + newId);
+    }
+
     getSingleSectorTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getSectorType + id);
     }

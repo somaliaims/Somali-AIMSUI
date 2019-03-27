@@ -62,6 +62,7 @@ import { UserSubscriptionComponent } from './user-subscription/user-subscription
 import { MergeProjectsComponent } from './merge-projects/merge-projects.component';
 import { MergeOrganizationComponent } from './merge-organization/merge-organization.component';
 import { DeleteOrganizationComponent } from './delete-organization/delete-organization.component';
+import { DeleteLocationComponent } from './delete-location/delete-location.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import { DeleteOrganizationComponent } from './delete-organization/delete-organi
     MergeProjectsComponent,
     MergeOrganizationComponent,
     DeleteOrganizationComponent,
+    DeleteLocationComponent,
   ],
   imports: [
     BrowserModule,
