@@ -63,6 +63,7 @@ import { MergeProjectsComponent } from './merge-projects/merge-projects.componen
 import { MergeOrganizationComponent } from './merge-organization/merge-organization.component';
 import { DeleteOrganizationComponent } from './delete-organization/delete-organization.component';
 import { DeleteLocationComponent } from './delete-location/delete-location.component';
+import { DeleteSectorComponent } from './delete-sector/delete-sector.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { DeleteLocationComponent } from './delete-location/delete-location.compo
     MergeOrganizationComponent,
     DeleteOrganizationComponent,
     DeleteLocationComponent,
+    DeleteSectorComponent,
   ],
   imports: [
     BrowserModule,

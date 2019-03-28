@@ -80,4 +80,8 @@ export class SectorsComponent implements OnInit {
     this.router.navigateByUrl('/manage-sector/' + id);
   }
 
+  delete(id: string) {
+    this.router.navigateByUrl('/delete-sector/' + id);
+  }
+
 }

@@ -147,6 +147,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorTypesUrl);
     }
 
+    getSectorProjectsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.sectorProjects + id);
+    }
+
     setSectorChildUrl(sectorId: string, childId: string) {
         return (this.BASE_URL + urlsList.urls.setSectorChild + sectorId + '/' + childId);
     }
@@ -189,6 +193,10 @@ export class UrlHelperService {
 
     getSectorUrl() {
         return (this.BASE_URL + urlsList.urls.sectorsUrl);
+    }
+
+    deleteSectorUrl(id: string, newId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteSector + id + '/' + newId);
     }
 
     getSingleProjectTypeUrl(id: string) {

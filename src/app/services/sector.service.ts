@@ -81,4 +81,18 @@ export class SectorService {
       catchError(this.storeService.handleError<any>('Sector Child')));
   }
 
+  getSectorProjects(id: string) {
+    var url = this.urlHelper.getSectorProjectsUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sector Projects'))
+    );
+  }
+
+  deleteSector(id: string, newId: string) {
+    var url = this.urlHelper.deleteSectorUrl(id, newId);
+    return this.httpClient.delete(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Delete Sector'))
+    );
+  }
+
 }
