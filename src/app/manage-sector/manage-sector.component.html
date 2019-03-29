@@ -27,6 +27,14 @@
             <form class="form-signin" (ngSubmit)="sectorForm.form.valid && saveSector()" #sectorForm="ngForm">
 
               <div class="form-group">
+                <label for="sectorTypeId">Sector Type</label>
+                <select class="form-control" id="sectorTypeId" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
+                  #sectorTypeId="ngModel">
+                  <option *ngFor="let sectorType of sectorTypes" [value]="sectorType.id">{{sectorType.typeName}}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <label for="sectorTypeId">Parent Sector</label>
                 <select class="form-control" id="parentId" [(ngModel)]="model.parentId" name="parentId"
                   #parentId="ngModel">

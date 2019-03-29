@@ -31,7 +31,7 @@
     </div>
 
     <div *ngIf="!isLoading" class="row">
-      <div class="col margin-top-10">
+      <div *ngIf="currenciesList.length > 0" class="col margin-top-10">
         <table class="table table-bordered table-stripped">
           <tr>
             <th>Currency Name</th>
@@ -46,6 +46,9 @@
           </tr>
         </table>
         <pagination-controls (pageChange)="p=$event"></pagination-controls>
+      </div>
+      <div class="col-md-12 text-info" *ngIf="currenciesList.length == 0">
+        <i>No currencies to show</i>
       </div>
     </div>
 

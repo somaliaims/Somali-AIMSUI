@@ -16,7 +16,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 })
 export class CurrenciesComponent implements OnInit {
 
-  currenciesList: any = null;
+  currenciesList: any = [];
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;

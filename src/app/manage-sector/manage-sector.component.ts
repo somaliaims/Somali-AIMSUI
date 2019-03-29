@@ -6,6 +6,7 @@ import { Messages } from '../config/messages';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { SectorTypeService } from '../services/sector-types.service';
 
 @Component({
   selector: 'app-manage-sector',
@@ -27,14 +28,15 @@ export class ManageSectorComponent implements OnInit {
   sectorChildren: any = [];
   requestNo: number = 0;
   isError: boolean = false;
-  model = { id: 0, sectorName: null, parentId: 0 };
+  model = { id: 0, sectorTypeId: 0, sectorName: null, parentId: 0 };
   childModel = { childSectorId: null };
   permissions: any = {};
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private sectorService: SectorService, private route: ActivatedRoute,
     private router: Router, private errorModal: ErrorModalComponent,
-    private storeService: StoreService, private securityService: SecurityHelperService) {
+    private storeService: StoreService, private securityService: SecurityHelperService,
+    private sectorTypeService: SectorTypeService) {
   }
 
   ngOnInit() {
@@ -44,6 +46,8 @@ export class ManageSectorComponent implements OnInit {
     }
 
     this.getSectors();
+    this.getSectorTypes();
+
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
@@ -63,6 +67,16 @@ export class ManageSectorComponent implements OnInit {
         this.isError = true;
       }
     });
+  }
+
+  getSectorTypes() {
+    this.sectorTypeService.getSectorTypesList().subscribe(
+      data => {
+        if (data) {
+          this.sectorTypes = data;
+        }
+      }
+    )
   }
 
   getSectors() {
@@ -94,9 +108,12 @@ export class ManageSectorComponent implements OnInit {
   loadSectorData() {
     this.sectorService.getSector(this.sectorId.toString()).subscribe(
       data => {
-        this.model.id = data.id;
-        this.model.parentId = data.parentId;
-        this.model.sectorName = data.sectorName;
+        if (data) {
+          this.model.id = data.id;
+          this.model.sectorTypeId = data.sectorTypeId;
+          this.model.parentId = data.parentId;
+          this.model.sectorName = data.sectorName;
+        }
       },
       error => {
         console.log("Request Failed: ", error);
@@ -106,6 +123,7 @@ export class ManageSectorComponent implements OnInit {
 
   saveSector() {
     var model = {
+      SectorTypeId: this.model.sectorTypeId,
       SectorName: this.model.sectorName,
       ParentId: this.model.parentId,
     };
