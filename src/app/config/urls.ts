@@ -21,6 +21,7 @@ export const urls = {
 	locationUrl: "Location",
 	getLocation: "Location/GetById/",
 	sectorTypesUrl: "SectorTypes",
+	otherSectorTypesUrl: "SectorTypes/GetOtherSectorTypes",
 	getSectorType: "SectorTypes/GetById/",
 	sectorCategoriesUrl: "SectorCategory",
 	getSectorCategory: "SectorCategory/GetById/",
@@ -83,5 +84,6 @@ export const urls = {
 	userSubscriptionsUrl: "ReportSubscription",
 	subscribeToReports: "ReportSubscription/Subscribe",
 	exchangeRateUrl: "ExchangeRate",
-	exchangeRateForDate: "ExchangeRate/GetRatesForDate/"
+	exchangeRateForDate: "ExchangeRate/GetRatesForDate/",
+	getDefaultSectors: "Sector/GetDefaultSectors"
 };

@@ -199,6 +199,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteSector + id + '/' + newId);
     }
 
+    getDefaultSectorsUrl() {
+        return (this.BASE_URL + urlsList.urls.getDefaultSectors);
+    }
+
     getSingleProjectTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getProjectType + id);
     }

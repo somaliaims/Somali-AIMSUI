@@ -88,6 +88,20 @@ export class SectorService {
     );
   }
 
+  getDefaultSectors() {
+    var url = this.urlHelper.getDefaultSectorsUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Default Sectors'))
+    );
+  }
+
+  getOtherSectors() {
+    var url = this.urlHelper.getOtherSectorTypesUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Other Sectors'))
+    );
+  }
+
   deleteSector(id: string, newId: string) {
     var url = this.urlHelper.deleteSectorUrl(id, newId);
     return this.httpClient.delete(url, httpOptions).pipe(
