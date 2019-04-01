@@ -12,7 +12,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 })
 export class SectorsComponent implements OnInit {
 
-  sectorsList: any = null;
+  sectorsList: any = [];
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;

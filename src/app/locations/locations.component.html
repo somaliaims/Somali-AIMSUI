@@ -29,7 +29,7 @@
 </div>
 
 <div *ngIf="!isLoading" class="row">
-  <div class="col margin-top-10">
+  <div *ngIf="locationsList.length > 0" class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
         <th>Location anme</th>
@@ -49,6 +49,9 @@
       </tr>
     </table>
     <pagination-controls (pageChange)="p=$event"></pagination-controls>
+  </div>
+  <div class="col-md-12 text-info">
+    <i>No locations to show</i>
   </div>
 </div>
 </div>
