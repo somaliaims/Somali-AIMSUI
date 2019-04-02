@@ -11,6 +11,7 @@ export class SectorMappingsComponent implements OnInit {
   sectorTypes: any = [];
   sectorsForType: any = [];
   sectorMappings: any = [];
+  permissions: any = {};
   model: any = { sectorTypeId: null };
   constructor(private sectorService: SectorService) { }
 
@@ -65,10 +66,16 @@ export class SectorMappingsComponent implements OnInit {
 
   mapSector(e) {
     var id = e.target.value.split('-')[1];
+    if (id) {
+
+    }
   }
 
   unMapSector(e) {
     var id = e.target.value.split('-')[1];
+    if (id) {
+      
+    }
   }
 
 }

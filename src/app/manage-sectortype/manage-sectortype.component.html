@@ -10,29 +10,38 @@
         </li>
       </ul>
     </div>
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
       <div class="card card-signin my-5">
         <div class="card-body">
           <div *ngIf="isError" class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Error!</strong> {{errorMessage}}
           </div>
-          <h5 class="card-title text-center">Sector Type</h5>
+          <h5 class="card-title text-center">Sector type</h5>
 
           <form class="form-signin" (ngSubmit)="saveSectorType()" #sectorTypeForm="ngForm">
             <div class="form-group">
-              <label for="text">SectorType Name</label>
+              <label for="text">Sector-Type name</label>
               <input type="text" class="form-control" id="typeName" [(ngModel)]="model.typeName" name="typeName"
                 #typeName="ngModel" required>
               <div [hidden]="typeName.valid" class="alert alert-danger">
-                Sector Type Name is required
+                Sector-Type name is required
               </div>
             </div>
 
-            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+              type="submit">{{btnText}}</button>
           </form>
         </div>
       </div>
     </div>
+
+    <div class="col-md-6">
+
+    </div>
   </div>
+
 </div>

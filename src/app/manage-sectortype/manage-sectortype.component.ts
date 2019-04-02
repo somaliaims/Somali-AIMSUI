@@ -3,6 +3,7 @@ import { SectorTypeService } from '../services/sector-types.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-manage-sectortype',
@@ -14,26 +15,32 @@ export class ManageSectortypeComponent implements OnInit {
   @Input()
   isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
-  orgId: number = 0;
+  typeId: number = 0;
   btnText: string = 'Add Sector Type';
   errorMessage: string = '';
   sectorTypeTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
+  permissions: any = {};
   model = { id: 0, typeName: '' };
 
   constructor(private sectorTypeService: SectorTypeService, private route: ActivatedRoute,
-    private router: Router,
+    private router: Router, private securityService: SecurityHelperService,
     private storeService: StoreService) {
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditSector) {
+      this.router.navigateByUrl('home');
+    }
+
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
         this.btnText = 'Edit SectorType';
         this.isForEdit = true;
-        this.orgId = id;
+        this.typeId = id;
         this.sectorTypeService.getSectorType(id).subscribe(
           data => {
             this.model.id = data.id;
@@ -65,13 +72,13 @@ export class ManageSectortypeComponent implements OnInit {
       this.btnText = 'Updating...';
       this.sectorTypeService.updateSectorType(this.model.id, model).subscribe(
         data => {
-          if (!this.isError) {
+          if (data) {
             var message = 'Sector Type' + Messages.RECORD_UPDATED;
             this.storeService.newInfoMessage(message);
             this.router.navigateByUrl('sector-types');
           } else {
             this.resetFormState();
-          }
+          } 
         },
         error => {
           this.isError = true;

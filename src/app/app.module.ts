@@ -120,6 +120,7 @@ import { SectorMappingsComponent } from './sector-mappings/sector-mappings.compo
     DeleteLocationComponent,
     DeleteSectorComponent,
     SectorMappingsComponent,
+    SectorTypesComponent,
   ],
   imports: [
     BrowserModule,

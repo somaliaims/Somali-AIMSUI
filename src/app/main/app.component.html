@@ -37,6 +37,7 @@
             <div class="dropdown-menu">
               <h5 *ngIf="permissions.canManage" class="dropdown-header">Field management</h5>
               <a *ngIf="permissions.canEditLocation" class="dropdown-item" [routerLink]="['/locations']">Locations</a>
+              <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sector-types']">Sector Types</a>
               <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sectors']">Sectors</a>
               <a *ngIf="permissions.canEditCurrency" class="dropdown-item" [routerLink]="['/currencies']">Currencies</a>
               <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial years</a>
