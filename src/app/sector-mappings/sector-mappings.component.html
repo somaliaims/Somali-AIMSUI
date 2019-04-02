@@ -1,3 +1,146 @@
-<p>
-  sector-mappings works!
-</p>
+<div class="container-fluid view-area">
+  <block-ui>
+
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Sector mappings</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 margin-top-10">
+        <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
+            (input)="filterSectors()" [(ngModel)]="model.title" name="title" #title="ngModel"
+            onkeypress="return event.keyCode != 13;" required>
+          <span class="input-group-btn">
+            <button class="btn btn-outline-info btn-lg" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-md-6 margin-top-10">
+        <div class="float-right">
+          <table>
+            <tr>
+              <td>
+                <button
+                  class="btn btn-warning btn-lg pull-right text-uppercase float-right" (click)="saveSectorMappings()">Save
+                  mappings</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!--IATI Activity Box-->
+      <div class="col-md-4 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Somali sectors list</h5>
+            <div *ngIf="isLoading">
+              Loading sectors...
+            </div>
+            <table *ngIf="defaultSectors.length > 0" class="table table-bordered">
+              <tr *ngFor="let sector of defaultSectors">
+                <td>
+                  <span class="float-left">
+                    {{sector.sectorName}}
+                  </span>
+                  <span class="float-right margin-right-15">
+                    <button type="button" id="select-{{sector.id}}" class="btn btn-success btn-sm"
+                      (click)="selectSector($event)">Select >></button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+            <span *ngIf="defaultSectors.length == 0" class="text-info">
+              No sectors to show
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--Sectors box from AIMS-->
+      <div class="col-md-4 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Other sectors</h5>
+
+            <form class="form-signin" (ngSubmit)="sectorForm.form.valid && mapAndSaveSectors()"
+              #sectorForm="ngForm">
+
+              <div class="form-group">
+                <label for="name">Select sector type</label>
+                <select type="text" class="form-control" id="name" maxlength="200" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
+                  #sectorTypeId="ngModel" required>
+                  <option *ngFor="let sType of sectorTypes" value={{sType.id}}>{{sType.typeName}}</option>
+                </select>
+                <div *ngIf="sectorForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
+                  Sector type is required
+                </div>
+              </div>
+            </form>
+            
+            <div>
+              <table *ngIf="sectorsForType.length > 0" class="table table-bordered">
+                <tr *ngFor="let sector of sectorsForType">
+                  <td>
+                    <span class="float-left">
+                      {{sector.sectorName}}<br />
+                    </span>
+                    <span class="float-right margin-right-15">
+                      <button type="button" id="select-{{sector.id}}" class="btn btn-success btn-sm"
+                        (click)="mapSector($event)">Map sector</button>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+              <span *ngIf="sectorsForType.length == 0" class="text-info">
+                No sectors to show
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5>Mapped sectors</h5>
+
+            <table *ngIf="sectorMappings.length > 0" class="table table-bordered">
+                <tr *ngFor="let mapping of sectorMappings">
+                    <td>
+                      <span class="float-left">
+                        {{mapping.sectorName}}<br />
+                      </span>
+                      <span class="float-right margin-right-15">
+                        <button type="button" id="unmap-{{sector.id}}" class="btn btn-success btn-sm"
+                          (click)="unMapSector($event)">Un-Map sector</button>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+                <span *ngIf="sectorsForType.length == 0" class="text-info">
+                  No sectors to show
+                </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!--End of Boxes row-->
+
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>

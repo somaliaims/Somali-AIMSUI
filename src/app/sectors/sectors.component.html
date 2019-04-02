@@ -6,6 +6,9 @@
       <li class="nav-item">
         <a class="nav-link active btn-info" data-toggle="tab" >Sectors list</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link active text-info" [routerLink]="['/sector-mappings']" data-toggle="tab" >Sectors mappings</a>
+      </li>
       <li *ngIf="permissions.canEditSector" class="nav-item">
         <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-sector']">Create new</a>
       </li>

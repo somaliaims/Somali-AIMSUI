@@ -9,7 +9,9 @@ import { SectorService } from '../services/sector.service';
 export class SectorMappingsComponent implements OnInit {
   defaultSectors: any = [];
   sectorTypes: any = [];
-
+  sectorsForType: any = [];
+  sectorMappings: any = [];
+  model: any = { sectorTypeId: null };
   constructor(private sectorService: SectorService) { }
 
   ngOnInit() {
@@ -35,6 +37,38 @@ export class SectorMappingsComponent implements OnInit {
         }
       }
     )
+  }
+
+  getSectorMappings(id: string) {
+    this.sectorService.getSectorMappings(id).subscribe(
+      data => {
+        if (data) {
+          this.sectorMappings = data;
+        }
+      }
+    )
+  }
+
+  getSectorForTypes() {
+    if (this.model.sectorTypeId == null) {
+      return false;
+    }
+    var id = this.model.sectorTypeId;
+    this.sectorService.getSectorForTypes(id).subscribe(
+      data => {
+        if (data) {
+          this.sectorsForType = data;
+        }
+      }
+    )
+  }
+
+  mapSector(e) {
+    var id = e.target.value.split('-')[1];
+  }
+
+  unMapSector(e) {
+    var id = e.target.value.split('-')[1];
   }
 
 }

@@ -43,6 +43,7 @@ import { MergeOrganizationComponent } from './merge-organization/merge-organizat
 import { DeleteOrganizationComponent } from './delete-organization/delete-organization.component';
 import { DeleteLocationComponent } from './delete-location/delete-location.component';
 import { DeleteSectorComponent } from './delete-sector/delete-sector.component';
+import { SectorMappingsComponent } from './sector-mappings/sector-mappings.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -73,6 +74,7 @@ export const routes: Routes = [
   { path: 'manage-sector', component: ManageSectorComponent },
   { path: 'manage-sector/:{id}', component: ManageSectorComponent, data: { isForEdit: true } },
   { path: 'delete-sector/:{id}', component: DeleteSectorComponent },
+  { path: 'sector-mappings', component: SectorMappingsComponent},
   { path: 'projects', component: ProjectsComponent },
   { path: 'manage-project/:{id}', component: ManageProjectComponent, data: { isForEdit: true } },
   { path: 'manage-project', component: ManageProjectComponent },

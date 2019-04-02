@@ -95,10 +95,24 @@ export class SectorService {
     );
   }
 
-  getOtherSectors() {
+  getSectorForTypes(id: string) {
+    var url = this.urlHelper.getSectorsForTypeUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sectors for Type'))
+    );
+  }
+
+  getOtherSectorTypes() {
     var url = this.urlHelper.getOtherSectorTypesUrl();
     return this.httpClient.get(url, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('Other Sectors'))
+    );
+  }
+
+  getSectorMappings(id: string) {
+    var url = this.urlHelper.getSectorMappingsUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sector Typings'))
     );
   }
 

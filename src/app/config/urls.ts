@@ -21,6 +21,8 @@ export const urls = {
 	locationUrl: "Location",
 	getLocation: "Location/GetById/",
 	sectorTypesUrl: "SectorTypes",
+	sectorsForTypesUrl: "Sector/GetSectorsForType/",
+	sectorMappingsUrl: "SectorMappings/GetForSector/",
 	otherSectorTypesUrl: "SectorTypes/GetOtherSectorTypes",
 	getSectorType: "SectorTypes/GetById/",
 	sectorCategoriesUrl: "SectorCategory",

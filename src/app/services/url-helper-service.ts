@@ -203,6 +203,18 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getDefaultSectors);
     }
 
+    getOtherSectorTypesUrl() {
+        return (this.BASE_URL + urlsList.urls.otherSectorTypesUrl);
+    }
+
+    getSectorMappingsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.sectorMappingsUrl);
+    }
+
+    getSectorsForTypeUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.sectorsForTypesUrl);
+    }
+
     getSingleProjectTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getProjectType + id);
     }
