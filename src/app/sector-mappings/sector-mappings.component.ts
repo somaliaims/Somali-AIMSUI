@@ -55,7 +55,7 @@ export class SectorMappingsComponent implements OnInit {
       return false;
     }
     var id = this.model.sectorTypeId;
-    this.sectorService.getSectorForTypes(id).subscribe(
+    this.sectorService.getSectorsForType(id).subscribe(
       data => {
         if (data) {
           this.sectorsForType = data;

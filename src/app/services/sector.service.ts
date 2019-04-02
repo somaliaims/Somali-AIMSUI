@@ -95,7 +95,7 @@ export class SectorService {
     );
   }
 
-  getSectorForTypes(id: string) {
+  getSectorsForType(id: string) {
     var url = this.urlHelper.getSectorsForTypeUrl(id);
     return this.httpClient.get(url, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('Sectors for Type'))

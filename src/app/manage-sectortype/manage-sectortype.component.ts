@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { SectorService } from '../services/sector.service';
 
 @Component({
   selector: 'app-manage-sectortype',
@@ -13,6 +14,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 export class ManageSectortypeComponent implements OnInit {
 
   @Input()
+  sectorsList: any = [];
   isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
   typeId: number = 0;
@@ -26,6 +28,7 @@ export class ManageSectortypeComponent implements OnInit {
 
   constructor(private sectorTypeService: SectorTypeService, private route: ActivatedRoute,
     private router: Router, private securityService: SecurityHelperService,
+    private sectorService: SectorService,
     private storeService: StoreService) {
   }
 
@@ -59,6 +62,14 @@ export class ManageSectortypeComponent implements OnInit {
         this.isError = true;
       }
     });
+  }
+
+  getSectorsForType(id: string) {
+    this.sectorService.getSectorsForType(id).subscribe(
+      data => {
+        this.sectorsList = data;
+      }
+    )
   }
 
   saveSectorType() {
