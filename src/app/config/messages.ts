@@ -21,5 +21,6 @@ export const Messages = {
     INVALID_PROJECT_MERGE: 'Two or more projects must be selected to complete the merge process',
     INVALID_DISBURSEMENT: 'You cannot add more disbursements than the project total value. Please increase the project funding amount before adding more disbursements.',
     PASSWORD_UPDATED: 'Your password updated successfully. You must login with new password on next login.',
-    ACCOUNT_DELETED: 'Your account is deleted successfully. In order to use AIMS again, register again with your Organization'
+    ACCOUNT_DELETED: 'Your account is deleted successfully. In order to use AIMS again, register again with your Organization',
+    INVALID_SECTOR_MAPPING: 'Select a sector before saving the mappings',
 }

@@ -4,13 +4,13 @@
     <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sectors']">Sectors list</a>
-              </li>
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sectors']">Sectors list</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link active btn-info" data-toggle="tab">Sector mappings</a>
           </li>
-          
+
         </ul>
       </div>
     </div>
@@ -18,9 +18,8 @@
     <div class="row">
       <div class="col-md-6 margin-top-10">
         <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
-          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
-            (input)="filterSectors()" [(ngModel)]="model.title" name="title" #title="ngModel"
-            onkeypress="return event.keyCode != 13;" required>
+          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (input)="filterSectors()"
+            [(ngModel)]="model.title" name="title" #title="ngModel" onkeypress="return event.keyCode != 13;" required>
           <span class="input-group-btn">
             <button class="btn btn-outline-info btn-lg" type="button">
               <i class="fa fa-search"></i>
@@ -34,8 +33,8 @@
           <table>
             <tr>
               <td>
-                <button
-                  class="btn btn-warning btn-lg pull-right text-uppercase float-right" (click)="saveSectorMappings()">Save
+                <button [class.disable]="newMappings.length == 0" class="btn btn-warning btn-lg pull-right text-uppercase float-right"
+                  (click)="saveSectorMappings()">Save new
                   mappings</button>
               </td>
             </tr>
@@ -60,8 +59,9 @@
                     {{sector.sectorName}}
                   </span>
                   <span class="float-right margin-right-15">
-                    <button [class.disable]="sector.id == model.selectedSectorId" type="button" id="select-{{sector.id}}" class="btn btn-success btn-sm"
-                      (click)="viewMappings($event)">View mappings</button>
+                    <button [class.disable]="sector.id == model.selectedSectorId" type="button"
+                      id="select-{{sector.id}}" class="btn btn-success btn-sm" (click)="viewMappings($event)">View
+                      mappings</button>
                   </span>
                 </td>
               </tr>
@@ -79,13 +79,12 @@
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Other sectors</h5>
 
-            <form class="form-signin" (ngSubmit)="sectorForm.form.valid && mapAndSaveSectors()"
-              #sectorForm="ngForm">
+            <form class="form-signin" (ngSubmit)="sectorForm.form.valid && mapAndSaveSectors()" #sectorForm="ngForm">
 
-              <div class="form-group">
+              <div [class.disable]="model.selectedSectorId == null" class="form-group">
                 <label for="name">Select sector type</label>
-                <select type="text" class="form-control" id="name" (change)="getSectorsForType()" maxlength="200" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
-                  #sectorTypeId="ngModel" required>
+                <select type="text" class="form-control" id="name" (change)="getSectorsForType()" maxlength="200"
+                  [(ngModel)]="model.sectorTypeId" name="sectorTypeId" #sectorTypeId="ngModel" required>
                   <option *ngFor="let sType of sectorTypes" value={{sType.id}}>{{sType.typeName}}</option>
                 </select>
                 <div *ngIf="sectorForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
@@ -93,7 +92,7 @@
                 </div>
               </div>
             </form>
-            
+
             <div>
               <table *ngIf="sectorsForType.length > 0" class="table table-bordered">
                 <tr *ngFor="let sector of sectorsForType">
@@ -118,25 +117,58 @@
 
       <div class="col-md-4 col-sm-6">
         <div class="card card-signin my-5">
-          <div class="card-body iati-box">
-            <h5>Sector mappings</h5>
+          <div class="card-body">
+            <h6>New mappings</h6>
+            <div class="split-box">
+              <table *ngIf="newMappings.length > 0" class="table table-bordered">
+                <tr *ngFor="let sector of newMappings">
+                  <td>{{sector.sectorName}}</td>
+                  <td>
+                      <button id="btnrmap-{{sector.id}}" (click)="unMapSector($event)"
+                      class="btn btn-danger btn-sm">
+                      <i id="irmap-{{sector.id}}" class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <span *ngIf="newMappings.length == 0" class="text-info">
+                <i>No mappings to show</i>
+              </span>
+            </div>
+          </div>
+        </div>
 
+        <div class="card card-signin my-5 iati-box">
+          <div class="card-body">
+            <h6>Mapped sectors</h6>
             <table *ngIf="sectorMappings.length > 0" class="table table-bordered">
-                <tr *ngFor="let mapping of sectorMappings">
-                    <td>
-                      <span class="float-left">
-                        {{mapping.sectorName}}<br />
-                      </span>
-                      <span class="float-right margin-right-15">
-                        <button type="button" id="unmap-{{sector.id}}" class="btn btn-success btn-sm"
-                          (click)="unMapSector($event)">Un-Map sector</button>
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-                <span *ngIf="isLoadingMappings" class="text-info">
-                  Wait loading...
-                </span>
+              <tr *ngFor="let mapping of sectorMappings">
+                <td>
+                  <span class="float-left">
+                    {{mapping.sectorName}}<br />
+                  </span>
+                  <span class="float-right margin-right-15">
+                    <button type="button" id="unmap-{{sector.id}}" class="btn btn-success btn-sm"
+                      (click)="unMapSector($event)">Un-Map sector</button>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <span class="float-right">
+                    <button class="btn btn-info text-uppercase" (click)="saveSectorMappings()" >Save mappings</button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+            <span class="text-info" *ngIf="sectorMappings.length == 0">
+              <i>
+                No mappings to show
+              </i>
+            </span>
+            <span *ngIf="isLoadingMappings" class="text-info">
+              Wait loading...
+            </span>
           </div>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SectorService } from '../services/sector.service';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { Messages } from '../config/messages';
 
 @Component({
   selector: 'app-sector-mappings',
@@ -7,14 +9,16 @@ import { SectorService } from '../services/sector.service';
   styleUrls: ['./sector-mappings.component.css']
 })
 export class SectorMappingsComponent implements OnInit {
+  errorMessage: string = null;
   defaultSectors: any = [];
   sectorTypes: any = [];
   sectorsForType: any = [];
   sectorMappings: any = [];
+  newMappings: any = [];
   isLoadingMappings: boolean = false;
   permissions: any = {};
   model: any = { selectedSectorId: null, sectorTypeId: null };
-  constructor(private sectorService: SectorService) { }
+  constructor(private sectorService: SectorService, private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
     this.getDefaultSectors();
@@ -45,7 +49,7 @@ export class SectorMappingsComponent implements OnInit {
     var id = this.model.selectedSectorId;
     if (id) {
       this.isLoadingMappings = true;
-      this.sectorMappings = [];
+      this.sectorMappings.length = 0;
       this.sectorService.getSectorMappings(id).subscribe(
         data => {
           if (data) {
@@ -80,17 +84,40 @@ export class SectorMappingsComponent implements OnInit {
   }
 
   mapSector(e) {
-    var id = e.target.value.split('-')[1];
+    var id = e.target.id.split('-')[1];
     if (id) {
-      
+      var selectSector = this.sectorsForType.filter(s => s.id == id);
+      if (selectSector.length > 0) {
+        this.newMappings.push(selectSector[0]);
+      }
     }
   }
 
   unMapSector(e) {
-    var id = e.target.value.split('-')[1];
+    var id = e.target.id.split('-')[1];
     if (id) {
-      
+      var selectSector = this.sectorsForType.filter(s => s.id == id);
+      if (selectSector.length > 0) {
+        this.newMappings = this.newMappings.filter(s => s.id != id);
+      }
     }
+  }
+
+  saveNewMappings() {
+    if (this.model.selectedSectorId == null) {
+      this.errorMessage = Messages.INVALID_SECTOR_MAPPING;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    var ids = this.newMappings.map(m => m.id);
+    var model = {
+      sectorTypeId: this.model.sectorTypeId,
+      sectorId: this.model.selectedSectorId,
+      mappingIds: ids
+    };
+
+    
   }
 
 }
