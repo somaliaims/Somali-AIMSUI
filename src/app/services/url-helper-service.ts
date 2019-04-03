@@ -208,11 +208,11 @@ export class UrlHelperService {
     }
 
     getSectorMappingsUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.sectorMappingsUrl);
+        return (this.BASE_URL + urlsList.urls.sectorMappingsUrl + id);
     }
 
     getSectorsForTypeUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.sectorsForTypesUrl);
+        return (this.BASE_URL + urlsList.urls.sectorsForTypesUrl + id);
     }
 
     getSingleProjectTypeUrl(id: string) {

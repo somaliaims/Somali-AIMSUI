@@ -11,8 +11,9 @@ export class SectorMappingsComponent implements OnInit {
   sectorTypes: any = [];
   sectorsForType: any = [];
   sectorMappings: any = [];
+  isLoadingMappings: boolean = false;
   permissions: any = {};
-  model: any = { sectorTypeId: null };
+  model: any = { selectedSectorId: null, sectorTypeId: null };
   constructor(private sectorService: SectorService) { }
 
   ngOnInit() {
@@ -40,17 +41,23 @@ export class SectorMappingsComponent implements OnInit {
     )
   }
 
-  getSectorMappings(id: string) {
-    this.sectorService.getSectorMappings(id).subscribe(
-      data => {
-        if (data) {
-          this.sectorMappings = data;
+  getSectorMappings() {
+    var id = this.model.selectedSectorId;
+    if (id) {
+      this.isLoadingMappings = true;
+      this.sectorMappings = [];
+      this.sectorService.getSectorMappings(id).subscribe(
+        data => {
+          if (data) {
+            this.sectorMappings = data;
+          }
+          this.isLoadingMappings = false;
         }
-      }
-    )
+      );
+    }
   }
 
-  getSectorForTypes() {
+  getSectorsForType() {
     if (this.model.sectorTypeId == null) {
       return false;
     }
@@ -64,10 +71,18 @@ export class SectorMappingsComponent implements OnInit {
     )
   }
 
+  viewMappings(e) {
+    var id = e.target.id.split('-')[1];
+    if (id) {
+      this.model.selectedSectorId = id;
+      this.getSectorMappings();
+    }
+  }
+
   mapSector(e) {
     var id = e.target.value.split('-')[1];
     if (id) {
-
+      
     }
   }
 

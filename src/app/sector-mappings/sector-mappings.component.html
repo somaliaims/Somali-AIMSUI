@@ -60,8 +60,8 @@
                     {{sector.sectorName}}
                   </span>
                   <span class="float-right margin-right-15">
-                    <button type="button" id="select-{{sector.id}}" class="btn btn-success btn-sm"
-                      (click)="selectSector($event)">Select >></button>
+                    <button [class.disable]="sector.id == model.selectedSectorId" type="button" id="select-{{sector.id}}" class="btn btn-success btn-sm"
+                      (click)="viewMappings($event)">View mappings</button>
                   </span>
                 </td>
               </tr>
@@ -84,7 +84,7 @@
 
               <div class="form-group">
                 <label for="name">Select sector type</label>
-                <select type="text" class="form-control" id="name" maxlength="200" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
+                <select type="text" class="form-control" id="name" (change)="getSectorsForType()" maxlength="200" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
                   #sectorTypeId="ngModel" required>
                   <option *ngFor="let sType of sectorTypes" value={{sType.id}}>{{sType.typeName}}</option>
                 </select>
@@ -119,7 +119,7 @@
       <div class="col-md-4 col-sm-6">
         <div class="card card-signin my-5">
           <div class="card-body iati-box">
-            <h5>Mapped sectors</h5>
+            <h5>Sector mappings</h5>
 
             <table *ngIf="sectorMappings.length > 0" class="table table-bordered">
                 <tr *ngFor="let mapping of sectorMappings">
@@ -134,8 +134,8 @@
                     </td>
                   </tr>
                 </table>
-                <span *ngIf="sectorsForType.length == 0" class="text-info">
-                  No sectors to show
+                <span *ngIf="isLoadingMappings" class="text-info">
+                  Wait loading...
                 </span>
           </div>
         </div>

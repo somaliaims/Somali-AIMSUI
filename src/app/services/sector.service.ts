@@ -112,7 +112,7 @@ export class SectorService {
   getSectorMappings(id: string) {
     var url = this.urlHelper.getSectorMappingsUrl(id);
     return this.httpClient.get(url, httpOptions).pipe(
-      catchError(this.storeService.handleError<any>('Sector Typings'))
+      catchError(this.storeService.handleError<any>('Sector Mappings'))
     );
   }
 
