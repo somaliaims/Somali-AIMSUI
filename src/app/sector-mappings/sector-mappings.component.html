@@ -141,27 +141,29 @@
         <div class="card card-signin my-5 iati-box">
           <div class="card-body">
             <h6>Mapped sectors</h6>
-            <table *ngIf="sectorMappings.length > 0" class="table table-bordered">
-              <tr *ngFor="let mapping of sectorMappings">
+            <table *ngIf="sectorMappings.mappedSectors && sectorMappings.mappedSectors.length > 0" class="table table-bordered">
+              <tr *ngFor="let mapping of sectorMappings.mappedSectors">
                 <td>
-                  <span class="float-left">
-                    {{mapping.sectorName}}<br />
-                  </span>
-                  <span class="float-right margin-right-15">
-                    <button type="button" id="unmap-{{sector.id}}" class="btn btn-success btn-sm"
-                      (click)="unMapSector($event)">Un-Map sector</button>
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <span class="float-right">
-                    <button class="btn btn-info text-uppercase" (click)="saveSectorMappings()" >Save mappings</button>
-                  </span>
+                  <table class="table table-bordered">
+                    <tr>
+                      <td class="bg-info" colspan="2"><span class="text-white">{{mapping.sectorType}}</span></td>
+                    </tr>
+                    <tr *ngFor="let sec of mapping.sectors">
+                      <td>
+                        {{sec.sector}}
+                      </td>
+                      <td>
+                          <button id="btnrmap-{{sec.id}}" (click)="unMapSector($event)"
+                          class="btn btn-danger btn-sm">
+                          <i id="unmap-{{mapping.sectorTypeId}}-{{sec.id}}" class="fa fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
               </tr>
             </table>
-            <span class="text-info" *ngIf="sectorMappings.length == 0">
+            <span class="text-info" *ngIf="!sectorMappings.mappedSectors && isLoadingMappings == false">
               <i>
                 No mappings to show
               </i>

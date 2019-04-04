@@ -57,6 +57,7 @@ export class SectorMappingsComponent implements OnInit {
         data => {
           if (data) {
             this.sectorMappings = data;
+            console.log(this.sectorMappings);
           }
           this.isLoadingMappings = false;
         }
