@@ -135,4 +135,18 @@ export class SectorMappingsComponent implements OnInit {
     )
   }
 
+  deleteMapping(e) {
+    var mappingId = e.target.id.split('-')[2];
+    if (mappingId) {
+      this.blockUI.start('Deleting mapping...');
+      this.sectorService.deleteSectorMapping(this.model.selectedSectorId, mappingId).subscribe(
+        data => {
+          if (data) {
+          }
+          this.blockUI.stop();
+        }
+      )
+    } 
+  }
+
 }

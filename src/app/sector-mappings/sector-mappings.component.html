@@ -153,9 +153,9 @@
                         {{sec.sector}}
                       </td>
                       <td>
-                          <button id="btnrmap-{{sec.id}}" (click)="unMapSector($event)"
+                          <button id="btnrmap-{{mapping.sectorTypeId}}-{{sec.sectorId}}" (click)="deleteMapping($event)"
                           class="btn btn-danger btn-sm">
-                          <i id="unmap-{{mapping.sectorTypeId}}-{{sec.id}}" class="fa fa-trash"></i>
+                          <i id="irmap-{{mapping.sectorTypeId}}-{{sec.sectorId}}" class="fa fa-trash"></i>
                         </button>
                       </td>
                     </tr>

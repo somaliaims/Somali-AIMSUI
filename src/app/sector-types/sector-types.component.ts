@@ -16,6 +16,7 @@ export class SectorTypesComponent implements OnInit {
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
+  pagingSize: number = Settings.rowsPerPage;
 
   constructor(private sectorTypeService: SectorTypeService, private router: Router,
     private storeService: StoreService) { }

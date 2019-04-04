@@ -211,6 +211,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorMappingsUrl + id);
     }
 
+    getDeleteSectorMappingsUrl(sectorId: string, mappingId: string) {
+        return (this.BASE_URL + urlsList.urls.sectorMappings + '/' + sectorId + '/' + mappingId);
+    }
+
     saveSectorMappingsUrl() {
         return (this.BASE_URL + urlsList.urls.sectorMappings);
     }

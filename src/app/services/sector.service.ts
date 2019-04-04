@@ -130,4 +130,11 @@ export class SectorService {
         catchError(this.storeService.handleError<any>('Sector mappings')));
   }
 
+  deleteSectorMapping(sectorId: string, mappingId: string) {
+    var url = this.urlHelper.getDeleteSectorMappingsUrl(sectorId, mappingId);
+    return this.httpClient.delete(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sector mapping'))
+    );
+  }
+
 }
