@@ -23,6 +23,7 @@ export const urls = {
 	sectorTypesUrl: "SectorTypes",
 	sectorsForTypesUrl: "Sector/GetSectorsForType/",
 	sectorMappingsUrl: "SectorMappings/GetForSector/",
+	sectorMappings: "SectorMappings/",
 	otherSectorTypesUrl: "SectorTypes/GetOtherSectorTypes",
 	getSectorType: "SectorTypes/GetById/",
 	sectorCategoriesUrl: "SectorCategory",

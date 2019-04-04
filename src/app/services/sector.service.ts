@@ -123,4 +123,11 @@ export class SectorService {
     );
   }
 
+  saveSectorMappings(model: any) {
+    var url = this.urlHelper.saveSectorMappingsUrl();
+    return this.httpClient.post(url,
+      JSON.stringify(model), httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Sector mappings')));
+  }
+
 }

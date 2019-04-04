@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SectorService } from '../services/sector.service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { Messages } from '../config/messages';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-sector-mappings',
@@ -18,6 +19,8 @@ export class SectorMappingsComponent implements OnInit {
   isLoadingMappings: boolean = false;
   permissions: any = {};
   model: any = { selectedSectorId: null, sectorTypeId: null };
+  @BlockUI() blockUI: NgBlockUI;
+  
   constructor(private sectorService: SectorService, private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
@@ -110,6 +113,7 @@ export class SectorMappingsComponent implements OnInit {
       return false;
     }
 
+    this.blockUI.start('Saving mappings...');
     var ids = this.newMappings.map(m => m.id);
     var model = {
       sectorTypeId: this.model.sectorTypeId,
@@ -117,7 +121,17 @@ export class SectorMappingsComponent implements OnInit {
       mappingIds: ids
     };
 
-    
+    this.sectorService.saveSectorMappings(model).subscribe(
+      data => {
+        if (data) {
+          for(var i=0; this.newMappings.length; i++) {
+            this.sectorMappings.push(this.newMappings[i]);
+          }
+          this.newMappings = [];
+        }
+        this.blockUI.stop();
+      }
+    )
   }
 
 }
