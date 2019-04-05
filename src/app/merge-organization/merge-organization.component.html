@@ -30,7 +30,7 @@
           <table>
             <tr>
               <td>
-                <button [class.disable]='isSearchingOrganizations || (selectedOrganizations.length < 2)'
+                <button [class.disable]='(selectedOrganizations.length < 2)'
                   class="btn btn-warning btn-lg pull-right float-right" (click)="mergeOrganizations()">Merge
                   Organizations</button>
               </td>
@@ -73,7 +73,7 @@
       <div class="col-md-6 col-sm-6">
         <div class="card card-signin my-5">
           <div class="card-body iati-box">
-            <form class="form-signin" (ngSubmit)="organizationForm.form.valid && mergeAndSaveProject()"
+            <form class="form-signin" (ngSubmit)="organizationForm.form.valid"
               #organizationForm="ngForm">
               <div class="form-group">
                 <label for="name">New name for merge</label>

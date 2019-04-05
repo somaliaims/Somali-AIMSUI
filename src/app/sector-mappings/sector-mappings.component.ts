@@ -11,6 +11,7 @@ import { StoreService } from '../services/store-service';
   styleUrls: ['./sector-mappings.component.css']
 })
 export class SectorMappingsComponent implements OnInit {
+  inputTextHolder: string = 'Enter sector name to search';
   errorMessage: string = null;
   requestNo: number = 0;
   defaultSectors: any = [];
@@ -20,6 +21,7 @@ export class SectorMappingsComponent implements OnInit {
   newMappings: any = [];
   isLoadingMappings: boolean = false;
   permissions: any = {};
+  isLoading: boolean = false;
   model: any = { selectedSectorId: null, sectorTypeId: null };
   @BlockUI() blockUI: NgBlockUI;
   
@@ -40,11 +42,13 @@ export class SectorMappingsComponent implements OnInit {
   }
 
   getDefaultSectors() {
+    this.isLoading = true;
     this.sectorService.getDefaultSectors().subscribe(
       data => {
         if (data) {
           this.defaultSectors = data;
         }
+        this.isLoading = false;
       }
     )
   }
@@ -97,6 +101,10 @@ export class SectorMappingsComponent implements OnInit {
       this.model.selectedSectorId = id;
       this.getSectorMappings();
     }
+  }
+
+  filterSectors() {
+    
   }
 
   mapSector(e) {

@@ -18,6 +18,8 @@ export class MergeOrganizationComponent implements OnInit {
   selectedOrganizations: any = [];
   model = {title: null, name: null };
   errorMessage: string = null;
+  isTextReadOnly: boolean = false;
+  inputTextHolder: string = 'Enter organization name to search';
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private organizationService: OrganizationService, 

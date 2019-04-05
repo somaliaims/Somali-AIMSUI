@@ -840,10 +840,10 @@ export class ProjectEntryComponent implements OnInit {
   /* Saving different section of project */
   saveProject(frm: any) {
     this.currentEntryForm = frm;
-    var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
-      this.model.startDate.day;
-    var endDate = this.model.endDate.year + '-' + this.model.endDate.month + '-' +
-      this.model.endDate.day;
+    var startDate = new Date(this.model.startDate.year + '-' + this.model.startDate.month + '-' +
+      this.model.startDate.day);
+    var endDate = new Date(this.model.endDate.year + '-' + this.model.endDate.month + '-' +
+      this.model.endDate.day);
 
     if (startDate > endDate) {
       this.errorMessage = 'Start date cannot be greater than end date';

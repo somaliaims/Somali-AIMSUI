@@ -17,7 +17,7 @@
 
     <div class="row">
       <div class="col-md-6 margin-top-10">
-        <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+        <div class="input-group">
           <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (input)="filterSectors()"
             [(ngModel)]="model.title" name="title" #title="ngModel" onkeypress="return event.keyCode != 13;" required>
           <span class="input-group-btn">
@@ -79,7 +79,7 @@
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Other sectors</h5>
 
-            <form class="form-signin" (ngSubmit)="sectorForm.form.valid && mapAndSaveSectors()" #sectorForm="ngForm">
+            <form class="form-signin" (ngSubmit)="sectorForm.form.valid" #sectorForm="ngForm">
 
               <div [class.disable]="model.selectedSectorId == null" class="form-group">
                 <label for="name">Select sector type</label>

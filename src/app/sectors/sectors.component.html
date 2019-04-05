@@ -36,10 +36,12 @@
     <table class="table table-bordered table-stripped">
       <tr>
         <th>Sector name</th>
+        <th>Sector type</th>
         <th>Actions</th>
       </tr>
       <tr *ngFor="let sector of sectorsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
         <td>{{sector.sectorName}}</td>
+        <td>{{sector.sectorType}}</td>
         <td>
           <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
           &nbsp;
