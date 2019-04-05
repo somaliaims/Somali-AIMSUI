@@ -154,12 +154,19 @@ export class SectorMappingsComponent implements OnInit {
   }
 
   deleteMapping(e) {
-    var mappingId = e.target.id.split('-')[2];
+    var idsArr = e.target.id.split('-');
+    var sectorTypeId = idsArr[1];
+    var mappingId = idsArr[2];
+
     if (mappingId) {
       this.blockUI.start('Deleting mapping...');
       this.sectorService.deleteSectorMapping(this.model.selectedSectorId, mappingId).subscribe(
         data => {
           if (data) {
+            var mapping = this.sectorMappings.filter(s => s.sectorTypeId == sectorTypeId);
+            if (mapping.length > 0) {
+              mapping[0].sectors = mapping[0].sectors.filter(s => s.sectorId != mappingId);
+            }
           }
           this.blockUI.stop();
         }
