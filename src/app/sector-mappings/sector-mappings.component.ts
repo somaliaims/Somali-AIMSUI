@@ -79,6 +79,8 @@ export class SectorMappingsComponent implements OnInit {
     if (this.model.sectorTypeId == null) {
       return false;
     }
+
+    this.newMappings = [];
     var id = this.model.sectorTypeId;
     this.sectorService.getSectorsForType(id).subscribe(
       data => {
@@ -135,15 +137,42 @@ export class SectorMappingsComponent implements OnInit {
     this.sectorService.saveSectorMappings(model).subscribe(
       data => {
         if (data) {
-          var mappings = this.sectorMappings.filter(s => s.sectorTypeId == this.model.sectorTypeId);
+          var mappings = [];
+          if (this.sectorMappings && this.sectorMappings.length > 0) {
+            mappings = this.sectorMappings.filter(s => s.sectorTypeId == this.model.sectorTypeId);
+          }
 
           if (mappings.length > 0) {
-            for(var i=0; this.newMappings.length; i++) {
+            for(var i=0; i < this.newMappings.length; i++) {
               var newMapping = {
                 sectorId: this.newMappings[i].id,
-                sectorName: this.newMappings[i].sectorName
+                sector: this.newMappings[i].sectorName
               };
               mappings[0].sectors.push(newMapping);
+            }
+          } else {
+            var sectorTypeName = '';
+            var sectorTypeObj = this.sectorTypes.filter(s => s.id == this.model.sectorTypeId);
+            if (sectorTypeObj.length > 0) {
+              var sectors: any = [];
+              sectorTypeName = sectorTypeObj[0].typeName;
+              for(var i=0; i < this.newMappings.length; i++) {
+                sectors.push({
+                  sectorId: this.newMappings[i].id,
+                  sector: this.newMappings[i].sectorName
+                });
+              }
+
+              var newSectorType = {
+                sectorTypeId: this.model.sectorTypeId,
+                sectorType: sectorTypeName,
+                sectors: sectors
+              }
+
+              if (!this.sectorMappings) {
+                this.sectorMappings = [];
+              }
+              this.sectorMappings.push(newSectorType);
             }
           }
           this.newMappings = [];
