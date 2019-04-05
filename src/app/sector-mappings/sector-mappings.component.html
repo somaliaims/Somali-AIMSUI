@@ -141,8 +141,8 @@
         <div class="card card-signin my-5 iati-box">
           <div class="card-body">
             <h6>Mapped sectors</h6>
-            <table *ngIf="sectorMappings.mappedSectors && sectorMappings.mappedSectors.length > 0" class="table table-bordered">
-              <tr *ngFor="let mapping of sectorMappings.mappedSectors">
+            <table *ngIf="sectorMappings && sectorMappings.length > 0" class="table table-bordered">
+              <tr *ngFor="let mapping of sectorMappings">
                 <td>
                   <table class="table table-bordered">
                     <tr>
@@ -163,7 +163,7 @@
                 </td>
               </tr>
             </table>
-            <span class="text-info" *ngIf="!sectorMappings.mappedSectors && isLoadingMappings == false">
+            <span class="text-info" *ngIf="!sectorMappings && isLoadingMappings == false">
               <i>
                 No mappings to show
               </i>

@@ -3,6 +3,7 @@ import { SectorService } from '../services/sector.service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { Messages } from '../config/messages';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-sector-mappings',
@@ -11,6 +12,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 })
 export class SectorMappingsComponent implements OnInit {
   errorMessage: string = null;
+  requestNo: number = 0;
   defaultSectors: any = [];
   sectorTypes: any = [];
   sectorsForType: any = [];
@@ -21,11 +23,20 @@ export class SectorMappingsComponent implements OnInit {
   model: any = { selectedSectorId: null, sectorTypeId: null };
   @BlockUI() blockUI: NgBlockUI;
   
-  constructor(private sectorService: SectorService, private errorModal: ErrorModalComponent) { }
+  constructor(private sectorService: SectorService, private errorModal: ErrorModalComponent,
+    private storeService: StoreService) { }
 
   ngOnInit() {
     this.getDefaultSectors();
     this.getOtherSectorTypes();
+
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.errorModal.openModal();
+      }
+    });
   }
 
   getDefaultSectors() {
@@ -56,8 +67,7 @@ export class SectorMappingsComponent implements OnInit {
       this.sectorService.getSectorMappings(id).subscribe(
         data => {
           if (data) {
-            this.sectorMappings = data;
-            console.log(this.sectorMappings);
+            this.sectorMappings = data.mappedSectors;
           }
           this.isLoadingMappings = false;
         }
@@ -125,8 +135,16 @@ export class SectorMappingsComponent implements OnInit {
     this.sectorService.saveSectorMappings(model).subscribe(
       data => {
         if (data) {
-          for(var i=0; this.newMappings.length; i++) {
-            this.sectorMappings.push(this.newMappings[i]);
+          var mappings = this.sectorMappings.filter(s => s.sectorTypeId == this.model.sectorTypeId);
+
+          if (mappings.length > 0) {
+            for(var i=0; this.newMappings.length; i++) {
+              var newMapping = {
+                sectorId: this.newMappings[i].id,
+                sectorName: this.newMappings[i].sectorName
+              };
+              mappings[0].sectors.push(newMapping);
+            }
           }
           this.newMappings = [];
         }
