@@ -298,6 +298,17 @@
               </div>
 
               <div *ngIf="sectorEntryType == 'iati'" class="form-group">
+                <label for="sectorType">SectorType</label>
+                <select class="form-control" id="sectorTypeId" [(ngModel)]="sectorModel.sectorTypeId" name="sectorTypeId"
+                  #sectorTypeId="ngModel" required>
+                  <option *ngFor="let sType of sectorTypesList" [value]="sector.id">{{sType.typeName}}</option>
+                </select>
+                <div *ngIf="projectSectorForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
+                  Sector type is required for mapping
+                </div>
+              </div>
+
+              <div *ngIf="sectorEntryType == 'iati'" class="form-group">
                 <label for="sectorName">New sector</label>
                 <input type="text" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName"
                   name="sectorName" #sectorName="ngModel" required>

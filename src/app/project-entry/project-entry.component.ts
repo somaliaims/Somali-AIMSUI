@@ -89,6 +89,7 @@ export class ProjectEntryComponent implements OnInit {
   iatiProjects: any = [];
   aimsProjects: any = [];
   currencyList: any = [];
+  sectorTypesList: any = [];
   sectorsList: any = [];
   locationsList: any = [];
   organizationsList: any = [];
@@ -245,6 +246,7 @@ export class ProjectEntryComponent implements OnInit {
       this.endingYearsList.push(y);
     }
 
+    this.loadSectorTypes();
     this.loadSectorsList();
     this.loadLocationsList();
     this.loadOrganizationsList();
@@ -274,6 +276,16 @@ export class ProjectEntryComponent implements OnInit {
       error => {
         console.log(error);
         this.isAimsLoading = false;
+      }
+    )
+  }
+
+  loadSectorTypes() {
+    this.sectorService.getOtherSectorTypes().subscribe(
+      data => {
+        if (data) {
+          this.sectorTypesList = data;
+        }
       }
     )
   }
