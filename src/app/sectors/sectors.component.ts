@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { SectorTypeService } from '../services/sector-types.service';
 
 @Component({
   selector: 'app-sectors',
@@ -13,15 +14,19 @@ import { SecurityHelperService } from '../services/security-helper.service';
 export class SectorsComponent implements OnInit {
 
   sectorsList: any = [];
+  filteredSectorsList: any = [];
+  sectorTypesList: any = [];
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
   showMessage: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
   permissions: any = {};
+  model: any = { sectorTypeId: 0 };
 
   constructor(private sectorService: SectorService, private router: Router,
-    private storeService: StoreService, private securityService: SecurityHelperService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService,
+    private sectorTypeService: SectorTypeService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -38,7 +43,27 @@ export class SectorsComponent implements OnInit {
       this.showMessage = false;
     }, Settings.displayMessageTime);
 
+    this.getSectorTypesList();
     this.getSectorsList();
+  }
+
+  getSectorTypesList() {
+    this.sectorTypeService.getSectorTypesList().subscribe(
+      data => {
+        if (data) {
+          this.sectorTypesList = data;
+        }
+      }
+    )
+  }
+
+  getSectorsForType() {
+    var typeId = this.model.sectorTypeId;
+    if (typeId != null && typeId > 0) {
+      this.filteredSectorsList = this.sectorsList.filter(s => s.sectorTypeId == typeId);
+    } else if (typeId == 0) {
+      this.filteredSectorsList = this.sectorsList;
+    }
   }
 
   getSectorsList() {
@@ -47,6 +72,7 @@ export class SectorsComponent implements OnInit {
         this.isLoading = false;
         if (data && data.length) {
           this.sectorsList = data;
+          this.filteredSectorsList = data;
         }
       },
       error => {
@@ -64,7 +90,13 @@ export class SectorsComponent implements OnInit {
         data => {
           this.isLoading = false;
           if (data && data.length) {
-            this.sectorsList = data
+            this.sectorsList = data;
+            
+            if (this.model.sectorTypeId && this.model.sectorTypeId > 0) {
+              this.getSectorsForType();
+            } else {
+              this.filteredSectorsList = this.sectorsList;
+            }
           }
         },
         error => {
