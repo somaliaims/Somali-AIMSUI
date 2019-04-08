@@ -127,7 +127,7 @@ export class ProjectEntryComponent implements OnInit {
   ];
 
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
-  sectorModel = { projectId: 0, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
+  sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
@@ -476,6 +476,10 @@ export class ProjectEntryComponent implements OnInit {
         }
       }
     }
+  }
+
+  getSectorMappings() {
+
   }
 
   enterAIMSSector(e) {

@@ -306,6 +306,7 @@
                 <div *ngIf="projectSectorForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
                   Sector type is required for mapping
                 </div>
+                <button *ngIf="mappingsFound.lenght > 0" class="btn btn-success">{{mappingsFound}} mappings found</button>
               </div>
 
               <div *ngIf="sectorEntryType == 'iati'" class="form-group">

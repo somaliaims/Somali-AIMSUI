@@ -219,6 +219,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorMappings);
     }
 
+    getMappingsForSectorUrl(sectorId: string, sectorTypeId: string) {
+        return (this.BASE_URL + urlsList.urls.mappingsForSector + sectorId + '/' + sectorTypeId);
+    }
+
     getSectorsForTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.sectorsForTypesUrl + id);
     }
