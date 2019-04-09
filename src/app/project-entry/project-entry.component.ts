@@ -801,6 +801,30 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  checkIfLocationAdded(location) {
+    if (this.currentProjectLocationsList.length > 0) {
+      var isExists = this.currentProjectLocationsList.filter(l => 
+        l.location.trim().toLowerCase() == location.trim().toLowerCase());
+      return isExists.length > 0 ? true : false;
+    }
+  }
+
+  checkIfFunderAdded(funder) {
+    if (this.currentProjectFundersList.length > 0) {
+      var isExists = this.currentProjectFundersList.filter(f => 
+        f.funder.trim().toLowerCase() == funder.trim().toLowerCase());
+      return isExists.length > 0 ? true : false;
+    }
+  }
+
+  checkIfImplementerAdded(implementer) {
+    if (this.currentProjectImplementersList.length > 0) {
+      var isExists = this.currentProjectImplementersList.filter(i => 
+        i.implementer.trim().toLowerCase() == implementer.trim().toLowerCase());
+      return isExists.length > 0 ? true : false;
+    }
+  }
+
   showProjects() {
     this.manageTabsDisplay('project');
   }

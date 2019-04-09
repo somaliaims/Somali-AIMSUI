@@ -218,7 +218,7 @@
                         <td>
                           {{sector.fundsPercentage}}
                         </td>
-                        <td>
+                        <td [class.disable]="checkIfSectorAdded(sector.sector)">
                           <button id="asector-{{project.id}}-{{sector.sectorId}}" (click)="enterAIMSSector($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
@@ -366,6 +366,9 @@
               </tr>
               <tr>
                 <td colspan="3">
+                    <span *ngIf="(sectorTotalPercentage > 100 || sectorTotalPercentage < 0)" class="float-left">
+                      <i class="text-danger">Invalid percentage value.</i>
+                    </span>
                   <span class="float-right">
                     <b>Total percentage: {{sectorTotalPercentage}} %</b>
                   </span>
@@ -410,7 +413,7 @@
                         <td>
                           {{location.fundsPercentage}}
                         </td>
-                        <td>
+                        <td [class.disable]="checkIfLocationAdded(location.location)">
                           <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
@@ -437,7 +440,7 @@
                         <td>
                           {{location.name}}
                         </td>
-                        <td>
+                        <td [class.disable]="checkIfLocationAdded(location.name)">
                           <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATILocation($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
@@ -535,6 +538,9 @@
               </tr>
               <tr>
                 <td colspan="3">
+                  <span *ngIf="(locationTotalPercentage > 100 || locationTotalPercentage < 0)" class="float-left">
+                    <i class="text-danger">Invalid percentage value.</i>
+                  </span>
                   <span class="float-right">
                     <b>Total Percentage: {{locationTotalPercentage}} %</b>
                   </span>
@@ -726,7 +732,7 @@
                         <td>
                           {{funder.funder}}
                         </td>
-                        <td>
+                        <td [class.disable]="checkIfFunderAdded(funder.funder)">
                           <button id="aFunder-{{project.id}}-{{funder.funderId}}" (click)="enterAIMSFunder($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
@@ -753,7 +759,7 @@
                         <td>
                           {{funder.name}}
                         </td>
-                        <td>
+                        <td [class.disable]="checkIfFunderAdded(funder.name)">
                           <button id="dfunder-{{project.id}}-{{funder.id}}" (click)="enterIATIFunder($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
@@ -911,7 +917,7 @@
                         <td>
                           {{implementer.implementer}}
                         </td>
-                        <td>
+                        <td [class.disable]="checkIfImplementerAdded(implementer.implementer)">
                           <button id="aImplementer-{{project.id}}-{{implementer.implementerId}}"
                             (click)="enterAIMSImplementer($event)" class="btn btn-success btn-sm">Enter >></button>
                         </td>
@@ -938,7 +944,7 @@
                         <td>
                           {{implementer.name}}
                         </td>
-                        <td>
+                        <td [class.disable]="checkIfImplementerAdded(implementer.name)">
                           <button id="dimplementer-{{project.id}}-{{implementer.id}}"
                             (click)="enterIATIImplementer($event)" class="btn btn-success btn-sm">Enter >></button>
                         </td>
