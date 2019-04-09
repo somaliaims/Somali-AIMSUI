@@ -793,6 +793,14 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
+  checkIfSectorAdded(sector) {
+    if (this.currentProjectSectorsList.length > 0) {
+      var isExists = this.currentProjectSectorsList.filter(s => 
+        s.sector.trim().toLowerCase() == sector.trim().toLowerCase());
+      return isExists.length > 0 ? true : false;
+    }
+  }
+
   showProjects() {
     this.manageTabsDisplay('project');
   }

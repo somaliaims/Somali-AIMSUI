@@ -249,7 +249,7 @@
                         <td>
                           {{sector.fundsPercentage}}
                         </td>
-                        <td>
+                        <td [class.disable]="checkIfSectorAdded(sector.sectorName)">
                           <button id="isector-{{project.id}}-{{sector.code}}" (click)="enterIATISector($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
