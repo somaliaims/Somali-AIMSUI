@@ -38,6 +38,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorTotalPercentage: number = 0;
   locationTotalPercentage: number = 0;
   totalFunds: number = 0;
+  mappingsCount: number = 0;
   totalDisbursements: number = 0;
   btnProjectText: string = 'Save Project';
   btnProjectSectorText: string = 'Add Sector';
@@ -92,6 +93,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorTypesList: any = [];
   sectorsList: any = [];
   locationsList: any = [];
+  mappedSectorsList: any = [];
   organizationsList: any = [];
   currentProjectSectorsList: any = [];
   currentProjectLocationsList: any = [];
@@ -110,6 +112,8 @@ export class ProjectEntryComponent implements OnInit {
   viewProjectDisbursements: any = [];
   yearsList: any = [];
   endingYearsList: any = [];
+  sectorMappings: any = [];
+  defaultSectorsList: any = [];
 
   monthsList: any = [
     { key: 'January', value: 1 },
@@ -246,7 +250,7 @@ export class ProjectEntryComponent implements OnInit {
       this.endingYearsList.push(y);
     }
 
-    this.loadSectorTypes();
+    //this.loadSectorTypes();
     this.loadSectorsList();
     this.loadLocationsList();
     this.loadOrganizationsList();
@@ -280,7 +284,7 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
-  loadSectorTypes() {
+  /*loadSectorTypes() {
     this.sectorService.getOtherSectorTypes().subscribe(
       data => {
         if (data) {
@@ -288,12 +292,13 @@ export class ProjectEntryComponent implements OnInit {
         }
       }
     )
-  }
+  }*/
 
   loadSectorsList() {
-    this.sectorService.getSectorsList().subscribe(
+    this.sectorService.getDefaultSectors().subscribe(
       data => {
         this.sectorsList = data;
+        this.defaultSectorsList = data;
       },
       error => {
         console.log(error);
@@ -469,6 +474,7 @@ export class ProjectEntryComponent implements OnInit {
           if (selectSector[0].sectorName.length > 0) {
             this.isSectorVisible = true;
             this.sectorModel.sectorName = selectSector[0].sectorName;
+            this.getSectorMappings();
           } else {
             this.sectorEntryType = 'aims';
           }
@@ -478,8 +484,40 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
-  getSectorMappings() {
+  /*getDefaultSectors() {
+    this.sectorService.getDefaultSectors().subscribe(
+      data => {
+        if (data) {
+          this.defaultSectorsList = data;
+          
+        }
+      }
+    )
+  }*/
 
+  getSectorMappings() {
+    var sectorName = this.sectorModel.sectorName;
+    this.mappingsCount = 0;
+    this.sectorService.getMappingsForSectorByName(sectorName).subscribe(
+      data => {
+        if (data && data.length > 0) {
+          this.sectorMappings = data;
+          this.mappedSectorsList = data;
+          this.mappingsCount = data.length;
+        } else {
+          this.mappingsCount = 0;
+          this.sectorMappings = this.defaultSectorsList;
+        } 
+      }
+    )
+  }
+
+  setManualMappings() {
+    this.sectorMappings = this.defaultSectorsList; 
+  }
+
+  setAutomaticMapping() {
+    this.sectorMappings = this.mappedSectorsList;
   }
 
   enterAIMSSector(e) {
@@ -973,9 +1011,10 @@ export class ProjectEntryComponent implements OnInit {
     if (this.sectorEntryType == 'iati') {
       var sectorModel = {
         sectorName: this.sectorModel.sectorName,
-        parentId: 0
+        parentId: 0,
+        mappingSectorId: this.sectorModel.sectorId
       };
-      this.sectorService.addSector(sectorModel).subscribe(
+      this.sectorService.addIATISector(sectorModel).subscribe(
         data => {
           if (data) {
             this.sectorModel.sectorId = data;

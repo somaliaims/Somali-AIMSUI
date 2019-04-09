@@ -195,6 +195,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorsUrl);
     }
 
+    saveIATISectorUrl() {
+        return (this.BASE_URL + urlsList.urls.addIATISector);
+    }
+
     deleteSectorUrl(id: string, newId: string) {
         return (this.BASE_URL + urlsList.urls.deleteSector + id + '/' + newId);
     }
@@ -219,8 +223,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorMappings);
     }
 
-    getMappingsForSectorUrl(sectorId: string, sectorTypeId: string) {
-        return (this.BASE_URL + urlsList.urls.mappingsForSector + sectorId + '/' + sectorTypeId);
+    getMappingsForSectorUrl(sectorId: string) {
+        return (this.BASE_URL + urlsList.urls.mappingsForSector + sectorId);
+    }
+
+    getMappingsForSectorByNameUrl(sectorName: string) {
+        return (this.BASE_URL + urlsList.urls.mappingsForSectorByName + sectorName);
     }
 
     getSectorsForTypeUrl(id: string) {

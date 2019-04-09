@@ -298,23 +298,29 @@
               </div>
 
               <div *ngIf="sectorEntryType == 'iati'" class="form-group">
-                <label for="sectorType">SectorType</label>
-                <select class="form-control" id="sectorTypeId" [(ngModel)]="sectorModel.sectorTypeId" name="sectorTypeId"
-                  #sectorTypeId="ngModel" required>
-                  <option *ngFor="let sType of sectorTypesList" [value]="sector.id">{{sType.typeName}}</option>
-                </select>
-                <div *ngIf="projectSectorForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
-                  Sector type is required for mapping
-                </div>
-                <button *ngIf="mappingsFound.lenght > 0" class="btn btn-success">{{mappingsFound}} mappings found</button>
-              </div>
-
-              <div *ngIf="sectorEntryType == 'iati'" class="form-group">
                 <label for="sectorName">New sector</label>
                 <input type="text" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName"
                   name="sectorName" #sectorName="ngModel" required>
                 <div *ngIf="projectSectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
                   Sector name is required
+                </div>
+              </div>
+
+              <div *ngIf="sectorEntryType == 'iati'" class="form-group">
+                <label for="sectorName">Sector mappings</label>
+                <select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
+                  #sectorId="ngModel" required>
+                  <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
+                </select>
+                <div *ngIf="mappingsCount > 0">
+                  <span class="float-left text-success">
+                      {{mappingsCount}} mappings found
+                  </span>
+                  <button class="btn btn-success btn-sm" (click)="setManualMappings()">Map manual</button>
+                </div>
+                <div *ngIf="mappingsCount == 0" class="text-warning"><i>No mappings found, map sector manually</i></div>
+                <div *ngIf="projectSectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
+                  Mapping for sector is required
                 </div>
               </div>
 
