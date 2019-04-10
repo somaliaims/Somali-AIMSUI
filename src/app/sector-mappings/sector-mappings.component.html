@@ -96,7 +96,7 @@
             <div>
               <table *ngIf="sectorsForType.length > 0" class="table table-bordered">
                 <tr *ngFor="let sector of sectorsForType">
-                  <td>
+                  <td [class.disable]="checkIfSectorMapped(sector.id)">
                     <span class="float-left">
                       {{sector.sectorName}}<br />
                     </span>

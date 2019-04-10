@@ -286,16 +286,6 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
-  /*loadSectorTypes() {
-    this.sectorService.getOtherSectorTypes().subscribe(
-      data => {
-        if (data) {
-          this.sectorTypesList = data;
-        }
-      }
-    )
-  }*/
-
   loadSectorsList() {
     this.sectorService.getDefaultSectors().subscribe(
       data => {
@@ -486,17 +476,6 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
-  /*getDefaultSectors() {
-    this.sectorService.getDefaultSectors().subscribe(
-      data => {
-        if (data) {
-          this.defaultSectorsList = data;
-          
-        }
-      }
-    )
-  }*/
-
   getSectorMappings() {
     var sectorName = this.sectorModel.sectorName;
     this.mappingsCount = 0;
@@ -508,7 +487,7 @@ export class ProjectEntryComponent implements OnInit {
           this.sectorMappings = data;
           this.mappedSectorsList = data;
           this.mappingsCount = data.length;
-          if (data.length == 1) {
+          if (data.length >= 1) {
             this.sectorModel.sectorId = data[0].id;
           }
         } else {

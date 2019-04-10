@@ -215,4 +215,12 @@ export class SectorMappingsComponent implements OnInit {
     } 
   }
 
+  checkIfSectorMapped(id) {
+    if (this.sectorMappings.length > 0 && this.sectorMappings[0].sectors) {
+      var isMapped = this.sectorMappings[0].sectors.filter(s => s.sectorId == id);
+      return isMapped.length > 0 ? true : false;
+    }
+    return false;
+  }
+
 }
