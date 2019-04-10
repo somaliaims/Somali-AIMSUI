@@ -71,7 +71,7 @@ export class CurrenciesComponent implements OnInit {
       this.currencyService.searchCurrencies(this.criteria).subscribe(
         data => {
           this.isLoading = false;
-          if (data && data.length) {
+          if (data) {
             this.currenciesList = data
           }
         },
@@ -90,11 +90,8 @@ export class CurrenciesComponent implements OnInit {
       this.currencyService.deleteCurrency(id).subscribe(
         data => {
           if (data.success) {
-            this.statusMessage = 'Currency ' + Messages.RECORD_DELETED;
             this.currenciesList = this.currenciesList.filter(c => c.id != id);
-            setTimeout(() => {
-              this.blockUI.stop();
-            }, 2000);
+            this.blockUI.stop();
           } else {
             this.blockUI.stop();
           }
@@ -106,5 +103,11 @@ export class CurrenciesComponent implements OnInit {
       )
     }
     return false;
+  }
+
+  edit(id: string) {
+    if (id) {
+      this.router.navigateByUrl('/manage-currency/' + id);
+    }
   }
 }

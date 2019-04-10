@@ -43,6 +43,9 @@
           <tr *ngFor="let currency of currenciesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>{{currency.currency}}</td>
             <td>
+                <a title="Delete" (click)="edit(currency.id)" class="btn btn-info"><i
+                  class="fa fa-edit color-white"></i></a>&nbsp;
+
               <a title="Delete" (click)="delete(currency.id)" class="btn btn-danger"><i
                   class="fa fa-trash color-white"></i></a>
             </td>

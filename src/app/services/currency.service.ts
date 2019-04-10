@@ -38,6 +38,12 @@ export class CurrencyService {
             catchError(this.storeService.handleError<any>('Currencies')));
     }
 
+    getCurrency(id: number) {
+        var url = this.urlHelper.getCurrencyByIdUrl(id.toString());
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Currencies')));
+    }
+
     addCurrency(model: any) {
         var url = this.urlHelper.getCurrencyUrl();
         return this.httpClient.post(url,

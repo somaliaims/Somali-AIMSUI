@@ -190,6 +190,16 @@ html {
   }
 
   /*
+  Custom checkbox
+  */
+  .btn span.fa {    			
+    opacity: 0;				
+  }
+  .btn.active span.fa {				
+    opacity: 1;				
+  }
+
+  /*
   For printing
   */
   @media print {

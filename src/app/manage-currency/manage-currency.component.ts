@@ -3,6 +3,7 @@ import { CurrencyService } from '../services/currency.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
+import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 
 @Component({
   selector: 'app-manage-currency',
@@ -16,8 +17,9 @@ export class ManageCurrencyComponent implements OnInit {
   btnText: string = 'Add Currency';
   errorMessage: string = '';
   requestNo: number = 0;
+  isForEdit: boolean = false;
   isError: boolean = false;
-  model = { currency: null };
+  model = { id: 0, currency: null, isDefault: false };
   entryForm: any = null;
 
   constructor(private currencyService: CurrencyService, private route: ActivatedRoute,
@@ -25,6 +27,28 @@ export class ManageCurrencyComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
+      var id = this.route.snapshot.params["{id}"];
+      if (id) {
+        this.btnText = 'Edit Currency';
+        this.isForEdit = true;
+        this.currencyId = id;
+        this.currencyService.getCurrency(id).subscribe(
+          data => {
+            if (data) {
+              this.model.id = data.id;
+              this.model.currency = data.currency;
+              this.model.isDefault = data.isDefault;
+            }
+          },
+          error => {
+            console.log("Request Failed: ", error);
+          }
+        );
+      }
+      this.requestNo = this.storeService.getNewRequestNumber();
+    }
+
     this.requestNo = this.storeService.getNewRequestNumber();
 
     this.storeService.currentRequestTrack.subscribe(model => {
@@ -41,9 +65,7 @@ export class ManageCurrencyComponent implements OnInit {
     this.isBtnDisabled = true;
     this.currencyService.addCurrency(this.model).subscribe(
       data => {
-        if (!this.isError) {
-          //var message = 'New currency' + Messages.NEW_RECORD;
-          //this.storeService.newInfoMessage(message);
+        if (data) {
           this.router.navigateByUrl('currencies');
         } else {
           this.resetFormState();
@@ -55,6 +77,14 @@ export class ManageCurrencyComponent implements OnInit {
         this.resetFormState();
       }
     );
+  }
+
+  toggleDefault() {
+    if (this.model.isDefault) {
+      this.model.isDefault = false;
+    } else {
+      this.model.isDefault = true;
+    }
   }
 
   resetFormState() {

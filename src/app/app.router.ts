@@ -93,6 +93,7 @@ export const routes: Routes = [
   { path: 'manage-account', component: ManageAccountComponent },
   { path: 'currencies', component: CurrenciesComponent },
   { path: 'manage-currency', component: ManageCurrencyComponent },
+  { path: 'manage-currency/:{id}', component: ManageCurrencyComponent, data: { isForEdit: true } },
   { path: 'financial-years', component: FinancialYearsComponent },
   { path: 'manage-year', component:  ManageYearComponent},
   { path: 'user-subscriptions', component: UserSubscriptionComponent },

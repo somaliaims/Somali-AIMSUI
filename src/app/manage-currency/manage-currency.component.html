@@ -30,6 +30,21 @@
               </div>
             </div>
 
+            
+            <div class="form-group">
+              <div class="row">
+                <div class="col-offset-2 col-md-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <button (click)="toggleDefault()" class="btn btn-success btn-sm">
+                      <i *ngIf="!model.isDefault" class="fa fa-square text-white"></i>
+                      <i *ngIf="model.isDefault" class="fa fa-check text-white"></i>
+                    </button>
+                    &nbsp;Is default currency?
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>
         </div>

@@ -95,6 +95,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getCurrency);
     }
 
+    getCurrencyByIdUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getCurrencyById + id);
+    }
+
     getExchangeRatesUrl() {
         return (this.BASE_URL + urlsList.urls.exchangeRateUrl)
     }
