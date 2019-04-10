@@ -51,6 +51,14 @@ export class CurrencyService {
                 catchError(this.storeService.handleError<any>('New Currency')));
     }
 
+    editCurrency(id: number, model: any) {
+        var url = this.urlHelper.getCurrencyUrl()  + '/' + id;
+        return this.httpClient.put(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('New Currency'))
+            );
+    }
+
     deleteCurrency(id: string) {
         var url = this.urlHelper.getDeleteCurrencyUrl(id);
         return this.httpClient.delete(url, httpOptions).pipe(

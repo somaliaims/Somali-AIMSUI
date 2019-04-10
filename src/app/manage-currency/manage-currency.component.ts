@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-manage-currency',
@@ -14,7 +15,7 @@ export class ManageCurrencyComponent implements OnInit {
 
   isBtnDisabled: boolean = false;
   currencyId: number = 0;
-  btnText: string = 'Add Currency';
+  btnText: string = 'Add currency';
   errorMessage: string = '';
   requestNo: number = 0;
   isForEdit: boolean = false;
@@ -30,7 +31,7 @@ export class ManageCurrencyComponent implements OnInit {
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit Currency';
+        this.btnText = 'Edit currency';
         this.isForEdit = true;
         this.currencyId = id;
         this.currencyService.getCurrency(id).subscribe(
@@ -63,20 +64,35 @@ export class ManageCurrencyComponent implements OnInit {
     this.entryForm = frm;
     this.btnText = 'Saving...';
     this.isBtnDisabled = true;
-    this.currencyService.addCurrency(this.model).subscribe(
-      data => {
-        if (data) {
-          this.router.navigateByUrl('currencies');
-        } else {
+
+    if (this.isForEdit) {
+      if (this.currencyId) {
+        this.currencyService.editCurrency(this.currencyId, this.model).subscribe(
+          data => {
+            if (data) {
+              this.router.navigateByUrl('currencies');
+            } else {
+              this.resetFormState();
+            }
+          }
+        )
+      }
+    } else {
+      this.currencyService.addCurrency(this.model).subscribe(
+        data => {
+          if (data) {
+            this.router.navigateByUrl('currencies');
+          } else {
+            this.resetFormState();
+          }
+        },
+        error => {
+          this.errorMessage = error;
+          this.isError = true;
           this.resetFormState();
         }
-      },
-      error => {
-        this.errorMessage = error;
-        this.isError = true;
-        this.resetFormState();
-      }
-    );
+      );
+    }
   }
 
   toggleDefault() {
