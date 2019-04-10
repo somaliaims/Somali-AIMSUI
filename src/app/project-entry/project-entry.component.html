@@ -312,11 +312,20 @@
                   #sectorId="ngModel" required>
                   <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
                 </select>
-                <div *ngIf="mappingsCount > 0">
-                  <span class="float-left text-success">
-                      {{mappingsCount}} mappings found
+                <div class="margin-top-5" *ngIf="mappingsCount > 0">
+                  <span *ngIf="showMappingManual" class="float-left text-success">
+                      {{mappingsCount}} mapping/s found
                   </span>
-                  <button class="btn btn-success btn-sm" (click)="setManualMappings()">Map manual</button>
+                  <span *ngIf="showMappingAuto" class="float-left text-success">
+                    Map manually
+                  </span>
+                  &nbsp;
+                  <span *ngIf="showMappingManual" class="float-right">
+                    <button type="button"  class="btn btn-info btn-sm" (click)="setManualMappings()">Map manual</button>
+                  </span>
+                  <span *ngIf="showMappingAuto" class="float-right">
+                    <button type="button"  class="btn btn-warning btn-sm" (click)="setAutomaticMappings()">Map auto</button>
+                  </span>
                 </div>
                 <div *ngIf="mappingsCount == 0" class="text-warning"><i>No mappings found, map sector manually</i></div>
                 <div *ngIf="projectSectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">

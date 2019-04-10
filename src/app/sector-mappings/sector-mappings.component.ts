@@ -71,7 +71,11 @@ export class SectorMappingsComponent implements OnInit {
       this.sectorService.getSectorMappings(id).subscribe(
         data => {
           if (data) {
-            this.sectorMappings = data.mappedSectors;
+            if (!data.mappedSectors) {
+              this.sectorMappings.length = 0;
+            } else {
+              this.sectorMappings = data.mappedSectors;
+            }
           }
           this.isLoadingMappings = false;
         }

@@ -64,6 +64,8 @@ export class ProjectEntryComponent implements OnInit {
   infoMessage: string = '';
   showMessage: boolean = false;
   isForEdit: boolean = false;
+  showMappingManual: boolean = false;
+  showMappingAuto: boolean = false;
   errorMessage: string = '';
   startDateModel: NgbDateStruct;
   currentTab: string = 'project';
@@ -501,9 +503,14 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorService.getMappingsForSectorByName(sectorName).subscribe(
       data => {
         if (data && data.length > 0) {
+          this.showMappingManual = true;
+          this.showMappingAuto = false;
           this.sectorMappings = data;
           this.mappedSectorsList = data;
           this.mappingsCount = data.length;
+          if (data.length == 1) {
+            this.sectorModel.sectorId = data[0].id;
+          }
         } else {
           this.mappingsCount = 0;
           this.sectorMappings = this.defaultSectorsList;
@@ -514,10 +521,14 @@ export class ProjectEntryComponent implements OnInit {
 
   setManualMappings() {
     this.sectorMappings = this.defaultSectorsList; 
+    this.showMappingManual = false;
+    this.showMappingAuto = true;
   }
 
-  setAutomaticMapping() {
+  setAutomaticMappings() {
     this.sectorMappings = this.mappedSectorsList;
+    this.showMappingAuto = false;
+    this.showMappingManual = true;
   }
 
   enterAIMSSector(e) {
@@ -1714,6 +1725,8 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorModel.projectId = 0;
     this.sectorModel.sectorId = null;
     this.sectorModel.sectorName = '';
+    this.showMappingAuto = false;
+    this.showMappingManual = false;
   }
 
   resetLocationEntry() {

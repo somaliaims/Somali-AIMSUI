@@ -139,6 +139,10 @@ html {
     margin-left: 5px;
   }
 
+  .margin-top-5 {
+    margin-top: 5px !important;
+  }
+
   .margin-left-10 {
     margin-left: 10px !important;
   }

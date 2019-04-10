@@ -163,7 +163,7 @@
                 </td>
               </tr>
             </table>
-            <span class="text-info" *ngIf="!sectorMappings && isLoadingMappings == false">
+            <span class="text-info" *ngIf="sectorMappings.length == 0 && isLoadingMappings == false">
               <i>
                 No mappings to show
               </i>
