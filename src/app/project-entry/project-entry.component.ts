@@ -1675,14 +1675,34 @@ export class ProjectEntryComponent implements OnInit {
     this.isExRateReadonly = true;
     var currency = this.funderModel.currency;
     var foundRate = this.exchangeRatesList.filter(e => e.currency == currency);
-    if (foundRate.length > 0) {
-      var proposedRate = foundRate[0].rate;
-      if (proposedRate < 1) {
-        this.funderModel.exchangeRate = (1 / proposedRate).toFixed(2);
-      } else {
-        this.funderModel.exchangeRate = proposedRate;
-      }
-    } 
+    var defaultCurrencyRate = this.exchangeRatesList.filter(e => currency == this.defaultCurrency);
+
+    if (defaultCurrencyRate.length > 0) {
+      var defaultRate = defaultCurrencyRate[0].rate;
+    
+      if (foundRate.length > 0) {
+        var proposedRate = foundRate[0].rate;
+        if (proposedRate < 1) {
+          var rateInUSD = (1 / proposedRate).toFixed(2);
+          if (defaultRate < 1) {
+            this.funderModel.exchangeRate = Math.ceil(defaultRate * parseFloat(rateInUSD))
+          } else {
+            this.funderModel.exchangeRate = Math.ceil(proposedRate / defaultRate);
+          }
+        } else if (proposedRate > 1) {
+          if (defaultRate < 1) {
+            this.funderModel.exchangeRate = Math.ceil(proposedRate / defaultRate)
+          } else if (defaultRate > 1) {
+            if (defaultRate > proposedRate) {
+              //this.funderModel.exchangeRate = Math.ceil(defaultRate )
+            }
+            //this.funderModel.exchangeRate = Math.ceil()
+          }
+        } else {
+          this.funderModel.exchangeRate = proposedRate;
+        }
+      } 
+    }
     this.isExRateReadonly = false;
   }
 

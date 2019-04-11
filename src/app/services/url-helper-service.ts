@@ -107,6 +107,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getExchangeRateSettingsUrl);
     }
 
+    getExRateAutoSettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.setExchangeRateAutoSettingsUrl);
+    }
+
     saveAPIKeyOpenExchangeUrl() {
         return (this.BASE_URL + urlsList.urls.saveAPIKeyOpenExchange);
     }
