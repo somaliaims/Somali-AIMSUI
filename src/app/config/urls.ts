@@ -87,10 +87,15 @@ export const urls = {
 	deleteNotifications: "Notification/DeleteNotifications",
 	getCurrency: "Currency",
 	getCurrencyById: "Currency/GetById/",
+	getDefaultCurrency: "Currency/GetDefault",
 	reportNamesUrl: "ReportName",
 	userSubscriptionsUrl: "ReportSubscription",
 	subscribeToReports: "ReportSubscription/Subscribe",
 	exchangeRateUrl: "ExchangeRate",
+	getExchangeRateSettingsUrl: "ExchangeRate/GetSettings",
+	setExchangeRateAutoSettingsUrl: "ExchangeRate/SetExchangeRateAutoSetting",
+	saveAPIKeyOpenExchange: "ExchangeRate/SaveAPIKeyForOpenExchange",
+	saveManualExchangeRates: "ExchangeRate/SaveManualCurrencyRates",
 	exchangeRateForDate: "ExchangeRate/GetRatesForDate/",
 	getDefaultSectors: "Sector/GetDefaultSectors"
 };

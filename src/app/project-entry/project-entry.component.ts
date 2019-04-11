@@ -82,6 +82,7 @@ export class ProjectEntryComponent implements OnInit {
   funderEntryType: string = 'aims';
   implementerEntryType: string = 'aims';
   disbursementEntryType: string = 'aims';
+  defaultCurrency: string = null;
   viewProject: any = {};
   currentEntryForm: any = null;
   calendarMaxDate: any = {};
@@ -305,6 +306,16 @@ export class ProjectEntryComponent implements OnInit {
       },
       error => {
         console.log(error);
+      }
+    )
+  }
+
+  loadDefaultCurrency() {
+    this.currencyService.getDefaultCurrency().subscribe(
+      data => {
+        if (data) {
+          this.defaultCurrency = data;
+        }
       }
     )
   }

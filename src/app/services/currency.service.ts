@@ -44,6 +44,45 @@ export class CurrencyService {
             catchError(this.storeService.handleError<any>('Currencies')));
     }
 
+    getDefaultCurrency() {
+        var url = this.urlHelper.getDefaultCurrencyUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Default Currency')));
+    }
+
+    getExRateSettings() {
+        var url = this.urlHelper.getExRateSettingsUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Exchange Rates Settings')));
+    }
+
+    saveAPIKeyOpenExchange(key: string) {
+        var url = this.urlHelper.saveAPIKeyOpenExchangeUrl();
+        var model = {
+            Key: key
+        };
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('OpenExchange API Key')));
+    }
+
+    saveExchangeRateAutoSettings(isAutomatic: boolean) {
+        var url = this.urlHelper.saveAPIKeyOpenExchangeUrl();
+        var model = {
+            IsAutomatic: isAutomatic
+        };
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('OpenExchange Auto Setting')));
+    }
+
+    saveManualCurrencyRates(model: any) {
+        var url = this.urlHelper.saveManualCurrencyRatesUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Manual Currency Rates')));
+    }
+
     addCurrency(model: any) {
         var url = this.urlHelper.getCurrencyUrl();
         return this.httpClient.post(url,

@@ -99,6 +99,22 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getCurrencyById + id);
     }
 
+    getDefaultCurrencyUrl() {
+        return (this.BASE_URL + urlsList.urls.getDefaultCurrency);
+    }
+
+    getExRateSettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.getExchangeRateSettingsUrl);
+    }
+
+    saveAPIKeyOpenExchangeUrl() {
+        return (this.BASE_URL + urlsList.urls.saveAPIKeyOpenExchange);
+    }
+
+    saveManualCurrencyRatesUrl() {
+        return (this.BASE_URL + urlsList.urls.saveManualExchangeRates);
+    }
+
     getExchangeRatesUrl() {
         return (this.BASE_URL + urlsList.urls.exchangeRateUrl)
     }

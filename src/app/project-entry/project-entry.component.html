@@ -850,15 +850,18 @@
               </div>
 
               <div class="form-group">
-                <label for="exchangeRate">Exchange rate of currency to 1 USD</label>
+                <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
                 <input type="number" [readonly]="isExRateReadonly" class="form-control" id="exchangeRate" [(ngModel)]="funderModel.exchangeRate"
                   name="exchangeRate" maxlength="9" min="1" max="1000" #exchangeRate="ngModel" />
                   <div *ngIf="projectFunderForm.submitted" [hidden]="exchangeRate.value > 0" class="alert alert-danger">
-                    Exchange for USD must not be zero or less
+                    Exchange rate for {{defaultCurrency}} must not be zero or less
+                  </div>
+                  <div [hidden]="defaultCurrency" class="alert alert-danger">
+                    Default currency is not set. Please contact administrator
                   </div>
               </div>
 
-              <button [class.disable]="isProjectFunderBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+              <button [class.disable]="(isProjectFunderBtnDisabled || !defaultCurrency)" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Add Funder</button>
               <button [class.disable]="isProjectFunderBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button" (click)="resetFunderEntry()">Reset
