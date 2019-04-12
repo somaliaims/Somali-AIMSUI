@@ -230,7 +230,7 @@ export class ProjectEntryComponent implements OnInit {
         aimsIdsArr.push(id);
       });
       this.loadAIMSProjectsForIds(aimsIdsArr);
-      this.getExchangeRatesList();
+      //this.getExchangeRatesList();
     }
 
     this.currencyService.getCurrenciesList().subscribe(
@@ -253,10 +253,10 @@ export class ProjectEntryComponent implements OnInit {
       this.endingYearsList.push(y);
     }
 
-    //this.loadSectorTypes();
     this.loadSectorsList();
     this.loadLocationsList();
     this.loadOrganizationsList();
+    this.loadDefaultCurrency();
   }
 
   loadIATIProjectsForIds(modelArr: any) {
@@ -314,7 +314,7 @@ export class ProjectEntryComponent implements OnInit {
     this.currencyService.getDefaultCurrency().subscribe(
       data => {
         if (data) {
-          this.defaultCurrency = data;
+          this.defaultCurrency = data.currency;
         }
       }
     )
@@ -840,6 +840,9 @@ export class ProjectEntryComponent implements OnInit {
 
   showFunders() {
     this.manageTabsDisplay('funder');
+    if (this.exchangeRatesList.length == 0) {
+      this.getExchangeRatesList();
+    }
   }
 
   showImplementers() {
@@ -1661,13 +1664,26 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   getExchangeRatesList() {
-    this.currencyService.getExchangeRatesList().subscribe(
-      data => {
-        if (data) {
-          this.exchangeRatesList = data.rates;
+    if (this.model.startDate && this.model.startDate.year) {
+      var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
+      this.model.startDate.day;
+
+      this.currencyService.getExchangeRatesForDate(startDate).subscribe(
+        data => {
+          if (data) {
+            this.exchangeRatesList = data.rates;
+          }
         }
-      }
-    );
+      )
+    } else {
+      this.currencyService.getExchangeRatesList().subscribe(
+        data => {
+          if (data) {
+            this.exchangeRatesList = data.rates;
+          }
+        }
+      );
+    }
   }
 
   getCurrencyExchangeRate() {
@@ -1679,29 +1695,32 @@ export class ProjectEntryComponent implements OnInit {
 
     if (defaultCurrencyRate.length > 0) {
       var defaultRate = defaultCurrencyRate[0].rate;
-    
-      if (foundRate.length > 0) {
-        var proposedRate = foundRate[0].rate;
+      if (defaultRate == 1) {
         if (proposedRate < 1) {
-          var rateInUSD = (1 / proposedRate).toFixed(2);
-          if (defaultRate < 1) {
-            this.funderModel.exchangeRate = Math.ceil(defaultRate * parseFloat(rateInUSD))
-          } else {
-            this.funderModel.exchangeRate = Math.ceil(proposedRate / defaultRate);
-          }
-        } else if (proposedRate > 1) {
-          if (defaultRate < 1) {
-            this.funderModel.exchangeRate = Math.ceil(proposedRate / defaultRate)
-          } else if (defaultRate > 1) {
-            if (defaultRate > proposedRate) {
-              //this.funderModel.exchangeRate = Math.ceil(defaultRate )
-            }
-            //this.funderModel.exchangeRate = Math.ceil()
-          }
+          this.funderModel.exchangeRate = (1 / proposedRate).toFixed(2);
         } else {
           this.funderModel.exchangeRate = proposedRate;
         }
-      } 
+      } else {
+        if (foundRate.length > 0) {
+          var proposedRate = foundRate[0].rate;
+          if (proposedRate < 1) {
+            if (defaultRate < proposedRate) {
+              this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
+            } else if (defaultRate > proposedRate) {
+              this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
+            } 
+          } else if (proposedRate > 1) {
+            if (defaultRate < proposedRate) {
+              this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
+            } else if (defaultRate > proposedRate) {
+              if (defaultRate > proposedRate) {
+                this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
+              }
+            }
+          } 
+        }
+      }
     }
     this.isExRateReadonly = false;
   }
