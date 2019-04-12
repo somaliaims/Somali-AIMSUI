@@ -1691,10 +1691,13 @@ export class ProjectEntryComponent implements OnInit {
     this.isExRateReadonly = true;
     var currency = this.funderModel.currency;
     var foundRate = this.exchangeRatesList.filter(e => e.currency == currency);
-    var defaultCurrencyRate = this.exchangeRatesList.filter(e => currency == this.defaultCurrency);
-
+    var defaultCurrencyRate = this.exchangeRatesList.filter(e => e.currency == this.defaultCurrency);
+    var proposedRate = 0;
+    if (foundRate.length > 0) {
+      proposedRate = parseFloat(foundRate[0].rate);
+    }
     if (defaultCurrencyRate.length > 0) {
-      var defaultRate = defaultCurrencyRate[0].rate;
+      var defaultRate = parseFloat(defaultCurrencyRate[0].rate);
       if (defaultRate == 1) {
         if (proposedRate < 1) {
           this.funderModel.exchangeRate = (1 / proposedRate).toFixed(2);
@@ -1702,24 +1705,28 @@ export class ProjectEntryComponent implements OnInit {
           this.funderModel.exchangeRate = proposedRate;
         }
       } else {
-        if (foundRate.length > 0) {
-          var proposedRate = foundRate[0].rate;
           if (proposedRate < 1) {
             if (defaultRate < proposedRate) {
-              this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
-            } else if (defaultRate > proposedRate) {
               this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
+            } else if (defaultRate > proposedRate) {
+              this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
             } 
           } else if (proposedRate > 1) {
             if (defaultRate < proposedRate) {
-              this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
+              this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
             } else if (defaultRate > proposedRate) {
               if (defaultRate > proposedRate) {
-                this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
+                this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
               }
             }
+          } else if (proposedRate == 1) {
+            if (defaultRate < 1) {
+              this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
+            } else {
+              this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
+            }
+            
           } 
-        }
       }
     }
     this.isExRateReadonly = false;
