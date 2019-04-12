@@ -41,7 +41,7 @@
                 </div>
               </div>
 
-              <button class="btn btn-lg btn-info btn-block text-uppercase" type="button">Save setting</button>
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save setting</button>
             </form>
           </div>
         </div>
@@ -56,10 +56,10 @@
                 <label for="apiKey"><b>OpenExchangeRate API key</b></label>
                 <input type="text" class="form-control" id="apiKey" [(ngModel)]="model.apiKey" name="apiKey"
                   #apiKey="ngModel" maxlength="50">
-                <div [hidden]="apiKey" class="alert alert-danger">
-                  API key is not set yet. Enter the key to set.
+                <div [hidden]="isAPIKeySet" class="alert alert-danger">
+                  API key is not set yet. Enter the key to set now.
                 </div>
-                <div [hidden]="!apiKey" class="alert alert-info">
+                <div [hidden]="!isAPIKeySet" class="alert alert-info">
                   API key already set. Enter and save new, if you want to update.
                 </div>
               </div>

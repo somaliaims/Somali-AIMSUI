@@ -19,6 +19,7 @@ export class ExrateSettingsComponent implements OnInit {
   infoMessage: string = null;
   requestNo: number = 0;
   permissions: any = {};
+  isAPIKeySet: boolean = false;
   model: any = { isAutoRateSet: false, apiKey: null, manualCurrencyRates: []};
   
   @BlockUI() blockUI: NgBlockUI;
@@ -39,14 +40,16 @@ export class ExrateSettingsComponent implements OnInit {
         this.errorModal.openModal();
       }
     });
+
+    this.getExRateSettings();
   }
 
   getExRateSettings() {
     this.currencyService.getExRateSettings().subscribe(
       data => {
         if (data) {
-          this.model.isAutoRateSet = data.IsAutomatic;
-          this.model.apiKey = data.isOpenExchangeKeySet;
+          this.model.isAutoRateSet = data.isAutomatic;
+          this.isAPIKeySet = data.isOpenExchangeKeySet;
           this.model.manualCurrencyRates = data.ManualCurrencyRates ? data.manualCurrencyRates : [];
         }
       }
@@ -66,8 +69,8 @@ export class ExrateSettingsComponent implements OnInit {
     this.currencyService.saveExchangeRateAutoSettings(this.model.isAutoRateSet).subscribe(
       data => {
         if (data) {
-          this.infoMessage = 'Settings for exchange rates conversion saved successfully';
-          this.infoModal.openModal();
+          //this.infoMessage = 'Settings for exchange rates conversion saved successfully';
+          //this.infoModal.openModal();
         }
         this.blockUI.stop();
       }
@@ -85,8 +88,10 @@ export class ExrateSettingsComponent implements OnInit {
     this.currencyService.saveAPIKeyOpenExchange(this.model.apiKey).subscribe(
       data => {
         if (data) {
-          this.infoMessage = 'New api key set successfully';
-          this.infoModal.openModal();
+          this.isAPIKeySet = true;
+          this.model.apiKey = null;
+          //this.infoMessage = 'New api key set successfully';
+          //this.infoModal.openModal();
         }
         this.blockUI.stop();
       }
