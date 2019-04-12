@@ -4,6 +4,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-delete-location',
@@ -19,13 +20,19 @@ export class DeleteLocationComponent implements OnInit {
   errorMessage: string = null;
   model: any = { locationId: 0};
   isLoading: boolean = true;
+  permissions: any = {};
 
   constructor(private locationService: LocationService, private route: ActivatedRoute,
     private storeService: StoreService, private errorModal: ErrorModalComponent,
-    private router: Router) { }
+    private router: Router, private securityService: SecurityHelperService) { }
 
   @BlockUI() blockUI: NgBlockUI;
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditCurrency) {
+      this.router.navigateByUrl('home');
+    }
+
     if (this.route.snapshot.data) {
       this.id = this.route.snapshot.params["{id}"];
     }

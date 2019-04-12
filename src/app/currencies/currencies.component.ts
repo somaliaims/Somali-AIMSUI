@@ -6,7 +6,6 @@ import { Settings } from '../config/settings';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Messages } from '../config/messages';
 import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
@@ -16,6 +15,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 })
 export class CurrenciesComponent implements OnInit {
 
+  requestNo: number = 0;
   currenciesList: any = [];
   criteria: string = null;
   isLoading: boolean = true;
@@ -37,14 +37,14 @@ export class CurrenciesComponent implements OnInit {
     if (!this.permissions.canEditCurrency) {
       this.router.navigateByUrl('home');
     }
-    this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
-    if (this.infoMessage !== null && this.infoMessage !== '') {
-      this.showMessage = true;
-    }
-    setTimeout(() => {
-      this.storeService.newInfoMessage('');
-      this.showMessage = false;
-    }, Settings.displayMessageTime);
+    
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.errorModal.openModal();
+      }
+    });
 
     this.getCurrenciesList();
   }

@@ -1,0 +1,90 @@
+<div class="container-fluid view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/currencies']">Currencies list</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-currency']">Create new</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Exchange rate settings</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-sm-12 col-md-6">
+
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Exchange rate settings</h5>
+
+            <form class="form-signin" (ngSubmit)="saveRateSettings()" #rateForm="ngForm">
+
+              <div class="form-group">
+                <label for="isAutoRateSet"><b>Auto/Manual ex rate setting</b></label>
+                <div class="row">
+                  <div class="col-offset-2 col-md-9">
+                    <div class="btn-group" data-toggle="buttons">
+                      <button (click)="toggleAuto()" class="btn btn-success btn-sm">
+                        <i *ngIf="!model.isAutoRateSet" class="fa fa-square text-white"></i>
+                        <i *ngIf="model.isAutoRateSet" class="fa fa-check text-white"></i>
+                      </button>
+                      &nbsp;<span class="text-info">Is exchange rate conversion automatic?</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="button">Save setting</button>
+            </form>
+          </div>
+        </div>
+
+        <!--API key settings-->
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">OpenExchangeRate API key setting</h5>
+        
+            <form class="form-signin" (ngSubmit)="saveAPIKey()" #rateForm="ngForm">
+              <div class="form-group">
+                <label for="apiKey"><b>OpenExchangeRate API key</b></label>
+                <input type="text" class="form-control" id="apiKey" [(ngModel)]="model.apiKey" name="apiKey"
+                  #apiKey="ngModel" maxlength="50">
+                <div [hidden]="apiKey" class="alert alert-danger">
+                  API key is not set yet. Enter the key to set.
+                </div>
+                <div [hidden]="!apiKey" class="alert alert-info">
+                  API key already set. Enter and save new, if you want to update.
+                </div>
+              </div>
+
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save key</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+      
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Custom settings for ex. rates.</h5>
+      
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </block-ui>
+</div>
+
+<info-modal message={{infoMessage}}></info-modal>
+<error-modal message={{errorMessage}}></error-modal>

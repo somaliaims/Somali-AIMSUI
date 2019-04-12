@@ -67,7 +67,7 @@ export class CurrencyService {
     }
 
     saveExchangeRateAutoSettings(isAutomatic: boolean) {
-        var url = this.urlHelper.saveAPIKeyOpenExchangeUrl();
+        var url = this.urlHelper.getExRateAutoSettingsUrl();
         var model = {
             IsAutomatic: isAutomatic
         };

@@ -44,6 +44,7 @@ import { DeleteOrganizationComponent } from './delete-organization/delete-organi
 import { DeleteLocationComponent } from './delete-location/delete-location.component';
 import { DeleteSectorComponent } from './delete-sector/delete-sector.component';
 import { SectorMappingsComponent } from './sector-mappings/sector-mappings.component';
+import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -98,7 +99,8 @@ export const routes: Routes = [
   { path: 'manage-year', component:  ManageYearComponent},
   { path: 'user-subscriptions', component: UserSubscriptionComponent },
   { path: 'merge-projects', component: MergeProjectsComponent },
-  { path: 'merge-organizations', component: MergeOrganizationComponent}
+  { path: 'merge-organizations', component: MergeOrganizationComponent},
+  { path: 'exrate-settings', component: ExrateSettingsComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);
