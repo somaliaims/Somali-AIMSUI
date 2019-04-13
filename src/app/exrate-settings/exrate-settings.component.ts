@@ -16,11 +16,18 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 export class ExrateSettingsComponent implements OnInit {
 
   errorMessage: string = null;
+  inputTextHolder: string = 'Enter currency to search';
   infoMessage: string = null;
   requestNo: number = 0;
   permissions: any = {};
+  isExRateSet: boolean = false;
   isAPIKeySet: boolean = false;
-  model: any = { isAutoRateSet: false, apiKey: null, manualCurrencyRates: []};
+  defaultCurrency: string = null;
+  currenciesList: any = [];
+  manualCurrencyRates: any = [];
+  filteredCurrencyRates: any = [];
+  criteria: string = null;
+  model: any = { isAutoRateSet: false, apiKey: null};
   
   @BlockUI() blockUI: NgBlockUI;
   constructor(private currencyService: CurrencyService, private infoModal: InfoModalComponent,
@@ -42,6 +49,7 @@ export class ExrateSettingsComponent implements OnInit {
     });
 
     this.getExRateSettings();
+    this.getDefaultCurrency();
   }
 
   getExRateSettings() {
@@ -50,7 +58,39 @@ export class ExrateSettingsComponent implements OnInit {
         if (data) {
           this.model.isAutoRateSet = data.isAutomatic;
           this.isAPIKeySet = data.isOpenExchangeKeySet;
-          this.model.manualCurrencyRates = data.ManualCurrencyRates ? data.manualCurrencyRates : [];
+          this.manualCurrencyRates = data.ManualCurrencyRates ? data.manualCurrencyRates : [];
+          if (this.manualCurrencyRates.length == 0) {
+            this.isExRateSet = false;
+            this.getCurrenciesList();
+          }
+        }
+      }
+    )
+  }
+
+  getDefaultCurrency() {
+    this.currencyService.getDefaultCurrency().subscribe(
+      data => {
+        if (data) {
+          this.defaultCurrency = data.currency;
+        }
+      }
+    )
+  }
+
+  getCurrenciesList() {
+    this.currencyService.getCurrenciesList().subscribe(
+      data => {
+        if (data) {
+          this.currenciesList = data;
+          this.currenciesList.forEach(function(cur) {
+            var currencyObj = {
+              currency: cur.currency,
+              rate: 0.0
+            }
+            this.manualCurrencyRates.push(currencyObj);
+            this.filteredCurrencyRates.push(currencyObj);
+          }.bind(this));
         }
       }
     )
@@ -69,8 +109,6 @@ export class ExrateSettingsComponent implements OnInit {
     this.currencyService.saveExchangeRateAutoSettings(this.model.isAutoRateSet).subscribe(
       data => {
         if (data) {
-          //this.infoMessage = 'Settings for exchange rates conversion saved successfully';
-          //this.infoModal.openModal();
         }
         this.blockUI.stop();
       }
@@ -90,12 +128,21 @@ export class ExrateSettingsComponent implements OnInit {
         if (data) {
           this.isAPIKeySet = true;
           this.model.apiKey = null;
-          //this.infoMessage = 'New api key set successfully';
-          //this.infoModal.openModal();
         }
         this.blockUI.stop();
       }
     )
+  }
+
+  filterCurrencies() {
+    var filtered = this.currenciesList.filter(c => c.currency.toLowerCase() == this.criteria.toLowerCase());
+    if (filtered.length > 0) {
+
+    }
+  }
+
+  saveExchangeRates() {
+
   }
 
 }
