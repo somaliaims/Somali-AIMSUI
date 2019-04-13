@@ -7,6 +7,7 @@ import { StoreService } from '../services/store-service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-exrate-settings',
@@ -58,10 +59,12 @@ export class ExrateSettingsComponent implements OnInit {
         if (data) {
           this.model.isAutoRateSet = data.isAutomatic;
           this.isAPIKeySet = data.isOpenExchangeKeySet;
-          this.manualCurrencyRates = data.ManualCurrencyRates ? data.manualCurrencyRates : [];
+          this.manualCurrencyRates = data.manualCurrencyRates ? data.manualCurrencyRates : [];
           if (this.manualCurrencyRates.length == 0) {
             this.isExRateSet = false;
             this.getCurrenciesList();
+          } else {
+            this.filteredCurrencyRates = this.manualCurrencyRates;
           }
         }
       }
@@ -135,14 +138,51 @@ export class ExrateSettingsComponent implements OnInit {
   }
 
   filterCurrencies() {
-    var filtered = this.currenciesList.filter(c => c.currency.toLowerCase() == this.criteria.toLowerCase());
-    if (filtered.length > 0) {
+    if (!this.criteria) {
+      this.filteredCurrencyRates = this.manualCurrencyRates;
+    } else {
+      if (this.manualCurrencyRates.length > 0) {
+        var criteria = this.criteria.toLowerCase();
+        var filtered = this.manualCurrencyRates.filter(c => c.currency.toLowerCase().indexOf(criteria) != -1);
+        if (filtered.length > 0) {
+          this.filteredCurrencyRates = filtered;
+        }
+      }
+    }
+  }
 
+  setCurrencyExRate(e) {
+    var currencyName = e.target.id;
+    var currency = this.manualCurrencyRates.filter(c => c.currency == currencyName);
+    if (currency.length > 0) {
+      currency[0].rate = parseFloat(e.target.value);
     }
   }
 
   saveExchangeRates() {
+    if (this.filteredCurrencyRates.length == 0) {
+      this.errorMessage = Messages.INVALID_EXRATE_SAVE;
+      this.errorModal.openModal();
+      return false;
+    }
 
+    this.filteredCurrencyRates.forEach(function (cur) {
+      var currency = this.manualCurrencyRates.filter(c => c.currency == cur.currency);
+      currency.rate = cur.rate;
+    }.bind(this));
+
+    this.blockUI.start('Saving exchange rates...');
+    var model = {
+      rates: this.manualCurrencyRates
+    }
+    this.currencyService.saveManualCurrencyRates(model).subscribe(
+      data => {
+        if (data) {
+        }
+        this.blockUI.stop();
+      }
+    )
+     
   }
 
 }

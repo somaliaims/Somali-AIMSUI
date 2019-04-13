@@ -21,7 +21,7 @@
         <div class="input-group">
           <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria"
             (input)="filterCurrencies()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
-            onkeypress="return event.keyCode != 13;" required>
+            onkeypress="return event.keyCode != 13;" maxlength="3" required>
           <span class="input-group-btn">
             <button class="btn btn-outline-info btn-lg" type="button">
               <i class="fa fa-search"></i>
@@ -35,7 +35,7 @@
           <table>
             <tr>
               <td>
-                <button [class.disable]="newMappings.length == 0"
+                <button [class.disable]="filteredCurrencyRates.length == 0"
                   class="btn btn-warning btn-lg pull-right text-uppercase float-right"
                   (click)="saveExchangeRates()">Save rates</button>
               </td>
@@ -51,15 +51,19 @@
         <div class="card card-signin my-5">
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Custom ex. rates for 1 {{defaultCurrency}}</h5>
-            <table *ngIf="manualCurrencyRates.length > 0" class="table table-bordered">
-              <tr *ngFor="let cur of manualCurrencyRates">
+            <table *ngIf="filteredCurrencyRates.length > 0" class="table table-bordered">
+              <tr>
+                <th>Currency</th>
+                <th>Rate</th>
+              </tr>
+              <tr *ngFor="let cur of filteredCurrencyRates">
                 <td>{{cur.currency}}</td>
                 <td>
-                  <input type="text" id="{{cur.currency}}" (click)="setRate($event)" value="{{cur.rate}}" />
+                  <input type="text" id="{{cur.currency}}" (blur)="setCurrencyExRate($event)" value="{{cur.rate}}" />
                 </td>
               </tr>
             </table>
-            <span class="text-info">No currencies to show. Add currencies to set rates.</span>
+            <span *ngIf="filteredCurrencyRates.length == 0" class="text-info">No currencies to show.</span>
           </div>
         </div>
       </div>

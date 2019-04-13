@@ -17,6 +17,7 @@ export const Messages = {
     INVALID_PERCENTAGE: 'Percentage total cannot be greater than 100%',
     INVALID_STARTEND_DATE: 'Start date cannot be greater than end date',
     INVALID_API_KEY: 'API key cannot be set as null',
+    INVALID_EXRATE_SAVE: 'You must provide some updated exchange rates to save',
     NULL_VALUE: 'Value cannot be set null for ',
     ATLEAST_PROJECT_MERGE: 'At least two projects are required for merge',
     ATLEAST_ORGANIZATION_MERGE: 'At least two organizations are required for merge',
