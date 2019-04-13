@@ -22,6 +22,7 @@ export class ExrateSettingsComponent implements OnInit {
   requestNo: number = 0;
   permissions: any = {};
   isExRateSet: boolean = false;
+  isLoading: boolean = true;
   isAPIKeySet: boolean = false;
   defaultCurrency: string = null;
   currenciesList: any = [];
@@ -65,6 +66,7 @@ export class ExrateSettingsComponent implements OnInit {
             this.getCurrenciesList();
           } else {
             this.filteredCurrencyRates = this.manualCurrencyRates;
+            this.isLoading = false;
           }
         }
       }
@@ -95,6 +97,7 @@ export class ExrateSettingsComponent implements OnInit {
             this.filteredCurrencyRates.push(currencyObj);
           }.bind(this));
         }
+        this.isLoading = false;
       }
     )
   }
@@ -143,10 +146,7 @@ export class ExrateSettingsComponent implements OnInit {
     } else {
       if (this.manualCurrencyRates.length > 0) {
         var criteria = this.criteria.toLowerCase();
-        var filtered = this.manualCurrencyRates.filter(c => c.currency.toLowerCase().indexOf(criteria) != -1);
-        if (filtered.length > 0) {
-          this.filteredCurrencyRates = filtered;
-        }
+        this.filteredCurrencyRates = this.manualCurrencyRates.filter(c => c.currency.toLowerCase().indexOf(criteria) != -1);
       }
     }
   }

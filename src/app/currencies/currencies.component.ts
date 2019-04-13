@@ -17,11 +17,13 @@ export class CurrenciesComponent implements OnInit {
 
   requestNo: number = 0;
   currenciesList: any = [];
+  filteredCurrencies: any = [];
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
   errorMessage: string = null;
   showMessage: boolean = false;
+  inputTextHolder: string = 'Enter currency name';
   statusMessage: string = 'Wait deleting...';
   pagingSize: number = Settings.rowsPerPage;
   permissions: any = {};
@@ -46,16 +48,19 @@ export class CurrenciesComponent implements OnInit {
       }
     });
 
-    this.getCurrenciesList();
+    //Loads currencies first time from open exchange, if they are not in db
+    this.getExchangeRates();
   }
 
   getCurrenciesList() {
     this.currencyService.getCurrenciesList().subscribe(
       data => {
-        this.isLoading = false;
         if (data && data.length) {
           this.currenciesList = data;
+          this.filteredCurrencies = data;
+        } else {
         }
+        this.isLoading = false;
       },
       error => {
         this.isLoading = false;
@@ -64,23 +69,29 @@ export class CurrenciesComponent implements OnInit {
     );
   }
 
-  searchCurrencies() {
-    if (this.criteria != null) {
-      this.isLoading = true;
-
-      this.currencyService.searchCurrencies(this.criteria).subscribe(
-        data => {
-          this.isLoading = false;
-          if (data) {
-            this.currenciesList = data
-          }
-        },
-        error => {
+  getExchangeRates() {
+    this.isLoading = true;
+    this.currencyService.getExchangeRatesList().subscribe(
+      data => {
+        if (data) {
+          setTimeout(() => {
+            this.getCurrenciesList();
+          }, 1000);
+        } else {
           this.isLoading = false;
         }
-      );
+      }
+    )
+  }
+
+  searchCurrencies() {
+    if (!this.criteria) {
+      this.filteredCurrencies = this.currenciesList;
     } else {
-      this.getCurrenciesList();
+      if (this.currenciesList.length > 0) {
+        var criteria = this.criteria.toLowerCase();
+        this.filteredCurrencies = this.currenciesList.filter(c => c.currency.toLowerCase().indexOf(criteria) != -1);
+      }
     }
   }
 

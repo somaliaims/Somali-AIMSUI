@@ -16,13 +16,15 @@
         </ul>
       </div>
       <div class="col-md-6">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Enter currency name" [(ngModel)]="criteria"
-            aria-label="Recipient's username" aria-describedby="basic-addon2">
-          <div class="input-group-append">
-            <button class="btn btn-outline-info" (click)="searchCurrencies()" type="button"><i
-                class="fa fa-search"></i></button>
-          </div>
+        <div class="input-group">
+          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria"
+            (input)="searchCurrencies()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
+            onkeypress="return event.keyCode != 13;" maxlength="3" required>
+          <span class="input-group-btn">
+            <button class="btn btn-outline-info btn-lg" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
         </div>
       </div>
     </div>
@@ -34,13 +36,13 @@
     </div>
 
     <div *ngIf="!isLoading" class="row">
-      <div *ngIf="currenciesList.length > 0" class="col margin-top-10">
+      <div *ngIf="filteredCurrencies.length > 0" class="col margin-top-10">
         <table class="table table-bordered table-stripped">
           <tr>
             <th>Currency Name</th>
             <th>Action</th>
           </tr>
-          <tr *ngFor="let currency of currenciesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+          <tr *ngFor="let currency of filteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>{{currency.currency}}</td>
             <td>
                 <a title="Delete" (click)="edit(currency.id)" class="btn btn-info"><i
@@ -53,7 +55,7 @@
         </table>
         <pagination-controls (pageChange)="p=$event"></pagination-controls>
       </div>
-      <div class="col-md-12 text-info" *ngIf="currenciesList.length == 0">
+      <div class="col-md-12 text-info" *ngIf="filteredCurrencies.length == 0">
         <i>No currencies to show</i>
       </div>
     </div>

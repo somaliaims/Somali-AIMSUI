@@ -63,10 +63,18 @@
                 </td>
               </tr>
             </table>
-            <span *ngIf="filteredCurrencyRates.length == 0" class="text-info">No currencies to show.</span>
+            <span *ngIf="filteredCurrencyRates.length == 0 && !isLoading" class="text-info">No currencies to show.</span>
+          </div>
+        </div>
+
+        <div class="row text-center" *ngIf="isLoading">
+          <div class="col-md-12">
+            <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading currencies...</span>
           </div>
         </div>
       </div>
+
+      
 
       <div class="col-sm-12 col-md-6">
         <div class="card card-signin my-5">
