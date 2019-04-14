@@ -56,6 +56,12 @@ export class CurrencyService {
             catchError(this.storeService.handleError<any>('Exchange Rates Settings')));
     }
 
+    getManualExchangeRates() {
+        var url = this.urlHelper.getManualExRatesUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Manual Ex Rates')));
+    }
+
     saveAPIKeyOpenExchange(key: string) {
         var url = this.urlHelper.saveAPIKeyOpenExchangeUrl();
         var model = {

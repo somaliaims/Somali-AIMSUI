@@ -107,6 +107,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getExchangeRateSettingsUrl);
     }
 
+    getManualExRatesUrl() {
+        return (this.BASE_URL + urlsList.urls.getManualExchangeRates);
+    }
+
     getExRateAutoSettingsUrl() {
         return (this.BASE_URL + urlsList.urls.setExchangeRateAutoSettingsUrl);
     }

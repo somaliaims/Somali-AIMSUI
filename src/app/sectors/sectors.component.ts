@@ -14,6 +14,7 @@ import { SectorTypeService } from '../services/sector-types.service';
 export class SectorsComponent implements OnInit {
 
   sectorsList: any = [];
+  inputTextHolder: string = 'Enter sector name';
   filteredSectorsList: any = [];
   sectorTypesList: any = [];
   criteria: string = null;
@@ -59,6 +60,7 @@ export class SectorsComponent implements OnInit {
 
   getSectorsForType() {
     var typeId = this.model.sectorTypeId;
+    this.criteria = null;
     if (typeId != null && typeId > 0) {
       this.filteredSectorsList = this.sectorsList.filter(s => s.sectorTypeId == typeId);
     } else if (typeId == 0) {
@@ -82,7 +84,7 @@ export class SectorsComponent implements OnInit {
     );
   }
 
-  searchSectors() {
+  /*searchSectors() {
     if (this.criteria != null) {
       this.isLoading = true;
       
@@ -105,6 +107,25 @@ export class SectorsComponent implements OnInit {
       );
     } else {
       this.sectorsList();
+    }
+  }*/
+
+  searchSectors() {
+    if (!this.criteria) {
+      if (this.model.sectorTypeId == 0) {
+        this.filteredSectorsList = this.sectorsList;
+      } else {
+        this.filteredSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.model.sectorTypeId);
+      }
+    } else {
+      if (this.sectorsList.length > 0) {
+        var criteria = this.criteria.toLowerCase();
+        if (this.model.sectorTypeId > 0) {
+          this.filteredSectorsList = this.sectorsList.filter(s => (s.sectorTypeId == this.model.sectorTypeId && s.sectorName.toLowerCase().indexOf(criteria) != -1));
+        } else {
+          this.filteredSectorsList = this.sectorsList.filter(s => (s.sectorName.toLowerCase().indexOf(criteria) != -1));
+        }
+      }
     }
   }
 

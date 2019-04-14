@@ -29,6 +29,7 @@ import { startWith, map } from 'rxjs/operators';
 })
 
 export class ProjectEntryComponent implements OnInit {
+  isExRateAutoConvert = false;
   filteredOrganizations: Observable<Organization[]>;
   activeProjectId: number = 0;
   selectedSectorId: number = 0;
@@ -230,7 +231,7 @@ export class ProjectEntryComponent implements OnInit {
         aimsIdsArr.push(id);
       });
       this.loadAIMSProjectsForIds(aimsIdsArr);
-      //this.getExchangeRatesList();
+      this.getExRateSettings();
     }
 
     this.currencyService.getCurrenciesList().subscribe(
@@ -840,7 +841,7 @@ export class ProjectEntryComponent implements OnInit {
 
   showFunders() {
     this.manageTabsDisplay('funder');
-    if (this.exchangeRatesList.length == 0) {
+    if (this.isExRateAutoConvert) {
       this.getExchangeRatesList();
     }
   }
@@ -1663,54 +1664,68 @@ export class ProjectEntryComponent implements OnInit {
     return percentageList.reduce(this.storeService.sumValues, 0);
   }
 
-  getExchangeRatesList() {
-    if (this.model.startDate && this.model.startDate.year) {
-      var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
-      this.model.startDate.day;
+  getExRateSettings() {
+    this.currencyService.getExRateSettings().subscribe(
+      data => {
+        this.isExRateAutoConvert = data.isAutomatic;
+        if (!this.isExRateAutoConvert) {
+          this.exchangeRatesList = data.manualCurrencyRates;
+        } 
+      }
+    )
+  }
 
-      this.currencyService.getExchangeRatesForDate(startDate).subscribe(
-        data => {
-          if (data) {
-            this.exchangeRatesList = data.rates;
+  getExchangeRatesList() {
+    if (this.isExRateAutoConvert) {
+      if (this.model.startDate && this.model.startDate.year) {
+        var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
+        this.model.startDate.day;
+  
+        this.currencyService.getExchangeRatesForDate(startDate).subscribe(
+          data => {
+            if (data) {
+              this.exchangeRatesList = data.rates;
+            }
           }
-        }
-      )
-    } else {
-      this.currencyService.getExchangeRatesList().subscribe(
-        data => {
-          if (data) {
-            this.exchangeRatesList = data.rates;
+        )
+      } else {
+        this.currencyService.getExchangeRatesList().subscribe(
+          data => {
+            if (data) {
+              this.exchangeRatesList = data.rates;
+            }
           }
-        }
-      );
+        );
+      }
     }
   }
 
   getCurrencyExchangeRate() {
-    this.exRatePlaceHolder = 'Fetching latest rate...';
-    this.isExRateReadonly = true;
-    var currency = this.funderModel.currency;
-    var foundRate = this.exchangeRatesList.filter(e => e.currency == currency);
-    var defaultCurrencyRate = this.exchangeRatesList.filter(e => e.currency == this.defaultCurrency);
-    var proposedRate = 0;
-    if (foundRate.length > 0) {
-      proposedRate = parseFloat(foundRate[0].rate);
-    }
-    if (defaultCurrencyRate.length > 0) {
-      var defaultRate = parseFloat(defaultCurrencyRate[0].rate);
-      if (defaultRate == 1) {
-        if (proposedRate < 1) {
-          this.funderModel.exchangeRate = (1 / proposedRate).toFixed(2);
+    if (this.exchangeRatesList.length > 0) {
+      this.exRatePlaceHolder = 'Fetching latest rate...';
+      this.isExRateReadonly = true;
+      var currency = this.funderModel.currency;
+      var foundRate = this.exchangeRatesList.filter(e => e.currency == currency);
+      var defaultCurrencyRate = this.exchangeRatesList.filter(e => e.currency == this.defaultCurrency);
+      var proposedRate = 0;
+      if (foundRate.length > 0) {
+        proposedRate = parseFloat(foundRate[0].rate);
+      }
+      if (defaultCurrencyRate.length > 0) {
+        var defaultRate = parseFloat(defaultCurrencyRate[0].rate);
+        if (defaultRate == 1) {
+          if (proposedRate < 1) {
+            this.funderModel.exchangeRate = (1 / proposedRate).toFixed(2);
+          } else {
+            this.funderModel.exchangeRate = proposedRate;
+          }
         } else {
-          this.funderModel.exchangeRate = proposedRate;
-        }
-      } else {
           if (proposedRate < 1) {
             if (defaultRate < proposedRate) {
               this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
             } else if (defaultRate > proposedRate) {
               this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
-            } 
+            }
           } else if (proposedRate > 1) {
             if (defaultRate < proposedRate) {
               this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
@@ -1725,11 +1740,12 @@ export class ProjectEntryComponent implements OnInit {
             } else {
               this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
             }
-            
-          } 
+
+          }
+        }
       }
+      this.isExRateReadonly = false;
     }
-    this.isExRateReadonly = false;
   }
 
   calculateProjectFunding() {

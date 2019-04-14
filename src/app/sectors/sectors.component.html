@@ -16,18 +16,19 @@
   </div>
   <div class="col-md-6">
     <div class="input-group mb-3">
-        <select placeholder="Select sector type" class="form-control" id="sectorTypeId" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
-        #sectorTypeId="ngModel" (change)="getSectorsForType()">
+      <select placeholder="Select sector type" class="form-control" id="sectorTypeId" [(ngModel)]="model.sectorTypeId"
+        name="sectorTypeId" #sectorTypeId="ngModel" (change)="getSectorsForType()">
         <option value="0">--Select sector type--</option>
         <option *ngFor="let sectorType of sectorTypesList" [value]="sectorType.id">{{sectorType.typeName}}</option>
       </select>&nbsp;
-      <input type="text" class="form-control" placeholder="Enter sector name" [(ngModel)]="criteria"
-        aria-describedby="basic-addon2">
+      <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria" (input)="searchSectors()"
+        [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;"
+        maxlength="50" required>
       <div class="input-group-append">
         <button class="btn btn-outline-info" (click)="searchSectors()" type="button"><i class="fa fa-search"></i></button>
       </div>
     </div>
-  </div>
+    </div>
 </div>
 
 <div class="row text-center" *ngIf="isLoading">
