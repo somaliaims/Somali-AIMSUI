@@ -142,8 +142,6 @@ export class NewProjectComponent implements OnInit {
       iatiProject.pid = selectedProject[0].id;
       this.addProject(iatiProject);
       this.selectedIATIProjects.push(selectedProject[0]);
-      this.filteredIatiProjects = this.filteredIatiProjects.filter(p => p.id != id);
-      this.iatiProjects = this.iatiProjects.filter(p => p.id != id);
     }
   }
 
@@ -162,8 +160,6 @@ export class NewProjectComponent implements OnInit {
       aimsProject.pid = selectedProject[0].id;
       this.addProject(aimsProject);
       this.selectedAIMSProjects.push(selectedProject[0]);
-      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(p => p.id != id);
-      this.aimsProjects = this.aimsProjects.filter(p => p.id != id);
     }
   }
 
@@ -277,18 +273,8 @@ export class NewProjectComponent implements OnInit {
     if (projectArr.length > 0) {
       var project = projectArr[0];
       if (project.type == 'AIMS') {
-        var aimsProject = this.selectedAIMSProjects.filter(p => p.id == id);
-        if (aimsProject.length > 0) {
-          this.filteredAIMSProjects.push(aimsProject[0]);
-          this.aimsProjects.push(aimsProject[0]);
-        }
         this.selectedAIMSProjects = this.selectedAIMSProjects.filter(p => p.id != id);
       } else {
-        var iatiProject = this.selectedIATIProjects.filter(p => p.id == id);
-        if (iatiProject.length > 0) {
-          this.filteredIatiProjects.push(iatiProject[0]);
-          this.iatiProjects.push(iatiProject[0]);
-        }
         this.selectedIATIProjects = this.selectedIATIProjects.filter(p => p.id != id);
       }
     }
@@ -319,6 +305,29 @@ export class NewProjectComponent implements OnInit {
 
   closeConfirmationModal() {
     this.modalService.close('confirmation-modal');
+  }
+
+  checkIfIATIAdded(title) {
+    var isAddedAims = this.aimsProjects.filter(p => p.title == title);
+    if (isAddedAims.length > 0) {
+      return true;
+    }
+
+    var isAddedSelected = this.selectedIATIProjects.filter(p => p.title == title);
+    if (isAddedSelected.length > 0) {
+      return true;
+    }
+
+    return false;
+  }
+
+  checkAIMSAdded(title) {
+    var isAddedSelected = this.selectedAIMSProjects.filter(p => p.title == title);
+    if (isAddedSelected.length > 0) {
+      return true;
+    }
+
+    return false;
   }
 
 }
