@@ -18,13 +18,13 @@ export class ManageSectortypeComponent implements OnInit {
   isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
   typeId: number = 0;
-  btnText: string = 'Add Sector Type';
+  btnText: string = 'Add sector type';
   errorMessage: string = '';
   sectorTypeTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
   permissions: any = {};
-  model = { id: 0, typeName: '' };
+  model = { id: 0, typeName: '', isDefault: false, isIATIType: false };
 
   constructor(private sectorTypeService: SectorTypeService, private route: ActivatedRoute,
     private router: Router, private securityService: SecurityHelperService,
@@ -48,6 +48,8 @@ export class ManageSectortypeComponent implements OnInit {
           data => {
             this.model.id = data.id;
             this.model.typeName = data.typeName;
+            this.model.isDefault = data.isDefault;
+            this.model.isIATIType = data.isIATIType;
           },
           error => {
             console.log("Request Failed: ", error);
@@ -72,10 +74,20 @@ export class ManageSectortypeComponent implements OnInit {
     )
   }
 
+  toggleDefault() {
+    this.model.isDefault = (this.model.isDefault) ? false : true;
+  }
+
+  toggleIATIType() {
+    this.model.isIATIType = (this.model.isIATIType) ? false : true;
+  }
+
   saveSectorType() {
     var model = {
       TypeName: this.model.typeName,
-      Id: this.model.id
+      Id: this.model.id,
+      isDefault: this.model.isDefault,
+      isIATIType: this.model.isIATIType
     };
 
     this.isBtnDisabled = true;

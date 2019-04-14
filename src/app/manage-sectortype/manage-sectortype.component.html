@@ -6,7 +6,7 @@
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sector-types']">Sector types list</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Create new</a>
+          <a class="nav-link active btn-info" data-toggle="tab">{{btnText}}</a>
         </li>
       </ul>
     </div>
@@ -29,6 +29,34 @@
                 #typeName="ngModel" required>
               <div [hidden]="typeName.valid" class="alert alert-danger">
                 Sector-Type name is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-offset-2 col-md-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <button (click)="toggleDefault()" class="btn btn-success btn-sm">
+                      <i *ngIf="!model.isDefault" class="fa fa-square text-white"></i>
+                      <i *ngIf="model.isDefault" class="fa fa-check text-white"></i>
+                    </button>
+                    &nbsp;Is default sector type?
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-offset-2 col-md-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <button (click)="toggleIATIType()" class="btn btn-success btn-sm">
+                      <i *ngIf="!model.isIATIType" class="fa fa-square text-white"></i>
+                      <i *ngIf="model.isIATIType" class="fa fa-check text-white"></i>
+                    </button>
+                    &nbsp;Is IATI sector type?
+                  </div>
+                </div>
               </div>
             </div>
 

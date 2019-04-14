@@ -69,6 +69,10 @@ export class SectorTypesComponent implements OnInit {
     }
   }
 
+  isTrue(val) {
+    return (val) ? 'Yes' : 'No';
+  }
+  
   edit(id: string) {
     this.router.navigateByUrl('/manage-sectortype/' + id);
   }
