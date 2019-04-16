@@ -98,5 +98,6 @@ export const urls = {
 	saveManualExchangeRates: "ExchangeRate/SaveManualCurrencyRates",
 	exchangeRateForDate: "ExchangeRate/GetRatesForDate/",
 	getManualExchangeRates: "ExchangeRate/GetManualExchangeRates",
-	getDefaultSectors: "Sector/GetDefaultSectors"
+	getDefaultSectors: "Sector/GetDefaultSectors",
+	envelopeUrl: "Envelope",
 };

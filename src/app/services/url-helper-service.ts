@@ -436,4 +436,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.subscribeToReports);
     }
 
+    getFunderEnvelopeUrl(id: string) {
+        return(this.BASE_URL + urlsList.urls.envelopeUrl + "/" + id);
+    }
+
+    getEnvelopeUrl() {
+        return (this.BASE_URL + urlsList.urls.envelopeUrl);
+    }
+
 }

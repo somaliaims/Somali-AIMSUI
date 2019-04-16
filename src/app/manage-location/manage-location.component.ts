@@ -45,7 +45,6 @@ export class ManageLocationComponent implements OnInit {
           }
         );
       }
-      //this.requestNo = this.storeService.getNewRequestNumber();
     }
 
     this.requestNo = this.storeService.getNewRequestNumber();

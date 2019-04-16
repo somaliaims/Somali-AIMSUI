@@ -66,6 +66,7 @@ import { DeleteLocationComponent } from './delete-location/delete-location.compo
 import { DeleteSectorComponent } from './delete-sector/delete-sector.component';
 import { SectorMappingsComponent } from './sector-mappings/sector-mappings.component';
 import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.component';
+import { EnvelopeComponent } from './envelope/envelope.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.compo
     SectorMappingsComponent,
     SectorTypesComponent,
     ExrateSettingsComponent,
+    EnvelopeComponent,
   ],
   imports: [
     BrowserModule,
