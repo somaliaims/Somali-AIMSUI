@@ -10,10 +10,12 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
   styleUrls: ['./envelope.component.css']
 })
 export class EnvelopeComponent implements OnInit {
+  btnText: string = 'Save envelope data';
   permissions: any = {};
   userOrganizationId: number = 0;
+  yearsList: any = [];
   envelopeData: any = {funderId: 0, funderName: '', totalFunds: 0.0, sectors: [], envelopeBreakups: []};
-
+  envelopeBreakups: any = [];
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
     private envelopeService: EnvelopeService) { }
@@ -23,14 +25,18 @@ export class EnvelopeComponent implements OnInit {
     if (!this.permissions.canEditEnvelope) {
       this.router.navigateByUrl('home');
     }
-    this.userOrganizationId = parseInt(localStorage.getItem('organizationId'));
+    this.getFunderEnvelope();
   }
 
   getFunderEnvelope() {
-    this.envelopeService.getEnvelopForFunder(this.userOrganizationId).subscribe(
+    this.envelopeService.getEnvelopForFunder().subscribe(
       data => {
         if (data) {
           this.envelopeData = data;
+          if (this.envelopeData.envelopeBreakups) {
+            this.envelopeBreakups = this.envelopeData.envelopeBreakups;
+            this.yearsList = this.envelopeData.envelopeBreakups.map(y => y.year);
+          }
         }
       }
     )

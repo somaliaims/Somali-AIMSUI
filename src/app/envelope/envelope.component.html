@@ -13,8 +13,21 @@
         <div class="card-body">
           <h5 class="card-title text-center">Envelope data</h5>
 
-          <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveLocation()" #envelopeForm="ngForm">
-
+          <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelope()" #envelopeForm="ngForm">
+            <table *ngIf="envelopeBreakups.length > 0" class="table table-bordered">
+              <tr>
+                <th>Sectors</th>
+                <th *ngFor="let year of yearsList">{{year}}</th>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td *ngFor="let e of envelopeBreakups">{{e.totalAmount}}</td>
+              </tr>
+              <tr *ngFor="let s of envelopeData.sectors">
+                <td>{{s.sector}}</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>
         </div>

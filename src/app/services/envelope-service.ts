@@ -13,8 +13,8 @@ export class EnvelopeService {
     constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService,
         private storeService: StoreService) { }
 
-        getEnvelopForFunder(id: number) {
-            var url = this.urlHelper.getFunderEnvelopeUrl(id.toString());
+        getEnvelopForFunder() {
+            var url = this.urlHelper.getFunderEnvelopeUrl();
             return this.httpClient.get(url, httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Envelope')));
         }
