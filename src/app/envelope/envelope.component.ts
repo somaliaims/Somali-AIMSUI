@@ -3,6 +3,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { EnvelopeService } from '../services/envelope-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { CurrencyService } from '../services/currency.service';
 
 @Component({
   selector: 'app-envelope',
@@ -14,11 +15,13 @@ export class EnvelopeComponent implements OnInit {
   permissions: any = {};
   userOrganizationId: number = 0;
   yearsList: any = [];
+  currenciesList: any = [];
+  selectedCurrency: string = null;
   envelopeData: any = {funderId: 0, funderName: '', totalFunds: 0.0, sectors: [], envelopeBreakups: []};
   envelopeBreakups: any = [];
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
-    private envelopeService: EnvelopeService) { }
+    private envelopeService: EnvelopeService, private currencyService: CurrencyService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -26,6 +29,17 @@ export class EnvelopeComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
     this.getFunderEnvelope();
+    this.getCurrenciesList();
+  }
+
+  getCurrenciesList() {
+    this.currencyService.getCurrenciesList().subscribe(
+      data => {
+        if (data) {
+          this.currenciesList = data;
+        }
+      }
+    )
   }
 
   getFunderEnvelope() {

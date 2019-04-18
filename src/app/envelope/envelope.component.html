@@ -7,27 +7,55 @@
         </li>
       </ul>
     </div>
+
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible margin-top-10">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Information!</strong> 
+            This section will include help on evelope data feature. This section will include help on evelope data feature. 
+            This section will include help on evelope data feature. This section will include help on evelope data feature. 
+          </div>
+    </div>
     
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="col-sm-12 col-md-10 col-lg-8 mx-auto">
       <div class="card card-signin my-5">
         <div class="card-body">
           <h5 class="card-title text-center">Envelope data</h5>
-
+          
           <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelope()" #envelopeForm="ngForm">
-            <table *ngIf="envelopeBreakups.length > 0" class="table table-bordered">
-              <tr>
-                <th>Sectors</th>
-                <th *ngFor="let year of yearsList">{{year}}</th>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td *ngFor="let e of envelopeBreakups">{{e.totalAmount}}</td>
-              </tr>
-              <tr *ngFor="let s of envelopeData.sectors">
-                <td>{{s.sector}}</td>
-                <td>{{s.amount}}</td>
-              </tr>
-            </table>
+            <div class="row">
+              <table>
+                <tr>
+                  <td>Currency: </td>
+                  <td>
+                      <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
+                      #currency="ngModel">
+                      <option value="null">--Select one--</option>
+                      <option *ngFor="let currency of currenciesList" [value]="currency.currency">{{currency.currency}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="row margin-top-10">
+                <table *ngIf="envelopeBreakups.length > 0" class="table table-bordered">
+                    <tr>
+                      <th>Sectors</th>
+                      <th *ngFor="let year of yearsList">{{year}}</th>
+                    </tr>
+                    <tr>
+                      <td><i>Total allocations</i></td>
+                      <td *ngFor="let e of envelopeBreakups">{{e.totalAmount}}</td>
+                    </tr>
+                    <tr *ngFor="let s of envelopeData.sectors">
+                      <td>{{s.sector}}</td>
+                      <td *ngFor="let allocation of s.yearlyAllocation">
+                        {{allocation.amount}}
+                      </td>
+                    </tr>
+                  </table>
+            </div>
+            
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>
         </div>
