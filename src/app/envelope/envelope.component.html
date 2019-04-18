@@ -25,7 +25,7 @@
               </tr>
               <tr *ngFor="let s of envelopeData.sectors">
                 <td>{{s.sector}}</td>
-                <td>&nbsp;</td>
+                <td>{{s.amount}}</td>
               </tr>
             </table>
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>

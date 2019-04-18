@@ -59,4 +59,8 @@ export class EnvelopeComponent implements OnInit {
     )
   }
 
+  getSectorAllocation(percent: number, totalAmount: number) {
+    return ((totalAmount / 100) * percent).toFixed(2);
+  }
+
 }
