@@ -117,12 +117,24 @@ export class EnvelopeComponent implements OnInit {
           e.amount = (e.amount * currencyRate);
         });
       } else {
-        var rateInUSD = (1 / currencyRate);
-        this.envelopeBreakups.array.forEach(e => {
-          e.amount = (e.amount * rateInUSD);
-        });
+        if (currencyRate < 1) {
+          var rateInUSD = (1 / currencyRate);
+          this.envelopeBreakups.array.forEach(e => {
+            e.amount = (e.amount * rateInUSD);
+          });
+        } else {
+          this.envelopeBreakups.array.forEach(e => {
+            e.amount = (e.amount * currencyRate);
+          });
+        }
+        
       }
     }
+  }
+
+  getSectorTotalForYear(year: number) {
+    //var allocations = this.envelopeData.sectors.filter(s => s.);
+    //return allocations.reduce((a, b) => a + b, 0);
   }
 
 }

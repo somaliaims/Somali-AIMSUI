@@ -143,8 +143,24 @@ html {
     margin-top: 5px !important;
   }
 
+  .margin-top-0 {
+    margin-top: 0px !important;
+  }
+
+  .margin-top-20 {
+    margin-top: 20px !important;
+  }
+
   .margin-left-10 {
     margin-left: 10px !important;
+  }
+
+  .margin-top-30 {
+    margin-top: 30px !important;
+  }
+
+  .margin-top-40 {
+    margin-top: 40px !important;
   }
 
   .margin-left-15 {

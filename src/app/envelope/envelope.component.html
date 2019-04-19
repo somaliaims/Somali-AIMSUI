@@ -7,19 +7,19 @@
         </li>
       </ul>
     </div>
-
-    <div class="col-md-12">
-        <div class="alert alert-info alert-dismissible margin-top-10">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Information!</strong> 
-            This section will include help on evelope data feature. This section will include help on evelope data feature. 
-            This section will include help on evelope data feature. This section will include help on evelope data feature. 
-          </div>
-    </div>
     
-    <div class="col-sm-12 col-md-10 col-lg-8 mx-auto">
-      <div class="card card-signin my-5">
+    <div class="col-md-3 margin-top-20">
+      <div class="card">
+        <div class="card-header bg-info text-white">Guide</div>
         <div class="card-body">
+            This section will include help on evelope data feature. This section will include help on evelope data feature. 
+            This section will include help on evelope data feature. This section will include help on evelope data feature. 
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-9 col-lg-9">
+      <div class="card card-signin my-5 margin-top-20">
+        <div class="card-body margin-top-0">
           <h5 class="card-title text-center">Envelope data</h5>
           
           <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelope()" #envelopeForm="ngForm">
@@ -53,9 +53,10 @@
                       <th *ngFor="let year of yearsList">{{year}}</th>
                     </tr>
                     <tr>
-                      <td><i>Total allocations</i></td>
+                      <td><i>Actual / Expected</i></td>
                       <td *ngFor="let e of envelopeBreakups">
-                          <input type="text" id="e-{{e.year}}" value="{{e.totalAmount}}" />
+                          <input type="text" id="a-{{e.year}}" value="{{e.actualAmount}}" />&nbsp;
+                          <input type="text" id="ex-{{e.year}}" value="{{e.expectedAmount}}" />
                       </td>
                     </tr>
                     <tr *ngFor="let s of envelopeData.sectors">
