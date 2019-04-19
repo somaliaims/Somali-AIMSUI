@@ -24,18 +24,27 @@
           
           <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelope()" #envelopeForm="ngForm">
             <div class="row">
-              <table>
-                <tr>
-                  <td>Currency: </td>
-                  <td>
-                      <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
-                      #currency="ngModel">
-                      <option value="null">--Select one--</option>
-                      <option *ngFor="let currency of currenciesList" [value]="currency.currency">{{currency.currency}}</option>
-                    </select>
-                  </td>
-                </tr>
-              </table>
+              <div class="col-md-6">
+                  <span class="float-left">
+                    <table>
+                      <tr>
+                        <td><b>Currency:</b>&nbsp;</td>
+                        <td>
+                            <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
+                            #currency="ngModel" (change)="convertExRatesToCurrency()">
+                            <option value="null">--Select one--</option>
+                            <option *ngFor="let currency of currenciesList" [value]="currency.currency">{{currency.currency}}</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </table>
+                  </span>
+              </div>
+              <div class="col-md-6">
+                  <span class="float-right">
+                      <b>Default Currency:</b>&nbsp;{{defaultCurrency}}
+                  </span> 
+              </div>
             </div>
             <div class="row margin-top-10">
                 <table *ngIf="envelopeBreakups.length > 0" class="table table-bordered">
@@ -45,12 +54,14 @@
                     </tr>
                     <tr>
                       <td><i>Total allocations</i></td>
-                      <td *ngFor="let e of envelopeBreakups">{{e.totalAmount}}</td>
+                      <td *ngFor="let e of envelopeBreakups">
+                          <input type="text" id="e-{{e.year}}" value="{{e.totalAmount}}" />
+                      </td>
                     </tr>
                     <tr *ngFor="let s of envelopeData.sectors">
                       <td>{{s.sector}}</td>
                       <td *ngFor="let allocation of s.yearlyAllocation">
-                        {{allocation.amount}}
+                        <input type="text" id="i-{{allocation.year}}" value="{{allocation.amount}}" />
                       </td>
                     </tr>
                   </table>

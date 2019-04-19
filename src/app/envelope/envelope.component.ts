@@ -16,7 +16,9 @@ export class EnvelopeComponent implements OnInit {
   userOrganizationId: number = 0;
   yearsList: any = [];
   currenciesList: any = [];
+  exRatesList: any = [];
   selectedCurrency: string = null;
+  defaultCurrency: string = null;
   envelopeData: any = {funderId: 0, funderName: '', totalFunds: 0.0, sectors: [], envelopeBreakups: []};
   envelopeBreakups: any = [];
   @BlockUI() blockUI: NgBlockUI;
@@ -30,6 +32,8 @@ export class EnvelopeComponent implements OnInit {
     }
     this.getFunderEnvelope();
     this.getCurrenciesList();
+    this.getDefaultCurrency();
+    this.getExchangeRates();
   }
 
   getCurrenciesList() {
@@ -38,6 +42,22 @@ export class EnvelopeComponent implements OnInit {
         if (data) {
           this.currenciesList = data;
         }
+      }
+    )
+  }
+
+  getExchangeRates() {
+    this.currencyService.getExchangeRatesList().subscribe(
+      data => {
+        this.exRatesList = data;
+      }
+    )
+  }
+
+  getDefaultCurrency() {
+    this.currencyService.getDefaultCurrency().subscribe(
+      data => {
+        this.defaultCurrency = data.currency;
       }
     )
   }
@@ -75,6 +95,34 @@ export class EnvelopeComponent implements OnInit {
 
   getSectorAllocation(percent: number, totalAmount: number) {
     return ((totalAmount / 100) * percent).toFixed(2);
+  }
+
+  convertExRatesToCurrency() {
+    if (this.selectedCurrency != null) {
+      var currencyRateArr = this.exRatesList.filter(ex => ex.currency == this.selectedCurrency);
+      var defaultRateArr = this.exRatesList.filter(ex => ex.currency == this.defaultCurrency);
+      var currencyRate = 0;
+      var defaultRate = 0;
+
+      if (defaultRateArr.length > 0) {
+        defaultRate = defaultRateArr[0].rate;
+      }
+
+      if (currencyRateArr.length > 0) {
+        currencyRate = currencyRateArr[0].rate;
+      }
+
+      if (defaultRate == 1) {
+        this.envelopeBreakups.array.forEach(e => {
+          e.amount = (e.amount * currencyRate);
+        });
+      } else {
+        var rateInUSD = (1 / currencyRate);
+        this.envelopeBreakups.array.forEach(e => {
+          e.amount = (e.amount * rateInUSD);
+        });
+      }
+    }
   }
 
 }
