@@ -19,6 +19,7 @@ export class EnvelopeComponent implements OnInit {
   exRatesList: any = [];
   selectedCurrency: string = null;
   defaultCurrency: string = null;
+  oldCurrency: string = null;
   envelopeData: any = { funderId: 0, funderName: '', totalFunds: 0.0, sectors: [], envelopeBreakups: [] };
   envelopeBreakups: any = [];
   @BlockUI() blockUI: NgBlockUI;
@@ -69,6 +70,7 @@ export class EnvelopeComponent implements OnInit {
           this.envelopeData = data;
           if (this.envelopeData.envelopeBreakups) {
             this.selectedCurrency = this.envelopeData.currency;
+            this.oldCurrency = this.selectedCurrency;
             this.envelopeBreakups = this.envelopeData.envelopeBreakups;
             this.yearsList = this.envelopeData.envelopeBreakups.map(y => y.year);
           }
@@ -102,8 +104,10 @@ export class EnvelopeComponent implements OnInit {
     if (this.selectedCurrency != null && this.exRatesList.length > 0) {
       var currencyRateArr = this.exRatesList.filter(ex => ex.currency == this.selectedCurrency);
       var defaultRateArr = this.exRatesList.filter(ex => ex.currency == this.defaultCurrency);
+      var oldCurrencyRateArr = this.exRatesList.filter(ex => ex.currency == this.oldCurrency);
       var currencyRate = 0;
       var defaultRate = 0;
+      var oldCurrencyRate = 0;
 
       if (defaultRateArr.length > 0) {
         defaultRate = defaultRateArr[0].rate;
@@ -113,29 +117,26 @@ export class EnvelopeComponent implements OnInit {
         currencyRate = currencyRateArr[0].rate;
       }
 
-      if (defaultRate == 1) {
-        if (defaultRate > currencyRate) {
-          
-        }
-        this.envelopeBreakups.forEach(e => {
-          e.actualAmount = (e.actualAmount * currencyRate);
-          e.expectedAmount = (e.expectedAmount * currencyRate);
-        });
-      } else {
-        if (currencyRate < 1) {
-          var rateInUSD = (1 / currencyRate);
-          this.envelopeBreakups.forEach(e => {
-            e.actualAmount = (e.actualAmount * currencyRate);
-            e.expectedAmount = (e.expectedAmount * currencyRate);
-          });
-        } else {
-          this.envelopeBreakups.forEach(e => {
-            e.actualAmount = (e.actualAmount * currencyRate);
-            e.expectedAmount = (e.expectedAmount * currencyRate);
-          });
-        }
-
+      if (oldCurrencyRateArr.length > 0) {
+        oldCurrencyRate = oldCurrencyRateArr[0].rate;
       }
+
+      var calculatedRate = 0;
+      calculatedRate = (currencyRate / oldCurrencyRate);
+
+      this.envelopeBreakups.forEach(e => {
+        e.actualAmount = Math.round(parseFloat((e.actualAmount * calculatedRate).toFixed(2)));
+        e.expectedAmount = Math.round(parseFloat((e.expectedAmount * calculatedRate).toFixed(2)));
+      });
+
+      var sectors = this.envelopeData.sectors;
+      sectors.forEach(function (sector) {
+        var allocation = sector.yearlyAllocation.forEach(function (a) {
+          a.amount = Math.round(parseFloat((a.amount * calculatedRate).toFixed(2)));
+        });
+      });
+
+      this.oldCurrency = this.selectedCurrency;
     }
   }
 
