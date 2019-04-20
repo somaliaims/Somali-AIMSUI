@@ -19,7 +19,7 @@ export class EnvelopeComponent implements OnInit {
   exRatesList: any = [];
   selectedCurrency: string = null;
   defaultCurrency: string = null;
-  envelopeData: any = {funderId: 0, funderName: '', totalFunds: 0.0, sectors: [], envelopeBreakups: []};
+  envelopeData: any = { funderId: 0, funderName: '', totalFunds: 0.0, sectors: [], envelopeBreakups: [] };
   envelopeBreakups: any = [];
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
@@ -49,7 +49,7 @@ export class EnvelopeComponent implements OnInit {
   getExchangeRates() {
     this.currencyService.getExchangeRatesList().subscribe(
       data => {
-        this.exRatesList = data;
+        this.exRatesList = data.rates;
       }
     )
   }
@@ -68,6 +68,7 @@ export class EnvelopeComponent implements OnInit {
         if (data) {
           this.envelopeData = data;
           if (this.envelopeData.envelopeBreakups) {
+            this.selectedCurrency = this.envelopeData.currency;
             this.envelopeBreakups = this.envelopeData.envelopeBreakups;
             this.yearsList = this.envelopeData.envelopeBreakups.map(y => y.year);
           }
@@ -98,7 +99,7 @@ export class EnvelopeComponent implements OnInit {
   }
 
   convertExRatesToCurrency() {
-    if (this.selectedCurrency != null) {
+    if (this.selectedCurrency != null && this.exRatesList.length > 0) {
       var currencyRateArr = this.exRatesList.filter(ex => ex.currency == this.selectedCurrency);
       var defaultRateArr = this.exRatesList.filter(ex => ex.currency == this.defaultCurrency);
       var currencyRate = 0;
@@ -113,21 +114,27 @@ export class EnvelopeComponent implements OnInit {
       }
 
       if (defaultRate == 1) {
-        this.envelopeBreakups.array.forEach(e => {
-          e.amount = (e.amount * currencyRate);
+        if (defaultRate > currencyRate) {
+          
+        }
+        this.envelopeBreakups.forEach(e => {
+          e.actualAmount = (e.actualAmount * currencyRate);
+          e.expectedAmount = (e.expectedAmount * currencyRate);
         });
       } else {
         if (currencyRate < 1) {
           var rateInUSD = (1 / currencyRate);
-          this.envelopeBreakups.array.forEach(e => {
-            e.amount = (e.amount * rateInUSD);
+          this.envelopeBreakups.forEach(e => {
+            e.actualAmount = (e.actualAmount * currencyRate);
+            e.expectedAmount = (e.expectedAmount * currencyRate);
           });
         } else {
-          this.envelopeBreakups.array.forEach(e => {
-            e.amount = (e.amount * currencyRate);
+          this.envelopeBreakups.forEach(e => {
+            e.actualAmount = (e.actualAmount * currencyRate);
+            e.expectedAmount = (e.expectedAmount * currencyRate);
           });
         }
-        
+
       }
     }
   }
