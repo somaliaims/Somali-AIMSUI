@@ -65,6 +65,12 @@
                         <input type="text" id="i-{{allocation.year}}" value="{{allocation.amount}}" />
                       </td>
                     </tr>
+                    <tr>
+                      <td><b>Sector totals</b></td>
+                      <td *ngFor="let year of yearsList">
+                        {{getSectorTotalForYear(year)}}
+                      </td>
+                    </tr>
                   </table>
             </div>
             

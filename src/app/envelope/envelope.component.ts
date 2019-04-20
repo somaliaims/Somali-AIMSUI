@@ -133,8 +133,15 @@ export class EnvelopeComponent implements OnInit {
   }
 
   getSectorTotalForYear(year: number) {
-    //var allocations = this.envelopeData.sectors.filter(s => s.);
-    //return allocations.reduce((a, b) => a + b, 0);
+    var sectors = this.envelopeData.sectors;
+    var sectorAllocation = 0;
+    sectors.forEach(function (sector) {
+      var allocation = sector.yearlyAllocation.filter(a => a.year == year);
+      if (allocation.length > 0) {
+        sectorAllocation += allocation[0].amount;
+      }
+    });
+    return sectorAllocation;
   }
 
 }
