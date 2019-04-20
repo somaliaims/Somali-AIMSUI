@@ -20,7 +20,7 @@ export class EnvelopeComponent implements OnInit {
   selectedCurrency: string = null;
   defaultCurrency: string = null;
   oldCurrency: string = null;
-  envelopeData: any = { funderId: 0, funderName: '', totalFunds: 0.0, sectors: [], envelopeBreakups: [] };
+  envelopeData: any = { funderId: 0, funderName: '', totalFunds: 0.0, sectors: [] };
   envelopeBreakups: any = [];
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
@@ -50,7 +50,9 @@ export class EnvelopeComponent implements OnInit {
   getExchangeRates() {
     this.currencyService.getExchangeRatesList().subscribe(
       data => {
-        this.exRatesList = data.rates;
+        if (data) {
+          this.exRatesList = data.rates;
+        }
       }
     )
   }
@@ -58,7 +60,9 @@ export class EnvelopeComponent implements OnInit {
   getDefaultCurrency() {
     this.currencyService.getDefaultCurrency().subscribe(
       data => {
-        this.defaultCurrency = data.currency;
+        if (data) {
+          this.defaultCurrency = data.currency;
+        }
       }
     )
   }
@@ -82,7 +86,8 @@ export class EnvelopeComponent implements OnInit {
   saveEnvelopeData() {
     var model = {
       funderId: this.envelopeData.funderId,
-      envelopeBreakups: this.envelopeData.envelopeBreakups
+      currency: this.selectedCurrency,
+      envelopeBreakups: this.envelopeBreakups
     }
 
     this.blockUI.start('Saving envelope...');
