@@ -27,7 +27,7 @@
 
             <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelopeData()" #envelopeForm="ngForm">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <span class="float-left">
                     <table>
                       <tr>
@@ -44,9 +44,14 @@
                     </table>
                   </span>
                 </div>
-                <div class="col-md-6">
-                  <span class="float-right">
+                <div class="col-md-4">
+                  <span class="float-left">
                     <b>Default Currency:</b>&nbsp;{{defaultCurrency}}
+                  </span>
+                </div>
+                <div class="col-md-4">
+                  <span class="float-right">
+                    <b>Actual Total:</b>&nbsp;{{totalFundingAmount}}
                   </span>
                 </div>
               </div>
@@ -59,8 +64,8 @@
                   <tr>
                     <td><i>Actual / Expected</i></td>
                     <td *ngFor="let e of envelopeBreakups">
-                      <input type="text" id="a-{{e.year}}" value="{{e.actualAmount}}" />&nbsp;
-                      <input type="text" id="ex-{{e.year}}" value="{{e.expectedAmount}}" />
+                      <input type="text" id="a-{{e.year}}" (change)="updateEnvelpeActualValue($event)" value="{{e.actualAmount}}" />&nbsp;
+                      <input type="text" id="ex-{{e.year}}" (change)="updateEnvelpeExpectedValue($event)" value="{{e.expectedAmount}}" />
                     </td>
                   </tr>
                   <tr *ngFor="let s of envelopeData.sectors">

@@ -14,6 +14,7 @@ export class EnvelopeComponent implements OnInit {
   btnText: string = 'Save envelope data';
   permissions: any = {};
   userOrganizationId: number = 0;
+  totalFundingAmount: number = 0;
   yearsList: any = [];
   currenciesList: any = [];
   exRatesList: any = [];
@@ -73,6 +74,7 @@ export class EnvelopeComponent implements OnInit {
         if (data) {
           this.envelopeData = data;
           if (this.envelopeData.envelopeBreakups) {
+            this.totalFundingAmount = this.envelopeData.expectedFunds;
             this.selectedCurrency = this.envelopeData.currency;
             this.oldCurrency = this.selectedCurrency;
             this.envelopeBreakups = this.envelopeData.envelopeBreakups;
@@ -99,6 +101,28 @@ export class EnvelopeComponent implements OnInit {
         this.blockUI.stop();
       }
     )
+  }
+
+  updateEnvelpeActualValue(e) {
+    var newValue = e.target.value;
+    var year = e.target.id.split('-')[1];
+    if (year) {
+      var envelopeArr = this.envelopeBreakups.filter(e => e.year == year);
+      if (envelopeArr.length > 0) {
+        envelopeArr[0].actualAmount = newValue;
+      }
+    }
+  }
+
+  updateEnvelpeExpectedValue(e) {
+    var newValue = e.target.value;
+    var year = e.target.id.split('-')[1];
+    if (year) {
+      var envelopeArr = this.envelopeBreakups.filter(e => e.year == year);
+      if (envelopeArr.length > 0) {
+        envelopeArr[0].expectedAmount = newValue;
+      }
+    }
   }
 
   getSectorAllocation(percent: number, totalAmount: number) {

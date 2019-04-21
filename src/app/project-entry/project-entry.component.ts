@@ -841,9 +841,7 @@ export class ProjectEntryComponent implements OnInit {
 
   showFunders() {
     this.manageTabsDisplay('funder');
-    if (this.isExRateAutoConvert) {
-      this.getExchangeRatesList();
-    }
+    this.getExchangeRatesList();
   }
 
   showImplementers() {
