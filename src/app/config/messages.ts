@@ -18,6 +18,7 @@ export const Messages = {
     INVALID_STARTEND_DATE: 'Start date cannot be greater than end date',
     INVALID_API_KEY: 'API key cannot be set as null',
     INVALID_EXRATE_SAVE: 'You must provide some updated exchange rates to save',
+    INVALID_ENVELOPE: 'The sum of all actual allocations shall not be less than total committed funds',
     NULL_VALUE: 'Value cannot be set null for ',
     ATLEAST_PROJECT_MERGE: 'At least two projects are required for merge',
     ATLEAST_ORGANIZATION_MERGE: 'At least two organizations are required for merge',

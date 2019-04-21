@@ -9,6 +9,13 @@
         </ul>
       </div>
 
+      <div *ngIf="isError" class="col-md-12 margin-top-10">
+        <div class="alert alert-danger alert-dismissible">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Error!</strong> {{errorMessage}}
+        </div>
+      </div>
+
       <div class="col-md-3 margin-top-20">
         <div class="card">
           <div class="card-header bg-info text-white">Guide</div>
@@ -71,7 +78,7 @@
                   <tr *ngFor="let s of envelopeData.sectors">
                     <td>{{s.sector}}</td>
                     <td *ngFor="let allocation of s.yearlyAllocation">
-                      <input type="text" id="i-{{allocation.year}}" value="{{allocation.amount}}" />
+                      <input type="text" id="i-{{allocation.year}}" readonly="readonly" value="{{allocation.amount}}" />
                     </td>
                   </tr>
                   <tr>

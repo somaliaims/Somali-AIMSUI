@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { EnvelopeService } from '../services/envelope-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { CurrencyService } from '../services/currency.service';
+import { Messages } from '../config/messages';
 
 @Component({
   selector: 'app-envelope',
@@ -18,6 +19,8 @@ export class EnvelopeComponent implements OnInit {
   yearsList: any = [];
   currenciesList: any = [];
   exRatesList: any = [];
+  isError: boolean = false;
+  errorMessage: string = '';
   selectedCurrency: string = null;
   defaultCurrency: string = null;
   oldCurrency: string = null;
@@ -32,6 +35,8 @@ export class EnvelopeComponent implements OnInit {
     if (!this.permissions.canEditEnvelope) {
       this.router.navigateByUrl('home');
     }
+
+    this.errorMessage = Messages.INVALID_ENVELOPE;
     this.getFunderEnvelope();
     this.getCurrenciesList();
     this.getDefaultCurrency();
@@ -79,6 +84,7 @@ export class EnvelopeComponent implements OnInit {
             this.oldCurrency = this.selectedCurrency;
             this.envelopeBreakups = this.envelopeData.envelopeBreakups;
             this.yearsList = this.envelopeData.envelopeBreakups.map(y => y.year);
+            this.checkIfFundsAllocationNormal();
           }
         }
       }
@@ -86,6 +92,11 @@ export class EnvelopeComponent implements OnInit {
   }
 
   saveEnvelopeData() {
+    var totalAmount = 0;
+    this.envelopeBreakups.forEach(function (e) {
+
+    });
+
     var model = {
       funderId: this.envelopeData.funderId,
       currency: this.selectedCurrency,
@@ -103,6 +114,16 @@ export class EnvelopeComponent implements OnInit {
     )
   }
 
+  checkIfFundsAllocationNormal() {
+    var amounts = this.envelopeBreakups.map(e => e.actualAmount);
+    var amountsTotal = amounts.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
+    if (amountsTotal < this.totalFundingAmount) {
+      this.isError = true;
+    } else {
+      this.isError = false;
+    }
+  }
+
   updateEnvelpeActualValue(e) {
     var newValue = e.target.value;
     var year = e.target.id.split('-')[1];
@@ -112,6 +133,7 @@ export class EnvelopeComponent implements OnInit {
         envelopeArr[0].actualAmount = newValue;
       }
     }
+    this.checkIfFundsAllocationNormal();
   }
 
   updateEnvelpeExpectedValue(e) {
@@ -123,6 +145,7 @@ export class EnvelopeComponent implements OnInit {
         envelopeArr[0].expectedAmount = newValue;
       }
     }
+    this.checkIfFundsAllocationNormal();
   }
 
   getSectorAllocation(percent: number, totalAmount: number) {
