@@ -16,12 +16,17 @@ export class SectorMappingsComponent implements OnInit {
   requestNo: number = 0;
   defaultSectors: any = [];
   sectorTypes: any = [];
+  filteredSectors: any = [];
   sectorsForType: any = [];
+  filteredSectorsForType: any = [];
   sectorMappings: any = [];
   newMappings: any = [];
   isLoadingMappings: boolean = false;
+  isLoadingSectorsForType: boolean = false;
   permissions: any = {};
   isLoading: boolean = false;
+  criteria: string = null;
+  otherCriteria: string = null;
   model: any = { selectedSectorId: null, sectorTypeId: null };
   @BlockUI() blockUI: NgBlockUI;
   
@@ -47,6 +52,7 @@ export class SectorMappingsComponent implements OnInit {
       data => {
         if (data) {
           this.defaultSectors = data;
+          this.filteredSectors = data;
         }
         this.isLoading = false;
       }
@@ -88,13 +94,16 @@ export class SectorMappingsComponent implements OnInit {
       return false;
     }
 
+    this.isLoadingSectorsForType = true;
     this.newMappings = [];
     var id = this.model.sectorTypeId;
     this.sectorService.getSectorsForType(id).subscribe(
       data => {
         if (data) {
           this.sectorsForType = data;
+          this.filteredSectorsForType = data;
         }
+        this.isLoadingSectorsForType = false;
       }
     )
   }
@@ -108,7 +117,25 @@ export class SectorMappingsComponent implements OnInit {
   }
 
   filterSectors() {
-    
+    if (!this.criteria) {
+        this.filteredSectors = this.defaultSectors;
+    } else {
+      if (this.defaultSectors.length > 0) {
+        var criteria = this.criteria.toLowerCase();
+        this.filteredSectors = this.defaultSectors.filter(s => s.sectorName.toLowerCase().indexOf(criteria) != -1);
+      }
+    }
+  }
+
+  filterOtherSectors() {
+    if (!this.otherCriteria) {
+      this.filteredSectorsForType = this.sectorsForType;
+  } else {
+    if (this.sectorsForType.length > 0) {
+      var criteria = this.otherCriteria.toLowerCase();
+      this.filteredSectorsForType = this.sectorsForType.filter(s => s.sectorName.toLowerCase().indexOf(criteria) != -1);
+    }
+  }
   }
 
   mapSector(e) {

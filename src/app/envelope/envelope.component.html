@@ -62,6 +62,12 @@
                   </span>
                 </div>
               </div>
+
+              <div class="row text-center" *ngIf="isLoading">
+                <div class="col-md-12">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+                </div>
+              </div>
               <div class="row margin-top-10">
                 <table *ngIf="envelopeBreakups.length > 0" class="table table-bordered">
                   <tr>
@@ -88,6 +94,7 @@
                     </td>
                   </tr>
                 </table>
+                <span *ngIf="envelopeBreakups.length == 0 && isLoading == false" class="text-info"><i></i></span>
               </div>
 
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"

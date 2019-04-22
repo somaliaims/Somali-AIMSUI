@@ -18,8 +18,8 @@
     <div class="row">
       <div class="col-md-6 margin-top-10">
         <div class="input-group">
-          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title" (input)="filterSectors()"
-            [(ngModel)]="model.title" name="title" #title="ngModel" onkeypress="return event.keyCode != 13;" required>
+          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria" (input)="filterSectors()"
+            [(ngModel)]="criteria" name="criteria" #title="ngModel" onkeypress="return event.keyCode != 13;" required>
           <span class="input-group-btn">
             <button class="btn btn-outline-info btn-lg" type="button">
               <i class="fa fa-search"></i>
@@ -52,8 +52,8 @@
             <div *ngIf="isLoading">
               Loading sectors...
             </div>
-            <table *ngIf="defaultSectors.length > 0" class="table table-bordered">
-              <tr *ngFor="let sector of defaultSectors">
+            <table *ngIf="filteredSectors.length > 0" class="table table-bordered">
+              <tr *ngFor="let sector of filteredSectors">
                 <td>
                   <span class="float-left">
                     {{sector.sectorName}}
@@ -66,7 +66,7 @@
                 </td>
               </tr>
             </table>
-            <span *ngIf="defaultSectors.length == 0" class="text-info">
+            <span *ngIf="filteredSectors.length == 0" class="text-info">
               No sectors to show
             </span>
           </div>
@@ -91,11 +91,18 @@
                   Sector type is required
                 </div>
               </div>
+
+              <div *ngIf="sectorsForType.length > 0" class="form-group">
+                <input type="text" placeholder="Search sector" name="otherCriteria" id="otherCriteria" maxlength="25"
+                [(ngModel)]="otherCriteria" #otherSectorCriteria="ngModel" (input)="filterOtherSectors()"
+                onkeypress="return event.keyCode != 13;" />
+              </div>
+
             </form>
 
             <div>
-              <table *ngIf="sectorsForType.length > 0" class="table table-bordered">
-                <tr *ngFor="let sector of sectorsForType">
+              <table *ngIf="filteredSectorsForType.length > 0" class="table table-bordered">
+                <tr *ngFor="let sector of filteredSectorsForType">
                   <td [class.disable]="checkIfSectorMapped(sector.id)">
                     <span class="float-left">
                       {{sector.sectorName}}<br />
@@ -107,8 +114,11 @@
                   </td>
                 </tr>
               </table>
-              <span *ngIf="sectorsForType.length == 0" class="text-info">
+              <span *ngIf="filteredSectorsForType.length == 0 && isLoadingSectorsForType == false" class="text-info">
                 No sectors to show
+              </span>
+              <span *ngIf="isLoadingSectorsForType" class="text-info">
+                Wait loading...
               </span>
             </div>
           </div>

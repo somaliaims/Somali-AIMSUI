@@ -20,6 +20,7 @@ export class EnvelopeComponent implements OnInit {
   currenciesList: any = [];
   exRatesList: any = [];
   isError: boolean = false;
+  isLoading: boolean = true;
   errorMessage: string = '';
   selectedCurrency: string = null;
   defaultCurrency: string = null;
@@ -87,6 +88,7 @@ export class EnvelopeComponent implements OnInit {
             this.checkIfFundsAllocationNormal();
           }
         }
+        this.isLoading = false;
       }
     )
   }
