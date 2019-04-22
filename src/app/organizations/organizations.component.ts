@@ -10,7 +10,8 @@ import { SecurityHelperService } from '../services/security-helper.service';
   styleUrls: ['./organizations.component.css']
 })
 export class OrganizationsComponent implements OnInit {
-  organizationsList: any = null;
+  organizationsList: any = [];
+  filteredOrganizationsList: any = [];
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
@@ -45,6 +46,7 @@ export class OrganizationsComponent implements OnInit {
         this.isLoading = false;
         if (data && data.length) {
           this.organizationsList = data;
+          this.filteredOrganizationsList = data;
         }
       },
       error => {
@@ -54,7 +56,7 @@ export class OrganizationsComponent implements OnInit {
     );
   }
 
-  searchOrganizations() {
+  /*searchOrganizations() {
     if (this.criteria != null) {
       this.isLoading = true;
       
@@ -71,6 +73,18 @@ export class OrganizationsComponent implements OnInit {
       );
     } else {
       this.organizationsList();
+    }
+  }*/
+
+  searchOrganizations() {
+    if (!this.criteria) {
+      this.filteredOrganizationsList = this.organizationsList;
+    }
+    else {
+      if (this.organizationsList.length > 0) {
+        var criteria = this.criteria.toLowerCase();
+        this.filteredOrganizationsList = this.organizationsList.filter(s => (s.organizationName.toLowerCase().indexOf(criteria) != -1));
+      }
     }
   }
 

@@ -41,6 +41,9 @@ export class AppComponent {
   logout(e) {
     this.securityService.clearLoginSession();
     this.router.navigateByUrl('/home');
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
+    
   }
 }

@@ -84,32 +84,6 @@ export class SectorsComponent implements OnInit {
     );
   }
 
-  /*searchSectors() {
-    if (this.criteria != null) {
-      this.isLoading = true;
-      
-      this.sectorService.filterSectors(this.criteria).subscribe(
-        data => {
-          this.isLoading = false;
-          if (data && data.length) {
-            this.sectorsList = data;
-            
-            if (this.model.sectorTypeId && this.model.sectorTypeId > 0) {
-              this.getSectorsForType();
-            } else {
-              this.filteredSectorsList = this.sectorsList;
-            }
-          }
-        },
-        error => {
-          this.isLoading = false;
-        }
-      );
-    } else {
-      this.sectorsList();
-    }
-  }*/
-
   searchSectors() {
     if (!this.criteria) {
       if (this.model.sectorTypeId == 0) {
