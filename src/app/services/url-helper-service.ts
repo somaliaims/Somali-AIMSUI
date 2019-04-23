@@ -159,6 +159,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteLocation + id + '/' + newId);
     }
 
+    getCustomFieldUrl() {
+        return (this.BASE_URL + urlsList.urls.customFieldsUrl);
+    }
+
+    getDeleteCustomFieldUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
+    }
+
     getSingleSectorTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getSectorType + id);
     }

@@ -67,6 +67,7 @@ import { DeleteSectorComponent } from './delete-sector/delete-sector.component';
 import { SectorMappingsComponent } from './sector-mappings/sector-mappings.component';
 import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.component';
 import { EnvelopeComponent } from './envelope/envelope.component';
+import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { EnvelopeComponent } from './envelope/envelope.component';
     SectorTypesComponent,
     ExrateSettingsComponent,
     EnvelopeComponent,
+    ManageCustomFieldsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 export const urls = {
-	baseUrl: "http://104.140.103.166:7000/api/",
-	//baseUrl: "http://localhost:60815/api/",
+	//baseUrl: "http://104.140.103.166:7000/api/",
+	baseUrl: "http://localhost:60815/api/",
 	getToken: "User/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
@@ -100,4 +100,5 @@ export const urls = {
 	getManualExchangeRates: "ExchangeRate/GetManualExchangeRates",
 	getDefaultSectors: "Sector/GetDefaultSectors",
 	envelopeUrl: "Envelope",
+	customFieldsUrl: "CustomField",
 };
