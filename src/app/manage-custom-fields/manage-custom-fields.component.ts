@@ -85,17 +85,17 @@ export class ManageCustomFieldsComponent implements OnInit {
   }
 
   setFieldTypeDisplay() {
-    var type = this.model.fieldType;
+    var type = this.model.typeId;
 
     switch(type) {
-      case 1:
-      case 2:
-      case 4:
+      case '1':
+      case '2':
+      case '4':
         this.isManyValuesDisplay = true;
         this.isTwoValuesDisplay = false;
         break;
       
-      case 3:
+      case '3':
         this.isTwoValuesDisplay = true;
         this.isManyValuesDisplay = false;
         break;
@@ -108,26 +108,25 @@ export class ManageCustomFieldsComponent implements OnInit {
   }
 
   addValue() {
-    if (this.model.optionValues.length > 0) {
-      var isValueExist = this.model.optionValues.filter(value => value.toLowerCase().trim() == this.model.newValue.toLowerCase().trim());
+      var isValueExist = this.model.optionValues.filter(v => v.value.toLowerCase().trim() == this.model.newValue.toLowerCase().trim());
       if (isValueExist.length == 0) {
         ++this.autoIncrement;
         var model = {
           id: this.autoIncrement,
           value: this.model.newValue
         };
-        this.model.values.push(this.model.newValue);
+        this.model.optionValues.push(model);
+        this.model.newValue = null;
       }
-    }
   }
 
   removeValue(e) {
     var id = e.targed.id.split('-')[1];
-    this.model.values = this.model.optionValues.filter(o => o.id != id);
+    this.model.optionValues = this.model.optionValues.filter(o => o.id != id);
   }
 
   saveCustomField(model: any) {
-    if (this.isManyValuesDisplay && this.model.values.length == 0) {
+    if (this.isManyValuesDisplay && this.model.optionValues.length == 0) {
       this.errorMessage = Messages.INVALID_OPTIONS_LIST;
       this.errorModal.openModal();
       return false;
@@ -146,7 +145,7 @@ export class ManageCustomFieldsComponent implements OnInit {
     this.isBtnDisbaled = true;
     var values = null;
     if (this.isManyValuesDisplay || this.isTwoValuesDisplay) {
-      values = JSON.stringify(this.model.values);
+      values = JSON.stringify(this.model.optionValues);
     } 
     var newModel = {
       fieldTitle: this.model.fieldTitle,

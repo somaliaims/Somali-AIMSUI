@@ -73,23 +73,27 @@
             <div *ngIf="isManyValuesDisplay" class="form-group">
               <label for="title">Enter value</label>
               <div class="input-group">
-                <input type="text" id="new-value" maxlength="20" [(ngModel)]="model.newValue" name="newValue"
-                #newValue="ngModel" />&nbsp;
+                <input class="form-control" type="text" id="new-value" maxlength="20" [(ngModel)]="model.newValue" name="newValue"
+                  #newValue="ngModel" aria-label="Enter value" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary calendar" (click)="addValue()" type="button"></button>
+                  <button class="btn btn-success" (click)="addValue()" type="button">Add value</button>
                 </div>
               </div>
             </div>
 
             <div *ngIf="isManyValuesDisplay" class="form-group">
-              <table>
-                <tr>
-                  <td></td>
+              <table class="table table-bordered" *ngIf="model.optionValues.length > 0">
+                <tr *ngFor="let val of model.optionValues">
+                  <td>{{val.value}}</td>
                   <td>
-
+                      <button id="dval-{{val.id}}" (click)="removeValue($event)"
+                      class="btn btn-danger btn-sm">
+                      <i id="idval-{{val.id}}" class="fa fa-trash"></i>
+                    </button>
                   </td>
                 </tr>
               </table>
+              <span *ngIf="model.optionValues.length == 0" class="text-info"><i>No values added yet</i></span>
             </div>
 
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>

@@ -59,8 +59,9 @@ export class CustomFieldsComponent implements OnInit {
   }
 
   displayFieldValues(json: any) {
-    if (json) {
-      return json.stringify();
+    if (json && json.length > 0) {
+      var values = json.map(v => v.value).join(',');
+      return values;
     }
     return json;
   }
