@@ -22,7 +22,7 @@
               <label for="typeId">Field type</label>
               <select class="form-control" id="typeId" [(ngModel)]="model.typeId"
                   name="typeId" #typeId="ngModel" (change)="setFieldTypeDisplay()" required>
-                  <option *ngFor="let type of fieldTypes" [value]="type.id">{{type.field}}</option>
+                  <option *ngFor="let type of fieldTypes" [value]="type.typeId">{{type.field}}</option>
                 </select>
               <div *ngIf="customFieldForm.submitted" [hidden]="typeId.valid" class="alert alert-danger">
                 Field type is required
@@ -41,7 +41,7 @@
             <div class="form-group">
               <label for="title">Active from</label>
               <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="activeFrom"
+                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="activeFromDate"
                   [(ngModel)]="model.activeFrom" [maxDate]="calendarMaxDate" ngbDatepicker #s="ngbDatepicker" required>
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>

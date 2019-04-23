@@ -42,6 +42,7 @@ export class ManageCustomFieldsComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     this.fieldTypes = Settings.customFieldTypes;
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
@@ -72,8 +73,6 @@ export class ManageCustomFieldsComponent implements OnInit {
           }
         );
       }
-
-      this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     }
 
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -151,7 +150,7 @@ export class ManageCustomFieldsComponent implements OnInit {
     } 
     var newModel = {
       fieldTitle: this.model.fieldTitle,
-      fieldType: this.model.fieldType,
+      fieldType: this.model.typeId,
       activeFrom: this.model.activeFrom,
       activeUpto: this.model.activeUpto,
       values: values

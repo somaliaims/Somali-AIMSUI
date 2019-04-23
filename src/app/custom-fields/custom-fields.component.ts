@@ -3,6 +3,7 @@ import { CustomeFieldService } from '../services/custom-field.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Router } from '@angular/router';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-custom-fields',
@@ -10,9 +11,6 @@ import { SecurityHelperService } from '../services/security-helper.service';
   styleUrls: ['./custom-fields.component.css']
 })
 export class CustomFieldsComponent implements OnInit {
-  customFields: any = [];
-  filteredCustomFields: any = [];
-  isLoading: boolean = true;
   fieldType: any = {
     1: 'Dropdown',
     2: 'Checkbox',
@@ -20,7 +18,12 @@ export class CustomFieldsComponent implements OnInit {
     4: 'List',
     5: 'Radio'
   };
+
+  customFields: any = [];
+  filteredCustomFields: any = [];
+  isLoading: boolean = true;
   permissions: any = {};
+  pagingSize: number = Settings.rowsPerPage;
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private customFieldService: CustomeFieldService, private router: Router,
@@ -51,12 +54,15 @@ export class CustomFieldsComponent implements OnInit {
     this.router.navigateByUrl('manage-custom-field');
   }
 
-  editCustomField() {
-
+  editCustomField(id: string) {
+    this.router.navigateByUrl('manage-custom-field/' + id);
   }
 
   displayFieldValues(json: any) {
-    return json.stringify();
+    if (json) {
+      return json.stringify();
+    }
+    return json;
   }
 
   getFieldType(id: number) {
