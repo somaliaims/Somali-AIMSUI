@@ -24,20 +24,20 @@ export class CustomeFieldService {
         var url = this.urlHelper.saveManualCurrencyRatesUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('Manual Currency Rates')));
+                catchError(this.storeService.handleError<any>('Custom Field')));
     }
 
     updateCustomField(model: any) {
         var url = this.urlHelper.getCurrencyUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('New Currency')));
+                catchError(this.storeService.handleError<any>('Custom Field')));
     }
 
     deleteCustomField(id: number) {
         var url = this.urlHelper.getDeleteCustomFieldUrl(id.toString());
         return this.httpClient.delete(url, httpOptions).pipe(
-            catchError(this.storeService.handleError<any>('Delete Currency')));
+            catchError(this.storeService.handleError<any>('Delete Custom Field')));
     }
 
 }

@@ -46,6 +46,7 @@ import { DeleteSectorComponent } from './delete-sector/delete-sector.component';
 import { SectorMappingsComponent } from './sector-mappings/sector-mappings.component';
 import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.component';
 import { EnvelopeComponent } from './envelope/envelope.component';
+import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -102,7 +103,8 @@ export const routes: Routes = [
   { path: 'merge-projects', component: MergeProjectsComponent },
   { path: 'merge-organizations', component: MergeOrganizationComponent},
   { path: 'exrate-settings', component: ExrateSettingsComponent },
-  { path: 'envelope', component: EnvelopeComponent}
+  { path: 'envelope', component: EnvelopeComponent},
+  { path: 'custom-fields', component: CustomFieldsComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

@@ -68,6 +68,7 @@ import { SectorMappingsComponent } from './sector-mappings/sector-mappings.compo
 import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.component';
 import { EnvelopeComponent } from './envelope/envelope.component';
 import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
+import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custo
     ExrateSettingsComponent,
     EnvelopeComponent,
     ManageCustomFieldsComponent,
+    CustomFieldsComponent,
   ],
   imports: [
     BrowserModule,

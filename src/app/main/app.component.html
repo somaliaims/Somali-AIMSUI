@@ -41,6 +41,7 @@
               <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sectors']">Sectors</a>
               <a *ngIf="permissions.canEditCurrency" class="dropdown-item" [routerLink]="['/currencies']">Currencies</a>
               <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial years</a>
+              <a *ngIf="permissions.canEditCustomFields" class="dropdown-item" [routerLink]="['/custom-fields']">Custom fields</a>
               <div class="dropdown-divider"></div>
               <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & organizations management</h5>
               <h5 *ngIf="!permissions.canManage" class="dropdown-header">User management</h5>

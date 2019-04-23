@@ -26,6 +26,7 @@ export const Settings = {
             canDoSMTPSettings: false,
             canDoIATISettings: false,
             canEditEnvelope: true,
+            canEditCustomFields: false,
         },
         manager: {
             canManage: true,
@@ -40,7 +41,8 @@ export const Settings = {
             canEditYear: true,
             canDoSMTPSettings: true,
             canDoIATISettings: true,
-            canEditEnvelope: true
+            canEditEnvelope: true,
+            canEditCustomFields: true,
         },
         superAdmin: {
             canManage: true,
@@ -55,7 +57,8 @@ export const Settings = {
             canEditYear: true,
             canDoSMTPSettings: true,
             canDoIATISettings: true,
-            canEditEnvelope: true
+            canEditEnvelope: true,
+            canEditCustomFields: true,
         },
         guest: {
             canManage: false,
@@ -70,7 +73,8 @@ export const Settings = {
             canEditYear: false,
             canDoSMTPSettings: false,
             canDoIATISettings: false,
-            canEditEnvelope: true
+            canEditEnvelope: true,
+            canEditCustomFields: false,
         }
     },
     currencies: [
