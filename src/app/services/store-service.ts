@@ -54,10 +54,6 @@ export class StoreService {
     return this.requestNumber;
   }
 
-  getCurrencyList() {
-    return Settings.currencies;
-  }
-
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       var currentRequestNo = this.getCurrentRequestId();

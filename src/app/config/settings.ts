@@ -77,24 +77,31 @@ export const Settings = {
             canEditCustomFields: false,
         }
     },
-    currencies: [
-        'EUR',
-        'USD',
-        'TL',
-        'SOS',
-        'GBP',
-        'JPY',
-        'DKK',
-        'SEK',
-        'CAD',
-        'SDR',
-        'UIA',
-        'QAR',
-        'SAR',
-        'TRY',
-        'CHF',
-        'CNY',
-        'NOK',
-        'AUD'
+    customFieldTypes: [
+        {
+            'typeId': null,
+            'field': '--Select One--'
+        },
+        {
+            'typeId': 1,
+            'field': 'Dropdown'
+        },
+        {
+            'typeId': 2,
+            'field': 'Checkbox'
+        },
+        {
+            'typeId': 3,
+            'field': 'Text'
+        },
+        {
+            'typeId': 4,
+            'field': 'List'
+        },
+        {
+            'typeId': 5,
+            'field': 'Radio'
+        },
+
     ]
 }

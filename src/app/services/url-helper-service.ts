@@ -163,6 +163,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.customFieldsUrl);
     }
 
+    getCustomFieldByIdUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
+    }
+
     getDeleteCustomFieldUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
     }

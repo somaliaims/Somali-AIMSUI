@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomeFieldService } from '../services/custom-field.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { Router } from '@angular/router';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-custom-fields',
@@ -18,11 +20,18 @@ export class CustomFieldsComponent implements OnInit {
     4: 'List',
     5: 'Radio'
   };
+  permissions: any = {};
 
   @BlockUI() blockUI: NgBlockUI;
-  constructor(private customFieldService: CustomeFieldService) { }
+  constructor(private customFieldService: CustomeFieldService, private router: Router,
+    private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditCustomFields) {
+      this.router.navigateByUrl('home');
+    }
+
     this.getCustomFields();
   }
 
@@ -38,6 +47,14 @@ export class CustomFieldsComponent implements OnInit {
     )
   }
 
+  addCustomField() {
+    this.router.navigateByUrl('manage-custom-field');
+  }
+
+  editCustomField() {
+
+  }
+
   displayFieldValues(json: any) {
     return json.stringify();
   }
@@ -45,15 +62,5 @@ export class CustomFieldsComponent implements OnInit {
   getFieldType(id: number) {
     return this.fieldType[id];
   }
-
-  /*saveCustomFields(model: any) {
-    this.customFieldService.saveCustomField(model).subscribe(
-      data => {
-        if (data) {
-
-        }
-      }
-    )
-  }*/
 
 }

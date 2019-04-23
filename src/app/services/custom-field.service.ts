@@ -19,6 +19,12 @@ export class CustomeFieldService {
         return this.httpClient.get(url, httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Custom Fields')));
     }
+
+    getCustomFieldById(id: string) {
+        var url = this.urlHelper.getCustomFieldByIdUrl(id);
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Custom Field')));
+    }
     
     saveCustomField(model: any) {
         var url = this.urlHelper.saveManualCurrencyRatesUrl();

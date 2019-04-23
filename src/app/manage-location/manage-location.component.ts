@@ -3,6 +3,7 @@ import { LocationService } from '../services/location.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-manage-location',
@@ -20,13 +21,20 @@ export class ManageLocationComponent implements OnInit {
   locationTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
+  permissions: any = {};
   model = { id: 0, location: '', latitude: 0.00, longitude: 0.00 };
 
   constructor(private locationService: LocationService, private route: ActivatedRoute,
-    private router: Router, private storeService: StoreService) {
+    private router: Router, private storeService: StoreService,
+    private securityService: SecurityHelperService) {
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditLocation) {
+      this.router.navigateByUrl('home');
+    }
+
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
