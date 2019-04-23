@@ -11,17 +11,17 @@
       </ul>
     </div>
     
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="col-sm-9 col-md-6 col-lg-5 mx-auto">
       <div class="card card-signin my-5">
         <div class="card-body">
-          <h5 class="card-title text-center">CustomField</h5>
+          <h5 class="card-title text-center">Custom field</h5>
 
           <form class="form-signin" (ngSubmit)="customFieldForm.form.valid && saveCustomField()" #customFieldForm="ngForm">
 
             <div class="form-group">
               <label for="typeId">Field type</label>
               <select class="form-control" id="typeId" [(ngModel)]="model.typeId"
-                  name="typeId" #typeId="ngModel" required>
+                  name="typeId" #typeId="ngModel" (change)="setFieldTypeDisplay()" required>
                   <option *ngFor="let type of fieldTypes" [value]="type.id">{{type.field}}</option>
                 </select>
               <div *ngIf="customFieldForm.submitted" [hidden]="typeId.valid" class="alert alert-danger">
@@ -31,8 +31,8 @@
 
             <div class="form-group">
               <label for="fieldTitle">Field title</label>
-              <input type="number" class="form-control" id="fieldTitle" [(ngModel)]="model.fieldTitle" name="fieldTitle"
-                #fieldTitle="ngModel">
+              <input type="text" class="form-control" id="fieldTitle" [(ngModel)]="model.fieldTitle" name="fieldTitle"
+                #fieldTitle="ngModel" maxlength="25" required>
               <div *ngIf="customFieldForm.submitted" [hidden]="fieldTitle.valid" class="alert alert-danger">
                 Field title is required
               </div>
@@ -60,6 +60,38 @@
               </div>
             </div>
 
+            <div *ngIf="isTwoValuesDisplay" class="form-group">
+              <label for="title">Option values</label>
+              <div class="input-group">
+                <input type="text" id="option-1" maxlength="20" [(ngModel)]="model.optionValue1" name="optionValue1"
+                #optionValue1="ngModel" />&nbsp;
+                <input type="text" id="option-2" maxlength="20" [(ngModel)]="model.optionValue2" name="optionValue2"
+                #optionValue2="ngModel" />
+              </div>
+            </div>
+
+            <div *ngIf="isManyValuesDisplay" class="form-group">
+              <label for="title">Enter value</label>
+              <div class="input-group">
+                <input type="text" id="new-value" maxlength="20" [(ngModel)]="model.newValue" name="newValue"
+                #newValue="ngModel" />&nbsp;
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="addValue()" type="button"></button>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="isManyValuesDisplay" class="form-group">
+              <table>
+                <tr>
+                  <td></td>
+                  <td>
+
+                  </td>
+                </tr>
+              </table>
+            </div>
+
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>
         </div>
@@ -67,3 +99,5 @@
     </div>
   </div>
 </div>
+
+<error-modal message={{errorMessage}}></error-modal>

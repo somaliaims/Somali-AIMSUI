@@ -27,14 +27,14 @@ export class CustomeFieldService {
     }
     
     saveCustomField(model: any) {
-        var url = this.urlHelper.saveManualCurrencyRatesUrl();
+        var url = this.urlHelper.getCustomFieldUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Custom Field')));
     }
 
     updateCustomField(model: any) {
-        var url = this.urlHelper.getCurrencyUrl();
+        var url = this.urlHelper.getCustomFieldUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Custom Field')));

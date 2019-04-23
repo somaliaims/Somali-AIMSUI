@@ -20,6 +20,8 @@ export const Messages = {
     INVALID_EXRATE_SAVE: 'You must provide some updated exchange rates to save',
     INVALID_ENVELOPE: 'The sum of all actual allocations shall not be less than total committed funds',
     NULL_VALUE: 'Value cannot be set null for ',
+    INVALID_RADIO_VALUES: 'Provide values of both options for radio button',
+    INVALID_OPTIONS_LIST: 'Provide at least one option for list/dropdown/checkbox',
     ATLEAST_PROJECT_MERGE: 'At least two projects are required for merge',
     ATLEAST_ORGANIZATION_MERGE: 'At least two organizations are required for merge',
     INVALID_PROJECT_MERGE: 'Two or more projects must be selected to complete the merge process',

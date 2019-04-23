@@ -5,6 +5,8 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { StoreService } from '../services/store-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { Messages } from '../config/messages';
 
 @Component({
   selector: 'app-manage-custom-fields',
@@ -22,12 +24,17 @@ export class ManageCustomFieldsComponent implements OnInit {
   errorMessage: string = null;
   isError: boolean = false;
   permissions: any = {};
+  isManyValuesDisplay: boolean = false;
+  isTwoValuesDisplay: boolean = false;
+  autoIncrement: number = 0;
+  calendarMaxDate: any = {};
 
-  model: any = { fieldType: null, fieldTitle: null, activeFrom: null, activeUpto: null };
+  model: any = { fieldType: null, fieldTitle: null, activeFrom: null, activeUpto: null, optionValues: [],
+    optionValue1: null, optionValue2: null, newValue: null };
 
   constructor(private customFieldService: CustomeFieldService, private route: ActivatedRoute,
     private router: Router, private storeService: StoreService,
-    private securityService: SecurityHelperService) { }
+    private securityService: SecurityHelperService, private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -39,7 +46,7 @@ export class ManageCustomFieldsComponent implements OnInit {
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit Location';
+        this.btnText = 'Edit custom field';
         this.isForEdit = true;
         this.fieldId = id;
         this.customFieldService.getCustomFieldById(id).subscribe(
@@ -47,6 +54,13 @@ export class ManageCustomFieldsComponent implements OnInit {
             this.model.fieldType = data.fieldType;
             this.model.fieldTitle = data.fieldTitle;
             this.model.values = data.values;
+            if (this.model.values.length > 0) {
+              var ids = this.model.values.map(v => v.id);
+              var id = Math.max(ids);
+              if (id) {
+                this.autoIncrement = id;
+              }
+            }
 
             var activeFrom = new Date(data.activeFrom);
             var activeUpto = new Date(data.activeUpto);
@@ -58,6 +72,8 @@ export class ManageCustomFieldsComponent implements OnInit {
           }
         );
       }
+
+      this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     }
 
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -69,10 +85,78 @@ export class ManageCustomFieldsComponent implements OnInit {
     });
   }
 
+  setFieldTypeDisplay() {
+    var type = this.model.fieldType;
+
+    switch(type) {
+      case 1:
+      case 2:
+      case 4:
+        this.isManyValuesDisplay = true;
+        this.isTwoValuesDisplay = false;
+        break;
+      
+      case 3:
+        this.isTwoValuesDisplay = true;
+        this.isManyValuesDisplay = false;
+        break;
+
+      default:
+        this.isTwoValuesDisplay = false;
+        this.isManyValuesDisplay = false;
+        break;
+    }
+  }
+
+  addValue() {
+    if (this.model.optionValues.length > 0) {
+      var isValueExist = this.model.optionValues.filter(value => value.toLowerCase().trim() == this.model.newValue.toLowerCase().trim());
+      if (isValueExist.length == 0) {
+        ++this.autoIncrement;
+        var model = {
+          id: this.autoIncrement,
+          value: this.model.newValue
+        };
+        this.model.values.push(this.model.newValue);
+      }
+    }
+  }
+
+  removeValue(e) {
+    var id = e.targed.id.split('-')[1];
+    this.model.values = this.model.optionValues.filter(o => o.id != id);
+  }
+
   saveCustomField(model: any) {
+    if (this.isManyValuesDisplay && this.model.values.length == 0) {
+      this.errorMessage = Messages.INVALID_OPTIONS_LIST;
+      this.errorModal.openModal();
+      return false;
+    } else if(this.isTwoValuesDisplay && (!this.model.optionValue1 || !this.model.optionValue2)) {
+      this.errorMessage = Messages.INVALID_RADIO_VALUES;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    this.model.activeFrom = new Date(this.model.activeFrom.year + '-' + this.model.activeFrom.month + '-' +
+      this.model.activeFrom.day);
+    this.model.activeUpto = new Date(this.model.activeUpto.year + '-' + this.model.activeUpto.month + '-' +
+      this.model.activeUpto.day);
+
     this.btnText = 'Saving...';
     this.isBtnDisbaled = true;
-    this.customFieldService.saveCustomField(model).subscribe(
+    var values = null;
+    if (this.isManyValuesDisplay || this.isTwoValuesDisplay) {
+      values = JSON.stringify(this.model.values);
+    } 
+    var newModel = {
+      fieldTitle: this.model.fieldTitle,
+      fieldType: this.model.fieldType,
+      activeFrom: this.model.activeFrom,
+      activeUpto: this.model.activeUpto,
+      values: values
+    };
+    this.customFieldService.saveCustomField(newModel).subscribe(
       data => {
         if (data) {
           this.router.navigateByUrl('custom-fields');
