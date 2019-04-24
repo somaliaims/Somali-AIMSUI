@@ -33,9 +33,9 @@ export class CustomeFieldService {
                 catchError(this.storeService.handleError<any>('Custom Field')));
     }
 
-    updateCustomField(model: any) {
-        var url = this.urlHelper.getCustomFieldUrl();
-        return this.httpClient.post(url,
+    updateCustomField(id: string, model: any) {
+        var url = this.urlHelper.getCustomFieldByIdUrl(id);
+        return this.httpClient.put(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Custom Field')));
     }

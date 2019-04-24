@@ -3,10 +3,10 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/customFields']">CustomFields List</a>
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/custom-fields']">Custom fields list</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
+          <a class="nav-link active btn-info" data-toggle="tab">Create new</a>
         </li>
       </ul>
     </div>
@@ -63,9 +63,9 @@
             <div *ngIf="isTwoValuesDisplay" class="form-group">
               <label for="title">Option values</label>
               <div class="input-group">
-                <input type="text" id="option-1" maxlength="20" [(ngModel)]="model.optionValue1" name="optionValue1"
+                <input type="text" class="form-control" placeholder="Option one" id="option-1" maxlength="20" [(ngModel)]="model.optionValue1" name="optionValue1"
                 #optionValue1="ngModel" />&nbsp;
-                <input type="text" id="option-2" maxlength="20" [(ngModel)]="model.optionValue2" name="optionValue2"
+                <input type="text" class="form-control" placeholder="Option two" id="option-2" maxlength="20" [(ngModel)]="model.optionValue2" name="optionValue2"
                 #optionValue2="ngModel" />
               </div>
             </div>
@@ -73,7 +73,7 @@
             <div *ngIf="isManyValuesDisplay" class="form-group">
               <label for="title">Enter value</label>
               <div class="input-group">
-                <input class="form-control" type="text" id="new-value" maxlength="20" [(ngModel)]="model.newValue" name="newValue"
+                <input class="form-control" type="text" id="new-value" [elFocus]="isNewValueFocus" maxlength="20" [(ngModel)]="model.newValue" name="newValue"
                   #newValue="ngModel" aria-label="Enter value" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <button class="btn btn-success" (click)="addValue()" type="button">Add value</button>

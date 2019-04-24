@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CustomeFieldService } from '../services/custom-field.service';
 import { Settings } from '../config/settings';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +28,8 @@ export class ManageCustomFieldsComponent implements OnInit {
   isTwoValuesDisplay: boolean = false;
   autoIncrement: number = 0;
   calendarMaxDate: any = {};
-
+  isNewValueFocus: boolean = false;
+  
   model: any = { fieldType: null, fieldTitle: null, activeFrom: null, activeUpto: null, optionValues: [],
     optionValue1: null, optionValue2: null, newValue: null };
 
@@ -52,11 +53,14 @@ export class ManageCustomFieldsComponent implements OnInit {
         this.fieldId = id;
         this.customFieldService.getCustomFieldById(id).subscribe(
           data => {
-            this.model.fieldType = data.fieldType;
+            this.model.typeId = data.fieldType;
             this.model.fieldTitle = data.fieldTitle;
-            this.model.values = data.values;
-            if (this.model.values.length > 0) {
-              var ids = this.model.values.map(v => v.id);
+            if (data.values) {
+              this.model.optionValues = JSON.parse(data.values);
+            }
+            
+            if (this.model.optionValues.length > 0) {
+              var ids = this.model.optionValues.map(v => v.id);
               var id = Math.max(ids);
               if (id) {
                 this.autoIncrement = id;
@@ -67,6 +71,7 @@ export class ManageCustomFieldsComponent implements OnInit {
             var activeUpto = new Date(data.activeUpto);
             this.model.activeFrom = { year: activeFrom.getFullYear(), month: (activeFrom.getMonth() + 1), day: activeFrom.getDate() };
             this.model.activeUpto = { year: activeUpto.getFullYear(), month: (activeUpto.getMonth() + 1), day: activeUpto.getDate() };
+            this.setFieldTypeDisplay();
           },
           error => {
             console.log("Request Failed: ", error);
@@ -86,16 +91,17 @@ export class ManageCustomFieldsComponent implements OnInit {
 
   setFieldTypeDisplay() {
     var type = this.model.typeId;
+    var typeId = parseInt(type);
 
-    switch(type) {
-      case '1':
-      case '2':
-      case '4':
+    switch(typeId) {
+      case 1:
+      case 2:
+      case 4:
         this.isManyValuesDisplay = true;
         this.isTwoValuesDisplay = false;
         break;
       
-      case '3':
+      case 5:
         this.isTwoValuesDisplay = true;
         this.isManyValuesDisplay = false;
         break;
@@ -108,20 +114,24 @@ export class ManageCustomFieldsComponent implements OnInit {
   }
 
   addValue() {
-      var isValueExist = this.model.optionValues.filter(v => v.value.toLowerCase().trim() == this.model.newValue.toLowerCase().trim());
-      if (isValueExist.length == 0) {
-        ++this.autoIncrement;
-        var model = {
-          id: this.autoIncrement,
-          value: this.model.newValue
-        };
-        this.model.optionValues.push(model);
-        this.model.newValue = null;
-      }
+    this.isNewValueFocus = false;
+    var isValueExist = this.model.optionValues.filter(v => v.value.toLowerCase().trim() == this.model.newValue.toLowerCase().trim());
+    if (isValueExist.length == 0) {
+      ++this.autoIncrement;
+      var model = {
+        id: this.autoIncrement,
+        value: this.model.newValue
+      };
+      this.model.optionValues.push(model);
+      this.model.newValue = null;
+    }
+    setTimeout(() => {
+      this.isNewValueFocus = true;
+    });
   }
 
   removeValue(e) {
-    var id = e.targed.id.split('-')[1];
+    var id = e.currentTarget.id.split('-')[1];
     this.model.optionValues = this.model.optionValues.filter(o => o.id != id);
   }
 
@@ -141,12 +151,22 @@ export class ManageCustomFieldsComponent implements OnInit {
     this.model.activeUpto = new Date(this.model.activeUpto.year + '-' + this.model.activeUpto.month + '-' +
       this.model.activeUpto.day);
 
-    this.btnText = 'Saving...';
     this.isBtnDisbaled = true;
     var values = null;
-    if (this.isManyValuesDisplay || this.isTwoValuesDisplay) {
+    if (this.isManyValuesDisplay) {
       values = JSON.stringify(this.model.optionValues);
-    } 
+    } else if (this.isTwoValuesDisplay) {
+      var valuesModel = [{
+        id: 1,
+        value: this.model.optionValue1, 
+      }, {
+        id: 2,
+        value: this.model.optionValue2
+      }];
+
+      values = JSON.stringify(valuesModel);
+    }
+
     var newModel = {
       fieldTitle: this.model.fieldTitle,
       fieldType: this.model.typeId,
@@ -154,27 +174,28 @@ export class ManageCustomFieldsComponent implements OnInit {
       activeUpto: this.model.activeUpto,
       values: values
     };
-    this.customFieldService.saveCustomField(newModel).subscribe(
-      data => {
-        if (data) {
-          this.router.navigateByUrl('custom-fields');
-        }
-        this.isBtnDisbaled = false;
-      }
-    );
-  }
 
-  updateCustomField(model: any) {
-    this.btnText = 'Updating...';
-    this.isBtnDisbaled = true;
-    this.customFieldService.updateCustomField(model).subscribe(
-      data => {
-        if (data) {
-          this.router.navigateByUrl('custom-fields');
+    if (this.isForEdit) {
+      this.btnText = 'Updating...';
+      this.customFieldService.updateCustomField(this.fieldId.toString(), newModel).subscribe(
+        data => {
+          if (data) {
+            this.router.navigateByUrl('custom-fields');
+          }
+          this.isBtnDisbaled = false;
         }
-        this.isBtnDisbaled = false;
-      }
-    );
+      );
+    } else {
+      this.btnText = 'Saving...';
+      this.customFieldService.saveCustomField(newModel).subscribe(
+        data => {
+          if (data) {
+            this.router.navigateByUrl('custom-fields');
+          }
+          this.isBtnDisbaled = false;
+        }
+      );
+    }
   }
 
 }

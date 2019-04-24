@@ -60,8 +60,18 @@ export class CustomFieldsComponent implements OnInit {
 
   displayFieldValues(json: any) {
     if (json && json.length > 0) {
-      var values = json.map(v => v.value).join(',');
-      return values;
+      var parsedJson = JSON.parse(json);
+      var valuesString = '';
+      if (parsedJson && parsedJson.length > 0) {
+        parsedJson.forEach(function (f) {
+          if (valuesString) {
+            valuesString += ', ' + f.value;
+          } else {
+            valuesString += f.value;
+          }
+        });
+      }
+      return valuesString;
     }
     return json;
   }
