@@ -60,8 +60,8 @@ export class ManageCustomFieldsComponent implements OnInit {
             }
             
             if (this.model.optionValues.length > 0) {
-              var ids = this.model.optionValues.map(v => v.id);
-              var id = Math.max(ids);
+              var ids = this.model.optionValues.map(v => parseInt(v.id));
+              var id = Math.max.apply(null, ids);
               if (id) {
                 this.autoIncrement = id;
               }

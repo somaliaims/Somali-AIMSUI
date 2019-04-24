@@ -1,0 +1,66 @@
+<div class="container-fluid view-area">
+
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/custom-fields']">Custom fields list</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Delete custom field</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <!--IATI Activity Box-->
+      <div class="col-md-6 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Effected projects list</h5>
+            <div *ngIf="isLoading">
+              Loading projects...
+            </div>
+            <table *ngIf="projectsList.length > 0" class="table table-bordered">
+              <tr *ngFor="let project of projectsList; let number = index">
+                <td>
+                  <span class="float-left">
+                      <span class="badge badge-info">{{number + 1}}</span> {{project.title}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+            <span *ngIf="projectsList.length == 0" class="text-info">
+              No projects to show
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--Custom fields box from AIMS-->
+      <div class="col-md-6 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <form class="form-signin" (ngSubmit)="customFieldForm.form.valid && deleteCustomField()"
+              #customFieldForm="ngForm">
+
+              <h5 class="card-title text-center">Delete confirmation</h5>
+                <div class="form-group">
+                  <p class="text-info">
+                    Please see the list of projects in case of deletion of this custom field.
+                    Please review the list, as this action cannot be undone.
+                  </p>
+                </div>
+                <button [class.disable]="isLoading" class="btn btn-lg btn-danger btn-bfieldk text-uppercase" type="submit">Delete Now</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>

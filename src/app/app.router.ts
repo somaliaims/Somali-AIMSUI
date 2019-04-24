@@ -48,6 +48,7 @@ import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.compo
 import { EnvelopeComponent } from './envelope/envelope.component';
 import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
 import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
+import { DeleteFieldComponent } from './delete-field/delete-field.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -108,6 +109,7 @@ export const routes: Routes = [
   { path: 'custom-fields', component: CustomFieldsComponent },
   { path: 'manage-custom-field', component: ManageCustomFieldsComponent },
   { path: 'manage-custom-field/:{id}', component: ManageCustomFieldsComponent, data: { isForEdit: true } },
+  { path: 'delete-field/:{id}', component: DeleteFieldComponent },
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

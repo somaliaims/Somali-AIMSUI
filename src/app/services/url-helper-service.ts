@@ -171,6 +171,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
     }
 
+    getFieldProjectsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.customFieldProjects + id);
+    }
+
     getSingleSectorTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getSectorType + id);
     }

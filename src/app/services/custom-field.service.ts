@@ -25,6 +25,12 @@ export class CustomeFieldService {
         return this.httpClient.get(url, httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Custom Field')));
     }
+
+    getCustomFieldProjects(id: string) {
+        var url = this.urlHelper.getFieldProjectsUrl(id);
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Custom Field Projects')));
+    }
     
     saveCustomField(model: any) {
         var url = this.urlHelper.getCustomFieldUrl();

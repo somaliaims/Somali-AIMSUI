@@ -69,6 +69,7 @@ import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.compo
 import { EnvelopeComponent } from './envelope/envelope.component';
 import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
 import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
+import { DeleteFieldComponent } from './delete-field/delete-field.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +130,7 @@ import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
     EnvelopeComponent,
     ManageCustomFieldsComponent,
     CustomFieldsComponent,
+    DeleteFieldComponent,
   ],
   imports: [
     BrowserModule,

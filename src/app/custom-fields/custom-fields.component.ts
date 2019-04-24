@@ -23,6 +23,7 @@ export class CustomFieldsComponent implements OnInit {
   filteredCustomFields: any = [];
   isLoading: boolean = true;
   permissions: any = {};
+  criteria: string = null;
   pagingSize: number = Settings.rowsPerPage;
 
   @BlockUI() blockUI: NgBlockUI;
@@ -43,11 +44,19 @@ export class CustomFieldsComponent implements OnInit {
       data => {
         if (data) {
           this.customFields = data;
-        this.filteredCustomFields = data;
+          this.filteredCustomFields = data;
         }
         this.isLoading = false;
       }
     )
+  }
+
+  searchFields() {
+    if (!this.criteria) {
+      this.filteredCustomFields = this.customFields;
+    } else {
+      this.filteredCustomFields = this.customFields.filter(c => c.fieldTitle.trim().toLowerCase().indexOf(this.criteria.toLowerCase()) != -1);
+    }
   }
 
   addCustomField() {
@@ -56,6 +65,10 @@ export class CustomFieldsComponent implements OnInit {
 
   editCustomField(id: string) {
     this.router.navigateByUrl('manage-custom-field/' + id);
+  }
+
+  deleteCustomField(id: string) {
+    this.router.navigateByUrl('delete-field/' + id);
   }
 
   displayFieldValues(json: any) {

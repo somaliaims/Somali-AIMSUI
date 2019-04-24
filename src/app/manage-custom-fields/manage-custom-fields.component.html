@@ -74,7 +74,7 @@
               <label for="title">Enter value</label>
               <div class="input-group">
                 <input class="form-control" type="text" id="new-value" [elFocus]="isNewValueFocus" maxlength="20" [(ngModel)]="model.newValue" name="newValue"
-                  #newValue="ngModel" aria-label="Enter value" aria-describedby="basic-addon2">
+                  #newValue="ngModel" aria-label="Enter value" onkeypress="return event.keyCode != 13;" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <button class="btn btn-success" (click)="addValue()" type="button">Add value</button>
                 </div>
