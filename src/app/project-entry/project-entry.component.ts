@@ -110,6 +110,7 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectDisbursementsList: any = [];
   currentProjectFieldsList: any = [];
   exchangeRatesList: any = [];
+  projectFields: any = [];
 
   viewProjectLocations: any = [];
   viewProjectSectors: any = [];
@@ -359,8 +360,9 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           var fields = data;
-          fields.forEach(field => field.values ? JSON.parse(field.values) : []);
-          console.log(fields);
+          fields.forEach(function (field) {
+            field.values = field.values ? JSON.parse(field.values) : [];
+          });
           this.customFieldsList = fields;
         }
       }
@@ -1141,6 +1143,15 @@ export class ProjectEntryComponent implements OnInit {
         this.errorModal.openModal();
       }
     )
+  }
+
+  selectFieldValue(fieldType: any, id: number, fieldId: number) {
+    var result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values).filter(v => v.id == id);
+    
+  }
+
+  saveProjectFields() {
+
   }
 
   deleteProjectSector(e) {

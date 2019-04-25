@@ -1244,7 +1244,7 @@
               </tr>
               <tr>
                 <td *ngFor="let val of field.values">
-                  <input type="radio" name="rd-{{field.id}}" value="{{val.id}}" />&nbsp;{{val.value}}
+                  <input type="radio" name="rd-options" id="rd-{{val.id}}" value="{{val.id}}" (click)="selectFieldValue(field.fieldType, val.id, field.id)" />&nbsp;{{val.value}}
                 </td>
               </tr>
             </table>
@@ -1275,6 +1275,11 @@
               <label>{{field.fieldTitle}}</label>
               <input class="form-control" type="text" id="txt-{{fieldId}}" />
             </div>
+
+            <span class="float-right">
+              <button class="btn btn-info btn-lg btn-block text-uppercase" (click)="saveProjectFields()"
+                  type="button">Save Fields</button>
+            </span>
           </div>
         </div>
       </div>
