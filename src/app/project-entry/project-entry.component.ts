@@ -21,6 +21,8 @@ import { CurrencyService } from '../services/currency.service';
 import { Organization } from '../models/organization-model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { CustomeFieldService } from '../services/custom-field.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-project-entry',
@@ -99,12 +101,14 @@ export class ProjectEntryComponent implements OnInit {
   locationsList: any = [];
   mappedSectorsList: any = [];
   organizationsList: any = [];
+  customFieldsList: any = [];
   currentProjectSectorsList: any = [];
   currentProjectLocationsList: any = [];
   currentProjectDocumentsList: any = [];
   currentProjectFundersList: any = [];
   currentProjectImplementersList: any = [];
   currentProjectDisbursementsList: any = [];
+  currentProjectFieldsList: any = [];
   exchangeRatesList: any = [];
 
   viewProjectLocations: any = [];
@@ -114,10 +118,12 @@ export class ProjectEntryComponent implements OnInit {
   viewProjectImplementers: any = [];
   viewParticipatingOrganizations: any = [];
   viewProjectDisbursements: any = [];
+  viewProjectFields: any = [];
   yearsList: any = [];
   endingYearsList: any = [];
   sectorMappings: any = [];
   defaultSectorsList: any = [];
+  fieldTypes: any = Settings.customFieldTypes;
 
   monthsList: any = [
     { key: 'January', value: 1 },
@@ -141,6 +147,7 @@ export class ProjectEntryComponent implements OnInit {
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
   disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0 };
+  fieldModel = { projectId: 0, fieldId: 0, values: [] };
 
   displayTabs: any = [
     { visible: true, identity: 'project' },
@@ -165,7 +172,8 @@ export class ProjectEntryComponent implements OnInit {
     private projectInfoModal: ProjectInfoModalComponent,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private errorModal: ErrorModalComponent,
-    private currencyService: CurrencyService) { }
+    private currencyService: CurrencyService,
+    private customFieldService: CustomeFieldService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -258,6 +266,7 @@ export class ProjectEntryComponent implements OnInit {
     this.loadLocationsList();
     this.loadOrganizationsList();
     this.loadDefaultCurrency();
+    this.loadActiveCustomFields();
   }
 
   loadIATIProjectsForIds(modelArr: any) {
@@ -343,6 +352,19 @@ export class ProjectEntryComponent implements OnInit {
         console.log("Request Failed: ", error);
       }
     );
+  }
+
+  loadActiveCustomFields() {
+    this.customFieldService.getActiveCustomFields().subscribe(
+      data => {
+        if (data) {
+          var fields = data;
+          fields.forEach(field => field.values ? JSON.parse(field.values) : []);
+          console.log(fields);
+          this.customFieldsList = fields;
+        }
+      }
+    )
   }
 
   enterProjectTitleAIMS(e) {
@@ -789,6 +811,10 @@ export class ProjectEntryComponent implements OnInit {
 
           if (data.disbursements && data.disbursements.length > 0) {
             this.currentProjectDisbursementsList = data.disbursements;
+          }
+
+          if (data.customFields && data.customFields.length > 0) {
+            this.currentProjectFieldsList = data.customFields;
           }
         }
       }
@@ -1754,6 +1780,11 @@ export class ProjectEntryComponent implements OnInit {
   calculateProjectDisbursement() {
     var amountsList = this.currentProjectDisbursementsList.map(d => parseInt(d.amount));
     return amountsList.reduce(this.storeService.sumValues, 0);
+  }
+
+  checkFieldType(typeId: number) {
+    var result = this.fieldTypes.filter(f => f.typeId == typeId).map(f => f.field);
+    return result;
   }
 
   /*Reset form states*/

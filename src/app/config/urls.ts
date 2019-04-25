@@ -101,5 +101,6 @@ export const urls = {
 	getDefaultSectors: "Sector/GetDefaultSectors",
 	envelopeUrl: "Envelope",
 	customFieldsUrl: "CustomField",
+	activeCustomFieldsUrl: "CustomField/GetActive",
 	customFieldProjects: "Project/GetCustomFieldProjects/"
 };

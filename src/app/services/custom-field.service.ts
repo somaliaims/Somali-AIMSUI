@@ -26,6 +26,12 @@ export class CustomeFieldService {
             catchError(this.storeService.handleError<any>('Custom Field')));
     }
 
+    getActiveCustomFields() {
+        var url = this.urlHelper.getActiveCustomFieldsUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Custom Fields')));
+    }
+
     getCustomFieldProjects(id: string) {
         var url = this.urlHelper.getFieldProjectsUrl(id);
         return this.httpClient.get(url, httpOptions).pipe(

@@ -5,9 +5,9 @@
 
       <div class="col-md-12">
         <ul class="nav nav-tabs">
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">New project selection</a>
-          </li>
+          </li>-->
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#"
               class="nav-link text-info" (click)="showProjects()" data-toggle="tab">Name/Description</a>
@@ -36,13 +36,17 @@
             <a [ngClass]="{'btn-info': currentTab == 'disbursement', 'text-info': currentTab != 'disbursement'}"
               href="#" class="nav-link text-info" (click)="showDisbursements()" data-toggle="tab">Disbursements</a>
           </li>
+
           <li *ngIf="activeProjectId != 0" class="nav-item">
-            
-            <!--<a [ngClass]="{'btn-info': currentTab == 'customFields', 'text-info': currentTab != 'customFields'}"
-              href="#" class="nav-link text-info" (click)="showCustomFields()" data-toggle="tab">Custom fields</a>-->
+            <a [ngClass]="{'btn-info': currentTab == 'customFields', 'text-info': currentTab != 'customFields'}"
+              href="#" class="nav-link text-info" (click)="showCustomFields()" data-toggle="tab">Custom fields</a>
+          </li>
+
+          <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'finish', 'text-info': currentTab != 'finish'}"
               href="#" class="nav-link text-info" (click)="showFinishProject()" data-toggle="tab">Finish Project</a>
           </li>
+
         </ul>
       </div>
     </div>
@@ -1221,6 +1225,68 @@
 
     </div>
 
+    <!--Custom fields tab for projects-->
+    <div *ngIf="currentTab == 'customFields'" class="row">
+      <div class="col-md-6 margin-top-10">
+        <div *ngFor="let field of customFieldsList" class="card margin-top-10">
+          <div class="card-header bg-info text-white">
+              <h5>{{field.fieldTitle}}</h5>
+          </div>
+          <div class="card-body">
+            <select *ngIf="checkFieldType(field.fieldType) == 'Dropdown'" name="drp-{{field.id}}">
+              <option value="null">--Select One--</option>
+              <option *ngFor="let val of field.values" value="val.id">{{val.value}}</option>
+            </select>
+
+            <table *ngIf="checkFieldType(field.fieldType) == 'Radio'" class="table">
+              <tr>
+                <th>{{field.fieldTitle}}</th>
+              </tr>
+              <tr>
+                <td *ngFor="let val of field.values">
+                  <input type="radio" name="rd-{{field.id}}" value="{{val.id}}" />&nbsp;{{val.value}}
+                </td>
+              </tr>
+            </table>
+
+            <table *ngIf="checkFieldType(field.fieldType) == 'List'" class="table">
+              <tr>
+                <th>{{field.fieldTitle}}</th>
+              </tr>
+              <tr>
+                <td *ngFor="let val of field.values">
+                  <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" />&nbsp;{{val.value}}
+                </td>
+              </tr>
+            </table>
+
+            <table *ngIf="checkFieldType(field.fieldType) == 'Checkbox'" class="table">
+                <tr>
+                  <th>{{field.fieldTitle}}</th>
+                </tr>
+                <tr>
+                  <td *ngFor="let val of field.values">
+                    <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" />&nbsp;{{val.value}}
+                  </td>
+                </tr>
+              </table>
+
+            <div *ngIf="checkFieldType(field.fieldType) == 'text'" class="form-group">
+              <label>{{field.fieldTitle}}</label>
+              <input class="form-control" type="text" id="txt-{{fieldId}}" />
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="col-md-6 margin-top-10">
+          <div class="card">
+            <div class="card-header bg-info text-white">Project fields</div>
+          </div>
+       </div>
+    </div>
+    
+    <!--End of data entry tab-->
+    <!--End of Custom fields Tab-->
 
     <!--Finish tab for projects-->
     <div *ngIf="currentTab == 'finish'" class="row">

@@ -167,6 +167,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
     }
 
+    getActiveCustomFieldsUrl() {
+        return (this.BASE_URL + urlsList.urls.activeCustomFieldsUrl);
+    }
+
     getDeleteCustomFieldUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
     }
