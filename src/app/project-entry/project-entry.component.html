@@ -1229,7 +1229,7 @@
     <div *ngIf="currentTab == 'customFields'" class="row">
       <div class="col-md-6 margin-top-10">
         <div *ngFor="let field of customFieldsList" class="card margin-top-10">
-          <div class="card-header bg-info text-white">
+          <div class="card-header bg-default">
               <h5>{{field.fieldTitle}}</h5>
           </div>
           <div class="card-body">
@@ -1277,14 +1277,14 @@
             </div>
 
             <span class="float-right">
-              <button class="btn btn-info btn-lg btn-block text-uppercase" (click)="saveProjectFields()"
+              <button class="btn btn-info btn-lg btn-block text-uppercase" (click)="saveProjectFields(field.id)"
                   type="button">Save Fields</button>
             </span>
           </div>
         </div>
       </div>
        <div class="col-md-6 margin-top-10">
-          <div class="card">
+          <div class="card margin-top-10">
             <div class="card-header bg-info text-white">Project fields</div>
           </div>
        </div>

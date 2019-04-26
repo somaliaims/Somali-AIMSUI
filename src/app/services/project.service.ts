@@ -193,6 +193,16 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('Delete Project Document')));
     }
 
+
+    //Project custom fields functions
+    saveProjectCustomField(model: any) {
+      var url  = this.urlHelper.addProjectCustomFieldUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Save Project Custom Field')));
+    }
+
+    //project functions
     extractProjectsByIds(model: any) {
       var url = this.urlHelper.extractAIMSProjectsByIds();
       return this.httpClient.post(url,

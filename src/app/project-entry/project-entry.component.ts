@@ -110,7 +110,7 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectDisbursementsList: any = [];
   currentProjectFieldsList: any = [];
   exchangeRatesList: any = [];
-  projectFields: any = [];
+  selectedProjectFields: any = [];
 
   viewProjectLocations: any = [];
   viewProjectSectors: any = [];
@@ -1146,12 +1146,47 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   selectFieldValue(fieldType: any, id: number, fieldId: number) {
-    var result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values).filter(v => v.id == id);
-    
+    var result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) == id)
+    if (result.length > 0) {
+      var values: any = [];
+      result.forEach(r => values.push({ id: r.id, value: r.value }));
+
+      var fieldModel = {
+        id: id,
+        customFieldId: fieldId,
+        fieldType: fieldType,
+        values: values
+      }
+      this.selectedProjectFields.push(fieldModel);
+    }
   }
 
-  saveProjectFields() {
+  saveProjectFields(id: number) {
+    var field = this.selectedProjectFields.filter(f => f.customFieldId == id);
+    if (field.length > 0) {
+      if (field[0].values.length == 0) {
+        this.errorMessage = Messages.INVALID_OPTION_VALUE;
+        this.errorModal.openModal();
+        return false;
+      }
 
+      var saveFieldModel = {
+        projectId: this.activeProjectId,
+        customFieldId: id,
+        fieldType: field[0].fieldType,
+        values: JSON.stringify(field[0].values)
+      }
+
+      this.blockUI.start('Saving...');
+      this.projectService.saveProjectCustomField(saveFieldModel).subscribe(
+        data => {
+          if (data) {
+
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
   }
 
   deleteProjectSector(e) {

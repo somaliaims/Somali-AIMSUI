@@ -22,6 +22,7 @@ export const Messages = {
     NULL_VALUE: 'Value cannot be set null for ',
     INVALID_RADIO_VALUES: 'Provide values of both options for radio button',
     INVALID_OPTIONS_LIST: 'Provide at least one option for list/dropdown/checkbox',
+    INVALID_OPTION_VALUE: 'You must provide at least single value for the selected field',
     ATLEAST_PROJECT_MERGE: 'At least two projects are required for merge',
     ATLEAST_ORGANIZATION_MERGE: 'At least two organizations are required for merge',
     INVALID_PROJECT_MERGE: 'Two or more projects must be selected to complete the merge process',
