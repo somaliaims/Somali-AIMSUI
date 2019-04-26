@@ -109,7 +109,7 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectImplementersList: any = [];
   currentProjectDisbursementsList: any = [];
   currentProjectFieldsList: any = [];
-  currentSelectFieldValues: any = [];
+  currentSelectedFieldValues: any = [];
   exchangeRatesList: any = [];
   selectedProjectFields: any = [];
 
@@ -1695,9 +1695,9 @@ export class ProjectEntryComponent implements OnInit {
     if (result.length > 0) {
       var values: any = [];
 
-      if ((el || {}).type === 'checkbox') {
-        if (!el.checked) {
-          result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) != id);
+      if (el.currentTarget.type === 'checkbox') {
+        if (!el.currentTarget.checked) {
+          result = this.currentSelectedFieldValues.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) != id);
         }
       }
 
@@ -1710,14 +1710,27 @@ export class ProjectEntryComponent implements OnInit {
         values: values
       }
       
-      if (this.currentSelectFieldValues.length > 0) {
-        var isExists = this.currentSelectFieldValues.filter(f => f.fieldType == fieldType);
+      if (this.currentSelectedFieldValues.length > 0) {
+        var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
         if (isExists.length > 0) {
           var values = isExists[0].values;
-
+          var isValueExists = values.filter(v => v.id == id);
+          if (isValueExists.length == 0) {
+            isExists[0].values.push({
+              id: id,
+              value: result[0].value
+            });
+          } 
         }
+      } else {
+        var newField = {
+          fieldId: fieldId,
+          values: [
+            { id: result[0].id, value: result[0].value }
+          ]
+        };
+        this.currentSelectedFieldValues.push(newField);
       }
-
       this.selectedProjectFields.push(fieldModel);
     }
   }
@@ -1731,11 +1744,13 @@ export class ProjectEntryComponent implements OnInit {
         return false;
       }
 
+      var selectedField = this.currentSelectedFieldValues.filter(f => f.fieldId == id);
+      var stringifiedJson = JSON.stringify(selectedField[0].values);
       var saveFieldModel = {
         projectId: this.activeProjectId,
         customFieldId: id,
         fieldType: field[0].fieldType,
-        values: JSON.stringify(field[0].values)
+        values: stringifiedJson
       }
 
       this.blockUI.start('Saving...');
