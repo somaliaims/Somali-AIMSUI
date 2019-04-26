@@ -109,6 +109,7 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectImplementersList: any = [];
   currentProjectDisbursementsList: any = [];
   currentProjectFieldsList: any = [];
+  currentSelectFieldValues: any = [];
   exchangeRatesList: any = [];
   selectedProjectFields: any = [];
 
@@ -140,6 +141,14 @@ export class ProjectEntryComponent implements OnInit {
     { key: 'November', value: 11 },
     { key: 'December', value: 12 }
   ];
+
+  fieldType: any = {
+    1: 'Dropdown',
+    2: 'Checkbox',
+    3: 'Text',
+    4: 'List',
+    5: 'Radio'
+  };
 
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
@@ -778,7 +787,7 @@ export class ProjectEntryComponent implements OnInit {
   loadProjectData(id: number) {
     this.projectService.getProjectProfileReport(id.toString()).subscribe(
       result => {
-        if (result.projectProfile) {
+        if (result && result.projectProfile) {
           var data = result.projectProfile;
           //Setting project data
           this.model.title = data.title;
@@ -1143,50 +1152,6 @@ export class ProjectEntryComponent implements OnInit {
         this.errorModal.openModal();
       }
     )
-  }
-
-  selectFieldValue(fieldType: any, id: number, fieldId: number) {
-    var result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) == id)
-    if (result.length > 0) {
-      var values: any = [];
-      result.forEach(r => values.push({ id: r.id, value: r.value }));
-
-      var fieldModel = {
-        id: id,
-        customFieldId: fieldId,
-        fieldType: fieldType,
-        values: values
-      }
-      this.selectedProjectFields.push(fieldModel);
-    }
-  }
-
-  saveProjectFields(id: number) {
-    var field = this.selectedProjectFields.filter(f => f.customFieldId == id);
-    if (field.length > 0) {
-      if (field[0].values.length == 0) {
-        this.errorMessage = Messages.INVALID_OPTION_VALUE;
-        this.errorModal.openModal();
-        return false;
-      }
-
-      var saveFieldModel = {
-        projectId: this.activeProjectId,
-        customFieldId: id,
-        fieldType: field[0].fieldType,
-        values: JSON.stringify(field[0].values)
-      }
-
-      this.blockUI.start('Saving...');
-      this.projectService.saveProjectCustomField(saveFieldModel).subscribe(
-        data => {
-          if (data) {
-
-          }
-          this.blockUI.stop();
-        }
-      );
-    }
   }
 
   deleteProjectSector(e) {
@@ -1724,6 +1689,103 @@ export class ProjectEntryComponent implements OnInit {
   }
   /**End of managing project documents */
 
+  /*Managing project custom fields*/
+  selectFieldValue(fieldType: any, id: number, fieldId: number, el: any) {
+    var result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) == id)
+    if (result.length > 0) {
+      var values: any = [];
+
+      if ((el || {}).type === 'checkbox') {
+        if (!el.checked) {
+          result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) != id);
+        }
+      }
+
+      result.forEach(r => values.push({ id: r.id, value: r.value }));
+
+      var fieldModel = {
+        id: id,
+        customFieldId: fieldId,
+        fieldType: fieldType,
+        values: values
+      }
+      
+      if (this.currentSelectFieldValues.length > 0) {
+        var isExists = this.currentSelectFieldValues.filter(f => f.fieldType == fieldType);
+        if (isExists.length > 0) {
+          var values = isExists[0].values;
+
+        }
+      }
+
+      this.selectedProjectFields.push(fieldModel);
+    }
+  }
+
+  saveProjectFields(id: number) {
+    var field = this.selectedProjectFields.filter(f => f.customFieldId == id);
+    if (field.length > 0) {
+      if (field[0].values.length == 0) {
+        this.errorMessage = Messages.INVALID_OPTION_VALUE;
+        this.errorModal.openModal();
+        return false;
+      }
+
+      var saveFieldModel = {
+        projectId: this.activeProjectId,
+        customFieldId: id,
+        fieldType: field[0].fieldType,
+        values: JSON.stringify(field[0].values)
+      }
+
+      this.blockUI.start('Saving...');
+      this.projectService.saveProjectCustomField(saveFieldModel).subscribe(
+        data => {
+          if (data) {
+            var isFieldExists = this.currentProjectFieldsList.filter(f => f.customFieldId == id);
+            if (isFieldExists.length > 0) {
+              isFieldExists[0].values = field[0].values;
+            } else {
+              var customField = this.customFieldsList.filter(c => c.id == id);
+              var fieldTitle = '';
+              if (customField.length > 0) {
+                fieldTitle = customField[0].fieldTitle;
+              }
+
+              this.currentProjectFieldsList.push({
+                customFieldId: id,
+                fieldTitle: fieldTitle,
+                fieldType: field[0].fieldType,
+                values: field[0].values,
+                projectId: this.activeProjectId
+              });
+            }
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+  
+  deleteProjectField(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var fieldId = arr[2];
+
+    this.blockUI.start('Removing Field...');
+    this.projectService.deleteProjectCustomField(projectId, fieldId).subscribe(
+      data => {
+        if (data) {
+          this.currentProjectFieldsList = this.currentProjectFieldsList.filter(c => c.customFieldId != fieldId);
+        }
+        this.blockUI.stop();
+      },
+      error => {
+        this.blockUI.stop();
+      }
+    )
+  }
+
   calculateSectorPercentage() {
     var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
@@ -1831,6 +1893,35 @@ export class ProjectEntryComponent implements OnInit {
   checkFieldType(typeId: number) {
     var result = this.fieldTypes.filter(f => f.typeId == typeId).map(f => f.field);
     return result;
+  }
+
+  displayFieldValues(json: any) {
+    if (json && json.length > 0) {
+      var parsedJson = null
+      var valuesString = '';
+
+      try {
+        parsedJson = (JSON.parse(json));
+      } catch (e) {
+        parsedJson = json;
+      }
+      
+      if (parsedJson && parsedJson.length > 0) {
+        parsedJson.forEach(function (f) {
+          if (valuesString) {
+            valuesString += ', ' + f.value;
+          } else {
+            valuesString += f.value;
+          }
+        });
+      }
+      return valuesString;
+    }
+    return json;
+  }
+
+  getFieldType(id: number) {
+    return this.fieldType[id];
   }
 
   /*Reset form states*/

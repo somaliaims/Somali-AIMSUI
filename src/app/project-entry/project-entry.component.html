@@ -1244,7 +1244,7 @@
               </tr>
               <tr>
                 <td *ngFor="let val of field.values">
-                  <input type="radio" name="rd-options" id="rd-{{val.id}}" value="{{val.id}}" (click)="selectFieldValue(field.fieldType, val.id, field.id)" />&nbsp;{{val.value}}
+                  <input type="radio" name="rd-options" id="rd-{{val.id}}" value="{{val.id}}" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
                 </td>
               </tr>
             </table>
@@ -1255,7 +1255,7 @@
               </tr>
               <tr>
                 <td *ngFor="let val of field.values">
-                  <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" />&nbsp;{{val.value}}
+                  <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
                 </td>
               </tr>
             </table>
@@ -1286,6 +1286,27 @@
        <div class="col-md-6 margin-top-10">
           <div class="card margin-top-10">
             <div class="card-header bg-info text-white">Project fields</div>
+            <div class="card-body">
+              <table class="table table-bordered">
+                <tr>
+                  <th>Field title</th>
+                  <th>Type</th>
+                  <th>Values</th>
+                  <th>Actions</th>
+                </tr>
+                <tr *ngFor="let field of currentProjectFieldsList">
+                  <td>{{field.fieldTitle}}</td>
+                  <td>{{getFieldType(field.fieldType)}}</td>
+                  <td>{{displayFieldValues(field.values)}}</td>
+                  <td>
+                    <button id="ffield-{{activeProjectId}}-{{field.customFieldId}}" (click)="deleteProjectField($event)"
+                    class="btn btn-danger btn-sm">
+                    <i id="ifield-{{activeProjectId}}-{{field.customFieldId}}" class="fa fa-trash"></i>
+                  </button>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
        </div>
     </div>

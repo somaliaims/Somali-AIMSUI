@@ -202,6 +202,12 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('Save Project Custom Field')));
     }
 
+    deleteProjectCustomField(projectId: string, customFieldId: string) {
+      var url  = this.urlHelper.getDeleteProjectFieldUrl(projectId, customFieldId);
+        return this.httpClient.delete(url, httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Delete Project Field')));
+    }
+
     //project functions
     extractProjectsByIds(model: any) {
       var url = this.urlHelper.extractAIMSProjectsByIds();

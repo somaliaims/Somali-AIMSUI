@@ -103,5 +103,5 @@ export const Settings = {
             'field': 'Radio'
         },
 
-    ]
+    ],
 }

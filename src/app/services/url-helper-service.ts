@@ -175,6 +175,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
     }
 
+    getDeleteProjectFieldUrl(projectId: string, customFieldId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectField + projectId + '/' + customFieldId);
+    }
+
     getFieldProjectsUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.customFieldProjects + id);
     }
