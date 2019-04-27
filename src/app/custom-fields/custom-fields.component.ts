@@ -4,6 +4,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Router } from '@angular/router';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Settings } from '../config/settings';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-custom-fields',
@@ -28,7 +29,7 @@ export class CustomFieldsComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private customFieldService: CustomeFieldService, private router: Router,
-    private securityService: SecurityHelperService) { }
+    private securityService: SecurityHelperService, private storeService: StoreService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -72,21 +73,7 @@ export class CustomFieldsComponent implements OnInit {
   }
 
   displayFieldValues(json: any) {
-    if (json && json.length > 0) {
-      var parsedJson = JSON.parse(json);
-      var valuesString = '';
-      if (parsedJson && parsedJson.length > 0) {
-        parsedJson.forEach(function (f) {
-          if (valuesString) {
-            valuesString += ', ' + f.value;
-          } else {
-            valuesString += f.value;
-          }
-        });
-      }
-      return valuesString;
-    }
-    return json;
+    return this.storeService.parseAndDisplayJsonAsString(json);
   }
 
   getFieldType(id: number) {

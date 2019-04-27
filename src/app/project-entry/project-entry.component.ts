@@ -454,6 +454,7 @@ export class ProjectEntryComponent implements OnInit {
     this.viewProjectSectors = this.currentProjectSectorsList;
     this.viewProjectImplementers = this.currentProjectImplementersList;
     this.viewProjectDocuments = this.currentProjectDocumentsList;
+    this.viewProjectFields = this.currentProjectFieldsList;
     this.projectInfoModal.openModal();
   }
 
@@ -1725,25 +1726,7 @@ export class ProjectEntryComponent implements OnInit {
           this.currentSelectedFieldValues.push(newTextField);
         }
       }
-    } /*else if (isTypeSingle == 2) {
-      result = this.customFieldsList.filter(f => f.fieldType == fieldType && f.id == fieldId).map(f => f.values)[0].filter(v => parseInt(v.id) == id);
-      if (result.length > 0) {
-        var rdValues = [];
-        var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
-        if (isExists.length > 0) {
-          isExists[0].values[0].value = this.fieldModel.newText;
-        } else {
-          var newTextField = {
-            fieldId: fieldId,
-            fieldType: fieldType,
-            values: [
-              { id: 1, value: this.fieldModel.newText }
-            ]
-          };
-          this.currentSelectedFieldValues.push(newTextField);
-        }
-      }
-    }*/ else {
+    }  else {
       result = this.customFieldsList.filter(f => f.fieldType == fieldType && f.id == fieldId).map(f => f.values)[0].filter(v => parseInt(v.id) == id);
       if (result.length > 0) {
         var values: any = [];
@@ -1754,7 +1737,6 @@ export class ProjectEntryComponent implements OnInit {
           }
         }
 
-        //result.forEach(r => values.push({ id: r.id, value: r.value }));
         if (this.currentSelectedFieldValues.length > 0) {
           var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
           if (isExists.length > 0) {
@@ -1978,28 +1960,7 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   displayFieldValues(json: any) {
-    if (json && json.length > 0) {
-      var parsedJson = null
-      var valuesString = '';
-
-      try {
-        parsedJson = (JSON.parse(json));
-      } catch (e) {
-        parsedJson = json;
-      }
-
-      if (parsedJson && parsedJson.length > 0) {
-        parsedJson.forEach(function (f) {
-          if (valuesString) {
-            valuesString += ', ' + f.value;
-          } else {
-            valuesString += f.value;
-          }
-        });
-      }
-      return valuesString;
-    }
-    return json;
+    return this.storeService.parseAndDisplayJsonAsString(json);
   }
 
   getFieldType(id: number) {

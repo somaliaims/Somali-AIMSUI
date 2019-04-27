@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { ModalService } from '../services/modal.service';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'project-info-modal',
@@ -29,8 +30,10 @@ export class ProjectInfoModalComponent implements OnInit {
   implementers: any = [];
   @Input()
   documents: any = [];
+  @Input()
+  customFields: any = [];
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService, private storeService: StoreService) { }
 
   ngOnInit() {
   }
@@ -41,6 +44,10 @@ export class ProjectInfoModalComponent implements OnInit {
 
   closeModal() {
     this.modalService.close('project-info-modal');
+  }
+
+  displayFieldValues(json: any) {
+    return this.storeService.parseAndDisplayJsonAsString(json);
   }
 
 }

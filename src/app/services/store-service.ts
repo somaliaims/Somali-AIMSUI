@@ -115,4 +115,29 @@ export class StoreService {
     localStorage.removeItem('ratesList');
   }
 
+  parseAndDisplayJsonAsString(json: any) {
+    if (json && json.length > 0) {
+      var parsedJson = null
+      var valuesString = '';
+
+      try {
+        parsedJson = (JSON.parse(json));
+      } catch (e) {
+        parsedJson = json;
+      }
+
+      if (parsedJson && parsedJson.length > 0) {
+        parsedJson.forEach(function (f) {
+          if (valuesString) {
+            valuesString += ', ' + f.value;
+          } else {
+            valuesString += f.value;
+          }
+        });
+      }
+      return valuesString;
+    }
+    return json;
+  }
+
 }

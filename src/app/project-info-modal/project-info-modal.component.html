@@ -129,6 +129,23 @@
               </span>
             </div>
 
+            <div class="col-md-12 margin-top-10">
+              <h6 class="text-info"><b>Project custom fields</b></h6>
+              <table class="table table-stripped">
+                <tr>
+                  <th>Field name</th>
+                  <th>Value/s</th>
+                </tr>
+                <tr *ngFor="let field of customFields">
+                  <td>{{field.fieldTitle}}</td>
+                  <td>{{displayFieldValues(field.values)}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="customFields.length == 0">
+                <i>No custom fields found</i>
+              </span>
+            </div>
+
           </div>
         </div>
       </div>
