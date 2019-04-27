@@ -146,9 +146,15 @@ export class ProjectEntryComponent implements OnInit {
     1: 'Dropdown',
     2: 'Checkbox',
     3: 'Text',
-    4: 'List',
-    5: 'Radio'
+    4: 'Radio'
   };
+
+  fieldTypeConstants : any = {
+    'Dropdown': 1,
+    'Checkbox': 2,
+    'Text': 3,
+    'Radio': 4
+  }
 
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
@@ -1692,7 +1698,7 @@ export class ProjectEntryComponent implements OnInit {
   /**End of managing project documents */
 
   /*Managing project custom fields*/
-  selectFieldValue(fieldType: any, id: number, fieldId: number, el: any) {
+  selectFieldValue(fieldType: any, id: number, fieldId: number, el: any, isTypeText = false) {
     if (id == -1) {
       id = el.target.value;
     }
@@ -1701,44 +1707,82 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    var result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) == id)
-    if (result.length > 0) {
-      var values: any = [];
-
-      if (el.currentTarget.type === 'checkbox') {
-        if (!el.currentTarget.checked) {
-          result = this.currentSelectedFieldValues.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) != id);
-        }
-      }
-
-      result.forEach(r => values.push({ id: r.id, value: r.value }));
-      if (this.currentSelectedFieldValues.length > 0) {
+    var result = [];
+    if (isTypeText) {
+      result = this.customFieldsList.filter(f => f.fieldType == fieldType && f.id == fieldId);
+      if (result.length > 0) {
         var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
         if (isExists.length > 0) {
-          var values = isExists[0].values;
-          if (fieldType != this.fieldTypes.checkbox) {
-            values = [];
-          }
+          isExists[0].values[0].value = this.fieldModel.newText;
+        } else {
+          var newTextField = {
+            fieldId: fieldId,
+            fieldType: fieldType,
+            values: [
+              { id: 1, value: this.fieldModel.newText }
+            ]
+          };
+          this.currentSelectedFieldValues.push(newTextField);
+        }
+      }
+    } /*else if (isTypeSingle == 2) {
+      result = this.customFieldsList.filter(f => f.fieldType == fieldType && f.id == fieldId).map(f => f.values)[0].filter(v => parseInt(v.id) == id);
+      if (result.length > 0) {
+        var rdValues = [];
+        var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
+        if (isExists.length > 0) {
+          isExists[0].values[0].value = this.fieldModel.newText;
+        } else {
+          var newTextField = {
+            fieldId: fieldId,
+            fieldType: fieldType,
+            values: [
+              { id: 1, value: this.fieldModel.newText }
+            ]
+          };
+          this.currentSelectedFieldValues.push(newTextField);
+        }
+      }
+    }*/ else {
+      result = this.customFieldsList.filter(f => f.fieldType == fieldType && f.id == fieldId).map(f => f.values)[0].filter(v => parseInt(v.id) == id);
+      if (result.length > 0) {
+        var values: any = [];
 
-          var isValueExists = values.filter(v => v.id == id);
-          if (isValueExists.length == 0) {
-            isExists[0].values.push({
-              id: id,
-              value: result[0].value
-            });
+        if (el.currentTarget.type === 'checkbox') {
+          if (!el.currentTarget.checked) {
+            result = this.currentSelectedFieldValues.filter(f => f.fieldType == fieldType && f.fieldId == fieldId).map(f => f.values)[0].filter(v => parseInt(v.id) != id);
           }
         }
-      } else {
-        var newField = {
-          fieldId: fieldId,
-          fieldType: fieldType,
-          values: [
-            { id: result[0].id, value: result[0].value }
-          ]
-        };
-        this.currentSelectedFieldValues.push(newField);
+
+        //result.forEach(r => values.push({ id: r.id, value: r.value }));
+        if (this.currentSelectedFieldValues.length > 0) {
+          var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
+          if (isExists.length > 0) {
+            if (fieldType != this.fieldTypeConstants.Checkbox) {
+              isExists[0].values = [];
+            }
+
+            var isValueExists = isExists[0].values.filter(v => v.id == id);
+            if (isValueExists.length == 0) {
+              isExists[0].values.push({
+                id: id,
+                value: result[0].value
+              });
+            }
+          }
+        } else {
+          var newField = {
+            fieldId: fieldId,
+            fieldType: fieldType,
+            values: [
+              { id: result[0].id, value: result[0].value }
+            ]
+          };
+          this.currentSelectedFieldValues.push(newField);
+        }
       }
     }
+
   }
 
   saveProjectFields(id: number) {

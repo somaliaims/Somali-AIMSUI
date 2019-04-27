@@ -1244,7 +1244,7 @@
               </tr>
               <tr>
                 <td *ngFor="let val of field.values">
-                  <input type="radio" name="rd-options" id="rd-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
+                  <input type="radio" name="rd-options-{{field.id}}" id="rd-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
                 </td>
               </tr>
             </table>
@@ -1260,9 +1260,9 @@
               </tr>
             </table>
             
-            <div *ngIf="checkFieldType(field.fieldType) == 'text'" class="form-group">
+            <div *ngIf="checkFieldType(field.fieldType) == 'Text'" class="form-group">
               <label>{{field.fieldTitle}}</label>
-              <input class="form-control" type="text" id="txt-{{fieldId}}" [(ngModel)]="field.newText" />
+              <input class="form-control" type="text" maxlength="100" id="txt-{{fieldId}}" [(ngModel)]="fieldModel.newText" (blur)="selectFieldValue(field.fieldType, 1, field.id, $event, true)" />
             </div>
 
             <span class="float-right margin-top-10">
