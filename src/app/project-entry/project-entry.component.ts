@@ -1691,6 +1691,14 @@ export class ProjectEntryComponent implements OnInit {
 
   /*Managing project custom fields*/
   selectFieldValue(fieldType: any, id: number, fieldId: number, el: any) {
+    if (id == -1) {
+      id = el.target.value;
+    }
+
+    if (!id) {
+      return false;
+    }
+
     var result = this.customFieldsList.filter(f => f.fieldType == fieldType).map(f => f.values)[0].filter(v => parseInt(v.id) == id)
     if (result.length > 0) {
       var values: any = [];
@@ -1714,6 +1722,10 @@ export class ProjectEntryComponent implements OnInit {
         var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
         if (isExists.length > 0) {
           var values = isExists[0].values;
+          if (fieldType != this.fieldTypes.checkbox) {
+            values = [];
+          }
+          
           var isValueExists = values.filter(v => v.id == id);
           if (isValueExists.length == 0) {
             isExists[0].values.push({
@@ -1736,20 +1748,20 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   saveProjectFields(id: number) {
-    var field = this.selectedProjectFields.filter(f => f.customFieldId == id);
-    if (field.length > 0) {
-      if (field[0].values.length == 0) {
+    var selectedField = this.currentSelectedFieldValues.filter(f => f.fieldId == id);
+    if (selectedField.length > 0) {
+      if (selectedField[0].values.length == 0) {
         this.errorMessage = Messages.INVALID_OPTION_VALUE;
         this.errorModal.openModal();
         return false;
       }
 
-      var selectedField = this.currentSelectedFieldValues.filter(f => f.fieldId == id);
+      //var selectedField = this.currentSelectedFieldValues.filter(f => f.fieldId == id);
       var stringifiedJson = JSON.stringify(selectedField[0].values);
       var saveFieldModel = {
         projectId: this.activeProjectId,
         customFieldId: id,
-        fieldType: field[0].fieldType,
+        fieldType: selectedField[0].fieldType,
         values: stringifiedJson
       }
 
@@ -1759,7 +1771,7 @@ export class ProjectEntryComponent implements OnInit {
           if (data) {
             var isFieldExists = this.currentProjectFieldsList.filter(f => f.customFieldId == id);
             if (isFieldExists.length > 0) {
-              isFieldExists[0].values = field[0].values;
+              isFieldExists[0].values = selectedField[0].values;
             } else {
               var customField = this.customFieldsList.filter(c => c.id == id);
               var fieldTitle = '';
@@ -1770,8 +1782,8 @@ export class ProjectEntryComponent implements OnInit {
               this.currentProjectFieldsList.push({
                 customFieldId: id,
                 fieldTitle: fieldTitle,
-                fieldType: field[0].fieldType,
-                values: field[0].values,
+                fieldType: selectedField[0].fieldType,
+                values: selectedField[0].values,
                 projectId: this.activeProjectId
               });
             }

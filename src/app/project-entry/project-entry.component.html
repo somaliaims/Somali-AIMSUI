@@ -1229,13 +1229,13 @@
     <div *ngIf="currentTab == 'customFields'" class="row">
       <div class="col-md-6 margin-top-10">
         <div *ngFor="let field of customFieldsList" class="card margin-top-10">
-          <div class="card-header bg-default">
-              <h5>{{field.fieldTitle}}</h5>
+          <div class="card-header bg-info text-white">
+              <h6>{{field.fieldTitle}}</h6>
           </div>
           <div class="card-body">
-            <select *ngIf="checkFieldType(field.fieldType) == 'Dropdown'" name="drp-{{field.id}}">
+            <select class="form-control" *ngIf="checkFieldType(field.fieldType) == 'Dropdown'" (change)="selectFieldValue(field.fieldType, -1, field.id, $event)" name="drp-{{field.id}}">
               <option value="null">--Select One--</option>
-              <option *ngFor="let val of field.values" value="val.id">{{val.value}}</option>
+              <option *ngFor="let val of field.values" value="{{val.id}}">{{val.value}}</option>
             </select>
 
             <table *ngIf="checkFieldType(field.fieldType) == 'Radio'" class="table">
@@ -1276,8 +1276,8 @@
               <input class="form-control" type="text" id="txt-{{fieldId}}" />
             </div>
 
-            <span class="float-right">
-              <button class="btn btn-info btn-lg btn-block text-uppercase" (click)="saveProjectFields(field.id)"
+            <span class="float-right margin-top-10">
+              <button class="btn btn-warning btn-lg btn-block text-uppercase" (click)="saveProjectFields(field.id)"
                   type="button">Save Fields</button>
             </span>
           </div>

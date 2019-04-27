@@ -96,10 +96,6 @@ export const Settings = {
         },
         {
             'typeId': 4,
-            'field': 'List'
-        },
-        {
-            'typeId': 5,
             'field': 'Radio'
         },
 
