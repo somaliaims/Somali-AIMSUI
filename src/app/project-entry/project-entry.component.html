@@ -1233,7 +1233,7 @@
               <h6>{{field.fieldTitle}}</h6>
           </div>
           <div class="card-body">
-            <select class="form-control" *ngIf="checkFieldType(field.fieldType) == 'Dropdown'" (change)="selectFieldValue(field.fieldType, -1, field.id, $event)" name="drp-{{field.id}}">
+            <select class="form-control" *ngIf="checkFieldType(field.fieldType) == 'Dropdown'" [(ngModel)]="fieldModel.dropdownId" (change)="selectFieldValue(field.fieldType, -1, field.id, $event)" name="drp-{{field.id}}">
               <option value="null">--Select One--</option>
               <option *ngFor="let val of field.values" value="{{val.id}}">{{val.value}}</option>
             </select>
@@ -1244,36 +1244,25 @@
               </tr>
               <tr>
                 <td *ngFor="let val of field.values">
-                  <input type="radio" name="rd-options" id="rd-{{val.id}}" value="{{val.id}}" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
-                </td>
-              </tr>
-            </table>
-
-            <table *ngIf="checkFieldType(field.fieldType) == 'List'" class="table">
-              <tr>
-                <th>{{field.fieldTitle}}</th>
-              </tr>
-              <tr>
-                <td *ngFor="let val of field.values">
-                  <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
+                  <input type="radio" name="rd-options" id="rd-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
                 </td>
               </tr>
             </table>
 
             <table *ngIf="checkFieldType(field.fieldType) == 'Checkbox'" class="table">
-                <tr>
-                  <th>{{field.fieldTitle}}</th>
-                </tr>
-                <tr>
-                  <td *ngFor="let val of field.values">
-                    <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" />&nbsp;{{val.value}}
-                  </td>
-                </tr>
-              </table>
-
+              <tr>
+                <th>{{field.fieldTitle}}</th>
+              </tr>
+              <tr>
+                <td *ngFor="let val of field.values">
+                  <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
+                </td>
+              </tr>
+            </table>
+            
             <div *ngIf="checkFieldType(field.fieldType) == 'text'" class="form-group">
               <label>{{field.fieldTitle}}</label>
-              <input class="form-control" type="text" id="txt-{{fieldId}}" />
+              <input class="form-control" type="text" id="txt-{{fieldId}}" [(ngModel)]="field.newText" />
             </div>
 
             <span class="float-right margin-top-10">

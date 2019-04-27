@@ -157,7 +157,7 @@ export class ProjectEntryComponent implements OnInit {
   funderModel = { id: 0, projectId: 0, funder: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
   disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0 };
-  fieldModel = { projectId: 0, fieldId: 0, values: [] };
+  fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
 
   displayTabs: any = [
     { visible: true, identity: 'project' },
@@ -183,7 +183,8 @@ export class ProjectEntryComponent implements OnInit {
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private errorModal: ErrorModalComponent,
     private currencyService: CurrencyService,
-    private customFieldService: CustomeFieldService) { }
+    private customFieldService: CustomeFieldService,
+  ) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -200,7 +201,7 @@ export class ProjectEntryComponent implements OnInit {
       this.model.id = this.activeProjectId;
       this.btnProjectText = 'Edit Project';
       this.loadProjectData(this.activeProjectId);
-    } 
+    }
 
     this.sectorSelectionForm = this.fb.group({
       sectorInput: null,
@@ -214,7 +215,7 @@ export class ProjectEntryComponent implements OnInit {
     this.locationSelectionForm = this.fb.group({
       locationInput: null,
     });
-    
+
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -371,6 +372,7 @@ export class ProjectEntryComponent implements OnInit {
           var fields = data;
           fields.forEach(function (field) {
             field.values = field.values ? JSON.parse(field.values) : [];
+            field.values.forEach(v => v.isSelected = false);
           });
           this.customFieldsList = fields;
         }
@@ -538,13 +540,13 @@ export class ProjectEntryComponent implements OnInit {
         } else {
           this.mappingsCount = 0;
           this.sectorMappings = this.defaultSectorsList;
-        } 
+        }
       }
     )
   }
 
   setManualMappings() {
-    this.sectorMappings = this.defaultSectorsList; 
+    this.sectorMappings = this.defaultSectorsList;
     this.showMappingManual = false;
     this.showMappingAuto = true;
   }
@@ -671,7 +673,7 @@ export class ProjectEntryComponent implements OnInit {
       if (selectFunder && selectFunder.length > 0) {
         if (selectFunder[0].name) {
           this.funderModel.funder = selectFunder[0].name;
-        this.funderEntryType = 'iati';
+          this.funderEntryType = 'iati';
         }
       }
     }
@@ -755,7 +757,7 @@ export class ProjectEntryComponent implements OnInit {
         var dated = selectTransaction[0].dated;
         if (dated && dated.length > 0) {
           var dateArr = dated.split('-');
-          var dateFormatted = {year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2])};
+          var dateFormatted = { year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2]) };
           this.disbursementModel.dated = dateFormatted;
         }
       }
@@ -777,7 +779,7 @@ export class ProjectEntryComponent implements OnInit {
         var dated = selectTransaction[0].dated;
         if (dated && dated.length > 0) {
           var dateArr = dated.split('-');
-          var dateFormatted = {year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2])};
+          var dateFormatted = { year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2]) };
           this.disbursementModel.dated = dateFormatted;
         }
       }
@@ -834,7 +836,7 @@ export class ProjectEntryComponent implements OnInit {
 
   checkIfSectorAdded(sector) {
     if (this.currentProjectSectorsList.length > 0) {
-      var isExists = this.currentProjectSectorsList.filter(s => 
+      var isExists = this.currentProjectSectorsList.filter(s =>
         s.sector.trim().toLowerCase() == sector.trim().toLowerCase());
       return isExists.length > 0 ? true : false;
     }
@@ -842,7 +844,7 @@ export class ProjectEntryComponent implements OnInit {
 
   checkIfLocationAdded(location) {
     if (this.currentProjectLocationsList.length > 0) {
-      var isExists = this.currentProjectLocationsList.filter(l => 
+      var isExists = this.currentProjectLocationsList.filter(l =>
         l.location.trim().toLowerCase() == location.trim().toLowerCase());
       return isExists.length > 0 ? true : false;
     }
@@ -850,7 +852,7 @@ export class ProjectEntryComponent implements OnInit {
 
   checkIfFunderAdded(funder) {
     if (this.currentProjectFundersList.length > 0) {
-      var isExists = this.currentProjectFundersList.filter(f => 
+      var isExists = this.currentProjectFundersList.filter(f =>
         f.funder.trim().toLowerCase() == funder.trim().toLowerCase());
       return isExists.length > 0 ? true : false;
     }
@@ -858,7 +860,7 @@ export class ProjectEntryComponent implements OnInit {
 
   checkIfImplementerAdded(implementer) {
     if (this.currentProjectImplementersList.length > 0) {
-      var isExists = this.currentProjectImplementersList.filter(i => 
+      var isExists = this.currentProjectImplementersList.filter(i =>
         i.implementer.trim().toLowerCase() == implementer.trim().toLowerCase());
       return isExists.length > 0 ? true : false;
     }
@@ -1483,7 +1485,7 @@ export class ProjectEntryComponent implements OnInit {
           this.currentProjectFundersList.push(model);
           this.resetFunderEntry();
           this.resetDataEntryValidation();
-        } 
+        }
         this.blockUI.stop();
       },
       error => {
@@ -1548,7 +1550,7 @@ export class ProjectEntryComponent implements OnInit {
           data => {
             if (data) {
               model.implementerId = data;
-            this.addProjectImplementer(model);
+              this.addProjectImplementer(model);
             } else {
               this.blockUI.stop();
             }
@@ -1710,14 +1712,6 @@ export class ProjectEntryComponent implements OnInit {
       }
 
       result.forEach(r => values.push({ id: r.id, value: r.value }));
-
-      var fieldModel = {
-        id: id,
-        customFieldId: fieldId,
-        fieldType: fieldType,
-        values: values
-      }
-      
       if (this.currentSelectedFieldValues.length > 0) {
         var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
         if (isExists.length > 0) {
@@ -1725,25 +1719,25 @@ export class ProjectEntryComponent implements OnInit {
           if (fieldType != this.fieldTypes.checkbox) {
             values = [];
           }
-          
+
           var isValueExists = values.filter(v => v.id == id);
           if (isValueExists.length == 0) {
             isExists[0].values.push({
               id: id,
               value: result[0].value
             });
-          } 
+          }
         }
       } else {
         var newField = {
           fieldId: fieldId,
+          fieldType: fieldType,
           values: [
             { id: result[0].id, value: result[0].value }
           ]
         };
         this.currentSelectedFieldValues.push(newField);
       }
-      this.selectedProjectFields.push(fieldModel);
     }
   }
 
@@ -1756,7 +1750,6 @@ export class ProjectEntryComponent implements OnInit {
         return false;
       }
 
-      //var selectedField = this.currentSelectedFieldValues.filter(f => f.fieldId == id);
       var stringifiedJson = JSON.stringify(selectedField[0].values);
       var saveFieldModel = {
         projectId: this.activeProjectId,
@@ -1771,7 +1764,14 @@ export class ProjectEntryComponent implements OnInit {
           if (data) {
             var isFieldExists = this.currentProjectFieldsList.filter(f => f.customFieldId == id);
             if (isFieldExists.length > 0) {
-              isFieldExists[0].values = selectedField[0].values;
+              var values = [];
+              selectedField[0].values.forEach(function (v) {
+                values.push({
+                  id: v.id,
+                  value: v.value
+                });
+              });
+              isFieldExists[0].values = values;
             } else {
               var customField = this.customFieldsList.filter(c => c.id == id);
               var fieldTitle = '';
@@ -1779,21 +1779,31 @@ export class ProjectEntryComponent implements OnInit {
                 fieldTitle = customField[0].fieldTitle;
               }
 
+              var values = [];
+              selectedField[0].values.forEach(function (v) {
+                values.push({
+                  id: v.id,
+                  value: v.value
+                });
+              });
+
               this.currentProjectFieldsList.push({
                 customFieldId: id,
                 fieldTitle: fieldTitle,
                 fieldType: selectedField[0].fieldType,
-                values: selectedField[0].values,
+                values: values,
                 projectId: this.activeProjectId
               });
             }
           }
+          this.currentSelectedFieldValues = [];
+          this.resetCustomFields();
           this.blockUI.stop();
         }
       );
     }
   }
-  
+
   deleteProjectField(e) {
     var arr = e.target.id.split('-');
     var projectId = arr[1];
@@ -1813,6 +1823,7 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
+  /** General functions */
   calculateSectorPercentage() {
     var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
@@ -1829,7 +1840,7 @@ export class ProjectEntryComponent implements OnInit {
         this.isExRateAutoConvert = data.isAutomatic;
         if (!this.isExRateAutoConvert) {
           this.exchangeRatesList = data.manualCurrencyRates;
-        } 
+        }
       }
     )
   }
@@ -1838,8 +1849,8 @@ export class ProjectEntryComponent implements OnInit {
     if (this.isExRateAutoConvert) {
       if (this.model.startDate && this.model.startDate.year) {
         var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
-        this.model.startDate.day;
-  
+          this.model.startDate.day;
+
         this.currencyService.getExchangeRatesForDate(startDate).subscribe(
           data => {
             if (data) {
@@ -1932,7 +1943,7 @@ export class ProjectEntryComponent implements OnInit {
       } catch (e) {
         parsedJson = json;
       }
-      
+
       if (parsedJson && parsedJson.length > 0) {
         parsedJson.forEach(function (f) {
           if (valuesString) {
@@ -2012,6 +2023,12 @@ export class ProjectEntryComponent implements OnInit {
 
   resetDataEntryValidation() {
     this.currentEntryForm.resetForm();
+  }
+
+  resetCustomFields() {
+    this.fieldModel.dropdownId = null;
+    this.fieldModel.newText = null;
+    this.customFieldsList.forEach(c => c.values.forEach(v => v.isSelected = false));
   }
 
   finishProject() {
