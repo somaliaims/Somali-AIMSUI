@@ -6,24 +6,24 @@
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/custom-fields']">Custom fields list</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Create new</a>
+          <a class="nav-link active btn-info" data-toggle="tab">{{tabText}}</a>
         </li>
       </ul>
     </div>
-    
-    <div class="col-sm-9 col-md-6 col-lg-5 mx-auto">
+
+    <div class="col-sm-9 col-md-6 col-lg-5">
       <div class="card card-signin my-5">
         <div class="card-body">
           <h5 class="card-title text-center">Custom field</h5>
 
-          <form class="form-signin" (ngSubmit)="customFieldForm.form.valid && saveCustomField()" #customFieldForm="ngForm">
-
+          <form class="form-signin" (ngSubmit)="customFieldForm.form.valid && saveCustomField()"
+            #customFieldForm="ngForm">
             <div class="form-group">
               <label for="typeId">Field type</label>
-              <select class="form-control" id="typeId" [(ngModel)]="model.typeId"
-                  name="typeId" #typeId="ngModel" (change)="setFieldTypeDisplay()" required>
-                  <option *ngFor="let type of fieldTypes" [value]="type.typeId">{{type.field}}</option>
-                </select>
+              <select class="form-control" id="typeId" [(ngModel)]="model.typeId" name="typeId" #typeId="ngModel"
+                (change)="setFieldTypeDisplay()" required>
+                <option *ngFor="let type of fieldTypes" [value]="type.typeId">{{type.field}}</option>
+              </select>
               <div *ngIf="customFieldForm.submitted" [hidden]="typeId.valid" class="alert alert-danger">
                 Field type is required
               </div>
@@ -63,44 +63,55 @@
             <div *ngIf="isTwoValuesDisplay" class="form-group">
               <label for="title">Option values</label>
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Option one" id="option-1" maxlength="20" [(ngModel)]="model.optionValue1" name="optionValue1"
-                #optionValue1="ngModel" />&nbsp;
-                <input type="text" class="form-control" placeholder="Option two" id="option-2" maxlength="20" [(ngModel)]="model.optionValue2" name="optionValue2"
-                #optionValue2="ngModel" />
+                <input type="text" class="form-control" placeholder="Option one" id="option-1" maxlength="20"
+                  [(ngModel)]="model.optionValue1" name="optionValue1" #optionValue1="ngModel" />&nbsp;
+                <input type="text" class="form-control" placeholder="Option two" id="option-2" maxlength="20"
+                  [(ngModel)]="model.optionValue2" name="optionValue2" #optionValue2="ngModel" />
               </div>
             </div>
 
             <div *ngIf="isManyValuesDisplay" class="form-group">
               <label for="title">Enter value</label>
               <div class="input-group">
-                <input class="form-control" type="text" id="new-value" [elFocus]="isNewValueFocus" maxlength="20" [(ngModel)]="model.newValue" name="newValue"
-                  #newValue="ngModel" aria-label="Enter value" onkeypress="return event.keyCode != 13;" aria-describedby="basic-addon2">
+                <input class="form-control" type="text" id="new-value" [elFocus]="isNewValueFocus" maxlength="20"
+                  [(ngModel)]="model.newValue" name="newValue" #newValue="ngModel" aria-label="Enter value"
+                  onkeypress="return event.keyCode != 13;" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-success" (click)="addValue()" type="button">Add value</button>
+                  <button class="btn btn-success" (click)="addValue()" type="button">Add value >></button>
                 </div>
               </div>
             </div>
 
-            <div *ngIf="isManyValuesDisplay" class="form-group">
-              <table class="table table-bordered" *ngIf="model.optionValues.length > 0">
-                <tr *ngFor="let val of model.optionValues">
-                  <td>{{val.value}}</td>
-                  <td>
-                      <button id="dval-{{val.id}}" (click)="removeValue($event)"
-                      class="btn btn-danger btn-sm">
-                      <i id="idval-{{val.id}}" class="fa fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </table>
-              <span *ngIf="model.optionValues.length == 0" class="text-info"><i>No values added yet</i></span>
-            </div>
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+              type="submit">{{btnText}}</button>
 
-            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
           </form>
         </div>
       </div>
     </div>
+
+    <div class="col-sm-9 col-md-6 col-lg-5">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">Values list for selected field</h5>
+
+          <div *ngIf="isManyValuesDisplay" class="form-group">
+            <table class="table table-bordered" *ngIf="model.optionValues.length > 0">
+              <tr *ngFor="let val of model.optionValues">
+                <td [ngStyle]="{'background-color': isAlreadySaved(val.id) ? '' : '#ffc107 ' }">{{val.value}}</td>
+                <td>
+                  <button id="dval-{{val.id}}" (click)="removeValue($event)" class="btn btn-danger btn-sm">
+                    <i id="idval-{{val.id}}" class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </table>
+            <span *ngIf="model.optionValues.length == 0" class="text-info"><i>No values added yet</i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 

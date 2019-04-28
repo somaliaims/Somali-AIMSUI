@@ -20,6 +20,7 @@ export class ManageCustomFieldsComponent implements OnInit {
   dateModel: NgbDateStruct;
   isForEdit: boolean = false;
   btnText: string = 'Save custom field';
+  tabText: string = 'Create new';
   fieldId: number = 0;
   errorMessage: string = null;
   isError: boolean = false;
@@ -29,6 +30,7 @@ export class ManageCustomFieldsComponent implements OnInit {
   autoIncrement: number = 0;
   calendarMaxDate: any = {};
   isNewValueFocus: boolean = false;
+  originalOptionValues: any = [];
   
   model: any = { fieldType: null, fieldTitle: null, activeFrom: null, activeUpto: null, optionValues: [],
     optionValue1: null, optionValue2: null, newValue: null };
@@ -49,6 +51,7 @@ export class ManageCustomFieldsComponent implements OnInit {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
         this.btnText = 'Edit custom field';
+        this.tabText = 'Edit field';
         this.isForEdit = true;
         this.fieldId = id;
         this.customFieldService.getCustomFieldById(id).subscribe(
@@ -65,6 +68,7 @@ export class ManageCustomFieldsComponent implements OnInit {
               if (id) {
                 this.autoIncrement = id;
               }
+              this.model.optionValues.forEach(val => this.originalOptionValues.push(val.id));
             }
 
             var activeFrom = new Date(data.activeFrom);
@@ -127,7 +131,7 @@ export class ManageCustomFieldsComponent implements OnInit {
     }
     setTimeout(() => {
       this.isNewValueFocus = true;
-    });
+    }, 2000);
   }
 
   removeValue(e) {
@@ -196,6 +200,10 @@ export class ManageCustomFieldsComponent implements OnInit {
         }
       );
     }
+  }
+
+  isAlreadySaved(vid: any) {
+    return this.originalOptionValues.includes(vid);
   }
 
 }
