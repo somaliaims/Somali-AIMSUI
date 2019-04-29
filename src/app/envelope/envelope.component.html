@@ -123,7 +123,7 @@
                         </tr>
                         <tr>
                           <td colspan="2">
-                            <input type="text" id="sm-{{allocation.year}}" value="{{handleNullAmount(allocation.manualAmount)}}" />
+                            <input type="text" id="sm-{{allocation.year}}-{{s.sectorId}}" (change)="updateEnvelpeManualValue($event)" value="{{handleNullAmount(allocation.manualAmount)}}" />
                           </td>
                         </tr>
                       </table>

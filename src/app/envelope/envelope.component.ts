@@ -27,6 +27,7 @@ export class EnvelopeComponent implements OnInit {
   oldCurrency: string = null;
   envelopeData: any = { funderId: 0, funderName: '', totalFunds: 0.0, sectors: [] };
   envelopeBreakups: any = [];
+  envelopeSectorsBreakups: any = [];
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
     private envelopeService: EnvelopeService, private currencyService: CurrencyService) { }
@@ -84,8 +85,9 @@ export class EnvelopeComponent implements OnInit {
             this.selectedCurrency = this.envelopeData.currency;
             this.oldCurrency = this.selectedCurrency;
             this.envelopeBreakups = this.envelopeData.envelopeBreakups;
+            this.envelopeSectorsBreakups = this.envelopeData.sectors;
             this.yearsList = this.envelopeData.envelopeBreakups.map(y => y.year);
-            this.checkIfFundsAllocationNormal();
+            //this.checkIfFundsAllocationNormal();
           }
         }
         this.isLoading = false;
@@ -123,29 +125,43 @@ export class EnvelopeComponent implements OnInit {
     )
   }
 
-  checkIfFundsAllocationNormal() {
-    var amounts = this.envelopeBreakups.map(e => e.actualAmount);
+  checkIfFundsAllocationNormal(year: number, sectorId: number) {
+    /*var amounts = this.envelopeBreakups.map(e => e.actualAmount);
     var amountsTotal = amounts.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
     if (amountsTotal < this.totalFundingAmount) {
       this.isError = true;
     } else {
       this.isError = false;
+    }*/
+    var sectorActualAllocation = 0;
+    var sectorManualAllocation = 0;
+    var sectorAllocations = this.envelopeSectorsBreakups.filter(e => e.sectorId == sectorId);
+    var yearlyAllocation = sectorAllocations.filter(a => a.year == year);
+    if (yearlyAllocation.length > 0) {
+      sectorActualAllocation = yearlyAllocation[0].actualAmount;
     }
   }
 
-  updateEnvelpeActualValue(e) {
+  updateEnvelpeManualValue(e) {
     var newValue = e.target.value;
-    var year = e.target.id.split('-')[1];
+    if (newValue <= 0) {
+      return false;
+    }
+
+    var arr = e.target.id.split('-');
+    var year = arr[1];
+    var sectorId = arr[2];
+
     if (year) {
-      var envelopeArr = this.envelopeBreakups.filter(e => e.year == year);
+      var envelopeArr = this.envelopeSectorsBreakups.filter(e => e.sectorId == sectorId && e.year == year);
       if (envelopeArr.length > 0) {
-        envelopeArr[0].actualAmount = newValue;
+        envelopeArr[0].manualAmount = newValue;
       }
     }
-    this.checkIfFundsAllocationNormal();
+    this.checkIfFundsAllocationNormal(year, sectorId);
   }
 
-  updateEnvelpeExpectedValue(e) {
+  /*updateEnvelpeExpectedValue(e) {
     var newValue = e.target.value;
     var year = e.target.id.split('-')[1];
     if (year) {
@@ -155,7 +171,7 @@ export class EnvelopeComponent implements OnInit {
       }
     }
     this.checkIfFundsAllocationNormal();
-  }
+  }*/
 
   getSectorAllocation(percent: number, totalAmount: number) {
     return ((totalAmount / 100) * percent).toFixed(2);
