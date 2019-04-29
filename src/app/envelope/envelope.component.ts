@@ -93,6 +93,13 @@ export class EnvelopeComponent implements OnInit {
     )
   }
 
+  handleNullAmount(amount: number) {
+    if (amount == null) {
+      return 0;
+    }
+    return amount;
+  }
+
   saveEnvelopeData() {
     var totalAmount = 0;
     this.envelopeBreakups.forEach(function (e) {

@@ -24,6 +24,25 @@
             feature.
             This section will include help on evelope data feature. This section will include help on evelope data
             feature.
+
+            <table class="table table-bordered">
+              <tr>
+                <th>Abbr</th>
+                <th>Explnation</th>
+              </tr>
+              <tr>
+                <td>A</td>
+                <td>Actual</td>
+              </tr>
+              <tr>
+                <td>E</td>
+                <td>Expected</td>
+              </tr>
+              <tr>
+                <td>M</td>
+                <td>Manually entered</td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
@@ -75,16 +94,39 @@
                     <th *ngFor="let year of yearsList">{{year}}</th>
                   </tr>
                   <tr>
-                    <td><i>Actual / Expected</i></td>
+                    <td><b>Total <i>A/E/M</i></b></td>
                     <td *ngFor="let e of envelopeBreakups">
-                      <input type="text" id="a-{{e.year}}" (change)="updateEnvelpeActualValue($event)" value="{{e.actualAmount}}" />&nbsp;
-                      <input type="text" id="ex-{{e.year}}" (change)="updateEnvelpeExpectedValue($event)" value="{{e.expectedAmount}}" />
+                      <!--<input readonly="readonly" type="text" id="a-{{e.year}}" (change)="updateEnvelpeActualValue($event)" value="{{e.actualAmount}}" />&nbsp;
+                      <input readonly="readonly"  type="text" id="ex-{{e.year}}" (change)="updateEnvelpeExpectedValue($event)" value="{{e.expectedAmount}}" />-->
+                      <table class="table table-bordered">
+                        <tr>
+                          <td>{{handleNullAmount(e.actualAmount)}}</td>
+                          <td>{{handleNullAmount(e.expectedAmount)}}</td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                              {{handleNullAmount(e.manualAmount)}}
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
                   <tr *ngFor="let s of envelopeData.sectors">
                     <td>{{s.sector}}</td>
                     <td *ngFor="let allocation of s.yearlyAllocation">
-                      <input type="text" id="i-{{allocation.year}}" readonly="readonly" value="{{allocation.amount}}" />
+                      <!--<input type="text" id="sa-{{allocation.year}}" readonly="readonly" value="{{allocation.amount}}" />&nbsp;
+                      <input type="text" id="se-{{allocation.year}}" readonly="readonly" value="{{allocation.expectedAmount}}" />&nbsp;-->
+                      <table class="table table-border">
+                        <tr>
+                          <td>{{handleNullAmount(allocation.actualAmount)}}</td>
+                          <td>{{handleNullAmount(allocation.expectedAmount)}}</td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <input type="text" id="sm-{{allocation.year}}" value="{{handleNullAmount(allocation.manualAmount)}}" />
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
                   <tr>
