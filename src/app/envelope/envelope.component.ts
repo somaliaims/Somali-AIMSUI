@@ -134,20 +134,38 @@ export class EnvelopeComponent implements OnInit {
       this.isError = false;
     }*/
     var sectorActualAllocation = 0;
+    var sectorExpectedAmount = 0;
     var sectorManualAllocation = 0;
+    var differenceInAmount = 0;
     var sectorAllocations = this.envelopeSectorsBreakups.filter(e => e.sectorId == sectorId);
     var yearlyAllocation = sectorAllocations.filter(a => a.year == year);
     if (yearlyAllocation.length > 0) {
       sectorActualAllocation = yearlyAllocation[0].actualAmount;
+      sectorExpectedAmount = yearlyAllocation[0].expectedAmount;
+      sectorManualAllocation = yearlyAllocation[0].manualAmount;
+
+      if (sectorExpectedAmount > sectorActualAllocation) {
+        differenceInAmount = sectorExpectedAmount - sectorActualAllocation;
+      }
+
+      if (sectorManualAllocation < differenceInAmount) {
+        this.errorMessage = 'Manually entered amount cannot be less than total expected amount for sector year ' + year;
+        this.isError = true;
+      } else {
+        this.isError = false;
+      }
     }
   }
 
   updateEnvelpeManualValue(e) {
     var newValue = e.target.value;
     if (newValue <= 0) {
+      this.errorMessage = 'Amount cannot be equal or less than 0';
+      this.isError = true;
       return false;
     }
 
+    this.isError = false;
     var arr = e.target.id.split('-');
     var year = arr[1];
     var sectorId = arr[2];
