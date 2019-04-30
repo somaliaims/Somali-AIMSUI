@@ -30,4 +30,5 @@ export const Messages = {
     PASSWORD_UPDATED: 'Your password updated successfully. You must login with new password on next login.',
     ACCOUNT_DELETED: 'Your account is deleted successfully. In order to use AIMS again, register again with your Organization',
     INVALID_SECTOR_MAPPING: 'Select a sector before saving the mappings',
+    INVALID_ENVELOPE_MANUAL_AMOUNT: 'Manually entered amount cannot be less than total expected amount',
 }

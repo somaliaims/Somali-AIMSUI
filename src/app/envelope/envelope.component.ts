@@ -5,6 +5,7 @@ import { EnvelopeService } from '../services/envelope-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { CurrencyService } from '../services/currency.service';
 import { Messages } from '../config/messages';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 @Component({
   selector: 'app-envelope',
@@ -30,7 +31,8 @@ export class EnvelopeComponent implements OnInit {
   envelopeSectorsBreakups: any = [];
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
-    private envelopeService: EnvelopeService, private currencyService: CurrencyService) { }
+    private envelopeService: EnvelopeService, private currencyService: CurrencyService,
+    private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -103,6 +105,10 @@ export class EnvelopeComponent implements OnInit {
   }
 
   saveEnvelopeData() {
+    if (this.isError) {
+      this.errorModal.openModal();
+      return false;
+    }
     var totalAmount = 0;
     this.envelopeBreakups.forEach(function (e) {
 
@@ -126,13 +132,6 @@ export class EnvelopeComponent implements OnInit {
   }
 
   checkIfFundsAllocationNormal(year: number, sectorId: number) {
-    /*var amounts = this.envelopeBreakups.map(e => e.actualAmount);
-    var amountsTotal = amounts.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-    if (amountsTotal < this.totalFundingAmount) {
-      this.isError = true;
-    } else {
-      this.isError = false;
-    }*/
     var sectorActualAllocation = 0;
     var sectorExpectedAmount = 0;
     var sectorManualAllocation = 0;
@@ -149,7 +148,7 @@ export class EnvelopeComponent implements OnInit {
       }
 
       if (sectorManualAllocation < differenceInAmount) {
-        this.errorMessage = 'Manually entered amount cannot be less than total expected amount for sector year ' + year;
+        this.errorMessage = Messages.INVALID_ENVELOPE_MANUAL_AMOUNT;
         this.isError = true;
       } else {
         this.isError = false;
@@ -160,7 +159,7 @@ export class EnvelopeComponent implements OnInit {
   updateEnvelpeManualValue(e) {
     var newValue = e.target.value;
     if (newValue <= 0) {
-      this.errorMessage = 'Amount cannot be equal or less than 0';
+      this.errorMessage = Messages.CANNOT_BE_ZERO;
       this.isError = true;
       return false;
     }
@@ -171,25 +170,29 @@ export class EnvelopeComponent implements OnInit {
     var sectorId = arr[2];
 
     if (year) {
-      var envelopeArr = this.envelopeSectorsBreakups.filter(e => e.sectorId == sectorId && e.year == year);
+      var envelopeArr = this.envelopeSectorsBreakups.filter(e => e.sectorId == sectorId);
       if (envelopeArr.length > 0) {
-        envelopeArr[0].manualAmount = newValue;
+        var allocationArr = envelopeArr[0].yearlyAllocation.filter(a => a.year == year);
+        if (allocationArr.length > 0) {
+          allocationArr[0].manualAmount = newValue;
+
+          var actualAmount = allocationArr[0].amount;
+          var expectedAmount = allocationArr[0].expectedAmount;
+          var amountDifference = 0;
+          if (expectedAmount > actualAmount) {
+            amountDifference = expectedAmount - actualAmount;
+          }
+
+          if (newValue < amountDifference) {
+            this.errorMessage = Messages.INVALID_ENVELOPE_MANUAL_AMOUNT;
+            this.isError = true;
+            this.errorModal.openModal();
+          }
+        }
       }
     }
-    this.checkIfFundsAllocationNormal(year, sectorId);
   }
 
-  /*updateEnvelpeExpectedValue(e) {
-    var newValue = e.target.value;
-    var year = e.target.id.split('-')[1];
-    if (year) {
-      var envelopeArr = this.envelopeBreakups.filter(e => e.year == year);
-      if (envelopeArr.length > 0) {
-        envelopeArr[0].expectedAmount = newValue;
-      }
-    }
-    this.checkIfFundsAllocationNormal();
-  }*/
 
   getSectorAllocation(percent: number, totalAmount: number) {
     return ((totalAmount / 100) * percent).toFixed(2);
@@ -235,9 +238,10 @@ export class EnvelopeComponent implements OnInit {
     }
   }
 
-  getSectorTotalForYear(year: number) {
+  getSectorActualTotalForYear(year: number) {
     var sectors = this.envelopeData.sectors;
     var sectorAllocation = 0;
+
     sectors.forEach(function (sector) {
       var allocation = sector.yearlyAllocation.filter(a => a.year == year);
       if (allocation.length > 0) {
@@ -245,6 +249,32 @@ export class EnvelopeComponent implements OnInit {
       }
     });
     return sectorAllocation;
+  }
+
+  getSectorExpectedTotalForYear(year: number) {
+    var sectors = this.envelopeData.sectors;
+    var sectorExpectedAllocation = 0;
+
+    sectors.forEach(function (sector) {
+      var allocation = sector.yearlyAllocation.filter(a => a.year == year);
+      if (allocation.length > 0) {
+        sectorExpectedAllocation += allocation[0].expectedAmount;
+      }
+    });
+    return sectorExpectedAllocation;
+  }
+
+  getSectorManualTotalForYear(year: number) {
+    var sectors = this.envelopeData.sectors;
+    var sectorManualAllocation = 0;
+
+    sectors.forEach(function (sector) {
+      var allocation = sector.yearlyAllocation.filter(a => a.year == year);
+      if (allocation.length > 0) {
+        sectorManualAllocation += allocation[0].manualAmount;
+      }
+    });
+    return sectorManualAllocation;
   }
 
 }

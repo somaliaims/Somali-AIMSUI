@@ -9,13 +9,6 @@
         </ul>
       </div>
 
-      <div *ngIf="isError" class="col-md-12 margin-top-10">
-        <div class="alert alert-danger alert-dismissible">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Error!</strong> {{errorMessage}}
-        </div>
-      </div>
-
       <div class="col-md-3 margin-top-20">
         <div class="card">
           <div class="card-header bg-info text-white">Guide</div>
@@ -96,8 +89,6 @@
                   <tr>
                     <td><b>Total <i>A/E/M</i></b></td>
                     <td *ngFor="let e of envelopeBreakups">
-                      <!--<input readonly="readonly" type="text" id="a-{{e.year}}" (change)="updateEnvelpeActualValue($event)" value="{{e.actualAmount}}" />&nbsp;
-                      <input readonly="readonly"  type="text" id="ex-{{e.year}}" (change)="updateEnvelpeExpectedValue($event)" value="{{e.expectedAmount}}" />-->
                       <table class="table table-bordered">
                         <tr>
                           <td>{{handleNullAmount(e.actualAmount)}}</td>
@@ -114,8 +105,6 @@
                   <tr *ngFor="let s of envelopeData.sectors">
                     <td>{{s.sector}}</td>
                     <td *ngFor="let allocation of s.yearlyAllocation">
-                      <!--<input type="text" id="sa-{{allocation.year}}" readonly="readonly" value="{{allocation.amount}}" />&nbsp;
-                      <input type="text" id="se-{{allocation.year}}" readonly="readonly" value="{{allocation.expectedAmount}}" />&nbsp;-->
                       <table class="table table-border">
                         <tr>
                           <td>{{handleNullAmount(allocation.amount)}}</td>
@@ -132,7 +121,20 @@
                   <tr>
                     <td><b>Sector totals</b></td>
                     <td *ngFor="let year of yearsList">
-                      {{getSectorTotalForYear(year)}}
+                      <table class="table table-bordered">
+                        <tr>
+                          <td>A</td>
+                          <td>{{getSectorActualTotalForYear(year)}}</td>
+                        </tr>
+                        <tr>
+                          <td>E</td>
+                          <td>{{getSectorExpectedTotalForYear(year)}}</td>
+                        </tr>
+                        <tr>
+                          <td>M</td>
+                          <td>{{getSectorManualTotalForYear(year)}}</td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
                 </table>
@@ -148,3 +150,5 @@
     </div>
   </block-ui>
 </div>
+
+<error-modal message="{{errorMessage}}"></error-modal>
