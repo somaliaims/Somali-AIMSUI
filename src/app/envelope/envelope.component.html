@@ -18,7 +18,7 @@
             This section will include help on evelope data feature. This section will include help on evelope data
             feature.
 
-            <table class="table table-bordered">
+            <table class="table table-bordered margin-top-10">
               <tr>
                 <th>Abbr</th>
                 <th>Explnation</th>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-md-4">
                   <span class="float-right">
-                    <b>Actual Total:</b>&nbsp;{{totalFundingAmount}}
+                    <b>Actual total:</b>&nbsp;{{totalFundingAmount}}
                   </span>
                 </div>
               </div>
@@ -123,15 +123,15 @@
                     <td *ngFor="let year of yearsList">
                       <table class="table table-bordered">
                         <tr>
-                          <td>A</td>
+                          <td><b>A</b></td>
                           <td>{{getSectorActualTotalForYear(year)}}</td>
                         </tr>
                         <tr>
-                          <td>E</td>
+                          <td><b>E</b></td>
                           <td>{{getSectorExpectedTotalForYear(year)}}</td>
                         </tr>
                         <tr>
-                          <td>M</td>
+                          <td><b>M</b></td>
                           <td>{{getSectorManualTotalForYear(year)}}</td>
                         </tr>
                       </table>

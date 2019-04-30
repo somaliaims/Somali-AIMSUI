@@ -17,6 +17,9 @@ export class EnvelopeComponent implements OnInit {
   permissions: any = {};
   userOrganizationId: number = 0;
   totalFundingAmount: number = 0;
+  totalActualAmount: number = 0;
+  totalExpectedAmount: number = 0;
+  totalManualAmount: number = 0;
   yearsList: any = [];
   currenciesList: any = [];
   exRatesList: any = [];
@@ -89,7 +92,6 @@ export class EnvelopeComponent implements OnInit {
             this.envelopeBreakups = this.envelopeData.envelopeBreakups;
             this.envelopeSectorsBreakups = this.envelopeData.sectors;
             this.yearsList = this.envelopeData.envelopeBreakups.map(y => y.year);
-            //this.checkIfFundsAllocationNormal();
           }
         }
         this.isLoading = false;
@@ -111,13 +113,13 @@ export class EnvelopeComponent implements OnInit {
     }
     var totalAmount = 0;
     this.envelopeBreakups.forEach(function (e) {
-
+      
     });
 
     var model = {
       funderId: this.envelopeData.funderId,
       currency: this.selectedCurrency,
-      envelopeBreakups: this.envelopeBreakups
+      sectorBreakups: this.envelopeSectorsBreakups 
     }
 
     this.blockUI.start('Saving envelope...');
@@ -225,12 +227,15 @@ export class EnvelopeComponent implements OnInit {
       this.envelopeBreakups.forEach(e => {
         e.actualAmount = Math.round(parseFloat((e.actualAmount * calculatedRate).toFixed(2)));
         e.expectedAmount = Math.round(parseFloat((e.expectedAmount * calculatedRate).toFixed(2)));
+        e.manualAmount = Math.round(parseFloat((e.manualAmount * calculatedRate).toFixed(2)));
       });
 
       var sectors = this.envelopeData.sectors;
       sectors.forEach(function (sector) {
         var allocation = sector.yearlyAllocation.forEach(function (a) {
           a.amount = Math.round(parseFloat((a.amount * calculatedRate).toFixed(2)));
+          a.expectedAmount = Math.round(parseFloat((a.expectedAmount * calculatedRate).toFixed(2)));
+          a.manualAmount = Math.round(parseFloat((a.manualAmount * calculatedRate).toFixed(2)));
         });
       });
 
@@ -245,9 +250,10 @@ export class EnvelopeComponent implements OnInit {
     sectors.forEach(function (sector) {
       var allocation = sector.yearlyAllocation.filter(a => a.year == year);
       if (allocation.length > 0) {
-        sectorAllocation += allocation[0].amount;
+        sectorAllocation += Math.round(parseFloat((allocation[0].amount).toFixed(2)));
       }
     });
+    this.totalActualAmount = Math.round(parseFloat(sectorAllocation.toFixed(2)));
     return sectorAllocation;
   }
 
@@ -258,9 +264,10 @@ export class EnvelopeComponent implements OnInit {
     sectors.forEach(function (sector) {
       var allocation = sector.yearlyAllocation.filter(a => a.year == year);
       if (allocation.length > 0) {
-        sectorExpectedAllocation += allocation[0].expectedAmount;
+        sectorExpectedAllocation += Math.round(parseFloat((allocation[0].expectedAmount).toFixed(2)));
       }
     });
+    this.totalExpectedAmount = Math.round(parseFloat(sectorExpectedAllocation.toFixed(2)));
     return sectorExpectedAllocation;
   }
 
@@ -271,9 +278,10 @@ export class EnvelopeComponent implements OnInit {
     sectors.forEach(function (sector) {
       var allocation = sector.yearlyAllocation.filter(a => a.year == year);
       if (allocation.length > 0) {
-        sectorManualAllocation += allocation[0].manualAmount;
+        sectorManualAllocation += Math.round(parseFloat((allocation[0].manualAmount).toFixed(2)));
       }
     });
+    this.totalManualAmount = Math.round(parseFloat(sectorManualAllocation.toFixed(2)));
     return sectorManualAllocation;
   }
 
