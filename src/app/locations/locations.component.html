@@ -37,7 +37,7 @@
         <th>Longitude</th>
         <th *ngIf="permissions.canEditLocation">Actions</th>
       </tr>
-      <tr *ngFor="let loc of locationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+      <tr *ngFor="let loc of filteredLocationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
         <td>{{loc.location}}</td>
         <td>{{loc.latitude}}</td>
         <td>{{loc.longitude}}</td>
@@ -50,24 +50,8 @@
     </table>
     <pagination-controls (pageChange)="p=$event"></pagination-controls>
   </div>
-  <div *ngIf="locationsList.length == 0" class="col-md-12 text-info">
+  <div *ngIf="filteredLocationsList.length == 0" class="col-md-12 text-info">
     <i>No locations to show</i>
   </div>
 </div>
 </div>
-
-<!--<jw-modal id="confirmation-modal">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-          <div class="card-header bg-info text-white">Confirmation Message</div>
-          <div class="card-body text-info">
-              Are you sure you want to delete selected location? This action cannot be undone.
-          </div>
-        </div><br />
-        <button class="btn btn-info" (click)="delete()">Yes Delete Location</button>
-        &nbsp;
-        <button class="btn btn-danger" (click)="closeModal();">No</button>
-    </div>
-  </div>
-</jw-modal>-->

@@ -187,6 +187,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.addProjectField);
     }
 
+    getGrantTypesUrl() {
+        return (this.BASE_URL + urlsList.urls.grantTypeUrl);
+    }
+
+    getSingleGrantTypeUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.grantTypeUrl + '/' + id);
+    } 
+
     getSingleSectorTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getSectorType + id);
     }

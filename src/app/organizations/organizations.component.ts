@@ -28,15 +28,6 @@ export class OrganizationsComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
-    this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
-    if (this.infoMessage !== null && this.infoMessage !== '') {
-      this.showMessage = true;
-    }
-    setTimeout(() => {
-      this.storeService.newInfoMessage('');
-      this.showMessage = false;
-    }, Settings.displayMessageTime);
-
     this.getOrganizationsList();
   }
 
@@ -55,26 +46,6 @@ export class OrganizationsComponent implements OnInit {
       }
     );
   }
-
-  /*searchOrganizations() {
-    if (this.criteria != null) {
-      this.isLoading = true;
-      
-      this.organizationService.filterOrganizations(this.criteria).subscribe(
-        data => {
-          this.isLoading = false;
-          if (data && data.length) {
-            this.organizationsList = data
-          }
-        },
-        error => {
-          this.isLoading = false;
-        }
-      );
-    } else {
-      this.organizationsList();
-    }
-  }*/
 
   searchOrganizations() {
     if (!this.criteria) {

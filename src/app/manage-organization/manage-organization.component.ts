@@ -40,7 +40,6 @@ export class ManageOrganizationComponent implements OnInit {
           data => {
             this.model.id = data.id;
             this.model.organizationName = data.organizationName;
-            //this.model.organizationTypeId = data.organizationTypeId;
           },
           error => {
             console.log("Request Failed: ", error);
@@ -71,7 +70,6 @@ export class ManageOrganizationComponent implements OnInit {
   saveOrganization() {
     var model = {
       Name: this.model.organizationName,
-      //TypeId: this.model.organizationTypeId
     };
 
     this.isBtnDisabled = true;

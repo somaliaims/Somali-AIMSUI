@@ -16,6 +16,7 @@ export class LocationsComponent implements OnInit {
 
   permissions: any = {};
   locationsList: any = null;
+  filteredLocationsList: any = null;
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
@@ -36,15 +37,6 @@ export class LocationsComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
-    this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
-    if (this.infoMessage !== null && this.infoMessage !== '') {
-      this.showMessage = true;
-    }
-    setTimeout(() => {
-      this.showMessage = false;
-    }, Settings.displayMessageTime);
-
-    this.permissions = this.securityService.getUserPermissions();
     this.getLocationsList();
   }
 
@@ -54,6 +46,7 @@ export class LocationsComponent implements OnInit {
         this.isLoading = false;
         if (data && data.length) {
           this.locationsList = data;
+          this.filteredLocationsList = data;
         }
       },
       error => {
@@ -63,7 +56,7 @@ export class LocationsComponent implements OnInit {
     );
   }
 
-  searchLocations() {
+  /*searchLocations() {
     if (this.criteria != null) {
       this.isLoading = true;
       
@@ -80,6 +73,18 @@ export class LocationsComponent implements OnInit {
       );
     } else {
       this.getLocationsList();
+    }
+  }*/
+
+  searchLocations() {
+    if (!this.criteria) {
+      this.filteredLocationsList = this.locationsList;
+    }
+    else {
+      if (this.locationsList.length > 0) {
+        var criteria = this.criteria.toLowerCase();
+        this.filteredLocationsList = this.locationsList.filter(s => (s.location.toLowerCase().indexOf(criteria) != -1));
+      }
     }
   }
 

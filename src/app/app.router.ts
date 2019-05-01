@@ -49,6 +49,8 @@ import { EnvelopeComponent } from './envelope/envelope.component';
 import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
 import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
 import { DeleteFieldComponent } from './delete-field/delete-field.component';
+import { GrantTypesComponent } from './grant-types/grant-types.component';
+import { ManageGrantTypeComponent } from './manage-grant-type/manage-grant-type.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -110,6 +112,9 @@ export const routes: Routes = [
   { path: 'manage-custom-field', component: ManageCustomFieldsComponent },
   { path: 'manage-custom-field/:{id}', component: ManageCustomFieldsComponent, data: { isForEdit: true } },
   { path: 'delete-field/:{id}', component: DeleteFieldComponent },
+  { path: 'grant-types', component: GrantTypesComponent },
+  { path: 'manage-grant-type', component: ManageGrantTypeComponent },
+  { path: 'manage-grant-type/:{id}', component: ManageGrantTypeComponent, data: { isForEdit: true } },
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

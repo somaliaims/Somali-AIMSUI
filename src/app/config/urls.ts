@@ -104,5 +104,6 @@ export const urls = {
 	envelopeUrl: "Envelope",
 	customFieldsUrl: "CustomField",
 	activeCustomFieldsUrl: "CustomField/GetActive",
-	customFieldProjects: "Project/GetCustomFieldProjects/"
+	customFieldProjects: "Project/GetCustomFieldProjects/",
+	grantTypeUrl: "GrantType",
 };

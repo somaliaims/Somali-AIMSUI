@@ -70,6 +70,8 @@ import { EnvelopeComponent } from './envelope/envelope.component';
 import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
 import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
 import { DeleteFieldComponent } from './delete-field/delete-field.component';
+import { GrantTypesComponent } from './grant-types/grant-types.component';
+import { ManageGrantTypeComponent } from './manage-grant-type/manage-grant-type.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +133,8 @@ import { DeleteFieldComponent } from './delete-field/delete-field.component';
     ManageCustomFieldsComponent,
     CustomFieldsComponent,
     DeleteFieldComponent,
+    GrantTypesComponent,
+    ManageGrantTypeComponent,
   ],
   imports: [
     BrowserModule,
