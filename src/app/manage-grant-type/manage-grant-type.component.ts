@@ -67,7 +67,7 @@ export class ManageGrantTypeComponent implements OnInit {
     this.isBtnDisabled = true;
     if (this.isForEdit) {
       this.btnText = 'Updating...';
-      this.grantTypeService.updateGrantType(this.model.id, model).subscribe(
+      this.grantTypeService.updateGrantType(this.id, model).subscribe(
         data => {
           if (data) {
             this.router.navigateByUrl('grant-types');

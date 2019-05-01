@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GrantTypeService } from '../services/grant-type.service';
 import { Router } from '@angular/router';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-grant-types',
@@ -13,7 +14,8 @@ export class GrantTypesComponent implements OnInit {
   filteredGrantTypesList: any = [];
   criteria: string = null;
   permissions: any = {};
-
+  pagingSize: number = Settings.rowsPerPage;
+  
   constructor(private grantTypeService: GrantTypeService, private router: Router,
     private securityService: SecurityHelperService) { }
 
@@ -31,6 +33,7 @@ export class GrantTypesComponent implements OnInit {
       data => {
         if (data) {
           this.grantTypesList = data;
+          this.filteredGrantTypesList = data;
         }
       }
     );
