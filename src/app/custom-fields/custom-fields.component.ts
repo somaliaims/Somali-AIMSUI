@@ -16,8 +16,7 @@ export class CustomFieldsComponent implements OnInit {
     1: 'Dropdown',
     2: 'Checkbox',
     3: 'Text',
-    4: 'List',
-    5: 'Radio'
+    4: 'Radio'
   };
 
   customFields: any = [];

@@ -286,17 +286,6 @@ export class EnvelopeComponent implements OnInit {
   getExchangeRate() {
     if (this.selectedCurrency != null) {
       return this.exRatesList.filter(ex => ex.currency == this.selectedCurrency)[0].rate;
-      /*var defaultRateArr = this.exRatesList.filter(ex => ex.currency == this.defaultCurrency);
-      var currencyExRate = currencyRateArr[0].rate;
-      var defaultRate = defaultRateArr[0].rate;*/
-
-      /*if (currencyExRate < defaultRate) {
-        return (defaultRate / currencyExRate);
-      } else if (currencyExRate == defaultRate) {
-        return defaultRate;
-      } else {
-        return (currencyExRate / defaultRate);
-      }*/
     }
     return 1;
   }
