@@ -111,15 +111,12 @@ export class EnvelopeComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
-    var totalAmount = 0;
-    this.envelopeBreakups.forEach(function (e) {
-      
-    });
-
+    
     var model = {
       funderId: this.envelopeData.funderId,
       currency: this.selectedCurrency,
-      sectorBreakups: this.envelopeSectorsBreakups 
+      sectorBreakups: this.envelopeSectorsBreakups,
+      exchangeRate: this.getExchangeRate()
     }
 
     this.blockUI.start('Saving envelope...');
@@ -230,7 +227,7 @@ export class EnvelopeComponent implements OnInit {
         e.manualAmount = Math.round(parseFloat((e.manualAmount * calculatedRate).toFixed(2)));
       });
 
-      var sectors = this.envelopeData.sectors;
+      var sectors = this.envelopeSectorsBreakups;
       sectors.forEach(function (sector) {
         var allocation = sector.yearlyAllocation.forEach(function (a) {
           a.amount = Math.round(parseFloat((a.amount * calculatedRate).toFixed(2)));
@@ -239,6 +236,7 @@ export class EnvelopeComponent implements OnInit {
         });
       });
 
+      this.totalFundingAmount = Math.round(parseFloat((this.totalFundingAmount * calculatedRate).toFixed(2)));
       this.oldCurrency = this.selectedCurrency;
     }
   }
@@ -283,6 +281,24 @@ export class EnvelopeComponent implements OnInit {
     });
     this.totalManualAmount = Math.round(parseFloat(sectorManualAllocation.toFixed(2)));
     return sectorManualAllocation;
+  }
+
+  getExchangeRate() {
+    if (this.selectedCurrency != null) {
+      return this.exRatesList.filter(ex => ex.currency == this.selectedCurrency)[0].rate;
+      /*var defaultRateArr = this.exRatesList.filter(ex => ex.currency == this.defaultCurrency);
+      var currencyExRate = currencyRateArr[0].rate;
+      var defaultRate = defaultRateArr[0].rate;*/
+
+      /*if (currencyExRate < defaultRate) {
+        return (defaultRate / currencyExRate);
+      } else if (currencyExRate == defaultRate) {
+        return defaultRate;
+      } else {
+        return (currencyExRate / defaultRate);
+      }*/
+    }
+    return 1;
   }
 
 }

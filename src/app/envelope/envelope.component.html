@@ -46,11 +46,11 @@
 
             <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelopeData()" #envelopeForm="ngForm">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <span class="float-left">
                     <table>
                       <tr>
-                        <td><b>Currency:</b>&nbsp;</td>
+                        <td><b>Envelope currency:</b>&nbsp;</td>
                         <td>
                           <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
                             #currency="ngModel" (change)="convertExRatesToCurrency()">
@@ -63,12 +63,7 @@
                     </table>
                   </span>
                 </div>
-                <div class="col-md-4">
-                  <span class="float-left">
-                    <b>Default Currency:</b>&nbsp;{{defaultCurrency}}
-                  </span>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <span class="float-right">
                     <b>Actual total:</b>&nbsp;{{totalFundingAmount}}
                   </span>
