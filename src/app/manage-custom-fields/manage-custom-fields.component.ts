@@ -139,7 +139,7 @@ export class ManageCustomFieldsComponent implements OnInit {
     this.model.optionValues = this.model.optionValues.filter(o => o.id != id);
   }
 
-  saveCustomField(model: any) {
+  saveCustomField() {
     if (this.isManyValuesDisplay && this.model.optionValues.length == 0) {
       this.errorMessage = Messages.INVALID_OPTIONS_LIST;
       this.errorModal.openModal();

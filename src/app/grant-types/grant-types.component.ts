@@ -14,6 +14,7 @@ export class GrantTypesComponent implements OnInit {
   filteredGrantTypesList: any = [];
   criteria: string = null;
   permissions: any = {};
+  isLoading: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
   
   constructor(private grantTypeService: GrantTypeService, private router: Router,

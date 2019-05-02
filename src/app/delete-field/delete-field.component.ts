@@ -18,6 +18,7 @@ export class DeleteFieldComponent implements OnInit {
   id: number = 0;
   requestNo: number = 0;
   errorMessage: string = null;
+  isLoading: boolean = false;
   @BlockUI() blockUI: NgBlockUI;
   
   constructor(private customFieldService: CustomeFieldService, private securityService: SecurityHelperService,

@@ -24,6 +24,7 @@ export class CustomFieldsComponent implements OnInit {
   isLoading: boolean = true;
   permissions: any = {};
   criteria: string = null;
+  inputTextHolder: string = 'Enter field name to search';
   pagingSize: number = Settings.rowsPerPage;
 
   @BlockUI() blockUI: NgBlockUI;
