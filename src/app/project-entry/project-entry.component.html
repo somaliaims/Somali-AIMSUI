@@ -843,6 +843,17 @@
               </div>
 
               <div class="form-group">
+                <label for="grantType">Grant type</label>
+                <select class="form-control" id="grantTypeId" [(ngModel)]="funderModel.grantTypeId" name="grantType"
+                  #grantTypeId="ngModel" required>
+                  <option *ngFor="let gType of grantTypesList" [value]="gType.id">{{gType.grantType}}</option>
+                </select>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="grantTypeId.valid" class="alert alert-danger">
+                  Grant type is required
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="currency">Currency</label>
                 <select class="form-control" id="currency" [(ngModel)]="funderModel.currency" name="currency"
                   #currency="ngModel" (change)="getCurrencyExchangeRate()" required>
@@ -881,6 +892,7 @@
             <table class="table table-bordered">
               <tr>
                 <th>Funder</th>
+                <th>Type</th>
                 <th>Amount</th>
                 <th>Currency</th>
                 <th>Exchange Rate</th>
@@ -888,6 +900,7 @@
               </tr>
               <tr *ngFor="let funder of currentProjectFundersList">
                 <td>{{funder.funder}}</td>
+                <td>{{funder.grantType}}</td>
                 <td>{{funder.amount | number:0}}</td>
                 <td>{{funder.currency}}</td>
                 <td>{{funder.exchangeRate}}</td>
