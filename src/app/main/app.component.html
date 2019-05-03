@@ -53,7 +53,7 @@
               <h5 *ngIf="permissions.canManage" class="dropdown-header">AIMS management</h5>
               <a *ngIf="permissions.canDoSMTPSettings" class="dropdown-item" [routerLink]="['/smtp-settings']">Email settings</a>
               <a *ngIf="permissions.canDoIATISettings" class="dropdown-item" [routerLink]="['/iati-settings']">IATI settings</a>
-              <a *ngIf="permissions.canEditEmailMessage" class="dropdown-item" [routerLink]="['/email-message']">Email messages</a>
+              <a *ngIf="permissions.canEditEmailMessage" class="dropdown-item" [routerLink]="['/email-messages']">Email messages</a>
             </div>
           </li>
           <!--<li *ngIf="isLoggedIn" class="nav-item active"> 

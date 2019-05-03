@@ -5,6 +5,7 @@ import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-manage-currency',
@@ -22,12 +23,19 @@ export class ManageCurrencyComponent implements OnInit {
   isError: boolean = false;
   model = { id: 0, currency: null, isDefault: false };
   entryForm: any = null;
+  permissions: any = {};
 
   constructor(private currencyService: CurrencyService, private route: ActivatedRoute,
-    private router: Router, private storeService: StoreService) {
+    private router: Router, private storeService: StoreService,
+    private securityService: SecurityHelperService) {
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditCurrency) {
+      this.router.navigateByUrl('home');
+    }
+
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
