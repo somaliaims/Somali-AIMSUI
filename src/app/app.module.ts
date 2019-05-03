@@ -72,6 +72,7 @@ import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
 import { DeleteFieldComponent } from './delete-field/delete-field.component';
 import { GrantTypesComponent } from './grant-types/grant-types.component';
 import { ManageGrantTypeComponent } from './manage-grant-type/manage-grant-type.component';
+import { EmailMessagesComponent } from './email-messages/email-messages.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import { ManageGrantTypeComponent } from './manage-grant-type/manage-grant-type.
     DeleteFieldComponent,
     GrantTypesComponent,
     ManageGrantTypeComponent,
+    EmailMessagesComponent,
   ],
   imports: [
     BrowserModule,

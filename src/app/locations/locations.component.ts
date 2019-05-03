@@ -56,26 +56,6 @@ export class LocationsComponent implements OnInit {
     );
   }
 
-  /*searchLocations() {
-    if (this.criteria != null) {
-      this.isLoading = true;
-      
-      this.locationService.filterLocations(this.criteria).subscribe(
-        data => {
-          this.isLoading = false;
-          if (data && data.length) {
-            this.locationsList = data
-          }
-        },
-        error => {
-          this.isLoading = false;
-        }
-      );
-    } else {
-      this.getLocationsList();
-    }
-  }*/
-
   searchLocations() {
     if (!this.criteria) {
       this.filteredLocationsList = this.locationsList;

@@ -195,6 +195,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.grantTypeUrl + '/' + id);
     } 
 
+    getEmailMessagesUrl() {
+        return (this.BASE_URL + urlsList.urls.emailMessageUrl);
+    }
+
+    getSingleEmailMessageUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.emailMessageUrl + '/' + id);
+    }
+
     getSingleSectorTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getSectorType + id);
     }
