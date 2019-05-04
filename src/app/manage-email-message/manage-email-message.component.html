@@ -10,7 +10,7 @@
         </li>
       </ul>
     </div>
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="col-sm-12 col-md-10 col-lg-10 mx-auto">
       <div class="card card-signin my-5">
         <div class="card-body">
           <h5 class="card-title text-center">Email message</h5>
@@ -31,7 +31,7 @@
             <div class="form-group">
               <label for="message">Message</label>
               <textarea rows="10" class="form-control" id="message" [(ngModel)]="model.message" name="message"
-                #message="ngModel" maxlength="800"></textarea>
+                #message="ngModel" maxlength="800" required></textarea>
               <div *ngIf="messageForm.submitted" [hidden]="message.valid" class="alert alert-danger">
                 Message is required
               </div>

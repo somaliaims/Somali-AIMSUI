@@ -13,6 +13,9 @@ import { ModalService } from '../services/modal.service';
 export class InfoModalComponent implements OnInit {
   @Input()
   message: string = '';
+  @Input()
+  title: string = 'Information message';
+
   constructor(private modalService: ModalService) { }
 
   ngOnInit() {

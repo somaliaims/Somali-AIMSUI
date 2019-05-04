@@ -1,10 +1,10 @@
 <div class="container-fluid view-area">
-  
+
   <div class="row">
     <div class="col-md-6">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab" >Email messages list</a>
+          <a class="nav-link active btn-info" data-toggle="tab">Email messages list</a>
         </li>
         <li *ngIf="permissions.canEditLocation" class="nav-item">
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-email-message']">Create new</a>
@@ -14,21 +14,22 @@
     <div class="col-md-6">
       <div class="input-group mb-3">
         <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria"
-            (input)="searchMessages()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
-            onkeypress="return event.keyCode != 13;" required>
+          (input)="searchMessages()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
+          onkeypress="return event.keyCode != 13;" required>
         <div class="input-group-append">
-          <button class="btn btn-outline-info" (click)="searchMessages()" type="button"><i class="fa fa-search"></i></button>
+          <button class="btn btn-outline-info" (click)="searchMessages()" type="button"><i
+              class="fa fa-search"></i></button>
         </div>
       </div>
     </div>
   </div>
-  
+
   <div class="row text-center" *ngIf="isLoading">
     <div class="col-md-12">
       <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
     </div>
   </div>
-  
+
   <div *ngIf="!isLoading" class="row">
     <div *ngIf="filteredEmailMessagesList.length > 0" class="col margin-top-10">
       <table class="table table-bordered table-stripped">
@@ -39,9 +40,9 @@
         </tr>
         <tr *ngFor="let msg of filteredEmailMessagesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{msg.typeDefinition}}</td>
-          <td>{{msg.message | truncate}} <a href="#" title="View message detail"
-            id="msg-{{msg.id}}" (click)="viewMessage($event)" class="text-info">View
-            full message</a><br /></td>
+          <td>{{msg.message | truncate}} <a href="#" title="View message detail" id="msg-{{msg.id}}"
+              (click)="viewEmailMessage($event)" class="text-info">View
+              full message</a><br /></td>
           <td *ngIf="permissions.canEditEmailMessage">
             <a title="Edit" (click)="edit(msg.id)" class="btn btn-info"><i class="fa fa-edit color-white"></i></a>
             <!--&nbsp;
@@ -55,5 +56,6 @@
       <i>No messages to show</i>
     </div>
   </div>
-  </div>
-  
+</div>
+
+<info-modal title="Email message" message="{{infoMessage}}"></info-modal>

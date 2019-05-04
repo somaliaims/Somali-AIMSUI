@@ -4,6 +4,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { ModalService } from '../services/modal.service';
 import { Settings } from '../config/settings';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
 
 @Component({
   selector: 'app-email-message',
@@ -16,10 +17,11 @@ export class EmailMessagesComponent implements OnInit {
   permissions: any = {};
   criteria: string = null;
   isLoading: boolean = true;
+  infoMessage: string = null;
   pagingSize: number = Settings.rowsPerPage;
 
   constructor(private emailMessageService: EmailMessageService, private securityService: SecurityHelperService,
-    private router: Router, private modalService: ModalService) { }
+    private router: Router, private modalService: ModalService, private infoModal: InfoModalComponent) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -40,6 +42,18 @@ export class EmailMessagesComponent implements OnInit {
         this.isLoading = false;
       }
     )
+  }
+
+  viewEmailMessage(e) {
+    var id = e.currentTarget.id.split('-')[1];
+    if (id) {
+      var message = this.emailMessagesList.filter(m => m.id == id);
+      if (message.length > 0) {
+        this.infoMessage = message[0].message;
+        this.infoModal.openModal();
+      }
+    }
+    return false;
   }
 
   searchMessages() {
