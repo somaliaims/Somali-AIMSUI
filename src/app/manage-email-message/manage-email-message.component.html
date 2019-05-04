@@ -18,11 +18,13 @@
           <form class="form-signin" (ngSubmit)="messageForm.form.valid && saveEmailMessage()" #messageForm="ngForm">
 
             <div class="form-group">
-              <label for="definition">Definition</label>
-              <input type="text" class="form-control" id="definition" [(ngModel)]="model.typeDefinition" name="definition"
-                #definition="ngModel" maxlength="3" required>
-              <div *ngIf="messageForm.submitted" [hidden]="definition.valid" class="alert alert-danger">
-                Definition is required
+              <label for="messageType">Definition</label>
+              <select class="form-control" id="messageType" [(ngModel)]="model.messageType" name="messageType"
+                #messageType="ngModel" required>
+                <option *ngFor="let type of messagesList" value={{type.messageType}}>{{type.typeDefinition}}</option>
+              </select>
+              <div *ngIf="messageForm.submitted" [hidden]="messageType.valid" class="alert alert-danger">
+                Message type is required
               </div>
             </div>
 

@@ -13,8 +13,9 @@
     </div>
     <div class="col-md-6">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Enter message" [(ngModel)]="criteria" aria-label="Recipient's username"
-          aria-describedby="basic-addon2">
+        <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria"
+            (input)="searchMessages()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
+            onkeypress="return event.keyCode != 13;" required>
         <div class="input-group-append">
           <button class="btn btn-outline-info" (click)="searchMessages()" type="button"><i class="fa fa-search"></i></button>
         </div>
@@ -29,21 +30,22 @@
   </div>
   
   <div *ngIf="!isLoading" class="row">
-    <div *ngIf="emailMessagesList.length > 0" class="col margin-top-10">
+    <div *ngIf="filteredEmailMessagesList.length > 0" class="col margin-top-10">
       <table class="table table-bordered table-stripped">
         <tr>
           <th>Definition</th>
           <th>Message</th>
-          <th>Longitude</th>
           <th *ngIf="permissions.canEditEmailMessage">Actions</th>
         </tr>
         <tr *ngFor="let msg of filteredEmailMessagesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{msg.typeDefinition}}</td>
-          <td>{{msg.message}}</td>
+          <td>{{msg.message | truncate}} <a href="#" title="View message detail"
+            id="msg-{{msg.id}}" (click)="viewMessage($event)" class="text-info">View
+            full message</a><br /></td>
           <td *ngIf="permissions.canEditEmailMessage">
-            <a title="Edit" (click)="edit(msg.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
-            &nbsp;
-            <a title="Delete" (click)="delete(msg.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+            <a title="Edit" (click)="edit(msg.id)" class="btn btn-info"><i class="fa fa-edit color-white"></i></a>
+            <!--&nbsp;
+            <a title="Delete" (click)="delete(msg.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>-->
           </td>
         </tr>
       </table>

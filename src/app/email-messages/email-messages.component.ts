@@ -3,6 +3,7 @@ import { EmailMessageService } from '../services/email-message.service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { ModalService } from '../services/modal.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-email-message',
@@ -14,6 +15,8 @@ export class EmailMessagesComponent implements OnInit {
   filteredEmailMessagesList: any = [];
   permissions: any = {};
   criteria: string = null;
+  isLoading: boolean = true;
+  pagingSize: number = Settings.rowsPerPage;
 
   constructor(private emailMessageService: EmailMessageService, private securityService: SecurityHelperService,
     private router: Router, private modalService: ModalService) { }
@@ -23,6 +26,8 @@ export class EmailMessagesComponent implements OnInit {
     if (!this.permissions.canEditEmailMessage) {
       this.router.navigateByUrl('home');
     }
+
+    this.getEmailMessages();
   }
 
   getEmailMessages() {
@@ -30,12 +35,14 @@ export class EmailMessagesComponent implements OnInit {
       data => {
         if (data) {
           this.emailMessagesList = data;
+          this.filteredEmailMessagesList = data;
         }
+        this.isLoading = false;
       }
     )
   }
 
-  searchLocations() {
+  searchMessages() {
     if (!this.criteria) {
       this.filteredEmailMessagesList = this.emailMessagesList;
     }
@@ -48,7 +55,7 @@ export class EmailMessagesComponent implements OnInit {
   }
 
   edit(id: string) {
-    this.router.navigateByUrl('/manage-location/' + id);
+    this.router.navigateByUrl('/manage-email-message/' + id);
   }
 
   closeModal() {
@@ -56,7 +63,7 @@ export class EmailMessagesComponent implements OnInit {
   }
 
   delete(id) {
-    this.router.navigateByUrl('delete-location/' + id);
+    this.router.navigateByUrl('delete-email-message/' + id);
   }
 
 }

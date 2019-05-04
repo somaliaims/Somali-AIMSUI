@@ -17,7 +17,8 @@ export class ManageEmailMessageComponent implements OnInit {
   requestNo: number = 0;
   isForEdit: boolean = false;
   isError: boolean = false;
-  model = { id: 0, typeDefinition: null, message: null };
+  messagesList: any = [];
+  model = { id: 0, messageType: null, typeDefinition: null, message: null };
   entryForm: any = null;
   permissions: any = {};
 
@@ -37,11 +38,11 @@ export class ManageEmailMessageComponent implements OnInit {
         this.btnText = 'Edit message';
         this.isForEdit = true;
         this.messageId = id;
-        this.getEmailMessage();
       }
       this.requestNo = this.storeService.getNewRequestNumber();
     }
 
+    this.getEmailMessages();
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -51,16 +52,35 @@ export class ManageEmailMessageComponent implements OnInit {
     });
   }
 
-  getEmailMessage() {
-    this.messageService.getEmailMessageById(this.messageId.toString()).subscribe(
+  getEmailMessages() {
+    this.messageService.getEmailMessages().subscribe(
       data => {
         if (data) {
-          this.model.typeDefinition = data.typeDefinition;
-          this.model.message = data.message;
+          this.messagesList = data;
+          if (this.isForEdit) {
+            var message = this.messagesList.filter(m => m.id == this.messageId);
+            if (message.length > 0) {
+              var messageData = message[0];
+              this.model.messageType = messageData.messageType;
+              this.model.typeDefinition = messageData.typeDefinition;
+              this.model.message = messageData.message;
+            }
+          }
         }
       }
     )
   }
+
+  // getEmailMessage() {
+  //   this.messageService.getEmailMessageById(this.messageId.toString()).subscribe(
+  //     data => {
+  //       if (data) {
+  //         this.model.typeDefinition = data.typeDefinition;
+  //         this.model.message = data.message;
+  //       }
+  //     }
+  //   )
+  // }
 
   saveEmailMessage(frm: any) {
     this.entryForm = frm;
