@@ -4,20 +4,20 @@
     <div class="col-md-6">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab" >Grant types list</a>
+          <a class="nav-link active btn-info" data-toggle="tab" >Funding types list</a>
         </li>
-        <li *ngIf="permissions.canEditGrantType" class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-grant-type']">Create new</a>
+        <li *ngIf="permissions.canEditFundingType" class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-funding-type']">Create new</a>
         </li>
       </ul>
     </div>
     <div class="col-md-6">
       <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Enter grant type" [(ngModel)]="criteria"
-          (input)="searchGrantTypes()" onkeypress="return event.keyCode != 13;">
+          <input type="text" class="form-control" placeholder="Enter funding type" [(ngModel)]="criteria"
+          (input)="searchFundingTypes()" onkeypress="return event.keyCode != 13;">
         
         <div class="input-group-append">
-          <button class="btn btn-outline-info" (click)="searchGrantTypes()" type="button"><i class="fa fa-search"></i></button>
+          <button class="btn btn-outline-info" (click)="searchFundingTypes()" type="button"><i class="fa fa-search"></i></button>
         </div>
       </div>
     </div>
@@ -30,15 +30,15 @@
   </div>
   
   <div *ngIf="!isLoading" class="row">
-    <div *ngIf="grantTypesList.length > 0" class="col margin-top-10">
+    <div *ngIf="fundingTypesList.length > 0" class="col margin-top-10">
       <table class="table table-bordered table-stripped">
         <tr>
-          <th>Grant type</th>
-          <th *ngIf="permissions.canEditGrantType">Actions</th>
+          <th>Funding type</th>
+          <th *ngIf="permissions.canEditFundingType">Actions</th>
         </tr>
-        <tr *ngFor="let g of filteredGrantTypesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
-          <td>{{g.grantType}}</td>
-          <td *ngIf="permissions.canEditGrantType">
+        <tr *ngFor="let g of filteredFundingTypesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+          <td>{{g.fundingType}}</td>
+          <td *ngIf="permissions.canEditFundingType">
             <a title="Edit" (click)="edit(g.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
             &nbsp;
             <a title="Delete" (click)="delete(g.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
@@ -47,8 +47,8 @@
       </table>
       <pagination-controls (pageChange)="p=$event"></pagination-controls>
     </div>
-    <div *ngIf="filteredGrantTypesList.length == 0" class="col-md-12 text-info">
-      <i>No grant types to show</i>
+    <div *ngIf="filteredFundingTypesList.length == 0" class="col-md-12 text-info">
+      <i>No funding types to show</i>
     </div>
   </div>
   </div>

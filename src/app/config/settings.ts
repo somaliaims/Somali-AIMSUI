@@ -27,7 +27,7 @@ export const Settings = {
             canDoIATISettings: false,
             canEditEnvelope: true,
             canEditCustomFields: false,
-            canEditGrantType: false,
+            canEditFundingType: false,
             canEditEmailMessage: false
         },
         manager: {
@@ -45,7 +45,7 @@ export const Settings = {
             canDoIATISettings: true,
             canEditEnvelope: true,
             canEditCustomFields: true,
-            canEditGrantType: true,
+            canEditFundingType: true,
             canEditEmailMessage: true
         },
         superAdmin: {
@@ -63,7 +63,7 @@ export const Settings = {
             canDoIATISettings: true,
             canEditEnvelope: true,
             canEditCustomFields: true,
-            canEditGrantType: true,
+            canEditFundingType: true,
             canEditEmailMessage: true
         },
         guest: {
@@ -81,7 +81,7 @@ export const Settings = {
             canDoIATISettings: false,
             canEditEnvelope: true,
             canEditCustomFields: false,
-            canEditGrantType: false,
+            canEditFundingType: false,
             canEditEmailMessage: false
         }
     },

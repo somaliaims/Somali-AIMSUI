@@ -105,6 +105,6 @@ export const urls = {
 	customFieldsUrl: "CustomField",
 	activeCustomFieldsUrl: "CustomField/GetActive",
 	customFieldProjects: "Project/GetCustomFieldProjects/",
-	grantTypeUrl: "GrantType",
+	fundingTypeUrl: "FundingType",
 	emailMessageUrl: "EmailMessage"
 };

@@ -23,7 +23,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { CustomeFieldService } from '../services/custom-field.service';
 import { Settings } from '../config/settings';
-import { GrantTypeService } from '../services/grant-type.service';
+import { FundingTypeService } from '../services/funding-type.service';
 
 @Component({
   selector: 'app-project-entry',
@@ -103,7 +103,7 @@ export class ProjectEntryComponent implements OnInit {
   mappedSectorsList: any = [];
   organizationsList: any = [];
   customFieldsList: any = [];
-  grantTypesList: any = [];
+  fundingTypesList: any = [];
   currentProjectSectorsList: any = [];
   currentProjectLocationsList: any = [];
   currentProjectDocumentsList: any = [];
@@ -162,7 +162,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
-  funderModel = { id: 0, projectId: 0, funder: null, grantTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
+  funderModel = { id: 0, projectId: 0, funder: null, fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
   disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0 };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
@@ -192,7 +192,7 @@ export class ProjectEntryComponent implements OnInit {
     private errorModal: ErrorModalComponent,
     private currencyService: CurrencyService,
     private customFieldService: CustomeFieldService,
-    private grantTypeService: GrantTypeService
+    private fundingTypeService: FundingTypeService
   ) { }
 
   ngOnInit() {
@@ -287,7 +287,7 @@ export class ProjectEntryComponent implements OnInit {
     this.loadOrganizationsList();
     this.loadDefaultCurrency();
     this.loadActiveCustomFields();
-    this.loadGrantTypes();
+    this.loadFundingTypes();
   }
 
   loadIATIProjectsForIds(modelArr: any) {
@@ -351,11 +351,11 @@ export class ProjectEntryComponent implements OnInit {
     )
   }
 
-  loadGrantTypes() {
-    this.grantTypeService.getGrantTypesList().subscribe(
+  loadFundingTypes() {
+    this.fundingTypeService.getFundingTypesList().subscribe(
       data => {
         if (data) {
-          this.grantTypesList = data;
+          this.fundingTypesList = data;
         }
       }
     )
@@ -720,7 +720,7 @@ export class ProjectEntryComponent implements OnInit {
             };
             this.funderModel.funder = dbFunder[0].funder;
             this.funderModel.funderId = dbFunder[0].funderId;
-            this.funderModel.grantTypeId = dbFunder[0].grantTypeId;
+            this.funderModel.fundingTypeId = dbFunder[0].fundingTypeId;
             this.funderModel.amount = dbFunder[0].amount;
             this.funderModel.exchangeRate = dbFunder[0].exchangeRate;
             this.funderInput.setValue(funderObj);
@@ -1420,7 +1420,7 @@ export class ProjectEntryComponent implements OnInit {
     if (this.selectedFunderId != 0) {
       this.funderModel.funderId = this.selectedFunderId;
       var funderExists = this.currentProjectFundersList.filter(f => f.funderId == this.selectedFunderId
-        && f.grantTypeId == this.funderModel.grantTypeId);
+        && f.fundingTypeId == this.funderModel.fundingTypeId);
       if (funderExists.length > 0) {
         if (this.funderInput.value && this.funderInput.value.toLowerCase().trim() != funderExists[0].funder.toLowerCase().trim()) {
           this.funderModel.funderId = 0;
@@ -1463,7 +1463,7 @@ export class ProjectEntryComponent implements OnInit {
       funder: this.funderModel.funder,
       projectId: this.funderModel.projectId,
       funderId: this.funderModel.funderId,
-      grantTypeId: this.funderModel.grantTypeId,
+      fundingTypeId: this.funderModel.fundingTypeId,
       amount: this.funderModel.amount,
       currency: this.funderModel.currency,
       exchangeRate: this.funderModel.exchangeRate
@@ -1506,10 +1506,10 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           model.funder = this.funderModel.funder;
-          var gTypeArr = this.grantTypesList.filter(g => g.id == model.grantTypeId);
+          var gTypeArr = this.fundingTypesList.filter(g => g.id == model.fundingTypeId);
           if (gTypeArr.length > 0) {
-            model.grantTypeId = gTypeArr[0].id;
-            model.grantType = gTypeArr[0].grantType;
+            model.fundingTypeId = gTypeArr[0].id;
+            model.fundingType = gTypeArr[0].fundingType;
           }
           this.currentProjectFundersList.push(model);
           this.resetFunderEntry();

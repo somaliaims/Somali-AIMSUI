@@ -1,42 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GrantTypeService } from '../services/grant-type.service';
+import { FundingTypeService } from '../services/funding-type.service';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
-  selector: 'app-manage-grant-type',
-  templateUrl: './manage-grant-type.component.html',
-  styleUrls: ['./manage-grant-type.component.css']
+  selector: 'app-manage-funding-type',
+  templateUrl: './manage-funding-type.component.html',
+  styleUrls: ['./manage-funding-type.component.css']
 })
-export class ManageGrantTypeComponent implements OnInit {
+export class ManageFundingTypeComponent implements OnInit {
   id: number = 0;
   isForEdit: boolean = false;
-  btnText: string = 'Save grant type';
-  model: any = { grantType: null };
+  btnText: string = 'Save funding type';
+  model: any = { fundingType: null };
   isBtnDisabled: boolean = false;
   requestNo: number = 0;
   errorMessage: string = null;
   isError: boolean = false;
   permissions: any = {};
 
-  constructor(private route: ActivatedRoute, private grantTypeService: GrantTypeService,
+  constructor(private route: ActivatedRoute, private fundingTypeService: FundingTypeService,
     private storeService: StoreService, private router: Router, private securityService: SecurityHelperService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
-    if (!this.permissions.canEditGrantType) {
+    if (!this.permissions.canEditFundingType) {
       this.router.navigateByUrl('home');
     }
 
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit grant type';
+        this.btnText = 'Edit funding type';
         this.isForEdit = true;
         this.id = id;
-        this.getGrantType();
+        this.getFundingType();
       }
     }
 
@@ -49,28 +49,28 @@ export class ManageGrantTypeComponent implements OnInit {
     });
   }
 
-  getGrantType() {
-    this.grantTypeService.getGrantType(this.id.toString()).subscribe(
+  getFundingType() {
+    this.fundingTypeService.getFundingType(this.id.toString()).subscribe(
       data => {
         if (data) {
-          this.model.grantType = data.grantType
+          this.model.fundingType = data.fundingType
         }
       }
     );
   }
 
-  saveGrantType() {
+  saveFundingType() {
     var model = {
-      grantType: this.model.grantType,
+      fundingType: this.model.fundingType,
     };
 
     this.isBtnDisabled = true;
     if (this.isForEdit) {
       this.btnText = 'Updating...';
-      this.grantTypeService.updateGrantType(this.id, model).subscribe(
+      this.fundingTypeService.updateFundingType(this.id, model).subscribe(
         data => {
           if (data) {
-            this.router.navigateByUrl('grant-types');
+            this.router.navigateByUrl('funding-types');
           } else {
             this.resetFormState();
           }
@@ -83,10 +83,10 @@ export class ManageGrantTypeComponent implements OnInit {
       );
     } else {
       this.btnText = 'Saving...';
-      this.grantTypeService.addGrantType(model).subscribe(
+      this.fundingTypeService.addFundingType(model).subscribe(
         data => {
           if (data) {
-            this.router.navigateByUrl('grant-types');
+            this.router.navigateByUrl('funding-types');
           } 
         },
         error => {
@@ -100,9 +100,9 @@ export class ManageGrantTypeComponent implements OnInit {
   resetFormState() {
     this.isBtnDisabled = false;
     if (this.isForEdit) {
-      this.btnText = 'Edit grant type';
+      this.btnText = 'Edit funding type';
     } else {
-      this.btnText = 'Add grant type';
+      this.btnText = 'Add funding type';
     }
   }
 

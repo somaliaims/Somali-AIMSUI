@@ -70,8 +70,8 @@ import { EnvelopeComponent } from './envelope/envelope.component';
 import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
 import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
 import { DeleteFieldComponent } from './delete-field/delete-field.component';
-import { GrantTypesComponent } from './grant-types/grant-types.component';
-import { ManageGrantTypeComponent } from './manage-grant-type/manage-grant-type.component';
+import { FundingTypesComponent } from './funding-types/funding-types.component';
+import { ManageFundingTypeComponent } from './manage-funding-type/manage-funding-type.component';
 import { EmailMessagesComponent } from './email-messages/email-messages.component';
 import { ManageEmailMessageComponent } from './manage-email-message/manage-email-message.component';
 
@@ -135,8 +135,8 @@ import { ManageEmailMessageComponent } from './manage-email-message/manage-email
     ManageCustomFieldsComponent,
     CustomFieldsComponent,
     DeleteFieldComponent,
-    GrantTypesComponent,
-    ManageGrantTypeComponent,
+    FundingTypesComponent,
+    ManageFundingTypeComponent,
     EmailMessagesComponent,
     ManageEmailMessageComponent,
   ],

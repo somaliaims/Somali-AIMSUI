@@ -49,8 +49,8 @@ import { EnvelopeComponent } from './envelope/envelope.component';
 import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
 import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
 import { DeleteFieldComponent } from './delete-field/delete-field.component';
-import { GrantTypesComponent } from './grant-types/grant-types.component';
-import { ManageGrantTypeComponent } from './manage-grant-type/manage-grant-type.component';
+import { FundingTypesComponent } from './funding-types/funding-types.component';
+import { ManageFundingTypeComponent } from './manage-funding-type/manage-funding-type.component';
 import { EmailMessagesComponent } from './email-messages/email-messages.component';
 import { ManageEmailMessageComponent } from './manage-email-message/manage-email-message.component';
 
@@ -114,9 +114,9 @@ export const routes: Routes = [
   { path: 'manage-custom-field', component: ManageCustomFieldsComponent },
   { path: 'manage-custom-field/:{id}', component: ManageCustomFieldsComponent, data: { isForEdit: true } },
   { path: 'delete-field/:{id}', component: DeleteFieldComponent },
-  { path: 'grant-types', component: GrantTypesComponent },
-  { path: 'manage-grant-type', component: ManageGrantTypeComponent },
-  { path: 'manage-grant-type/:{id}', component: ManageGrantTypeComponent, data: { isForEdit: true } },
+  { path: 'funding-types', component: FundingTypesComponent },
+  { path: 'manage-funding-type', component: ManageFundingTypeComponent },
+  { path: 'manage-funding-type/:{id}', component: ManageFundingTypeComponent, data: { isForEdit: true } },
   { path: 'email-messages', component: EmailMessagesComponent },
   { path: 'manage-email-message', component: ManageEmailMessageComponent },
   { path: 'manage-email-message/:{id}', component: ManageEmailMessageComponent, data: { isForEdit: true } },

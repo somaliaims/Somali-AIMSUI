@@ -187,12 +187,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.addProjectField);
     }
 
-    getGrantTypesUrl() {
-        return (this.BASE_URL + urlsList.urls.grantTypeUrl);
+    getFundingTypesUrl() {
+        return (this.BASE_URL + urlsList.urls.fundingTypeUrl);
     }
 
-    getSingleGrantTypeUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.grantTypeUrl + '/' + id);
+    getSingleFundingTypeUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.fundingTypeUrl + '/' + id);
     } 
 
     getEmailMessagesUrl() {

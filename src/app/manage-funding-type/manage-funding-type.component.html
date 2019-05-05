@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/grant-types']">Grant types list</a>
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/funding-types']">Funding types list</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active btn-info" data-toggle="tab">Create new</a>
@@ -18,16 +18,16 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Error!</strong> {{errorMessage}}
           </div>
-          <h5 class="card-title text-center">Grant type</h5>
+          <h5 class="card-title text-center">Funding type</h5>
 
-          <form class="form-signin" (ngSubmit)="grantTypeForm.form.valid && saveGrantType()" #grantTypeForm="ngForm">
+          <form class="form-signin" (ngSubmit)="fundingTypeForm.form.valid && saveFundingType()" #fundingTypeForm="ngForm">
 
             <div class="form-group">
-              <label for="grantType">Grant type</label>
-              <input type="text" class="form-control" id="granttype" [(ngModel)]="model.grantType" name="grantType"
-                #grantType="ngModel" required>
-              <div *ngIf="grantTypeForm.submitted" [hidden]="grantType.valid" class="alert alert-danger">
-                Grant type is required
+              <label for="fundingType">Funding type</label>
+              <input type="text" class="form-control" id="fundingtype" [(ngModel)]="model.fundingType" name="fundingType"
+                #fundingType="ngModel" required>
+              <div *ngIf="fundingTypeForm.submitted" [hidden]="fundingType.valid" class="alert alert-danger">
+                Funding type is required
               </div>
             </div>
 
