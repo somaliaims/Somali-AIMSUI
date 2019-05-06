@@ -79,6 +79,18 @@ export class UserService {
             catchError(this.storeService.handleError<any>('User Subscription')));
     }
 
+    getManagerUsers() {
+        var url = this.urlHelper.getManagerUsersUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Manager Users')));
+    }
+
+    getStandardUsers() {
+        var url = this.urlHelper.getStandardUsersUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Standard Users')));
+    }
+
     saveReportSubscriptions(model:any) {
         var url = this.urlHelper.getSubscribeToReportsUrl();
         return this.httpClient.post(url, 

@@ -463,6 +463,18 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.userSubscriptionsUrl);
     }
 
+    getManagerUsersUrl() {
+        return (this.BASE_URL + urlsList.urls.getManagerUsers);
+    }
+
+    getStandardUsersUrl() {
+        return (this.BASE_URL + urlsList.urls.getStandardUsers);
+    }
+
+    getSendEmailUrl() {
+        return (this.BASE_URL + urlsList.urls.sendEmailUrl);
+    }
+
     //Reports url
     getSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);

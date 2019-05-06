@@ -71,17 +71,6 @@ export class ManageEmailMessageComponent implements OnInit {
     )
   }
 
-  // getEmailMessage() {
-  //   this.messageService.getEmailMessageById(this.messageId.toString()).subscribe(
-  //     data => {
-  //       if (data) {
-  //         this.model.typeDefinition = data.typeDefinition;
-  //         this.model.message = data.message;
-  //       }
-  //     }
-  //   )
-  // }
-
   saveEmailMessage(frm: any) {
     this.entryForm = frm;
     this.btnText = 'Saving...';

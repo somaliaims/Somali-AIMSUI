@@ -32,6 +32,13 @@ export class EmailMessageService {
                 catchError(this.storeService.handleError<any>('Email Message')));
     }
 
+    sendEmailMessage(model: any) {
+        var url = this.urlHelper.getSendEmailUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Email')));
+    }
+
     updateEmailMessage(id: string, model: any) {
         var url = this.urlHelper.getSingleEmailMessageUrl(id);
         return this.httpClient.put(url,
