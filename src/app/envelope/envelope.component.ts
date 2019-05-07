@@ -27,6 +27,7 @@ export class EnvelopeComponent implements OnInit {
   isLoading: boolean = true;
   errorMessage: string = '';
   selectedCurrency: string = null;
+  exchangeRate: number = 0;
   defaultCurrency: string = null;
   oldCurrency: string = null;
   envelopeData: any = { funderId: 0, funderName: '', totalFunds: 0.0, sectors: [] };
@@ -88,10 +89,15 @@ export class EnvelopeComponent implements OnInit {
           if (this.envelopeData.envelopeBreakups) {
             this.totalFundingAmount = this.envelopeData.expectedFunds;
             this.selectedCurrency = this.envelopeData.currency;
+            this.exchangeRate = this.envelopeData.exchangeRate;
             this.oldCurrency = this.selectedCurrency;
             this.envelopeBreakups = this.envelopeData.envelopeBreakups;
             this.envelopeSectorsBreakups = this.envelopeData.sectors;
             this.yearsList = this.envelopeData.envelopeBreakups.map(y => y.year);
+
+            if (!this.exchangeRate) {
+              this.exchangeRate = this.getExchangeRate(this.selectedCurrency);
+            }
           }
         }
         this.isLoading = false;
@@ -116,7 +122,7 @@ export class EnvelopeComponent implements OnInit {
       funderId: this.envelopeData.funderId,
       currency: this.selectedCurrency,
       sectorBreakups: this.envelopeSectorsBreakups,
-      exchangeRate: this.getExchangeRate()
+      exchangeRate: this.getExchangeRate(this.selectedCurrency)
     }
 
     this.blockUI.start('Saving envelope...');
@@ -212,6 +218,7 @@ export class EnvelopeComponent implements OnInit {
 
       if (currencyRateArr.length > 0) {
         currencyRate = currencyRateArr[0].rate;
+        this.exchangeRate = currencyRate;
       }
 
       if (oldCurrencyRateArr.length > 0) {
@@ -283,9 +290,10 @@ export class EnvelopeComponent implements OnInit {
     return sectorManualAllocation;
   }
 
-  getExchangeRate() {
-    if (this.selectedCurrency != null) {
-      return this.exRatesList.filter(ex => ex.currency == this.selectedCurrency)[0].rate;
+  getExchangeRate(currency: string) {
+    if (currency != null) {
+      var exRate = this.exRatesList.filter(ex => ex.currency == currency);
+      return exRate.length > 0 ? exRate[0].rate : 1;
     }
     return 1;
   }

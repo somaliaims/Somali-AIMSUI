@@ -44,26 +44,23 @@
           <div class="card-body margin-top-0">
             <h5 class="card-title text-center">Envelope data</h5>
 
-            <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelopeData()" #envelopeForm="ngForm">
+            <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelopeData()"
+              #envelopeForm="ngForm">
               <div class="row">
-                <div class="col-md-6">
-                  <span class="float-left">
-                    <table>
-                      <tr>
-                        <td><b>Envelope currency:</b>&nbsp;</td>
-                        <td>
-                          <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
-                            #currency="ngModel" (change)="convertExRatesToCurrency()">
-                            <option value="null">--Select one--</option>
-                            <option *ngFor="let currency of currenciesList" [value]="currency.currency">
-                              {{currency.currency}}</option>
-                          </select>
-                        </td>
-                      </tr>
-                    </table>
-                  </span>
+                <div class="col-md-9">
+                  <div class="form-inline">
+                    <label><b>Currency:</b>&nbsp;</label>
+                    <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
+                      #currency="ngModel" (change)="convertExRatesToCurrency()">
+                      <option value="null">--Select one--</option>
+                      <option *ngFor="let currency of currenciesList" [value]="currency.currency">
+                        {{currency.currency}}</option>
+                    </select>
+                    <label>&nbsp;<b>Ex. rate for {{defaultCurrency}}:</b>&nbsp;</label>
+                    <input class="form-control" type="text" [(ngModel)]="exchangeRate" name="exchangeRate" #exRate="ngModel" />
+                  </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                   <span class="float-right">
                     <b>Actual total:</b>&nbsp;{{totalFundingAmount}}
                   </span>
@@ -91,7 +88,7 @@
                         </tr>
                         <tr>
                           <td colspan="2">
-                              {{handleNullAmount(e.manualAmount)}}
+                            {{handleNullAmount(e.manualAmount)}}
                           </td>
                         </tr>
                       </table>
@@ -107,7 +104,9 @@
                         </tr>
                         <tr>
                           <td colspan="2">
-                            <input type="text" id="sm-{{allocation.year}}-{{s.sectorId}}" (change)="updateEnvelpeManualValue($event)" value="{{handleNullAmount(allocation.manualAmount)}}" />
+                            <input type="text" id="sm-{{allocation.year}}-{{s.sectorId}}"
+                              (change)="updateEnvelpeManualValue($event)"
+                              value="{{handleNullAmount(allocation.manualAmount)}}" />
                           </td>
                         </tr>
                       </table>
@@ -136,8 +135,7 @@
                 <span *ngIf="envelopeBreakups.length == 0 && isLoading == false" class="text-info"><i></i></span>
               </div>
 
-              <button class="btn btn-lg btn-info btn-block text-uppercase"
-                type="submit">{{btnText}}</button>
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
             </form>
           </div>
         </div>

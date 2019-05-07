@@ -107,10 +107,10 @@
                         id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                         Details</a><br />
                         <div class="margin-top-5">
-                            <b>Start date: </b>{{project.startDate}}&nbsp;<button id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)" class="btn btn-sm btn-success">>></button><br />
+                            <b>Start date: </b>{{project.startDate}}&nbsp;<button *ngIf="project.startDate" id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)" class="btn btn-sm btn-success">>></button><br />
                           </div>
                           <div class="margin-top-5">
-                            <b>End date: </b>{{project.endDate}}&nbsp;<button id="btniedate-{{project.id}}" (click)="enterEndDateIATI($event)" class="btn btn-sm btn-success">>></button><br />
+                            <b>End date: </b>{{project.endDate}}&nbsp;<button *ngIf="project.endDate" id="btniedate-{{project.id}}" (click)="enterEndDateIATI($event)" class="btn btn-sm btn-success">>></button><br />
                           </div>
                       <span class="badge badge-warning">IATI</span>
                     </span>
@@ -858,7 +858,7 @@
               <div class="form-group">
                 <label for="currency">Currency</label>
                 <select class="form-control" id="currency" [(ngModel)]="funderModel.currency" name="currency"
-                  #currency="ngModel" (change)="getCurrencyExchangeRate()" required>
+                  #currency="ngModel" (change)="getExchangeRateForFunding()" required>
                   <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currency}}</option>
                 </select>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
@@ -1196,6 +1196,29 @@
                 </div>
               </div>
 
+              <div class="form-group">
+                  <label for="currency">Currency</label>
+                  <select class="form-control" id="currency" [(ngModel)]="disbursementModel.currency" name="currency"
+                    #currency="ngModel" (change)="getExchangeRateForDisbursement()" required>
+                    <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currency}}</option>
+                  </select>
+                  <div *ngIf="disbursementForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
+                    Currency is required
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
+                  <input type="number" [readonly]="isExRateReadonly" class="form-control" id="exchangeRate" [(ngModel)]="disbursementModel.exchangeRate"
+                    name="exchangeRate" maxlength="9" min="1" max="1000" #exchangeRate="ngModel" />
+                    <div *ngIf="disbursementForm.submitted" [hidden]="exchangeRate.value > 0" class="alert alert-danger">
+                      Exchange rate for {{defaultCurrency}} must not be zero or less
+                    </div>
+                    <div [hidden]="defaultCurrency" class="alert alert-danger">
+                      Default currency is not set. Please contact administrator
+                    </div>
+                </div>
+
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Add Disbursement</button>
               <button [class.disable]="isBtnDisabled" (click)="resetDisbursementEntry()"
@@ -1212,11 +1235,15 @@
               <tr>
                 <th>Dated</th>
                 <th>Amount</th>
+                <th>Currency</th>
+                <th>Ex. rate</th>
                 <th>Action</th>
               </tr>
               <tr *ngFor="let disbursement of currentProjectDisbursementsList">
                 <td>{{disbursement.dated}}</td>
                 <td>{{disbursement.amount | number:0}}</td>
+                <td>{{disbursement.currency}}</td>
+                <td>{{disbursement.exchangeRate}}</td>
                 <td>
                   <button id="ddis-{{activeProjectId}}-{{disbursement.id}}"
                     (click)="deleteProjectDisbursement($event)" class="btn btn-danger btn-sm">
@@ -1225,7 +1252,7 @@
                   </button>
                 </td>
               </tr>
-              <td colspan="3">
+              <td colspan="5">
                 <span class="float-left">
                   <b>Fundings: {{totalFunds}}</b>
                 </span>

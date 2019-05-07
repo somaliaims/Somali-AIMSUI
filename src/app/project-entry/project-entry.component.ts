@@ -164,7 +164,7 @@ export class ProjectEntryComponent implements OnInit {
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
-  disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0 };
+  disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, exchangeRate: null };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
 
   displayTabs: any = [
@@ -1684,8 +1684,10 @@ export class ProjectEntryComponent implements OnInit {
     var model = {
       dated: dModel.dated.year + '-' + dModel.dated.month + '-' + dModel.dated.day,
       projectId: this.disbursementModel.projectId,
-      amount: this.disbursementModel.amount
-    }
+      amount: this.disbursementModel.amount,
+      currency: this.disbursementModel.currency,
+      exchangeRate: this.disbursementModel.exchangeRate
+    };
 
     var totalFund = this.calculateProjectFunding();
     var totalDisbursement = this.calculateProjectDisbursement();
@@ -1936,11 +1938,12 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
-  getCurrencyExchangeRate() {
+  getCurrencyExchangeRate(currency: string) {
+    var exRate = null;
     if (this.exchangeRatesList.length > 0) {
       this.exRatePlaceHolder = 'Fetching latest rate...';
       this.isExRateReadonly = true;
-      var currency = this.funderModel.currency;
+      
       var foundRate = this.exchangeRatesList.filter(e => e.currency == currency);
       var defaultCurrencyRate = this.exchangeRatesList.filter(e => e.currency == this.defaultCurrency);
       var proposedRate = 0;
@@ -1951,30 +1954,30 @@ export class ProjectEntryComponent implements OnInit {
         var defaultRate = parseFloat(defaultCurrencyRate[0].rate);
         if (defaultRate == 1) {
           if (proposedRate < 1) {
-            this.funderModel.exchangeRate = (1 / proposedRate).toFixed(2);
+            exRate = (1 / proposedRate).toFixed(2);
           } else {
-            this.funderModel.exchangeRate = proposedRate;
+            exRate = proposedRate;
           }
         } else {
           if (proposedRate < 1) {
             if (defaultRate < proposedRate) {
-              this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
+              exRate = (proposedRate / defaultRate).toFixed(2);
             } else if (defaultRate > proposedRate) {
-              this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
+              exRate = (defaultRate / proposedRate).toFixed(2);
             }
           } else if (proposedRate > 1) {
             if (defaultRate < proposedRate) {
-              this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
+              exRate = (defaultRate / proposedRate).toFixed(2);
             } else if (defaultRate > proposedRate) {
               if (defaultRate > proposedRate) {
-                this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
+                exRate = (proposedRate / defaultRate).toFixed(2);
               }
             }
           } else if (proposedRate == 1) {
             if (defaultRate < 1) {
-              this.funderModel.exchangeRate = (proposedRate / defaultRate).toFixed(2);
+              exRate = (proposedRate / defaultRate).toFixed(2);
             } else {
-              this.funderModel.exchangeRate = (defaultRate / proposedRate).toFixed(2);
+              exRate = (defaultRate / proposedRate).toFixed(2);
             }
 
           }
@@ -1982,6 +1985,15 @@ export class ProjectEntryComponent implements OnInit {
       }
       this.isExRateReadonly = false;
     }
+    return exRate;
+  }
+
+  getExchangeRateForFunding() {
+    this.funderModel.exchangeRate = this.getCurrencyExchangeRate(this.funderModel.currency);
+  }
+
+  getExchangeRateForDisbursement() {
+    this.disbursementModel.exchangeRate = this.getCurrencyExchangeRate(this.disbursementModel.currency);
   }
 
   calculateProjectFunding() {
