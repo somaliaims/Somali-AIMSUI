@@ -73,7 +73,9 @@
                 <tr *ngFor="let project of aimsProjects">
                   <td>
                     <span class="float-left">
-                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                      <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="aimst-{{project.id}}" class="btn btn-info btn-sm"
+                      (click)="enterProjectTitleAIMS($event)">Title
+                      >></button>&nbsp;<a href="#" title="View Project Details"
                         id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
                         Details</a><br />
                       
@@ -86,10 +88,6 @@
                       <span class="badge badge-warning">AIMS</span>
                     </span>
                     <span class="float-right">
-                      <button id="aimst-{{project.id}}" class="btn btn-info btn-sm"
-                        (click)="enterProjectTitleAIMS($event)">Title
-                        >></button>
-                      &nbsp;
                       <button id="aimsd-{{project.id}}" class="btn btn-warning btn-sm"
                         (click)="enterProjectDescAIMS($event)">Description
                         >></button>
@@ -103,17 +101,21 @@
                 <tr *ngFor="let project of iatiProjects">
                   <td>
                     <span class="float-left">
-                      <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                      <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="iatit-{{project.id}}" class="btn btn-info btn-sm"
+                      (click)="enterProjectTitleIATI($event)">Title
+                      >></button>&nbsp;<a href="#" title="View Project Details"
                         id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                         Details</a><br />
-                      <b>Currency: </b>{{project.defaultCurrency}}<br />
+                        <div class="margin-top-5">
+                            <b>Start date: </b>{{project.startDate}}&nbsp;<button id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)" class="btn btn-sm btn-success">>></button><br />
+                          </div>
+                          <div class="margin-top-5">
+                            <b>End date: </b>{{project.endDate}}&nbsp;<button id="btniedate-{{project.id}}" (click)="enterEndDateIATI($event)" class="btn btn-sm btn-success">>></button><br />
+                          </div>
                       <span class="badge badge-warning">IATI</span>
                     </span>
                     <span class="float-right">
-                      <button id="iatit-{{project.id}}" class="btn btn-info btn-sm"
-                        (click)="enterProjectTitleIATI($event)">Title
-                        >></button>
-                      &nbsp;
+                      
                       <button id="iatid-{{project.id}}" class="btn btn-warning btn-sm"
                         (click)="enterProjectDescIATI($event)">Description
                         >></button>
@@ -201,11 +203,11 @@
         <div class="col-md-12">
           <div class="card card-signin my-5">
             <div class="card-body">
-              <h5 class="card-title text-center">Source Projects</h5>
+              <h5 class="card-title text-center">Source projects</h5>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">AIMS</span>
@@ -236,7 +238,7 @@
               <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
                 <tr *ngFor="let project of iatiProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">IATI</span>
@@ -291,7 +293,7 @@
               #projectSectorForm="ngForm">
 
               <div *ngIf="sectorEntryType == 'aims'" class="form-group">
-                <label for="sectorId">AIMS Sector</label>
+                <label for="sectorId">AIMS sector</label>
                 <select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
                   #sectorId="ngModel" required>
                   <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}</option>
@@ -405,11 +407,11 @@
         <div class="col-md-12">
           <div class="card card-signin my-5">
             <div class="card-body">
-              <h5 class="card-title text-center">Source Projects</h5>
+              <h5 class="card-title text-center">Source projects</h5>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">AIMS</span>
@@ -440,7 +442,7 @@
               <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
                 <tr *ngFor="let project of iatiProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">IATI</span>
@@ -477,7 +479,7 @@
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage Locations</h5>
+                  <h5 class="card-title">Manage locations</h5>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase" (click)="showDocuments()"
@@ -532,7 +534,7 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project Locations</h5>
+            <h5 class="card-title text-center">Project locations</h5>
             <table class="table table-bordered">
               <tr>
                 <th>Location</th>
@@ -555,7 +557,7 @@
                     <i class="text-danger">Invalid percentage value.</i>
                   </span>
                   <span class="float-right">
-                    <b>Total Percentage: {{locationTotalPercentage}} %</b>
+                    <b>Total percentage: {{locationTotalPercentage}} %</b>
                   </span>
                 </td>
               </tr>
@@ -580,13 +582,13 @@
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">AIMS</span>
                     <table *ngIf="project.documents.length > 0" class="table table-bordered">
                       <tr>
-                        <th>Document Title</th>
+                        <th>Document title</th>
                         <th>Url</th>
                         <th>Action</th>
                       </tr>
@@ -611,14 +613,14 @@
               <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
                 <tr *ngFor="let project of iatiProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">IATI</span>
                     <table *ngIf="project.documents.length > 0" class="table table-bordered">
                       <tr>
-                        <th>Document Title</th>
-                        <th>Document Url</th>
+                        <th>Document title</th>
+                        <th>Document url</th>
                         <th>Action</th>
                       </tr>
                       <tr *ngFor="let document of project.documents">
@@ -652,7 +654,7 @@
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage Documents & Links</h5>
+                  <h5 class="card-title">Manage documents & links</h5>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase"
@@ -664,7 +666,7 @@
               #projectDocumentForm="ngForm">
 
               <div class="form-group">
-                <label for="documentTitle">Document Title</label>
+                <label for="documentTitle">Document title</label>
                 <input type="text" class="form-control" id="documentTitle" [(ngModel)]="documentModel.documentTitle"
                   name="documentTitle" #documentTitle="ngModel" required>
                 <div *ngIf="projectDocumentForm.submitted" [hidden]="documentTitle.valid" class="alert alert-danger">
@@ -673,7 +675,7 @@
               </div>
 
               <div class="form-group">
-                <label for="documentUrl">Document Url</label>
+                <label for="documentUrl">Document url</label>
                 <input type="url" class="form-control" id="documentUrl" [(ngModel)]="documentModel.documentUrl"
                   name="documentUrl" #documentUrl="ngModel" required>
                 <div *ngIf="projectDocumentForm.submitted" [hidden]="documentUrl.valid" class="alert alert-danger">
@@ -682,7 +684,7 @@
               </div>
 
               <button [class.disable]="isProjectDocumentBtnDisabled"
-                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Add Document</button>
+                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Add document</button>
               <button [class.disable]="isProjectDocumentBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="submit"
                 (click)="resetDocumentEntry()">Reset document</button>
@@ -693,10 +695,10 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project Documents and Links</h5>
+            <h5 class="card-title text-center">Project documents and links</h5>
             <table class="table table-bordered">
               <tr>
-                <th>Document Title</th>
+                <th>Document title</th>
                 <th>Url</th>
                 <th>Action</th>
               </tr>
@@ -732,13 +734,13 @@
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">AIMS</span>
                     <table *ngIf="project.funders.length > 0" class="table table-bordered">
                       <tr>
-                        <th>Funder Name</th>
+                        <th>Funder name</th>
                         <th>Action</th>
                       </tr>
                       <tr *ngFor="let funder of project.funders">
@@ -759,13 +761,13 @@
               <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
                 <tr *ngFor="let project of iatiProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">IATI</span>
                     <table *ngIf="project.participatingOrganizations.length > 0" class="table table-bordered">
                       <tr>
-                        <th>Funder Name</th>
+                        <th>Funder name</th>
                         <th>Action</th>
                       </tr>
                       <tr *ngFor="let funder of project.participatingOrganizations">
@@ -798,7 +800,7 @@
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage Funders</h5>
+                  <h5 class="card-title">Manage funders</h5>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase"
@@ -825,7 +827,7 @@
               #projectFunderForm="ngForm">
 
               <div *ngIf="funderEntryType == 'iati'" class="form-group">
-                <label for="funder">New Funder</label>
+                <label for="funder">New funder</label>
                 <input type="text" maxlength="200" class="form-control" id="funder" [(ngModel)]="funderModel.funder"
                   name="funder" readonly="readonly" #funder="ngModel" required>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="funder.valid" class="alert alert-danger">
@@ -888,14 +890,14 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project Funders</h5>
+            <h5 class="card-title text-center">Project funders</h5>
             <table class="table table-bordered">
               <tr>
                 <th>Funder</th>
                 <th>Type</th>
                 <th>Amount</th>
                 <th>Currency</th>
-                <th>Exchange Rate</th>
+                <th>Exchange rate</th>
                 <th>Action</th>
               </tr>
               <tr *ngFor="let funder of currentProjectFundersList">
@@ -929,17 +931,17 @@
         <div class="col-md-12">
           <div class="card card-signin my-5">
             <div class="card-body">
-              <h5 class="card-title text-center">Source Projects</h5>
+              <h5 class="card-title text-center">Source projects</h5>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">AIMS</span>
                     <table *ngIf="project.implementers.length > 0" class="table table-bordered">
                       <tr>
-                        <th>Implementer Name</th>
+                        <th>Implementer name</th>
                         <th>Action</th>
                       </tr>
                       <tr *ngFor="let implementer of project.implementers">

@@ -434,6 +434,24 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  enterStartDateIATI(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.iatiProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      var sDate = new Date(selectedProject[0].startDate);
+      this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
+    }
+  }
+
+  enterEndDateIATI(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.iatiProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      var eDate = new Date(selectedProject[0].endDate);
+      this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
+    }
+  }
+
   enterProjectTitleIATI(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
