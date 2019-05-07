@@ -57,7 +57,7 @@
             </div>
           </li>
           <li *ngIf="isLoggedIn" class="nav-item active"> 
-            <a class="nav-link" [routerLink]="['/notification']">Notifications <span class="badge badge-pill badge-danger">{{notificationsCount}}</span></a>
+            <a class="nav-link" [routerLink]="['/notification']">Notifications <span *ngIf="notificationsCount > 0" class="badge badge-pill badge-danger">{{notificationsCount}}</span></a>
           </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">

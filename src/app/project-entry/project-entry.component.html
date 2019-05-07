@@ -1282,9 +1282,6 @@
 
             <table *ngIf="checkFieldType(field.fieldType) == 'Radio'" class="table">
               <tr>
-                <th>{{field.fieldTitle}}</th>
-              </tr>
-              <tr>
                 <td *ngFor="let val of field.values">
                   <input type="radio" name="rd-options-{{field.id}}" id="rd-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
                 </td>
@@ -1293,17 +1290,13 @@
 
             <table *ngIf="checkFieldType(field.fieldType) == 'Checkbox'" class="table">
               <tr>
-                <th>{{field.fieldTitle}}</th>
-              </tr>
-              <tr>
                 <td *ngFor="let val of field.values">
-                  <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
+                  <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected" [checked]="checkIfSelected(field.id, val.id)" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
                 </td>
               </tr>
             </table>
             
             <div *ngIf="checkFieldType(field.fieldType) == 'Text'" class="form-group">
-              <label>{{field.fieldTitle}}</label>
               <input class="form-control" type="text" maxlength="100" id="txt-{{fieldId}}" [(ngModel)]="fieldModel.newText" (blur)="selectFieldValue(field.fieldType, 1, field.id, $event, true)" />
             </div>
 

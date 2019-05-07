@@ -1793,6 +1793,15 @@ export class ProjectEntryComponent implements OnInit {
                 value: result[0].value
               });
             }
+          } else {
+            var newField = {
+              fieldId: fieldId,
+              fieldType: fieldType,
+              values: [
+                { id: result[0].id, value: result[0].value }
+              ]
+            };
+            this.currentSelectedFieldValues.push(newField);
           }
         } else {
           var newField = {
@@ -1806,7 +1815,6 @@ export class ProjectEntryComponent implements OnInit {
         }
       }
     }
-
   }
 
   saveProjectFields(id: number) {
@@ -1864,8 +1872,8 @@ export class ProjectEntryComponent implements OnInit {
               });
             }
           }
-          this.currentSelectedFieldValues = [];
-          this.resetCustomFields();
+          //this.currentSelectedFieldValues = [];
+          //this.resetCustomFields();
           this.blockUI.stop();
         }
       );
@@ -1979,7 +1987,6 @@ export class ProjectEntryComponent implements OnInit {
             } else {
               exRate = (defaultRate / proposedRate).toFixed(2);
             }
-
           }
         }
       }
@@ -2013,6 +2020,11 @@ export class ProjectEntryComponent implements OnInit {
 
   displayFieldValues(json: any) {
     return this.storeService.parseAndDisplayJsonAsString(json);
+  }
+
+  checkIfSelected(id: number, valId: string) {
+    var values = this.storeService.parseJson(this.currentProjectFieldsList.filter(f => f.customFieldId == id).map(v => v.values)).filter(v => v.id == valId);
+    return values.length > 0 ? false : true;
   }
 
   getFieldType(id: number) {

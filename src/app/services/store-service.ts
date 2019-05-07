@@ -115,6 +115,18 @@ export class StoreService {
     localStorage.removeItem('ratesList');
   }
 
+  parseJson(jsonStr: any) {
+    if (jsonStr && jsonStr.length > 0) {
+      var parsedJson = null
+      try {
+        parsedJson = (JSON.parse(jsonStr));
+      } catch (e) {
+        parsedJson = jsonStr;
+      }
+    }
+    return parsedJson;
+  }
+
   parseAndDisplayJsonAsString(json: any) {
     if (json && json.length > 0) {
       var parsedJson = null

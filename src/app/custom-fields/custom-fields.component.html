@@ -2,17 +2,17 @@
 
   <block-ui>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Fields List</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Custom fields</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-custom-field']">Create New</a>
           </li>
         </ul>
       </div>
-      <div class="col-md-6">
+      <!--<div class="col-md-6">
         <div class="input-group">
           <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria"
             (input)="searchFields()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
@@ -23,7 +23,7 @@
             </button>
           </span>
         </div>
-      </div>
+      </div>-->
     </div>
 
     <div class="row text-center" *ngIf="isLoading">
