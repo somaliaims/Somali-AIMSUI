@@ -41,7 +41,7 @@
         <tr *ngFor="let sector of sectorTypesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{sector.id}}</td>
           <td>{{sector.typeName}}</td>
-          <td>{{isTrue(sector.isDefault)}}</td>
+          <td>{{isTrue(sector.isPrimary)}}</td>
           <td>{{isTrue(sector.isIATIType)}}</td>
           <td>
             <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>

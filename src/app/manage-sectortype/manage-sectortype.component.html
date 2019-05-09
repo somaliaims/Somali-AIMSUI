@@ -37,10 +37,10 @@
                 <div class="col-offset-2 col-md-9">
                   <div class="btn-group" data-toggle="buttons">
                     <button (click)="toggleDefault()" class="btn btn-success btn-sm">
-                      <i *ngIf="!model.isDefault" class="fa fa-square text-white"></i>
-                      <i *ngIf="model.isDefault" class="fa fa-check text-white"></i>
+                      <i *ngIf="!model.isPrimary" class="fa fa-square text-white"></i>
+                      <i *ngIf="model.isPrimary" class="fa fa-check text-white"></i>
                     </button>
-                    &nbsp;Is default sector type?
+                    &nbsp;Is primary sector type?
                   </div>
                 </div>
               </div>

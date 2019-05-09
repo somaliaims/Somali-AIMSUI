@@ -18,6 +18,16 @@
 
           <form class="form-signin" (ngSubmit)="customFieldForm.form.valid && saveCustomField()"
             #customFieldForm="ngForm">
+
+            <div class="form-group">
+              <label for="fieldTitle">Field title</label>
+              <input type="text" class="form-control" id="fieldTitle" [(ngModel)]="model.fieldTitle" name="fieldTitle"
+                #fieldTitle="ngModel" maxlength="50" required> <span class="text-info"><i>(Max length: 50)</i></span>
+              <div *ngIf="customFieldForm.submitted" [hidden]="fieldTitle.valid" class="alert alert-danger">
+                Field title is required
+              </div>
+            </div>
+
             <div class="form-group">
               <label for="typeId">Field type</label>
               <select class="form-control" id="typeId" [(ngModel)]="model.typeId" name="typeId" #typeId="ngModel"
@@ -26,15 +36,6 @@
               </select>
               <div *ngIf="customFieldForm.submitted" [hidden]="typeId.valid" class="alert alert-danger">
                 Field type is required
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="fieldTitle">Field title</label>
-              <input type="text" class="form-control" id="fieldTitle" [(ngModel)]="model.fieldTitle" name="fieldTitle"
-                #fieldTitle="ngModel" maxlength="25" required>
-              <div *ngIf="customFieldForm.submitted" [hidden]="fieldTitle.valid" class="alert alert-danger">
-                Field title is required
               </div>
             </div>
             

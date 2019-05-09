@@ -24,7 +24,7 @@ export class ManageSectortypeComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   permissions: any = {};
-  model = { id: 0, typeName: '', isDefault: false, isIATIType: false };
+  model = { id: 0, typeName: '', isPrimary: false, isIATIType: false };
 
   constructor(private sectorTypeService: SectorTypeService, private route: ActivatedRoute,
     private router: Router, private securityService: SecurityHelperService,
@@ -48,7 +48,7 @@ export class ManageSectortypeComponent implements OnInit {
           data => {
             this.model.id = data.id;
             this.model.typeName = data.typeName;
-            this.model.isDefault = data.isDefault;
+            this.model.isPrimary = data.isPrimary;
             this.model.isIATIType = data.isIATIType;
           },
           error => {
@@ -75,7 +75,7 @@ export class ManageSectortypeComponent implements OnInit {
   }
 
   toggleDefault() {
-    this.model.isDefault = (this.model.isDefault) ? false : true;
+    this.model.isPrimary = (this.model.isPrimary) ? false : true;
   }
 
   toggleIATIType() {
@@ -86,11 +86,19 @@ export class ManageSectortypeComponent implements OnInit {
     var model = {
       TypeName: this.model.typeName,
       Id: this.model.id,
-      isDefault: this.model.isDefault,
+      isPrimary: this.model.isPrimary,
       isIATIType: this.model.isIATIType
     };
 
     this.isBtnDisabled = true;
+    if (!model.isIATIType) {
+      model.isIATIType = false;
+    }
+    if (!model.isPrimary) {
+      model.isPrimary = false;
+    }
+
+
     if (this.isForEdit) {
       this.btnText = 'Updating...';
       this.sectorTypeService.updateSectorType(this.model.id, model).subscribe(
