@@ -37,29 +37,7 @@
                 Field title is required
               </div>
             </div>
-
-            <div class="form-group">
-              <label for="title">Active from</label>
-              <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="activeFromDate"
-                  [(ngModel)]="model.activeFrom" [maxDate]="calendarMaxDate" ngbDatepicker #s="ngbDatepicker" required>
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="title">Active upto</label>
-              <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="activeUpto"
-                  [(ngModel)]="model.activeUpto" [maxDate]="calendarMaxDate" ngbDatepicker #e="ngbDatepicker" required>
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
-                </div>
-              </div>
-            </div>
-
+            
             <div *ngIf="isTwoValuesDisplay" class="form-group">
               <label for="title">Option values</label>
               <div class="input-group">

@@ -32,7 +32,7 @@ export class ManageCustomFieldsComponent implements OnInit {
   isNewValueFocus: boolean = false;
   originalOptionValues: any = [];
   
-  model: any = { fieldType: null, fieldTitle: null, activeFrom: null, activeUpto: null, optionValues: [],
+  model: any = { fieldType: null, fieldTitle: null, optionValues: [],
     optionValue1: null, optionValue2: null, newValue: null };
 
   constructor(private customFieldService: CustomeFieldService, private route: ActivatedRoute,
@@ -150,11 +150,6 @@ export class ManageCustomFieldsComponent implements OnInit {
       return false;
     }
 
-    this.model.activeFrom = new Date(this.model.activeFrom.year + '-' + this.model.activeFrom.month + '-' +
-      this.model.activeFrom.day);
-    this.model.activeUpto = new Date(this.model.activeUpto.year + '-' + this.model.activeUpto.month + '-' +
-      this.model.activeUpto.day);
-
     this.isBtnDisbaled = true;
     var values = null;
     if (this.isManyValuesDisplay) {
@@ -174,8 +169,6 @@ export class ManageCustomFieldsComponent implements OnInit {
     var newModel = {
       fieldTitle: this.model.fieldTitle,
       fieldType: this.model.typeId,
-      activeFrom: this.model.activeFrom,
-      activeUpto: this.model.activeUpto,
       values: values
     };
 

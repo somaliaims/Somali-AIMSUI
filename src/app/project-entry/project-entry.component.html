@@ -1283,7 +1283,7 @@
             <table *ngIf="checkFieldType(field.fieldType) == 'Radio'" class="table">
               <tr>
                 <td *ngFor="let val of field.values">
-                  <input type="radio" name="rd-options-{{field.id}}" id="rd-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
+                  <input type="radio" name="rd-options-{{field.id}}" id="rd-{{val.id}}" [value]="val.isSelected" (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
                 </td>
               </tr>
             </table>

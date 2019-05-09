@@ -2022,9 +2022,16 @@ export class ProjectEntryComponent implements OnInit {
     return this.storeService.parseAndDisplayJsonAsString(json);
   }
 
-  checkIfSelected(id: number, valId: string) {
-    var values = this.storeService.parseJson(this.currentProjectFieldsList.filter(f => f.customFieldId == id).map(v => v.values)).filter(v => v.id == valId);
-    return values.length > 0 ? false : true;
+  checkIfSelected() {
+    /*this.currentProjectFieldsList.forEach(function (field) {
+      var id = field.id;
+
+      var values = this.storeService.parseJson(this.customFieldsList.filter(f => f.id == id).map(v => v.values));
+    if (values.length > 0) {
+      var optionValue = values[0].filter(v => v.id == valId);
+      optionValue.length > 0 ? optionValue[0].isSelected = true : null;
+    }
+    });*/
   }
 
   getFieldType(id: number) {
