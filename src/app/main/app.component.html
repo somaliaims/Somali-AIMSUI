@@ -40,6 +40,7 @@
               <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sector-types']">Sector types</a>
               <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sectors']">Sectors</a>
               <a *ngIf="permissions.canEditCurrency" class="dropdown-item" [routerLink]="['/currencies']">Currencies</a>
+              <a *ngIf="permissions.canEditCurrency" class="dropdown-item" [routerLink]="['/exrate-settings']">Exchange rates</a>
               <a *ngIf="permissions.canEditFundingType" class="dropdown-item" [routerLink]="['/funding-types']">Funding types</a>
               <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial years</a>
               <a *ngIf="permissions.canEditCustomFields" class="dropdown-item" [routerLink]="['/custom-fields']">Custom fields</a>

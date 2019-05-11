@@ -4,13 +4,7 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/currencies']">Currencies list</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-currency']">Create new</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Exchange rate settings</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Exchange rates & settings</a>
           </li>
         </ul>
       </div>
@@ -48,7 +42,7 @@
     <div class="row">
 
       <div class="col-md-6 col-sm-12">
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Custom ex. rates for 1 {{defaultCurrency}}</h5>
             <table *ngIf="filteredCurrencyRates.length > 0" class="table table-bordered">
@@ -57,7 +51,7 @@
                 <th>Rate</th>
               </tr>
               <tr *ngFor="let cur of filteredCurrencyRates">
-                <td>{{cur.currency}}</td>
+                <td>{{cur.currencyName}}</td>
                 <td>
                   <input type="text" id="{{cur.currency}}" (blur)="setCurrencyExRate($event)" value="{{cur.rate}}" />
                 </td>
@@ -77,7 +71,7 @@
       
 
       <div class="col-sm-12 col-md-6">
-        <div class="card card-signin my-5">
+        <!--<div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Exchange rate settings</h5>
 
@@ -99,12 +93,11 @@
               <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save setting</button>
             </form>
           </div>
-        </div>
+        </div>-->
 
-        <!--API key settings-->
-        <div class="card card-signin my-5">
+          <!--API key settings-->
+        <div class="card card-signin margin-top-10 my-5">
           <div class="card-body">
-            <h5 class="card-title text-center">OpenExchangeRate API key setting</h5>
             <form class="form-signin" (ngSubmit)="saveAPIKey()" #rateForm="ngForm">
               <div class="form-group">
                 <label for="apiKey"><b>OpenExchangeRate API key</b></label>
@@ -120,8 +113,31 @@
 
               <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save key</button>
             </form>
+
+            <div class="margin-top-10 iati-box">
+              <h6 class="card-title text-center">Open exchange rates for 1 USD ({{exchangeRateDate}})</h6>
+              <table *ngIf="exchangeRates.length > 0" class="table table-bordered">
+                <tr>
+                  <th>Currency</th>
+                  <th>Rate</th>
+                </tr>
+                <tr *ngFor="let cur of exchangeRates">
+                  <td>{{cur.currencyName}}</td>
+                  <td>
+                    {{cur.rate}}
+                  </td>
+                </tr>
+              </table>
+              <span *ngIf="exchangeRates.length == 0 && !isLoading" class="text-info">No currencies to show.</span>
+            </div>
           </div>
         </div>
+  
+          <div class="row text-center" *ngIf="isLoading">
+            <div class="col-md-12">
+              <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading currencies...</span>
+            </div>
+          </div>
 
       </div>
     </div>

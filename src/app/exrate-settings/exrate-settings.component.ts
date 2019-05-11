@@ -26,6 +26,8 @@ export class ExrateSettingsComponent implements OnInit {
   isAPIKeySet: boolean = false;
   defaultCurrency: string = null;
   currenciesList: any = [];
+  exchangeRates: any = [];
+  exchangeRateDate: any = null;
   manualCurrencyRates: any = [];
   filteredCurrencyRates: any = [];
   criteria: string = null;
@@ -52,6 +54,7 @@ export class ExrateSettingsComponent implements OnInit {
 
     this.getExRateSettings();
     this.getDefaultCurrency();
+    this.getLatestExchangeRates();
   }
 
   getExRateSettings() {
@@ -182,7 +185,17 @@ export class ExrateSettingsComponent implements OnInit {
         this.blockUI.stop();
       }
     )
-     
+  }
+
+  getLatestExchangeRates() {
+    this.currencyService.getExchangeRatesList().subscribe(
+      data => {
+        if (data) {
+          this.exchangeRateDate = this.storeService.getLongDateString(data.dated);
+          this.exchangeRates = data.rates;
+        }
+      }
+    )
   }
 
 }

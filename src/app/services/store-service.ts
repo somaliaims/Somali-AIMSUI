@@ -10,6 +10,9 @@ import { Settings } from '../config/settings';
 
 export class StoreService {
 
+  private monthNames: any = [
+    "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+  ];
   private requestNumber: number = 0;
   private yearGap: number = 50;
   private messageSource = new BehaviorSubject<RegistrationModel>(null);
@@ -152,4 +155,16 @@ export class StoreService {
     return json;
   }
 
+  getLongDateString(dated: any) {
+    var validDate = Date.parse(dated);
+    if (!isNaN(validDate)) {
+      return new Date(dated).toLocaleDateString('en-GB', {  
+        day : 'numeric',
+        month : 'short',
+        year : 'numeric'
+      });
+    }
+    return 'Invalid date';
+  }
+  
 }
