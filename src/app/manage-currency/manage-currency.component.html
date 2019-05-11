@@ -22,11 +22,20 @@
           <form class="form-signin" (ngSubmit)="currencyForm.form.valid && saveCurrency(currencyForm)" #currencyForm="ngForm">
 
             <div class="form-group">
-              <label for="currency">Currency Name</label>
+              <label for="currency">Code</label>
               <input type="text" class="form-control" id="currency" [(ngModel)]="model.currency" name="currency"
                 #currency="ngModel" maxlength="3" required>
               <div *ngIf="currencyForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
-                Currency Name is required
+                Currency code is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="currency">Currency</label>
+              <input type="text" class="form-control" id="currencyName" [(ngModel)]="model.currencyName" name="currencyName"
+                #currencyName="ngModel" maxlength="50" required>
+              <div *ngIf="currencyForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
+                Currency name is required
               </div>
             </div>
 
@@ -40,6 +49,20 @@
                       <i *ngIf="model.isDefault" class="fa fa-check text-white"></i>
                     </button>
                     &nbsp;Is default currency?
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-offset-2 col-md-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <button (click)="toggleNational()" class="btn btn-success btn-sm">
+                      <i *ngIf="!model.isNational" class="fa fa-square text-white"></i>
+                      <i *ngIf="model.isNational" class="fa fa-check text-white"></i>
+                    </button>
+                    &nbsp;Is national currency?
                   </div>
                 </div>
               </div>

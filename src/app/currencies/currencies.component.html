@@ -39,11 +39,13 @@
       <div *ngIf="filteredCurrencies.length > 0" class="col margin-top-10">
         <table class="table table-bordered table-stripped">
           <tr>
-            <th>Currency Name</th>
+            <th>Code</th>
+            <th>Currency</th>
             <th>Action</th>
           </tr>
           <tr *ngFor="let currency of filteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>{{currency.currency}}</td>
+            <td>{{currency.currencyName}}</td>
             <td>
                 <a title="Delete" (click)="edit(currency.id)" class="btn btn-info"><i
                   class="fa fa-edit color-white"></i></a>&nbsp;

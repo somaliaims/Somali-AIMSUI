@@ -100,12 +100,13 @@ export class CurrenciesComponent implements OnInit {
       this.blockUI.start(this.statusMessage);
       this.currencyService.deleteCurrency(id).subscribe(
         data => {
-          if (data.success) {
+          if (data) {
             this.currenciesList = this.currenciesList.filter(c => c.id != id);
+            this.filteredCurrencies = this.currenciesList;
+            this.criteria = null;
             this.blockUI.stop();
-          } else {
-            this.blockUI.stop();
-          }
+          } 
+          this.blockUI.stop();
         },
         error => {
           this.errorMessage = error;

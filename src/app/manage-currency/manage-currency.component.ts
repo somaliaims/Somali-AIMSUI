@@ -21,7 +21,7 @@ export class ManageCurrencyComponent implements OnInit {
   requestNo: number = 0;
   isForEdit: boolean = false;
   isError: boolean = false;
-  model = { id: 0, currency: null, isDefault: false };
+  model = { id: 0, currency: null, currencyName: null, isDefault: false, isNational: false };
   entryForm: any = null;
   permissions: any = {};
 
@@ -47,7 +47,9 @@ export class ManageCurrencyComponent implements OnInit {
             if (data) {
               this.model.id = data.id;
               this.model.currency = data.currency;
+              this.model.currencyName = data.currencyName;
               this.model.isDefault = data.isDefault;
+              this.model.isNational = data.isNational;
             }
           },
           error => {
@@ -108,6 +110,14 @@ export class ManageCurrencyComponent implements OnInit {
       this.model.isDefault = false;
     } else {
       this.model.isDefault = true;
+    }
+  }
+
+  toggleNational() {
+    if (this.model.isNational) {
+      this.model.isNational = false;
+    } else {
+      this.model.isNational = true;
     }
   }
 
