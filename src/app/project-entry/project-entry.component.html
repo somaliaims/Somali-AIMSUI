@@ -836,6 +836,17 @@
               </div>
 
               <div class="form-group">
+                <label for="title">Date </label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
+                    [(ngModel)]="funderModel.dated" ngbDatepicker #s="ngbDatepicker" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="documentUrl">Amount</label>
                 <input type="number" class="form-control" id="amount" [(ngModel)]="funderModel.amount"
                   name="amount" #amount="ngModel" min="1" max="100" required>

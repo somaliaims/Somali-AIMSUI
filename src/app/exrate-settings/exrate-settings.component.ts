@@ -7,7 +7,6 @@ import { StoreService } from '../services/store-service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-exrate-settings',
@@ -19,16 +18,21 @@ export class ExrateSettingsComponent implements OnInit {
   errorMessage: string = null;
   inputTextHolder: string = 'Enter currency to search';
   infoMessage: string = null;
+  defaultCurrencyId: number = 0;
+  nationalCurrencyId: number = 0;
   requestNo: number = 0;
   permissions: any = {};
   isExRateSet: boolean = false;
   isLoading: boolean = true;
   isAPIKeySet: boolean = false;
   defaultCurrency: string = null;
+  nationalCurrency: string = null;
   currenciesList: any = [];
   exchangeRates: any = [];
   exchangeRateDate: any = null;
   manualCurrencyRates: any = [];
+  manualExchangeRates: any = [];
+  filteredManualExchangeRates: any = [];
   filteredCurrencyRates: any = [];
   criteria: string = null;
   model: any = { isAutoRateSet: false, apiKey: null};
@@ -54,6 +58,7 @@ export class ExrateSettingsComponent implements OnInit {
 
     this.getExRateSettings();
     this.getDefaultCurrency();
+    this.getNationalCurrency();
     this.getLatestExchangeRates();
   }
 
@@ -81,7 +86,32 @@ export class ExrateSettingsComponent implements OnInit {
       data => {
         if (data) {
           this.defaultCurrency = data.currency;
+          this.defaultCurrencyId = data.id;
         }
+      }
+    )
+  }
+
+  getNationalCurrency() {
+    this.currencyService.getNationalCurrency().subscribe(
+      data => {
+        if (data) {
+          this.nationalCurrency = data.currency;
+          this.nationalCurrencyId = data.id;
+          this.getManualExchangeRates();
+        }
+      }
+    )
+  }
+
+  getManualExchangeRates() {
+    this.currencyService.getManaulExRatesForCurrency(this.nationalCurrency).subscribe(
+      data => {
+        if (data) {
+          this.manualExchangeRates = data;
+          this.filteredManualExchangeRates = data;
+        }
+        this.isLoading = false;
       }
     )
   }

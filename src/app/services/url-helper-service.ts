@@ -103,6 +103,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getDefaultCurrency);
     }
 
+    getNationalCurrencyUrl() {
+        return (this.BASE_URL + urlsList.urls.getNationalCurrency);
+    }
+
     getExRateSettingsUrl() {
         return (this.BASE_URL + urlsList.urls.getExchangeRateSettingsUrl);
     }
@@ -113,6 +117,14 @@ export class UrlHelperService {
 
     getExRateAutoSettingsUrl() {
         return (this.BASE_URL + urlsList.urls.setExchangeRateAutoSettingsUrl);
+    }
+
+    getManualExchangeRatesUrl() {
+        return (this.BASE_URL + urlsList.urls.manualExchangeRates);
+    }
+
+    getManualExchangeRatesForCurrency(code: string) {
+        return (this.BASE_URL + urlsList.urls.manualExRatesForCurrency + code);
     }
 
     saveAPIKeyOpenExchangeUrl() {

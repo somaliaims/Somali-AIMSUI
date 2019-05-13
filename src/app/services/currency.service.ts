@@ -50,6 +50,12 @@ export class CurrencyService {
             catchError(this.storeService.handleError<any>('Default Currency')));
     }
 
+    getNationalCurrency() {
+        var url = this.urlHelper.getNationalCurrencyUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('National Currency')));
+    }
+
     getExRateSettings() {
         var url = this.urlHelper.getExRateSettingsUrl();
         return this.httpClient.get(url, httpOptions).pipe(
@@ -58,6 +64,12 @@ export class CurrencyService {
 
     getManualExchangeRates() {
         var url = this.urlHelper.getManualExRatesUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Manual Ex Rates')));
+    }
+
+    getManaulExRatesForCurrency(code: string) {
+        var url = this.urlHelper.getManualExchangeRatesForCurrency(code);
         return this.httpClient.get(url, httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Manual Ex Rates')));
     }

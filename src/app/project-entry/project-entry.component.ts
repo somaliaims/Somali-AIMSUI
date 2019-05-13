@@ -162,7 +162,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
-  funderModel = { id: 0, projectId: 0, funder: null, fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
+  funderModel = { id: 0, projectId: 0, funder: null, dated: null, fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
   disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, exchangeRate: null };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
@@ -1477,6 +1477,7 @@ export class ProjectEntryComponent implements OnInit {
     }
 
     this.blockUI.start('Saving Funder...');
+    var fModel = this.funderModel;
     var model = {
       funder: this.funderModel.funder,
       projectId: this.funderModel.projectId,
@@ -1484,7 +1485,8 @@ export class ProjectEntryComponent implements OnInit {
       fundingTypeId: this.funderModel.fundingTypeId,
       amount: this.funderModel.amount,
       currency: this.funderModel.currency,
-      exchangeRate: this.funderModel.exchangeRate
+      exchangeRate: this.funderModel.exchangeRate,
+      dated: fModel.dated.year + '-' + fModel.dated.month + '-' + fModel.dated.day,
     }
 
     if (this.funderEntryType == 'iati' || isNewFunder) {

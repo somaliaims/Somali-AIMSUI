@@ -90,6 +90,7 @@ export const urls = {
 	getCurrency: "Currency",
 	getCurrencyById: "Currency/GetById/",
 	getDefaultCurrency: "Currency/GetDefault",
+	getNationalCurrency: "Currency/GetNational",
 	reportNamesUrl: "ReportName",
 	userSubscriptionsUrl: "ReportSubscription",
 	subscribeToReports: "ReportSubscription/Subscribe",
@@ -100,6 +101,8 @@ export const urls = {
 	saveManualExchangeRates: "ExchangeRate/SaveManualCurrencyRates",
 	exchangeRateForDate: "ExchangeRate/GetRatesForDate/",
 	getManualExchangeRates: "ExchangeRate/GetManualExchangeRates",
+	manualExchangeRates: "ManualExchangeRate",
+	manualExRatesForCurrency: "ManualExchangeRate/GetForNationalCurrency/",
 	getDefaultSectors: "Sector/GetDefaultSectors",
 	envelopeUrl: "Envelope",
 	customFieldsUrl: "CustomField",
@@ -109,5 +112,5 @@ export const urls = {
 	emailMessageUrl: "EmailMessage",
 	getManagerUsers: "User/GetManagerUsers",
 	getStandardUsers: "User/GetStandardUsers",
-	sendEmailUrl: "Email/SendEmailToUsers"
+	sendEmailUrl: "Email/SendEmailToUsers",
 };

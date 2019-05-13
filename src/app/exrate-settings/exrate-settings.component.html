@@ -44,26 +44,36 @@
       <div class="col-md-6 col-sm-12">
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Custom ex. rates for 1 {{defaultCurrency}}</h5>
-            <table *ngIf="filteredCurrencyRates.length > 0" class="table table-bordered">
+              <form class="form-inline">
+                  <div class="form-group mb-2">
+                    <label for="staticEmail2" class="sr-only">Email</label>
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="inputPassword2" class="sr-only">Password</label>
+                    <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                  </div>
+                  <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+                </form>
+                
+            <h6 class="card-title text-center">Ex. rates for {{defaultCurrency}} and {{nationalCurrency}}</h6>
+            <table *ngIf="filteredManualExchangeRates.length > 0" class="table table-bordered">
               <tr>
                 <th>Currency</th>
                 <th>Rate</th>
               </tr>
-              <tr *ngFor="let cur of filteredCurrencyRates">
-                <td>{{cur.currencyName}}</td>
-                <td>
-                  <input type="text" id="{{cur.currency}}" (blur)="setCurrencyExRate($event)" value="{{cur.rate}}" />
-                </td>
+              <tr *ngFor="let cur of filteredManualExchangeRates">
+                <td>{{cur.exchangeRate}}</td>
+                <td>{{cur.dated}}</td>
               </tr>
             </table>
-            <span *ngIf="filteredCurrencyRates.length == 0 && !isLoading" class="text-info">No currencies to show.</span>
+            <span *ngIf="filteredManualExchangeRates.length == 0 && !isLoading" class="text-info">No ex. rates to show.</span>
           </div>
         </div>
 
         <div class="row text-center" *ngIf="isLoading">
           <div class="col-md-12">
-            <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading currencies...</span>
+            <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading rates...</span>
           </div>
         </div>
       </div>
