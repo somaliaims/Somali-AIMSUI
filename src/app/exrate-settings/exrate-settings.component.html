@@ -42,7 +42,7 @@
                 <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated" [(ngModel)]="model.dated"
                   ngbDatepicker #s="ngbDatepicker" required>
               </div>
-              <button type="submit" class="btn btn-warning mb-2 text-uppercase">Save Rate</button>
+              <button type="submit" class="btn btn-warning mb-2 text-uppercase">Save new rate</button>
             </form>
 
             <h6 class="card-title text-center">Ex. rates for {{defaultCurrency}} and {{nationalCurrency}}</h6>
@@ -50,11 +50,17 @@
               <tr>
                 <th>Ex. rate</th>
                 <th>Dated</th>
+                <th>Action</th>
               </tr>
               <tr
                 *ngFor="let cur of filteredManualExchangeRates  | paginate: { itemsPerPage: pagingSize, currentPage: p }">
                 <td>{{cur.exchangeRate}}</td>
                 <td>{{formatDate(cur.dated)}}</td>
+                <td>
+                  <button id="btndel-{{cur.id}}" (click)="deleteRate($event)" class="btn btn-danger">
+                    <i id="ibtndel-{{cur.id}}" class="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </table>
             <pagination-controls (pageChange)="p=$event"></pagination-controls>

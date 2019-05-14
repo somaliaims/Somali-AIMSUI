@@ -81,6 +81,12 @@ export class CurrencyService {
                 catchError(this.storeService.handleError<any>('Manual Exchange Rate')));
     }
 
+    deleteManualExchangeRate(id: string) {
+        var url = this.urlHelper.getManualExchangeRatesUrl() + '/' + id;
+        return this.httpClient.delete(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Delete Manual Exchange Rate')));
+    }
+
     saveAPIKeyOpenExchange(key: string) {
         var url = this.urlHelper.saveAPIKeyOpenExchangeUrl();
         var model = {

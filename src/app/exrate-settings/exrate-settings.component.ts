@@ -180,12 +180,32 @@ export class ExrateSettingsComponent implements OnInit {
             isRateExist[0].exchangeRate = model.exchangeRate;
           } else {
             this.manualExchangeRates.push(model);
+            this.filteredManualExchangeRates.push(model);
           }
           this.currentForm.resetForm();
+          this.model.dated = null;
+          this.model.exchangeRate = null;
         }
         this.blockUI.stop();
       }
     )
+  }
+
+  deleteRate(e) {
+    var id = e.currentTarget.id.split('-')[1];
+
+    if (id) {
+      this.blockUI.start('Deleting exchange rate...');
+      this.currencyService.deleteManualExchangeRate(id).subscribe(
+        data => {
+          if (data) {
+            this.manualExchangeRates = this.manualExchangeRates.filter(r => r.id != id);
+            this.filteredManualExchangeRates = this.filteredManualExchangeRates.filter(r => r.id != id);
+          }
+          this.blockUI.stop();
+        }
+      )
+    }
   }
 
   saveAPIKey() {
