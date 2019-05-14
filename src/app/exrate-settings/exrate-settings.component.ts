@@ -7,6 +7,7 @@ import { StoreService } from '../services/store-service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-exrate-settings',
@@ -36,7 +37,8 @@ export class ExrateSettingsComponent implements OnInit {
   filteredManualExchangeRates: any = [];
   filteredCurrencyRates: any = [];
   criteria: string = null;
-  model: any = { exchangeRate: null, dated: null};
+  pagingSize: number = Settings.rowsPerPage;
+  model: any = { exchangeRate: null, dated: null, searchDate: null};
   
   @BlockUI() blockUI: NgBlockUI;
   constructor(private currencyService: CurrencyService, private infoModal: InfoModalComponent,
@@ -262,6 +264,21 @@ export class ExrateSettingsComponent implements OnInit {
 
   formatDate(dated: string) {
     return (this.storeService.getLongDateString(dated));
+  }
+
+  showAllManualRates() {
+    this.model.searchDate = null;
+    this.filteredManualExchangeRates = this.manualExchangeRates;
+  }
+
+  searchManualRates() {
+    if (!this.model.searchDate) {
+      this.filteredManualExchangeRates = this.manualExchangeRates;
+    }
+    var dated = new Date(this.model.searchDate.year + '-' + this.model.searchDate.month + '-' +
+    this.model.searchDate.day);
+    var longDate = this.storeService.getLongDateString(dated);
+    this.filteredManualExchangeRates = this.manualExchangeRates.filter(r => this.storeService.getLongDateString(r.dated) == longDate);
   }
 
 }

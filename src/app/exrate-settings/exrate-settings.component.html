@@ -1,5 +1,6 @@
 <div class="container-fluid view-area">
   <block-ui>
+
     <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs">
@@ -12,65 +13,53 @@
 
     <div class="row">
       <div class="col-md-6 margin-top-10">
+
         <div class="input-group">
-          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria"
-            (input)="filterCurrencies()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
-            onkeypress="return event.keyCode != 13;" maxlength="3" required>
+          <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="searchDate"
+            [(ngModel)]="model.searchDate" [maxDate]="calendarMaxDate" ngbDatepicker #c="ngbDatepicker" required>
           <span class="input-group-btn">
-            <button class="btn btn-outline-info btn-lg" type="button">
+            <button title="Search" class="btn btn-outline-info btn-lg" (click)="searchManualRates()" type="button">
               <i class="fa fa-search"></i>
+            </button>&nbsp;
+            <button title="Show all" class="btn btn-outline-warning btn-lg" (click)="showAllManualRates()"
+              type="button">
+              <i class="fa fa-list"></i>
             </button>
           </span>
         </div>
-      </div>
 
-      <!--<div class="col-md-6 margin-top-10">
-        <div class="float-right">
-          <table>
-            <tr>
-              <td>
-                <button [class.disable]="filteredCurrencyRates.length == 0"
-                  class="btn btn-warning btn-lg pull-right text-uppercase float-right"
-                  (click)="saveExchangeRates()">Save rates</button>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>-->
-    </div>
-
-    <div class="row">
-
-      <div class="col-md-6 col-sm-12">
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body iati-box">
-              <form class="form-inline" (ngSubmit)="rateForm.form.valid && saveRate(rateForm)" #rateForm="ngForm">
-                  <div class="form-group mb-2">
-                    <input type="text" pattern="\d*" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate" name="exchangeRate"
-                #exchangeRate="ngModel" maxlength="6" required>
-                    <div *ngIf="rateForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
-                      Valid exchange rate is required
-                    </div>
-                  </div>
-                  <div class="form-group mx-sm-3 mb-2">
-                    <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
-                    [(ngModel)]="model.dated" ngbDatepicker #s="ngbDatepicker" required>
-                  </div>
-                  <button type="submit" class="btn btn-warning mb-2">Save Rate</button>
-                </form>
-                
+            <form class="form-inline" (ngSubmit)="rateForm.form.valid && saveRate(rateForm)" #rateForm="ngForm">
+              <div class="form-group mb-2">
+                <input type="text" pattern="\d*" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate"
+                  name="exchangeRate" #exchangeRate="ngModel" maxlength="6" required>
+                <div *ngIf="rateForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
+                  Valid exchange rate is required
+                </div>
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated" [(ngModel)]="model.dated"
+                  ngbDatepicker #s="ngbDatepicker" required>
+              </div>
+              <button type="submit" class="btn btn-warning mb-2 text-uppercase">Save Rate</button>
+            </form>
+
             <h6 class="card-title text-center">Ex. rates for {{defaultCurrency}} and {{nationalCurrency}}</h6>
             <table *ngIf="filteredManualExchangeRates.length > 0" class="table table-bordered">
               <tr>
                 <th>Ex. rate</th>
                 <th>Dated</th>
               </tr>
-              <tr *ngFor="let cur of filteredManualExchangeRates">
+              <tr
+                *ngFor="let cur of filteredManualExchangeRates  | paginate: { itemsPerPage: pagingSize, currentPage: p }">
                 <td>{{cur.exchangeRate}}</td>
                 <td>{{formatDate(cur.dated)}}</td>
               </tr>
             </table>
-            <span *ngIf="filteredManualExchangeRates.length == 0 && !isLoading" class="text-info">No ex. rates to show.</span>
+            <pagination-controls (pageChange)="p=$event"></pagination-controls>
+            <span *ngIf="filteredManualExchangeRates.length == 0 && !isLoading" class="text-info">No ex. rates to
+              show.</span>
           </div>
         </div>
 
@@ -79,12 +68,11 @@
             <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading rates...</span>
           </div>
         </div>
+
       </div>
 
-      
-
       <div class="col-sm-12 col-md-6 margin-top-10">
-          <!--API key settings-->
+        <!--API key settings-->
         <div class="card card-signin margin-top-10 my-5">
           <div class="card-body">
             <form class="form-signin" (ngSubmit)="saveAPIKey()" #rateForm="ngForm">
@@ -121,17 +109,18 @@
             </div>
           </div>
         </div>
-  
-          <div class="row text-center" *ngIf="isLoading">
-            <div class="col-md-12">
-              <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading currencies...</span>
-            </div>
+
+        <div class="row text-center" *ngIf="isLoading">
+          <div class="col-md-12">
+            <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading currencies...</span>
           </div>
+        </div>
 
       </div>
+
     </div>
 
-</block-ui>
+  </block-ui>
 </div>
 
 <info-modal message={{infoMessage}}></info-modal>
