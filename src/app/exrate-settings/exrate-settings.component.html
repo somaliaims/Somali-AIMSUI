@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="col-md-6 margin-top-10">
+      <!--<div class="col-md-6 margin-top-10">
         <div class="float-right">
           <table>
             <tr>
@@ -36,7 +36,7 @@
             </tr>
           </table>
         </div>
-      </div>
+      </div>-->
     </div>
 
     <div class="row">
@@ -44,27 +44,30 @@
       <div class="col-md-6 col-sm-12">
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body iati-box">
-              <form class="form-inline">
+              <form class="form-inline" (ngSubmit)="rateForm.form.valid && saveRate(rateForm)" #rateForm="ngForm">
                   <div class="form-group mb-2">
-                    <label for="staticEmail2" class="sr-only">Email</label>
-                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                    <input type="text" pattern="\d*" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate" name="exchangeRate"
+                #exchangeRate="ngModel" maxlength="6" required>
+                    <div *ngIf="rateForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
+                      Valid exchange rate is required
+                    </div>
                   </div>
                   <div class="form-group mx-sm-3 mb-2">
-                    <label for="inputPassword2" class="sr-only">Password</label>
-                    <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                    <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
+                    [(ngModel)]="model.dated" ngbDatepicker #s="ngbDatepicker" required>
                   </div>
-                  <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+                  <button type="submit" class="btn btn-warning mb-2">Save Rate</button>
                 </form>
                 
             <h6 class="card-title text-center">Ex. rates for {{defaultCurrency}} and {{nationalCurrency}}</h6>
             <table *ngIf="filteredManualExchangeRates.length > 0" class="table table-bordered">
               <tr>
-                <th>Currency</th>
-                <th>Rate</th>
+                <th>Ex. rate</th>
+                <th>Dated</th>
               </tr>
               <tr *ngFor="let cur of filteredManualExchangeRates">
                 <td>{{cur.exchangeRate}}</td>
-                <td>{{cur.dated}}</td>
+                <td>{{formatDate(cur.dated)}}</td>
               </tr>
             </table>
             <span *ngIf="filteredManualExchangeRates.length == 0 && !isLoading" class="text-info">No ex. rates to show.</span>
@@ -80,31 +83,7 @@
 
       
 
-      <div class="col-sm-12 col-md-6">
-        <!--<div class="card card-signin my-5">
-          <div class="card-body">
-            <h5 class="card-title text-center">Exchange rate settings</h5>
-
-            <form class="form-signin" (ngSubmit)="saveRateSettings()" #rateForm="ngForm">
-              <div class="form-group">
-                <label for="isAutoRateSet"><b>Auto/Manual ex rate setting</b></label>
-                <div class="row">
-                  <div class="col-offset-2 col-md-9">
-                    <div class="btn-group" data-toggle="buttons">
-                      <button (click)="toggleAuto()" class="btn btn-success btn-sm">
-                        <i *ngIf="!model.isAutoRateSet" class="fa fa-square text-white"></i>
-                        <i *ngIf="model.isAutoRateSet" class="fa fa-check text-white"></i>
-                      </button>
-                      &nbsp;<span class="text-info">Is exchange rate conversion automatic?</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save setting</button>
-            </form>
-          </div>
-        </div>-->
-
+      <div class="col-sm-12 col-md-6 margin-top-10">
           <!--API key settings-->
         <div class="card card-signin margin-top-10 my-5">
           <div class="card-body">

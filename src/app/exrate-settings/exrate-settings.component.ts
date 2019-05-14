@@ -29,13 +29,14 @@ export class ExrateSettingsComponent implements OnInit {
   nationalCurrency: string = null;
   currenciesList: any = [];
   exchangeRates: any = [];
+  currentForm: any = null;
   exchangeRateDate: any = null;
   manualCurrencyRates: any = [];
   manualExchangeRates: any = [];
   filteredManualExchangeRates: any = [];
   filteredCurrencyRates: any = [];
   criteria: string = null;
-  model: any = { isAutoRateSet: false, apiKey: null};
+  model: any = { exchangeRate: null, dated: null};
   
   @BlockUI() blockUI: NgBlockUI;
   constructor(private currencyService: CurrencyService, private infoModal: InfoModalComponent,
@@ -154,6 +155,37 @@ export class ExrateSettingsComponent implements OnInit {
     );
   }
 
+  saveRate(frm: any) {
+    var dateStr = this.model.dated.year + '-' + this.model.dated.month + '-' +
+    this.model.dated.day;
+    var dated = new Date(dateStr).toLocaleDateString();
+    this.currentForm = frm;
+
+    var model = {
+      exchangeRate: this.model.exchangeRate,
+      defaultCurrency: this.defaultCurrency,
+      nationalCurrency: this.nationalCurrency,
+      dated: dated
+    }
+
+    this.blockUI.start('Saving exchange rate...');
+    this.currencyService.saveManualExchangeRates(model).subscribe(
+      data => {
+        if (data) {
+          model.dated = this.storeService.getLongDateString(model.dated);
+          var isRateExist = this.manualExchangeRates.filter(m => this.storeService.getLongDateString(m.dated) == model.dated);
+          if (isRateExist.length > 0) {
+            isRateExist[0].exchangeRate = model.exchangeRate;
+          } else {
+            this.manualExchangeRates.push(model);
+          }
+          this.currentForm.resetForm();
+        }
+        this.blockUI.stop();
+      }
+    )
+  }
+
   saveAPIKey() {
     if (!this.model.apiKey) {
       this.errorMessage = Messages.INVALID_API_KEY;
@@ -226,6 +258,10 @@ export class ExrateSettingsComponent implements OnInit {
         }
       }
     )
+  }
+
+  formatDate(dated: string) {
+    return (this.storeService.getLongDateString(dated));
   }
 
 }
