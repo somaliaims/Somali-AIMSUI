@@ -168,13 +168,18 @@ export class ProjectEntryComponent implements OnInit {
     'AFRICAN_BANK': 2
   };
 
+  exRateFor: any = {
+    'FUNDING' : 1,
+    'DISBURSEMENT': 2
+  }
+
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, dated: null, exRateSource: null, fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
-  disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, exchangeRate: null };
+  disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, exchangeRate: null, exRateSource: null };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
 
   displayTabs: any = [
@@ -930,7 +935,7 @@ export class ProjectEntryComponent implements OnInit {
 
   showFunders() {
     this.manageTabsDisplay('funder');
-    this.getExchangeRatesList();
+    //this.getExchangeRatesList();
   }
 
   showImplementers() {
@@ -1958,8 +1963,62 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
-  getExchangeRates(eType: string, eFor: string) {
+  getExchangeRates(eFor: string) {
+
+    if (eFor = this.exRateFor.FUNDING) {
+      if (!this.funderModel.dated || !this.funderModel.currency || !this.funderModel.exRateSource) {
+        return false;
+      }
+    }
+
+    if (eFor = this.exRateFor.DISBURSEMENT) {
+      if (!this.disbursementModel.dated || !this.disbursementModel.currency || !this.disbursementModel.exRateSource) {
+        return false;
+      }
+    }
     
+
+    this.blockUI.start('Search exchange rate...');
+    var fundingDate = this.funderModel.dated;
+    var dated = fundingDate.year + '-' + fundingDate.month + '-' + fundingDate.day;
+    if (this.funderModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
+      this.currencyService.getExchangeRatesForDate(dated).subscribe(
+        data => {
+          if (data) {
+            var rates = data.rates;
+
+            if (rates) {
+              if (eFor == this.exRateFor.FUNDING) {
+                var rate = rates.filter(r => r.currency == this.funderModel.currency);
+                if (rate.length > 0) {
+                  this.funderModel.exchangeRate = rate[0].rate;
+                }
+              } else if (eFor == this.exRateFor.DISBURSEMENT) {
+                var rate = rates.filter(r => r.currency == this.disbursementModel.currency);
+                if (rate.length > 0) {
+                  this.disbursementModel.exchangeRate = rate[0].rate;
+                }
+              }
+            }
+          }
+          this.blockUI.stop();
+        }
+      )
+    } else if (this.funderModel.exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
+      this.currencyService.getManualExRatesByDate(dated).subscribe(
+        data => {
+          if (data) {
+            if (data.exchangeRate) {
+              if (eFor == this.exRateFor.FUNDING) {
+                this.funderModel.exchangeRate = data.exchangeRate;
+              } else if (eFor == this.exRateFor.DISBURSEMENT) {
+                this.disbursementModel.exchangeRate = data.exchangeRate;
+              }
+            }
+          }
+        }
+      )
+    }
   }
 
   getCurrencyExchangeRate(currency: string) {
@@ -1973,7 +2032,7 @@ export class ProjectEntryComponent implements OnInit {
       var proposedRate = 0;
       if (foundRate.length > 0) {
         proposedRate = parseFloat(foundRate[0].rate);
-      }
+      } 
       if (defaultCurrencyRate.length > 0) {
         var defaultRate = parseFloat(defaultCurrencyRate[0].rate);
         if (defaultRate == 1) {
