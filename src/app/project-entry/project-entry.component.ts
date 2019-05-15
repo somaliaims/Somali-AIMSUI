@@ -1978,9 +1978,19 @@ export class ProjectEntryComponent implements OnInit {
     }
 
     this.blockUI.start('Searching exchange rate...');
-    var fundingDate = this.funderModel.dated;
-    var dated = fundingDate.year + '-' + fundingDate.month + '-' + fundingDate.day;
-    if (this.funderModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
+    var dated = null;
+    var exRateSource = null;
+    if (eFor == this.exRateFor.FUNDING) {
+      var fundingDate = this.funderModel.dated;
+      dated = fundingDate.year + '-' + fundingDate.month + '-' + fundingDate.day;
+      exRateSource = this.funderModel.exRateSource;
+    } else if (eFor == this.exRateFor.DISBURSEMENT) {
+      var disbursementDate = this.disbursementModel.dated;
+      dated = disbursementDate.year + '-' + disbursementDate.month + '-' + disbursementDate.day;
+      exRateSource = this.disbursementModel.exRateSource;
+    }
+    
+    if (exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
       this.currencyService.getExchangeRatesForDate(dated).subscribe(
         data => {
           if (data) {
@@ -2003,7 +2013,7 @@ export class ProjectEntryComponent implements OnInit {
           this.blockUI.stop();
         }
       )
-    } else if (this.funderModel.exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
+    } else if (exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
       this.currencyService.getManualExRatesByDate(dated).subscribe(
         data => {
           if (data) {
