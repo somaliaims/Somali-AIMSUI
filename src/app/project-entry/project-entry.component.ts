@@ -1965,20 +1965,19 @@ export class ProjectEntryComponent implements OnInit {
 
   getExchangeRates(eFor: string) {
 
-    if (eFor = this.exRateFor.FUNDING) {
+    if (eFor == this.exRateFor.FUNDING) {
       if (!this.funderModel.dated || !this.funderModel.currency || !this.funderModel.exRateSource) {
         return false;
       }
     }
 
-    if (eFor = this.exRateFor.DISBURSEMENT) {
+    if (eFor == this.exRateFor.DISBURSEMENT) {
       if (!this.disbursementModel.dated || !this.disbursementModel.currency || !this.disbursementModel.exRateSource) {
         return false;
       }
     }
-    
 
-    this.blockUI.start('Search exchange rate...');
+    this.blockUI.start('Searching exchange rate...');
     var fundingDate = this.funderModel.dated;
     var dated = fundingDate.year + '-' + fundingDate.month + '-' + fundingDate.day;
     if (this.funderModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
@@ -2015,6 +2014,7 @@ export class ProjectEntryComponent implements OnInit {
                 this.disbursementModel.exchangeRate = data.exchangeRate;
               }
             }
+            this.blockUI.stop();
           }
         }
       )
