@@ -878,6 +878,17 @@
               </div>
 
               <div class="form-group">
+                <label for="exrate-source">Ex. rate source</label>
+                <select class="form-control" id="exrate-source" (change)="getExchangeRates()" [(ngModel)]="funderModel.exRateSource" name="exrate-source"
+                  #exrate-source="ngModel" required>
+                  <option *ngFor="let source of exRateSources" [value]="e.id">{{e.value}}</option>
+                </select>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="exrate-source.valid" class="alert alert-danger">
+                  Exchange rate source is required
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
                 <input type="number" [readonly]="isExRateReadonly" class="form-control" id="exchangeRate" [(ngModel)]="funderModel.exchangeRate"
                   name="exchangeRate" maxlength="9" min="1" max="1000" #exchangeRate="ngModel" />

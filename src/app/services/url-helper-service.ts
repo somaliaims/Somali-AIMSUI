@@ -123,6 +123,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.manualExchangeRates);
     }
 
+    getManualExchangeRatesByDateUrl(dated: string) {
+        return (this.BASE_URL + urlsList.urls.manualExRatesByDate + dated);
+    }
+
     getManualExchangeRatesForCurrency(code: string) {
         return (this.BASE_URL + urlsList.urls.manualExRatesForCurrency + code);
     }

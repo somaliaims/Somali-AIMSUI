@@ -74,6 +74,12 @@ export class CurrencyService {
             catchError(this.storeService.handleError<any>('Manual Ex Rates')));
     }
 
+    getManualExRatesByDate(dated: string) {
+        var url = this.urlHelper.getManualExchangeRatesByDateUrl(dated);
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Manual Ex Rates by Date')));
+    }
+
     saveManualExchangeRates(model: any) {
         var url = this.urlHelper.getManualExchangeRatesUrl();
         return this.httpClient.post(url,

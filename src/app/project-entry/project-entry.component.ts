@@ -158,11 +158,21 @@ export class ProjectEntryComponent implements OnInit {
     'Radio': 4
   }
 
+  exRateSources: any = [
+    { id: 1, value: 'Open exchange api' },
+    { id: 2, value: 'African bank' }
+  ];
+
+  exRateSourceCodes: any = {
+    'OPEN_EXCHANGE': 1,
+    'AFRICAN_BANK': 2
+  };
+
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
-  funderModel = { id: 0, projectId: 0, funder: null, dated: null, fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
+  funderModel = { id: 0, projectId: 0, funder: null, dated: null, exRateSource: null, fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
   disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, exchangeRate: null };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
@@ -1948,6 +1958,10 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  getExchangeRates(eType: string, eFor: string) {
+    
+  }
+
   getCurrencyExchangeRate(currency: string) {
     var exRate = null;
     if (this.exchangeRatesList.length > 0) {
@@ -1997,8 +2011,27 @@ export class ProjectEntryComponent implements OnInit {
     return exRate;
   }
 
+  getCurrencyManualExchangeRate() {
+    if (this.funderModel.dated) {
+      var dated  = new Date(this.funderModel.dated.year + '-' + this.funderModel.dated.month + '-'
+      + this.funderModel.dated.date);
+      this.currencyService.getManualExRatesByDate(dated.toString()).subscribe(
+        data => {
+          console.log(data);
+        }
+      );
+    }
+
+    
+    
+  }
+
   getExchangeRateForFunding() {
-    this.funderModel.exchangeRate = this.getCurrencyExchangeRate(this.funderModel.currency);
+    if (this.funderModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
+      this.funderModel.exchangeRate = this.getCurrencyExchangeRate(this.funderModel.currency);
+    } else if (this.funderModel.exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
+
+    }
   }
 
   getExchangeRateForDisbursement() {
