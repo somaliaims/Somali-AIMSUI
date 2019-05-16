@@ -6,6 +6,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { CurrencyService } from '../services/currency.service';
 import { Messages } from '../config/messages';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-envelope',
@@ -20,6 +21,7 @@ export class EnvelopeComponent implements OnInit {
   totalActualAmount: number = 0;
   totalExpectedAmount: number = 0;
   totalManualAmount: number = 0;
+  manualExchangeRate: number = 0;
   yearsList: any = [];
   currenciesList: any = [];
   exRatesList: any = [];
@@ -29,14 +31,27 @@ export class EnvelopeComponent implements OnInit {
   selectedCurrency: string = null;
   exchangeRate: number = 0;
   defaultCurrency: string = null;
+  nationalCurrency: string = null;
+  exRateSource: string = null;
   oldCurrency: string = null;
   envelopeData: any = { funderId: 0, funderName: '', totalFunds: 0.0, sectors: [] };
   envelopeBreakups: any = [];
   envelopeSectorsBreakups: any = [];
+
+  exRateSources: any = [
+    { id: 1, value: 'Open exchange api' },
+    { id: 2, value: 'African bank' }
+  ];
+
+  exRateSourceCodes: any = {
+    'OPEN_EXCHANGE': 1,
+    'AFRICAN_BANK': 2
+  };
+
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
     private envelopeService: EnvelopeService, private currencyService: CurrencyService,
-    private errorModal: ErrorModalComponent) { }
+    private errorModal: ErrorModalComponent, private storeService: StoreService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -46,9 +61,10 @@ export class EnvelopeComponent implements OnInit {
 
     this.errorMessage = Messages.INVALID_ENVELOPE;
     this.getFunderEnvelope();
-    this.getCurrenciesList();
     this.getDefaultCurrency();
+    this.getNationalCurrency();
     this.getExchangeRates();
+    this.getManualExchangeRateForToday();
   }
 
   getCurrenciesList() {
@@ -71,14 +87,38 @@ export class EnvelopeComponent implements OnInit {
     )
   }
 
+  getManualExchangeRateForToday() {
+    var dated = this.storeService.getCurrentDateSQLFormat();
+    this.currencyService.getManualExRatesByDate(dated).subscribe(
+      data => {
+        if (data) {
+          if (data.exchangeRate) {
+            this.manualExchangeRate = data.exchangeRate;
+          }
+        }
+      });
+  }
+
   getDefaultCurrency() {
     this.currencyService.getDefaultCurrency().subscribe(
       data => {
         if (data) {
           this.defaultCurrency = data.currency;
+          this.currenciesList.push(data);
         }
       }
     )
+  }
+
+  getNationalCurrency() {
+    this.currencyService.getNationalCurrency().subscribe(
+      data => {
+        if (data) {
+          this.nationalCurrency = data.currency;
+          this.currenciesList.push(data);
+        }
+      }
+    );
   }
 
   getFunderEnvelope() {
@@ -198,9 +238,31 @@ export class EnvelopeComponent implements OnInit {
     }
   }
 
-
   getSectorAllocation(percent: number, totalAmount: number) {
     return ((totalAmount / 100) * percent).toFixed(2);
+  }
+
+  selectExRateSource() {
+    if (this.exRateSource != null) {
+      this.getCurrencyRates(this.exRateSource);
+    }
+  }
+
+  getCurrencyRates(eSource: string) {
+    if (eSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
+      this.convertExRatesToCurrency();
+    } else if (eSource == this.exRateSourceCodes.AFRICAN_BANK) {
+      if (this.selectedCurrency != this.nationalCurrency) {
+        var calculatedRate = 0;
+        if (this.manualExchangeRate > 0) {
+          calculatedRate = (1 / this.manualExchangeRate);
+        }
+      } else {
+        calculatedRate = this.manualExchangeRate;
+      }
+      this.exchangeRate = calculatedRate;
+      this.applyRateOnEnvelope(calculatedRate);
+    }
   }
 
   convertExRatesToCurrency() {
@@ -227,25 +289,28 @@ export class EnvelopeComponent implements OnInit {
 
       var calculatedRate = 0;
       calculatedRate = (currencyRate / oldCurrencyRate);
-
-      this.envelopeBreakups.forEach(e => {
-        e.actualAmount = Math.round(parseFloat((e.actualAmount * calculatedRate).toFixed(2)));
-        e.expectedAmount = Math.round(parseFloat((e.expectedAmount * calculatedRate).toFixed(2)));
-        e.manualAmount = Math.round(parseFloat((e.manualAmount * calculatedRate).toFixed(2)));
-      });
-
-      var sectors = this.envelopeSectorsBreakups;
-      sectors.forEach(function (sector) {
-        var allocation = sector.yearlyAllocation.forEach(function (a) {
-          a.amount = Math.round(parseFloat((a.amount * calculatedRate).toFixed(2)));
-          a.expectedAmount = Math.round(parseFloat((a.expectedAmount * calculatedRate).toFixed(2)));
-          a.manualAmount = Math.round(parseFloat((a.manualAmount * calculatedRate).toFixed(2)));
-        });
-      });
-
-      this.totalFundingAmount = Math.round(parseFloat((this.totalFundingAmount * calculatedRate).toFixed(2)));
-      this.oldCurrency = this.selectedCurrency;
+      this.applyRateOnEnvelope(calculatedRate);
     }
+  }
+
+  applyRateOnEnvelope(calculatedRate: number) {
+    this.envelopeBreakups.forEach(e => {
+      e.actualAmount = Math.round(parseFloat((e.actualAmount * calculatedRate).toFixed(2)));
+      e.expectedAmount = Math.round(parseFloat((e.expectedAmount * calculatedRate).toFixed(2)));
+      e.manualAmount = Math.round(parseFloat((e.manualAmount * calculatedRate).toFixed(2)));
+    });
+
+    var sectors = this.envelopeSectorsBreakups;
+    sectors.forEach(function (sector) {
+      var allocation = sector.yearlyAllocation.forEach(function (a) {
+        a.amount = Math.round(parseFloat((a.amount * calculatedRate).toFixed(2)));
+        a.expectedAmount = Math.round(parseFloat((a.expectedAmount * calculatedRate).toFixed(2)));
+        a.manualAmount = Math.round(parseFloat((a.manualAmount * calculatedRate).toFixed(2)));
+      });
+    });
+
+    this.totalFundingAmount = Math.round(parseFloat((this.totalFundingAmount * calculatedRate).toFixed(2)));
+    this.oldCurrency = this.selectedCurrency;
   }
 
   getSectorActualTotalForYear(year: number) {
@@ -297,5 +362,6 @@ export class EnvelopeComponent implements OnInit {
     }
     return 1;
   }
+
 
 }

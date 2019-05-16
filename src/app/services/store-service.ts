@@ -166,5 +166,10 @@ export class StoreService {
     }
     return 'Invalid date';
   }
+
+  getCurrentDateSQLFormat() {
+    var dated = new Date();
+    return (dated.getFullYear() + '-' + (dated.getMonth() + 1) + '-' + dated.getDate());
+  }
   
 }

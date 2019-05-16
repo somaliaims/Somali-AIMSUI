@@ -49,15 +49,20 @@
               <div class="row">
                 <div class="col-md-9">
                   <div class="form-inline">
-                    <label><b>Currency:</b>&nbsp;</label>
+                    <label>&nbsp;</label>
                     <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
                       #currency="ngModel" (change)="convertExRatesToCurrency()">
-                      <option value="null">--Select one--</option>
+                      <option value="null">--Currencies--</option>
                       <option *ngFor="let currency of currenciesList" [value]="currency.currency">
                         {{currency.currency}}</option>
                     </select>
-                    <label>&nbsp;<b>Ex. rate for {{defaultCurrency}}:</b>&nbsp;</label>
-                    <input class="form-control" type="text" [(ngModel)]="exchangeRate" name="exchangeRate" #exRate="ngModel" />
+                    <label for="exrate-source">&nbsp;</label>
+                    <select class="form-control" id="esource" (change)="selectExRateSource()" [(ngModel)]="exRateSource"
+                      name="esource" #esource="ngModel" required>
+                      <option value="null">--Ex Rate Source--</option>
+                      <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
+                    </select>&nbsp;
+                    <label>&nbsp;<b>Ex. rate: {{exchangeRate}}</b>&nbsp;</label>
                   </div>
                 </div>
                 <div class="col-md-3">
