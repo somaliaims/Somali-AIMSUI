@@ -254,11 +254,17 @@ export class EnvelopeComponent implements OnInit {
     } else if (eSource == this.exRateSourceCodes.AFRICAN_BANK) {
       if (this.selectedCurrency != this.nationalCurrency) {
         var calculatedRate = 0;
-        if (this.manualExchangeRate > 0) {
-          calculatedRate = (1 / this.manualExchangeRate);
-        }
+        calculatedRate = 1;
       } else {
         calculatedRate = this.manualExchangeRate;
+        if (calculatedRate == this.exchangeRate) {
+          return false;
+        } else if (this.selectedCurrency == this.oldCurrency) {
+          var oldCurrencyRateArr = this.exRatesList.filter(ex => ex.currency == this.oldCurrency);
+          if (oldCurrencyRateArr.length > 0) {
+            calculatedRate = (calculatedRate / oldCurrencyRateArr[0].rate);
+          }
+        }
       }
       this.exchangeRate = calculatedRate;
       this.applyRateOnEnvelope(calculatedRate);
@@ -266,13 +272,15 @@ export class EnvelopeComponent implements OnInit {
   }
 
   convertExRatesToCurrency() {
-    if (this.selectedCurrency != null && this.exRatesList.length > 0) {
+    var currencyRate = 0;
+    var defaultRate = 0;
+    var oldCurrencyRate = 0;
+
+    if (this.exRatesList.length > 0) {
       var currencyRateArr = this.exRatesList.filter(ex => ex.currency == this.selectedCurrency);
       var defaultRateArr = this.exRatesList.filter(ex => ex.currency == this.defaultCurrency);
       var oldCurrencyRateArr = this.exRatesList.filter(ex => ex.currency == this.oldCurrency);
-      var currencyRate = 0;
-      var defaultRate = 0;
-      var oldCurrencyRate = 0;
+
 
       if (defaultRateArr.length > 0) {
         defaultRate = defaultRateArr[0].rate;
@@ -286,7 +294,13 @@ export class EnvelopeComponent implements OnInit {
       if (oldCurrencyRateArr.length > 0) {
         oldCurrencyRate = oldCurrencyRateArr[0].rate;
       }
+    }
+      
+    if (this.selectedCurrency == this.oldCurrency && this.selectedCurrency == this.defaultCurrency) {
+      return false; 
+    }
 
+    if (this.selectedCurrency != null && this.exRatesList.length > 0) {
       var calculatedRate = 0;
       calculatedRate = (currencyRate / oldCurrencyRate);
       this.applyRateOnEnvelope(calculatedRate);

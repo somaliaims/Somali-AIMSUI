@@ -58,7 +58,7 @@
                     </select>
                     <label for="exrate-source">&nbsp;</label>
                     <select class="form-control" id="esource" (change)="selectExRateSource()" [(ngModel)]="exRateSource"
-                      name="esource" #esource="ngModel" required>
+                      name="esource" #esource="ngModel">
                       <option value="null">--Ex Rate Source--</option>
                       <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
                     </select>&nbsp;
