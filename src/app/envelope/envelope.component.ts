@@ -363,5 +363,4 @@ export class EnvelopeComponent implements OnInit {
     return 1;
   }
 
-
 }

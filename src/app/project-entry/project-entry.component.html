@@ -349,12 +349,12 @@
                 </div>
               </div>
 
-              <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+              <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-warning btn-block text-uppercase"
                 type="submit">{{btnProjectSectorText}}</button>
 
-              <button [class.disable]="isProjectSectorBtnDisabled"
+              <!--<button [class.disable]="isProjectSectorBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button" (click)="resetSectorEntry()">Reset
-                Sector</button>
+                Sector</button>-->
             </form>
 
           </div>
@@ -522,11 +522,11 @@
               </div>
 
               <button [class.disable]="isProjectLocationBtnDisabled"
-                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectLocationText}}</button>
+                class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">{{btnProjectLocationText}}</button>
 
-              <button [class.disable]="isProjectLocationBtnDisabled"
+              <!--<button [class.disable]="isProjectLocationBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button"
-                (click)="resetLocationEntry()">Reset Location</button>
+                (click)="resetLocationEntry()">Reset Location</button>-->
             </form>
 
           </div>
@@ -684,10 +684,10 @@
               </div>
 
               <button [class.disable]="isProjectDocumentBtnDisabled"
-                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Add document</button>
-              <button [class.disable]="isProjectDocumentBtnDisabled"
+                class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Add document</button>
+              <!--<button [class.disable]="isProjectDocumentBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="submit"
-                (click)="resetDocumentEntry()">Reset document</button>
+                (click)="resetDocumentEntry()">Reset document</button>-->
             </form>
 
           </div>
@@ -883,7 +883,7 @@
                   #esource="ngModel" required>
                   <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
                 </select>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="exrate-source.valid" class="alert alert-danger">
+                <div *ngIf="projectFunderForm.submitted" [hidden]="esource.valid" class="alert alert-danger">
                   Exchange rate source is required
                 </div>
               </div>
@@ -900,11 +900,11 @@
                   </div>
               </div>
 
-              <button [class.disable]="(isProjectFunderBtnDisabled || !defaultCurrency)" class="btn btn-lg btn-info btn-block text-uppercase"
+              <button [class.disable]="(isProjectFunderBtnDisabled || !defaultCurrency)" class="btn btn-lg btn-warning btn-block text-uppercase"
                 type="submit">Add Funder</button>
-              <button [class.disable]="isProjectFunderBtnDisabled"
+              <!--<button [class.disable]="isProjectFunderBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button" (click)="resetFunderEntry()">Reset
-                Funder</button>
+                Funder</button>-->
             </form>
 
           </div>
@@ -1057,10 +1057,10 @@
               </div>
 
               <button [class.disable]="isProjectImplementerBtnDisabled"
-                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Add Implementer</button>
-              <button [class.disable]="isProjectImplementerBtnDisabled"
+                class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Add Implementer</button>
+              <!--<button [class.disable]="isProjectImplementerBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button"
-                (click)="resetImplementerEntry()">Reset Implementer</button>
+                (click)="resetImplementerEntry()">Reset Implementer</button>-->
             </form>
 
           </div>
@@ -1231,11 +1231,11 @@
 
                 <div class="form-group">
                   <label for="exrate-source">Ex. rate source</label>
-                  <select class="form-control" id="esource" (change)="getExchangeRates(2)" [(ngModel)]="disbursementModel.exRateSource" name="esource"
-                    #esource="ngModel" required>
+                  <select class="form-control" id="desource" (change)="getExchangeRates(2)" [(ngModel)]="disbursementModel.exRateSource" name="desource"
+                    #desource="ngModel" required>
                     <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
                   </select>
-                  <div *ngIf="disbursementForm.submitted" [hidden]="exrate-source.valid" class="alert alert-danger">
+                  <div *ngIf="disbursementForm.submitted" [hidden]="desource.valid" class="alert alert-danger">
                     Exchange rate source is required
                   </div>
                 </div>
@@ -1252,10 +1252,10 @@
                     </div>
                 </div>
 
-              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-warning btn-block text-uppercase"
                 type="submit">Add Disbursement</button>
-              <button [class.disable]="isBtnDisabled" (click)="resetDisbursementEntry()"
-                class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Reset Disbursement</button>
+              <!--<button [class.disable]="isBtnDisabled" (click)="resetDisbursementEntry()"
+                class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Reset Disbursement</button>-->
             </form>
 
           </div>
