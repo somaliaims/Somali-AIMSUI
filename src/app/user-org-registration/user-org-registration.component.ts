@@ -36,6 +36,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   errorMessage: string = '';
+  orgModel: any = { organizationName: null };
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
@@ -80,15 +81,29 @@ export class UserOrgRegistrationComponent implements OnInit {
     return organization ? organization.organizationName : undefined;
   }
 
-  private filterOrganizations(value: string): Organization[] {
+  /*private filterOrganizations(value: string): Organization[] {
     if (typeof value != "string") {
     } else {
       const filterValue = value.toLowerCase();
       return this.organizations.filter(organization => organization.organizationName.toLowerCase().indexOf(filterValue) !== -1);
     }
+  }*/
+
+  selectOrganization(e) {
+
   }
 
-  loadOrganizations() {
+  filterOrganizations() {
+    var org = this.orgModel.organizationName;
+    if (!org) {
+      this.filterOrganizations = this.organizations;
+    } else {
+      org = org.toLowerCase();
+      this.filteredOrganizations = this.organizations.filter(o => o.organizationName.toLowerCase().indexOf(org) != -1);
+    }
+  }
+
+  /*loadOrganizations() {
     this.organizationService.getOrganizationsList().subscribe(
       data => {
         this.organizations = data;
@@ -100,6 +115,17 @@ export class UserOrgRegistrationComponent implements OnInit {
       },
       error => {
         console.log("Request Failed: ", error);
+      }
+    );
+  }*/
+
+  loadOrganizations() {
+    this.organizationService.getOrganizationsList().subscribe(
+      data => {
+        if (data) {
+          this.organizations = data;
+          this.filteredOrganizations = data;
+        }
       }
     );
   }
@@ -151,6 +177,11 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   resetModel() {
     this.model = new RegistrationModel('', '', '', '', '', '', false);
+  }
+
+  clear() {
+    this.orgModel.organizationName = null;
+    this.selectedOrganizationId = 0;
   }
 
 }

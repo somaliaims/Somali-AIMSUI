@@ -10,14 +10,35 @@
           <h5 class="card-title text-center">Select or create organization</h5>
 
           <form (ngSubmit)="registerUser()" class="example-form" [formGroup]='usersForm'>
-            <mat-form-field class="example-full-width">
+            <!--<mat-form-field class="example-full-width">
               <input matInput placeholder="Enter/Select Organization" aria-label="Organization" [matAutocomplete]="auto" [formControl]="userInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
                 <mat-option *ngFor="let org of filteredOrganizations | async" [value]="org">
                   <span>{{org.organizationName}}</span>
                 </mat-option>
               </mat-autocomplete>
-            </mat-form-field>
+            </mat-form-field>-->
+            <div class="input-group">
+              <input class="form-control" placeholder="Enter organization name" type="text" name="organization"
+                [(ngModel)]="orgModel.organizationName" onkeypress="return event.keyCode != 13;"
+                (input)="filterOrganizations()" maxlength="100" required>
+              <span class="input-group-btn">
+                <button title="Clear" class="btn btn-outline-danger btn-lg" (click)="clear()" type="button">
+                  <i class="fa fa-close"></i>
+                </button>
+              </span>
+            </div>
+            <table *ngIf="filteredOrganizations.length > 0" class="table table-bordered">
+              <tr *ngFor="let org of filteredOrganizations">
+                <td>{{org.organizationName}}</td>
+                <td>
+                  <button id="org-{{org.id}}" (click)="selectOrganization" class="btn btn-success"><i id="iorg-{{org.id}}" class="fa fa-check"></i></button>
+                </td>
+              </tr>
+            </table>
+            <span class="text-info" *ngIf="filteredOrganizations.length == 0">
+              <i>No organizations found</i>
+            </span>
             <button [class.disable]="isProcessing" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnRegisterText}}</button>
           </form>
         </div>
