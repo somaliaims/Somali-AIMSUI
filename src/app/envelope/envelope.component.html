@@ -51,7 +51,7 @@
                   <div class="form-inline">
                     <label>&nbsp;</label>
                     <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
-                      #currency="ngModel" (change)="convertExRatesToCurrency()">
+                      #currency="ngModel" (change)="selectExRateSource()">
                       <option value="null">--Currencies--</option>
                       <option *ngFor="let currency of currenciesList" [value]="currency.currency">
                         {{currency.currency}}</option>
@@ -110,7 +110,7 @@
                         <tr>
                           <td colspan="2">
                             <input type="text" id="sm-{{allocation.year}}-{{s.sectorId}}"
-                              (change)="updateEnvelpeManualValue($event)"
+                              (change)="updateEnvelopeManualValue($event)"
                               value="{{handleNullAmount(allocation.manualAmount)}}" />
                           </td>
                         </tr>

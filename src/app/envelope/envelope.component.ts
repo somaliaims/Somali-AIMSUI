@@ -201,7 +201,7 @@ export class EnvelopeComponent implements OnInit {
     }
   }
 
-  updateEnvelpeManualValue(e) {
+  updateEnvelopeManualValue(e) {
     var newValue = e.target.value;
     if (newValue <= 0) {
       this.errorMessage = Messages.CANNOT_BE_ZERO;
@@ -249,12 +249,19 @@ export class EnvelopeComponent implements OnInit {
   }
 
   getCurrencyRates(eSource: string) {
+    var exRate = 0;
     if (eSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
       this.convertExRatesToCurrency();
     } else if (eSource == this.exRateSourceCodes.AFRICAN_BANK) {
       if (this.selectedCurrency != this.nationalCurrency) {
         var calculatedRate = 0;
-        calculatedRate = 1;
+
+        if (this.oldCurrency != null) {
+          calculatedRate = (1 / this.exchangeRate);
+        } else {
+          calculatedRate = 1;
+        }
+        exRate = calculatedRate;
       } else {
         calculatedRate = this.manualExchangeRate;
         if (calculatedRate == this.exchangeRate) {
@@ -262,11 +269,16 @@ export class EnvelopeComponent implements OnInit {
         } else if (this.selectedCurrency == this.oldCurrency) {
           var oldCurrencyRateArr = this.exRatesList.filter(ex => ex.currency == this.oldCurrency);
           if (oldCurrencyRateArr.length > 0) {
+            exRate = calculatedRate;
             calculatedRate = (calculatedRate / oldCurrencyRateArr[0].rate);
           }
         }
       }
-      this.exchangeRate = calculatedRate;
+      if (exRate != 0) {
+        this.exchangeRate = exRate;
+      } else {
+        this.exchangeRate = calculatedRate;
+      }
       this.applyRateOnEnvelope(calculatedRate);
     }
   }
@@ -279,8 +291,8 @@ export class EnvelopeComponent implements OnInit {
     if (this.exRatesList.length > 0) {
       var currencyRateArr = this.exRatesList.filter(ex => ex.currency == this.selectedCurrency);
       var defaultRateArr = this.exRatesList.filter(ex => ex.currency == this.defaultCurrency);
-      var oldCurrencyRateArr = this.exRatesList.filter(ex => ex.currency == this.oldCurrency);
-
+      //var oldCurrencyRateArr = this.exRatesList.filter(ex => ex.currency == this.oldCurrency);
+      oldCurrencyRate = this.exchangeRate;
 
       if (defaultRateArr.length > 0) {
         defaultRate = defaultRateArr[0].rate;
@@ -291,9 +303,9 @@ export class EnvelopeComponent implements OnInit {
         this.exchangeRate = currencyRate;
       }
 
-      if (oldCurrencyRateArr.length > 0) {
-        oldCurrencyRate = oldCurrencyRateArr[0].rate;
-      }
+      /*if (oldCurrencyRateArr.length > 0) {
+        
+      }*/
     }
       
     if (this.selectedCurrency == this.oldCurrency && this.selectedCurrency == this.defaultCurrency) {
