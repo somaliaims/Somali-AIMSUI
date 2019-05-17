@@ -20,7 +20,7 @@
             </mat-form-field>-->
             <div class="input-group">
               <input [readonly]="selectedOrganizationId != 0" class="form-control" placeholder="Enter organization name" type="text" name="organizationName"
-                [(ngModel)]="orgModel.organizationName" #organizationName="ngModel" onkeypress="return event.keyCode != 13;"
+                [(ngModel)]="model.organizationName" #organizationName="ngModel" onkeypress="return event.keyCode != 13;"
                 (input)="filterOrganizations()" minlength="2" maxlength="100" required>
               <span class="input-group-btn">
                 &nbsp;

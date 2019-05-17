@@ -23,7 +23,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   organizationTypes: any = [];
   organizationType: string = null;
   isLoading = true;
-  model: RegistrationModel = null;
+  //model: RegistrationModel = null;
   organizationId: number = 0;
   organizationTypeId: string = null;
   isProcessing: boolean = false;
@@ -35,7 +35,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   errorMessage: string = '';
-  orgModel: any = { organizationName: null };
+  model: any = { email: null, password: null, organizationId: null, IsNewOrganization: false, organizationName: null };
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
@@ -48,12 +48,12 @@ export class UserOrgRegistrationComponent implements OnInit {
     this.storeService.currentRegistration.subscribe(model => {
       if (model) {
         if (model.Email === '' || model.Email == null) {
-          //this.router.navigateByUrl('user-registration');
+          this.router.navigateByUrl('user-registration');
         } else {
           this.model = model;
         }
       } else {
-        //this.router.navigateByUrl('user-registration');
+        this.router.navigateByUrl('user-registration');
       }
     });
 
@@ -63,11 +63,6 @@ export class UserOrgRegistrationComponent implements OnInit {
         this.isError = true;
       }
     });
-
-    /*this.usersForm = this.fb.group({
-      userInput: null,
-    });*/
-    
     this.loadOrganizations();
   }
   
@@ -94,13 +89,13 @@ export class UserOrgRegistrationComponent implements OnInit {
       var organization = this.organizations.filter(o => o.id == id);
       if (organization.length > 0) {
         this.selectedOrganizationId = organization[0].id;
-        this.orgModel.organizationName = organization[0].organizationName;
+        this.model.organizationName = organization[0].organizationName;
       }
     }
   }
 
   filterOrganizations() {
-    var org = this.orgModel.organizationName;
+    var org = this.model.organizationName;
     if (!org) {
       this.filteredOrganizations = this.organizations;
     } else {
@@ -139,7 +134,7 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   registerUser() {
     if (this.selectedOrganizationId == 0) {
-      this.model.OrganizationName = this.orgModel.organizationName;
+      this.model.OrganizationName = this.model.organizationName;
       if (this.model.OrganizationName.length == 0) {
         //Need to show a dialog message here
         console.log('error');
@@ -159,11 +154,11 @@ export class UserOrgRegistrationComponent implements OnInit {
     this.userService.registerUser(this.model).subscribe(
       data => {
         if (!this.isError) {
-          this.resetModel();
           this.storeService
             .newInfoMessage(Messages.USER_REGISTRATION_MESSAGE);
           this.btnRegisterText = 'Redirecting...';
           setTimeout(() => {
+            this.resetModel();
             this.router.navigateByUrl('');
           }, this.delaySeconds);
         } else {
@@ -187,7 +182,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   clear() {
-    this.orgModel.organizationName = null;
+    this.model.organizationName = null;
     this.selectedOrganizationId = 0;
   }
 
