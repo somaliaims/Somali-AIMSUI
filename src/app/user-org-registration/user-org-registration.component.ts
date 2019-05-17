@@ -19,10 +19,9 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   organizations: any = [];
   userInput = new FormControl();
-  filteredOrganizations: Observable<Organization[]>;
+  filteredOrganizations: any = [] ;
   organizationTypes: any = [];
   organizationType: string = null;
-  usersForm: FormGroup;
   isLoading = false;
   model: RegistrationModel = null;
   organizationId: number = 0;
@@ -49,12 +48,12 @@ export class UserOrgRegistrationComponent implements OnInit {
     this.storeService.currentRegistration.subscribe(model => {
       if (model) {
         if (model.Email === '' || model.Email == null) {
-          this.router.navigateByUrl('user-registration');
+          //this.router.navigateByUrl('user-registration');
         } else {
           this.model = model;
         }
       } else {
-        this.router.navigateByUrl('user-registration');
+        //this.router.navigateByUrl('user-registration');
       }
     });
 
@@ -65,9 +64,9 @@ export class UserOrgRegistrationComponent implements OnInit {
       }
     });
 
-    this.usersForm = this.fb.group({
+    /*this.usersForm = this.fb.group({
       userInput: null,
-    });
+    });*/
     
     this.loadOrganizations();
   }
@@ -90,13 +89,20 @@ export class UserOrgRegistrationComponent implements OnInit {
   }*/
 
   selectOrganization(e) {
-
+    var id = e.currentTarget.id.split('-')[1];
+    if (id) {
+      var organization = this.organizations.filter(o => o.id == id);
+      if (organization.length > 0) {
+        this.selectedOrganizationId = organization[0].id;
+        this.orgModel.organizationName = organization[0].organizationName;
+      }
+    }
   }
 
   filterOrganizations() {
     var org = this.orgModel.organizationName;
     if (!org) {
-      this.filterOrganizations = this.organizations;
+      this.filteredOrganizations = this.organizations;
     } else {
       org = org.toLowerCase();
       this.filteredOrganizations = this.organizations.filter(o => o.organizationName.toLowerCase().indexOf(org) != -1);
@@ -132,7 +138,7 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   registerUser() {
     if (this.selectedOrganizationId == 0) {
-      this.model.OrganizationName = this.userInput.value;
+      this.model.OrganizationName = this.orgModel.organizationName;
       if (this.model.OrganizationName.length == 0) {
         //Need to show a dialog message here
         console.log('error');

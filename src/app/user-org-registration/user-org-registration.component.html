@@ -1,6 +1,6 @@
 <div class="container-fluid view-area">
   <div class="row">
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="col-sm-12 col-md-9 col-lg-7 mx-auto">
       <div class="card card-signin my-5">
         <div class="card-body">
           <div *ngIf="isError" class="alert alert-danger alert-dismissible">
@@ -9,7 +9,7 @@
           </div>
           <h5 class="card-title text-center">Select or create organization</h5>
 
-          <form (ngSubmit)="registerUser()" class="example-form" [formGroup]='usersForm'>
+          <form (ngSubmit)="usersForm.form.valid && registerUser()" class="example-form" #usersForm='ngForm'>
             <!--<mat-form-field class="example-full-width">
               <input matInput placeholder="Enter/Select Organization" aria-label="Organization" [matAutocomplete]="auto" [formControl]="userInput">
               <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
@@ -19,27 +19,35 @@
               </mat-autocomplete>
             </mat-form-field>-->
             <div class="input-group">
-              <input class="form-control" placeholder="Enter organization name" type="text" name="organization"
-                [(ngModel)]="orgModel.organizationName" onkeypress="return event.keyCode != 13;"
-                (input)="filterOrganizations()" maxlength="100" required>
+              <input [readonly]="selectedOrganizationId != 0" class="form-control" placeholder="Enter organization name" type="text" name="organizationName"
+                [(ngModel)]="orgModel.organizationName" #organizationName="ngModel" onkeypress="return event.keyCode != 13;"
+                (input)="filterOrganizations()" minlength="2" maxlength="100" required>
               <span class="input-group-btn">
-                <button title="Clear" class="btn btn-outline-danger btn-lg" (click)="clear()" type="button">
+                &nbsp;
+                <button [class.disable]="selectedOrganizationId == 0"  title="Clear" class="btn btn-danger btn-lg" (click)="clear()" type="button">
                   <i class="fa fa-close"></i>
                 </button>
               </span>
             </div>
-            <table *ngIf="filteredOrganizations.length > 0" class="table table-bordered">
-              <tr *ngFor="let org of filteredOrganizations">
-                <td>{{org.organizationName}}</td>
-                <td>
-                  <button id="org-{{org.id}}" (click)="selectOrganization" class="btn btn-success"><i id="iorg-{{org.id}}" class="fa fa-check"></i></button>
-                </td>
-              </tr>
-            </table>
-            <span class="text-info" *ngIf="filteredOrganizations.length == 0">
-              <i>No organizations found</i>
-            </span>
-            <button [class.disable]="isProcessing" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnRegisterText}}</button>
+            <div *ngIf="usersForm.submitted" [hidden]="organizationName.valid" class="alert alert-danger form-group">
+              Valid organization name is required (at least 2 characters)
+            </div>
+            <div class="form-group margin-top-10">
+              <button [class.disable]="isProcessing" type="submit" class="btn btn-warning btn-lg btn-block text-uppercase">{{btnRegisterText}}</button>
+            </div>
+            <div class="iati-box">
+                <table *ngIf="filteredOrganizations.length > 0" class="table table-bordered">
+                    <tr *ngFor="let org of filteredOrganizations">
+                      <td>{{org.organizationName}}</td>
+                      <td>
+                        <button type="button" id="org-{{org.id}}" (click)="selectOrganization($event)" class="btn btn-success"><i id="iorg-{{org.id}}" class="fa fa-check"></i></button>
+                      </td>
+                    </tr>
+                  </table>
+                  <span class="text-info" *ngIf="filteredOrganizations.length == 0">
+                    <i>No organizations found</i>
+                  </span>
+            </div>
           </form>
         </div>
       </div>
