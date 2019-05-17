@@ -40,12 +40,15 @@
                     <tr *ngFor="let org of filteredOrganizations">
                       <td>{{org.organizationName}}</td>
                       <td>
-                        <button type="button" id="org-{{org.id}}" (click)="selectOrganization($event)" class="btn btn-success"><i id="iorg-{{org.id}}" class="fa fa-check"></i></button>
+                        <button [class.disable]="selectedOrganizationId == org.id" type="button" id="org-{{org.id}}" (click)="selectOrganization($event)" class="btn btn-success"><i id="iorg-{{org.id}}" class="fa fa-check"></i></button>
                       </td>
                     </tr>
                   </table>
-                  <span class="text-info" *ngIf="filteredOrganizations.length == 0">
+                  <span class="text-info" *ngIf="filteredOrganizations.length == 0 && !isLoading">
                     <i>No organizations found</i>
+                  </span>
+                  <span *ngIf="isLoading" class="text-center">
+                    <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
                   </span>
             </div>
           </form>

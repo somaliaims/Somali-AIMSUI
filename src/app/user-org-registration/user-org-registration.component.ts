@@ -22,7 +22,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   filteredOrganizations: any = [] ;
   organizationTypes: any = [];
   organizationType: string = null;
-  isLoading = false;
+  isLoading = true;
   model: RegistrationModel = null;
   organizationId: number = 0;
   organizationTypeId: string = null;
@@ -132,6 +132,7 @@ export class UserOrgRegistrationComponent implements OnInit {
           this.organizations = data;
           this.filteredOrganizations = data;
         }
+        this.isLoading = false;
       }
     );
   }
