@@ -5,7 +5,7 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">New project selection</a>
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">Source project selection</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active btn-info" data-toggle="tab">Merge projects</a>
@@ -15,10 +15,17 @@
     </div>
 
     <div class="row">
+      <div class="col-md-12">
+        <span class="float-right margin-top-10">
+          <button class="btn btn-info" [class.disable]="isProjectBtnDisabled"
+            class="btn btn-info btn-lg text-uppercase" type="submit">Merge projects</button>
+        </span>
+      </div>
+    </div>
+    <div class="row">
       <!--IATI Activity Box-->
       <div class="col-md-4 col-sm-12">
-
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Source projects</h5>
             <table class="table table-bordered">
@@ -71,7 +78,7 @@
 
       <!--Selected projects box-->
       <div class="col-md-4 col-sm-12">
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Selected AIMS projects</h5>
             <div>
@@ -100,8 +107,8 @@
                       </table>
                     </div>
                     <div class="float-right margin-top-5">
-                      <button type="button" id="deselect-{{project.id}}" class="btn btn-success btn-sm"
-                        (click)="deSelectForMerge($event)">De-Select</button>&nbsp;
+                      <!--<button type="button" id="deselect-{{project.id}}" class="btn btn-success btn-sm"
+                        (click)="deSelectForMerge($event)">De-Select</button>&nbsp;-->
                       <button type="button" id="selected-{{project.id}}" class="btn btn-info btn-sm"
                         (click)="enterTitle($event)">Title
                         >></button>&nbsp;
@@ -117,7 +124,7 @@
       </div>
 
       <div class="col-md-4 col-sm-12">
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body iati-box">
             <h5 class="card-title text-center">New Project Detail</h5>
 
@@ -127,10 +134,6 @@
                 <div class="col-md-12">
                   <span class="float-left">
                     <h5 class="card-title">New project</h5>
-                  </span>
-                  <span class="float-right">
-                    <button class="btn btn-info" [class.disable]="isProjectBtnDisabled"
-                      class="btn btn-info btn-block text-uppercase" type="submit">Merge projects</button>
                   </span>
                 </div>
               </div>

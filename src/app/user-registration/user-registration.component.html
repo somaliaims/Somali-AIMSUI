@@ -22,7 +22,7 @@
         
                   <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" [(ngModel)]="model.Password" required [(ngModel)]="model.Password" name="Password" #Password="ngModel">
+                    <input type="password" [elFocus]="isPasswordFocus" class="form-control" id="password" [(ngModel)]="model.Password" required [(ngModel)]="model.Password" name="Password" #Password="ngModel">
                     <div [hidden]="Password.valid || Password.pristine" class="alert alert-danger">
                       Password is required
                     </div>

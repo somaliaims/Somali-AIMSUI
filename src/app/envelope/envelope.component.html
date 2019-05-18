@@ -99,6 +99,11 @@
                       </table>
                     </td>
                   </tr>
+                  <tr *ngIf="envelopeData.sectors.length == 0">
+                    <td colspan="6">
+                      <span class="text-info"><b><i>Funds are not distributed among the sectors yet</i></b></span>
+                    </td>
+                  </tr>
                   <tr *ngFor="let s of envelopeData.sectors">
                     <td>{{s.sector}}</td>
                     <td *ngFor="let allocation of s.yearlyAllocation">

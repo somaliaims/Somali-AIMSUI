@@ -765,22 +765,22 @@
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.participatingOrganizations.length > 0" class="table table-bordered">
+                    <table *ngIf="project.funders.length > 0" class="table table-bordered">
                       <tr>
                         <th>Funder name</th>
                         <th>Action</th>
                       </tr>
-                      <tr *ngFor="let funder of project.participatingOrganizations">
+                      <tr *ngFor="let funder of project.funders">
                         <td>
                           {{funder.name}}
                         </td>
-                        <td [class.disable]="checkIfFunderAdded(funder.name)">
+                        <td  [class.disable]="checkIfFunderAdded(funder.name)">
                           <button id="dfunder-{{project.id}}-{{funder.id}}" (click)="enterIATIFunder($event)"
                             class="btn btn-success btn-sm">Enter >></button>
                         </td>
                       </tr>
                     </table>
-                    <div class="text-info" *ngIf="project.participatingOrganizations.length == 0"><i>No funders from
+                    <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from
                         IATI found.</i></div>
                   </td>
                 </tr>
@@ -847,15 +847,6 @@
               </div>
 
               <div class="form-group">
-                <label for="documentUrl">Amount</label>
-                <input type="number" class="form-control" id="amount" [(ngModel)]="funderModel.amount"
-                  name="amount" #amount="ngModel" min="1" max="100" required>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value > 0" class="alert alert-danger">
-                  Amount must not be zero or less
-                </div>
-              </div>
-
-              <div class="form-group">
                 <label for="fundingType">Funding type</label>
                 <select class="form-control" id="fundingTypeId" [(ngModel)]="funderModel.fundingTypeId" name="fundingType"
                   #fundingTypeId="ngModel" required>
@@ -867,10 +858,19 @@
               </div>
 
               <div class="form-group">
+                <label for="documentUrl">Amount</label>
+                <input type="number" class="form-control" id="amount" [(ngModel)]="funderModel.amount"
+                  name="amount" #amount="ngModel" min="1" max="100" required>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value > 0" class="alert alert-danger">
+                  Amount must not be zero or less
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="currency">Currency</label>
                 <select class="form-control" id="currency" (change)="getExchangeRates(1)" [(ngModel)]="funderModel.currency" name="currency"
                   #currency="ngModel" (change)="getExchangeRateForFunding()" required>
-                  <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currency}}</option>
+                  <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currencyName}}</option>
                 </select>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
                   Currency is required
@@ -900,7 +900,7 @@
                   </div>
               </div>
 
-              <button [class.disable]="(isProjectFunderBtnDisabled || !defaultCurrency)" class="btn btn-lg btn-warning btn-block text-uppercase"
+              <button [class.disable]="(isProjectFunderBtnDisabled || !defaultCurrency)" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Add Funder</button>
               <!--<button [class.disable]="isProjectFunderBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button" (click)="resetFunderEntry()">Reset
@@ -988,12 +988,12 @@
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.participatingOrganizations.length > 0" class="table table-bordered">
+                    <table *ngIf="project.implementers.length > 0" class="table table-bordered">
                       <tr>
                         <th>Implementer Name</th>
                         <th>Action</th>
                       </tr>
-                      <tr *ngFor="let implementer of project.participatingOrganizations">
+                      <tr *ngFor="let implementer of project.implementers">
                         <td>
                           {{implementer.name}}
                         </td>
@@ -1003,7 +1003,7 @@
                         </td>
                       </tr>
                     </table>
-                    <div class="text-info" *ngIf="project.participatingOrganizations.length == 0"><i>No implementers
+                    <div class="text-info" *ngIf="project.implementers.length == 0"><i>No implementers
                         found.</i></div>
                   </td>
                 </tr>
@@ -1057,7 +1057,7 @@
               </div>
 
               <button [class.disable]="isProjectImplementerBtnDisabled"
-                class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Add Implementer</button>
+                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Add Implementer</button>
               <!--<button [class.disable]="isProjectImplementerBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button"
                 (click)="resetImplementerEntry()">Reset Implementer</button>-->
@@ -1222,7 +1222,7 @@
                   <label for="currency">Currency</label>
                   <select class="form-control" id="currency" [(ngModel)]="disbursementModel.currency" name="currency"
                     #currency="ngModel" (change)="getExchangeRates(2)" required>
-                    <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currency}}</option>
+                    <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currencyName}}</option>
                   </select>
                   <div *ngIf="disbursementForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
                     Currency is required
@@ -1252,7 +1252,7 @@
                     </div>
                 </div>
 
-              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-warning btn-block text-uppercase"
+              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Add Disbursement</button>
               <!--<button [class.disable]="isBtnDisabled" (click)="resetDisbursementEntry()"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Reset Disbursement</button>-->
@@ -1334,7 +1334,7 @@
             </div>
 
             <span class="float-right margin-top-10">
-              <button class="btn btn-warning btn-lg btn-block text-uppercase" (click)="saveProjectFields(field.id)"
+              <button class="btn btn-info btn-lg btn-block text-uppercase" (click)="saveProjectFields(field.id)"
                   type="button">Save Fields</button>
             </span>
           </div>

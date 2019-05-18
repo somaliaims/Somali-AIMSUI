@@ -180,7 +180,8 @@ export class ExrateSettingsComponent implements OnInit {
             isRateExist[0].exchangeRate = model.exchangeRate;
           } else {
             this.manualExchangeRates.push(model);
-            this.filteredManualExchangeRates.push(model);
+            this.filteredManualExchangeRates = this.manualExchangeRates;
+            this.model.searchDate = null;
           }
           this.currentForm.resetForm();
           this.model.dated = null;
@@ -200,7 +201,8 @@ export class ExrateSettingsComponent implements OnInit {
         data => {
           if (data) {
             this.manualExchangeRates = this.manualExchangeRates.filter(r => r.id != id);
-            this.filteredManualExchangeRates = this.filteredManualExchangeRates.filter(r => r.id != id);
+            this.filteredManualExchangeRates = this.manualExchangeRates;
+            this.model.searchDate = null;
           }
           this.blockUI.stop();
         }

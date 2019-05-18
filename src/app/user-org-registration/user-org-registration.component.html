@@ -1,6 +1,6 @@
 <div class="container-fluid view-area">
   <div class="row">
-    <div class="col-sm-12 col-md-9 col-lg-7 mx-auto">
+    <div class="col-sm-12 col-md-9 col-lg-7 mx-auto margin-top-10">
       <div class="card card-signin my-5">
         <div class="card-body">
           <div *ngIf="isError" class="alert alert-danger alert-dismissible">
@@ -10,14 +10,6 @@
           <h5 class="card-title text-center">Select or create organization</h5>
 
           <form (ngSubmit)="usersForm.form.valid && registerUser()" class="example-form" #usersForm='ngForm'>
-            <!--<mat-form-field class="example-full-width">
-              <input matInput placeholder="Enter/Select Organization" aria-label="Organization" [matAutocomplete]="auto" [formControl]="userInput">
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
-                <mat-option *ngFor="let org of filteredOrganizations | async" [value]="org">
-                  <span>{{org.organizationName}}</span>
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>-->
             <div class="input-group">
               <input [readonly]="selectedOrganizationId != 0" class="form-control" placeholder="Enter organization name" type="text" name="organizationName"
                 [(ngModel)]="model.organizationName" #organizationName="ngModel" onkeypress="return event.keyCode != 13;"

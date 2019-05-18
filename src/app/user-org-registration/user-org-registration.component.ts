@@ -23,7 +23,6 @@ export class UserOrgRegistrationComponent implements OnInit {
   organizationTypes: any = [];
   organizationType: string = null;
   isLoading = true;
-  //model: RegistrationModel = null;
   organizationId: number = 0;
   organizationTypeId: string = null;
   isProcessing: boolean = false;
@@ -75,14 +74,6 @@ export class UserOrgRegistrationComponent implements OnInit {
     return organization ? organization.organizationName : undefined;
   }
 
-  /*private filterOrganizations(value: string): Organization[] {
-    if (typeof value != "string") {
-    } else {
-      const filterValue = value.toLowerCase();
-      return this.organizations.filter(organization => organization.organizationName.toLowerCase().indexOf(filterValue) !== -1);
-    }
-  }*/
-
   selectOrganization(e) {
     var id = e.currentTarget.id.split('-')[1];
     if (id) {
@@ -104,22 +95,6 @@ export class UserOrgRegistrationComponent implements OnInit {
     }
   }
 
-  /*loadOrganizations() {
-    this.organizationService.getOrganizationsList().subscribe(
-      data => {
-        this.organizations = data;
-        this.filteredOrganizations = this.userInput.valueChanges
-      .pipe(
-        startWith(''),
-        map(organization => organization ? this.filterOrganizations(organization) : this.organizations.slice())
-      );
-      },
-      error => {
-        console.log("Request Failed: ", error);
-      }
-    );
-  }*/
-
   loadOrganizations() {
     this.organizationService.getOrganizationsList().subscribe(
       data => {
@@ -136,7 +111,6 @@ export class UserOrgRegistrationComponent implements OnInit {
     if (this.selectedOrganizationId == 0) {
       this.model.OrganizationName = this.model.organizationName;
       if (this.model.OrganizationName.length == 0) {
-        //Need to show a dialog message here
         console.log('error');
         return false;
       } else if (this.model.IsNewOrganization) {

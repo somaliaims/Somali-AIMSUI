@@ -722,7 +722,7 @@ export class ProjectEntryComponent implements OnInit {
 
     var selectProject = this.iatiProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
-      var funders = selectProject[0].participatingOrganizations;
+      var funders = selectProject[0].funders;
       var selectFunder = funders.filter(f => f.id == funderId);
       if (selectFunder && selectFunder.length > 0) {
         if (selectFunder[0].name) {
@@ -770,7 +770,7 @@ export class ProjectEntryComponent implements OnInit {
 
     var selectProject = this.iatiProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
-      var implementers = selectProject[0].participatingOrganizations;
+      var implementers = selectProject[0].implementers;
       this.implementerEntryType = 'iati';
       var selectImplementer = implementers.filter(i => i.id == implementerId);
       if (selectImplementer && selectImplementer.length > 0) {

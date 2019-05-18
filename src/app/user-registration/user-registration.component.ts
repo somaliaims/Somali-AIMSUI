@@ -17,6 +17,7 @@ export class UserRegistrationComponent implements OnInit {
   disableEmail: boolean = false;
   isNameFocus: boolean = false;
   isEmailFocus: boolean = false;
+  isPasswordFocus: boolean = true;
   isSearchingEmail: boolean = false;
   btnCheckEmailTitle: string = 'Check Availability';
 
@@ -62,6 +63,7 @@ export class UserRegistrationComponent implements OnInit {
           this.disableEmail = true;
           this.isNameFocus = true;
           this.isEmailFocus = false;
+          this.isPasswordFocus = true;
         }
         this.isSearchingEmail = false;
         this.btnCheckEmailTitle = 'Check Email';

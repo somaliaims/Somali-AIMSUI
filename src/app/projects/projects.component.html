@@ -106,6 +106,7 @@
             <th>Project title</th>
             <th>Start date</th>
             <th>End date</th>
+            <th>Updated on</th>
           </tr>
           <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>
@@ -115,6 +116,7 @@
             </td>
             <td>{{project.startDate}}</td>
             <td>{{project.endDate}}</td>
+            <td>{{project.dateUpdated}}</td>
           </tr>
         </table>
         <pagination-controls (pageChange)="p=$event"></pagination-controls>

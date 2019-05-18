@@ -27,7 +27,7 @@ export class NewProjectComponent implements OnInit {
   selectedProjectDescription: string = '';
   inputTextHolder: string = 'Setting up IATI...';
   counter: number = 0;
-  btnText: string = 'Add Project';
+  btnText: string = 'Manual entry only';
   errorMessage: string = '';
   requestNo: number = 0;
   isError: boolean = false;

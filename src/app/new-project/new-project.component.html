@@ -29,17 +29,20 @@
           <tr>
             <td>
                 <button *ngIf='countAIMSProjects() > 1' [class.disable]='isSearchingProjects'
-                    class="btn btn-warning btn-lg pull-right float-right" (click)="mergeProjects()">Merge
+                    class="btn btn-warning btn-lg pull-right float-right text-uppercase" (click)="mergeProjects()">Merge
                     Projects</button>
             </td>
             <td>
                 <button *ngIf="countAIMSProjects() == 1" [class.disable]='isSearchingProjects'
-                class="btn btn-success btn-lg float-right"  (click)="editProject()">Edit
+                class="btn btn-success btn-lg float-right text-uppercase"  (click)="editProject()">Edit
                 Project</button>
             </td>
             <td>
-                <button [class.disable]='isIATILoading || isSearchingProjects' class="btn btn-info btn-lg float-right"
-                (click)="proceedConfirmation()">Proceed</button>
+                <button *ngIf="selectedProjects.length == 0" [class.disable]='isIATILoading || isSearchingProjects' class="btn btn-info btn-lg float-right text-uppercase"
+                (click)="proceedConfirmation()">Manual entry only</button>
+                
+                <button *ngIf="selectedProjects.length > 0" [class.disable]='isIATILoading || isSearchingProjects' class="btn btn-info btn-lg float-right text-uppercase"
+                (click)="proceedConfirmation()">Proceed with selected source projects</button>
             </td>
           </tr>
         </table>
@@ -63,7 +66,7 @@
                   <div class="float-left">
                     <span class="margin-right-60">
                         <b>Project Title: </b>{{project.title}}<br />
-                        <b>Currency: </b>{{project.defaultCurrency}}<br />
+                        <!--<b>Currency: </b>{{project.defaultCurrency}}<br />-->
                     </span>
                   </div>
                   <div class="float-right margin-right-60">

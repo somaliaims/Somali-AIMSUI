@@ -104,8 +104,6 @@ export class ManageSectortypeComponent implements OnInit {
       this.sectorTypeService.updateSectorType(this.model.id, model).subscribe(
         data => {
           if (data) {
-            var message = 'Sector Type' + Messages.RECORD_UPDATED;
-            this.storeService.newInfoMessage(message);
             this.router.navigateByUrl('sector-types');
           } else {
             this.resetFormState();

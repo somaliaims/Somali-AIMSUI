@@ -90,7 +90,8 @@ export class CurrenciesComponent implements OnInit {
     } else {
       if (this.currenciesList.length > 0) {
         var criteria = this.criteria.toLowerCase();
-        this.filteredCurrencies = this.currenciesList.filter(c => c.currency.toLowerCase().indexOf(criteria) != -1);
+        this.filteredCurrencies = this.currenciesList.filter(c => 
+          (c.currency.toLowerCase().indexOf(criteria) != -1 || c.currencyName.toLowerCase().indexOf(criteria) != -1));
       }
     }
   }

@@ -62,10 +62,15 @@
                   </button>
                 </td>
               </tr>
+              <tr>
+                <td colspan="3">
+                  <pagination-controls (pageChange)="p=$event"></pagination-controls>
+                </td>
+              </tr>
             </table>
-            <pagination-controls (pageChange)="p=$event"></pagination-controls>
-            <span *ngIf="filteredManualExchangeRates.length == 0 && !isLoading" class="text-info">No ex. rates to
-              show.</span>
+            <span *ngIf="filteredManualExchangeRates.length == 0 && !isLoading" class="text-info">
+              <i>No ex. rates to show.</i>
+            </span>
           </div>
         </div>
 
