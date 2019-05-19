@@ -45,7 +45,7 @@
               <button type="submit" class="btn btn-warning mb-2 text-uppercase">Save new rate</button>
             </form>
 
-            <h6 class="card-title text-center">Ex. rates for {{defaultCurrency}} and {{nationalCurrency}}</h6>
+            <h6 class="card-title text-center">Ex. rates from (African Bank) for 1 {{defaultCurrency}} to {{nationalCurrency}}</h6>
             <table *ngIf="filteredManualExchangeRates.length > 0" class="table table-bordered">
               <tr>
                 <th>Ex. rate</th>
@@ -103,7 +103,7 @@
             </form>
 
             <div class="margin-top-10 iati-box">
-              <h6 class="card-title text-center">Open exchange rates for 1 USD ({{exchangeRateDate}})</h6>
+              <h6 class="card-title text-center">Ex. Rates from (OpenExchangeRates) for 1 USD ({{exchangeRateDate}})</h6>
               <table *ngIf="exchangeRates.length > 0" class="table table-bordered">
                 <tr>
                   <th>Currency</th>

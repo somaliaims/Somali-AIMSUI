@@ -15,7 +15,7 @@
         <div class="card-body">
           <h5 class="card-title text-center">Email message</h5>
           
-          <form class="form-signin" (ngSubmit)="messageForm.form.valid && sendEmailMessage()" #messageForm="ngForm">
+          <form class="form-signin" (ngSubmit)="messageForm.form.valid && saveEmailMessage(messageForm)" #messageForm="ngForm">
 
             <div class="form-group">
               <label for="messageType">Definition</label>

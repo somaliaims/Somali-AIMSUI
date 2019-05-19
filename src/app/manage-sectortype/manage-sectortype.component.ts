@@ -24,7 +24,7 @@ export class ManageSectortypeComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   permissions: any = {};
-  model = { id: 0, typeName: '', isPrimary: false, isIATIType: false };
+  model = { id: 0, typeName: '', isPrimary: false, isSourceType: false };
 
   constructor(private sectorTypeService: SectorTypeService, private route: ActivatedRoute,
     private router: Router, private securityService: SecurityHelperService,
@@ -49,7 +49,7 @@ export class ManageSectortypeComponent implements OnInit {
             this.model.id = data.id;
             this.model.typeName = data.typeName;
             this.model.isPrimary = data.isPrimary;
-            this.model.isIATIType = data.isIATIType;
+            this.model.isSourceType = data.isSourceType;
           },
           error => {
             console.log("Request Failed: ", error);
@@ -78,8 +78,8 @@ export class ManageSectortypeComponent implements OnInit {
     this.model.isPrimary = (this.model.isPrimary) ? false : true;
   }
 
-  toggleIATIType() {
-    this.model.isIATIType = (this.model.isIATIType) ? false : true;
+  toggleSourceType() {
+    this.model.isSourceType = (this.model.isSourceType) ? false : true;
   }
 
   saveSectorType() {
@@ -87,12 +87,12 @@ export class ManageSectortypeComponent implements OnInit {
       TypeName: this.model.typeName,
       Id: this.model.id,
       isPrimary: this.model.isPrimary,
-      isIATIType: this.model.isIATIType
+      isSourceType: this.model.isSourceType
     };
 
     this.isBtnDisabled = true;
-    if (!model.isIATIType) {
-      model.isIATIType = false;
+    if (!model.isSourceType) {
+      model.isSourceType = false;
     }
     if (!model.isPrimary) {
       model.isPrimary = false;

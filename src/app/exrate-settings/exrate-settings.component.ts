@@ -23,6 +23,7 @@ export class ExrateSettingsComponent implements OnInit {
   nationalCurrencyId: number = 0;
   requestNo: number = 0;
   permissions: any = {};
+  calendarMaxDate: any = {};
   isExRateSet: boolean = false;
   isLoading: boolean = true;
   isAPIKeySet: boolean = false;
@@ -59,6 +60,7 @@ export class ExrateSettingsComponent implements OnInit {
       }
     });
 
+    this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     this.getExRateSettings();
     this.getDefaultCurrency();
     this.getNationalCurrency();

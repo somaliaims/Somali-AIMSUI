@@ -22,6 +22,7 @@ export class EmailMessagesComponent implements OnInit {
   isBtnDisabled: boolean = false;
   btnText : string = 'Send email';
   infoMessage: string = null;
+  errorMessage: string = null;
   currentTab: string = 'messages';
   pagingSize: number = Settings.rowsPerPage;
   standardUsersList: any = [];
@@ -218,6 +219,8 @@ export class EmailMessagesComponent implements OnInit {
     this.emailMessageService.sendEmailMessage(model).subscribe(
       data => {
         if (data) {
+          this.infoMessage = 'Email sent successfully to the recipient/s';
+          this.infoModal.openModal();
         }
         this.blockUI.stop();
         this.resetEmailForm();
