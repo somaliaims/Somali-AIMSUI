@@ -48,4 +48,11 @@ export class SectorTypeService {
                 catchError(this.storeService.handleError<any>('Update SectorType')));
     }
 
+    deleteSectorType(id: string) {
+      var url = this.urlHelper.getSectorTypeUrl() + '/' + id;
+      return this.httpClient.delete(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Sector type'))
+      );
+    }
+
 }

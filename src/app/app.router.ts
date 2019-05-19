@@ -53,6 +53,7 @@ import { FundingTypesComponent } from './funding-types/funding-types.component';
 import { ManageFundingTypeComponent } from './manage-funding-type/manage-funding-type.component';
 import { EmailMessagesComponent } from './email-messages/email-messages.component';
 import { ManageEmailMessageComponent } from './manage-email-message/manage-email-message.component';
+import { DeleteSectortypeComponent } from './delete-sectortype/delete-sectortype.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -79,6 +80,7 @@ export const routes: Routes = [
   { path: 'sector-types', component: SectorTypesComponent },
   { path: 'manage-sectortype/:{id}', component: ManageSectortypeComponent, data: { isForEdit: true } },
   { path: 'manage-sectortype', component: ManageSectortypeComponent },
+  { path: 'delete-sectortype/:{id}', component: DeleteSectortypeComponent },
   { path: 'sectors', component: SectorsComponent },
   { path: 'manage-sector', component: ManageSectorComponent },
   { path: 'manage-sector/:{id}', component: ManageSectorComponent, data: { isForEdit: true } },

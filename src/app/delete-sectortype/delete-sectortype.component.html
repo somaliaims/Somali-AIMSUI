@@ -1,0 +1,70 @@
+<div class="container-fluid view-area">
+
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Delete sector type</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sector-types']">Sector types</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <h5 class="card-title text-center">Dependent sectors list</h5>
+            <div *ngIf="isLoading">
+              Loading sectors...
+            </div>
+            <table *ngIf="sectors.length > 0" class="table table-bordered">
+              <tr *ngFor="let sector of sectors; let number = index">
+                <td>
+                  <span class="float-left">
+                      <span class="badge badge-info">{{number + 1}}</span> {{sector.sectorName}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+            <span *ngIf="sectors.length == 0" class="text-info">
+              No dependent sectors found
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!--Sectors box from AIMS-->
+      <div class="col-md-6 col-sm-6">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <form class="form-signin" (ngSubmit)="sectorForm.form.valid && delete()"
+              #sectorForm="ngForm">
+
+              <h5 class="card-title text-center">{{deletionMessage}}</h5>
+                <div class="form-group">
+                  <p *ngIf="sectors.length > 0" class="text-warning">
+                    There are {{sectors.length}} dependent sector/s for this sector type. Delete all
+                    dependent sector/s first before attempting to delete this sector type.
+                  </p>
+                  <p *ngIf="sectors.length == 0" class="text-info">
+                    There are no dependent sectors under this sector type. You can delete this sector type
+                    safely. This action cannot be undone.
+                  </p>
+                </div>
+                <button *ngIf="sectors.length == 0" [class.disable]="isLoading" class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
+                <button *ngIf="sectors.length > 0" (click)="showList()" [class.disable]="isLoading" class="btn btn-lg btn-info btn-block text-uppercase" type="button">Back to List</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>

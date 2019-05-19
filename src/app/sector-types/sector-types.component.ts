@@ -77,4 +77,8 @@ export class SectorTypesComponent implements OnInit {
     this.router.navigateByUrl('/manage-sectortype/' + id);
   }
 
+  delete(id: string) {
+    this.router.navigateByUrl('delete-sectortype/' + id);
+  }
+
 }
