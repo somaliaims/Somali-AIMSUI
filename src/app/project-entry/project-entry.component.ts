@@ -310,6 +310,14 @@ export class ProjectEntryComponent implements OnInit {
     this.iatiService.extractProjectsByIds(modelArr).subscribe(
       data => {
         this.iatiProjects = data;
+        if (this.iatiProjects.length > 0) {
+          this.iatiProjects.forEach(function (project) {
+            project.isFunderVisible = true;
+            project.isImplementerVisible = true;
+            project.isBudgetVisible = false;
+            project.isTransactionVisible = false;
+          });
+        }
         console.log(this.iatiProjects);
         this.isIatiLoading = false;
       },
@@ -763,6 +771,47 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
+  //Display management for tabs in funder and implementers
+  showFunderTab(id) {
+    var project = this.iatiProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      project[0].isFunderVisible = true;
+      project[0].isImplementerVisible = false;
+      project[0].isBudgetVisible = false;
+      project[0].isTransactionVisible = false;
+    }
+  }
+
+  showImplementerTab(id) {
+    var project = this.iatiProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      project[0].isImplementerVisible = true;
+      project[0].isBudgetVisible = false;
+      project[0].isTransactionVisible = false;
+    }
+  }
+
+  showTransactionTab(id) {
+    var project = this.iatiProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      project[0].isFunderVisible = false;
+      project[0].isImplementerVisible = false;
+      project[0].isBudgetVisible = false;
+      project[0].isTransactionVisible = true;
+    }
+  }
+
+  showBudgetTab(id) {
+    var project = this.iatiProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      project[0].isFunderVisible = false;
+      project[0].isImplementerVisible = false;
+      project[0].isBudgetVisible = true;
+      project[0].isTransactionVisible = false;
+    }
+  }
+  /** End of tabs */
+
   enterIATIImplementer(e) {
     var arr = e.target.id.split('-');
     var projectId = arr[1];
@@ -887,6 +936,15 @@ export class ProjectEntryComponent implements OnInit {
         }
       }
     )
+  }
+
+  checkIfFunderTabSelected(id) {
+    var isSelected = false;
+    var project = this.iatiProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      isSelected = project[0].isFunderVisible;
+    }
+    return isSelected;
   }
 
   checkIfSectorAdded(sector) {
