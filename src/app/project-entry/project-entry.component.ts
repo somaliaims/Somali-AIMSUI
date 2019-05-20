@@ -947,6 +947,24 @@ export class ProjectEntryComponent implements OnInit {
     return isSelected;
   }
 
+  checkIfBudgetTabSelected(id) {
+    var isSelected = false;
+    var project = this.iatiProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      isSelected = project[0].isBudgetVisible;
+    }
+    return isSelected;
+  }
+
+  checkIfTransactionTabSelected(id) {
+    var isSelected = false;
+    var project = this.iatiProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      isSelected = project[0].isTransactionVisible;
+    }
+    return isSelected;
+  }
+
   checkIfSectorAdded(sector) {
     if (this.currentProjectSectorsList.length > 0) {
       var isExists = this.currentProjectSectorsList.filter(s =>

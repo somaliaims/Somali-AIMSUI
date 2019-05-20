@@ -750,22 +750,24 @@
                       id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">AIMS</span>
-                    <table *ngIf="project.funders.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Funder name</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let funder of project.funders">
-                        <td>
-                          {{funder.funder}}
-                        </td>
-                        <td [class.disable]="checkIfFunderAdded(funder.funder)">
-                          <button id="aFunder-{{project.id}}-{{funder.funderId}}" (click)="enterAIMSFunder($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from AIMS found.</i></div>
+
+                      <table *ngIf="project.funders.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Funder name</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let funder of project.funders">
+                          <td>
+                            {{funder.funder}}
+                          </td>
+                          <td [class.disable]="checkIfFunderAdded(funder.funder)">
+                            <button id="aFunder-{{project.id}}-{{funder.funderId}}" (click)="enterAIMSFunder($event)"
+                              class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from AIMS found.</i></div>
+                    
                   </td>
                 </tr>
               </table>
@@ -776,34 +778,41 @@
                     <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
-                    
-                    <div class="badge badge-warning float-left">IATI</div>
-                    <div class="float-right btn-group">
-                      <button [ngClass]="{'active': checkIfFunderTabSelected(project.id)}" type="button" class="btn btn-warning">Funders</button>
-                      <button type="button" class="btn btn-warning">Budget</button>
-                      <button type="button" class="btn btn-warning">Transactions</button>
+
+                      <div class="badge badge-info float-right">IATI</div>
+                    <div class="btn-group">
+                      <button (click)="showFundersTab(project.id)" [ngClass]="{'active': checkIfFunderTabSelected(project.id)}" type="button"
+                        class="btn btn-warning">Funders</button>
+                      <button [ngClass]="{'active': checkIfBudgetTabSelected(project.id)}" type="button"
+                        class="btn btn-warning">Budget</button>
+                      <button [ngClass]="{'active': checkIfTransactionTabSelected(project.id)}" type="button"
+                        class="btn btn-warning">Transactions</button>
                     </div>
-                    <table *ngIf="project.funders.length > 0" class="table table-bordered margin-top-5">
-                      <tr>
-                        <th>Funder name</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let funder of project.funders">
-                        <td>
-                          {{funder.name}}
-                        </td>
-                        <td [class.disable]="checkIfFunderAdded(funder.name)">
-                          <button id="dfunder-{{project.id}}-{{funder.id}}" (click)="enterIATIFunder($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from
-                        IATI found.</i></div>
+
+                    <div *ngIf="project.isFunderVisible" class="margin-top-10">
+                      <table *ngIf="project.funders.length > 0" class="table table-bordered margin-top-5">
+                        <tr>
+                          <th>Funder name</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let funder of project.funders">
+                          <td>
+                            {{funder.name}}
+                          </td>
+                          <td [class.disable]="checkIfFunderAdded(funder.name)">
+                            <button id="dfunder-{{project.id}}-{{funder.id}}" (click)="enterIATIFunder($event)"
+                              class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.funders.length == 0">
+                            <i>No funders to show.</i>
+                      </div>
+                    </div>
+
                   </td>
                 </tr>
               </table>
-
             </div>
           </div>
         </div>
@@ -1280,7 +1289,8 @@
               </div>
 
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-                type="submit">Add Disbursement</button>
+                type="submit">Add
+                Disbursement</button>
               <!--<button [class.disable]="isBtnDisabled" (click)="resetDisbursementEntry()"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Reset Disbursement</button>-->
             </form>
@@ -1440,7 +1450,8 @@
               <tr>
                 <td>
                   <button class="btn btn-warning btn-lg btn-block text-uppercase" (click)="goToHome()"
-                    type="button">Finish Project</button>
+                    type="button">Finish
+                    Project</button>
                 </td>
               </tr>
             </table>
