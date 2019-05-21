@@ -767,7 +767,6 @@
                         </tr>
                       </table>
                       <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from AIMS found.</i></div>
-                    
                   </td>
                 </tr>
               </table>
@@ -779,13 +778,13 @@
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
 
-                      <div class="badge badge-info float-right">IATI</div>
+                    <div class="badge badge-info float-right">IATI</div>
                     <div class="btn-group">
-                      <button (click)="showFundersTab(project.id)" [ngClass]="{'active': checkIfFunderTabSelected(project.id)}" type="button"
+                      <button (click)="showFunderTab(project.id)" [ngClass]="{'active': checkIfFunderTabSelected(project.id)}" type="button"
                         class="btn btn-warning">Funders</button>
-                      <button [ngClass]="{'active': checkIfBudgetTabSelected(project.id)}" type="button"
+                      <button (click)="showBudgetTab(project.id)" [ngClass]="{'active': checkIfBudgetTabSelected(project.id)}" type="button"
                         class="btn btn-warning">Budget</button>
-                      <button [ngClass]="{'active': checkIfTransactionTabSelected(project.id)}" type="button"
+                      <button (click)="showTransactionTab(project.id)" [ngClass]="{'active': checkIfTransactionTabSelected(project.id)}" type="button"
                         class="btn btn-warning">Transactions</button>
                     </div>
 
@@ -809,6 +808,64 @@
                             <i>No funders to show.</i>
                       </div>
                     </div>
+
+                    <div *ngIf="project.isBudgetVisible" class="margin-top-10">
+                        <table *ngIf="project.budgets.length > 0" class="table table-bordered margin-top-5">
+                          <tr>
+                            <th>Amount</th>
+                            <th>Currency</th>
+                            <th>Dated</th>
+                            <th>Action</th>
+                          </tr>
+                          <tr *ngFor="let budget of project.budgets">
+                            <td>
+                              {{budget.amount}}
+                            </td>
+                            <td>
+                              {{budget.currency}}
+                            </td>
+                            <td>
+                              {{budget.endDate}}
+                            </td>
+                            <td [class.disable]="checkIfBudgetAdded(budget.id)">
+                              <button id="dbudget-{{budget.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
+                                class="btn btn-success btn-sm">Enter >></button>
+                            </td>
+                          </tr>
+                        </table>
+                        <div class="text-info" *ngIf="project.budgets.length == 0">
+                              <i>No budgets to show.</i>
+                        </div>
+                      </div>
+
+                      <div *ngIf="project.isTransactionVisible" class="margin-top-10">
+                        <table *ngIf="project.transactions.length > 0" class="table table-bordered margin-top-5">
+                          <tr>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Dated</th>
+                            <th>Action</th>
+                          </tr>
+                          <tr *ngFor="let transaction of project.transactions">
+                            <td>
+                              {{transaction.amount}}
+                            </td>
+                            <td>
+                              {{transaction.transactionType}}
+                            </td>
+                            <td>
+                              {{transaction.dated}}
+                            </td>
+                            <td>
+                              <button id="dtransaction-{{transaction.id}}" (click)="enterIATITransaction($event)"
+                                class="btn btn-success btn-sm">Enter >></button>
+                            </td>
+                          </tr>
+                        </table>
+                        <div class="text-info" *ngIf="project.transactions.length == 0">
+                              <i>No transactions to show.</i>
+                        </div>
+                      </div>
 
                   </td>
                 </tr>
