@@ -827,8 +827,8 @@
                             <td>
                               {{budget.endDate}}
                             </td>
-                            <td [class.disable]="checkIfBudgetAdded(budget.id)">
-                              <button id="dbudget-{{budget.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
+                            <td>
+                              <button id="dbudget-{{project.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
                                 class="btn btn-success btn-sm">Enter >></button>
                             </td>
                           </tr>
@@ -839,14 +839,14 @@
                       </div>
 
                       <div *ngIf="project.isTransactionVisible" class="margin-top-10">
-                        <table *ngIf="project.transactions.length > 0" class="table table-bordered margin-top-5">
+                        <table *ngIf="project.fundingTransactions.length > 0" class="table table-bordered margin-top-5">
                           <tr>
                             <th>Amount</th>
                             <th>Type</th>
                             <th>Dated</th>
                             <th>Action</th>
                           </tr>
-                          <tr *ngFor="let transaction of project.transactions">
+                          <tr *ngFor="let transaction of project.fundingTransactions">
                             <td>
                               {{transaction.amount}}
                             </td>
@@ -857,12 +857,12 @@
                               {{transaction.dated}}
                             </td>
                             <td>
-                              <button id="dtransaction-{{transaction.id}}" (click)="enterIATITransaction($event)"
+                              <button id="dtransaction-{{transaction.id}}" (click)="enterIATIFundingTransaction($event)"
                                 class="btn btn-success btn-sm">Enter >></button>
                             </td>
                           </tr>
                         </table>
-                        <div class="text-info" *ngIf="project.transactions.length == 0">
+                        <div class="text-info" *ngIf="project.fundingTransactions.length == 0">
                               <i>No transactions to show.</i>
                         </div>
                       </div>

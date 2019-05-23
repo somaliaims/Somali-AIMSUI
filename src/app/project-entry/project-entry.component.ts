@@ -151,6 +151,11 @@ export class ProjectEntryComponent implements OnInit {
     4: 'Radio'
   };
 
+  financeType: any = {
+    1: 'Funding',
+    2: 'Disbursement'
+  }
+
   fieldTypeConstants : any = {
     'Dropdown': 1,
     'Checkbox': 2,
@@ -736,6 +741,45 @@ export class ProjectEntryComponent implements OnInit {
         if (selectFunder[0].name) {
           this.funderModel.funder = selectFunder[0].name;
           this.funderEntryType = 'iati';
+        }
+      }
+    }
+  }
+
+  enterIATIBudget(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var budgetId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var budgets = selectProject[0].budgets;
+      var selectedBudget = budgets.filter(b => b.id == budgetId);
+      if (selectedBudget && selectedBudget.length > 0) {
+        if (selectedBudget.length > 0) {
+          var eDate = new Date(selectedBudget[0].endDate);
+          this.funderModel.dated = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
+          this.funderModel.currency = selectedBudget[0].currency;
+          this.funderModel.amount = selectedBudget[0].amount;
+        }
+      }
+    }
+  }
+
+  enterIATIFundingTransaction(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var transactionId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var transactions = selectProject[0].fundingTransactions;
+      var selectedTransaction = transactions.filter(t => t.id == transactionId);
+      if (selectedTransaction && selectedTransaction.length > 0) {
+        if (selectedTransaction.length > 0) {
+          var dated = new Date(selectedTransaction[0].dated);
+          this.funderModel.dated = { year: dated.getFullYear(), month: (dated.getMonth() + 1), day: dated.getDate() };
+          this.funderModel.amount = selectedTransaction[0].amount;
         }
       }
     }
