@@ -818,14 +818,14 @@
                             <th>Action</th>
                           </tr>
                           <tr *ngFor="let budget of project.budgets">
-                            <td>
-                              {{budget.amount}}
+                            <td [ngClass]="{'bg-warning': !budget.amount}">
+                              {{displayNull(budget.amount)}}
                             </td>
-                            <td>
-                              {{budget.currency}}
+                            <td [ngClass]="{'bg-warning': !budget.currency}">
+                              {{displayNull(budget.currency)}}
                             </td>
-                            <td>
-                              {{budget.endDate}}
+                            <td [ngClass]="{'bg-warning': !budget.endDate}">
+                              {{displayNull(budget.endDate)}}
                             </td>
                             <td>
                               <button id="dbudget-{{project.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
@@ -847,14 +847,14 @@
                             <th>Action</th>
                           </tr>
                           <tr *ngFor="let transaction of project.fundingTransactions">
-                            <td>
-                              {{transaction.amount}}
+                            <td [ngClass]="{'bg-warning': !transaction.amount}">
+                              {{displayNull(transaction.amount)}}
                             </td>
                             <td>
                               {{transaction.transactionType}}
                             </td>
-                            <td>
-                              {{transaction.dated}}
+                            <td [ngClass]="{'bg-warning': !transaction.dated}">
+                              {{displayNull(transaction.dated)}}
                             </td>
                             <td>
                               <button id="dtransaction-{{project.id}}-{{transaction.id}}" (click)="enterIATIFundingTransaction($event)"
@@ -1231,7 +1231,7 @@
                       id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
                       Details</a><br />
                     <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.transactions.length != 0" class="table table-bordered">
+                    <table *ngIf="project.disbursementTransactions.length != 0" class="table table-bordered">
                       <tr>
                         <th>Type</th>
                         <th>Currency</th>
@@ -1239,18 +1239,18 @@
                         <th>Dated</th>
                         <th>Action</th>
                       </tr>
-                      <tr *ngFor="let disbursement of project.transactions">
-                        <td>
+                      <tr *ngFor="let disbursement of project.disbursementTransactions">
+                        <td [ngClass]="{'bg-warning': !disbursement.transactionType}">
                           {{disbursement.transactionType}}
                         </td>
-                        <td>
-                          {{disbursement.currency}}
+                        <td [ngClass]="{'bg-warning': !disbursement.currency}">
+                          {{displayNull(disbursement.currency)}}
                         </td>
-                        <td>
+                        <td [ngClass]="{'bg-warning': !disbursement.amount}">
                           {{disbursement.amount | number:0}}
                         </td>
-                        <td>
-                          {{disbursement.dated}}
+                        <td [ngClass]="{'bg-warning': !disbursement.dated}">
+                          {{displayNull(disbursement.dated)}}
                         </td>
                         <td>
                           <button id="idisbursement-{{project.id}}-{{disbursement.id}}"

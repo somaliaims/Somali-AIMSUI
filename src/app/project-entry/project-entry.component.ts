@@ -2341,4 +2341,8 @@ export class ProjectEntryComponent implements OnInit {
     this.router.navigateByUrl('home');
   }
 
+  displayNull(val: string) {
+    return val ? val : 'N/a';
+  }
+
 }
