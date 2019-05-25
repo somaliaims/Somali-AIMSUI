@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../services/notification.service';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { StoreService } from '../services/store-service';
+import { SecurityHelperService } from '../services/security-helper.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notification',
@@ -10,13 +16,32 @@ export class NotificationComponent implements OnInit {
   notifications: any = [];
   isLoading: boolean = true;
   showNoFound: boolean = false;
-  infoMessage: string = '';
-
-  constructor(private notificationService: NotificationService) { 
-    this.getNotifications();
+  infoMessage: string = null;
+  errorMessage: string = null;
+  requestNo: number = 0;
+  permissions: any = {};
+  @BlockUI() blockUI: NgBlockUI;
+  
+  constructor(private notificationService: NotificationService, private infoModal: InfoModalComponent,
+    private errorModal: ErrorModalComponent, private storeService: StoreService,
+    private securityService: SecurityHelperService, private router: Router) { 
+    
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditCurrency) {
+      this.router.navigateByUrl('home');
+    }
+
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+      }
+    });
+
+    this.getNotifications();
   }
 
   getNotifications() {
@@ -30,9 +55,6 @@ export class NotificationComponent implements OnInit {
       } else {
         this.showNoFound = true;
       }
-    },
-    error => {
-      console.log("Request Failed: ", error);
     });
   }
 
@@ -41,15 +63,17 @@ export class NotificationComponent implements OnInit {
   }
 
   activateUserAccount(event, userId, notificationId) {
-    this.notificationService.activateUserAccount(userId, notificationId).subscribe(data => {
-      this.infoMessage = 'User account is activated successfully';
-      this.notifications = this.notifications.filter(function (n) {
-        return (n.id != notificationId);
+    if (userId && notificationId) {
+      this.blockUI.start('Activating account...');
+      this.notificationService.activateUserAccount(userId, notificationId).subscribe(data => {
+        if (data) {
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        }
+        this.blockUI.stop();
       });
-    },
-    error => {
-      console.log(error);
-    });
+    }
   }
 
 }

@@ -14,10 +14,10 @@
         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
       </div>
     </div>
-    <div class="row" *ngFor="let notification of notifications; let i = index">
+    <div class="row">
       <div class="col-md-12">
         <table class="table table-stripped">
-          <tr>
+          <tr *ngFor="let notification of notifications; let i = index">
             <td>
               <span class="badge badge-info lead">
                 {{i + 1}}
@@ -46,3 +46,6 @@
 
   </div>
 </div>
+
+<info-modal message={{infoMessage}}></info-modal>
+<error-modal message={{errorMessage}}></error-modal>
