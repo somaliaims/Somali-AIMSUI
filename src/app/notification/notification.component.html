@@ -23,10 +23,14 @@
                 <span class="badge badge-info lead">
                   {{i + 1}}
                 </span>
-                <span [innerHTML]="notification.message" class="text-info margin-left-5">
+                <span class="text-info margin-left-5">
+                  {{notification.message}}<br />
+                </span>
+                <span class="text-info">
+                    <b>Organization name: {{notification.organization}}</b> <br />
                 </span>
                 <span class="text-warning">
-                  <b><i>Dated: {{notification.dated}}</i></b>
+                    <b><i>Dated: {{notification.dated}}</i></b>
                 </span>
               </td>
               <td *ngIf="notification.notificationType == 1">
