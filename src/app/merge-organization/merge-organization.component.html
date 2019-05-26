@@ -65,7 +65,7 @@
                 </td>
               </tr>
             </table>
-            <span *ngIf="filteredOrganizationsList.length == 0" class="text-info">
+            <span *ngIf="filteredOrganizationsList.length == 0 && !isLoading" class="text-info">
               No organizations to show
             </span>
           </div>

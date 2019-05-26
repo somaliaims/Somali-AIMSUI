@@ -65,6 +65,12 @@ export class MergeOrganizationComponent implements OnInit {
   }
 
   mergeOrganizations() {
+    if (!this.model.name || this.model.name.length < 2 ) {
+      this.errorMessage = Messages.INVALID_ORG_NAME;
+      this.errorModal.openModal();
+      return false;
+    }
+
     if (this.selectedOrganizations.length < 2) {
       this.errorMessage = Messages.ATLEAST_ORGANIZATION_MERGE;
       this.errorModal.openModal();
