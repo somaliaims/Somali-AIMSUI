@@ -19,6 +19,7 @@ export class NotificationComponent implements OnInit {
   infoMessage: string = null;
   errorMessage: string = null;
   requestNo: number = 0;
+  isError: boolean = false;
   permissions: any = {};
   @BlockUI() blockUI: NgBlockUI;
   
@@ -38,6 +39,9 @@ export class NotificationComponent implements OnInit {
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
+        this.isError = true;
+        this.errorModal.openModal();
+        this.blockUI.stop();
       }
     });
 
@@ -71,7 +75,6 @@ export class NotificationComponent implements OnInit {
             location.reload();
           }, 1000);
         }
-        this.blockUI.stop();
       });
     }
   }
