@@ -135,6 +135,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.saveAPIKeyOpenExchange);
     }
 
+    setLabelForManualExRatesUrl() {
+        return (this.BASE_URL + urlsList.urls.setLabelForManualExRates);
+    }
+
     saveManualCurrencyRatesUrl() {
         return (this.BASE_URL + urlsList.urls.saveManualExchangeRates);
     }

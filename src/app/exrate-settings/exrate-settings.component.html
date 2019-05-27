@@ -4,13 +4,18 @@
     <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs">
-          <li *ngIf="activeProjectId != 0" class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'exrates', 'text-info': currentTab != 'exrates'}"
-              href="#" class="nav-link text-info" (click)="showExRates()" data-toggle="tab">{{manualExchangeRateSource}}</a>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'exrates', 'text-info': currentTab != 'exrates'}" href="#"
+              class="nav-link text-info" (click)="showExRates()" data-toggle="tab">{{manualExRateLabel}}</a>
           </li>
-          <li *ngIf="activeProjectId != 0" class="nav-item">
+          <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'open-exrates', 'text-info': currentTab != 'open-exrates'}"
               href="#" class="nav-link text-info" (click)="showOpenExRates()" data-toggle="tab">Open exchange rates</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'label-setting', 'text-info': currentTab != 'label-setting'}"
+              href="#" class="nav-link text-info" (click)="showLabelSetting()" data-toggle="tab">Set label for manual
+              entry</a>
           </li>
         </ul>
       </div>
@@ -18,20 +23,20 @@
 
     <div class="row">
       <div *ngIf="currentTab == 'exrates'" class="col-md-12 margin-top-10">
-            <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="searchDate"
-                  [(ngModel)]="model.searchDate" [maxDate]="calendarMaxDate" ngbDatepicker #c="ngbDatepicker" required>
-                <span class="input-group-btn">
-                  <button title="Search" class="btn btn-outline-info btn-lg" (click)="searchManualRates()" type="button">
-                    <i class="fa fa-search"></i>
-                  </button>&nbsp;
-                  <button title="Show all" class="btn btn-outline-warning btn-lg" (click)="showAllManualRates()"
-                    type="button">
-                    <i class="fa fa-list"></i>
-                  </button>
-                </span>
-              </div>
-        
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="searchDate"
+            [(ngModel)]="model.searchDate" [maxDate]="calendarMaxDate" ngbDatepicker #c="ngbDatepicker" required>
+          <span class="input-group-btn">
+            <button title="Search" class="btn btn-outline-info btn-lg" (click)="searchManualRates()" type="button">
+              <i class="fa fa-search"></i>
+            </button>&nbsp;
+            <button title="Show all" class="btn btn-outline-warning btn-lg" (click)="showAllManualRates()"
+              type="button">
+              <i class="fa fa-list"></i>
+            </button>
+          </span>
+        </div>
+
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body iati-box">
             <form class="form-inline" (ngSubmit)="rateForm.form.valid && saveRate(rateForm)" #rateForm="ngForm">
@@ -49,7 +54,8 @@
               <button type="submit" class="btn btn-warning mb-2 text-uppercase">Save new rate</button>
             </form>
 
-            <h6 class="card-title text-center">{{manualExchangeRateSource}} for 1 {{defaultCurrency}} to {{nationalCurrency}}</h6>
+            <h6 class="card-title text-center">{{manualExchangeRateSource}} for 1 {{defaultCurrency}} to
+              {{nationalCurrency}}</h6>
             <table *ngIf="filteredManualExchangeRates.length > 0" class="table table-bordered">
               <tr>
                 <th>Ex. rate</th>
@@ -107,7 +113,8 @@
             </form>
 
             <div class="margin-top-10 iati-box">
-              <h6 class="card-title text-center">Ex. Rates from (OpenExchangeRates) for 1 USD ({{exchangeRateDate}})</h6>
+              <h6 class="card-title text-center">Ex. Rates from (OpenExchangeRates) for 1 USD ({{exchangeRateDate}})
+              </h6>
               <table *ngIf="exchangeRates.length > 0" class="table table-bordered">
                 <tr>
                   <th>Currency</th>
@@ -133,22 +140,23 @@
 
       </div>
 
-      <div *ngIf="currentTab == 'label-settings'">
-          <div class="card card-signin margin-top-10 my-5">
-              <div class="card-body">
-                <form class="form-signin" (ngSubmit)="saveAPIKey()" #labelForm="ngForm">
-                  <div class="form-group">
-                    <label for="exRatesLabel"><b>Set label for manual exchange rate source</b></label>
-                    <input type="text" class="form-control" id="exRatesLabel" [(ngModel)]="model.exRatesLabel" name="exRatesLabel"
-                      #apiKey="ngModel" maxlength="50">
-                    <div [hidden]="exRatesLabel.valid" class="alert alert-danger">
-                      Label is required
-                    </div>
-                  </div>
-                  <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save key</button>
-                </form>
+      <div *ngIf="currentTab == 'label-setting'" class="col-sm-12 col-md-12 margin-top-10">
+        <div class="card card-signin margin-top-10 my-7 mx-auto">
+          <div class="card-body">
+            <form class="form-signin" (ngSubmit)="labelForm.form.valid && saveManualRatesLabel(labelForm)"
+              #labelForm="ngForm">
+              <div class="form-group">
+                <label for="exRateLabel"><b>Set label for manual entry exchange rate</b></label>
+                <input type="text" class="form-control" id="exRateLabel" [(ngModel)]="model.exRateLabel"
+                  name="exRateLabel" #exRateLabel="ngModel" maxlength="50">
+                <div *ngIf="labelForm.submitted" [hidden]="exRateLabel.valid" class="alert alert-danger">
+                  Label is required
+                </div>
               </div>
-            </div>
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save label</button>
+            </form>
+          </div>
+        </div>
       </div>
 
     </div>

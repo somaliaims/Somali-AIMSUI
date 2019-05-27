@@ -103,6 +103,16 @@ export class CurrencyService {
                 catchError(this.storeService.handleError<any>('OpenExchange API Key')));
     }
 
+    setLabelForManualExRates(label: string) {
+        var url = this.urlHelper.setLabelForManualExRatesUrl();
+        var model = {
+            label: label
+        };
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Manual Ex Rates Label')));
+    }
+
     saveExchangeRateAutoSettings(isAutomatic: boolean) {
         var url = this.urlHelper.getExRateAutoSettingsUrl();
         var model = {

@@ -46,6 +46,7 @@ export class ExrateSettingsComponent implements OnInit {
   displayTabs: any = [
     { visible: true, identity: 'exrates' },
     { visible: false, identity: 'open-exrates' },
+    { visible: false, identity: 'label-setting' }
   ];
 
   @BlockUI() blockUI: NgBlockUI;
@@ -81,6 +82,7 @@ export class ExrateSettingsComponent implements OnInit {
           this.model.isAutoRateSet = data.isAutomatic;
           this.isAPIKeySet = data.isOpenExchangeKeySet;
           this.manualExRateLabel = data.manualExchangeRateSource;
+          this.model.exRateLabel = this.manualExRateLabel;
           this.manualCurrencyRates = data.manualCurrencyRates ? data.manualCurrencyRates : [];
           if (this.manualCurrencyRates.length == 0) {
             this.isExRateSet = false;
@@ -321,6 +323,10 @@ export class ExrateSettingsComponent implements OnInit {
     this.manageTabsDisplay('open-exrates');
   }
 
+  showLabelSetting() {
+    this.manageTabsDisplay('label-setting');
+  }
+
   manageTabsDisplay(tabIdentity) {
     for (var i = 0; i < this.displayTabs.length; i++) {
       var tab = this.displayTabs[i];
@@ -333,8 +339,25 @@ export class ExrateSettingsComponent implements OnInit {
     }
   }
 
-  saveManualRatesLabel() {
+  saveManualRatesLabel(frm) {
+    if (!this.model.exRateLabel) {
+      this.errorMessage = 'Enter valid label for manual entry of exchange rates';
+      this.errorModal.openModal();
+      return false;
+    }
 
+    this.blockUI.start('Setting label...');
+    this.currencyService.setLabelForManualExRates(this.model.exRateLabel).subscribe(
+      data => {
+        if (data) {
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        }
+        frm.resetForm();
+      }
+    );
+    
   }
 
 }

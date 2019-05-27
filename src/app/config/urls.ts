@@ -98,6 +98,7 @@ export const urls = {
 	getExchangeRateSettingsUrl: "ExchangeRate/GetSettings",
 	setExchangeRateAutoSettingsUrl: "ExchangeRate/SetExchangeRateAutoSetting",
 	saveAPIKeyOpenExchange: "ExchangeRate/SaveAPIKeyForOpenExchange",
+	setLabelForManualExRates: "ExchangeRate/SetLabelForManualExRates",
 	saveManualExchangeRates: "ExchangeRate/SaveManualCurrencyRates",
 	exchangeRateForDate: "ExchangeRate/GetRatesForDate/",
 	getManualExchangeRates: "ExchangeRate/GetManualExchangeRates",
