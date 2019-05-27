@@ -39,8 +39,15 @@ export class ExrateSettingsComponent implements OnInit {
   filteredCurrencyRates: any = [];
   criteria: string = null;
   pagingSize: number = Settings.rowsPerPage;
-  model: any = { exchangeRate: null, dated: null, searchDate: null};
-  
+  model: any = { exchangeRate: null, dated: null, searchDate: null, exRateLabel: null};
+  currentTab: string = 'exrates';
+  manualExRateLabel: string = 'Central Bank exchange rate';
+
+  displayTabs: any = [
+    { visible: true, identity: 'exrates' },
+    { visible: false, identity: 'open-exrates' },
+  ];
+
   @BlockUI() blockUI: NgBlockUI;
   constructor(private currencyService: CurrencyService, private infoModal: InfoModalComponent,
     private errorModal: ErrorModalComponent, private storeService: StoreService,
@@ -73,6 +80,7 @@ export class ExrateSettingsComponent implements OnInit {
         if (data) {
           this.model.isAutoRateSet = data.isAutomatic;
           this.isAPIKeySet = data.isOpenExchangeKeySet;
+          this.manualExRateLabel = data.manualExchangeRateSource;
           this.manualCurrencyRates = data.manualCurrencyRates ? data.manualCurrencyRates : [];
           if (this.manualCurrencyRates.length == 0) {
             this.isExRateSet = false;
@@ -303,6 +311,30 @@ export class ExrateSettingsComponent implements OnInit {
     this.model.searchDate.day);
     var longDate = this.storeService.getLongDateString(dated);
     this.filteredManualExchangeRates = this.manualExchangeRates.filter(r => this.storeService.getLongDateString(r.dated) == longDate);
+  }
+
+  showExRates() {
+    this.manageTabsDisplay('exrates');
+  }
+
+  showOpenExRates() {
+    this.manageTabsDisplay('open-exrates');
+  }
+
+  manageTabsDisplay(tabIdentity) {
+    for (var i = 0; i < this.displayTabs.length; i++) {
+      var tab = this.displayTabs[i];
+      if (tab.identity == tabIdentity) {
+        tab.visible = true;
+        this.currentTab = tabIdentity;
+      } else {
+        tab.visible = false;
+      }
+    }
+  }
+
+  saveManualRatesLabel() {
+
   }
 
 }

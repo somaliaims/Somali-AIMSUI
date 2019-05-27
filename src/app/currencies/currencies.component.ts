@@ -27,6 +27,10 @@ export class CurrenciesComponent implements OnInit {
   statusMessage: string = 'Wait deleting...';
   pagingSize: number = Settings.rowsPerPage;
   permissions: any = {};
+  currencySource: {
+    1: 'Open exchange',
+    2: 'Manual'
+  }
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private currencyService: CurrencyService, private router: Router,
