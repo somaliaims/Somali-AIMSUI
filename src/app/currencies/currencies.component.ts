@@ -17,7 +17,9 @@ export class CurrenciesComponent implements OnInit {
 
   requestNo: number = 0;
   currenciesList: any = [];
+  manualEnteredCurrencies: any = [];
   filteredCurrencies: any = [];
+  manualFilteredCurrencies: any = [];
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
@@ -27,7 +29,7 @@ export class CurrenciesComponent implements OnInit {
   statusMessage: string = 'Wait deleting...';
   pagingSize: number = Settings.rowsPerPage;
   permissions: any = {};
-  currencySource: {
+  currencySource: any = {
     1: 'Open exchange',
     2: 'Manual'
   }
@@ -60,8 +62,11 @@ export class CurrenciesComponent implements OnInit {
     this.currencyService.getCurrenciesList().subscribe(
       data => {
         if (data && data.length) {
-          this.currenciesList = data;
-          this.filteredCurrencies = data;
+          var currencies = data;
+          this.currenciesList = currencies.filter(c => c.source == 1);
+          this.filteredCurrencies = this.currenciesList;
+          this.manualEnteredCurrencies = currencies.filter(c => c.source == 2);
+          this.manualFilteredCurrencies = this.manualEnteredCurrencies;
         } else {
         }
         this.isLoading = false;
@@ -86,6 +91,10 @@ export class CurrenciesComponent implements OnInit {
         }
       }
     )
+  }
+
+  showCurrencySource(id: number) {
+    return this.currencySource[id];
   }
 
   searchCurrencies() {

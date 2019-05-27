@@ -36,32 +36,68 @@
     </div>
 
     <div *ngIf="!isLoading" class="row">
-      <div *ngIf="filteredCurrencies.length > 0" class="col margin-top-10">
-        <table class="table table-bordered table-stripped">
-          <tr>
-            <th>Code</th>
-            <th>Currency</th>
-            <th>Source</th>
-            <th>Action</th>
-          </tr>
-          <tr *ngFor="let currency of filteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
-            <td>{{currency.currency}}</td>
-            <td>{{currency.currencyName}}</td>
-            <td>{{currencySource[currency.source]}}</td>
-            <td>
-                <a title="Delete" (click)="edit(currency.id)" class="btn btn-info"><i
-                  class="fa fa-edit color-white"></i></a>&nbsp;
+      <div class="col-md-6">
+        <div class="card margin-top-10">
+          <div class="card-header bg-info text-white">Currencies from Open Exchange</div>
+          <div class="card-body">
+            <div *ngIf="filteredCurrencies.length > 0">
+              <table class="table table-bordered table-stripped">
+                <tr>
+                  <th>Code</th>
+                  <th>Currency</th>
+                  <th>Source</th>
+                  <!--<th>Action</th>-->
+                </tr>
+                <tr
+                  *ngFor="let currency of filteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+                  <td>{{currency.currency}}</td>
+                  <td>{{currency.currencyName}}</td>
+                  <td>{{showCurrencySource(currency.source) }}</td>
+                  <!--<td>
+                              <a title="Delete" (click)="edit(currency.id)" class="btn btn-info"><i
+                                class="fa fa-edit color-white"></i></a>&nbsp;
+              
+                            <a title="Delete" (click)="delete(currency.id)" class="btn btn-danger"><i
+                                class="fa fa-trash color-white"></i></a>
+                          </td>-->
+                </tr>
+              </table>
+              <pagination-controls (pageChange)="p=$event"></pagination-controls>
+            </div>
+            <div class="col-md-12 text-info" *ngIf="filteredCurrencies.length == 0">
+              <i>No currencies to show</i>
+            </div>
+          </div>
+        </div>
+      </div>
 
-              <a title="Delete" (click)="delete(currency.id)" class="btn btn-danger"><i
-                  class="fa fa-trash color-white"></i></a>
-            </td>
-          </tr>
-        </table>
-        <pagination-controls (pageChange)="p=$event"></pagination-controls>
+      <div class="col-md-6">
+        <div class="card margin-top-10">
+          <div class="card-header bg-info text-white">Manual entered currencies</div>
+          <div class="card-body">
+            <div *ngIf="manualFilteredCurrencies.length > 0">
+              <table class="table table-bordered table-stripped">
+                <tr>
+                  <th>Code</th>
+                  <th>Currency</th>
+                  <th>Source</th>
+                </tr>
+                <tr
+                  *ngFor="let currency of manualFilteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+                  <td>{{currency.currency}}</td>
+                  <td>{{currency.currencyName}}</td>
+                  <td>{{showCurrencySource(currency.source) }}</td>
+                </tr>
+              </table>
+              <pagination-controls (pageChange)="p=$event"></pagination-controls>
+            </div>
+            <div class="col-md-12 text-info" *ngIf="manualFilteredCurrencies.length == 0">
+              <i>No currencies to show</i>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-12 text-info" *ngIf="filteredCurrencies.length == 0">
-        <i>No currencies to show</i>
-      </div>
+
     </div>
 
   </block-ui>
