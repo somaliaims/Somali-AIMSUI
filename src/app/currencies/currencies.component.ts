@@ -29,6 +29,8 @@ export class CurrenciesComponent implements OnInit {
   statusMessage: string = 'Wait deleting...';
   pagingSize: number = Settings.rowsPerPage;
   permissions: any = {};
+  defaultCurrency: any = { currency: null, currencyName: null };
+  nationalCurrency: any = { currency: null, currencyName: null };
   currencySource: any = {
     1: 'Open exchange',
     2: 'Manual'
@@ -56,6 +58,8 @@ export class CurrenciesComponent implements OnInit {
 
     //Loads currencies first time from open exchange, if they are not in db
     this.getExchangeRates();
+    this.getDefaultCurrency();
+    this.getNationalCurrency();
   }
 
   getCurrenciesList() {
@@ -74,6 +78,28 @@ export class CurrenciesComponent implements OnInit {
       error => {
         this.isLoading = false;
         console.log("Request Failed: ", error);
+      }
+    );
+  }
+
+  getDefaultCurrency() {
+    this.currencyService.getDefaultCurrency().subscribe(
+      data => {
+        if (data) {
+          this.defaultCurrency.currency = data.currency;
+          this.defaultCurrency.currencyName = data.currencyName;
+        }
+      }
+    );
+  }
+
+  getNationalCurrency() {
+    this.currencyService.getNationalCurrency().subscribe(
+      data => {
+        if (data) {
+          this.nationalCurrency.currency = data.currency;
+          this.nationalCurrency.currencyName = data.currencyName;
+        }
       }
     );
   }
@@ -104,6 +130,9 @@ export class CurrenciesComponent implements OnInit {
       if (this.currenciesList.length > 0) {
         var criteria = this.criteria.toLowerCase();
         this.filteredCurrencies = this.currenciesList.filter(c => 
+          (c.currency.toLowerCase().indexOf(criteria) != -1 || c.currencyName.toLowerCase().indexOf(criteria) != -1));
+      
+        this.manualFilteredCurrencies = this.manualEnteredCurrencies.filter(c =>
           (c.currency.toLowerCase().indexOf(criteria) != -1 || c.currencyName.toLowerCase().indexOf(criteria) != -1));
       }
     }
@@ -136,4 +165,37 @@ export class CurrenciesComponent implements OnInit {
       this.router.navigateByUrl('/manage-currency/' + id);
     }
   }
+
+  toggleDefault(e) {
+    var id = e.currentTarget.id.split('-')[1];
+    if (id) {
+      this.blockUI.start('Setting default currency...');
+      this.currencyService.setDefaultCurrency(id).subscribe(
+        data => {
+          if (data) {
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          }
+        }
+      )
+    }
+  }
+
+  toggleNational(e) {
+    var id = e.currentTarget.id.split('-')[1];
+    if (id) {
+      this.blockUI.start('Setting default currency...');
+      this.currencyService.setNationalCurrency(id).subscribe(
+        data => {
+          if (data) {
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          }
+        }
+      )
+    }
+  }
+
 }

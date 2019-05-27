@@ -130,6 +130,21 @@ export class CurrencyService {
                 catchError(this.storeService.handleError<any>('Manual Currency Rates')));
     }
 
+    setDefaultCurrency(id: number) {
+        var url = this.urlHelper.getUpdateDefaultCurrencyUrl(id);
+        return this.httpClient.post(url,
+            JSON.stringify(null), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Default Currency')));
+    }
+
+    setNationalCurrency(id: number) {
+        var url = this.urlHelper.getUpdateNationalCurrencyUrl(id);
+        return this.httpClient.post(url,
+            JSON.stringify(null), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('National Currency')));
+    }
+
+
     addCurrency(model: any) {
         var url = this.urlHelper.getCurrencyUrl();
         return this.httpClient.post(url,

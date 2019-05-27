@@ -36,23 +36,29 @@
     </div>
 
     <div *ngIf="!isLoading" class="row">
+      <div class="col-md-12 mx-auto alert alert-info margin-top-5">
+        <span class="float-left">
+          <b>Default currency: </b> {{defaultCurrency.currencyName}}&nbsp;
+          <b>National currency: </b> {{nationalCurrency.currencyName}}
+        </span>
+      </div>
       <div class="col-md-6">
-        <div class="card margin-top-10">
-          <div class="card-header bg-info text-white">Currencies from Open Exchange</div>
+        <div class="card margin-top-5">
+          <div class="card-header bg-info text-white">Currencies from {{currencySource[1]}}</div>
           <div class="card-body">
             <div *ngIf="filteredCurrencies.length > 0">
               <table class="table table-bordered table-stripped">
                 <tr>
                   <th>Code</th>
                   <th>Currency</th>
-                  <th>Source</th>
-                  <!--<th>Action</th>-->
+                  <!--<th>Source</th>-->
+                  <th>Is Default / National?</th>
                 </tr>
                 <tr
                   *ngFor="let currency of filteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
                   <td>{{currency.currency}}</td>
                   <td>{{currency.currencyName}}</td>
-                  <td>{{showCurrencySource(currency.source) }}</td>
+                  <!--<td>{{showCurrencySource(currency.source) }}</td>-->
                   <!--<td>
                               <a title="Delete" (click)="edit(currency.id)" class="btn btn-info"><i
                                 class="fa fa-edit color-white"></i></a>&nbsp;
@@ -60,6 +66,18 @@
                             <a title="Delete" (click)="delete(currency.id)" class="btn btn-danger"><i
                                 class="fa fa-trash color-white"></i></a>
                           </td>-->
+                    <td>
+                      <div class="btn-group" data-toggle="buttons">
+                        <button id="btnd-{{currency.id}}" title="Is default?" (click)="toggleDefault($event)" class="btn btn-info btn-sm">
+                          <i id="id-{{currency.id}}" *ngIf="!currency.isDefault" class="fa fa-square text-white"></i>
+                          <i id="id-{{currency.id}}" *ngIf="currency.isDefault" class="fa fa-check text-white"></i>
+                        </button>&nbsp;&nbsp;
+                        <button id="btnn-{{currency.id}}" title="Is national?" (click)="toggleNational($event)" class="btn btn-warning btn-sm">
+                          <i id="in-{{currency.id}}" *ngIf="!currency.isNational" class="fa fa-square text-white"></i>
+                          <i id="in-{{currency.id}}" *ngIf="currency.isNational" class="fa fa-check text-white"></i>
+                        </button>
+                      </div>
+                    </td>
                 </tr>
               </table>
               <pagination-controls (pageChange)="p=$event"></pagination-controls>
@@ -72,7 +90,7 @@
       </div>
 
       <div class="col-md-6">
-        <div class="card margin-top-10">
+        <div class="card margin-top-5">
           <div class="card-header bg-info text-white">Manual entered currencies</div>
           <div class="card-body">
             <div *ngIf="manualFilteredCurrencies.length > 0">

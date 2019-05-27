@@ -139,6 +139,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.setLabelForManualExRates);
     }
 
+    getUpdateDefaultCurrencyUrl(id: number) {
+        return (this.BASE_URL + urlsList.urls.setDefaultCurrency + id);
+    }
+
+    getUpdateNationalCurrencyUrl(id: number) {
+        return (this.BASE_URL + urlsList.urls.setNationalCurrency + id);
+    }
+
     saveManualCurrencyRatesUrl() {
         return (this.BASE_URL + urlsList.urls.saveManualExchangeRates);
     }

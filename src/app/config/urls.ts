@@ -91,6 +91,8 @@ export const urls = {
 	getCurrencyById: "Currency/GetById/",
 	getDefaultCurrency: "Currency/GetDefault",
 	getNationalCurrency: "Currency/GetNational",
+	setDefaultCurrency: "Currency/SetDefault/",
+	setNationalCurrency: "Currency/SetNational/",
 	reportNamesUrl: "ReportName",
 	userSubscriptionsUrl: "ReportSubscription",
 	subscribeToReports: "ReportSubscription/Subscribe",
