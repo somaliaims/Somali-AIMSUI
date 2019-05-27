@@ -42,7 +42,7 @@ export class DeleteSectorComponent implements OnInit {
   }
 
   getSectorsList() {
-    this.sectorService.getSectorsList().subscribe(
+    this.sectorService.getDefaultSectors().subscribe(
       data => {
         if (data) {
           this.sectorsList = data;

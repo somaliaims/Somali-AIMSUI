@@ -10,7 +10,6 @@
           <li class="nav-item">
             <a class="nav-link active btn-info" data-toggle="tab">Sector mappings</a>
           </li>
-
         </ul>
       </div>
     </div>
@@ -33,7 +32,7 @@
           <table>
             <tr>
               <td>
-                <button [class.disable]="newMappings.length == 0" class="btn btn-warning btn-lg pull-right text-uppercase float-right"
+                <button [class.disable]="newMappings.length == 0" class="btn btn-info btn-lg pull-right text-uppercase float-right"
                   (click)="saveNewMappings()">Save new
                   mappings</button>
               </td>
@@ -97,7 +96,6 @@
                 [(ngModel)]="otherCriteria" #otherSectorCriteria="ngModel" (input)="filterOtherSectors()"
                 onkeypress="return event.keyCode != 13;" />
               </div>
-
             </form>
 
             <div>
