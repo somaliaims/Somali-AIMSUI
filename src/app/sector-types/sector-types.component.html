@@ -34,7 +34,7 @@
         <tr>
           <th>Sector type name</th>
           <th>Default type</th>
-          <th>Source type</th>
+          <th>Source</th>
           <th>Actions</th>
         </tr>
         <tr *ngFor="let sector of sectorTypesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
@@ -42,9 +42,9 @@
           <td>{{isTrue(sector.isPrimary)}}</td>
           <td>{{isTrue(sector.isSourceType)}}</td>
           <td>
-            <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
-            &nbsp;
-            <a title="Delete" (click)="delete(sector.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+            <a title="Edit" (click)="edit(sector.id)" class="btn btn-info"><i class="fa fa-edit color-white"></i></a>
+            <!-->&nbsp;
+            <a title="Delete" (click)="delete(sector.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>-->
           </td>
         </tr>
       </table>
