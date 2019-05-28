@@ -173,10 +173,44 @@ export class CurrenciesComponent implements OnInit {
       this.currencyService.setDefaultCurrency(id).subscribe(
         data => {
           if (data) {
-            setTimeout(() => {
+            /*setTimeout(() => {
               location.reload();
-            }, 1000);
+            }, 1000);*/
+            var selectedCurrency = null;
+            this.currenciesList.map(c => c.isDefault = false);
+            this.filteredCurrencies.map(c => c.isDefault = false);
+            this.manualEnteredCurrencies.map(c => c.isDefault = false);
+            this.manualFilteredCurrencies.map(c => c.isDefault = false);
+
+            var currency = this.currenciesList.filter(c => c.id == id);
+            if (currency.length > 0) {
+              currency[0].isDefault = true;
+              selectedCurrency = currency[0];
+
+              var fCurrency = this.filteredCurrencies.filter(c => c.id == id);
+              if (fCurrency.length > 0) {
+                fCurrency[0].isDefault = true;
+              }
+            }
+
+            var mCurrency = this.manualEnteredCurrencies.filter(c => c.id == id);
+            if (mCurrency.length > 0) {
+              mCurrency[0].isDefault = true;
+              selectedCurrency = mCurrency[0];
+
+              var mfCurrency = this.manualFilteredCurrencies.filter(c => c.id == id);
+              if (mfCurrency.length > 0) {
+                mfCurrency[0].isDefault = true;
+              }
+            }
+
+            if (selectedCurrency && selectedCurrency.currency) {
+              this.defaultCurrency.currency = selectedCurrency.currency;
+              this.defaultCurrency.currencyName = selectedCurrency.currencyName;
+            }
+            
           }
+          this.blockUI.stop();
         }
       )
     }
@@ -189,10 +223,40 @@ export class CurrenciesComponent implements OnInit {
       this.currencyService.setNationalCurrency(id).subscribe(
         data => {
           if (data) {
-            setTimeout(() => {
-              location.reload();
-            }, 1000);
+            var selectedCurrency = null;
+            this.currenciesList.map(c => c.isNational = false);
+            this.filteredCurrencies.map(c => c.isNational = false);
+            this.manualEnteredCurrencies.map(c => c.isNational = false);
+            this.manualFilteredCurrencies.map(c => c.isNational = false);
+
+            var currency = this.currenciesList.filter(c => c.id == id);
+            if (currency.length > 0) {
+              currency[0].isNational = true;
+              selectedCurrency = currency[0];
+
+              var fCurrency = this.filteredCurrencies.filter(c => c.id == id);
+              if (fCurrency.length > 0) {
+                fCurrency[0].isNational = true;
+              }
+            }
+
+            var mCurrency = this.manualEnteredCurrencies.filter(c => c.id == id);
+            if (mCurrency.length > 0) {
+              mCurrency[0].isNational = true;
+              selectedCurrency = mCurrency[0];
+
+              var mfCurrency = this.manualFilteredCurrencies.filter(c => c.id == id);
+              if (mfCurrency.length > 0) {
+                mfCurrency[0].isNational = true;
+              }
+            }
+
+            if (selectedCurrency && selectedCurrency.currency) {
+              this.nationalCurrency.currency = selectedCurrency.currency;
+              this.nationalCurrency.currencyName = selectedCurrency.currencyName;
+            }
           }
+          this.blockUI.stop();
         }
       )
     }

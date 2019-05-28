@@ -310,14 +310,16 @@ export class NewProjectComponent implements OnInit {
   checkIfIATIAdded(title) {
     var isAddedAims = this.aimsProjects.filter(p => p.title == title);
     if (isAddedAims.length > 0) {
-      return true;
+      return 'Use again';
     }
+    return 'Select';
+  }
 
+  checkIfIATIEntered(title) {
     var isAddedSelected = this.selectedIATIProjects.filter(p => p.title == title);
     if (isAddedSelected.length > 0) {
       return true;
     }
-
     return false;
   }
 
