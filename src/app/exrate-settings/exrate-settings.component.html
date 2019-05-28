@@ -41,10 +41,10 @@
           <div class="card-body iati-box">
             <form class="form-inline" (ngSubmit)="rateForm.form.valid && saveRate(rateForm)" #rateForm="ngForm">
               <div class="form-group mb-2">
-                <input type="text" pattern="\d*" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate"
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate"
                   name="exchangeRate" #exchangeRate="ngModel" maxlength="6" required>
                 <div *ngIf="rateForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
-                  Valid exchange rate is required
+                  Valid exchange rate is required (Max. 2 decimal points)
                 </div>
               </div>
               <div class="form-group mx-sm-3 mb-2">
@@ -137,7 +137,6 @@
             <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading currencies...</span>
           </div>
         </div>
-
       </div>
 
       <div *ngIf="currentTab == 'label-setting'" class="col-sm-12 col-md-12 margin-top-10">

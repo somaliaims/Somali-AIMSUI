@@ -98,13 +98,11 @@
                 <tr>
                   <th>Code</th>
                   <th>Currency</th>
-                  <th>Source</th>
                 </tr>
                 <tr
                   *ngFor="let currency of manualFilteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
                   <td>{{currency.currency}}</td>
                   <td>{{currency.currencyName}}</td>
-                  <td>{{showCurrencySource(currency.source) }}</td>
                 </tr>
               </table>
               <pagination-controls (pageChange)="p=$event"></pagination-controls>

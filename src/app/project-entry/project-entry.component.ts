@@ -903,6 +903,9 @@ export class ProjectEntryComponent implements OnInit {
       if (selectTransaction && selectTransaction.length > 0) {
         this.disbursementModel.amount = selectTransaction[0].amount;
         var dated = selectTransaction[0].dated;
+        if (selectTransaction[0].currency) {
+          this.disbursementModel.currency = selectTransaction[0].currency;
+        }
         if (dated && dated.length > 0) {
           var dateArr = dated.split('-');
           var dateFormatted = { year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2]) };

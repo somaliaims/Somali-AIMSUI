@@ -15,8 +15,8 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 export class LocationsComponent implements OnInit {
 
   permissions: any = {};
-  locationsList: any = null;
-  filteredLocationsList: any = null;
+  locationsList: any = [];
+  filteredLocationsList: any = [];
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
