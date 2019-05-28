@@ -1269,9 +1269,9 @@ export class ProjectEntryComponent implements OnInit {
       this.sectorService.addIATISector(sectorModel).subscribe(
         data => {
           if (data) {
-            this.sectorModel.sectorId = data;
-            this.selectedSectorId = data;
-            projectSectorModel.sectorId = data;
+            //this.sectorModel.sectorId = data;
+            this.selectedSectorId = this.sectorModel.sectorId;
+            projectSectorModel.sectorId = this.sectorModel.sectorId;
             this.addProjectSector(projectSectorModel);
           } else {
             this.blockUI.stop();
@@ -1305,6 +1305,13 @@ export class ProjectEntryComponent implements OnInit {
             fundsPercentage: this.sectorModel.fundsPercentage,
           };
 
+          if (model.sectorId) {
+            var selectedSector = this.defaultSectorsList.filter(s => s.id == model.sectorId);
+            if (selectedSector.length > 0) {
+              sectorObj.sector = selectedSector[0].sectorName;
+            }
+          }
+
           if (sectorObj.sector == "") {
             var selectSector = this.sectorsList.filter(s => s.id == sectorObj.sectorId);
             if (selectSector && selectSector.length > 0) {
@@ -1321,8 +1328,8 @@ export class ProjectEntryComponent implements OnInit {
           }
 
           this.sectorTotalPercentage = this.calculateSectorPercentage();
-          this.resetSectorEntry();
           this.resetDataEntryValidation();
+          this.resetSectorEntry();
         }
         this.blockUI.stop();
       },
@@ -2283,7 +2290,7 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorModel.parentId = 0;
     this.sectorModel.projectId = 0;
     this.sectorModel.sectorId = null;
-    this.sectorModel.sectorName = '';
+    this.sectorModel.sectorName = null;
     this.showMappingAuto = false;
     this.showMappingManual = false;
   }
