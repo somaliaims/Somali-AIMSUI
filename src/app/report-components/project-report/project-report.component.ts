@@ -411,4 +411,24 @@ export class ProjectReportComponent implements OnInit {
     }.bind(this));
   }
 
+  getGrandTotalFundingForSector() {
+    var totalFunding  = 0;
+    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+      this.reportDataList.sectorProjectsList.forEach(function (p) {
+        totalFunding += p.totalFunding;
+      });
+    }
+    return totalFunding;
+  }
+
+  getGrandTotalDisbursementForSector() {
+    var totalDisursement  = 0;
+    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+      this.reportDataList.sectorProjectsList.forEach(function (p) {
+        totalDisursement += p.totalDisbursements;
+      });
+    }
+    return totalDisursement;
+  }
+
 }

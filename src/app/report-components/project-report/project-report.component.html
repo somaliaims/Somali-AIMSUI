@@ -102,10 +102,17 @@
                     <th>Funders</th>
                     <th>Implementers</th>
                     <th>Funding</th>
-                    <th colspan="2">Disbursements Actual & Planned</th>
+                    <th colspan="2">Disbursements actual & planned</th>
                   </tr>
                   <tr>
-                    <td colspan="6" class="report-subtitle">{{sectorProject.sectorName}} - Funding ({{sectorProject.totalCost}})</td>
+                    <td colspan="6">
+                      <b>
+                        <i>
+                          {{sectorProject.sectorName}} - Funding ({{sectorProject.totalFunding}}) &nbsp;&nbsp;
+                          Disbursements ({{sectorProject.totalDisbursements}})
+                        </i>
+                      </b>
+                    </td>
                   </tr>
                   <tr *ngFor="let project of sectorProject.projects">
                     <td width="35%">{{project.title}}</td>
@@ -125,6 +132,18 @@
                     </td>
                   </tr>
                 </table>
+              </tr>
+              <tr>
+                <td width="100%">
+                  <span class="float-right">
+                    <b>
+                      <i>
+                      Funding total: {{getGrandTotalFundingForSector()}}&nbsp;&nbsp;
+                      Disbursement total: {{getGrandTotalDisbursementForSector()}}
+                    </i>
+                  </b>
+                  </span>
+                </td>
               </tr>
             </table>
           </div>
