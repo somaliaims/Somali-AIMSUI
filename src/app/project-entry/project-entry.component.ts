@@ -2139,6 +2139,9 @@ export class ProjectEntryComponent implements OnInit {
                 }
               }
             }
+          } else {
+            this.errorMessage = Messages.EX_RATE_NOT_FOUND;
+            this.errorModal.openModal();
           }
           this.blockUI.stop();
         }
@@ -2154,8 +2157,11 @@ export class ProjectEntryComponent implements OnInit {
                 this.disbursementModel.exchangeRate = data.exchangeRate;
               }
             }
-            this.blockUI.stop();
+          } else {
+            this.errorMessage = Messages.EX_RATE_NOT_FOUND;
+            this.errorModal.openModal();
           }
+          this.blockUI.stop();
         }
       )
     }

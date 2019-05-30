@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Sector Projects Report</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Sector projects report</a>
           </li>
         </ul>
       </div>
@@ -47,28 +47,28 @@
               </div>
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList"
-                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
-                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
-                    (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
-                  </ng-multiselect-dropdown>
+                      <ng-multiselect-dropdown [placeholder]="'-- All Sector/s --'" [data]="sectorsList"
+                      [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                      (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                      (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
+                    </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList"
-                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
-                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
-                    (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
-                    #selectedOrganizations="ngModel">
-                  </ng-multiselect-dropdown>
+                  <ng-multiselect-dropdown [placeholder]="'-- All Organization/s --'" [data]="organizationsList"
+                  [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
+                  (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
+                  (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
+                  #selectedOrganizations="ngModel">
+                </ng-multiselect-dropdown>
                 </div>
               </div>
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'" [data]="locationsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All Location/s --'" [data]="locationsList"
                     [(ngModel)]="model.selectedLocations" [settings]="locationsSettings"
                     (onSelect)="onLocationSelect($event)" (onDeSelect)="onLocationDeSelect($event)"
                     (onSelectAll)="onLocationSelectAll($event)" name="selectedLocations" #selectedLocations="ngModel">
-                  </ng-multiselect-dropdown>
+                  </ng-multiselect-dropdown>  
                 </div>
                 <div class="col-md-6">
                   <span class="float-right">
@@ -78,17 +78,18 @@
                   </span>
                 </div>
               </div>
+
             </form>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row margin-top-10" style="font-size: 18px;">
+    <div class="row margin-top-10">
       <div id="rpt-sector-project" class="col-md-12">
         <div class="row">
           <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
-            <h4>{{reportDataList.reportSettings.title}}</h4>
+            <h5>{{reportDataList.reportSettings.title}}</h5>
           </div>
 
           <div class="col-md-12">
@@ -100,11 +101,11 @@
                     <th>Project Name</th>
                     <th>Funders</th>
                     <th>Implementers</th>
-                    <th>Total Cost</th>
-                    <th>Disbursements</th>
+                    <th>Funding</th>
+                    <th colspan="2">Disbursements Actual & Planned</th>
                   </tr>
                   <tr>
-                    <td colspan="5" class="report-subtitle">{{sectorProject.sectorName}}</td>
+                    <td colspan="6" class="report-subtitle">{{sectorProject.sectorName}} - Funding ({{sectorProject.totalCost}})</td>
                   </tr>
                   <tr *ngFor="let project of sectorProject.projects">
                     <td width="35%">{{project.title}}</td>
@@ -112,8 +113,10 @@
                     <td width="20%">{{formatImplementers(project.implementers)}}</td>
                     <td width="10%">{{project.projectCost}}</td>
                     <td width="10%">
-                      Actual: {{project.actualDisbursements}}<br />
-                      Planned: {{project.plannedDisbursements}}
+                      {{project.actualDisbursements}}<br />
+                    </td>
+                    <td width="10%">
+                      {{project.plannedDisbursements}}
                     </td>
                   </tr>
                   <tr *ngIf="sectorProject.projects.length == 0">
@@ -128,8 +131,8 @@
 
         </div>
 
-        <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-10">
-          <div style="display: block;" class="canvas-container">
+        <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-50">
+          <div style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
               [legend]="barChartLegend" [chartType]="barChartType" [colors]="chartColors"
               (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>

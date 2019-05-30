@@ -23,6 +23,7 @@ export class ProjectReportComponent implements OnInit {
   locationsSettings: any = [];
   yearsList: any = [];
   sectorsList: any = [];
+  subSectorsList: any = [];
   organizationsList: any = [];
   locationsList: any = [];
 
@@ -81,8 +82,8 @@ export class ProjectReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'sectorName',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
@@ -91,8 +92,8 @@ export class ProjectReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'organizationName',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
@@ -101,8 +102,8 @@ export class ProjectReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'location',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
@@ -304,9 +305,11 @@ export class ProjectReportComponent implements OnInit {
   }
 
   getSectorsList() {
-    this.sectorService.getSectorsList().subscribe(
+    this.sectorService.getDefaultSectors().subscribe(
       data => {
-        this.sectorsList = data;
+        var sectorsList = data;
+        this.sectorsList = sectorsList.filter(s => s.parentSectorId == null);
+        this.subSectorsList = [];
       },
       error => {
         console.log(error);

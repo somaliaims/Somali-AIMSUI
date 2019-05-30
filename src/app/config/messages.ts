@@ -31,5 +31,6 @@ export const Messages = {
     PASSWORD_UPDATED: 'Your password updated successfully. You must login with new password on next login.',
     ACCOUNT_DELETED: 'Your account is deleted successfully. In order to use AIMS again, register again with your Organization',
     INVALID_SECTOR_MAPPING: 'Select a sector before saving the mappings',
+    EX_RATE_NOT_FOUND: 'Exchange rate could not be found for the selected source. Please select another source or contact administrator',
     INVALID_ENVELOPE_MANUAL_AMOUNT: 'Manually entered amount cannot be less than total expected amount',
 }
