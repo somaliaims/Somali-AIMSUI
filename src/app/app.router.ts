@@ -28,7 +28,7 @@ import { ProjectDisbursementComponent } from './project-disbursement/project-dis
 import { ProjectDocumentComponent } from './project-document/project-document.component';
 import { NewProjectComponent } from './new-project/new-project.component';
 import { ProjectEntryComponent } from './project-entry/project-entry.component';
-import { ProjectReportComponent } from './report-components/project-report/project-report.component';
+import { SectorReportComponent } from './report-components/sector-report/sector-report.component';
 import { IatiSettingsComponent } from './iati-settings/iati-settings.component';
 import { SmtpSettingsComponent } from './smtp-settings/smtp-settings.component';
 import { ManageAccountComponent } from './manage-account/manage-account.component';
@@ -98,7 +98,7 @@ export const routes: Routes = [
   { path: 'project-disbursement/:{id}', component: ProjectDisbursementComponent },
   { path: 'project-document/:{id}', component: ProjectDocumentComponent },
   { path: 'project-entry', component: ProjectEntryComponent },
-  { path: 'sectors-report', component: ProjectReportComponent },
+  { path: 'sectors-report', component: SectorReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
   { path: 'manage-account', component: ManageAccountComponent },

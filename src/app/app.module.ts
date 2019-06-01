@@ -43,7 +43,7 @@ import { ProjectDisbursementComponent } from './project-disbursement/project-dis
 import { ProjectDocumentComponent } from './project-document/project-document.component';
 import { ModalComponent } from './modal/modal.component';
 import { NewProjectComponent } from './new-project/new-project.component';
-import { ProjectReportComponent } from './report-components/project-report/project-report.component';
+import { SectorReportComponent } from './report-components/sector-report/sector-report.component';
 import { ProjectEntryComponent } from './project-entry/project-entry.component';
 import { InfoModalComponent } from './info-modal/info-modal.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
@@ -108,7 +108,7 @@ import { DeleteSectortypeComponent } from './delete-sectortype/delete-sectortype
     ProjectDocumentComponent,
     ModalComponent,
     NewProjectComponent,
-    ProjectReportComponent,
+    SectorReportComponent,
     ProjectEntryComponent,
     InfoModalComponent,
     TruncatePipe,

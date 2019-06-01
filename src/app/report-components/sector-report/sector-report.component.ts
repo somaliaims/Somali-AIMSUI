@@ -10,11 +10,11 @@ import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
 
 @Component({
-  selector: 'app-project-report',
-  templateUrl: './project-report.component.html',
-  styleUrls: ['./project-report.component.css']
+  selector: 'sector-report',
+  templateUrl: './sector-report.component.html',
+  styleUrls: ['./sector-report.component.css']
 })
-export class ProjectReportComponent implements OnInit {
+export class SectorReportComponent implements OnInit {
   sectorsSettings: any = [];
   selectedSectors: any = [];
   selectedOrganizations: any = [];
@@ -26,6 +26,13 @@ export class ProjectReportComponent implements OnInit {
   subSectorsList: any = [];
   organizationsList: any = [];
   locationsList: any = [];
+  chartOptions: any = [
+    { id: 1, type: 'bar', title: 'Bar chart' },
+    { id: 2, type: 'pie', title: 'Pie chart' },
+    { id: 3, type: 'line', title: 'Line chart' },
+    { id: 4, type: 'doughnut', title: 'Doughnut chart' },
+    { id: 5, type: 'radar', title: 'Radar chart' }
+  ];
 
   reportDataList: any = [];
   dropdownSettings: any = {};
@@ -59,7 +66,7 @@ export class ProjectReportComponent implements OnInit {
   barChartData: any[] = [
   ];
   model: any = {
-    title: '', organizationIds: [], startingYear: 0, endingYear: 0,
+    title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: []
   };

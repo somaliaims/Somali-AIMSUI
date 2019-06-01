@@ -80,7 +80,7 @@ export const urls = {
 	sectorProjects: "Project/GetSectorProjects/",
 	sectorProjectsReport: "Report/GetSectorWiseProjects",
 	searchProjectsViewByCriteria: "Project/SearchProjectsViewByCriteria",
-	searchProjectsByCriteriaReport: "Report/SearchProjectsByCriteria",
+	searchProjectsByCriteriaReport: "Report/GetSectorWiseProjects",
 	getFinancialYears: "FinancialYear",
 	smtpSettings: "SMTPSettings",
 	notificationsCount: "Notification/GetCount",

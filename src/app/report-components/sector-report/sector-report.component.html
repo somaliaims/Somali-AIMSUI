@@ -63,12 +63,16 @@
                 </div>
               </div>
               <div class="row margin-top-10">
-                <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All Location/s --'" [data]="locationsList"
-                    [(ngModel)]="model.selectedLocations" [settings]="locationsSettings"
-                    (onSelect)="onLocationSelect($event)" (onDeSelect)="onLocationDeSelect($event)"
-                    (onSelectAll)="onLocationSelectAll($event)" name="selectedLocations" #selectedLocations="ngModel">
-                  </ng-multiselect-dropdown>  
+                <div class="col-md-3">
+                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType" #chartType="ngModel"
+                    required>
+                    <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
+                      {{chart.title}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+
                 </div>
                 <div class="col-md-6">
                   <span class="float-right">
@@ -153,7 +157,7 @@
         <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-50">
           <div style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [legend]="barChartLegend" [chartType]="barChartType" [colors]="chartColors"
+              [legend]="barChartLegend" [chartType]="model.chartType" [colors]="chartColors"
               (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
           </div>
         </div>
