@@ -120,8 +120,8 @@
                   </tr>
                   <tr *ngFor="let project of sectorProject.projects">
                     <td width="35%">{{project.title}}</td>
-                    <td width="20%">{{formatFunders(project.funders)}}</td>
-                    <td width="20%">{{formatImplementers(project.implementers)}}</td>
+                    <td width="20%">{{project.funders}}</td>
+                    <td width="20%">{{project.implementers}}</td>
                     <td width="10%">{{project.projectCost}}</td>
                     <td width="10%">
                       {{project.actualDisbursements}}<br />
