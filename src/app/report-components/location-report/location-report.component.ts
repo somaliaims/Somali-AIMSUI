@@ -2,30 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { ReportService } from 'src/app/services/report.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from 'src/app/services/store-service';
-import { SectorService } from 'src/app/services/sector.service';
+import { LocationService } from 'src/app/services/location.service';
 import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { OrganizationService } from 'src/app/services/organization-service';
-import { LocationService } from 'src/app/services/location.service';
 import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
 
 @Component({
-  selector: 'sector-report',
-  templateUrl: './sector-report.component.html',
-  styleUrls: ['./sector-report.component.css']
+  selector: 'location-report',
+  templateUrl: './location-report.component.html',
+  styleUrls: ['./location-report.component.css']
 })
-export class SectorReportComponent implements OnInit {
-  sectorsSettings: any = [];
-  selectedSectors: any = [];
-  selectedOrganizations: any = [];
-  selectedLocations: any = [];
-  organizationsSettings: any = [];
+export class LocationReportComponent implements OnInit {
   locationsSettings: any = [];
+  selectedLocations: any = [];
+  selectedOrganizations: any = [];
+  organizationsSettings: any = [];
   yearsList: any = [];
-  sectorsList: any = [];
-  subSectorsList: any = [];
-  organizationsList: any = [];
   locationsList: any = [];
+  subLocationsList: any = [];
+  organizationsList: any = [];
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
@@ -66,28 +62,28 @@ export class SectorReportComponent implements OnInit {
   ];
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
-    sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
-    selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: []
+    locationIds: [], selectedLocations: [], selectedOrganizations: [],
+    locationsList: [], organizationsList: []
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private reportService: ReportService, private storeService: StoreService,
-    private sectorService: SectorService, private fyService: FinancialYearService,
-    private organizationService: OrganizationService, private locationService: LocationService,
+    private locationService: LocationService, private fyService: FinancialYearService,
+    private organizationService: OrganizationService,
   ) { }
 
   ngOnInit() {
 
-    this.getSectorsList();
+    this.getLocationsList();
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
 
-    this.sectorsSettings = {
+    this.locationsSettings = {
       singleSelection: false,
       idField: 'id',
-      textField: 'sectorName',
+      textField: 'locationName',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -123,20 +119,20 @@ export class SectorReportComponent implements OnInit {
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
       organizationIds: this.selectedOrganizations,
-      sectorIds: this.selectedSectors,
+      locationIds: this.selectedLocations,
     };
 
     this.resetSearchResults();
-    this.blockUI.start('Searching Projects...');
-    this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(
+    this.blockUI.start('Searching projects...');
+    this.reportService.getLocationWiseProjectsReport(searchModel).subscribe(
       data => {
         this.reportDataList = data;
-        if (this.reportDataList && this.reportDataList.sectorProjectsList) {
-          var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
-          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: 'Sector Projects' };
+        if (this.reportDataList && this.reportDataList.locationProjectsList) {
+          var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
+          var locationProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
+          var chartData = { data: locationProjects, label: 'Location projects' };
           this.barChartData.push(chartData);
-          this.barChartLabels = sectorNames;
+          this.barChartLabels = locationNames;
         }
         this.blockUI.stop();
       },
@@ -182,83 +178,14 @@ export class SectorReportComponent implements OnInit {
     );
   }
 
-  /*generatePDF() {
-    html2canvas(document.getElementById('rpt-sector-project')).then(function (canvas) {
-      var img = canvas.toDataURL("image/png");
-      var doc = new jsPDF();
-      var width = doc.internal.pageSize.getWidth();
-      var height = doc.internal.pageSize.getHeight();
-      doc.addImage(img, 'JPEG', 0, 0, width, height);
-      doc.save('testCanvas.pdf');
-    });
-    /*const div = document.getElementById("rpt-sector-project");
-    const options = {background: "white", height: div.clientHeight, width: div.clientWidth};
-    //let chartCanvas = document.getElementById('chart') as HTMLCanvasElement;
-
-    html2canvas(div, options).then((canvas) => {
-        //Initialize JSPDF
-        let doc = new jsPDF("p", "mm", "a4");
-        //Converting canvas to Image
-        let imgData = canvas.toDataURL("image/PNG");
-        //let chartData = chartCanvas.toDataURL("image/PNG");
-        //Add image Canvas to PDF
-        doc.addImage(imgData, 'PNG', 20, 20, div.clientWidth, div.clientHeight, '', 1.0);
-        //doc.addImage(chartData, 'PNG');
-        let pdfOutput = doc.output();
-        // using ArrayBuffer will allow you to put image inside PDF
-        let buffer = new ArrayBuffer(pdfOutput.length);
-        let array = new Uint8Array(buffer);
-        for (let i = 0; i < pdfOutput.length; i++) {
-            array[i] = pdfOutput.charCodeAt(i);
-        }
-        //Name of pdf
-        const fileName = "example.pdf";
-        // Make file
-        doc.save(fileName);
-    });
-}*/
-
-  /*generatePDF() {
-    var dv = document.getElementById('rpt-sector-project');
-    var HTML_Width = dv.clientWidth;
-    var HTML_Height = dv.clientHeight;
-    var top_left_margin = 15;
-    var PDF_Width = HTML_Width + (top_left_margin * 2);
-    var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
-    var canvas_image_width = HTML_Width;
-    var canvas_image_height = HTML_Height;
-
-    var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
-
-
-    html2canvas(dv, { allowTaint: true }).then(function (canvas) {
-      canvas.getContext('2d');
-      console.log(canvas.height + "  " + canvas.width);
-      var imgData = canvas.toDataURL("image/jpeg", 1.0);
-      var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
-      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
-
-
-      for (var i = 1; i <= totalPDFPages; i++) {
-        pdf.addPage([PDF_Width, PDF_Height]);
-        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
-      }
-
-      pdf.save("HTML-Document.pdf");
-    });
-  };*/
-
   generatePDF() {
-
-    var quotes = document.getElementById('rpt-sector-project');
+    var quotes = document.getElementById('rpt-location-project');
     html2canvas(quotes)
       .then((canvas) => {
-        //! MAKE YOUR PDF
         var pdf = new jsPDF('p', 'pt', 'letter');
         var container = document.querySelector(".row");
         var docWidth = container.getBoundingClientRect().width;
         for (var i = 0; i <= quotes.clientHeight / 980; i++) {
-          //! This is all just html2canvas stuff
           var srcImg = canvas;
           var sX = 0;
           var sY = 980 * i; // start 980 pixels down for every new page
@@ -273,53 +200,31 @@ export class SectorReportComponent implements OnInit {
           onePageCanvas.setAttribute('width', docWidth.toString());
           onePageCanvas.setAttribute('height', '980');
           var ctx = onePageCanvas.getContext('2d');
-          // details on this usage of this function: 
-          // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
           ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
 
-          // document.body.appendChild(canvas);
           var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
 
           var width = onePageCanvas.width;
           var height = onePageCanvas.clientHeight;
 
-          //! If we're on anything other than the first page,
-          // add another page
           if (i > 0) {
             pdf.addPage([612, 791]); //8.5" x 11" in pts (in*72)
           }
-          //! now we declare that we're working on that page
           pdf.setPage(i + 1);
-          //! now we add content to that page!
           pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .44), (height * .62));
-
         }
-        //! after the for loop is finished running, we save the pdf.
         pdf.save('Test.pdf');
       });
   }
 
   printReport() {
-    this.storeService.printReport('rpt-sector-project', 'SectorWise Projects List');
+    this.storeService.printReport('rpt-location-project', 'LocationWise Projects List');
   }
 
   public chartClicked(e: any): void {
   }
 
   public chartHovered(e: any): void {
-  }
-
-  getSectorsList() {
-    this.sectorService.getDefaultSectors().subscribe(
-      data => {
-        var sectorsList = data;
-        this.sectorsList = sectorsList.filter(s => s.parentSectorId == null);
-        this.subSectorsList = [];
-      },
-      error => {
-        console.log(error);
-      }
-    )
   }
 
   getLocationsList() {
@@ -344,26 +249,26 @@ export class SectorReportComponent implements OnInit {
     )
   }
 
-  onSectorSelect(item: any) {
+  onLocationSelect(item: any) {
     var id = item.id;
-    if (this.selectedSectors.indexOf(id) == -1) {
-      this.selectedSectors.push(id);
+    if (this.selectedLocations.indexOf(id) == -1) {
+      this.selectedLocations.push(id);
     }
   }
 
-  onSectorDeSelect(item: any) {
+  onLocationDeSelect(item: any) {
     var id = item.id;
-    var index = this.selectedSectors.indexOf(id);
-    this.selectedSectors.splice(index, 1);
+    var index = this.selectedLocations.indexOf(id);
+    this.selectedLocations.splice(index, 1);
 
     this.searchProjectsByCriteriaReport();
   }
 
-  onSectorSelectAll(items: any) {
+  onLocationSelectAll(items: any) {
     items.forEach(function (item) {
       var id = item.id;
-      if (this.selectedSectors.indexOf(id) == -1) {
-        this.selectedSectors.push(id);
+      if (this.selectedLocations.indexOf(id) == -1) {
+        this.selectedLocations.push(id);
       }
     }.bind(this))
   }
@@ -392,44 +297,20 @@ export class SectorReportComponent implements OnInit {
     }.bind(this));
   }
 
-  onLocationSelect(item: any) {
-    var id = item.id;
-    if (this.selectedLocations.indexOf(id) == -1) {
-      this.selectedLocations.push(id);
-    }
-  }
-
-  onLocationDeSelect(item: any) {
-    var id = item.id;
-    var index = this.selectedLocations.indexOf(id);
-    this.selectedLocations.splice(index, 1);
-
-    this.searchProjectsByCriteriaReport();
-  }
-
-  onLocationSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedLocations.indexOf(id) == -1) {
-        this.selectedLocations.push(id);
-      }
-    }.bind(this));
-  }
-
-  getGrandTotalFundingForSector() {
+  getGrandTotalFundingForLocation() {
     var totalFunding  = 0;
-    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
-      this.reportDataList.sectorProjectsList.forEach(function (p) {
+    if (this.reportDataList && this.reportDataList.locationProjectsList) {
+      this.reportDataList.locationProjectsList.forEach(function (p) {
         totalFunding += p.totalFunding;
       });
     }
     return totalFunding;
   }
 
-  getGrandTotalDisbursementForSector() {
+  getGrandTotalDisbursementForLocation() {
     var totalDisursement  = 0;
-    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
-      this.reportDataList.sectorProjectsList.forEach(function (p) {
+    if (this.reportDataList && this.reportDataList.locationProjectsList) {
+      this.reportDataList.locationProjectsList.forEach(function (p) {
         totalDisursement += p.totalDisbursements;
       });
     }

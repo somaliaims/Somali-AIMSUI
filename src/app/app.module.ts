@@ -75,6 +75,7 @@ import { ManageFundingTypeComponent } from './manage-funding-type/manage-funding
 import { EmailMessagesComponent } from './email-messages/email-messages.component';
 import { ManageEmailMessageComponent } from './manage-email-message/manage-email-message.component';
 import { DeleteSectortypeComponent } from './delete-sectortype/delete-sectortype.component';
+import { LocationReportComponent } from './report-components/location-report/location-report.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { DeleteSectortypeComponent } from './delete-sectortype/delete-sectortype
     EmailMessagesComponent,
     ManageEmailMessageComponent,
     DeleteSectortypeComponent,
+    LocationReportComponent,
   ],
   imports: [
     BrowserModule,

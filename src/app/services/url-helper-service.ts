@@ -508,6 +508,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);
     }
 
+    getLocationProjectsReportUrl() {
+        return (this.BASE_URL + urlsList.urls.locationProjectsReport);
+    }
+
     getSearchProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.searchProjectsByCriteriaReport);
     }

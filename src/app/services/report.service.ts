@@ -32,8 +32,15 @@ export class ReportService {
         catchError(this.storeService.handleError<any>('Report Names')));
     }
 
-    searchProjectsByCriteriaReport(model: any) {
-      var url = this.urlHelper.getSearchProjectsReportUrl();
+    getSectorWiseProjectsReport(model: any) {
+      var url = this.urlHelper.getSectorProjectsReportUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Projects Report by Sectors')));
+    }
+
+    getLocationWiseProjectsReport(model: any) {
+      var url = this.urlHelper.getLocationProjectsReportUrl();
       return this.httpClient.post(url,
         JSON.stringify(model), httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Projects Report by Sectors')));

@@ -79,6 +79,7 @@ export const urls = {
 	aimsProjectsByIds: "Project/ExtractProjectsByIds",
 	sectorProjects: "Project/GetSectorProjects/",
 	sectorProjectsReport: "Report/GetSectorWiseProjects",
+	locationProjectsReport: "Report/GetLocationWiseProjects",
 	searchProjectsViewByCriteria: "Project/SearchProjectsViewByCriteria",
 	searchProjectsByCriteriaReport: "Report/GetSectorWiseProjects",
 	getFinancialYears: "FinancialYear",
