@@ -291,7 +291,6 @@ export class EnvelopeComponent implements OnInit {
     if (this.exRatesList.length > 0) {
       var currencyRateArr = this.exRatesList.filter(ex => ex.currency == this.selectedCurrency);
       var defaultRateArr = this.exRatesList.filter(ex => ex.currency == this.defaultCurrency);
-      //var oldCurrencyRateArr = this.exRatesList.filter(ex => ex.currency == this.oldCurrency);
       oldCurrencyRate = this.exchangeRate;
 
       if (defaultRateArr.length > 0) {
@@ -302,10 +301,7 @@ export class EnvelopeComponent implements OnInit {
         currencyRate = currencyRateArr[0].rate;
         this.exchangeRate = currencyRate;
       }
-
-      /*if (oldCurrencyRateArr.length > 0) {
-        
-      }*/
+      
     }
       
     if (this.selectedCurrency == this.oldCurrency && this.selectedCurrency == this.defaultCurrency) {
