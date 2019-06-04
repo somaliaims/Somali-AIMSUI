@@ -94,7 +94,20 @@
               </div>
 
               <div class="row margin-top-10">
-                <div class="col-md-12">
+                <div class="col-md-6">
+                  <!--<select class="form-control" id="dataOption" (change)="selectDataOption()" [(ngModel)]="model.dataOption"
+                    name="dataOption" #dataOption="ngModel">
+                    <option value="null">--Data on charts--</option>
+                    <option *ngFor="let data of dataOptions" [value]="data.id">{{data.title}}</option>
+                  </select>-->
+                  <ng-multiselect-dropdown [placeholder]="'-- All data option/s --'" [data]="dataOptions"
+                    [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
+                    (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
+                    (onSelectAll)="onDataSelectAll($event)" name="selectedDataOptions"
+                    #selectedDataOptions="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-6">
                     <span class="float-right">
                         <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
                         <!--<button type="button" class="btn btn-success" (click)="generatePDF()">Get PDF</button>&nbsp;-->
@@ -175,10 +188,10 @@
 
         </div>
 
-        <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-50">
+        <div *ngIf="barChartLabels.length > 0 && showChart" class="col-md-12 margin-top-50">
           <div style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [legend]="barChartLegend" [chartType]="model.chartType" [colors]="chartColors"
+              [legend]="barChartLegend" [chartType]="model.chartType"
               (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
           </div>
         </div>

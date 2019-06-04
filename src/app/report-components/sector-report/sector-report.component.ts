@@ -22,8 +22,10 @@ export class SectorReportComponent implements OnInit {
   selectedSectors: any = [];
   selectedOrganizations: any = [];
   selectedLocations: any = [];
-  organizationsSettings: any = [];
-  locationsSettings: any = [];
+  selectedDataOptions: any = [];
+  organizationsSettings: any = {};
+  dataOptionSettings: any = {};
+  locationsSettings: any = {};
   oldCurrencyRate: number = 0;
   currencyRate: number = 0;
   yearsList: any = [];
@@ -38,6 +40,7 @@ export class SectorReportComponent implements OnInit {
   nationalCurrency: string = null;
   selectedCurrencyName: string = null;
   errorMessage: string = null;
+  showChart: boolean = true;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -45,6 +48,16 @@ export class SectorReportComponent implements OnInit {
     { id: 4, type: 'doughnut', title: 'Doughnut chart' },
     { id: 5, type: 'radar', title: 'Radar chart' }
   ];
+
+  dataOptions: any = [
+    { id: 1, type: 'funding', value: 'Funding' },
+    { id: 2, type: 'disbursements', value: 'Disbursements' }
+  ];
+
+  dataOptionsCodes: any = {
+    'FUNDING': 1,
+    'DISBURSEMENTS': 2
+  };
 
   exRateSourceCodes: any = {
     'OPEN_EXCHANGE': 1,
@@ -73,6 +86,12 @@ export class SectorReportComponent implements OnInit {
           autoSkip: false
         }
       }],
+    },
+    plugins: {
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+      }
     }
   };
   chartColors: any = [
@@ -91,7 +110,7 @@ export class SectorReportComponent implements OnInit {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
-    selectedCurrency: null, exRateSource: null
+    selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: []
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -137,6 +156,16 @@ export class SectorReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'location',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.dataOptionSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'value',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -216,9 +245,10 @@ export class SectorReportComponent implements OnInit {
         if (this.reportDataList && this.reportDataList.sectorProjectsList) {
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
           var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: 'Sector Projects' };
+          var chartData = { data: sectorProjects, label: 'Projects' };
           this.barChartData.push(chartData);
           this.barChartLabels = sectorNames;
+          //this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
         }
         this.blockUI.stop();
       },
@@ -498,6 +528,31 @@ export class SectorReportComponent implements OnInit {
     }.bind(this));
   }
 
+  onDataOptionSelect(item: any) {
+    var id = item.id;
+    if (this.selectedDataOptions.indexOf(id) == -1) {
+      this.selectedDataOptions.push(id);
+      this.manageDataOptions();
+    }
+  }
+
+  onDataOptionDeSelect(item: any) {
+    var id = item.id;
+    var index = this.selectedDataOptions.indexOf(id);
+    this.selectedDataOptions.splice(index, 1);
+    this.manageDataOptions();
+  }
+
+  onDataOptionSelectAll(items: any) {
+    items.forEach(function (item) {
+      var id = item.id;
+      if (this.selectedDataOptions.indexOf(id) == -1) {
+        this.selectedDataOptions.push(id);
+      }
+    }.bind(this));
+    this.manageDataOptions();
+  }
+
   getGrandTotalFundingForSector() {
     var totalFunding  = 0;
     if (this.reportDataList && this.reportDataList.sectorProjectsList) {
@@ -523,6 +578,37 @@ export class SectorReportComponent implements OnInit {
       this.reportDataList.sectorProjectsList.forEach(function (p) {
         p.totalDisbursements = 0;
       });
+    }
+  }
+
+  manageDataOptions() {
+    if (this.selectedDataOptions.length > 0 && this.reportDataList.sectorProjectsList) {
+      this.barChartData = [];
+      this.showChart = false;
+
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING != -1)) {
+        var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
+        var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+        var chartData = { data: sectorFunding, label: 'Funding' };
+        this.barChartData.push(chartData);
+        this.barChartLabels = sectorNames;
+      } else {
+        this.barChartData = this.barChartData.filter(d => d.label != 'Funding');
+      }
+
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS != -1)) {
+        var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
+        var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+        var chartData = { data: sectorDisbursements, label: 'Disbursements' };
+        this.barChartData.push(chartData);
+        this.barChartLabels = sectorNames;
+      } else {
+        this.barChartData = this.barChartData.filter(d => d.label != 'Disbursements');
+      }
+
+      setTimeout(() => {
+        this.showChart = true;
+      }, 1000);
     }
   }
 
