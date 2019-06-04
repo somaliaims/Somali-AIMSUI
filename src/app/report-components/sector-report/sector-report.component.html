@@ -113,7 +113,7 @@
       <div id="rpt-sector-project" class="col-md-12">
         <div class="row">
           <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
-            <h5>{{reportDataList.reportSettings.title}}</h5>
+            <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
           </div>
 
           <div class="col-md-12">

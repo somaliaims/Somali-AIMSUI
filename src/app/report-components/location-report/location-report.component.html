@@ -30,7 +30,8 @@
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
                           name="startingYear" #startingYear="ngModel" required>
                           <option value="0">--Starting Year--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
+                          </option>
                         </select>
                       </td>
                       <td>&nbsp;&nbsp;</td>
@@ -38,7 +39,8 @@
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
                           #endingYear="ngModel" required>
                           <option value="0">--Ending Year--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
+                          </option>
                         </select>
                       </td>
                     </tr>
@@ -47,39 +49,57 @@
               </div>
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                      <ng-multiselect-dropdown [placeholder]="'-- All Location/s --'" [data]="locationsList"
-                      [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
-                      (onSelect)="onLocationSelect($event)" (onDeSelect)="onLocationDeSelect($event)"
-                      (onSelectAll)="onLocationSelectAll($event)" #selectedLocations="ngModel">
-                    </ng-multiselect-dropdown>
+                  <ng-multiselect-dropdown [placeholder]="'-- All Location/s --'" [data]="locationsList"
+                    [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
+                    (onSelect)="onLocationSelect($event)" (onDeSelect)="onLocationDeSelect($event)"
+                    (onSelectAll)="onLocationSelectAll($event)" #selectedLocations="ngModel">
+                  </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All Organization/s --'" [data]="organizationsList"
-                  [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
-                  (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
-                  (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
-                  #selectedOrganizations="ngModel">
-                </ng-multiselect-dropdown>
+                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
+                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
+                    (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
+                    #selectedOrganizations="ngModel">
+                  </ng-multiselect-dropdown>
                 </div>
               </div>
+
               <div class="row margin-top-10">
-                <div class="col-md-3">
-                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType" #chartType="ngModel"
-                    required>
+                <div class="col-md-6">
+                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
+                    #chartType="ngModel" required>
+                    <option value="null">-- Chart type --</option>
                     <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
                       {{chart.title}}
                     </option>
                   </select>
                 </div>
                 <div class="col-md-3">
-
+                  <select class="form-control" (change)="selectCurrency()" id="selectedCurrency"
+                    [(ngModel)]="model.selectedCurrency" name="selectedCurrency" #selectedCurrency="ngModel">
+                    <option value="null">-- Currency --</option>
+                    <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
+                      {{currency.currencyName}}
+                    </option>
+                  </select>
                 </div>
-                <div class="col-md-6">
-                  <span class="float-right">
-                    <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
-                    <!--<button type="button" class="btn btn-success" (click)="generatePDF()">Get PDF</button>&nbsp;-->
-                    <button type="button" class="btn btn-warning" (click)="printReport()">Print Report</button>
-                  </span>
+                <div class="col-md-3">
+                  <select class="form-control" id="esource" (change)="selectExRateSource()"
+                    [(ngModel)]="model.exRateSource" name="esource" #esource="ngModel">
+                    <option value="null">--Ex Rate Source--</option>
+                    <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row margin-top-10">
+                <div class="col-md-12">
+                    <span class="float-right">
+                        <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
+                        <!--<button type="button" class="btn btn-success" (click)="generatePDF()">Get PDF</button>&nbsp;-->
+                        <button type="button" class="btn btn-warning" (click)="printReport()">Print Report</button>
+                      </span>
                 </div>
               </div>
 
@@ -93,11 +113,12 @@
       <div id="rpt-location-project" class="col-md-12">
         <div class="row">
           <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
-            <h5>{{reportDataList.reportSettings.title}}</h5>
+            <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
           </div>
 
           <div class="col-md-12">
-            <table *ngIf="reportDataList && reportDataList.locationProjectsList" class="table table-bordered" style="margin-bottom: 0rem !important">
+            <table *ngIf="reportDataList && reportDataList.locationProjectsList" class="table table-bordered"
+              style="margin-bottom: 0rem !important">
 
               <tr *ngFor="let locationProject of reportDataList.locationProjectsList; let i = index;">
                 <table class="table table-bordered" style="margin-bottom: 0rem !important">
@@ -142,16 +163,15 @@
                   <span class="float-right">
                     <b>
                       <i>
-                      Funding total: {{getGrandTotalFundingForLocation()}}&nbsp;&nbsp;
-                      Disbursement total: {{getGrandTotalDisbursementForLocation()}}
-                    </i>
-                  </b>
+                        Funding total: {{getGrandTotalFundingForLocation()}}&nbsp;&nbsp;
+                        Disbursement total: {{getGrandTotalDisbursementForLocation()}}
+                      </i>
+                    </b>
                   </span>
                 </td>
               </tr>
             </table>
           </div>
-
         </div>
 
         <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-50">
@@ -167,3 +187,5 @@
 
   </block-ui>
 </div>
+
+<error-modal message={{errorMessage}}></error-modal>

@@ -7,6 +7,9 @@ import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { OrganizationService } from 'src/app/services/organization-service';
 import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
+import { CurrencyService } from 'src/app/services/currency.service';
+import { Messages } from 'src/app/config/messages';
+import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 
 @Component({
   selector: 'location-report',
@@ -22,11 +25,30 @@ export class LocationReportComponent implements OnInit {
   locationsList: any = [];
   subLocationsList: any = [];
   organizationsList: any = [];
+  currenciesList: any = [];
+  exchangeRatesList: any = [];
+  manualExchangeRatesList: any = [];
+  defaultCurrency: string = null;
+  nationalCurrency: string = null;
+  selectedCurrencyName: string = null;
+  errorMessage: string = null;
+  oldCurrencyRate: number = 0;
+
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
     { id: 4, type: 'doughnut', title: 'Doughnut chart' },
     { id: 5, type: 'radar', title: 'Radar chart' }
+  ];
+
+  exRateSourceCodes: any = {
+    'OPEN_EXCHANGE': 1,
+    'AFRICAN_BANK': 2
+  };
+
+  exRateSources: any = [
+    { id: 1, value: 'Open exchange api' },
+    { id: 2, value: 'African bank' }
   ];
 
   reportDataList: any = [];
@@ -63,14 +85,15 @@ export class LocationReportComponent implements OnInit {
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
     locationIds: [], selectedLocations: [], selectedOrganizations: [],
-    locationsList: [], organizationsList: []
+    locationsList: [], organizationsList: [], selectedCurrency: null, exRateSource: null
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private reportService: ReportService, private storeService: StoreService,
     private locationService: LocationService, private fyService: FinancialYearService,
-    private organizationService: OrganizationService,
+    private organizationService: OrganizationService, private currencyService: CurrencyService,
+    private errorModal: ErrorModalComponent
   ) { }
 
   ngOnInit() {
@@ -79,6 +102,10 @@ export class LocationReportComponent implements OnInit {
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
+    this.getDefaultCurrency();
+    this.getNationalCurrency();
+    this.getExchangeRates();
+    this.getManualExchangeRateForToday();
 
     this.locationsSettings = {
       singleSelection: false,
@@ -109,6 +136,59 @@ export class LocationReportComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+  }
+
+  getExchangeRates() {
+    this.currencyService.getExchangeRatesList().subscribe(
+      data => {
+        if (data) {
+          this.exchangeRatesList = data.rates;
+
+          if (this.defaultCurrency && this.exchangeRatesList.length > 0) {
+              var exRate = this.exchangeRatesList.filter(c => c.currency == this.defaultCurrency);
+              if (exRate.length > 0) {
+                this.oldCurrencyRate = exRate[0].rate;
+              } 
+          }
+        }
+      }
+    );
+  }
+
+  getManualExchangeRateForToday() {
+    var dated = this.storeService.getCurrentDateSQLFormat();
+    this.currencyService.getManualExRatesByDate(dated).subscribe(
+      data => {
+        if (data) {
+          if (data.exchangeRate) {
+            this.manualExchangeRatesList = data.exchangeRate;
+          }
+        }
+      });
+  }
+
+  getDefaultCurrency() {
+    this.currencyService.getDefaultCurrency().subscribe(
+      data => {
+        if (data) {
+          this.defaultCurrency = data.currency;
+          this.model.selectedCurrency = data.currency;
+          this.selectedCurrencyName = data.currencyName;
+          this.currenciesList.push(data);
+        }
+      }
+    );
+  }
+
+  getNationalCurrency() {
+    this.currencyService.getNationalCurrency().subscribe(
+      data => {
+        if (data) {
+          this.nationalCurrency = data;
+          this.currenciesList.push(data);
+        }
+      }
+    );
   }
 
   searchProjectsByCriteriaReport() {
@@ -315,6 +395,83 @@ export class LocationReportComponent implements OnInit {
       });
     }
     return totalDisursement;
+  }
+
+  convertAmountsToCurrency() {
+    if (this.reportDataList && this.reportDataList.locationProjectsList) {
+      this.reportDataList.locationProjectsList.forEach(function (p) {
+        p.totalDisbursements = 0;
+      });
+    }
+  }
+
+  selectCurrency() {
+    if (!this.model.selectedCurrency) {
+      this.selectedCurrencyName = 'Default';
+    } else {
+      var selectedCurrency = this.currenciesList.filter(c => c.currency == this.model.selectedCurrency);
+      if (selectedCurrency.length > 0) {
+        this.selectedCurrencyName = selectedCurrency[0].currencyName;
+      }
+    }
+    if (this.model.selectedCurrency && this.model.exRateSource) {
+       this.getCurrencyRates(this.model.exRateSource);
+    }
+  }
+
+  selectExRateSource() {
+    if (this.model.exRateSource && this.model.selectedCurrency) {
+      this.getCurrencyRates(this.model.exRateSource);
+    }
+  }
+
+  getCurrencyRates(eSource: string) {
+    var exRate: any = [];
+    if (eSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
+      var calculatedRate = 0;
+      exRate = this.exchangeRatesList.filter(c => c.currency == this.model.selectedCurrency);
+      if (exRate.length > 0) {
+        calculatedRate = (exRate[0].rate / this.oldCurrencyRate);
+        this.oldCurrencyRate = exRate[0].rate;
+      }
+    } else if (eSource == this.exRateSourceCodes.AFRICAN_BANK) {
+      if (this.manualExchangeRatesList.length == 0) {
+        this.errorMessage = Messages.EX_RATE_NOT_FOUND;
+        this.errorModal.openModal();
+        return false;
+      }
+
+      var manualRate = this.manualExchangeRatesList.filter(c => c.currency == this.model.currency);
+      if (manualRate.length > 0) {
+        exRate = manualRate[0].rate;
+        calculatedRate = (exRate / this.oldCurrencyRate);
+        this.oldCurrencyRate = exRate;
+      } 
+    }
+
+    if (calculatedRate > 0 && calculatedRate != 1) {
+      this.applyRateOnFinancials(calculatedRate);
+    }
+  }
+
+  applyRateOnFinancials(calculatedRate: number) {
+    if (this.reportDataList && this.reportDataList.locationProjectsList) {
+      this.reportDataList.locationProjectsList.forEach(function (location) {
+        location.totalFunding = Math.round(parseFloat(((location.totalFunding * calculatedRate).toFixed(2))));
+        location.totalDisbursements = Math.round(parseFloat(((location.totalDisbursements * calculatedRate).toFixed(2))));
+
+        if (location.projects && location.projects.length > 0) {
+          location.projects.forEach(function (project) {
+            project.projectCost = Math.round(parseFloat(((project.projectCost * calculatedRate).toFixed(2))));
+            project.actualDisbursements = Math.round(parseFloat(((project.actualDisbursements * calculatedRate).toFixed(2))));
+            project.plannedDisbursements = Math.round(parseFloat(((project.plannedDisbursements * calculatedRate).toFixed(2))));
+          });
+        }
+      });
+
+      this.getGrandTotalFundingForLocation();
+      this.getGrandTotalDisbursementForLocation();
+    }
   }
 
 }

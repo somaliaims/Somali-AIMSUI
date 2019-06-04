@@ -36,6 +36,7 @@ export class SectorReportComponent implements OnInit {
   manualExchangeRatesList: any = [];
   defaultCurrency: string = null;
   nationalCurrency: string = null;
+  selectedCurrencyName: string = null;
   errorMessage: string = null;
 
   chartOptions: any = [
@@ -178,6 +179,7 @@ export class SectorReportComponent implements OnInit {
         if (data) {
           this.defaultCurrency = data.currency;
           this.model.selectedCurrency = data.currency;
+          this.selectedCurrencyName = data.currencyName;
           this.currenciesList.push(data);
         }
       }
@@ -525,8 +527,16 @@ export class SectorReportComponent implements OnInit {
   }
 
   selectCurrency() {
+    if (!this.model.selectedCurrency) {
+      this.selectedCurrencyName = 'Default';
+    } else {
+      var selectedCurrency = this.currenciesList.filter(c => c.currency == this.model.selectedCurrency);
+      if (selectedCurrency.length > 0) {
+        this.selectedCurrencyName = selectedCurrency[0].currencyName;
+      }
+    }
     if (this.model.selectedCurrency && this.model.exRateSource) {
-      this.getCurrencyRates(this.model.exRateSource);
+       this.getCurrencyRates(this.model.exRateSource);
     }
   }
 
