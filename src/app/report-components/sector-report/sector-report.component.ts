@@ -558,6 +558,11 @@ export class SectorReportComponent implements OnInit {
     this.manageDataOptions();
   }
 
+  onDataOptionDeSelectAll(items: any) {
+    this.selectedDataOptions = [];
+    this.manageDataOptions();
+  }
+
   getGrandTotalFundingForSector() {
     var totalFunding  = 0;
     if (this.reportDataList && this.reportDataList.sectorProjectsList) {
@@ -628,7 +633,13 @@ export class SectorReportComponent implements OnInit {
           this.showChart = true;
         }, 1000);
       }
-      
+    }
+
+    if (this.selectedDataOptions.length == 0 && this.barChartData.length > 0) {
+      this.barChartData = [];
+      setTimeout(() => {
+        this.showChart = true;
+      }, 1000);
     }
   }
 

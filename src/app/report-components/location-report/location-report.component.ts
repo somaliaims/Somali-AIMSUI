@@ -579,6 +579,13 @@ export class LocationReportComponent implements OnInit {
         }, 1000);
       }
     }
+
+    if (this.selectedDataOptions.length == 0 && this.barChartData.length > 0) {
+      this.barChartData = [];
+      setTimeout(() => {
+        this.showChart = true;
+      }, 1000);
+    }
   }
 
 }

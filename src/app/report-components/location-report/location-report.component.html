@@ -95,7 +95,7 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All data option/s --'" [data]="dataOptions"
+                  <ng-multiselect-dropdown [placeholder]="'-- Chart data option/s --'" [data]="dataOptions"
                     [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
                     (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
                     (onSelectAll)="onDataOptionSelectAll($event)" (onDeSelectAll)="onDataOptionDeSelectAll($event)" name="selectedDataOptions"
@@ -183,9 +183,9 @@
         </div>
 
         <div *ngIf="barChartData.length > 0 && showChart" class="col-md-12 margin-top-50">
-          <div *ngIf="barChartLabels.length > 0" style="display: block;" class="canvas-container mx-auto col-md-10">
+          <div style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [legend]="barChartLegend" [chartType]="model.chartType" [colors]="chartColors"
+              [legend]="barChartLegend" [chartType]="model.chartType"
               (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
           </div>
         </div>

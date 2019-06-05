@@ -95,10 +95,10 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All data option/s --'" [data]="dataOptions"
+                  <ng-multiselect-dropdown [placeholder]="'-- Chart data option/s --'" [data]="dataOptions"
                     [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
                     (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
-                    (onSelectAll)="onDataOptionSelectAll($event)" name="selectedDataOptions"
+                    (onSelectAll)="onDataOptionSelectAll($event)" (onDeSelectAll)="onDataOptionDeSelectAll($event)" name="selectedDataOptions"
                     #selectedDataOptions="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
