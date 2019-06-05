@@ -55,8 +55,15 @@ export class SectorReportComponent implements OnInit {
   ];
 
   dataOptionsCodes: any = {
+    'PROJECTS': 0,
     'FUNDING': 1,
     'DISBURSEMENTS': 2
+  };
+
+  dataOptionLabels: any = {
+    PROJECTS: 'Projects',
+    FUNDING: 'Funding',
+    DISBURSEMENTS: 'Disbursements'
   };
 
   exRateSourceCodes: any = {
@@ -245,10 +252,12 @@ export class SectorReportComponent implements OnInit {
         if (this.reportDataList && this.reportDataList.sectorProjectsList) {
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
           var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: 'Projects' };
+          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
           this.barChartData.push(chartData);
           this.barChartLabels = sectorNames;
-          //this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+          this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+
+          this.manageDataOptions();
         }
         this.blockUI.stop();
       },
@@ -583,27 +592,28 @@ export class SectorReportComponent implements OnInit {
 
   manageDataOptions() {
     if (this.selectedDataOptions.length > 0 && this.reportDataList.sectorProjectsList) {
-      this.barChartData = [];
       this.showChart = false;
 
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING != -1)) {
-        var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
-        var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
-        var chartData = { data: sectorFunding, label: 'Funding' };
-        this.barChartData.push(chartData);
-        this.barChartLabels = sectorNames;
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
+        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
+        if (isDataExists.length == 0) {
+          var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+          var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
+          this.barChartData.push(chartData);
+        }
       } else {
-        this.barChartData = this.barChartData.filter(d => d.label != 'Funding');
+        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
       }
 
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS != -1)) {
-        var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
-        var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
-        var chartData = { data: sectorDisbursements, label: 'Disbursements' };
-        this.barChartData.push(chartData);
-        this.barChartLabels = sectorNames;
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
+        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
+        if (isDataExists.length == 0) {
+          var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+          var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
+          this.barChartData.push(chartData);
+        }
       } else {
-        this.barChartData = this.barChartData.filter(d => d.label != 'Disbursements');
+        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
       }
 
       setTimeout(() => {

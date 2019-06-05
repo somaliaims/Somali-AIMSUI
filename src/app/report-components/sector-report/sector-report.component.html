@@ -103,7 +103,7 @@
                   <ng-multiselect-dropdown [placeholder]="'-- All data option/s --'" [data]="dataOptions"
                     [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
                     (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
-                    (onSelectAll)="onDataSelectAll($event)" name="selectedDataOptions"
+                    (onSelectAll)="onDataOptionSelectAll($event)" name="selectedDataOptions"
                     #selectedDataOptions="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
