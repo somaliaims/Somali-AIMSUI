@@ -20,7 +20,8 @@ export class LocationReportComponent implements OnInit {
   locationsSettings: any = [];
   selectedLocations: any = [];
   selectedOrganizations: any = [];
-  organizationsSettings: any = [];
+  organizationsSettings: any = {};
+  dataOptionSettings: any = {};
   yearsList: any = [];
   locationsList: any = [];
   subLocationsList: any = [];
@@ -28,11 +29,13 @@ export class LocationReportComponent implements OnInit {
   currenciesList: any = [];
   exchangeRatesList: any = [];
   manualExchangeRatesList: any = [];
+  selectedDataOptions: any = [];
   defaultCurrency: string = null;
   nationalCurrency: string = null;
   selectedCurrencyName: string = null;
   errorMessage: string = null;
   oldCurrencyRate: number = 0;
+  showChart: boolean = true;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -50,6 +53,24 @@ export class LocationReportComponent implements OnInit {
     { id: 1, value: 'Open exchange api' },
     { id: 2, value: 'African bank' }
   ];
+
+  dataOptions: any = [
+    { id: 1, type: 'funding', value: 'No. of Projects' },
+    { id: 2, type: 'funding', value: 'Funding' },
+    { id: 3, type: 'disbursements', value: 'Disbursements' }
+  ];
+
+  dataOptionsCodes: any = {
+    'PROJECTS': 1,
+    'FUNDING': 2,
+    'DISBURSEMENTS': 3
+  };
+
+  dataOptionLabels: any = {
+    PROJECTS: 'Projects',
+    FUNDING: 'Funding',
+    DISBURSEMENTS: 'Disbursements'
+  };
 
   reportDataList: any = [];
   dropdownSettings: any = {};
@@ -84,7 +105,7 @@ export class LocationReportComponent implements OnInit {
   ];
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
-    locationIds: [], selectedLocations: [], selectedOrganizations: [],
+    locationIds: [], selectedLocations: [], selectedOrganizations: [], selectedDataOptions: [],
     locationsList: [], organizationsList: [], selectedCurrency: null, exRateSource: null
   };
   //Overlay UI blocker
@@ -131,6 +152,16 @@ export class LocationReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'location',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.dataOptionSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'value',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -209,10 +240,11 @@ export class LocationReportComponent implements OnInit {
         this.reportDataList = data;
         if (this.reportDataList && this.reportDataList.locationProjectsList) {
           var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
-          var locationProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
-          var chartData = { data: locationProjects, label: 'Location projects' };
-          this.barChartData.push(chartData);
+          //var locationProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
+          //var chartData = { data: locationProjects, label: 'Location projects' };
+          //this.barChartData.push(chartData);
           this.barChartLabels = locationNames;
+          this.manageDataOptions();
         }
         this.blockUI.stop();
       },
@@ -377,6 +409,36 @@ export class LocationReportComponent implements OnInit {
     }.bind(this));
   }
 
+  onDataOptionSelect(item: any) {
+    var id = item.id;
+    if (this.selectedDataOptions.indexOf(id) == -1) {
+      this.selectedDataOptions.push(id);
+      this.manageDataOptions();
+    }
+  }
+
+  onDataOptionDeSelect(item: any) {
+    var id = item.id;
+    var index = this.selectedDataOptions.indexOf(id);
+    this.selectedDataOptions.splice(index, 1);
+    this.manageDataOptions();
+  }
+
+  onDataOptionSelectAll(items: any) {
+    items.forEach(function (item) {
+      var id = item.id;
+      if (this.selectedDataOptions.indexOf(id) == -1) {
+        this.selectedDataOptions.push(id);
+      }
+    }.bind(this));
+    this.manageDataOptions();
+  }
+
+  onDataOptionDeSelectAll(items: any) {
+    this.selectedDataOptions = [];
+    this.manageDataOptions();
+  }
+
   getGrandTotalFundingForLocation() {
     var totalFunding  = 0;
     if (this.reportDataList && this.reportDataList.locationProjectsList) {
@@ -471,6 +533,51 @@ export class LocationReportComponent implements OnInit {
 
       this.getGrandTotalFundingForLocation();
       this.getGrandTotalDisbursementForLocation();
+    }
+  }
+
+  manageDataOptions() {
+    if (this.selectedDataOptions.length > 0 && this.reportDataList.locationProjectsList) {
+      this.showChart = false;
+
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
+        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
+        if (isDataExists.length == 0) {
+          var sectorProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
+          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
+          this.barChartData.push(chartData);
+        }
+      } else {
+        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
+      }
+
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
+        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
+        if (isDataExists.length == 0) {
+          var sectorFunding = this.reportDataList.locationProjectsList.map(p => p.totalFunding);
+          var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
+          this.barChartData.push(chartData);
+        }
+      } else {
+        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
+      }
+
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
+        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
+        if (isDataExists.length == 0) {
+          var sectorDisbursements = this.reportDataList.locationProjectsList.map(p => p.totalDisbursements);
+          var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
+          this.barChartData.push(chartData);
+        }
+      } else {
+        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
+      }
+
+      if (this.selectedDataOptions.length > 0) {
+        setTimeout(() => {
+          this.showChart = true;
+        }, 1000);
+      }
     }
   }
 

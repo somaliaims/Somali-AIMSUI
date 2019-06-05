@@ -94,12 +94,20 @@
               </div>
 
               <div class="row margin-top-10">
-                <div class="col-md-12">
-                    <span class="float-right">
-                        <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
-                        <!--<button type="button" class="btn btn-success" (click)="generatePDF()">Get PDF</button>&nbsp;-->
-                        <button type="button" class="btn btn-warning" (click)="printReport()">Print Report</button>
-                      </span>
+                <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- All data option/s --'" [data]="dataOptions"
+                    [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
+                    (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
+                    (onSelectAll)="onDataOptionSelectAll($event)" (onDeSelectAll)="onDataOptionDeSelectAll($event)" name="selectedDataOptions"
+                    #selectedDataOptions="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-6">
+                  <span class="float-right">
+                    <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
+                    <!--<button type="button" class="btn btn-success" (click)="generatePDF()">Get PDF</button>&nbsp;-->
+                    <button type="button" class="btn btn-warning" (click)="printReport()">Print Report</button>
+                  </span>
                 </div>
               </div>
 
@@ -174,12 +182,18 @@
           </div>
         </div>
 
-        <div *ngIf="barChartLabels.length > 0" class="col-md-12 margin-top-50">
-          <div style="display: block;" class="canvas-container mx-auto col-md-10">
+        <div *ngIf="barChartData.length > 0 && showChart" class="col-md-12 margin-top-50">
+          <div *ngIf="barChartLabels.length > 0" style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
               [legend]="barChartLegend" [chartType]="model.chartType" [colors]="chartColors"
               (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
           </div>
+        </div>
+
+        <div class="margin-top-20" *ngIf="barChartData.length == 0">
+          <span class="text-info"><i>
+              <h6>No data available for displaying chart</h6>
+            </i></span>
         </div>
 
       </div>

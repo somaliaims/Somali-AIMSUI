@@ -50,14 +50,15 @@ export class SectorReportComponent implements OnInit {
   ];
 
   dataOptions: any = [
-    { id: 1, type: 'funding', value: 'Funding' },
-    { id: 2, type: 'disbursements', value: 'Disbursements' }
+    { id: 1, type: 'funding', value: 'No. of Projects' },
+    { id: 2, type: 'funding', value: 'Funding' },
+    { id: 3, type: 'disbursements', value: 'Disbursements' }
   ];
 
   dataOptionsCodes: any = {
-    'PROJECTS': 0,
-    'FUNDING': 1,
-    'DISBURSEMENTS': 2
+    'PROJECTS': 1,
+    'FUNDING': 2,
+    'DISBURSEMENTS': 3
   };
 
   dataOptionLabels: any = {
@@ -251,12 +252,7 @@ export class SectorReportComponent implements OnInit {
         this.reportDataList = data;
         if (this.reportDataList && this.reportDataList.sectorProjectsList) {
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
-          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
-          this.barChartData.push(chartData);
           this.barChartLabels = sectorNames;
-          this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-
           this.manageDataOptions();
         }
         this.blockUI.stop();
@@ -594,6 +590,17 @@ export class SectorReportComponent implements OnInit {
     if (this.selectedDataOptions.length > 0 && this.reportDataList.sectorProjectsList) {
       this.showChart = false;
 
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
+        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
+        if (isDataExists.length == 0) {
+          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
+          this.barChartData.push(chartData);
+        }
+      } else {
+        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
+      }
+
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
         var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
         if (isDataExists.length == 0) {
@@ -616,9 +623,12 @@ export class SectorReportComponent implements OnInit {
         this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
       }
 
-      setTimeout(() => {
-        this.showChart = true;
-      }, 1000);
+      if (this.selectedDataOptions.length > 0) {
+        setTimeout(() => {
+          this.showChart = true;
+        }, 1000);
+      }
+      
     }
   }
 
