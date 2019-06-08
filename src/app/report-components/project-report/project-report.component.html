@@ -1,13 +1,10 @@
-<p>
-  project-report works!
-</p>
 <div class="container-fluid view-area">
   <block-ui>
     <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Location projects report</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Project profile report</a>
           </li>
         </ul>
       </div>
@@ -16,18 +13,18 @@
     <div *ngIf="reportView == 'search'" class="row">
 
       <div class="col-sm-12 col-md-9 col-lg-7 mx-auto margin-top-10">
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <h5 class="card-title text-center">Select project to view report</h5>
   
-            <form (ngSubmit)="projectForm.form.valid && viewProjectReport()" class="example-form" #projectForm='ngForm'>
+            <form (ngSubmit)="projectForm.form.valid && viewProjectProfileReport()" class="example-form" #projectForm='ngForm'>
               <div class="input-group">
                 <input [readonly]="model.selectedProjectId != 0" class="form-control" placeholder="Enter project title" type="text" name="projectTitle"
                   [(ngModel)]="model.projectTitle" #projectTitle="ngModel" onkeypress="return event.keyCode != 13;"
                   (input)="filterProjects()" minlength="2" maxlength="100" required>
                 <span class="input-group-btn">
                   &nbsp;
-                  <button [class.disable]="selectedProjectId == 0"  title="Clear" class="btn btn-danger btn-lg" (click)="clear()" type="button">
+                  <button [class.disable]="model.selectedProjectId == 0"  title="Clear" class="btn btn-danger btn-lg" (click)="reset()" type="button">
                     <i class="fa fa-close"></i>
                   </button>
                 </span>
@@ -43,7 +40,7 @@
                       <tr *ngFor="let project of filteredProjects">
                         <td>{{project.title}}</td>
                         <td>
-                          <button [class.disable]="selectedProjectId == project.id" type="button" id="project-{{project.id}}" (click)="selectProject($event)" class="btn btn-success"><i id="iproject-{{project.id}}" class="fa fa-check"></i></button>
+                          <button title="Select project" [class.disable]="model.selectedProjectId == project.id" type="button" id="project-{{project.id}}" (click)="selectProject($event)" class="btn btn-success"><i id="iproject-{{project.id}}" class="fa fa-check"></i></button>
                         </td>
                       </tr>
                     </table>
@@ -61,9 +58,132 @@
 
     </div>
 
-    <div *ngIf="reportView == 'report'" class="row">
+    <div *ngIf="reportView == 'report'" class="row margin-top-10">
+
+      <table class="table table-stripped">
+        <tr>
+          <td><b>Title: </b></td>
+          <td colspan="3">{{projectProfile.title}}</td>
+        </tr>
+        <tr>
+          <td><b>Start date: </b></td>
+          <td>{{projectProfile.startDate}}</td>
+          <td><b>End date: </b></td>
+          <td>{{projectProfile.endDate}}</td>
+        </tr>
+        <tr>
+          <td><b>Description: </b></td>
+          <td colspan="3">
+            {{projectProfile.description}}
+          </td>
+        </tr>
+      </table>
+
+      <div class="col-md-12 margin-top-10">
+        <h6 class="text-info">Project locations</h6>
+        <table *ngIf="projectProfile.locations.length > 0" class="table table-stripped">
+          <tr>
+            <th>Location</th>
+          </tr>
+          <tr *ngFor="let location of projectProfile.locations">
+            <td>{{location.location}}</td>
+          </tr>
+        </table>
+        <span *ngIf="projectProfile.locations.length == 0" class="text-info"><i>No locations found</i></span>
+      </div>
+
+      <div class="col-md-12 margin-top-10">
+        <h6 class="text-info"><b>Project sectors</b></h6>
+        <table *ngIf="projectProfile.sectors.length > 0" class="table table-stripped">
+          <tr>
+            <th>Sector</th>
+            <th>Funds percentage</th>
+          </tr>
+          <tr *ngFor="let sector of projectProfile.sectors">
+            <td>{{sector.sector}}</td>
+            <td>{{sector.fundsPercentage}}</td>
+          </tr>
+        </table>
+        <span class="text-info" *ngIf="projectProfile.sectors.length == 0">
+          <i>No sectors found</i>
+        </span>
+      </div>
+
+
+      <div class="col-md-12 margin-top-10">
+        <h6 class="text-info"><b>Project funders</b></h6>
+        <table *ngIf="projectProfile.funders.length > 0" class="table table-stripped">
+          <tr>
+            <th>Funder</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Exchange rate</th>
+          </tr>
+          <tr *ngFor="let funder of projectProfile.funders">
+            <td>{{funder.funder}}</td>
+            <td>{{funder.amount | number:0}}</td>
+            <td>{{funder.currency}}</td>
+            <td>{{funder.exchangeRate}}</td>
+          </tr>
+        </table>
+        <span class="text-info" *ngIf="projectProfile.funders.length == 0">
+          <i>No funders found</i>
+        </span>
+      </div>
+
+      <div class="col-md-12 margin-top-10">
+        <h6 class="text-info"><b>Project implementers</b></h6>
+        <table *ngIf="projectProfile.implementers.length > 0" class="table table-stripped">
+          <tr>
+            <th>Implementor</th>
+          </tr>
+          <tr *ngFor="let implementer of projectProfile.implementers">
+            <td>{{implementer.implementer}}</td>
+          </tr>
+        </table>
+        <span class="text-info" *ngIf="projectProfile.implementers.length == 0">
+          <i>No implementers found</i>
+        </span>
+      </div>
+
+
+      <div class="col-md-12 margin-top-10">
+        <h6 class="text-info"><b>Project documents</b></h6>
+        <table *ngIf="projectProfile.documents.length > 0" class="table table-stripped">
+          <tr>
+            <th>Document title</th>
+            <th>Url</th>
+          </tr>
+          <tr *ngFor="let document of projectProfile.documents">
+            <td>{{document.documentTitle}}</td>
+            <td>{{document.documentUrl}}</td>
+          </tr>
+        </table>
+        <span class="text-info" *ngIf="projectProfile.documents.length == 0">
+          <i>No documents found</i>
+        </span>
+      </div>
+
+      <div class="col-md-12 margin-top-10">
+        <h6 class="text-info"><b>Project custom fields</b></h6>
+        <table *ngIf="projectProfile.customFields.length > 0" class="table table-stripped">
+          <tr>
+            <th>Field name</th>
+            <th>Value/s</th>
+          </tr>
+          <tr *ngFor="let field of projectProfile.customFields">
+            <td>{{field.fieldTitle}}</td>
+            <td>{{displayFieldValues(field.values)}}</td>
+          </tr>
+        </table>
+        <span class="text-info" *ngIf="projectProfile.customFields.length == 0">
+          <i>No custom fields found</i>
+        </span>
+      </div>
 
     </div>
 
   </block-ui>
 </div>
+
+<error-modal message={{errorMessage}}></error-modal>
