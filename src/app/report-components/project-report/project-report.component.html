@@ -1,0 +1,69 @@
+<p>
+  project-report works!
+</p>
+<div class="container-fluid view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Location projects report</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div *ngIf="reportView == 'search'" class="row">
+
+      <div class="col-sm-12 col-md-9 col-lg-7 mx-auto margin-top-10">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Select project to view report</h5>
+  
+            <form (ngSubmit)="projectForm.form.valid && viewProjectReport()" class="example-form" #projectForm='ngForm'>
+              <div class="input-group">
+                <input [readonly]="model.selectedProjectId != 0" class="form-control" placeholder="Enter project title" type="text" name="projectTitle"
+                  [(ngModel)]="model.projectTitle" #projectTitle="ngModel" onkeypress="return event.keyCode != 13;"
+                  (input)="filterProjects()" minlength="2" maxlength="100" required>
+                <span class="input-group-btn">
+                  &nbsp;
+                  <button [class.disable]="selectedProjectId == 0"  title="Clear" class="btn btn-danger btn-lg" (click)="clear()" type="button">
+                    <i class="fa fa-close"></i>
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="projectForm.submitted" [hidden]="projectTitle.valid" class="alert alert-danger form-group">
+                A project must be selected to view report
+              </div>
+              <div class="form-group margin-top-10">
+                <button [class.disable]="isProcessing" type="submit" class="btn btn-info btn-lg btn-block text-uppercase">{{btnText}}</button>
+              </div>
+              <div class="iati-box">
+                  <table *ngIf="filteredProjects.length > 0" class="table table-bordered">
+                      <tr *ngFor="let project of filteredProjects">
+                        <td>{{project.title}}</td>
+                        <td>
+                          <button [class.disable]="selectedProjectId == project.id" type="button" id="project-{{project.id}}" (click)="selectProject($event)" class="btn btn-success"><i id="iproject-{{project.id}}" class="fa fa-check"></i></button>
+                        </td>
+                      </tr>
+                    </table>
+                    <span class="text-info" *ngIf="filteredProjects.length == 0 && !isLoading">
+                      <i>No projects found</i>
+                    </span>
+                    <span *ngIf="isLoading" class="text-center">
+                      <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+                    </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div *ngIf="reportView == 'report'" class="row">
+
+    </div>
+
+  </block-ui>
+</div>

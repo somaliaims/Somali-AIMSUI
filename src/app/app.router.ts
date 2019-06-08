@@ -55,6 +55,7 @@ import { EmailMessagesComponent } from './email-messages/email-messages.componen
 import { ManageEmailMessageComponent } from './manage-email-message/manage-email-message.component';
 import { DeleteSectortypeComponent } from './delete-sectortype/delete-sectortype.component';
 import { LocationReportComponent } from './report-components/location-report/location-report.component';
+import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -100,6 +101,7 @@ export const routes: Routes = [
   { path: 'project-document/:{id}', component: ProjectDocumentComponent },
   { path: 'project-entry', component: ProjectEntryComponent },
   { path: 'sectors-report', component: SectorReportComponent },
+  { path: 'projects-report', component: ProjectReportComponent },
   { path: 'locations-report', component: LocationReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
