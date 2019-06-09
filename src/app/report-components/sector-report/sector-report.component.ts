@@ -41,6 +41,7 @@ export class SectorReportComponent implements OnInit {
   selectedCurrencyName: string = null;
   errorMessage: string = null;
   showChart: boolean = true;
+  excelFile: string = null;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -253,6 +254,10 @@ export class SectorReportComponent implements OnInit {
         if (this.reportDataList && this.reportDataList.sectorProjectsList) {
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
           this.barChartLabels = sectorNames;
+          if (this.reportDataList.reportSettings) {
+            this.excelFile = this.reportDataList.reportSettings.excelReportName;
+            this.setExcelFile();
+          }
           this.manageDataOptions();
         }
         this.blockUI.stop();
@@ -709,6 +714,12 @@ export class SectorReportComponent implements OnInit {
 
       this.getGrandTotalFundingForSector();
       this.getGrandTotalDisbursementForSector();
+    }
+  }
+
+  setExcelFile() {
+    if (this.excelFile) {
+      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
     }
   }
 
