@@ -27,6 +27,7 @@ export class SectorReportComponent implements OnInit {
   dataOptionSettings: any = {};
   locationsSettings: any = {};
   oldCurrencyRate: number = 0;
+  oldCurrency: string = null;
   currencyRate: number = 0;
   yearsList: any = [];
   sectorsList: any = [];
@@ -35,8 +36,9 @@ export class SectorReportComponent implements OnInit {
   currenciesList: any = [];
   locationsList: any = [];
   exchangeRatesList: any = [];
-  manualExchangeRatesList: any = [];
+  manualExRate: any = 0;
   defaultCurrency: string = null;
+  defaultCurrencyRate: number = 0;
   nationalCurrency: string = null;
   selectedCurrencyName: string = null;
   errorMessage: string = null;
@@ -192,6 +194,8 @@ export class SectorReportComponent implements OnInit {
               var exRate = this.exchangeRatesList.filter(c => c.currency == this.defaultCurrency);
               if (exRate.length > 0) {
                 this.oldCurrencyRate = exRate[0].rate;
+                this.oldCurrency = exRate[0].currency;
+                this.defaultCurrencyRate = this.oldCurrencyRate;
               } 
           }
         }
@@ -205,7 +209,7 @@ export class SectorReportComponent implements OnInit {
       data => {
         if (data) {
           if (data.exchangeRate) {
-            this.manualExchangeRatesList = data.exchangeRate;
+            this.manualExRate = data.exchangeRate;
           }
         }
       });
@@ -674,22 +678,36 @@ export class SectorReportComponent implements OnInit {
       var calculatedRate = 0;
       exRate = this.exchangeRatesList.filter(c => c.currency == this.model.selectedCurrency);
       if (exRate.length > 0) {
-        calculatedRate = (exRate[0].rate / this.oldCurrencyRate);
-        this.oldCurrencyRate = exRate[0].rate;
+        if (this.oldCurrencyRate == 0) {
+          calculatedRate = exRate[0].rate;
+        } else {
+          calculatedRate = (exRate[0].rate / this.oldCurrencyRate);
+          this.oldCurrencyRate = exRate[0].rate;
+        }
       }
     } else if (eSource == this.exRateSourceCodes.AFRICAN_BANK) {
-      if (this.manualExchangeRatesList.length == 0) {
+      if (this.manualExRate == 0) {
         this.errorMessage = Messages.EX_RATE_NOT_FOUND;
         this.errorModal.openModal();
         return false;
       }
 
-      var manualRate = this.manualExchangeRatesList.filter(c => c.currency == this.model.currency);
-      if (manualRate.length > 0) {
-        exRate = manualRate[0].rate;
-        calculatedRate = (exRate / this.oldCurrencyRate);
-        this.oldCurrencyRate = exRate;
-      } 
+      var manualRate = this.manualExRate;
+      if (this.model.selectedCurrency == this.defaultCurrency) {
+        manualRate = this.defaultCurrencyRate;
+      }
+
+      if (this.oldCurrency == this.defaultCurrency && this.oldCurrency == this.model.selectedCurrency) {
+        calculatedRate = this.oldCurrencyRate;
+      } else {
+        if (this.oldCurrencyRate == 0) {
+          calculatedRate = manualRate;
+        } else {
+          calculatedRate = (manualRate / this.oldCurrencyRate);
+          this.oldCurrencyRate = manualRate;
+        }
+      }
+      this.oldCurrency = this.model.selectedCurrency;
     }
 
     if (calculatedRate > 0 && calculatedRate != 1) {

@@ -59,127 +59,140 @@
     </div>
 
     <div *ngIf="reportView == 'report'" class="row margin-top-10">
-
-      <table class="table table-stripped">
-        <tr>
-          <td><b>Title: </b></td>
-          <td colspan="3">{{projectProfile.title}}</td>
-        </tr>
-        <tr>
-          <td><b>Start date: </b></td>
-          <td>{{projectProfile.startDate}}</td>
-          <td><b>End date: </b></td>
-          <td>{{projectProfile.endDate}}</td>
-        </tr>
-        <tr>
-          <td><b>Description: </b></td>
-          <td colspan="3">
-            {{projectProfile.description}}
-          </td>
-        </tr>
-      </table>
-
-      <div class="col-md-12 margin-top-10">
-        <h6 class="text-info">Project locations</h6>
-        <table *ngIf="projectProfile.locations.length > 0" class="table table-stripped">
-          <tr>
-            <th>Location</th>
-          </tr>
-          <tr *ngFor="let location of projectProfile.locations">
-            <td>{{location.location}}</td>
-          </tr>
-        </table>
-        <span *ngIf="projectProfile.locations.length == 0" class="text-info"><i>No locations found</i></span>
-      </div>
-
-      <div class="col-md-12 margin-top-10">
-        <h6 class="text-info"><b>Project sectors</b></h6>
-        <table *ngIf="projectProfile.sectors.length > 0" class="table table-stripped">
-          <tr>
-            <th>Sector</th>
-            <th>Funds percentage</th>
-          </tr>
-          <tr *ngFor="let sector of projectProfile.sectors">
-            <td>{{sector.sector}}</td>
-            <td>{{sector.fundsPercentage}}</td>
-          </tr>
-        </table>
-        <span class="text-info" *ngIf="projectProfile.sectors.length == 0">
-          <i>No sectors found</i>
+      <div class="col-md-12">
+        <span class="float-right">
+          <!--<button type="submit" class="btn btn-info">Get Report</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;
+          <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get Excel</a>&nbsp;-->
+          <button *ngIf="projectProfile && projectProfile.title" type="button" class="btn btn-warning" (click)="printReport()">Print Report</button>
         </span>
       </div>
-
-
-      <div class="col-md-12 margin-top-10">
-        <h6 class="text-info"><b>Project funders</b></h6>
-        <table *ngIf="projectProfile.funders.length > 0" class="table table-stripped">
+      <div class="col-md-12" id="rpt-project-report">
+        <h5 class="text-center">Project profile report</h5>
+        <table class="table table-stripped">
           <tr>
-            <th>Funder</th>
-            <th>Amount</th>
-            <th>Currency</th>
-            <th>Exchange rate</th>
+            <td><b>Title: </b></td>
+            <td colspan="3">{{projectProfile.title}}</td>
           </tr>
-          <tr *ngFor="let funder of projectProfile.funders">
-            <td>{{funder.funder}}</td>
-            <td>{{funder.amount | number:0}}</td>
-            <td>{{funder.currency}}</td>
-            <td>{{funder.exchangeRate}}</td>
+          <tr>
+            <td><b>Start date: </b></td>
+            <td>{{projectProfile.startDate}}</td>
+            <td><b>End date: </b></td>
+            <td>{{projectProfile.endDate}}</td>
+          </tr>
+          <tr>
+            <td><b>Description: </b></td>
+            <td colspan="3">
+              {{projectProfile.description}}
+            </td>
           </tr>
         </table>
-        <span class="text-info" *ngIf="projectProfile.funders.length == 0">
-          <i>No funders found</i>
-        </span>
+  
+        <div class="col-md-12 margin-top-10">
+          <h6 class="text-info">Project locations</h6>
+          <table *ngIf="projectProfile.locations.length > 0" class="table table-stripped">
+            <tr>
+              <th>Location</th>
+              <th>Funds percentage</th>
+            </tr>
+            <tr *ngFor="let location of projectProfile.locations">
+              <td>{{location.location}}</td>
+              <td>{{location.fundsPercentage}}</td>
+            </tr>
+          </table>
+          <span *ngIf="projectProfile.locations.length == 0" class="text-info"><i>No locations found</i></span>
+        </div>
+  
+        <div class="col-md-12 margin-top-10">
+          <h6 class="text-info"><b>Project sectors</b></h6>
+          <table *ngIf="projectProfile.sectors.length > 0" class="table table-stripped">
+            <tr>
+              <th>Sector</th>
+              <th>Funds percentage</th>
+            </tr>
+            <tr *ngFor="let sector of projectProfile.sectors">
+              <td>{{sector.sector}}</td>
+              <td>{{sector.fundsPercentage}}</td>
+            </tr>
+          </table>
+          <span class="text-info" *ngIf="projectProfile.sectors.length == 0">
+            <i>No sectors found</i>
+          </span>
+        </div>
+  
+  
+        <div class="col-md-12 margin-top-10">
+          <h6 class="text-info"><b>Project funders</b></h6>
+          <table *ngIf="projectProfile.funders.length > 0" class="table table-stripped">
+            <tr>
+              <th>Funder</th>
+              <th>Amount</th>
+              <th>Currency</th>
+              <th>Exchange rate</th>
+            </tr>
+            <tr *ngFor="let funder of projectProfile.funders">
+              <td>{{funder.funder}}</td>
+              <td>{{funder.amount | number:0}}</td>
+              <td>{{funder.currency}}</td>
+              <td>{{funder.exchangeRate}}</td>
+            </tr>
+          </table>
+          <span class="text-info" *ngIf="projectProfile.funders.length == 0">
+            <i>No funders found</i>
+          </span>
+        </div>
+  
+        <div class="col-md-12 margin-top-10">
+          <h6 class="text-info"><b>Project implementers</b></h6>
+          <table *ngIf="projectProfile.implementers.length > 0" class="table table-stripped">
+            <tr>
+              <th>Implementor</th>
+            </tr>
+            <tr *ngFor="let implementer of projectProfile.implementers">
+              <td>{{implementer.implementer}}</td>
+            </tr>
+          </table>
+          <span class="text-info" *ngIf="projectProfile.implementers.length == 0">
+            <i>No implementers found</i>
+          </span>
+        </div>
+  
+  
+        <div class="col-md-12 margin-top-10">
+          <h6 class="text-info"><b>Project documents</b></h6>
+          <table *ngIf="projectProfile.documents.length > 0" class="table table-stripped">
+            <tr>
+              <th>Document title</th>
+              <th>Url</th>
+            </tr>
+            <tr *ngFor="let document of projectProfile.documents">
+              <td>{{document.documentTitle}}</td>
+              <td>{{document.documentUrl}}</td>
+            </tr>
+          </table>
+          <span class="text-info" *ngIf="projectProfile.documents.length == 0">
+            <i>No documents found</i>
+          </span>
+        </div>
+  
+        <div class="col-md-12 margin-top-10">
+          <h6 class="text-info"><b>Project custom fields</b></h6>
+          <table *ngIf="projectProfile.customFields.length > 0" class="table table-stripped">
+            <tr>
+              <th>Field name</th>
+              <th>Value/s</th>
+            </tr>
+            <tr *ngFor="let field of projectProfile.customFields">
+              <td>{{field.fieldTitle}}</td>
+              <td>{{displayFieldValues(field.values)}}</td>
+            </tr>
+          </table>
+          <span class="text-info" *ngIf="projectProfile.customFields.length == 0">
+            <i>No custom fields found</i>
+          </span>
+        </div>
       </div>
-
-      <div class="col-md-12 margin-top-10">
-        <h6 class="text-info"><b>Project implementers</b></h6>
-        <table *ngIf="projectProfile.implementers.length > 0" class="table table-stripped">
-          <tr>
-            <th>Implementor</th>
-          </tr>
-          <tr *ngFor="let implementer of projectProfile.implementers">
-            <td>{{implementer.implementer}}</td>
-          </tr>
-        </table>
-        <span class="text-info" *ngIf="projectProfile.implementers.length == 0">
-          <i>No implementers found</i>
-        </span>
-      </div>
-
-
-      <div class="col-md-12 margin-top-10">
-        <h6 class="text-info"><b>Project documents</b></h6>
-        <table *ngIf="projectProfile.documents.length > 0" class="table table-stripped">
-          <tr>
-            <th>Document title</th>
-            <th>Url</th>
-          </tr>
-          <tr *ngFor="let document of projectProfile.documents">
-            <td>{{document.documentTitle}}</td>
-            <td>{{document.documentUrl}}</td>
-          </tr>
-        </table>
-        <span class="text-info" *ngIf="projectProfile.documents.length == 0">
-          <i>No documents found</i>
-        </span>
-      </div>
-
-      <div class="col-md-12 margin-top-10">
-        <h6 class="text-info"><b>Project custom fields</b></h6>
-        <table *ngIf="projectProfile.customFields.length > 0" class="table table-stripped">
-          <tr>
-            <th>Field name</th>
-            <th>Value/s</th>
-          </tr>
-          <tr *ngFor="let field of projectProfile.customFields">
-            <td>{{field.fieldTitle}}</td>
-            <td>{{displayFieldValues(field.values)}}</td>
-          </tr>
-        </table>
-        <span class="text-info" *ngIf="projectProfile.customFields.length == 0">
-          <i>No custom fields found</i>
-        </span>
-      </div>
+      
 
     </div>
 

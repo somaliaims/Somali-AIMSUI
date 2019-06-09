@@ -37,6 +37,9 @@ export class LocationReportComponent implements OnInit {
   oldCurrencyRate: number = 0;
   showChart: boolean = true;
   excelFile: string = null;
+  manualExRate: any = 0;
+  oldCurrency: string = null;
+  defaultCurrencyRate: number = 0;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -177,10 +180,13 @@ export class LocationReportComponent implements OnInit {
           this.exchangeRatesList = data.rates;
 
           if (this.defaultCurrency && this.exchangeRatesList.length > 0) {
-              var exRate = this.exchangeRatesList.filter(c => c.currency == this.defaultCurrency);
-              if (exRate.length > 0) {
-                this.oldCurrencyRate = exRate[0].rate;
-              } 
+            var exRate = this.exchangeRatesList.filter(c => c.currency == this.defaultCurrency);
+            if (exRate.length > 0) {
+              this.oldCurrencyRate = exRate[0].rate;
+              this.defaultCurrency = exRate[0].currency;
+              this.oldCurrency = this.defaultCurrency;
+              this.oldCurrencyRate = this.oldCurrencyRate;
+            }
           }
         }
       }
@@ -442,7 +448,7 @@ export class LocationReportComponent implements OnInit {
   }
 
   getGrandTotalFundingForLocation() {
-    var totalFunding  = 0;
+    var totalFunding = 0;
     if (this.reportDataList && this.reportDataList.locationProjectsList) {
       this.reportDataList.locationProjectsList.forEach(function (p) {
         totalFunding += p.totalFunding;
@@ -452,7 +458,7 @@ export class LocationReportComponent implements OnInit {
   }
 
   getGrandTotalDisbursementForLocation() {
-    var totalDisursement  = 0;
+    var totalDisursement = 0;
     if (this.reportDataList && this.reportDataList.locationProjectsList) {
       this.reportDataList.locationProjectsList.forEach(function (p) {
         totalDisursement += p.totalDisbursements;
@@ -479,7 +485,7 @@ export class LocationReportComponent implements OnInit {
       }
     }
     if (this.model.selectedCurrency && this.model.exRateSource) {
-       this.getCurrencyRates(this.model.exRateSource);
+      this.getCurrencyRates(this.model.exRateSource);
     }
   }
 
@@ -495,22 +501,36 @@ export class LocationReportComponent implements OnInit {
       var calculatedRate = 0;
       exRate = this.exchangeRatesList.filter(c => c.currency == this.model.selectedCurrency);
       if (exRate.length > 0) {
-        calculatedRate = (exRate[0].rate / this.oldCurrencyRate);
-        this.oldCurrencyRate = exRate[0].rate;
+        if (this.oldCurrencyRate == 0) {
+          calculatedRate = exRate[0].rate;
+        } else {
+          calculatedRate = (exRate[0].rate / this.oldCurrencyRate);
+          this.oldCurrencyRate = exRate[0].rate;
+        }
       }
     } else if (eSource == this.exRateSourceCodes.AFRICAN_BANK) {
-      if (this.manualExchangeRatesList.length == 0) {
+      if (this.manualExRate == 0) {
         this.errorMessage = Messages.EX_RATE_NOT_FOUND;
         this.errorModal.openModal();
         return false;
       }
 
-      var manualRate = this.manualExchangeRatesList.filter(c => c.currency == this.model.currency);
-      if (manualRate.length > 0) {
-        exRate = manualRate[0].rate;
-        calculatedRate = (exRate / this.oldCurrencyRate);
-        this.oldCurrencyRate = exRate;
-      } 
+      var manualRate = this.manualExRate;
+      if (this.model.selectedCurrency == this.defaultCurrency) {
+        manualRate = this.defaultCurrencyRate;
+      }
+
+      if (this.oldCurrency == this.defaultCurrency && this.oldCurrency == this.model.selectedCurrency) {
+        calculatedRate = this.oldCurrencyRate;
+      } else {
+        if (this.oldCurrencyRate == 0) {
+          calculatedRate = manualRate;
+        } else {
+          calculatedRate = (manualRate / this.oldCurrencyRate);
+          this.oldCurrencyRate = manualRate;
+        }
+      }
+      this.oldCurrency = this.model.selectedCurrency;
     }
 
     if (calculatedRate > 0 && calculatedRate != 1) {

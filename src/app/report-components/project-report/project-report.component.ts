@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
+import { StoreService } from 'src/app/services/store-service';
 
 @Component({
   selector: 'app-project-report',
@@ -13,7 +14,7 @@ export class ProjectReportComponent implements OnInit {
   filteredProjects: any = [];
   reportView: string = 'search';
   btnText: string = 'View report';
-  isProcessing: boolean = true;
+  isLoading: boolean = true;
   projectProfile: any = {
     locations: [],
     sectors: [],
@@ -25,7 +26,8 @@ export class ProjectReportComponent implements OnInit {
   model: any = {criteria: null, selectedProjectId: 0, projectTitle: null };
   @BlockUI() blockUI: NgBlockUI;
   
-  constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent) { }
+  constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent,
+    private storeService: StoreService) { }
 
   ngOnInit() {
     this.getProjects();
@@ -38,7 +40,7 @@ export class ProjectReportComponent implements OnInit {
           this.projectsList = data;
           this.filteredProjects = data;
         }
-        this.isProcessing = false;
+        this.isLoading = false;
       }
     )
   }
@@ -67,7 +69,7 @@ export class ProjectReportComponent implements OnInit {
   viewProjectProfileReport() {
     if (this.model.selectedProjectId) {
       this.blockUI.start('Loading report');
-      this.reportView = 'report';
+      
       this.projectService.getProjectProfileReport(this.model.selectedProjectId).subscribe(
         data => {
           if (data) {
@@ -75,6 +77,7 @@ export class ProjectReportComponent implements OnInit {
               this.projectProfile = data.projectProfile;
             }
           }
+          this.reportView = 'report';
           this.blockUI.stop();
         }
       );
@@ -84,6 +87,14 @@ export class ProjectReportComponent implements OnInit {
   reset() {
     this.model.selectedProjectId = 0;
     this.model.projectTitle = null;
+  }
+
+  displayFieldValues(json: any) {
+    return this.storeService.parseAndDisplayJsonAsString(json);
+  }
+
+  printReport() {
+    this.storeService.printSimpleReport('rpt-project-report', 'Project profile report');
   }
 
 }
