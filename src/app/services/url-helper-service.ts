@@ -11,6 +11,10 @@ export class UrlHelperService {
         this.BASE_URL = urlsList.urls.baseUrl; 
     }
 
+    getExcelFilesUrl() {
+        return (urlsList.urls.excelFilesUrl);
+    }
+
     userTokenUrl() {
         return (this.BASE_URL + urlsList.urls.getToken);
     }

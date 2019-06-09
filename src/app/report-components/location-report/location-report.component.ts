@@ -36,6 +36,7 @@ export class LocationReportComponent implements OnInit {
   errorMessage: string = null;
   oldCurrencyRate: number = 0;
   showChart: boolean = true;
+  excelFile: string = null;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -234,16 +235,17 @@ export class LocationReportComponent implements OnInit {
     };
 
     this.resetSearchResults();
-    this.blockUI.start('Searching projects...');
+    this.blockUI.start('Preparing report...');
     this.reportService.getLocationWiseProjectsReport(searchModel).subscribe(
       data => {
         this.reportDataList = data;
         if (this.reportDataList && this.reportDataList.locationProjectsList) {
           var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
-          //var locationProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
-          //var chartData = { data: locationProjects, label: 'Location projects' };
-          //this.barChartData.push(chartData);
           this.barChartLabels = locationNames;
+          if (this.reportDataList.reportSettings) {
+            this.excelFile = this.reportDataList.reportSettings.excelReportName;
+            this.setExcelFile();
+          }
           this.manageDataOptions();
         }
         this.blockUI.stop();
@@ -585,6 +587,12 @@ export class LocationReportComponent implements OnInit {
       setTimeout(() => {
         this.showChart = true;
       }, 1000);
+    }
+  }
+
+  setExcelFile() {
+    if (this.excelFile) {
+      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
     }
   }
 

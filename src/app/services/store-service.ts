@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RegistrationModel } from '../models/registration';
 import { RequestModel } from '../models/request-model';
 import { Settings } from '../config/settings';
+import * as urlsList from "../config/urls";
 
 @Injectable({
   providedIn: 'root'
@@ -103,7 +104,6 @@ export class StoreService {
   }
 
   getCalendarLowerLimit() {
-    
   }
 
   storeExchangeRates(rates) {
@@ -170,6 +170,10 @@ export class StoreService {
   getCurrentDateSQLFormat() {
     var dated = new Date();
     return (dated.getFullYear() + '-' + (dated.getMonth() + 1) + '-' + dated.getDate());
+  }
+
+  getExcelFilesUrl() {
+    return (urlsList.urls.excelFilesUrl);
   }
   
 }
