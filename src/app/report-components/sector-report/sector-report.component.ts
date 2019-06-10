@@ -53,7 +53,7 @@ export class SectorReportComponent implements OnInit {
   ];
 
   dataOptions: any = [
-    { id: 1, type: 'funding', value: 'No. of Projects' },
+    { id: 1, type: 'funding', value: 'Number of Projects' },
     { id: 2, type: 'funding', value: 'Funding' },
     { id: 3, type: 'disbursements', value: 'Disbursements' }
   ];

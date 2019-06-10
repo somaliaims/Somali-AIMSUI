@@ -15,6 +15,7 @@ export class ProjectReportComponent implements OnInit {
   reportView: string = 'search';
   btnText: string = 'View report';
   isLoading: boolean = true;
+  errorMessage: string = null;
   projectProfile: any = {
     locations: [],
     sectors: [],
