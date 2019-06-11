@@ -76,8 +76,8 @@
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <select class="form-control" (change)="selectCurrency()" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
-                    name="selectedCurrency" #selectedCurrency="ngModel">
+                  <select class="form-control" (change)="selectCurrency()" id="selectedCurrency"
+                    [(ngModel)]="model.selectedCurrency" name="selectedCurrency" #selectedCurrency="ngModel">
                     <option value="null">-- Currency --</option>
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
                       {{currency.currencyName}}
@@ -85,8 +85,8 @@
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <select class="form-control" id="esource" (change)="selectExRateSource()" [(ngModel)]="model.exRateSource"
-                    name="esource" #esource="ngModel">
+                  <select class="form-control" id="esource" (change)="selectExRateSource()"
+                    [(ngModel)]="model.exRateSource" name="esource" #esource="ngModel">
                     <option value="null">--Ex rate source--</option>
                     <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
                   </select>
@@ -95,20 +95,15 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- Chart data option/s --'" [data]="dataOptions"
-                    [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
-                    (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
-                    (onSelectAll)="onDataOptionSelectAll($event)" (onDeSelectAll)="onDataOptionDeSelectAll($event)" name="selectedDataOptions"
-                    #selectedDataOptions="ngModel">
-                  </ng-multiselect-dropdown>
+
                 </div>
                 <div class="col-md-6">
-                    <span class="float-right">
-                        <button type="submit" class="btn btn-info">Get report</button>&nbsp;
-                        <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
-                        <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get excel</a>&nbsp;
-                        <button type="button" class="btn btn-warning" (click)="printReport()">Print report</button>
-                      </span>
+                  <span class="float-right">
+                    <button type="submit" class="btn btn-info">Get report</button>&nbsp;
+                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get excel</a>&nbsp;
+                    <button type="button" class="btn btn-warning" (click)="printReport()">Print report</button>
+                  </span>
                 </div>
               </div>
 
@@ -119,9 +114,23 @@
     </div>
 
     <div class="row margin-top-10">
-      <div id="rpt-sector-project" class="col-md-12">
+      <div *ngIf="reportDataList && reportDataList.reportSettings" id="rpt-sector-project" class="col-md-12">
         <div class="row">
-          <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
+          <div class="col-md-12">
+            <div class="float-right form-inline">
+              <label><b><i>Data display options for chart: </i></b></label>
+              <ng-multiselect-dropdown [placeholder]="'-- Chart data option/s --'" [data]="dataOptions"
+                [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
+                (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
+                (onSelectAll)="onDataOptionSelectAll($event)" (onDeSelectAll)="onDataOptionDeSelectAll($event)"
+                name="selectedDataOptions" #selectedDataOptions="ngModel">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 text-center">
             <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
           </div>
 
@@ -185,16 +194,19 @@
 
         </div>
 
-        <div *ngIf="barChartData.length > 0 && showChart"  class="col-md-12 margin-top-50">
-          <div style="display: block;" class="canvas-container mx-auto col-md-10">
-            <canvas id="chart" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [legend]="barChartLegend" [chartType]="model.chartType"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        <div *ngIf="chartData.length > 0 && showChart" class="col-md-12 margin-top-50">
+          <div *ngIf="model.chartType == chartTypes.BAR || model.chartType == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="barChartLabels" [options]="barChartOptions"
+              [legend]="barChartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
           </div>
-        </div>
 
-        <div class="margin-top-20" *ngIf="barChartData.length == 0">
-          <span class="text-info"><i><h6>No data available for displaying chart</h6></i></span>
+          <div *ngIf="model.chartType == chartTypes.DOUGHNUT || model.chartType == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [data]="chartData" [labels]="barChartLabels" [options]="pieChartOptions"
+              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
         </div>
 
       </div>

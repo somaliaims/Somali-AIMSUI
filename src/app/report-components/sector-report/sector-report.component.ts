@@ -12,6 +12,7 @@ import { CurrencyService } from 'src/app/services/currency.service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 
+
 @Component({
   selector: 'sector-report',
   templateUrl: './sector-report.component.html',
@@ -23,6 +24,7 @@ export class SectorReportComponent implements OnInit {
   selectedOrganizations: any = [];
   selectedLocations: any = [];
   selectedDataOptions: any = [];
+  selectedChartType: number = 1;
   organizationsSettings: any = {};
   dataOptionSettings: any = {};
   locationsSettings: any = {};
@@ -48,9 +50,16 @@ export class SectorReportComponent implements OnInit {
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
-    { id: 4, type: 'doughnut', title: 'Doughnut chart' },
-    { id: 5, type: 'radar', title: 'Radar chart' }
+    { id: 3, type: 'doughnut', title: 'Doughnut chart' },
+    { id: 4, type: 'line', title: 'Line chart' }
   ];
+
+  chartTypes: any = {
+    BAR: 'bar',
+    PIE: 'pie',
+    DOUGHNUT: 'doughnut',
+    LINE: 'line'
+  };
 
   dataOptions: any = [
     { id: 1, type: 'funding', value: 'Number of Projects' },
@@ -105,6 +114,13 @@ export class SectorReportComponent implements OnInit {
       }
     }
   };
+
+  pieChartOptions: any = {
+    responsive: true,
+    legend: {
+      position: 'top',
+    },
+  }
   chartColors: any = [
     {
       backgroundColor: [
@@ -115,7 +131,7 @@ export class SectorReportComponent implements OnInit {
   barChartLabels: string[] = [];
   barChartType: string = 'bar';
   barChartLegend: boolean = true;
-  barChartData: any[] = [
+  chartData: any[] = [
   ];
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
@@ -182,6 +198,13 @@ export class SectorReportComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+
+    var dataOption = this.dataOptions.filter(o => o.id == 1);
+    if (dataOption.length > 0) {
+      this.model.selectedDataOptions.push(dataOption[0]);
+      this.selectedDataOptions.push(1);
+    }
+    
   }
 
   getExchangeRates() {
@@ -241,7 +264,7 @@ export class SectorReportComponent implements OnInit {
 
   searchProjectsByCriteriaReport() {
     this.barChartLabels = [];
-    this.barChartData = [];
+    this.chartData = [];
     var searchModel = {
       title: this.model.title,
       startingYear: this.model.startingYear,
@@ -274,7 +297,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   resetSearchResults() {
-    this.barChartData = [];
+    this.chartData = [];
     this.barChartLabels = [];
     this.reportDataList = [];
   }
@@ -605,36 +628,36 @@ export class SectorReportComponent implements OnInit {
       this.showChart = false;
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
-        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
         if (isDataExists.length == 0) {
           var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
           var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
-          this.barChartData.push(chartData);
+          this.chartData.push(chartData);
         }
       } else {
-        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
-        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
         if (isDataExists.length == 0) {
           var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
           var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
-          this.barChartData.push(chartData);
+          this.chartData.push(chartData);
         }
       } else {
-        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
-        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
         if (isDataExists.length == 0) {
           var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
           var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
-          this.barChartData.push(chartData);
+          this.chartData.push(chartData);
         }
       } else {
-        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
       }
 
       if (this.selectedDataOptions.length > 0) {
@@ -644,8 +667,8 @@ export class SectorReportComponent implements OnInit {
       }
     }
 
-    if (this.selectedDataOptions.length == 0 && this.barChartData.length > 0) {
-      this.barChartData = [];
+    if (this.selectedDataOptions.length == 0 && this.chartData.length > 0) {
+      this.chartData = [];
       setTimeout(() => {
         this.showChart = true;
       }, 1000);
@@ -738,6 +761,13 @@ export class SectorReportComponent implements OnInit {
   setExcelFile() {
     if (this.excelFile) {
       this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+    }
+  }
+
+  checkChartType() {
+    var selectedChart = this.chartOptions.filter(c => c.type == this.model.chartType);
+    if (selectedChart.length > 0) {
+      this.selectedChartType = selectedChart[0].id;
     }
   }
 
