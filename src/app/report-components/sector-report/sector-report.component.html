@@ -24,12 +24,12 @@
                   <table>
                     <tr>
                       <td>
-                        Financial Years From/To:&nbsp;
+                        Financial years from/to:&nbsp;
                       </td>
                       <td>
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
                           name="startingYear" #startingYear="ngModel" required>
-                          <option value="0">--Starting Year--</option>
+                          <option value="0">--Starting year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
                         </select>
@@ -38,7 +38,7 @@
                       <td>
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
                           #endingYear="ngModel" required>
-                          <option value="0">--Ending Year--</option>
+                          <option value="0">--Ending year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
                         </select>
@@ -49,14 +49,14 @@
               </div>
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All Sector/s --'" [data]="sectorsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
                     (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
                     (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All Organization/s --'" [data]="organizationsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" [data]="organizationsList"
                     [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
                     (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
                     (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
@@ -87,7 +87,7 @@
                 <div class="col-md-3">
                   <select class="form-control" id="esource" (change)="selectExRateSource()" [(ngModel)]="model.exRateSource"
                     name="esource" #esource="ngModel">
-                    <option value="null">--Ex Rate Source--</option>
+                    <option value="null">--Ex rate source--</option>
                     <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
                   </select>
                 </div>
@@ -104,10 +104,10 @@
                 </div>
                 <div class="col-md-6">
                     <span class="float-right">
-                        <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
+                        <button type="submit" class="btn btn-info">Get report</button>&nbsp;
                         <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
-                        <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get Excel</a>&nbsp;
-                        <button type="button" class="btn btn-warning" (click)="printReport()">Print Report</button>
+                        <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get excel</a>&nbsp;
+                        <button type="button" class="btn btn-warning" (click)="printReport()">Print report</button>
                       </span>
                 </div>
               </div>
@@ -135,14 +135,15 @@
                     <th>Project Name</th>
                     <th>Funders</th>
                     <th>Implementers</th>
-                    <th>Funding</th>
-                    <th colspan="2">Disbursements actual & planned</th>
+                    <th>Project cost</th>
+                    <th>Disbursements actual</th>
+                    <th>Disbursements planned</th>
                   </tr>
                   <tr>
                     <td colspan="6">
                       <b>
                         <i>
-                          {{sectorProject.sectorName}} - Funding ({{sectorProject.totalFunding}}) &nbsp;&nbsp;
+                          {{sectorProject.sectorName}} - Project cost ({{sectorProject.totalFunding}}) &nbsp;&nbsp;
                           Disbursements ({{sectorProject.totalDisbursements}})
                         </i>
                       </b>

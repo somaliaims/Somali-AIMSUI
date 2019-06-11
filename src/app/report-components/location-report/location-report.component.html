@@ -24,12 +24,12 @@
                   <table>
                     <tr>
                       <td>
-                        Financial Years From/To:&nbsp;
+                        Financial yars from/to:&nbsp;
                       </td>
                       <td>
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
                           name="startingYear" #startingYear="ngModel" required>
-                          <option value="0">--Starting Year--</option>
+                          <option value="0">--Starting year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
                         </select>
@@ -38,7 +38,7 @@
                       <td>
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
                           #endingYear="ngModel" required>
-                          <option value="0">--Ending Year--</option>
+                          <option value="0">--Ending year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
                         </select>
@@ -49,14 +49,14 @@
               </div>
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All Location/s --'" [data]="locationsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" [data]="locationsList"
                     [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
                     (onSelect)="onLocationSelect($event)" (onDeSelect)="onLocationDeSelect($event)"
                     (onSelectAll)="onLocationSelectAll($event)" #selectedLocations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All Organization/s --'" [data]="organizationsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" [data]="organizationsList"
                     [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
                     (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
                     (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
@@ -87,7 +87,7 @@
                 <div class="col-md-3">
                   <select class="form-control" id="esource" (change)="selectExRateSource()"
                     [(ngModel)]="model.exRateSource" name="esource" #esource="ngModel">
-                    <option value="null">--Ex Rate Source--</option>
+                    <option value="null">--Ex rate source--</option>
                     <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
                   </select>
                 </div>
@@ -135,14 +135,15 @@
                     <th>Project Name</th>
                     <th>Funders</th>
                     <th>Implementers</th>
-                    <th>Funding</th>
-                    <th colspan="2">Disbursements actual & planned</th>
+                    <th>Project cost</th>
+                    <th>Disbursements actual</th>
+                    <th>Disbursements planned</th>
                   </tr>
                   <tr>
                     <td colspan="6">
                       <b>
                         <i>
-                          {{locationProject.locationName}} - Funding ({{locationProject.totalFunding}}) &nbsp;&nbsp;
+                          {{locationProject.locationName}} - Project cost ({{locationProject.totalFunding}}) &nbsp;&nbsp;
                           Disbursements ({{locationProject.totalDisbursements}})
                         </i>
                       </b>
