@@ -54,7 +54,8 @@ export class SectorReportComponent implements OnInit {
     { id: 2, type: 'pie', title: 'Pie chart' },
     { id: 3, type: 'doughnut', title: 'Doughnut chart' },
     { id: 4, type: 'line', title: 'Line chart' },
-    { id: 5, type: 'radar', title: 'Radar' }
+    { id: 5, type: 'radar', title: 'Radar' },
+    { id: 6, type: 'polarArea', title: 'Polar area' }
   ];
 
   chartTypes: any = {
@@ -62,7 +63,8 @@ export class SectorReportComponent implements OnInit {
     PIE: 'pie',
     DOUGHNUT: 'doughnut',
     LINE: 'line',
-    RADAR: 'radar'
+    RADAR: 'radar',
+    POLAR: 'polarArea'
   };
 
   dataOptions: any = [
@@ -142,10 +144,10 @@ export class SectorReportComponent implements OnInit {
       ]
     }
   ];
-  barChartLabels: any = [];
+  chartLables: any = [];
   doughnutChartLabels: any = [];
   barChartType: string = 'bar';
-  barChartLegend: boolean = true;
+  chartLegend: boolean = true;
   chartData: any = [];
   doughnutChartData: any = [];
   model: any = {
@@ -279,7 +281,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   searchProjectsByCriteriaReport() {
-    this.barChartLabels = [];
+    this.chartLables = [];
     this.chartData = [];
     var searchModel = {
       title: this.model.title,
@@ -296,7 +298,7 @@ export class SectorReportComponent implements OnInit {
         this.reportDataList = data;
         if (this.reportDataList && this.reportDataList.sectorProjectsList) {
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
-          this.barChartLabels = sectorNames;
+          this.chartLables = sectorNames;
           if (this.reportDataList.reportSettings) {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();
@@ -314,7 +316,7 @@ export class SectorReportComponent implements OnInit {
 
   resetSearchResults() {
     this.chartData = [];
-    this.barChartLabels = [];
+    this.chartLables = [];
     this.reportDataList = [];
   }
 
@@ -812,7 +814,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   manageChartTypeDisplay(chartType: any) {
-    if (chartType == this.chartTypes.PIE) {
+    if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
       this.chartData = [];
       this.selectedDataOptions = [];
       this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
@@ -829,10 +831,8 @@ export class SectorReportComponent implements OnInit {
         this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
         this.doughnutChartData.push(sectorProjects);
         this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
-      } else {
-        this.multiDataDisplay = true;
-      }
-
+      } 
+      this.multiDataDisplay = true;
     }
   }
 
