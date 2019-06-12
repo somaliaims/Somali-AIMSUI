@@ -221,7 +221,6 @@ export class SectorReportComponent implements OnInit {
       this.model.selectedDataOptions.push(dataOption[0]);
       this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
     }
-
   }
 
   getManualExchangeRateForToday() {
@@ -231,6 +230,7 @@ export class SectorReportComponent implements OnInit {
         if (data) {
           if (data.exchangeRate) {
             this.manualExRate = data.exchangeRate;
+            this.oldCurrencyRate = 1;
           }
         }
       });
@@ -242,6 +242,7 @@ export class SectorReportComponent implements OnInit {
         if (data) {
           this.defaultCurrency = data.currency;
           this.model.selectedCurrency = data.currency;
+          this.oldCurrency = this.model.selectedCurrency;
           this.selectedCurrencyName = data.currencyName;
           this.currenciesList.push(data);
         }
@@ -289,7 +290,8 @@ export class SectorReportComponent implements OnInit {
           } else {
             this.manageChartTypeDisplay();
           }
-
+          this.model.selectedCurrency = this.defaultCurrency;
+          this.selectCurrency();
         }
         this.blockUI.stop();
       },
@@ -732,7 +734,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   getCurrencyRates() {
-    var exRate: any = [];
+    var exRate: number = 0;
     var calculatedRate = 0;
     if (this.manualExRate == 0) {
       this.errorMessage = Messages.EX_RATE_NOT_FOUND;
@@ -740,21 +742,14 @@ export class SectorReportComponent implements OnInit {
       return false;
     }
 
-    var manualRate = this.manualExRate;
     if (this.model.selectedCurrency == this.defaultCurrency) {
-      manualRate = this.defaultCurrencyRate;
+      exRate = 1;
+    } else {
+      exRate = this.manualExRate;
     }
 
-    if (this.oldCurrency == this.defaultCurrency && this.oldCurrency == this.model.selectedCurrency) {
-      calculatedRate = this.oldCurrencyRate;
-    } else {
-      if (this.oldCurrencyRate == 0) {
-        calculatedRate = manualRate;
-      } else {
-        calculatedRate = (manualRate / this.oldCurrencyRate);
-        this.oldCurrencyRate = manualRate;
-      }
-    }
+    calculatedRate = (exRate / this.oldCurrencyRate);
+    this.oldCurrencyRate = exRate;
     this.oldCurrency = this.model.selectedCurrency;
 
     if (calculatedRate > 0 && calculatedRate != 1) {

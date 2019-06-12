@@ -223,7 +223,8 @@ export class LocationReportComponent implements OnInit {
       data => {
         if (data) {
           if (data.exchangeRate) {
-            this.manualExchangeRatesList = data.exchangeRate;
+            this.manualExRate = data.exchangeRate;
+            this.oldCurrencyRate = 1;
           }
         }
       });
@@ -235,6 +236,7 @@ export class LocationReportComponent implements OnInit {
         if (data) {
           this.defaultCurrency = data.currency;
           this.model.selectedCurrency = data.currency;
+          this.oldCurrency = this.model.selectedCurrency;
           this.selectedCurrencyName = data.currencyName;
           this.currenciesList.push(data);
         }
@@ -281,6 +283,8 @@ export class LocationReportComponent implements OnInit {
           } else {
             this.manageChartTypeDisplay();
           }
+          this.model.selectedCurrency = this.defaultCurrency;
+          this.selectCurrency();
         }
         this.blockUI.stop();
       },
@@ -538,54 +542,35 @@ export class LocationReportComponent implements OnInit {
         this.selectedCurrencyName = selectedCurrency[0].currencyName;
       }
     }
-    if (this.model.selectedCurrency && this.model.exRateSource) {
-      this.getCurrencyRates(this.model.exRateSource);
+    if (this.model.selectedCurrency) {
+      this.getCurrencyRates();
     }
   }
 
   selectExRateSource() {
     if (this.model.exRateSource && this.model.selectedCurrency) {
-      this.getCurrencyRates(this.model.exRateSource);
+      this.getCurrencyRates();
     }
   }
 
-  getCurrencyRates(eSource: string) {
-    var exRate: any = [];
-    if (eSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
-      var calculatedRate = 0;
-      exRate = this.exchangeRatesList.filter(c => c.currency == this.model.selectedCurrency);
-      if (exRate.length > 0) {
-        if (this.oldCurrencyRate == 0) {
-          calculatedRate = exRate[0].rate;
-        } else {
-          calculatedRate = (exRate[0].rate / this.oldCurrencyRate);
-          this.oldCurrencyRate = exRate[0].rate;
-        }
-      }
-    } else if (eSource == this.exRateSourceCodes.AFRICAN_BANK) {
-      if (this.manualExRate == 0) {
-        this.errorMessage = Messages.EX_RATE_NOT_FOUND;
-        this.errorModal.openModal();
-        return false;
-      }
-
-      var manualRate = this.manualExRate;
-      if (this.model.selectedCurrency == this.defaultCurrency) {
-        manualRate = this.defaultCurrencyRate;
-      }
-
-      if (this.oldCurrency == this.defaultCurrency && this.oldCurrency == this.model.selectedCurrency) {
-        calculatedRate = this.oldCurrencyRate;
-      } else {
-        if (this.oldCurrencyRate == 0) {
-          calculatedRate = manualRate;
-        } else {
-          calculatedRate = (manualRate / this.oldCurrencyRate);
-          this.oldCurrencyRate = manualRate;
-        }
-      }
-      this.oldCurrency = this.model.selectedCurrency;
+  getCurrencyRates() {
+    var exRate: number = 0;
+    var calculatedRate = 0;
+    if (this.manualExRate == 0) {
+      this.errorMessage = Messages.EX_RATE_NOT_FOUND;
+      this.errorModal.openModal();
+      return false;
     }
+
+    if (this.model.selectedCurrency == this.defaultCurrency) {
+      exRate = 1;
+    } else {
+      exRate = this.manualExRate;
+    }
+
+    calculatedRate = (exRate / this.oldCurrencyRate);
+    this.oldCurrencyRate = exRate;
+    this.oldCurrency = this.model.selectedCurrency;
 
     if (calculatedRate > 0 && calculatedRate != 1) {
       this.applyRateOnFinancials(calculatedRate);
