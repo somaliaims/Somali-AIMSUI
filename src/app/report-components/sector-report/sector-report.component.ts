@@ -174,7 +174,6 @@ export class SectorReportComponent implements OnInit {
     this.loadFinancialYears();
     this.getDefaultCurrency();
     this.getNationalCurrency();
-    this.getExchangeRates();
     this.getManualExchangeRateForToday();
 
     this.sectorsSettings = {
@@ -223,25 +222,6 @@ export class SectorReportComponent implements OnInit {
       this.selectedDataOptions.push(1);
     }
 
-  }
-
-  getExchangeRates() {
-    this.currencyService.getExchangeRatesList().subscribe(
-      data => {
-        if (data) {
-          this.exchangeRatesList = data.rates;
-
-          if (this.defaultCurrency && this.exchangeRatesList.length > 0) {
-            var exRate = this.exchangeRatesList.filter(c => c.currency == this.defaultCurrency);
-            if (exRate.length > 0) {
-              this.oldCurrencyRate = exRate[0].rate;
-              this.oldCurrency = exRate[0].currency;
-              this.defaultCurrencyRate = this.oldCurrencyRate;
-            }
-          }
-        }
-      }
-    );
   }
 
   getManualExchangeRateForToday() {
@@ -746,54 +726,36 @@ export class SectorReportComponent implements OnInit {
         this.selectedCurrencyName = selectedCurrency[0].currencyName;
       }
     }
-    if (this.model.selectedCurrency && this.model.exRateSource) {
-      this.getCurrencyRates(this.model.exRateSource);
+    if (this.model.selectedCurrency) {
+      this.getCurrencyRates();
     }
   }
 
-  selectExRateSource() {
-    if (this.model.exRateSource && this.model.selectedCurrency) {
-      this.getCurrencyRates(this.model.exRateSource);
-    }
-  }
-
-  getCurrencyRates(eSource: string) {
+  getCurrencyRates() {
     var exRate: any = [];
-    if (eSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
-      var calculatedRate = 0;
-      exRate = this.exchangeRatesList.filter(c => c.currency == this.model.selectedCurrency);
-      if (exRate.length > 0) {
-        if (this.oldCurrencyRate == 0) {
-          calculatedRate = exRate[0].rate;
-        } else {
-          calculatedRate = (exRate[0].rate / this.oldCurrencyRate);
-          this.oldCurrencyRate = exRate[0].rate;
-        }
-      }
-    } else if (eSource == this.exRateSourceCodes.AFRICAN_BANK) {
-      if (this.manualExRate == 0) {
-        this.errorMessage = Messages.EX_RATE_NOT_FOUND;
-        this.errorModal.openModal();
-        return false;
-      }
-
-      var manualRate = this.manualExRate;
-      if (this.model.selectedCurrency == this.defaultCurrency) {
-        manualRate = this.defaultCurrencyRate;
-      }
-
-      if (this.oldCurrency == this.defaultCurrency && this.oldCurrency == this.model.selectedCurrency) {
-        calculatedRate = this.oldCurrencyRate;
-      } else {
-        if (this.oldCurrencyRate == 0) {
-          calculatedRate = manualRate;
-        } else {
-          calculatedRate = (manualRate / this.oldCurrencyRate);
-          this.oldCurrencyRate = manualRate;
-        }
-      }
-      this.oldCurrency = this.model.selectedCurrency;
+    var calculatedRate = 0;
+    if (this.manualExRate == 0) {
+      this.errorMessage = Messages.EX_RATE_NOT_FOUND;
+      this.errorModal.openModal();
+      return false;
     }
+
+    var manualRate = this.manualExRate;
+    if (this.model.selectedCurrency == this.defaultCurrency) {
+      manualRate = this.defaultCurrencyRate;
+    }
+
+    if (this.oldCurrency == this.defaultCurrency && this.oldCurrency == this.model.selectedCurrency) {
+      calculatedRate = this.oldCurrencyRate;
+    } else {
+      if (this.oldCurrencyRate == 0) {
+        calculatedRate = manualRate;
+      } else {
+        calculatedRate = (manualRate / this.oldCurrencyRate);
+        this.oldCurrencyRate = manualRate;
+      }
+    }
+    this.oldCurrency = this.model.selectedCurrency;
 
     if (calculatedRate > 0 && calculatedRate != 1) {
       this.applyRateOnFinancials(calculatedRate);
@@ -828,12 +790,6 @@ export class SectorReportComponent implements OnInit {
 
   manageChartTypeDisplay() {
     var chartType = this.model.chartType;
-    /*if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
-      this.multiDataDisplay = false;
-    } else {
-      this.multiDataDisplay = true;
-      this.model.selectedDataOptions = [];
-    }*/
 
     if (this.reportDataList && this.reportDataList.sectorProjectsList) {
       if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {

@@ -75,21 +75,17 @@
                     </option>
                   </select>
                 </div>
-                <div class="col-md-3">
-                  <select class="form-control" (change)="selectCurrency()" id="selectedCurrency"
+                <div class="col-md-6">
+                  <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()" id="selectedCurrency"
                     [(ngModel)]="model.selectedCurrency" name="selectedCurrency" #selectedCurrency="ngModel">
-                    <option value="null">-- Currency --</option>
+                    <option value="null">-- Exchange rate in currency --</option>
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
                       {{currency.currencyName}}
                     </option>
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <select class="form-control" id="esource" (change)="selectExRateSource()"
-                    [(ngModel)]="model.exRateSource" name="esource" #esource="ngModel">
-                    <option value="null">--Ex rate source--</option>
-                    <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
-                  </select>
+                  </select>&nbsp;
+                  <span *ngIf="manualExRate == 0" class="text-danger">
+                    <i>No exchange rate available, contact Administrator.</i>
+                  </span>
                 </div>
               </div>
 
