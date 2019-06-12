@@ -68,7 +68,7 @@
               <div class="row margin-top-10">
                 <div class="col-md-6">
                   <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                    #chartType="ngModel" required>
+                    #chartType="ngModel" (change)="manageChartTypeDisplay()" required>
                     <option value="null">-- Chart type --</option>
                     <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
                       {{chart.title}}

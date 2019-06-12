@@ -484,19 +484,19 @@ export class LocationReportComponent implements OnInit {
 
     switch (selectedDataOption) {
       case this.dataOptionsCodes.PROJECTS:
-        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        this.chartData = this.reportDataList.locationProjectsList.map(p => p.projects.length);
         break;
 
       case this.dataOptionsCodes.FUNDING:
-        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+        this.chartData = this.reportDataList.locationProjectsList.map(p => p.totalFunding);
         break;
 
       case this.dataOptionsCodes.DISBURSEMENTS:
-        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+        this.chartData = this.reportDataList.locationProjectsList.map(p => p.totalDisbursements);
         break;
 
       default:
-        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        this.chartData = this.reportDataList.locationProjectsList.map(p => p.projects.length);
         break;
     }
   }
@@ -613,7 +613,7 @@ export class LocationReportComponent implements OnInit {
   }
 
   manageDataOptions() {
-    if (this.selectedDataOptions.length > 0 && this.reportDataList.sectorProjectsList) {
+    if (this.selectedDataOptions.length > 0 && this.reportDataList.locationProjectsList) {
       this.chartData = [];
       this.doughnutChartData = [];
       this.showChart = false;
@@ -621,7 +621,7 @@ export class LocationReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
         if (isDataExists.length == 0) {
-          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          var sectorProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
           var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorProjects);
@@ -635,7 +635,7 @@ export class LocationReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
         if (isDataExists.length == 0) {
-          var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+          var sectorFunding = this.reportDataList.locationProjectsList.map(p => p.totalFunding);
           var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorFunding);
@@ -649,7 +649,7 @@ export class LocationReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+          var sectorDisbursements = this.reportDataList.locationProjectsList.map(p => p.totalDisbursements);
           var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorDisbursements);
@@ -685,13 +685,13 @@ export class LocationReportComponent implements OnInit {
   manageChartTypeDisplay() {
     var chartType = this.model.chartType;
 
-    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+    if (this.reportDataList && this.reportDataList.locationProjectsList) {
       if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
         this.multiDataDisplay = false;
         this.chartData = [];
         this.selectedDataOptions = [];
         this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-        var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        var sectorProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
         this.chartData.push(sectorProjects);
         this.model.selectedDataOptions = [];
         var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
@@ -703,7 +703,7 @@ export class LocationReportComponent implements OnInit {
           this.chartData = [];
           this.doughnutChartData = [];
           this.selectedDataOptions = [];
-          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          var sectorProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
           var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
           this.chartData.push(chartData);
           this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
