@@ -40,29 +40,38 @@ export class LocationReportComponent implements OnInit {
   manualExRate: any = 0;
   oldCurrency: string = null;
   defaultCurrencyRate: number = 0;
+  chartCategory: number = 1;
+  multiDataDisplay: boolean = true;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
-    { id: 4, type: 'doughnut', title: 'Doughnut chart' },
-    { id: 5, type: 'radar', title: 'Radar chart' }
+    { id: 3, type: 'doughnut', title: 'Doughnut chart' },
+    { id: 4, type: 'line', title: 'Line chart' },
+    { id: 5, type: 'radar', title: 'Radar' },
+    { id: 6, type: 'polarArea', title: 'Polar area' }
   ];
 
-  exRateSourceCodes: any = {
-    'OPEN_EXCHANGE': 1,
-    'AFRICAN_BANK': 2
+  chartTypes: any = {
+    BAR: 'bar',
+    PIE: 'pie',
+    DOUGHNUT: 'doughnut',
+    LINE: 'line',
+    RADAR: 'radar',
+    POLAR: 'polarArea'
   };
 
-  exRateSources: any = [
-    { id: 1, value: 'Open exchange api' },
-    { id: 2, value: 'African bank' }
-  ];
-
   dataOptions: any = [
-    { id: 1, type: 'funding', value: 'Number of Projects' },
+    { id: 1, type: 'projects', value: 'Number of Projects' },
     { id: 2, type: 'funding', value: 'Funding' },
     { id: 3, type: 'disbursements', value: 'Disbursements' }
   ];
+
+  dataOptionsIndexForDoughnut: any = {
+    1: 0,
+    2: 1,
+    3: 2
+  };
 
   dataOptionsCodes: any = {
     'PROJECTS': 1,
@@ -75,6 +84,16 @@ export class LocationReportComponent implements OnInit {
     FUNDING: 'Funding',
     DISBURSEMENTS: 'Disbursements'
   };
+
+  exRateSourceCodes: any = {
+    'OPEN_EXCHANGE': 1,
+    'AFRICAN_BANK': 2
+  };
+
+  exRateSources: any = [
+    { id: 1, value: 'Open exchange api' },
+    { id: 2, value: 'African bank' }
+  ];
 
   reportDataList: any = [];
   dropdownSettings: any = {};
@@ -93,8 +112,25 @@ export class LocationReportComponent implements OnInit {
           autoSkip: false
         }
       }],
+    },
+    plugins: {
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+      }
     }
   };
+
+  pieChartOptions: any = {
+    responsive: true,
+    legend: {
+      position: 'top',
+    },
+  }
+
+  radarChartOptions: any = {
+    responsive: true
+  }
   chartColors: any = [
     {
       backgroundColor: [
@@ -102,15 +138,18 @@ export class LocationReportComponent implements OnInit {
       ]
     }
   ];
-  barChartLabels: string[] = [];
+  chartLables: any = [];
+  doughnutChartLabels: any = [];
   barChartType: string = 'bar';
-  barChartLegend: boolean = true;
-  barChartData: any[] = [
-  ];
+  chartLegend: boolean = true;
+  chartData: any = [];
+  doughnutChartData: any = [];
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
-    locationIds: [], selectedLocations: [], selectedOrganizations: [], selectedDataOptions: [],
-    locationsList: [], organizationsList: [], selectedCurrency: null, exRateSource: null
+    sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
+    selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
+    selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
+    selectedDataOption: 1
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -129,7 +168,6 @@ export class LocationReportComponent implements OnInit {
     this.loadFinancialYears();
     this.getDefaultCurrency();
     this.getNationalCurrency();
-    this.getExchangeRates();
     this.getManualExchangeRateForToday();
 
     this.locationsSettings = {
@@ -171,26 +209,12 @@ export class LocationReportComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
-  }
 
-  getExchangeRates() {
-    this.currencyService.getExchangeRatesList().subscribe(
-      data => {
-        if (data) {
-          this.exchangeRatesList = data.rates;
-
-          if (this.defaultCurrency && this.exchangeRatesList.length > 0) {
-            var exRate = this.exchangeRatesList.filter(c => c.currency == this.defaultCurrency);
-            if (exRate.length > 0) {
-              this.oldCurrencyRate = exRate[0].rate;
-              this.defaultCurrency = exRate[0].currency;
-              this.oldCurrency = this.defaultCurrency;
-              this.oldCurrencyRate = this.oldCurrencyRate;
-            }
-          }
-        }
-      }
-    );
+    var dataOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
+    if (dataOption.length > 0) {
+      this.model.selectedDataOptions.push(dataOption[0]);
+      this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+    }
   }
 
   getManualExchangeRateForToday() {
@@ -230,8 +254,8 @@ export class LocationReportComponent implements OnInit {
   }
 
   searchProjectsByCriteriaReport() {
-    this.barChartLabels = [];
-    this.barChartData = [];
+    this.chartLables = [];
+    this.chartData = [];
     var searchModel = {
       title: this.model.title,
       startingYear: this.model.startingYear,
@@ -247,12 +271,16 @@ export class LocationReportComponent implements OnInit {
         this.reportDataList = data;
         if (this.reportDataList && this.reportDataList.locationProjectsList) {
           var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
-          this.barChartLabels = locationNames;
+          this.chartLables = locationNames;
           if (this.reportDataList.reportSettings) {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();
           }
-          this.manageDataOptions();
+          if (this.multiDataDisplay) {
+            this.manageDataOptions();
+          } else {
+            this.manageChartTypeDisplay();
+          }
         }
         this.blockUI.stop();
       },
@@ -264,8 +292,8 @@ export class LocationReportComponent implements OnInit {
   }
 
   resetSearchResults() {
-    this.barChartData = [];
-    this.barChartLabels = [];
+    this.chartData = [];
+    this.chartLables = [];
     this.reportDataList = [];
   }
 
@@ -447,6 +475,32 @@ export class LocationReportComponent implements OnInit {
     this.manageDataOptions();
   }
 
+  selectDataOption() {
+    this.chartData = [];
+    var selectedDataOption = 1;
+    if (this.model.selectedDataOption) {
+      selectedDataOption = parseInt(this.model.selectedDataOption);
+    }
+
+    switch (selectedDataOption) {
+      case this.dataOptionsCodes.PROJECTS:
+        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        break;
+
+      case this.dataOptionsCodes.FUNDING:
+        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+        break;
+
+      case this.dataOptionsCodes.DISBURSEMENTS:
+        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+        break;
+
+      default:
+        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        break;
+    }
+  }
+
   getGrandTotalFundingForLocation() {
     var totalFunding = 0;
     if (this.reportDataList && this.reportDataList.locationProjectsList) {
@@ -559,40 +613,51 @@ export class LocationReportComponent implements OnInit {
   }
 
   manageDataOptions() {
-    if (this.selectedDataOptions.length > 0 && this.reportDataList.locationProjectsList) {
+    if (this.selectedDataOptions.length > 0 && this.reportDataList.sectorProjectsList) {
+      this.chartData = [];
+      this.doughnutChartData = [];
       this.showChart = false;
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
-        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
         if (isDataExists.length == 0) {
-          var sectorProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
+          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
           var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
-          this.barChartData.push(chartData);
+          this.chartData.push(chartData);
+          this.doughnutChartData.push(sectorProjects);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
         }
       } else {
-        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS], 1);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
-        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
         if (isDataExists.length == 0) {
-          var sectorFunding = this.reportDataList.locationProjectsList.map(p => p.totalFunding);
+          var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
           var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
-          this.barChartData.push(chartData);
+          this.chartData.push(chartData);
+          this.doughnutChartData.push(sectorFunding);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
         }
       } else {
-        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING], 1);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
-        var isDataExists = this.barChartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorDisbursements = this.reportDataList.locationProjectsList.map(p => p.totalDisbursements);
+          var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
           var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
-          this.barChartData.push(chartData);
+          this.chartData.push(chartData);
+          this.doughnutChartData.push(sectorDisbursements);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
-        this.barChartData = this.barChartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS], 1);
       }
 
       if (this.selectedDataOptions.length > 0) {
@@ -602,8 +667,9 @@ export class LocationReportComponent implements OnInit {
       }
     }
 
-    if (this.selectedDataOptions.length == 0 && this.barChartData.length > 0) {
-      this.barChartData = [];
+    if (this.selectedDataOptions.length == 0 && this.chartData.length > 0) {
+      this.chartData = [];
+      this.doughnutChartData = [];
       setTimeout(() => {
         this.showChart = true;
       }, 1000);
@@ -613,6 +679,45 @@ export class LocationReportComponent implements OnInit {
   setExcelFile() {
     if (this.excelFile) {
       this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+    }
+  }
+
+  manageChartTypeDisplay() {
+    var chartType = this.model.chartType;
+
+    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+      if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
+        this.multiDataDisplay = false;
+        this.chartData = [];
+        this.selectedDataOptions = [];
+        this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+        var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        this.chartData.push(sectorProjects);
+        this.model.selectedDataOptions = [];
+        var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
+        if (defaultOption.length > 0) {
+          this.model.selectedDataOptions.push(defaultOption[0]);
+        }
+      } else {
+        if (!this.multiDataDisplay) {
+          this.chartData = [];
+          this.doughnutChartData = [];
+          this.selectedDataOptions = [];
+          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
+          this.chartData.push(chartData);
+          this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+          this.doughnutChartData.push(sectorProjects);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
+          if (this.model.selectedDataOptions.length == 0) {
+            var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
+            if (defaultOption.length > 0) {
+              this.model.selectedDataOptions.push(defaultOption[0]);
+            }
+          }
+        }
+        this.multiDataDisplay = true;
+      }
     }
   }
 

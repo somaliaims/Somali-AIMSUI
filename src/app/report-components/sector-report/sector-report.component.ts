@@ -219,7 +219,7 @@ export class SectorReportComponent implements OnInit {
     var dataOption = this.dataOptions.filter(o => o.id == 1);
     if (dataOption.length > 0) {
       this.model.selectedDataOptions.push(dataOption[0]);
-      this.selectedDataOptions.push(1);
+      this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
     }
 
   }
