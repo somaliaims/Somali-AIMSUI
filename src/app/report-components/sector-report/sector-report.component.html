@@ -68,7 +68,7 @@
               <div class="row margin-top-10">
                 <div class="col-md-6">
                   <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                    #chartType="ngModel" (change)="manageChartTypeDisplay(chartType.value)" required>
+                    #chartType="ngModel" (change)="manageChartTypeDisplay()" required>
                     <option value="null">-- Chart type --</option>
                     <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
                       {{chart.title}}
@@ -118,7 +118,7 @@
         <div class="row">
           <div class="col-md-12">
             <div *ngIf="multiDataDisplay" class="float-right form-inline">
-              <label><b><i>Data display options for chart:&nbsp;</i></b></label>
+              <label class="text-warning"><b><i>Data display options for chart:&nbsp;</i></b></label>
               <ng-multiselect-dropdown [placeholder]="'-- Chart data option/s --'" [data]="dataOptions"
                 [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
                 (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
@@ -206,7 +206,13 @@
         </div>
 
         <div *ngIf="chartData.length > 0 && showChart" class="col-md-12 margin-top-50">
-          <div *ngIf="model.chartType == chartTypes.BAR || model.chartType == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-10">
+          <div *ngIf="model.chartType == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
+              [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
               [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>

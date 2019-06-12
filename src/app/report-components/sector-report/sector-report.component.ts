@@ -154,7 +154,7 @@ export class SectorReportComponent implements OnInit {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
-    selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [], 
+    selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1
   };
   //Overlay UI blocker
@@ -222,7 +222,7 @@ export class SectorReportComponent implements OnInit {
       this.model.selectedDataOptions.push(dataOption[0]);
       this.selectedDataOptions.push(1);
     }
-    
+
   }
 
   getExchangeRates() {
@@ -232,12 +232,12 @@ export class SectorReportComponent implements OnInit {
           this.exchangeRatesList = data.rates;
 
           if (this.defaultCurrency && this.exchangeRatesList.length > 0) {
-              var exRate = this.exchangeRatesList.filter(c => c.currency == this.defaultCurrency);
-              if (exRate.length > 0) {
-                this.oldCurrencyRate = exRate[0].rate;
-                this.oldCurrency = exRate[0].currency;
-                this.defaultCurrencyRate = this.oldCurrencyRate;
-              } 
+            var exRate = this.exchangeRatesList.filter(c => c.currency == this.defaultCurrency);
+            if (exRate.length > 0) {
+              this.oldCurrencyRate = exRate[0].rate;
+              this.oldCurrency = exRate[0].currency;
+              this.defaultCurrencyRate = this.oldCurrencyRate;
+            }
           }
         }
       }
@@ -303,7 +303,13 @@ export class SectorReportComponent implements OnInit {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();
           }
-          this.manageDataOptions();
+
+          if (this.multiDataDisplay) {
+            this.manageDataOptions();
+          } else {
+            this.manageChartTypeDisplay();
+          }
+
         }
         this.blockUI.stop();
       },
@@ -615,7 +621,12 @@ export class SectorReportComponent implements OnInit {
 
   selectDataOption() {
     this.chartData = [];
-    switch (this.model.selectedDataOption) {
+    var selectedDataOption = 1;
+    if (this.model.selectedDataOption) {
+      selectedDataOption = parseInt(this.model.selectedDataOption);
+    }
+
+    switch (selectedDataOption) {
       case this.dataOptionsCodes.PROJECTS:
         this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
         break;
@@ -635,7 +646,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   getGrandTotalFundingForSector() {
-    var totalFunding  = 0;
+    var totalFunding = 0;
     if (this.reportDataList && this.reportDataList.sectorProjectsList) {
       this.reportDataList.sectorProjectsList.forEach(function (p) {
         totalFunding += p.totalFunding;
@@ -645,7 +656,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   getGrandTotalDisbursementForSector() {
-    var totalDisbursement  = 0;
+    var totalDisbursement = 0;
     if (this.reportDataList && this.reportDataList.sectorProjectsList) {
       this.reportDataList.sectorProjectsList.forEach(function (p) {
         totalDisbursement += p.totalDisbursements;
@@ -664,6 +675,8 @@ export class SectorReportComponent implements OnInit {
 
   manageDataOptions() {
     if (this.selectedDataOptions.length > 0 && this.reportDataList.sectorProjectsList) {
+      this.chartData = [];
+      this.doughnutChartData = [];
       this.showChart = false;
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
@@ -673,7 +686,7 @@ export class SectorReportComponent implements OnInit {
           var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorProjects);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1); 
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
         }
       } else {
         this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
@@ -687,7 +700,7 @@ export class SectorReportComponent implements OnInit {
           var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorFunding);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1); 
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
         }
       } else {
         this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
@@ -701,7 +714,7 @@ export class SectorReportComponent implements OnInit {
           var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorDisbursements);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1); 
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
         this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
@@ -734,7 +747,7 @@ export class SectorReportComponent implements OnInit {
       }
     }
     if (this.model.selectedCurrency && this.model.exRateSource) {
-       this.getCurrencyRates(this.model.exRateSource);
+      this.getCurrencyRates(this.model.exRateSource);
     }
   }
 
@@ -813,27 +826,50 @@ export class SectorReportComponent implements OnInit {
     }
   }
 
-  manageChartTypeDisplay(chartType: any) {
-    if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
-      this.chartData = [];
-      this.selectedDataOptions = [];
-      this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-      var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-      this.chartData.push(sectorProjects);
+  manageChartTypeDisplay() {
+    var chartType = this.model.chartType;
+    /*if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
       this.multiDataDisplay = false;
     } else {
-      if (!this.multiDataDisplay) {
+      this.multiDataDisplay = true;
+      this.model.selectedDataOptions = [];
+    }*/
+
+    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+      if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
+        this.multiDataDisplay = false;
         this.chartData = [];
         this.selectedDataOptions = [];
-        var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-        var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
-        this.chartData.push(chartData);
         this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-        this.doughnutChartData.push(sectorProjects);
-        this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
-      } 
-      this.multiDataDisplay = true;
+        var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        this.chartData.push(sectorProjects);
+        this.model.selectedDataOptions = [];
+        var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
+        if (defaultOption.length > 0) {
+          this.model.selectedDataOptions.push(defaultOption[0]);
+        }
+      } else {
+        if (!this.multiDataDisplay) {
+          this.chartData = [];
+          this.doughnutChartData = [];
+          this.selectedDataOptions = [];
+          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
+          this.chartData.push(chartData);
+          this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+          this.doughnutChartData.push(sectorProjects);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
+          if (this.model.selectedDataOptions.length == 0) {
+            var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
+            if (defaultOption.length > 0) {
+              this.model.selectedDataOptions.push(defaultOption[0]);
+            }
+          }
+        }
+        this.multiDataDisplay = true;
+      }
     }
+
   }
 
 }
