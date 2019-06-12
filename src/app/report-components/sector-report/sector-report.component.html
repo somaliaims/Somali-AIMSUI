@@ -68,7 +68,7 @@
               <div class="row margin-top-10">
                 <div class="col-md-6">
                   <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                    #chartType="ngModel" required>
+                    #chartType="ngModel" (change)="manageChartTypeDisplay(chartType.value)" required>
                     <option value="null">-- Chart type --</option>
                     <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
                       {{chart.title}}
@@ -117,14 +117,25 @@
       <div *ngIf="reportDataList && reportDataList.reportSettings" id="rpt-sector-project" class="col-md-12">
         <div class="row">
           <div class="col-md-12">
-            <div class="float-right form-inline">
-              <label><b><i>Data display options for chart: </i></b></label>
+            <div *ngIf="multiDataDisplay" class="float-right form-inline">
+              <label><b><i>Data display options for chart:&nbsp;</i></b></label>
               <ng-multiselect-dropdown [placeholder]="'-- Chart data option/s --'" [data]="dataOptions"
                 [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
                 (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
                 (onSelectAll)="onDataOptionSelectAll($event)" (onDeSelectAll)="onDataOptionDeSelectAll($event)"
                 name="selectedDataOptions" #selectedDataOptions="ngModel">
               </ng-multiselect-dropdown>
+            </div>
+
+            <div *ngIf="!multiDataDisplay" class="float-right form-inline">
+              <label><b><i>Data display options for chart:&nbsp;</i></b></label>
+              <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType" #dataOption="ngModel"
+                (change)="selectDataOption()" required>
+                <option value="null">-- Chart data option --</option>
+                <option *ngFor="let option of dataOptions" value="{{option.id}}">
+                  {{option.value}}
+                </option>
+              </select>
             </div>
           </div>
         </div>
@@ -201,13 +212,18 @@
               (chartClick)="chartClicked($event)"></canvas>
           </div>
 
+          <div *ngIf="model.chartType == chartTypes.RADAR" style="display: block;" class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="barChartLabels" [options]="radarChartOptions"
+              [chartType]="model.chartType"></canvas>
+          </div>
+
           <div *ngIf="model.chartType == chartTypes.DOUGHNUT" style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="barChartLabels" [options]="pieChartOptions"
               [chartType]="model.chartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
           </div>
 
-          <div *ngIf="model.chartType == chartTypes.DOUGHNUT || model.chartType == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-10">
+          <div *ngIf="model.chartType == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [data]="chartData" [labels]="barChartLabels" [options]="pieChartOptions"
               [chartType]="model.chartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>

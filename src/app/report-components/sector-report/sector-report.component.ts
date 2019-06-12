@@ -46,23 +46,27 @@ export class SectorReportComponent implements OnInit {
   errorMessage: string = null;
   showChart: boolean = true;
   excelFile: string = null;
+  chartCategory: number = 1;
+  multiDataDisplay: boolean = true;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
     { id: 3, type: 'doughnut', title: 'Doughnut chart' },
-    { id: 4, type: 'line', title: 'Line chart' }
+    { id: 4, type: 'line', title: 'Line chart' },
+    { id: 5, type: 'radar', title: 'Radar' }
   ];
 
   chartTypes: any = {
     BAR: 'bar',
     PIE: 'pie',
     DOUGHNUT: 'doughnut',
-    LINE: 'line'
+    LINE: 'line',
+    RADAR: 'radar'
   };
 
   dataOptions: any = [
-    { id: 1, type: 'funding', value: 'Number of Projects' },
+    { id: 1, type: 'projects', value: 'Number of Projects' },
     { id: 2, type: 'funding', value: 'Funding' },
     { id: 3, type: 'disbursements', value: 'Disbursements' }
   ];
@@ -127,6 +131,10 @@ export class SectorReportComponent implements OnInit {
       position: 'top',
     },
   }
+
+  radarChartOptions: any = {
+    responsive: true
+  }
   chartColors: any = [
     {
       backgroundColor: [
@@ -144,7 +152,8 @@ export class SectorReportComponent implements OnInit {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
-    selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: []
+    selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [], 
+    selectedDataOption: 1
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -572,10 +581,6 @@ export class SectorReportComponent implements OnInit {
     }.bind(this));
   }
 
-  chartOptionChange(chartType: any) {
-
-  }
-
   onDataOptionSelect(item: any) {
     var id = item.id;
     if (this.selectedDataOptions.indexOf(id) == -1) {
@@ -604,6 +609,27 @@ export class SectorReportComponent implements OnInit {
   onDataOptionDeSelectAll(items: any) {
     this.selectedDataOptions = [];
     this.manageDataOptions();
+  }
+
+  selectDataOption() {
+    this.chartData = [];
+    switch (this.model.selectedDataOption) {
+      case this.dataOptionsCodes.PROJECTS:
+        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        break;
+
+      case this.dataOptionsCodes.FUNDING:
+        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+        break;
+
+      case this.dataOptionsCodes.DISBURSEMENTS:
+        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+        break;
+
+      default:
+        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        break;
+    }
   }
 
   getGrandTotalFundingForSector() {
@@ -785,10 +811,28 @@ export class SectorReportComponent implements OnInit {
     }
   }
 
-  checkChartType() {
-    var selectedChart = this.chartOptions.filter(c => c.type == this.model.chartType);
-    if (selectedChart.length > 0) {
-      this.selectedChartType = selectedChart[0].id;
+  manageChartTypeDisplay(chartType: any) {
+    if (chartType == this.chartTypes.PIE) {
+      this.chartData = [];
+      this.selectedDataOptions = [];
+      this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+      var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+      this.chartData.push(sectorProjects);
+      this.multiDataDisplay = false;
+    } else {
+      if (!this.multiDataDisplay) {
+        this.chartData = [];
+        this.selectedDataOptions = [];
+        var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
+        this.chartData.push(chartData);
+        this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+        this.doughnutChartData.push(sectorProjects);
+        this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
+      } else {
+        this.multiDataDisplay = true;
+      }
+
     }
   }
 
