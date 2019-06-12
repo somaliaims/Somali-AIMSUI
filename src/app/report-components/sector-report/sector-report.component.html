@@ -201,6 +201,12 @@
               (chartClick)="chartClicked($event)"></canvas>
           </div>
 
+          <div *ngIf="model.chartType == chartTypes.DOUGHNUT" style="display: block;" class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="barChartLabels" [options]="pieChartOptions"
+              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
           <div *ngIf="model.chartType == chartTypes.DOUGHNUT || model.chartType == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-10">
             <canvas id="chart" baseChart [data]="chartData" [labels]="barChartLabels" [options]="pieChartOptions"
               [chartType]="model.chartType" (chartHover)="chartHovered($event)"

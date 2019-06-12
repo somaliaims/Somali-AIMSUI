@@ -67,6 +67,12 @@ export class SectorReportComponent implements OnInit {
     { id: 3, type: 'disbursements', value: 'Disbursements' }
   ];
 
+  dataOptionsIndexForDoughnut: any = {
+    1: 0,
+    2: 1,
+    3: 2
+  };
+
   dataOptionsCodes: any = {
     'PROJECTS': 1,
     'FUNDING': 2,
@@ -128,11 +134,12 @@ export class SectorReportComponent implements OnInit {
       ]
     }
   ];
-  barChartLabels: string[] = [];
+  barChartLabels: any = [];
+  doughnutChartLabels: any = [];
   barChartType: string = 'bar';
   barChartLegend: boolean = true;
-  chartData: any[] = [
-  ];
+  chartData: any = [];
+  doughnutChartData: any = [];
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
@@ -565,6 +572,10 @@ export class SectorReportComponent implements OnInit {
     }.bind(this));
   }
 
+  chartOptionChange(chartType: any) {
+
+  }
+
   onDataOptionSelect(item: any) {
     var id = item.id;
     if (this.selectedDataOptions.indexOf(id) == -1) {
@@ -633,9 +644,12 @@ export class SectorReportComponent implements OnInit {
           var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
           var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
           this.chartData.push(chartData);
+          this.doughnutChartData.push(sectorProjects);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1); 
         }
       } else {
         this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS], 1);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
@@ -644,9 +658,12 @@ export class SectorReportComponent implements OnInit {
           var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
           var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
           this.chartData.push(chartData);
+          this.doughnutChartData.push(sectorFunding);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1); 
         }
       } else {
         this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING], 1);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
@@ -655,9 +672,12 @@ export class SectorReportComponent implements OnInit {
           var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
           var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
           this.chartData.push(chartData);
+          this.doughnutChartData.push(sectorDisbursements);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1); 
         }
       } else {
         this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS], 1);
       }
 
       if (this.selectedDataOptions.length > 0) {
@@ -669,6 +689,7 @@ export class SectorReportComponent implements OnInit {
 
     if (this.selectedDataOptions.length == 0 && this.chartData.length > 0) {
       this.chartData = [];
+      this.doughnutChartData = [];
       setTimeout(() => {
         this.showChart = true;
       }, 1000);
