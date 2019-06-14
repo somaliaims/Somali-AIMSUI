@@ -17,8 +17,9 @@
             <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
 
               <div class="row margin-top-10">
-                <div class="col-md-6">
-                    <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
+                <div class="col-md-6 form-inline">
+                  <label>Currency: </label>&nbsp;&nbsp;
+                  <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
                     id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
                     #selectedCurrency="ngModel">
                     <option value="null">-- Exchange rate in currency --</option>
@@ -78,41 +79,48 @@
                   <td>
                     <table class="table table-bordered">
                       <tr>
-                        <th>Year</th>
-                        <th>Disbursements</th>
+                        <th>Year - Disbursements</th>
                       </tr>
                       <tr>
-                        <td>{{project.previousYear}}</td>
-                        <td>{{project.previousYearDisbursements}}</td>
+                        <td>{{project.previousYear}} - {{project.previousYearDisbursements}}</td>
                       </tr>
-                      <tr *ngFor="let disbursement of project.expectedDisbursements">
+
+                      <tr>
                         <td>
-                          {{disbursement.year}}
-                        </td>
-                        <td>
-                          {{disbursement.disbursements}}
+                          <table class="table table-bordered">
+                            <tr *ngFor="let disbursement of project.expectedDisbursements">
+                              <td>
+                                <b>{{disbursement.year}}</b>
+                              </td>
+                              <td>
+                                {{disbursement.disbursements}}
+                              </td>
+
+                              <table class="table table-bordered">
+                                <tr>
+                                  <th colspan="2">Sectors breakup</th>
+                                </tr>
+                                <tr *ngFor="let percentage of disbursement.sectorPercentages">
+                                  <td>{{percentage.sector}}</td>
+                                  <td>{{percentage.disbursements}}</td>
+                                </tr>
+                              </table>
+
+                              <table>
+                                <tr>
+                                  <th colspan="2">Locations breakup</th>
+                                </tr>
+                                <tr *ngFor="let percentage of disbursement.locationPercentages">
+                                  <td>{{percentage.location}}</td>
+                                  <td>{{percentage.disbursements}}</td>
+                                </tr>
+                              </table>
+                            </tr>
+                          </table>
                         </td>
 
-                        <table class="table table-bordered">
-                          <tr>
-                            <th colspan="2">Sectors breakup</th>
-                          </tr>
-                          <tr *ngFor="let percentage of disbursement.sectorPercentages">
-                            <td>{{percentage.sector}}</td>
-                            <td>{{percentage.disbursements}}</td>
-                          </tr>
-                        </table>
-
-                        <table>
-                            <tr>
-                                <th colspan="2">Locations breakup</th>
-                              </tr>
-                              <tr *ngFor="let percentage of disbursement.locationPercentages">
-                                <td>{{percentage.location}}</td>
-                                <td>{{percentage.disbursements}}</td>
-                              </tr>
-                        </table>
                       </tr>
+
                     </table>
                   </td>
                 </tr>
@@ -124,7 +132,7 @@
                   <b>
                     <i>
                       Funding total: {{getGrandTotalForFunding()}}&nbsp;&nbsp;
-                      Disbursement total: {{getGrandTotalForDisbursements()}} 
+                      Disbursement total: {{getGrandTotalForDisbursements()}}
                     </i>
                   </b>
                 </span>

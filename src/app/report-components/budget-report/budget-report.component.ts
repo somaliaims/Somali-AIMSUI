@@ -4,6 +4,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { StoreService } from 'src/app/services/store-service';
 import { CurrencyService } from 'src/app/services/currency.service';
+import { Messages } from 'src/app/config/messages';
 
 @Component({
   selector: 'app-budget-report',
@@ -21,6 +22,7 @@ export class BudgetReportComponent implements OnInit {
   reportSettings: any = { title: null};
   currenciesList: any = [];
   model: any = { selectedCurrency: null };
+  errorMessage: string = null;
 
   @BlockUI() blockUI: NgBlockUI;
   
@@ -94,6 +96,55 @@ export class BudgetReportComponent implements OnInit {
 
   printReport() {
     this.storeService.printSimpleReport('rpt-budget-report', 'Budget report');
+  }
+
+  selectCurrency() {
+    if (!this.model.selectedCurrency) {
+      this.selectedCurrencyName = 'Default';
+    } else {
+      var selectedCurrency = this.currenciesList.filter(c => c.currency == this.model.selectedCurrency);
+      if (selectedCurrency.length > 0) {
+        this.selectedCurrencyName = selectedCurrency[0].currencyName;
+      }
+    }
+    if (this.model.selectedCurrency) {
+      this.getCurrencyRates();
+    }
+  }
+
+  getCurrencyRates() {
+    var exRate: number = 0;
+    var calculatedRate = 0;
+    if (this.manualExRate == 0) {
+      this.errorMessage = Messages.EX_RATE_NOT_FOUND;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    if (this.model.selectedCurrency == this.defaultCurrency) {
+      exRate = 1;
+    } else {
+      exRate = this.manualExRate;
+    }
+
+    calculatedRate = (exRate / this.oldCurrencyRate);
+    this.oldCurrencyRate = exRate;
+    this.oldCurrency = this.model.selectedCurrency;
+
+    if (calculatedRate > 0 && calculatedRate != 1) {
+      this.applyRateOnFinancials(calculatedRate);
+    }
+  }
+
+  applyRateOnFinancials(calculatedRate = 1) {
+    if (calculatedRate != 1) {
+      if (this.reportDataList.projects && this.reportDataList.projects.length > 0) {
+        this.reportDataList.projects.array.forEach(p => {
+          p.projectValue = (p.projectValue * calculatedRate);
+
+        });
+      }
+    }
   }
 
 }
