@@ -404,7 +404,6 @@ export class SectorReportComponent implements OnInit {
   };*/
 
   generatePDF() {
-
     var quotes = document.getElementById('rpt-sector-project');
     html2canvas(quotes)
       .then((canvas) => {
@@ -434,10 +433,8 @@ export class SectorReportComponent implements OnInit {
 
           // document.body.appendChild(canvas);
           var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
-
           var width = onePageCanvas.width;
           var height = onePageCanvas.clientHeight;
-
           //! If we're on anything other than the first page,
           // add another page
           if (i > 0) {
@@ -447,7 +444,6 @@ export class SectorReportComponent implements OnInit {
           pdf.setPage(i + 1);
           //! now we add content to that page!
           pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .44), (height * .62));
-
         }
         //! after the for loop is finished running, we save the pdf.
         pdf.save('Test.pdf');
@@ -720,8 +716,8 @@ export class SectorReportComponent implements OnInit {
   }
 
   selectCurrency() {
-    if (!this.model.selectedCurrency) {
-      this.selectedCurrencyName = 'Default';
+    if (this.model.selectedCurrency == null || this.model.selectedCurrency == 'null') {
+      return false;
     } else {
       var selectedCurrency = this.currenciesList.filter(c => c.currency == this.model.selectedCurrency);
       if (selectedCurrency.length > 0) {

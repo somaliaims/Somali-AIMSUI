@@ -534,8 +534,8 @@ export class LocationReportComponent implements OnInit {
   }
 
   selectCurrency() {
-    if (!this.model.selectedCurrency) {
-      this.selectedCurrencyName = 'Default';
+    if (this.model.selectedCurrency == null || this.model.selectedCurrency == 'null') {
+      return false;
     } else {
       var selectedCurrency = this.currenciesList.filter(c => c.currency == this.model.selectedCurrency);
       if (selectedCurrency.length > 0) {

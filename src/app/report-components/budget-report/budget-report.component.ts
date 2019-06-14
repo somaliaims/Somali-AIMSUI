@@ -23,6 +23,8 @@ export class BudgetReportComponent implements OnInit {
   currenciesList: any = [];
   model: any = { selectedCurrency: null };
   errorMessage: string = null;
+  grandTotalFunding: number = 0;
+  grandTotalDisbursements: number = 0;
 
   @BlockUI() blockUI: NgBlockUI;
   
@@ -87,11 +89,11 @@ export class BudgetReportComponent implements OnInit {
   }
 
   getGrandTotalForFunding() {
-    return (this.reportDataList.projects.map(p => p.projectValue).reduce(this.storeService.sumValues, 0));
+    this.grandTotalFunding = (this.reportDataList.projects.map(p => p.projectValue).reduce(this.storeService.sumValues, 0));
   }
 
   getGrandTotalForDisbursements() {
-    return (this.reportDataList.projects.map(p => p.actualDisbursements).reduce(this.storeService.sumValues, 0));
+    this.grandTotalDisbursements = (this.reportDataList.projects.map(p => p.actualDisbursements).reduce(this.storeService.sumValues, 0));
   }
 
   printReport() {
@@ -99,8 +101,8 @@ export class BudgetReportComponent implements OnInit {
   }
 
   selectCurrency() {
-    if (!this.model.selectedCurrency) {
-      this.selectedCurrencyName = 'Default';
+    if (this.model.selectedCurrency == null || this.model.selectCurrency == 'null') {
+      return false;
     } else {
       var selectedCurrency = this.currenciesList.filter(c => c.currency == this.model.selectedCurrency);
       if (selectedCurrency.length > 0) {
@@ -139,10 +141,33 @@ export class BudgetReportComponent implements OnInit {
   applyRateOnFinancials(calculatedRate = 1) {
     if (calculatedRate != 1) {
       if (this.reportDataList.projects && this.reportDataList.projects.length > 0) {
-        this.reportDataList.projects.array.forEach(p => {
-          p.projectValue = (p.projectValue * calculatedRate);
+        this.reportDataList.projects.forEach(p => {
+          p.projectValue = Math.round(parseFloat((p.projectValue * calculatedRate).toFixed(2)));
+          p.previousYearDisbursements = Math.round(parseFloat((p.previousYearDisbursements * calculatedRate).toFixed(2)));
+          p.actualDisbursements = Math.round(parseFloat((p.actualDisbursements * calculatedRate).toFixed(2)));
+          p.plannedDisbursements = Math.round(parseFloat((p.plannedDisbursements * calculatedRate).toFixed(2)));
 
+          if (p.funding) {
+            p.funding.forEach(f => {
+              f.amount = Math.round(parseFloat((f.amount * calculatedRate).toFixed(2)));
+            });
+          }
+
+          if (p.expectedDisbursements) {
+            p.expectedDisbursements.forEach(d => {
+              d.sectorPercentages.forEach(s => {
+                s.disbursements = Math.round(parseFloat((s.disbursements * calculatedRate).toFixed(2)));
+              });
+
+              d.locationPercentages.forEach(l => {
+                l.disbursements = Math.round(parseFloat((l.disbursements * calculatedRate).toFixed(2)));
+              });
+            });
+
+          }
         });
+        this.getGrandTotalForFunding();
+        this.getGrandTotalForDisbursements();
       }
     }
   }
