@@ -82,6 +82,7 @@ export const urls = {
 	sectorProjects: "Project/GetSectorProjects/",
 	sectorProjectsReport: "Report/GetSectorWiseProjects",
 	locationProjectsReport: "Report/GetLocationWiseProjects",
+	budgetReport: "Report/GetProjectsBudgetReport",
 	searchProjectsViewByCriteria: "Project/SearchProjectsViewByCriteria",
 	searchProjectsByCriteriaReport: "Report/GetSectorWiseProjects",
 	getFinancialYears: "FinancialYear",

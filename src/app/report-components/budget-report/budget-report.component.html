@@ -1,0 +1,138 @@
+<div class="container-fluid view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Location projects report</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
+
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+                    <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
+                    id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
+                    #selectedCurrency="ngModel">
+                    <option value="null">-- Exchange rate in currency --</option>
+                    <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
+                      {{currency.currencyName}}
+                    </option>
+                  </select>&nbsp;
+                  <span *ngIf="manualExRate == 0" class="text-danger">
+                    <i>No exchange rate available, contact Administrator.</i>
+                  </span>
+                </div>
+                <div class="col-md-6">
+                  <span class="float-right">
+                    <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
+                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
+                    <button *ngIf="reportDataList && reportDataList.projects" type="button" class="btn btn-warning"
+                      (click)="printReport()">Print Report</button>
+                  </span>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row margin-top-10">
+      <div class="row">
+        <div *ngIf="reportSettings" class="col-md-12 text-center">
+          <h5>{{reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
+        </div>
+
+        <div class="col-md-12">
+          <table *ngIf="reportDataList && reportDataList.projects.length > 0" class="table table-bordered"
+            style="margin-bottom: 0rem !important">
+
+            <tr *ngFor="let project of reportDataList.projects; let i = index;">
+              <table class="table table-bordered" style="margin-bottom: 0rem !important">
+                <tr *ngIf="i == 0">
+                  <th>Project name</th>
+                  <th>Project value</th>
+                  <th>Funding</th>
+                  <th>Disbursements</th>
+                </tr>
+                <tr>
+                  <td>{{project.title}}</td>
+                  <td>{{project.projectValue}}</td>
+                  <td>
+                    <table class="table table-bordered">
+                      <tr *ngFor="let funding of project.funding">
+                        <td>{{funding.fundType}}</td>
+                        <td>{{funding.amount}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <table class="table table-bordered">
+                      <tr>
+                        <th>Year</th>
+                        <th>Disbursements</th>
+                      </tr>
+                      <tr *ngFor="let disbursement of project.expectedDisbursements">
+                        <td>
+                          {{disbursement.year}}
+                        </td>
+                        <td>
+                          {{disbursement.disbursements}}
+                        </td>
+
+                        <table class="table table-bordered">
+                          <tr>
+                            <th colspan="2">Sectors breakup</th>
+                          </tr>
+                          <tr *ngFor="let percentages of disbursement.sectorPercentages">
+                            <td>{{percentage.sector}}</td>
+                            <td>{{percentage.disbursements}}</td>
+                          </tr>
+                        </table>
+
+                        <table>
+                            <tr>
+                                <th colspan="2">Locations breakup</th>
+                              </tr>
+                              <tr *ngFor="let percentages of disbursement.locationPercentages">
+                                <td>{{percentage.location}}</td>
+                                <td>{{percentage.disbursements}}</td>
+                              </tr>
+                        </table>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </tr>
+            <tr>
+              <td width="100%">
+                <span class="float-right">
+                  <b>
+                    <i>
+                      Funding total: &nbsp;&nbsp;
+                      Disbursement total: 
+                    </i>
+                  </b>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>

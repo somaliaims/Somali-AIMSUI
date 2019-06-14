@@ -520,6 +520,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.searchProjectsByCriteriaReport);
     }
 
+    getBudgetReportUrl() {
+        return (this.BASE_URL + urlsList.urls.budgetReport);
+    }
+
     getReportNamesUrl() {
         return (this.BASE_URL + urlsList.urls.reportNamesUrl);
     }
