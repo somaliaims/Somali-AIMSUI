@@ -17,8 +17,8 @@ export class BudgetReportComponent implements OnInit {
   oldCurrency: string = null;
   selectedCurrencyName: string = null;
   nationalCurrency: string = null;
-  reportDataList: any = {};
-  reportSettings: any = {};
+  reportDataList: any = [];
+  reportSettings: any = { title: null};
   currenciesList: any = [];
   model: any = { selectedCurrency: null };
 
@@ -28,6 +28,7 @@ export class BudgetReportComponent implements OnInit {
     private storeService: StoreService, private currencyService: CurrencyService) { }
 
   ngOnInit() {
+    this.blockUI.start('Loading report...');
     this.getDefaultCurrency();
     this.getNationalCurrency();
     this.getManualExchangeRateForToday();
@@ -73,16 +74,26 @@ export class BudgetReportComponent implements OnInit {
   }
 
   getBudgetReport() {
-    this.blockUI.start('Loading report...');
     this.reportService.getBudgetReport().subscribe(
       data => {
         if (data) {
-          this.reportSettings = data.reportSettings;
-          this.reportDataList = data.projects;
+          this.reportDataList = data;
         }
         this.blockUI.stop();
       }
     )
+  }
+
+  getGrandTotalForFunding() {
+    return (this.reportDataList.projects.map(p => p.projectValue).reduce(this.storeService.sumValues, 0));
+  }
+
+  getGrandTotalForDisbursements() {
+    return (this.reportDataList.projects.map(p => p.actualDisbursements).reduce(this.storeService.sumValues, 0));
+  }
+
+  printReport() {
+    this.storeService.printSimpleReport('rpt-budget-report', 'Budget report');
   }
 
 }

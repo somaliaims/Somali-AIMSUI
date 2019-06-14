@@ -111,7 +111,7 @@
     </div>
 
     <div class="row margin-top-10">
-        <div *ngIf="reportDataList && reportDataList.reportSettings" id="rpt-location-project" class="col-md-12">
+        <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
           <div class="col-md-12">
             <div *ngIf="multiDataDisplay" class="float-right form-inline">
               <label class="text-warning"><b><i>Data display options for chart:&nbsp;</i></b></label>
@@ -136,7 +136,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="rpt-location-project">
           <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
             <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
           </div>

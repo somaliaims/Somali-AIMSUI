@@ -455,7 +455,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   printReport() {
-    this.storeService.printReport('rpt-sector-project', 'SectorWise Projects List');
+    this.storeService.printReport('rpt-sector-project', 'Sector wise projects list');
   }
 
   public chartClicked(e: any): void {

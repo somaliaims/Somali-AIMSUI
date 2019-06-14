@@ -46,14 +46,14 @@
       </div>
     </div>
 
-    <div class="row margin-top-10">
+    <div class="row margin-top-10" id="rpt-budget-report">
       <div class="row">
-        <div *ngIf="reportSettings" class="col-md-12 text-center">
-          <h5>{{reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
+        <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
+          <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
         </div>
 
         <div class="col-md-12">
-          <table *ngIf="reportDataList && reportDataList.projects.length > 0" class="table table-bordered"
+          <table *ngIf="reportDataList && reportDataList.projects" class="table table-bordered"
             style="margin-bottom: 0rem !important">
 
             <tr *ngFor="let project of reportDataList.projects; let i = index;">
@@ -81,6 +81,10 @@
                         <th>Year</th>
                         <th>Disbursements</th>
                       </tr>
+                      <tr>
+                        <td>{{project.previousYear}}</td>
+                        <td>{{project.previousYearDisbursements}}</td>
+                      </tr>
                       <tr *ngFor="let disbursement of project.expectedDisbursements">
                         <td>
                           {{disbursement.year}}
@@ -93,7 +97,7 @@
                           <tr>
                             <th colspan="2">Sectors breakup</th>
                           </tr>
-                          <tr *ngFor="let percentages of disbursement.sectorPercentages">
+                          <tr *ngFor="let percentage of disbursement.sectorPercentages">
                             <td>{{percentage.sector}}</td>
                             <td>{{percentage.disbursements}}</td>
                           </tr>
@@ -103,7 +107,7 @@
                             <tr>
                                 <th colspan="2">Locations breakup</th>
                               </tr>
-                              <tr *ngFor="let percentages of disbursement.locationPercentages">
+                              <tr *ngFor="let percentage of disbursement.locationPercentages">
                                 <td>{{percentage.location}}</td>
                                 <td>{{percentage.disbursements}}</td>
                               </tr>
@@ -119,8 +123,8 @@
                 <span class="float-right">
                   <b>
                     <i>
-                      Funding total: &nbsp;&nbsp;
-                      Disbursement total: 
+                      Funding total: {{getGrandTotalForFunding()}}&nbsp;&nbsp;
+                      Disbursement total: {{getGrandTotalForDisbursements()}} 
                     </i>
                   </b>
                 </span>

@@ -370,7 +370,7 @@ export class LocationReportComponent implements OnInit {
   }
 
   printReport() {
-    this.storeService.printReport('rpt-location-project', 'LocationWise Projects List');
+    this.storeService.printReport('rpt-location-project', 'Location wise projects list');
   }
 
   public chartClicked(e: any): void {
