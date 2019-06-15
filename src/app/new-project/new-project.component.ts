@@ -296,11 +296,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   proceedConfirmation() {
-    if (this.selectedProjects.length == 0) {
-      this.modalService.open('confirmation-modal');
-    } else {
-      this.proceedToDataEntry();
-    }
+    this.proceedToDataEntry();
   }
 
   closeConfirmationModal() {

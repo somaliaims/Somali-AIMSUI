@@ -943,29 +943,16 @@
 
               <div class="form-group">
                 <label for="documentUrl">Amount</label>
-                <input type="number" class="form-control" id="amount" [(ngModel)]="funderModel.amount" name="amount"
-                  #amount="ngModel" min="1" max="100" required>
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount" [(ngModel)]="funderModel.amount" name="amount"
+                  #amount="ngModel" maxlength="12" required>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value > 0" class="alert alert-danger">
-                  Amount must not be zero or less
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="currency">Currency</label>
-                <select class="form-control" id="currency" (change)="getExchangeRates(1)"
-                  [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
-                  (change)="getExchangeRateForFunding()" required>
-                  <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currencyName}}
-                  </option>
-                </select>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
-                  Currency is required
+                  Enter valid amount
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="exrate-source">Ex. rate source</label>
-                <select class="form-control" id="esource" (change)="getExchangeRates(1)"
+                <select class="form-control" id="esource" (change)="selectExRateSource(1)"
                   [(ngModel)]="funderModel.exRateSource" name="esource" #esource="ngModel" required>
                   <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
                 </select>
@@ -975,12 +962,24 @@
               </div>
 
               <div class="form-group">
+                <label for="currency">Currency</label>
+                <select [class.disable]="funderModel.exRateSource == null || funderModel.dated == null" class="form-control" id="currency" (change)="getExchangeRates(1)"
+                  [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
+                  required>
+                  <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">{{currency.currencyName}}
+                  </option>
+                </select>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
+                  Currency is required
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
-                <input type="number" [readonly]="isExRateReadonly" class="form-control" id="exchangeRate"
-                  [(ngModel)]="funderModel.exchangeRate" name="exchangeRate" maxlength="9" min="1" max="1000"
-                  #exchangeRate="ngModel" />
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" [readonly]="isFundingExRateReadonly" class="form-control" id="exchangeRate"
+                  [(ngModel)]="funderModel.exchangeRate" name="exchangeRate" maxlength="9" #exchangeRate="ngModel" />
                 <div *ngIf="projectFunderForm.submitted" [hidden]="exchangeRate.value > 0" class="alert alert-danger">
-                  Exchange rate for {{defaultCurrency}} must not be zero or less
+                  Enter valid exchange rate for {{defaultCurrency}}
                 </div>
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
                   Default currency is not set. Please contact administrator
@@ -1300,28 +1299,16 @@
 
               <div class="form-group">
                 <label for="text">Amount</label>
-                <input type="number" class="form-control" id="amount" [(ngModel)]="disbursementModel.amount"
-                  name="amount" #amount="ngModel" maxlength="10" min="1" required>
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount" [(ngModel)]="disbursementModel.amount"
+                  name="amount" #amount="ngModel" maxlength="12" required>
                 <div *ngIf="disbursementForm.submitted" [hidden]="amount.valid" class="alert alert-danger">
                   Enter valid amount
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="currency">Currency</label>
-                <select class="form-control" id="currency" [(ngModel)]="disbursementModel.currency" name="currency"
-                  #currency="ngModel" (change)="getExchangeRates(2)" required>
-                  <option *ngFor="let currency of currencyList" [value]="currency.currency">{{currency.currencyName}}
-                  </option>
-                </select>
-                <div *ngIf="disbursementForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
-                  Currency is required
-                </div>
-              </div>
-
-              <div class="form-group">
                 <label for="exrate-source">Ex. rate source</label>
-                <select class="form-control" id="desource" (change)="getExchangeRates(2)"
+                <select class="form-control" id="desource" (change)="selectExRateSource(2)"
                   [(ngModel)]="disbursementModel.exRateSource" name="desource" #desource="ngModel" required>
                   <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
                 </select>
@@ -1331,10 +1318,21 @@
               </div>
 
               <div class="form-group">
+                <label for="currency">Currency</label>
+                <select class="form-control" id="currency" [(ngModel)]="disbursementModel.currency" name="currency"
+                  #currency="ngModel" (change)="getExchangeRates(2)" required>
+                  <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">{{currency.currencyName}}
+                  </option>
+                </select>
+                <div *ngIf="disbursementForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
+                  Currency is required
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
-                <input type="number" [readonly]="isExRateReadonly" class="form-control" id="exchangeRate"
-                  [(ngModel)]="disbursementModel.exchangeRate" name="exchangeRate" maxlength="9" min="1" max="1000"
-                  #exchangeRate="ngModel" />
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" [readonly]="isDisbursementExRateReadonly" class="form-control" id="exchangeRate"
+                  [(ngModel)]="disbursementModel.exchangeRate" name="exchangeRate" maxlength="9" #exchangeRate="ngModel" />
                 <div *ngIf="disbursementForm.submitted" [hidden]="exchangeRate.value > 0" class="alert alert-danger">
                   Exchange rate for {{defaultCurrency}} must not be zero or less
                 </div>

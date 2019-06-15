@@ -8,6 +8,7 @@ export const Messages = {
     INVALID_ORG_NAME: 'Enter valid organization name having at least length of 2 characters',
     ALREADY_IN_LIST: ' is already added to list.',
     INVALID_INPUT: 'Data is not in valid format for submission',
+    EX_RATE_REQUIREMENTS: 'Date, currency, and exchange rate source are required to fetch exchange rate',
     SAVED_SUCCESSFULLY: ' saved successfully',
     INVALID_DATE: 'Enter valid date',
     PASSWORD_RESET_SENT: 'Password reset link sent to the provided email Id',
