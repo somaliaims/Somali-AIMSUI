@@ -63,7 +63,7 @@ export class ProjectEntryComponent implements OnInit {
   isAimsLoading: boolean = false;
   isIatiLoading: boolean = false;
   isFundingExRateReadonly: boolean = true;
-  isDisbursementExRateReadOnly: boolean = true;
+  isDisbursementExRateReadonly: boolean = true;
   requestNo: number = 0;
   isError: boolean = false;
   infoMessage: string = '';
@@ -2117,8 +2117,8 @@ export class ProjectEntryComponent implements OnInit {
         this.isFundingExRateReadonly = true;
         return false;
       }
-
       this.isFundingExRateReadonly = true;
+
       if (this.funderModel.exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
         this.filteredCurrencyList = this.currencyList.filter(c => c.currency == this.defaultCurrency || 
           c.currency == this.nationalCurrency);
@@ -2130,14 +2130,30 @@ export class ProjectEntryComponent implements OnInit {
         this.funderModel.exchangeRate = null;
       }
       this.getExchangeRates('1');
+    } else if (eFor == this.exRateFor.DISBURSEMENT) {
+      if (!this.disbursementModel.exRateSource || this.disbursementModel.exRateSource == 'null' ){
+        this.isDisbursementExRateReadonly = true;
+        return false;
+      }
+      this.isDisbursementExRateReadonly = true;
+
+      if (this.disbursementModel.exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
+        this.filteredCurrencyList = this.currencyList.filter(c => c.currency == this.defaultCurrency || 
+          c.currency == this.nationalCurrency);
+      } else if(this.disbursementModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
+        this.filteredCurrencyList = this.currencyList;
+      } else if (this.disbursementModel.exRateSource == this.exRateSourceCodes.MANUAL) {
+        this.filteredCurrencyList = this.currencyList;
+        this.isDisbursementExRateReadonly = false;
+        this.disbursementModel.exchangeRate = null;
+      }
+      this.getExchangeRates('2');
     }
   }
 
   getExchangeRates(eFor: string) {
     if (eFor == this.exRateFor.FUNDING) {
       if (!this.funderModel.dated || !this.funderModel.currency || !this.funderModel.exRateSource) {
-        //this.errorMessage = Messages.EX_RATE_REQUIREMENTS;
-        //this.errorModal.openModal();
         return false;
       }
     }
@@ -2195,6 +2211,9 @@ export class ProjectEntryComponent implements OnInit {
     } else if (exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
       if (this.funderModel.currency == this.defaultCurrency) {
         this.funderModel.exchangeRate = 1;
+        this.blockUI.stop();
+      } else if(this.disbursementModel.currency == this.defaultCurrency) {
+        this.disbursementModel.exchangeRate = 1;
         this.blockUI.stop();
       } else {
         this.currencyService.getManualExRatesByDate(dated).subscribe(

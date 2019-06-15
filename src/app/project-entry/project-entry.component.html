@@ -1319,7 +1319,7 @@
 
               <div class="form-group">
                 <label for="currency">Currency</label>
-                <select class="form-control" id="currency" [(ngModel)]="disbursementModel.currency" name="currency"
+                <select [class.disable]="disbursementModel.exRateSource == null || disbursementModel.dated == null" class="form-control" id="currency" [(ngModel)]="disbursementModel.currency" name="currency"
                   #currency="ngModel" (change)="getExchangeRates(2)" required>
                   <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">{{currency.currencyName}}
                   </option>
