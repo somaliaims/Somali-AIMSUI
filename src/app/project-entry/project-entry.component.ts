@@ -2037,8 +2037,6 @@ export class ProjectEntryComponent implements OnInit {
               });
             }
           }
-          //this.currentSelectedFieldValues = [];
-          //this.resetCustomFields();
           this.blockUI.stop();
         }
       );
@@ -2235,7 +2233,6 @@ export class ProjectEntryComponent implements OnInit {
         );
       }
     }
-
   }
 
   getCurrencyExchangeRate(currency: string) {
@@ -2295,16 +2292,12 @@ export class ProjectEntryComponent implements OnInit {
         }
       );
     }
-
-    
-    
   }
 
   getExchangeRateForFunding() {
     if (this.funderModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
       this.funderModel.exchangeRate = this.getCurrencyExchangeRate(this.funderModel.currency);
     } else if (this.funderModel.exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
-
     }
   }
 

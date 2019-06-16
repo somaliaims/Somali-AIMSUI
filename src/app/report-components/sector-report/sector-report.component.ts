@@ -42,12 +42,14 @@ export class SectorReportComponent implements OnInit {
   defaultCurrency: string = null;
   defaultCurrencyRate: number = 0;
   nationalCurrency: string = null;
+  nationalCurrencyName: string = null;
   selectedCurrencyName: string = null;
   errorMessage: string = null;
   showChart: boolean = true;
   excelFile: string = null;
   chartCategory: number = 1;
   multiDataDisplay: boolean = true;
+  datedToday: string = null;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -175,6 +177,7 @@ export class SectorReportComponent implements OnInit {
     this.getDefaultCurrency();
     this.getNationalCurrency();
     this.getManualExchangeRateForToday();
+    this.datedToday = this.storeService.getLongDateString(new Date());
 
     this.sectorsSettings = {
       singleSelection: false,
@@ -255,6 +258,7 @@ export class SectorReportComponent implements OnInit {
       data => {
         if (data) {
           this.nationalCurrency = data;
+          this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
         }
       }

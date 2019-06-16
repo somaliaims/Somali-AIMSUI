@@ -301,7 +301,6 @@ export class EnvelopeComponent implements OnInit {
         currencyRate = currencyRateArr[0].rate;
         this.exchangeRate = currencyRate;
       }
-      
     }
       
     if (this.selectedCurrency == this.oldCurrency && this.selectedCurrency == this.defaultCurrency) {

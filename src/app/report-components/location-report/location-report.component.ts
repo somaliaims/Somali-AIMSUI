@@ -32,6 +32,7 @@ export class LocationReportComponent implements OnInit {
   selectedDataOptions: any = [];
   defaultCurrency: string = null;
   nationalCurrency: string = null;
+  nationalCurrencyName: string = null;
   selectedCurrencyName: string = null;
   errorMessage: string = null;
   oldCurrencyRate: number = 0;
@@ -42,6 +43,7 @@ export class LocationReportComponent implements OnInit {
   defaultCurrencyRate: number = 0;
   chartCategory: number = 1;
   multiDataDisplay: boolean = true;
+  datedToday: string = null;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -169,6 +171,7 @@ export class LocationReportComponent implements OnInit {
     this.getDefaultCurrency();
     this.getNationalCurrency();
     this.getManualExchangeRateForToday();
+    this.datedToday = this.storeService.getLongDateString(new Date());
 
     this.locationsSettings = {
       singleSelection: false,
@@ -249,6 +252,7 @@ export class LocationReportComponent implements OnInit {
       data => {
         if (data) {
           this.nationalCurrency = data;
+          this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
         }
       }
