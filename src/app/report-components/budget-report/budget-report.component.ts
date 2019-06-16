@@ -18,6 +18,7 @@ export class BudgetReportComponent implements OnInit {
   oldCurrency: string = null;
   selectedCurrencyName: string = null;
   nationalCurrency: string = null;
+  nationalCurrencyName: string = null;
   reportDataList: any = [];
   reportSettings: any = { title: null};
   currenciesList: any = [];
@@ -25,6 +26,7 @@ export class BudgetReportComponent implements OnInit {
   errorMessage: string = null;
   grandTotalFunding: number = 0;
   grandTotalDisbursements: number = 0;
+  datedToday: string = null;
 
   @BlockUI() blockUI: NgBlockUI;
   
@@ -37,6 +39,7 @@ export class BudgetReportComponent implements OnInit {
     this.getNationalCurrency();
     this.getManualExchangeRateForToday();
     this.getBudgetReport();
+    this.datedToday = this.storeService.getLongDateString(new Date());
   }
 
   getManualExchangeRateForToday() {
@@ -71,6 +74,7 @@ export class BudgetReportComponent implements OnInit {
       data => {
         if (data) {
           this.nationalCurrency = data;
+          this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
         }
       }

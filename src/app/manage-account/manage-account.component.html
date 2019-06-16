@@ -34,7 +34,7 @@
                   <label for="password">Enter New Password</label>
                   <input type="password" class="form-control" id="password" [(ngModel)]="model.password" name="location"
                     #password="ngModel" required>
-                  <div [hidden]="password.valid" class="alert alert-danger">
+                  <div *ngIf="accountForm.submitted" [hidden]="password.valid" class="alert alert-danger">
                     Password is required
                   </div>
                 </div>
@@ -43,7 +43,7 @@
                   <label for="confirmPassword">Confirm Password</label>
                   <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="model.confirmPassword"
                     name="confirmPassword" #confirmPassword="ngModel" required>
-                  <div [hidden]="model.password == model.confirmPassword" class="alert alert-danger">
+                  <div *ngIf="accountForm.submitted" [hidden]="model.password == model.confirmPassword" class="alert alert-danger">
                     Passwords do not match
                   </div>
                 </div>

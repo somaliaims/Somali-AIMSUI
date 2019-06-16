@@ -12,9 +12,9 @@
             <a [ngClass]="{'btn-info': currentTab == 'email', 'text-info': currentTab != 'email'}" href="#"
               class="nav-link text-info" (click)="showEmail()" data-toggle="tab">Send email</a>
           </li>
-          <li *ngIf="permissions.canEditLocation" class="nav-item">
+          <!--<li *ngIf="permissions.canEditLocation" class="nav-item">
             <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-email-message']">Create new message</a>
-          </li>
+          </li>-->
         </ul>
       </div>
       <div class="col-md-6">
@@ -43,14 +43,15 @@
           <table class="table table-bordered table-stripped">
             <tr>
               <th>Definition</th>
+              <th>Subject</th>
               <th>Message</th>
               <th *ngIf="permissions.canEditEmailMessage">Actions</th>
             </tr>
             <tr *ngFor="let msg of filteredEmailMessagesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
               <td>{{msg.typeDefinition}}</td>
+              <td>{{msg.subject}}</td>
               <td>{{msg.message | truncate}} <a href="#" title="View message detail" id="msg-{{msg.id}}"
-                  (click)="viewEmailMessage($event)" class="text-info">View
-                  full message</a><br /></td>
+                  (click)="viewEmailMessage($event)" class="text-info"><b>>></b></a><br /></td>
               <td *ngIf="permissions.canEditEmailMessage">
                 <a title="Edit" (click)="edit(msg.id)" class="btn btn-info"><i class="fa fa-edit color-white"></i></a>
                 <!--&nbsp;
@@ -106,7 +107,7 @@
                 <input type="text" class="form-control" id="title" [(ngModel)]="emailModel.title" name="title"
                   #title="ngModel" maxlength="100" required>
                 <div *ngIf="emailForm.submitted" [hidden]="title.valid" class="alert alert-danger">
-                  Subject is required
+                  Title is required
                 </div>
               </div>
 

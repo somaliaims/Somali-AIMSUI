@@ -12,13 +12,13 @@ import { SecurityHelperService } from '../services/security-helper.service';
 export class ManageEmailMessageComponent implements OnInit {
   isBtnDisabled: boolean = false;
   messageId: number = 0;
-  btnText: string = 'Add message';
+  btnText: string = 'Save message';
   errorMessage: string = '';
   requestNo: number = 0;
   isForEdit: boolean = false;
   isError: boolean = false;
   messagesList: any = [];
-  model = { id: 0, messageType: null, typeDefinition: null, message: null };
+  model = { id: 0, messageType: null, subject: null, typeDefinition: null, message: null };
   entryForm: any = null;
   permissions: any = {};
 
@@ -35,7 +35,7 @@ export class ManageEmailMessageComponent implements OnInit {
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit message';
+        this.btnText = 'Save message';
         this.isForEdit = true;
         this.messageId = id;
       }
@@ -68,7 +68,7 @@ export class ManageEmailMessageComponent implements OnInit {
           }
         }
       }
-    )
+    );
   }
 
   saveEmailMessage(frm: any) {
@@ -86,7 +86,7 @@ export class ManageEmailMessageComponent implements OnInit {
               this.resetFormState();
             }
           }
-        )
+        );
       }
     } else {
       this.messageService.saveEmailMessage(this.model).subscribe(
