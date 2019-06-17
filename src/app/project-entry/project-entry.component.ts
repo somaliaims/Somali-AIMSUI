@@ -1105,6 +1105,7 @@ export class ProjectEntryComponent implements OnInit {
   showDisbursements() {
     this.totalFunds = this.calculateProjectFunding();
     this.totalDisbursements = this.calculateProjectDisbursement();
+    this.disbursementModel.dated = this.storeService.getTodaysDateForDtPicker();
     this.manageTabsDisplay('disbursement');
   }
 
@@ -1878,7 +1879,13 @@ export class ProjectEntryComponent implements OnInit {
 
     var totalFund = this.calculateProjectFunding();
     var totalDisbursement = this.calculateProjectDisbursement();
-    totalDisbursement += this.disbursementModel.amount;
+
+    if (this.disbursementModel.exchangeRate != 1) {
+      totalDisbursement += (this.disbursementModel.amount * (1 / this.disbursementModel.exchangeRate));
+    } else {
+      totalDisbursement += (this.disbursementModel.amount);
+    }
+    
 
     if (totalDisbursement > totalFund) {
       this.errorMessage = Messages.INVALID_DISBURSEMENT;
@@ -2328,12 +2335,12 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   calculateProjectFunding() {
-    var amountsList = this.currentProjectFundersList.map(f => parseInt(f.amount));
+    var amountsList = this.currentProjectFundersList.map(f => (f.exchangeRate > 1 || f.exchangeRate < 1) ? parseFloat((f.amount * (1 / f.exchangeRate)).toFixed(2)) : parseFloat((f.amount * f.exchangeRate).toFixed(2)));
     return amountsList.reduce(this.storeService.sumValues, 0);
   }
 
   calculateProjectDisbursement() {
-    var amountsList = this.currentProjectDisbursementsList.map(d => parseInt(d.amount));
+    var amountsList = this.currentProjectDisbursementsList.map(d => (d.exchangeRate > 1 || d.exchangeRate < 1) ? parseFloat((d.amount * (1 / d.exchangeRate)).toFixed(2)) : parseFloat((d.amount * d.exchangeRate).toFixed(2)));
     return parseFloat(amountsList.reduce(this.storeService.sumValues, 0));
   }
 

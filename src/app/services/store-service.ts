@@ -15,7 +15,7 @@ export class StoreService {
     "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
   ];
   private requestNumber: number = 0;
-  private yearGap: number = 50;
+  private yearGap: number = 100;
   private messageSource = new BehaviorSubject<RegistrationModel>(null);
   currentRegistration = this.messageSource.asObservable();
 
@@ -184,6 +184,11 @@ export class StoreService {
   getCurrentDateSQLFormat() {
     var dated = new Date();
     return (dated.getFullYear() + '-' + (dated.getMonth() + 1) + '-' + dated.getDate());
+  }
+
+  getTodaysDateForDtPicker() {
+    var dated = new Date();
+    return { year: dated.getFullYear(), month: (dated.getMonth() + 1), day: dated.getDate() };
   }
 
   getExcelFilesUrl() {
