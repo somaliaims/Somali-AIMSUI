@@ -919,18 +919,6 @@
               </div>
 
               <div class="form-group">
-                <label for="title">Date </label>
-                <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
-                    [(ngModel)]="funderModel.dated" (dateSelect)="getExchangeRates(1)" ngbDatepicker #s="ngbDatepicker"
-                    required>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group">
                 <label for="fundingType">Funding type</label>
                 <select class="form-control" id="fundingTypeId" [(ngModel)]="funderModel.fundingTypeId"
                   name="fundingType" #fundingTypeId="ngModel" required>
@@ -938,15 +926,6 @@
                 </select>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="fundingTypeId.valid" class="alert alert-danger">
                   Funding type is required
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="documentUrl">Amount</label>
-                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount" [(ngModel)]="funderModel.amount" name="amount"
-                  #amount="ngModel" maxlength="12" required>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value > 0" class="alert alert-danger">
-                  Enter valid amount
                 </div>
               </div>
 
@@ -962,7 +941,7 @@
               </div>
 
               <div class="form-group">
-                <label for="currency">Currency</label>
+                <label for="currency">Funding currency</label>
                 <select [class.disable]="funderModel.exRateSource == null || funderModel.dated == null" class="form-control" id="currency" (change)="getExchangeRates(1)"
                   [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
                   required>
@@ -983,6 +962,27 @@
                 </div>
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
                   Default currency is not set. Please contact administrator
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="documentUrl">Funding amount</label>
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount" [(ngModel)]="funderModel.amount" name="amount"
+                  #amount="ngModel" maxlength="12" required>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value > 0" class="alert alert-danger">
+                  Enter valid amount
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="title">Funding date </label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
+                    [(ngModel)]="funderModel.dated" (dateSelect)="getExchangeRates(1)" ngbDatepicker #s="ngbDatepicker"
+                    required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                  </div>
                 </div>
               </div>
 
@@ -1319,8 +1319,8 @@
 
               <div class="form-group">
                 <label for="currency">Currency</label>
-                <select [class.disable]="disbursementModel.exRateSource == null || disbursementModel.dated == null" class="form-control" id="currency" [(ngModel)]="disbursementModel.currency" name="currency"
-                  #currency="ngModel" (change)="getExchangeRates(2)" required>
+                <select [class.disable]="disbursementModel.exRateSource == null || disbursementModel.dated == null" class="form-control" id="dcurrency" [(ngModel)]="disbursementModel.currency" name="dcurrency"
+                  #dcurrency="ngModel" (change)="getExchangeRates(2)" required>
                   <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">{{currency.currencyName}}
                   </option>
                 </select>

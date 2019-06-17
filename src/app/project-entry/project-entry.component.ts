@@ -233,6 +233,7 @@ export class ProjectEntryComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
+    this.selectedFunderId = parseInt(localStorage.getItem('organizationId'));
     this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
@@ -424,6 +425,13 @@ export class ProjectEntryComponent implements OnInit {
     this.organizationService.getOrganizationsList().subscribe(
       data => {
         this.organizationsList = data;
+        if (this.selectedFunderId != 0) {
+          var selectOrganization = this.organizationsList.filter(o => o.id == this.selectedFunderId);
+          if (selectOrganization.length > 0) {
+            this.funderInput.setValue(selectOrganization[0]);
+            this.funderModel.funder = selectOrganization[0].organizationName;
+          }
+        }
         this.filteredOrganizations = this.funderInput.valueChanges
           .pipe(
             startWith(''),
@@ -972,10 +980,10 @@ export class ProjectEntryComponent implements OnInit {
           var eDate = new Date(data.endDate);
           this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
           this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
+          this.funderModel.dated = this.model.startDate;
 
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
-            console.log(data.sectors);
             this.currentProjectSectorsList = data.sectors;
             this.sectorTotalPercentage = this.calculateSectorPercentage();
           }
