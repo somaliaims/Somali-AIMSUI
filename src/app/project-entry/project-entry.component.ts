@@ -156,6 +156,11 @@ export class ProjectEntryComponent implements OnInit {
     4: 'Radio'
   };
 
+  conditionsForCustomFields: any = {
+    GRANT_LAON: 'Loan',
+    HEALTH_SECTOR: 'Health'
+  }
+
   financeType: any = {
     1: 'Funding',
     2: 'Disbursement'
@@ -970,6 +975,7 @@ export class ProjectEntryComponent implements OnInit {
 
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
+            console.log(data.sectors);
             this.currentProjectSectorsList = data.sectors;
             this.sectorTotalPercentage = this.calculateSectorPercentage();
           }
@@ -984,6 +990,7 @@ export class ProjectEntryComponent implements OnInit {
           }
 
           if (data.funders && data.funders.length > 0) {
+            console.log(data.funders);
             this.currentProjectFundersList = data.funders;
           }
 
@@ -1620,11 +1627,18 @@ export class ProjectEntryComponent implements OnInit {
 
     if (this.funderEntryType == 'aims' && this.selectedFunderId == 0) {
       this.funderModel.funder = this.funderInput.value;
-      if (this.funderModel.funder.length < 3) {
-        this.errorMessage = 'Either select from list or enter valid name for funder (Min length of 3)';
+      if (!this.funderModel.funder) {
+        this.errorMessage = 'Either select from list or enter valid name for funder';
         this.errorModal.openModal();
         return false;
       }
+
+      if (this.funderModel.funder.length < 3) {
+        this.errorMessage = 'Funder name must be at least 3 characters long';
+        this.errorModal.openModal();
+        return false;
+      }
+
     }
 
     if (this.funderModel.amount <= 0) {
@@ -2312,7 +2326,7 @@ export class ProjectEntryComponent implements OnInit {
 
   calculateProjectDisbursement() {
     var amountsList = this.currentProjectDisbursementsList.map(d => parseInt(d.amount));
-    return amountsList.reduce(this.storeService.sumValues, 0);
+    return parseFloat(amountsList.reduce(this.storeService.sumValues, 0));
   }
 
   checkFieldType(typeId: number) {
@@ -2334,6 +2348,19 @@ export class ProjectEntryComponent implements OnInit {
       optionValue.length > 0 ? optionValue[0].isSelected = true : null;
     }
     });*/
+  }
+
+  isShowCustomFields() {
+    var isLoanExists = this.currentProjectFundersList.filter(f => f.fundingType == this.conditionsForCustomFields.GRANT_LAON);
+    if (isLoanExists.length > 0) {
+      return true;
+    }
+
+    var isHealthExists = this.currentProjectSectorsList.filter(s => s.sector.toLowerCase().indexOf(this.conditionsForCustomFields.HEALTH_SECTOR));
+    if (isHealthExists.length > 0) {
+      return true;
+    }
+    return false;
   }
 
   getFieldType(id: number) {

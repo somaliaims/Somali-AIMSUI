@@ -36,7 +36,7 @@
             <a [ngClass]="{'btn-info': currentTab == 'disbursement', 'text-info': currentTab != 'disbursement'}"
               href="#" class="nav-link text-info" (click)="showDisbursements()" data-toggle="tab">Disbursements</a>
           </li>
-          <li *ngIf="activeProjectId != 0" class="nav-item">
+          <li *ngIf="activeProjectId != 0 && isShowCustomFields()" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'customFields', 'text-info': currentTab != 'customFields'}"
               href="#" class="nav-link text-info" (click)="showCustomFields()" data-toggle="tab">Custom fields</a>
           </li>

@@ -86,6 +86,8 @@ export class BudgetReportComponent implements OnInit {
       data => {
         if (data) {
           this.reportDataList = data;
+          this.getGrandTotalForFunding();
+          this.getGrandTotalForDisbursements();
         }
         this.blockUI.stop();
       }

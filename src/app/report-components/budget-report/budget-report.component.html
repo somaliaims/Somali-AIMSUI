@@ -14,7 +14,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
+            <form class="form-signin" (ngSubmit)="getBudgetReport()" #searchForm="ngForm">
 
               <div class="row margin-top-10">
                 <div class="col-md-6 form-inline">
@@ -72,9 +72,9 @@
                   <th>Disbursements</th>
                 </tr>
                 <tr>
-                  <td>{{project.title}}</td>
-                  <td>{{project.projectValue}}</td>
-                  <td>
+                  <td width="40%">{{project.title}}</td>
+                  <td width="10%">{{project.projectValue}}</td>
+                  <td width="20%">
                     <table class="table table-bordered">
                       <tr *ngFor="let funding of project.funding">
                         <td>{{funding.fundType}}</td>
@@ -82,7 +82,7 @@
                       </tr>
                     </table>
                   </td>
-                  <td>
+                  <td width="30%">
                     <table class="table table-bordered">
                       <tr>
                         <th>Year - Disbursements</th>
