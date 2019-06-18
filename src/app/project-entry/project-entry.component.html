@@ -1310,9 +1310,9 @@
 
               <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
-                <input type="text" pattern="^\d*(\.\d{0,2})?$" [readonly]="isDisbursementExRateReadonly" class="form-control" id="exchangeRate"
-                  [(ngModel)]="disbursementModel.exchangeRate" name="exchangeRate" maxlength="9" #exchangeRate="ngModel" />
-                <div *ngIf="disbursementForm.submitted" [hidden]="exchangeRate.value > 0" class="alert alert-danger">
+                <input type="number" [readonly]="isDisbursementExRateReadonly" class="form-control" id="dexchangeRate"
+                  [(ngModel)]="disbursementModel.exchangeRate" name="dexchangeRate" min="0.1" max="1000" #dexchangeRate="ngModel" required />
+                <div *ngIf="disbursementForm.submitted" [hidden]="dexchangeRate.valid" class="alert alert-danger">
                   Exchange rate for {{defaultCurrency}} must not be zero or less
                 </div>
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
@@ -1322,9 +1322,9 @@
 
               <div class="form-group">
                 <label for="text">Amount</label>
-                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount" [(ngModel)]="disbursementModel.amount"
-                  name="amount" #amount="ngModel" maxlength="12" required>
-                <div *ngIf="disbursementForm.submitted" [hidden]="amount.valid" class="alert alert-danger">
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="damount" [(ngModel)]="disbursementModel.amount"
+                  name="damount" #damount="ngModel" maxlength="12" required>
+                <div *ngIf="disbursementForm.submitted" [hidden]="damount.valid" class="alert alert-danger">
                   Enter valid amount
                 </div>
               </div>
@@ -1334,9 +1334,9 @@
                 <div class="input-group">
                   <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
                     [(ngModel)]="disbursementModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(2)" ngbDatepicker
-                    #s="ngbDatepicker" required>
+                    #dd="ngbDatepicker" required>
                   <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                    <button class="btn btn-outline-secondary calendar" (click)="dd.toggle()" type="button"></button>
                   </div>
                 </div>
               </div>

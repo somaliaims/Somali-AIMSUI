@@ -1105,7 +1105,7 @@ export class ProjectEntryComponent implements OnInit {
   showDisbursements() {
     this.totalFunds = this.calculateProjectFunding();
     this.totalDisbursements = this.calculateProjectDisbursement();
-    this.disbursementModel.dated = this.storeService.getTodaysDateForDtPicker();
+    //this.disbursementModel.dated = this.storeService.getTodaysDateForDtPicker();
     this.manageTabsDisplay('disbursement');
   }
 
@@ -1843,6 +1843,10 @@ export class ProjectEntryComponent implements OnInit {
 
   /**Managing Disbursements */
   saveProjectDisbursement(frm: any) {
+    if (!this.disbursementModel.dated) {
+      return false;
+    }
+
     this.currentEntryForm = frm;
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;

@@ -194,5 +194,16 @@ export class StoreService {
   getExcelFilesUrl() {
     return (urlsList.urls.excelFilesUrl);
   }
+
+  isDateValid(dated: any) {
+    var formattedDate = null;
+    if (dated.year && dated.month && dated.day) {
+      formattedDate = dated.year + '-' + dated.month + '-' + dated.day;
+    } else {
+      formattedDate = dated;
+    }
+    var timestamp = Date.parse(formattedDate);
+    return (isNaN(timestamp) == false); 
+  }
   
 }
