@@ -1105,7 +1105,7 @@ export class ProjectEntryComponent implements OnInit {
   showDisbursements() {
     this.totalFunds = this.calculateProjectFunding();
     this.totalDisbursements = this.calculateProjectDisbursement();
-    //this.disbursementModel.dated = this.storeService.getTodaysDateForDtPicker();
+    this.disbursementModel.dated = this.storeService.getTodaysDateForDtPicker();
     this.manageTabsDisplay('disbursement');
   }
 
