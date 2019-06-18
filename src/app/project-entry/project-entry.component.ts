@@ -34,9 +34,11 @@ import { FundingTypeService } from '../services/funding-type.service';
 export class ProjectEntryComponent implements OnInit {
   isExRateAutoConvert = false;
   filteredOrganizations: Observable<Organization[]>;
+  filteredImplementers: Observable<Organization[]>;
   activeProjectId: number = 0;
   selectedSectorId: number = 0;
   selectedFunderId: number = 0;
+  selectedImplementerId: number = 0;
   selectedLocationId: number = 0;
   selectedParentSectorId: number = 0;
   sectorTotalPercentage: number = 0;
@@ -80,9 +82,11 @@ export class ProjectEntryComponent implements OnInit {
   sectorInput = new FormControl();
   locationSelectionForm: FormGroup;
   funderForm: FormGroup;
+  implementerForm: FormGroup;
   locationInput = new FormControl();
   parentSectorInput = new FormControl();
   funderInput = new FormControl();
+  implementerInput = new FormControl();
   sectorEntryType: string = 'aims';
   locationEntryType: string = 'aims';
   documentEntryType: string = 'aims';
@@ -253,6 +257,11 @@ export class ProjectEntryComponent implements OnInit {
     this.funderForm = this.fb.group({
       funderInput: null,
     });
+
+    this.implementerForm = this.fb.group({
+      implementerInput: null,
+    });
+
 
     this.locationSelectionForm = this.fb.group({
       locationInput: null,
@@ -432,7 +441,14 @@ export class ProjectEntryComponent implements OnInit {
             this.funderModel.funder = selectOrganization[0].organizationName;
           }
         }
+
         this.filteredOrganizations = this.funderInput.valueChanges
+          .pipe(
+            startWith(''),
+            map(organization => organization ? this.filterOrganizations(organization) : this.organizationsList.slice())
+          );
+
+        this.filteredImplementers = this.implementerInput.valueChanges
           .pipe(
             startWith(''),
             map(organization => organization ? this.filterOrganizations(organization) : this.organizationsList.slice())
@@ -998,7 +1014,6 @@ export class ProjectEntryComponent implements OnInit {
           }
 
           if (data.funders && data.funders.length > 0) {
-            console.log(data.funders);
             this.currentProjectFundersList = data.funders;
           }
 
@@ -1135,6 +1150,15 @@ export class ProjectEntryComponent implements OnInit {
       this.selectedFunderId = organization.id;
     } else {
       this.selectedFunderId = 0;
+    }
+    return organization ? organization.organizationName : undefined;
+  }
+
+  displayImplementer(organization?: any): string | undefined {
+    if (organization) {
+      this.selectedImplementerId = organization.id;
+    } else {
+      this.selectedImplementerId = 0;
     }
     return organization ? organization.organizationName : undefined;
   }
@@ -1619,9 +1643,11 @@ export class ProjectEntryComponent implements OnInit {
       var funderExists = this.currentProjectFundersList.filter(f => f.funderId == this.selectedFunderId
         && f.fundingTypeId == this.funderModel.fundingTypeId);
       if (funderExists.length > 0) {
-        if (this.funderInput.value && this.funderInput.value.toLowerCase().trim() != funderExists[0].funder.toLowerCase().trim()) {
+        var funderName = (this.funderInput.value && this.funderInput.value.organizationName) ? this.funderInput.value.organizationName : this.funderInput.value;
+        if (funderName && funderName.toLowerCase().trim() != funderExists[0].funder.toLowerCase().trim() && 
+        this.funderModel.fundingTypeId != funderExists[0].fundingTypeId) {
           this.funderModel.funderId = 0;
-          this.funderModel.funder = this.funderInput.value;
+          this.funderModel.funder = funderName;
           isNewFunder = true;
         } else {
           this.errorMessage = 'Selected funder ' + Messages.ALREADY_IN_LIST;
@@ -1761,6 +1787,25 @@ export class ProjectEntryComponent implements OnInit {
       this.implementerModel.projectId = projectId;
     } else {
       this.errorMessage = Messages.PROJECT_DEPENDENCY;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    var isNewImplementer = false;
+    if (this.selectedImplementerId != 0) {
+      this.implementerModel.implementerId = this.selectedImplementerId;
+      var implementerExists = this.currentProjectImplementersList.filter(i => i.implementerId == this.selectedImplementerId);
+      if (implementerExists.length > 0) {
+        var implementerName = (this.implementerInput.value && this.implementerInput.value.organizationName) ? this.implementerInput.value.organizationName : this.implementerInput.value;
+        if (implementerName && implementerName.toLowerCase().trim() != implementerExists[0].implementer.toLowerCase().trim()) {
+          this.errorMessage = 'Selected implementer ' + Messages.ALREADY_IN_LIST;
+          this.errorModal.openModal();
+          return false;
+        }
+      }
+    } else if (this.implementerEntryType == 'aims' && this.selectedImplementerId == 0) {
+      this.implementerModel.implementerId = 0;
+      this.errorMessage = 'Select an implementer';
       this.errorModal.openModal();
       return false;
     }
@@ -2430,8 +2475,10 @@ export class ProjectEntryComponent implements OnInit {
 
   resetImplementerEntry() {
     this.implementerEntryType = 'aims';
-    this.implementerModel.implementer = '';
+    this.implementerModel.implementer = null;
     this.implementerModel.implementerId = null;
+    this.selectedImplementerId = 0;
+    this.implementerInput.setValue(null);
   }
 
   resetDisbursementEntry() {

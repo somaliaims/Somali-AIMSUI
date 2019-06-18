@@ -1117,11 +1117,28 @@
                 </span>
               </div>
             </div>
+
+            <div *ngIf="implementerEntryType == 'aims'" class="form-group">
+              <div class="form-group">
+                <form class="example-form" [formGroup]='implementerForm'>
+                  <mat-form-field class="example-full-width margin-left-5">
+                    <input matInput placeholder="Enter/Select Implementer" aria-label="Implementer" [matAutocomplete]="auto"
+                      [formControl]="implementerInput">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayImplementer.bind(this)">
+                      <mat-option *ngFor="let org of filteredImplementers | async" [value]="org">
+                        <span>{{org.organizationName}}</span>
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </form>
+              </div>
+            </div>
+
             <form class="form-signin"
               (ngSubmit)="projectImplementerForm.form.valid && saveProjectImplementer(projectImplementerForm)"
               #projectImplementerForm="ngForm">
 
-              <div *ngIf="implementerEntryType == 'aims'" class="form-group">
+              <!--<div *ngIf="implementerEntryType == 'aims'" class="form-group">
                 <label for="implementerId">AIMS Implementers</label>
                 <select class="form-control" id="implementerId" [(ngModel)]="implementerModel.implementerId"
                   name="implementerId" #implementerId="ngModel" required>
@@ -1131,7 +1148,7 @@
                 <div *ngIf="projectImplementerForm.submitted" [hidden]="implementerId.valid" class="alert alert-danger">
                   Implementer is required
                 </div>
-              </div>
+              </div>-->
 
               <div *ngIf="implementerEntryType == 'iati'" class="form-group">
                 <label for="implementer">New Implementer</label>
