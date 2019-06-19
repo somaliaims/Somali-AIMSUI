@@ -78,6 +78,7 @@ import { DeleteSectortypeComponent } from './delete-sectortype/delete-sectortype
 import { LocationReportComponent } from './report-components/location-report/location-report.component';
 import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 import { BudgetReportComponent } from './report-components/budget-report/budget-report.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +148,7 @@ import { BudgetReportComponent } from './report-components/budget-report/budget-
     LocationReportComponent,
     ProjectReportComponent,
     BudgetReportComponent,
+    ContactFormComponent,
   ],
   imports: [
     BrowserModule,
