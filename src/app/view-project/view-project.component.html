@@ -30,16 +30,14 @@
               </div>
               <table class="table table-stripped">
                 <tr>
-                  <td><b>Id: </b></td>
-                  <td>{{projectData.id}}</td>
                   <td><b>Title: </b></td>
-                  <td>{{projectData.title}}</td>
+                  <td colspan="3">{{projectData.title}}</td>
                 </tr>
                 <tr>
                   <td><b>Start Date: </b></td>
-                  <td>{{projectData.startDate}}</td>
+                  <td>{{convertDateToLongString(projectData.startDate)}}</td>
                   <td><b>End Date: </b></td>
-                  <td>{{projectData.endDate}}</td>
+                  <td>{{convertDateToLongString(projectData.endDate)}}</td>
                 </tr>
                 <tr>
                   <td><b>Description: </b></td>
@@ -76,13 +74,11 @@
               <table *ngIf="projectLocations.length > 0" class="table table-stripped">
                 <tr>
                   <th>Location</th>
-                  <th>Latitude</th>
-                  <th>Longitude</th>
+                  <th>Funds percentage</th>
                 </tr>
                 <tr *ngFor="let location of projectLocations">
                   <td>{{location.location}}</td>
-                  <td>{{location.latitude}}</td>
-                  <td>{{location.longitude}}</td>
+                  <td>{{location.fundsPercentage}}</td>
                   <!-- <td>
                     <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
@@ -102,7 +98,7 @@
           <div class="card">
             <div class="card-header">
               <span class="float-left">
-                Project Sectors
+                Project sectors
               </span>
               <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectSector()">Add Project Sector</button>
@@ -118,7 +114,7 @@
               <table *ngIf="projectSectors.length > 0" class="table table-stripped">
                 <tr>
                   <th>Sector</th>
-                  <th>Funds Percentage</th>
+                  <th>Funds percentage</th>
                 </tr>
                 <tr *ngFor="let sector of projectSectors">
                   <td>{{sector.sector}}</td>
@@ -143,7 +139,7 @@
           <div class="card">
             <div class="card-header">
               <span class="float-left">
-                Project Funders
+                Project funders
               </span>
               <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectFunder()">Add Project Funder</button>
@@ -161,7 +157,7 @@
                   <th>Funder</th>
                   <th>Amount</th>
                   <th>Currency</th>
-                  <th>Exchange Rate</th>
+                  <th>Exchange rate</th>
                 </tr>
                 <tr *ngFor="let funder of projectFunders">
                   <td>{{funder.funder}}</td>
@@ -229,7 +225,7 @@
           <div class="card">
             <div class="card-header">
               <span class="float-left">
-                Project Disbursements
+                Project disbursements
               </span>
               <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectDisbursement()">Add Project Disbursement</button>
@@ -244,13 +240,11 @@
 
               <table *ngIf="projectDisbursements.length > 0" class="table table-stripped">
                 <tr>
-                  <th>Starting Month/Year</th>
-                  <th>Ending Month/Year</th>
+                  <th>Dated</th>
                   <th>Amount</th>
                 </tr>
                 <tr *ngFor="let disbursement of projectDisbursements">
-                  <td>{{monthStrings[disbursement.startingMonth]}}, {{disbursement.startingYear}}</td>
-                  <td>{{monthStrings[disbursement.endingMonth]}}, {{disbursement.endingYear}}</td>
+                  <td>{{convertDateToLongString(disbursement.dated)}}</td>
                   <td>{{disbursement.amount | number:0}}</td>
                   <!-- <td>
                     <a title="Remove Disbursement" (click)="deleteProjectDisbursement(disbursement.projectId, disbursement.startingYear, disbursement.startingMonth)" class="btn btn-danger"><i

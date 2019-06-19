@@ -283,6 +283,10 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  convertDateToLongString(dated: string) {
+    return (this.storeService.getLongDateString(dated));
+  }
+
   hideLoader() {
     this.isLoading = false;
   }
