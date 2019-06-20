@@ -199,11 +199,9 @@
 
               <table *ngIf="projectImplementers.length > 0" class="table table-stripped">
                 <tr>
-                  <th>Id</th>
                   <th>Implementer</th>
                 </tr>
                 <tr *ngFor="let implementer of projectImplementers">
-                  <td>{{implementer.implementerId}}</td>
                   <td>{{implementer.implementer}}</td>
                   <!-- <td>
                     <a title="Remove Implementer" (click)="deleteProjectImplementer(projectId, implementer.implementerId)" class="btn btn-danger"><i
@@ -242,10 +240,14 @@
                 <tr>
                   <th>Dated</th>
                   <th>Amount</th>
+                  <th>Currency</th>
+                  <th>Exchange rate</th>
                 </tr>
                 <tr *ngFor="let disbursement of projectDisbursements">
                   <td>{{convertDateToLongString(disbursement.dated)}}</td>
                   <td>{{disbursement.amount | number:0}}</td>
+                  <td>{{disbursement.currency}}</td>
+                  <td>{{disbursement.exchangeRate}}</td>
                   <!-- <td>
                     <a title="Remove Disbursement" (click)="deleteProjectDisbursement(disbursement.projectId, disbursement.startingYear, disbursement.startingMonth)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>

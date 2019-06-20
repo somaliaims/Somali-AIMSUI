@@ -34,4 +34,5 @@ export const Messages = {
     INVALID_SECTOR_MAPPING: 'Select a sector before saving the mappings',
     EX_RATE_NOT_FOUND: 'Exchange rate could not be found for the selected source. Please select another source or contact administrator',
     INVALID_ENVELOPE_MANUAL_AMOUNT: 'Manually entered amount cannot be less than total expected amount',
+    SELECT_IMPLEMENTER_FROM_LIST: 'You must select an implementer from the list'
 }

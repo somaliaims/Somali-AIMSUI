@@ -1792,14 +1792,28 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
+    var implementerName = (this.implementerInput.value && this.implementerInput.value.organizationName) ? this.implementerInput.value.organizationName : this.implementerInput.value;
+    implementerName = implementerName.toLowerCase().trim();
+    if (this.selectedImplementerId == 0) {
+      var isImplementerExists = this.organizationsList.filter(o => o.organizationName.toLowerCase().trim() == implementerName);
+      if (isImplementerExists.length == 0) {
+        this.errorMessage = Messages.SELECT_IMPLEMENTER_FROM_LIST;
+        this.errorModal.openModal();
+        return false;
+      }
+    }
+
     var isNewImplementer = false;
     if (this.selectedImplementerId != 0) {
       this.implementerModel.implementerId = this.selectedImplementerId;
       var implementerExists = this.currentProjectImplementersList.filter(i => i.implementerId == this.selectedImplementerId);
       if (implementerExists.length > 0) {
-        var implementerName = (this.implementerInput.value && this.implementerInput.value.organizationName) ? this.implementerInput.value.organizationName : this.implementerInput.value;
-        if (implementerName && implementerName.toLowerCase().trim() != implementerExists[0].implementer.toLowerCase().trim()) {
+        if (implementerName && implementerName == implementerExists[0].implementer.toLowerCase().trim()) {
           this.errorMessage = 'Selected implementer ' + Messages.ALREADY_IN_LIST;
+          this.errorModal.openModal();
+          return false;
+        } else {
+          this.errorMessage = Messages.SELECT_IMPLEMENTER_FROM_LIST;
           this.errorModal.openModal();
           return false;
         }
