@@ -39,7 +39,6 @@ export class MergeProjectsComponent implements OnInit {
   viewProjectDocuments: any = [];
   viewProjectFunders: any = [];
   viewProjectImplementers: any = [];
-  viewParticipatingOrganizations: any = [];
   viewProjectDisbursements: any = [];
 
   calendarMaxDate: any = {};
@@ -225,7 +224,8 @@ export class MergeProjectsComponent implements OnInit {
         this.viewProject = project;
         this.viewProjectLocations = projectData.locations;
         this.viewProjectSectors = projectData.sectors;
-        this.viewParticipatingOrganizations = projectData.participatingOrganizations;
+        this.viewProjectFunders = projectData.funders;
+        this.viewProjectImplementers = projectData.implementers;
         this.viewProjectDocuments = projectData.documents;
         this.projectIATIInfoModal.openModal();
       }

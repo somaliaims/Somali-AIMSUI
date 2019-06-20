@@ -356,7 +356,7 @@
               </div>
 
               <button [class.disable]="isProjectSectorBtnDisabled"
-                class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">{{btnProjectSectorText}}</button>
+                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectSectorText}}</button>
 
               <!--<button [class.disable]="isProjectSectorBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button" (click)="resetSectorEntry()">Reset
@@ -530,7 +530,7 @@
               </div>
 
               <button [class.disable]="isProjectLocationBtnDisabled"
-                class="btn btn-lg btn-warning btn-block text-uppercase"
+                class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">{{btnProjectLocationText}}</button>
 
               <!--<button [class.disable]="isProjectLocationBtnDisabled"
@@ -694,7 +694,7 @@
               </div>
 
               <button [class.disable]="isProjectDocumentBtnDisabled"
-                class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Add document</button>
+                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Add document</button>
               <!--<button [class.disable]="isProjectDocumentBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="submit"
                 (click)="resetDocumentEntry()">Reset document</button>-->
@@ -1548,5 +1548,5 @@
 </project-info-modal>
 
 <projecti-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
-  [participatingOrganizations]="viewParticipatingOrganizations" [documents]="viewProjectDocuments">
+  [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments">
 </projecti-info-modal>

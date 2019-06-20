@@ -43,7 +43,7 @@
 
             <div class="col-md-12 margin-top-10">
               <h6 class="text-info"><b>Project sectors</b></h6>
-              <table class="table table-stripped">
+              <table *ngIf="sectors.length > 0" class="table table-stripped">
                 <tr>
                   <th>Sector name</th>
                   <th>Funds percentage</th>
@@ -60,25 +60,38 @@
 
 
             <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Participating organizations</b></h6>
-              <table class="table table-stripped">
+              <h6 class="text-info"><b>Funders</b></h6>
+              <table *ngIf="funders.length > 0" class="table table-stripped">
                 <tr>
-                  <th>Organization</th>
-                  <th>Role</th>
+                  <th>Funder</th>
                 </tr>
-                <tr *ngFor="let org of participatingOrganizations">
+                <tr *ngFor="let org of funders">
                   <td>{{org.name}}</td>
-                  <td>{{org.role}}</td>
                 </tr>
               </table>
-              <span class="text-info" *ngIf="participatingOrganizations.length == 0">
-                <i>No organizations found</i>
+              <span class="text-info" *ngIf="funders.length == 0">
+                <i>No funders found</i>
+              </span>
+            </div>
+
+            <div class="col-md-12 margin-top-10">
+              <h6 class="text-info"><b>Implementers</b></h6>
+              <table *ngIf="implementers.length > 0" class="table table-stripped">
+                <tr>
+                  <th>Implementer</th>
+                </tr>
+                <tr *ngFor="let org of funders">
+                  <td>{{org.name}}</td>
+                </tr>
+              </table>
+              <span class="text-info" *ngIf="funders.length == 0">
+                <i>No implementers found</i>
               </span>
             </div>
 
             <div class="col-md-12 margin-top-10">
               <h6 class="text-info"><b>Project documents</b></h6>
-              <table class="table table-stripped">
+              <table *ngIf="documents.length > 0" class="table table-stripped">
                 <tr>
                   <th>Document title</th>
                   <th>Url</th>

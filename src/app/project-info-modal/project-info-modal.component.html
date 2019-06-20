@@ -40,18 +40,11 @@
               <table *ngIf="locations.length > 0" class="table table-stripped">
                 <tr>
                   <th>Location</th>
-                  <th>Latitude</th>
-                  <th>Longitude</th>
-                  <th>Actions</th>
+                  <th>Funds percentage</th>
                 </tr>
                 <tr *ngFor="let location of locations">
                   <td>{{location.location}}</td>
-                  <td>{{location.latitude}}</td>
-                  <td>{{location.longitude}}</td>
-                  <td>
-                    <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)"
-                      class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
-                  </td>
+                  <td>{{location.fundsPercentage}}</td>
                 </tr>
               </table>
               <span *ngIf="locations.length == 0" class="text-info"><i>No locations found</i></span>
@@ -59,7 +52,7 @@
 
             <div class="col-md-12 margin-top-10">
               <h6 class="text-info"><b>Project sectors</b></h6>
-              <table class="table table-stripped">
+              <table *ngIf="sectors.length > 0" class="table table-stripped">
                 <tr>
                   <th>Sector</th>
                   <th>Funds percentage</th>
@@ -77,7 +70,7 @@
 
             <div class="col-md-12 margin-top-10">
               <h6 class="text-info"><b>Project funders</b></h6>
-              <table class="table table-stripped">
+              <table *ngIf="funders.length > 0" class="table table-stripped">
                 <tr>
                   <th>Funder</th>
                   <th>Amount</th>
@@ -98,7 +91,7 @@
 
             <div class="col-md-12 margin-top-10">
               <h6 class="text-info"><b>Project implementers</b></h6>
-              <table class="table table-stripped">
+              <table *ngIf="implementers.length > 0" class="table table-stripped">
                 <tr>
                   <th>Implementor</th>
                 </tr>
@@ -114,7 +107,7 @@
 
             <div class="col-md-12 margin-top-10">
               <h6 class="text-info"><b>Project documents</b></h6>
-              <table class="table table-stripped">
+              <table *ngIf="documents.length > 0" class="table table-stripped">
                 <tr>
                   <th>Document title</th>
                   <th>Url</th>
@@ -131,7 +124,7 @@
 
             <div class="col-md-12 margin-top-10">
               <h6 class="text-info"><b>Project custom fields</b></h6>
-              <table class="table table-stripped">
+              <table *ngIf="customFields.length > 0" class="table table-stripped">
                 <tr>
                   <th>Field name</th>
                   <th>Value/s</th>

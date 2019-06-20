@@ -23,7 +23,9 @@ export class ProjectiInfoModalComponent implements OnInit {
   @Input()
   locations: any = [];
   @Input()
-  participatingOrganizations: any = [];
+  funders: any = [];
+  @Input()
+  implementers: any = [];
   @Input()
   documents: any = [];
   
