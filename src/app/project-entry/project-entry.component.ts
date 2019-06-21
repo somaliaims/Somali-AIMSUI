@@ -98,7 +98,9 @@ export class ProjectEntryComponent implements OnInit {
   viewProject: any = {};
   currentEntryForm: any = null;
   calendarMaxDate: any = {};
+  isEditProjectAllowed: boolean = false;
 
+  userApprovedProjects: any [];
   permissions: any = [];
   selectedProjects: any = [];
   selectedProjectSectors: any = [];
@@ -123,6 +125,7 @@ export class ProjectEntryComponent implements OnInit {
   currentSelectedFieldValues: any = [];
   exchangeRatesList: any = [];
   selectedProjectFields: any = [];
+  userMembershipProjects: any = [];
 
   viewProjectLocations: any = [];
   viewProjectSectors: any = [];
@@ -240,11 +243,15 @@ export class ProjectEntryComponent implements OnInit {
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
     if (projectId && projectId != '0') {
+      this.blockUI.start('Loading project data...');
       this.isForEdit = true;
       this.activeProjectId = parseInt(projectId);
       this.model.id = this.activeProjectId;
       this.btnProjectText = 'Edit Project';
+      this.loadUserApprovedProjects();
       this.loadProjectData(this.activeProjectId);
+    } else {
+      this.isEditProjectAllowed = true;
     }
 
     this.sectorSelectionForm = this.fb.group({
@@ -331,6 +338,22 @@ export class ProjectEntryComponent implements OnInit {
     this.loadFundingTypes();
   }
 
+  checkIfUserCanEditProject() {
+    if (this.currentProjectFundersList.length > 0) {
+      var userOrganizationId = this.securityService.getUserOrganizationId();
+      if (userOrganizationId) {
+        var isFunder = this.currentProjectFundersList.filter(f => f.id == userOrganizationId);
+        if (isFunder.length > 0) {
+          return true;
+        }
+        var isImplementer = this.currentProjectImplementersList.filter(i => i.id == userOrganizationId);
+        if (isImplementer.length > 0) {
+          return true;
+        }
+      }
+    }
+  }
+
   loadIATIProjectsForIds(modelArr: any) {
     this.isIatiLoading = true;
     this.iatiService.extractProjectsByIds(modelArr).subscribe(
@@ -351,6 +374,16 @@ export class ProjectEntryComponent implements OnInit {
         this.isIatiLoading = false;
       }
     )
+  }
+
+  loadUserApprovedProjects() {
+    this.projectService.getUserMembershipProjects().subscribe(
+      data => {
+        if (data) {
+          this.userApprovedProjects = data;
+        }
+      }
+    );
   }
 
   loadAIMSProjectsForIds(modelArr: any) {
@@ -1029,7 +1062,12 @@ export class ProjectEntryComponent implements OnInit {
           if (data.customFields && data.customFields.length > 0) {
             this.currentProjectFieldsList = data.customFields;
           }
+          this.isEditProjectAllowed =  this.checkIfUserCanEditProject();
         }
+
+        setTimeout(() => {
+          this.blockUI.stop();
+        }, 1000);
       }
     )
   }

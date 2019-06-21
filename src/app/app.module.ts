@@ -79,6 +79,7 @@ import { LocationReportComponent } from './report-components/location-report/loc
 import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 import { BudgetReportComponent } from './report-components/budget-report/budget-report.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
+import { ProjectMembershipComponent } from './project-membership/project-membership.component';
 
 @NgModule({
   declarations: [
@@ -149,6 +150,7 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
     ProjectReportComponent,
     BudgetReportComponent,
     ContactFormComponent,
+    ProjectMembershipComponent,
   ],
   imports: [
     BrowserModule,

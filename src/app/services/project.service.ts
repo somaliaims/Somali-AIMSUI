@@ -39,6 +39,18 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('Project Profile')));
     }
 
+    getUserMembershipProjects() {
+      var url = this.urlHelper.getUserApprovedRequestsUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('User Approved Requests')));
+    }
+
+    getUserProjects() {
+      var url = this.urlHelper.getUserProjectsUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('User Projects')));
+    }
+
     getProjectTitle(id: string) {
       var url = this.urlHelper.getProjectTitle(id);
       return this.httpClient.get(url, httpOptions).pipe(

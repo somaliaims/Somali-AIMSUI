@@ -33,9 +33,11 @@
                     Projects</button>
             </td>
             <td>
-                <button *ngIf="countAIMSProjects() == 1" [class.disable]='isSearchingProjects'
+                <button *ngIf="countAIMSProjects() == 1 && isProjectPermitted" [class.disable]='isSearchingProjects'
                 class="btn btn-success btn-lg float-right text-uppercase"  (click)="editProject()">Edit
                 Project</button>
+                <button *ngIf="countAIMSProjects() == 1 && !isProjectPermitted" [class.disable]='isSearchingProjects'
+                class="btn btn-warning btn-lg float-right text-uppercase"  (click)="applyForProject()">Become a member</button>
             </td>
             <td>
                 <button *ngIf="selectedProjects.length == 0" class="btn btn-info btn-lg float-right text-uppercase"

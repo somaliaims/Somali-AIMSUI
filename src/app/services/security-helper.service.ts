@@ -37,6 +37,10 @@ export class SecurityHelperService {
       localStorage.setItem('isLoggedIn', true.toString());
     }
   }
+  
+  getUserOrganizationId() {
+    return localStorage.getItem('organizationId');
+  }
 
   getUserToken() {
     var token = localStorage.getItem('token');

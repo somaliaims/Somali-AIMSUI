@@ -38,6 +38,7 @@ export class NewProjectComponent implements OnInit {
   timerCounter: number = 0;
   timeoutForSearch: number = 2000;
   isAIMSSearchInProgress: boolean = false;
+  isProjectPermitted: boolean = true;
   timer: any = null;
 
   permissions: any = [];
@@ -48,6 +49,7 @@ export class NewProjectComponent implements OnInit {
   selectedAIMSProjects: any = [];
   selectedIATIProjects: any = [];
   aimsProjects: any = [];
+  userProjectIds: any = [];
 
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
 
@@ -65,6 +67,7 @@ export class NewProjectComponent implements OnInit {
     }
 
     this.requestNo = this.storeService.getCurrentRequestId();
+    this.loadUserProjects();
     this.loadIATIProjects();
     this.loadAIMSProjects();
 
@@ -77,6 +80,16 @@ export class NewProjectComponent implements OnInit {
     });
     localStorage.setItem('selected-projects', null);
     localStorage.setItem('active-project', '0');
+  }
+
+  loadUserProjects() {
+    this.projectService.getUserProjects().subscribe(
+      data => {
+        if (data) {
+          this.userProjectIds = data;
+        }
+      }
+    );
   }
 
   loadIATIProjects() {
@@ -128,6 +141,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   selectIATIProject(e) {
+    this.isProjectPermitted = true;
     var id = e.target.id;
     var selectedProject = this.filteredIatiProjects.filter(
       iati => iati.id == id
@@ -146,6 +160,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   selectAIMSProject(e) {
+    this.isProjectPermitted = true;
     var id = e.target.id.split('-')[1];
     var selectedProject = this.filteredAIMSProjects.filter(
       aims => aims.id == id
@@ -160,6 +175,9 @@ export class NewProjectComponent implements OnInit {
       aimsProject.pid = selectedProject[0].id;
       this.addProject(aimsProject);
       this.selectedAIMSProjects.push(selectedProject[0]);
+      if (this.selectedAIMSProjects.length == 1) {
+        this.isProjectPermitted = this.checkIfProjectPermittedToUser(id);
+      }
     }
   }
 
@@ -324,8 +342,11 @@ export class NewProjectComponent implements OnInit {
     if (isAddedSelected.length > 0) {
       return true;
     }
-
     return false;
+  }
+
+  checkIfProjectPermittedToUser(id) {
+    return this.userProjectIds.filter(p => p.id == id).length > 0 ? true : false;
   }
 
 }

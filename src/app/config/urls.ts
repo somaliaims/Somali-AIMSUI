@@ -121,4 +121,6 @@ export const urls = {
 	getManagerUsers: "User/GetManagerUsers",
 	getStandardUsers: "User/GetStandardUsers",
 	sendEmailUrl: "Email/SendEmailToUsers",
+	userApprovedRequests: "ProjectMembership/GetUserApprovedRequests",
+	userProjects: "Project/GetUserProjects",
 };

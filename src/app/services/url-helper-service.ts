@@ -540,4 +540,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.envelopeUrl);
     }
 
+    getUserApprovedRequestsUrl() {
+        return (this.BASE_URL + urlsList.urls.userApprovedRequests);
+    }
+
+    getUserProjectsUrl() {
+        return (this.BASE_URL + urlsList.urls.userProjects);
+    }
+
 }
