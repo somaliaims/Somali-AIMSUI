@@ -9,43 +9,46 @@
         </ul>
       </div>
     </div>
+    
     <div class="row">
-      <div class="row text-center" *ngIf="isLoading">
-        <div class="col-md-12">
+      <div class="col-md-12 text-center" *ngIf="isLoading">
           <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
-        </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <table class="table table-stripped">
-            <tr *ngFor="let notification of notifications; let i = index">
-              <td>
-                <span class="badge badge-info lead">
-                  {{i + 1}}
-                </span>
-                <span class="text-info margin-left-5">
-                  {{notification.message}}<br />
-                </span>
-                <span class="text-info">
-                    <b>Organization name: {{notification.organization}}</b> <br />
-                </span>
-                <span class="text-warning">
-                    <b><i>Dated: {{notification.dated}}</i></b>
-                </span>
-              </td>
-              <td *ngIf="notification.notificationType == 1">
-                <button class="btn btn-warning"
-                  (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
-              </td>
-            </tr>
-          </table>
-        </div>
+      <div class="col-md-6 margin-top-10">
+        <h6>General notifications</h6>
+        <hr />
+        <table class="table table-stripped">
+          <tr *ngFor="let notification of notifications; let i = index">
+            <td>
+              <span class="badge badge-info lead">
+                {{i + 1}}
+              </span>
+              <span class="text-info margin-left-5">
+                {{notification.message}}<br />
+              </span>
+              <span class="text-info">
+                <b>Organization name: {{notification.organization}}</b> <br />
+              </span>
+              <span class="text-warning">
+                <b><i>Dated: {{notification.dated}}</i></b>
+              </span>
+            </td>
+            <td *ngIf="notification.notificationType == 1">
+              <button class="btn btn-warning"
+                (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
+            </td>
+          </tr>
+        </table>
+        <span *ngIf="notifications.length == 0" class="text-info"><i>No notifications to show</i></span>
       </div>
 
-      <div class="col-md-12" *ngIf="notifications.length == 0">
-        <span class="text-info">
-          <i>No notifications found.</i>
-        </span>
+      <div class="col-md-6 margin-top-10">
+        <h6>Project membership requests</h6>
+        <hr />
+        <table *ngIf="projectRequests.length > 0" class="table table-bordered">
+
+        </table>
+        <span class="text-info"><i>No project membership requests to show</i></span>
       </div>
 
     </div>

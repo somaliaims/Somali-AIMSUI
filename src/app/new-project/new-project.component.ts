@@ -279,6 +279,16 @@ export class NewProjectComponent implements OnInit {
     }
   }
 
+  applyForMembership() {
+    var aimsProject = this.selectedProjects.filter(p => p.type == 'AIMS');
+    if (aimsProject.length > 0) {
+      var id = aimsProject[0].identifier;
+      if (id) {
+        this.router.navigateByUrl('/project-membership/' + id);
+      }
+    }
+  }
+
   mergeProjects() {
     var projects = JSON.stringify(this.selectedProjects);
     localStorage.setItem("merge-projects", projects);
@@ -292,6 +302,9 @@ export class NewProjectComponent implements OnInit {
       var project = projectArr[0];
       if (project.type == 'AIMS') {
         this.selectedAIMSProjects = this.selectedAIMSProjects.filter(p => p.id != id);
+        if (this.selectedAIMSProjects.length == 1) {
+          this.isProjectPermitted = this.checkIfProjectPermittedToUser(this.selectedAIMSProjects[0].id);
+        }
       } else {
         this.selectedIATIProjects = this.selectedIATIProjects.filter(p => p.id != id);
       }

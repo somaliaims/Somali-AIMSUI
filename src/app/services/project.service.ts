@@ -64,6 +64,18 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('New Project')));
     }
 
+    applyForProjectMembership(id) {
+      var url = this.urlHelper.applyForProjectMembershipUrl(id);
+      return this.httpClient.post(url, null, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Membership')));
+    }
+
+    getProjectMembershipRequests() {
+      var url = this.urlHelper.getProjectMembershipUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Membership Requests')));
+    }
+
     mergeProjects(model: any) {
       var url = this.urlHelper.getMergeProjectsUrl();
       return this.httpClient.post(url, JSON.stringify(model), httpOptions).pipe(

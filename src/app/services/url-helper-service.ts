@@ -548,4 +548,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.userProjects);
     }
 
+    getProjectMembershipUrl() {
+        return (this.BASE_URL + urlsList.urls.projectMembershipUrl);
+    }
+
+    applyForProjectMembershipUrl(id) {
+        return (this.BASE_URL + urlsList.urls.projectMembershipUrl + '/' + id);
+    }
+
 }

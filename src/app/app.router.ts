@@ -57,6 +57,7 @@ import { DeleteSectortypeComponent } from './delete-sectortype/delete-sectortype
 import { LocationReportComponent } from './report-components/location-report/location-report.component';
 import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 import { BudgetReportComponent } from './report-components/budget-report/budget-report.component';
+import { ProjectMembershipComponent } from './project-membership/project-membership.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -128,6 +129,7 @@ export const routes: Routes = [
   { path: 'email-messages', component: EmailMessagesComponent },
   { path: 'manage-email-message', component: ManageEmailMessageComponent },
   { path: 'manage-email-message/:{id}', component: ManageEmailMessageComponent, data: { isForEdit: true } },
+  { path: 'project-membership/:{id}', component: ProjectMembershipComponent },
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

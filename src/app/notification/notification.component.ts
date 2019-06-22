@@ -6,6 +6,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from '../services/store-service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-notification',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class NotificationComponent implements OnInit {
   notifications: any = [];
+  projectRequests: any = [];
   isLoading: boolean = true;
   showNoFound: boolean = false;
   infoMessage: string = null;
@@ -25,7 +27,8 @@ export class NotificationComponent implements OnInit {
   
   constructor(private notificationService: NotificationService, private infoModal: InfoModalComponent,
     private errorModal: ErrorModalComponent, private storeService: StoreService,
-    private securityService: SecurityHelperService, private router: Router) { 
+    private securityService: SecurityHelperService, private router: Router,
+    private projectService: ProjectService) { 
     
   }
 
@@ -46,6 +49,7 @@ export class NotificationComponent implements OnInit {
     });
 
     this.getNotifications();
+    this.getProjectRequests();
   }
 
   getNotifications() {
@@ -62,8 +66,14 @@ export class NotificationComponent implements OnInit {
     });
   }
 
-  refreshNotifications(id) {
-
+  getProjectRequests() {
+    this.projectService.getProjectMembershipRequests().subscribe(
+      data => {
+        if (data) {
+          this.projectRequests = data;
+        }
+      }
+    );
   }
 
   activateUserAccount(event, userId, notificationId) {

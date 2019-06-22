@@ -1,3 +1,56 @@
-<p>
-  project-membership works!
-</p>
+<div class="container-fluid view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/new-project']">Add/edit project data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Become a member of project</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+        <div class="card card-signin my-10 mx-auto">
+          <div class="card-body">
+            <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Error!</strong> {{errorMessage}}
+            </div>
+            <div *ngIf="isShowSuccessMessage" class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Information!</strong> {{successMessage}}
+            </div>
+            <h5 class="card-title text-center">Project information</h5>
+              <table class="table table-bordered">
+                <tr>
+                  <td width="15%"><b>Project title</b></td>
+                  <td colspan="3">{{projectData.title}}</td>
+                </tr>
+                <tr>
+                  <td><b>Start date</b></td>
+                  <td>{{displayLongDateString(projectData.startDate)}}</td>
+                  <td><b>End date</b></td>
+                  <td>{{displayLongDateString(projectData.endDate)}}</td>
+                </tr>
+                <tr>
+                  <td><b>Description</b></td>
+                  <td colspan="3">{{projectData.description}}</td>
+                </tr>
+              </table>
+              <button [class.disable]="isShowSuccessMessage" (click)="applyForProjectMembership()" class="btn btn-lg btn-info btn-block text-uppercase"
+                type="button">{{btnText}}</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>
