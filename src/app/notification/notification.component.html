@@ -4,8 +4,13 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Notifications</a>
+            <a [ngClass]="{'btn-info': currentTab == 'notifications', 'text-info': currentTab != 'notifications'}" href="#"
+              class="nav-link text-info" (click)="showNotifications()" data-toggle="tab">General notifications</a>
           </li>
+          <!--<li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'requests', 'text-info': currentTab != 'requests'}"
+              href="#" class="nav-link text-info" (click)="showRequests()" data-toggle="tab">Membership requests</a>
+          </li>-->
         </ul>
       </div>
     </div>
@@ -14,9 +19,7 @@
       <div class="col-md-12 text-center" *ngIf="isLoading">
           <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
       </div>
-      <div class="col-md-6 margin-top-10">
-        <h6>General notifications</h6>
-        <hr />
+      <div *ngIf="currentTab == 'notifications'" class="col-md-12 margin-top-10">
         <table class="table table-stripped">
           <tr *ngFor="let notification of notifications; let i = index">
             <td>
@@ -42,14 +45,14 @@
         <span *ngIf="notifications.length == 0" class="text-info"><i>No notifications to show</i></span>
       </div>
 
-      <div class="col-md-6 margin-top-10">
-        <h6>Project membership requests</h6>
-        <hr />
+      <!--<div *ngIf="currentTab == 'requests'" class="col-md-12 margin-top-10">
         <table *ngIf="projectRequests.length > 0" class="table table-bordered">
+          <tr *ngFor="let request of projectRequests">
 
+          </tr>
         </table>
         <span class="text-info"><i>No project membership requests to show</i></span>
-      </div>
+      </div>-->
 
     </div>
   </block-ui>
