@@ -58,6 +58,7 @@ import { LocationReportComponent } from './report-components/location-report/loc
 import { ProjectReportComponent } from './report-components/project-report/project-report.component';
 import { BudgetReportComponent } from './report-components/budget-report/budget-report.component';
 import { ProjectMembershipComponent } from './project-membership/project-membership.component';
+import { MembershipRequestsComponent } from './membership-requests/membership-requests.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -130,6 +131,7 @@ export const routes: Routes = [
   { path: 'manage-email-message', component: ManageEmailMessageComponent },
   { path: 'manage-email-message/:{id}', component: ManageEmailMessageComponent, data: { isForEdit: true } },
   { path: 'project-membership/:{id}', component: ProjectMembershipComponent },
+  { path: 'membership-requests', component: MembershipRequestsComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

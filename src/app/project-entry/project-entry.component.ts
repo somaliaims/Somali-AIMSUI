@@ -1063,6 +1063,9 @@ export class ProjectEntryComponent implements OnInit {
             this.currentProjectFieldsList = data.customFields;
           }
           this.isEditProjectAllowed =  this.checkIfUserCanEditProject();
+          if (!this.isEditProjectAllowed) {
+            this.router.navigateByUrl('new-project');
+          }
         }
 
         setTimeout(() => {

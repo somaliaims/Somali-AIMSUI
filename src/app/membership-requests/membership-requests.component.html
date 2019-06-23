@@ -1,0 +1,46 @@
+<div class="container view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Project membership requests</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12 text-center" *ngIf="isLoading">
+          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+      </div>
+      <div class="col-md-12 margin-top-10">
+        <table *ngIf="projectRequests.length > 0" class="table table-stripped">
+          <tr *ngFor="let request of projectRequests; let i = index">
+            <td>
+              <span class="badge badge-info lead">
+                {{i + 1}}
+              </span>
+              <span class="text-info margin-left-5">
+                {{request.project}}<br />
+              </span>
+              <span class="text-info">
+                <b>Requestee organization: </b>{{request.userOrganization}} <br />
+              </span>
+              <span class="text-warning">
+                <b><i>Dated: {{getLongDateString(request.dated)}}</i></b>
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-warning"
+                (click)="approveRequest($event, request.id)">Approve</button>
+            </td>
+          </tr>
+        </table>
+        <span *ngIf="projectRequests.length == 0" class="text-info"><i>No project membership requests available to show</i></span>
+      </div>
+
+    </div>
+  </block-ui>
+</div>
+<error-modal message={{errorMessage}}></error-modal>

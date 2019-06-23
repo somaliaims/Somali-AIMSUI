@@ -80,6 +80,7 @@ import { ProjectReportComponent } from './report-components/project-report/proje
 import { BudgetReportComponent } from './report-components/budget-report/budget-report.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { ProjectMembershipComponent } from './project-membership/project-membership.component';
+import { MembershipRequestsComponent } from './membership-requests/membership-requests.component';
 
 @NgModule({
   declarations: [
@@ -151,6 +152,7 @@ import { ProjectMembershipComponent } from './project-membership/project-members
     BudgetReportComponent,
     ContactFormComponent,
     ProjectMembershipComponent,
+    MembershipRequestsComponent,
   ],
   imports: [
     BrowserModule,

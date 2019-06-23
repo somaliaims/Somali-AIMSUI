@@ -30,12 +30,11 @@ export class AppComponent {
   getNotificationsCount() {
     this.notificationService.getNotificationsCount().subscribe(
       data => {
-        this.notificationsCount = data;
-      },
-      error => {
-        //To do something
+        if (data) {
+          this.notificationsCount = data;
+        }
       }
-    )
+    );
   }
 
   logout(e) {

@@ -39,11 +39,6 @@ export class NotificationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.permissions = this.securityService.getUserPermissions();
-    if (!this.permissions.canEditCurrency) {
-      this.router.navigateByUrl('home');
-    }
-
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -55,7 +50,6 @@ export class NotificationComponent implements OnInit {
     });
 
     this.getNotifications();
-    this.getProjectRequests();
   }
 
   getNotifications() {
@@ -67,17 +61,6 @@ export class NotificationComponent implements OnInit {
       } 
       this.isLoading = false;
     });
-  }
-
-  getProjectRequests() {
-    this.projectService.getProjectMembershipRequests().subscribe(
-      data => {
-        if (data) {
-          this.projectRequests = data;
-        }
-        
-      }
-    );
   }
 
   activateUserAccount(event, userId, notificationId) {
