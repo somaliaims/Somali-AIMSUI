@@ -1073,7 +1073,7 @@ export class ProjectEntryComponent implements OnInit {
       data => {
         if (data) {
           this.userProjectIds = data;
-          if (this.userProjectIds.indexOf(projectId) == -1) {
+          if (this.userProjectIds.map(p => p.id).indexOf(projectId) == -1) {
             this.router.navigateByUrl('project-membership/' + projectId);
           } else {
             this.loadProjectData(projectId);
