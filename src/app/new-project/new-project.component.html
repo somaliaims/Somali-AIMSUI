@@ -115,11 +115,15 @@
                     <b>Start Date: </b>{{project.startDate}}<br />
                     <b>End Date: </b>{{project.endDate}}<br />
                   </span>
+                
                   <span class="float-right margin-right-15">
+                      <button [class.disable]="checkIfProjectPermittedToUser(project.id)" type="button" id="raims-{{project.id}}" class="btn btn-warning btn-sm"
+                      (click)="applyForProjectMembership($event)">Request permission</button>&nbsp;
+
                     <button type="button" id="aims-{{project.id}}" class="btn btn-info btn-sm"
-                      (click)="showAIMSProjectDescription($event)">Description</button>
+                      (click)="showAIMSProjectDescription($event)">View detail</button>
                     &nbsp;
-                    <button [class.disable]="checkAIMSAdded(project.title)" type="button" id="saims-{{project.id}}" class="btn btn-success btn-sm"
+                    <button [class.disable]="!checkIfProjectPermittedToUser(project.id) || checkAIMSAdded(project.title)" type="button" id="saims-{{project.id}}" class="btn btn-success btn-sm"
                       (click)="selectAIMSProject($event)">Select</button>
                   </span>
                 </td>
@@ -200,3 +204,5 @@
     </div>
   </div>
 </jw-modal>
+
+<info-modal message={{successMessage}}></info-modal>

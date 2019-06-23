@@ -9,6 +9,8 @@ import { ModalService } from '../services/modal.service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Settings } from '../config/settings';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
 
 @Component({
   selector: 'app-new-project',
@@ -28,7 +30,8 @@ export class NewProjectComponent implements OnInit {
   inputTextHolder: string = 'Setting up IATI...';
   counter: number = 0;
   btnText: string = 'Manual entry only';
-  errorMessage: string = '';
+  errorMessage: string = null;
+  successMessage: string = null;
   requestNo: number = 0;
   isError: boolean = false;
   isSearchingProjects: boolean = false;
@@ -50,14 +53,15 @@ export class NewProjectComponent implements OnInit {
   selectedIATIProjects: any = [];
   aimsProjects: any = [];
   userProjectIds: any = [];
-
+  @BlockUI() blockUI: NgBlockUI;
+  
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
     private storeService: StoreService, private iatiService: IATIService,
     private modalService: ModalService, private securityService: SecurityHelperService,
-    private errorModal: ErrorModalComponent) {
+    private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent) {
   }
 
   ngOnInit() {
@@ -91,6 +95,10 @@ export class NewProjectComponent implements OnInit {
         }
       }
     );
+  }
+
+  checkIfPermitted(id) {
+    return (this.userProjectIds.map(p => p.id).indexOf(id) == -1) ? true : false;
   }
 
   loadIATIProjects() {
@@ -361,6 +369,22 @@ export class NewProjectComponent implements OnInit {
 
   checkIfProjectPermittedToUser(id) {
     return this.userProjectIds.filter(p => p.id == id).length > 0 ? true : false;
+  }
+
+  applyForProjectMembership(e) {
+    var projectId = e.target.id.split('-')[1];
+    if (projectId) {
+      this.blockUI.start('Wait submitting request...');
+      this.projectService.applyForProjectMembership(projectId).subscribe(
+        data => {
+          if (data) {
+            this.successMessage = Messages.MEMBERSHIP_REQUEST_MESSAGE;
+            this.infoModal.openModal();
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
   }
 
 }
