@@ -83,6 +83,18 @@ export class ProjectService {
       );
     }
 
+    approveProjectMembership(model: any) {
+      var url = this.urlHelper.approveProjectMembershipUrl();
+      return this.httpClient.post(url, JSON.stringify(model), httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Approve Project Membership')));
+    }
+
+    unApproveProjectMembership(model: any) {
+      var url = this.urlHelper.unApproveProjectMembershipUrl();
+      return this.httpClient.post(url, JSON.stringify(model), httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Approve Project Membership')));
+    }
+
     searchProjectsViewByCriteria(model: any) {
       var url  = this.urlHelper.getSearchProjectsViewUrl();
         return this.httpClient.post(url,

@@ -52,7 +52,7 @@
     </div>
   </div>
 
-  <div *ngIf="!isProjectPermitted" class="row">
+  <div *ngIf="countAIMSProjects() == 1 && !isProjectPermitted" class="row">
     <div class="col-md-12">
       <div class="text-warning float-right">
         <b><i>

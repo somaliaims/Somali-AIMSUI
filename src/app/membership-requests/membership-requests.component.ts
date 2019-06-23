@@ -28,27 +28,8 @@ export class MembershipRequestsComponent implements OnInit {
       }
     });
 
-    this.getProjectRequests();
+    //this.getProjectRequests();
   }
 
-  getProjectRequests() {
-    this.projectService.getProjectMembershipRequests().subscribe(
-      data => {
-        if (data) {
-          console.log(data);
-          this.projectRequests = data;
-        }
-        this.isLoading = false;
-      }
-    );
-  }
-
-  getLongDateString(dated) {
-    return this.storeService.getLongDateString(dated);
-  }
-
-  approveRequest(event, id) {
-    
-  }
-
+  
 }

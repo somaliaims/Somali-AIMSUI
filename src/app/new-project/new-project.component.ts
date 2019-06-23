@@ -85,6 +85,7 @@ export class NewProjectComponent implements OnInit {
   loadUserProjects() {
     this.projectService.getUserProjects().subscribe(
       data => {
+        console.log(data);
         if (data) {
           this.userProjectIds = data;
         }

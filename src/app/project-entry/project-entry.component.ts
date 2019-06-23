@@ -100,6 +100,7 @@ export class ProjectEntryComponent implements OnInit {
   calendarMaxDate: any = {};
   isEditProjectAllowed: boolean = false;
 
+  userProjectIds: any = [];
   userApprovedProjects: any [];
   permissions: any = [];
   selectedProjects: any = [];
@@ -248,11 +249,8 @@ export class ProjectEntryComponent implements OnInit {
       this.activeProjectId = parseInt(projectId);
       this.model.id = this.activeProjectId;
       this.btnProjectText = 'Edit Project';
-      this.loadUserApprovedProjects();
-      this.loadProjectData(this.activeProjectId);
-    } else {
-      this.isEditProjectAllowed = true;
-    }
+      this.loadUserProjects(this.activeProjectId);
+    } 
 
     this.sectorSelectionForm = this.fb.group({
       sectorInput: null,
@@ -1062,17 +1060,27 @@ export class ProjectEntryComponent implements OnInit {
           if (data.customFields && data.customFields.length > 0) {
             this.currentProjectFieldsList = data.customFields;
           }
-          this.isEditProjectAllowed =  this.checkIfUserCanEditProject();
-          if (!this.isEditProjectAllowed) {
-            this.router.navigateByUrl('new-project');
-          }
         }
-
         setTimeout(() => {
           this.blockUI.stop();
         }, 1000);
       }
     )
+  }
+
+  loadUserProjects(projectId: number) {
+    this.projectService.getUserProjects().subscribe(
+      data => {
+        if (data) {
+          this.userProjectIds = data;
+          if (this.userProjectIds.indexOf(projectId) == -1) {
+            this.router.navigateByUrl('project-membership/' + projectId);
+          } else {
+            this.loadProjectData(projectId);
+          }
+        }
+      }
+    );
   }
 
   checkIfFunderTabSelected(id) {

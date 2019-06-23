@@ -50,6 +50,7 @@ export class NotificationComponent implements OnInit {
     });
 
     this.getNotifications();
+    this.getProjectRequests();
   }
 
   getNotifications() {
@@ -59,7 +60,6 @@ export class NotificationComponent implements OnInit {
           this.notifications = data;
         } 
       } 
-      this.isLoading = false;
     });
   }
 
@@ -68,9 +68,7 @@ export class NotificationComponent implements OnInit {
       this.blockUI.start('Activating account...');
       this.notificationService.activateUserAccount(userId, notificationId).subscribe(data => {
         if (data) {
-          setTimeout(() => {
-            location.reload();
-          }, 1000);
+          this.reloadPage();
         }
       });
     }
@@ -83,6 +81,61 @@ export class NotificationComponent implements OnInit {
   showRequests() {
     this.manageTabsDisplay('requests');
   }
+
+  reloadPage() {
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
+  }
+
+  getProjectRequests() {
+    this.projectService.getProjectMembershipRequests().subscribe(
+      data => {
+        console.log(data);
+        if (data) {
+          this.projectRequests = data;
+        }
+        this.isLoading = false;
+      }
+    );
+  }
+
+  getLongDateString(dated) {
+    return this.storeService.getLongDateString(dated);
+  }
+
+  approveRequest(e) {
+    var arr = e.currentTarget.id.split('-');
+    var model = {
+      projectId: arr[2],
+      userId: arr[3]
+    };
+
+    this.projectService.approveProjectMembership(model).subscribe(
+      data => {
+        if (data) {
+          this.reloadPage();
+        }
+      }
+    );
+  }
+
+  unApproveRequest(e) {
+    var arr = e.currentTarget.id.split('-');
+    var model = {
+      projectId: arr[2],
+      userId: arr[3]
+    };
+
+    this.projectService.unApproveProjectMembership(model).subscribe(
+      data => {
+        if (data) {
+          this.reloadPage();
+        }
+      }
+    );
+  }
+
 
   manageTabsDisplay(tabIdentity) {
     for (var i = 0; i < this.displayTabs.length; i++) {

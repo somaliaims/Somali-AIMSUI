@@ -556,4 +556,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectMembershipUrl + '/' + id);
     }
 
+    approveProjectMembershipUrl() {
+        return (this.BASE_URL + urlsList.urls.approveProjectMembership);
+    }
+    
+    unApproveProjectMembershipUrl() {
+        return (this.BASE_URL + urlsList.urls.unApproveProjectMembership);
+    }
+
 }

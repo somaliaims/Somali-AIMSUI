@@ -63,9 +63,9 @@ export class ProjectMembershipComponent implements OnInit {
     this.projectService.getProject(id).subscribe(
       data => {
         if (data) {
-          console.log(data);
           this.projectData = data;
         }
+        this.blockUI.stop();
       }
     );
   }
