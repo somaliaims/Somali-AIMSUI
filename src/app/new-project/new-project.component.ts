@@ -11,6 +11,7 @@ import { Settings } from '../config/settings';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { ProjectInfoModalComponent } from '../project-info-modal/project-info-modal.component';
 
 @Component({
   selector: 'app-new-project',
@@ -53,15 +54,25 @@ export class NewProjectComponent implements OnInit {
   selectedIATIProjects: any = [];
   aimsProjects: any = [];
   userProjectIds: any = [];
+  viewProject: any = [];
+  viewProjectLocations: any = [];
+  viewProjectSectors: any = [];
+  viewProjectDocuments: any = [];
+  viewProjectFunders: any = [];
+  viewProjectImplementers: any = [];
+  viewProjectDisbursements: any = [];
+  viewProjectFields: any = [];
+
   @BlockUI() blockUI: NgBlockUI;
-  
+
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
     private storeService: StoreService, private iatiService: IATIService,
     private modalService: ModalService, private securityService: SecurityHelperService,
-    private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent) {
+    private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent,
+    private projectInfoModal: ProjectInfoModalComponent) {
   }
 
   ngOnInit() {
@@ -177,7 +188,7 @@ export class NewProjectComponent implements OnInit {
 
     if (selectedProject.length && selectedProject.length > 0) {
       ++this.projectIdCounter;
-      var aimsProject = { id: this.projectIdCounter, pid: 0, identifier: '', title: '',  description: '', type: 'AIMS' };
+      var aimsProject = { id: this.projectIdCounter, pid: 0, identifier: '', title: '', description: '', type: 'AIMS' };
       aimsProject.title = selectedProject[0].title;
       aimsProject.description = selectedProject[0].description;
       aimsProject.identifier = selectedProject[0].id;
@@ -271,7 +282,7 @@ export class NewProjectComponent implements OnInit {
   countAIMSProjects() {
     if (this.selectedProjects.length == 0)
       return 0;
-    
+
     var aimsProjects = this.selectedProjects.filter(p => p.type == 'AIMS');
     return aimsProjects.length;
   }
@@ -387,4 +398,53 @@ export class NewProjectComponent implements OnInit {
     }
   }
 
+  loadAIMSProjectData(e) {
+    var projectId = e.target.id.split('-')[1];
+
+    if (projectId) {
+      this.blockUI.start('Loading project data...')
+      this.projectService.getProjectProfileReport(projectId).subscribe(
+        result => {
+          if (result && result.projectProfile) {
+            var data = result.projectProfile;
+            this.viewProject = data;
+
+            //Setting sectors data
+            if (data.sectors && data.sectors.length > 0) {
+              this.viewProjectSectors = data.sectors;
+            }
+
+            if (data.locations && data.locations.length > 0) {
+              this.viewProjectLocations = data.locations;
+            }
+
+            if (data.documents && data.documents.length > 0) {
+              this.viewProjectDocuments = data.documents;
+            }
+
+            if (data.funders && data.funders.length > 0) {
+              this.viewProjectFunders = data.funders;
+            }
+
+            if (data.implementers && data.implementers.length > 0) {
+              this.viewProjectImplementers = data.implementers;
+            }
+
+            if (data.disbursements && data.disbursements.length > 0) {
+              this.viewProjectDisbursements = data.disbursements;
+            }
+
+            if (data.customFields && data.customFields.length > 0) {
+              this.viewProjectFields = data.customFields;
+            }
+          }
+          setTimeout(() => {
+            this.projectInfoModal.openModal();
+            this.blockUI.stop();
+          }, 1000);
+        }
+      );
+    }
+
+  }
 }

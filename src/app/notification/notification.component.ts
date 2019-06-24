@@ -30,12 +30,12 @@ export class NotificationComponent implements OnInit {
     { visible: true, identity: 'notifications' },
     { visible: false, identity: 'requests' },
   ];
-  
+
   constructor(private notificationService: NotificationService, private infoModal: InfoModalComponent,
     private errorModal: ErrorModalComponent, private storeService: StoreService,
     private securityService: SecurityHelperService, private router: Router,
-    private projectService: ProjectService) { 
-    
+    private projectService: ProjectService) {
+
   }
 
   ngOnInit() {
@@ -54,12 +54,12 @@ export class NotificationComponent implements OnInit {
   }
 
   getNotifications() {
-    this.notificationService.getUserNotifications().subscribe( data => {
+    this.notificationService.getUserNotifications().subscribe(data => {
       if (data && data.length) {
         if (data.length > 0) {
           this.notifications = data;
-        } 
-      } 
+        }
+      }
     });
   }
 
@@ -70,6 +70,7 @@ export class NotificationComponent implements OnInit {
         if (data) {
           this.reloadPage();
         }
+        this.stopScreenBlocker();
       });
     }
   }
@@ -83,9 +84,7 @@ export class NotificationComponent implements OnInit {
   }
 
   reloadPage() {
-    setTimeout(() => {
-      location.reload();
-    }, 1000);
+    location.reload();
   }
 
   getProjectRequests() {
@@ -111,13 +110,17 @@ export class NotificationComponent implements OnInit {
       userId: arr[3]
     };
 
-    this.projectService.approveProjectMembership(model).subscribe(
-      data => {
-        if (data) {
-          this.reloadPage();
+    if (model.projectId && model.userId) {
+      this.blockUI.start('Wait submitting request...');
+      this.projectService.approveProjectMembership(model).subscribe(
+        data => {
+          if (data) {
+            this.reloadPage();
+          }
+          this.stopScreenBlocker();
         }
-      }
-    );
+      );
+    }
   }
 
   unApproveRequest(e) {
@@ -127,13 +130,16 @@ export class NotificationComponent implements OnInit {
       userId: arr[3]
     };
 
-    this.projectService.unApproveProjectMembership(model).subscribe(
-      data => {
-        if (data) {
-          this.reloadPage();
+    if (model.projectId && model.userId) {
+      this.projectService.unApproveProjectMembership(model).subscribe(
+        data => {
+          if (data) {
+            this.reloadPage();
+          }
+          this.stopScreenBlocker();
         }
-      }
-    );
+      );
+    }
   }
 
 
@@ -147,6 +153,12 @@ export class NotificationComponent implements OnInit {
         tab.visible = false;
       }
     }
+  }
+
+  stopScreenBlocker() {
+    setTimeout(() => {
+      this.blockUI.stop();
+    }, 1000);
   }
 
 }
