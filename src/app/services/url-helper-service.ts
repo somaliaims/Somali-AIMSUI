@@ -303,8 +303,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorsUrl);
     }
 
-    saveIATISectorUrl() {
-        return (this.BASE_URL + urlsList.urls.addIATISector);
+    saveSectorWithMappingUrl() {
+        return (this.BASE_URL + urlsList.urls.addSectorWithMapping);
     }
 
     deleteSectorUrl(id: string, newId: string) {
@@ -339,8 +339,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.mappingsForSector + sectorId);
     }
 
-    getMappingsForSectorByNameUrl(sectorName: string) {
-        return (this.BASE_URL + urlsList.urls.mappingsForSectorByName + sectorName);
+    getMappingsForSectorByNameUrl() {
+        return (this.BASE_URL + urlsList.urls.mappingsForSectorByName);
     }
 
     getSectorsForTypeUrl(id: string) {

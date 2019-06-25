@@ -322,7 +322,7 @@
 
               <div *ngIf="sectorEntryType == 'iati'" class="form-group">
                 <label for="sectorName">New sector</label>
-                <input type="text" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName"
+                <input type="text" [readonly]="true" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName"
                   name="sectorName" #sectorName="ngModel" required>
                 <div *ngIf="projectSectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
                   Sector name is required
@@ -331,8 +331,8 @@
 
               <div *ngIf="(sectorModel.sectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId" class="form-group">
                 <label for="sectorName">Sector mappings</label>
-                <select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
-                  #sectorId="ngModel" required>
+                <select class="form-control" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
+                  #mappingId="ngModel" required>
                   <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
                 </select>
                 <div class="margin-top-5" *ngIf="mappingsCount > 0">
@@ -352,7 +352,7 @@
                   </span>
                 </div>
                 <div *ngIf="mappingsCount == 0" class="text-warning"><i>No mappings found, map sector manually</i></div>
-                <div *ngIf="projectSectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
+                <div *ngIf="projectSectorForm.submitted" [hidden]="mappingId.valid" class="alert alert-danger">
                   Mapping for sector is required
                 </div>
               </div>
@@ -522,8 +522,8 @@
               </div>
 
               <div *ngIf="locationEntryType == 'iati'" class="form-group">
-                <label for="location">New Location</label>
-                <input type="text" class="form-control" id="location" [(ngModel)]="locationModel.location"
+                <label for="location">New location</label>
+                <input type="text" [readonly]="true" class="form-control" id="location" [(ngModel)]="locationModel.location"
                   name="location" #location="ngModel" required>
                 <div *ngIf="projectLocationForm.submitted" [hidden]="location.valid" class="alert alert-danger">
                   Location is required

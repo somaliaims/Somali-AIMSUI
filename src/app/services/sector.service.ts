@@ -137,8 +137,11 @@ export class SectorService {
   }
 
   getMappingsForSectorByName(sectorName: string) {
-    var url = this.urlHelper.getMappingsForSectorByNameUrl(sectorName);
-    return this.httpClient.get(url, httpOptions).pipe(
+    var model = {
+      sector: sectorName
+    };
+    var url = this.urlHelper.getMappingsForSectorByNameUrl();
+    return this.httpClient.post(url, model, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('Mappings for Sector'))
     );
   }
@@ -150,8 +153,8 @@ export class SectorService {
     );
   }
 
-  addIATISector(model: any) {
-    var url = this.urlHelper.saveIATISectorUrl();
+  addSectorWithMapping(model: any) {
+    var url = this.urlHelper.saveSectorWithMappingUrl();
     return this.httpClient.post(url,
       JSON.stringify(model), httpOptions).pipe(
         catchError(this.storeService.handleError<any>('New IATI Sector')));

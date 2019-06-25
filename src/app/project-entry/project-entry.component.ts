@@ -102,7 +102,7 @@ export class ProjectEntryComponent implements OnInit {
   isEditProjectAllowed: boolean = false;
 
   userProjectIds: any = [];
-  userApprovedProjects: any [];
+  userApprovedProjects: any[];
   permissions: any = [];
   selectedProjects: any = [];
   selectedProjectSectors: any = [];
@@ -176,7 +176,7 @@ export class ProjectEntryComponent implements OnInit {
     2: 'Disbursement'
   }
 
-  fieldTypeConstants : any = {
+  fieldTypeConstants: any = {
     'Dropdown': 1,
     'Checkbox': 2,
     'Text': 3,
@@ -196,12 +196,12 @@ export class ProjectEntryComponent implements OnInit {
   };
 
   exRateFor: any = {
-    'FUNDING' : 1,
+    'FUNDING': 1,
     'DISBURSEMENT': 2
   }
 
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
-  sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
+  sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, mappingId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, dated: null, exRateSource: null, fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null };
@@ -253,7 +253,7 @@ export class ProjectEntryComponent implements OnInit {
       this.model.id = this.activeProjectId;
       this.btnProjectText = 'Edit Project';
       this.loadUserProjects(this.activeProjectId);
-    } 
+    }
 
     this.sectorSelectionForm = this.fb.group({
       sectorInput: null,
@@ -404,7 +404,6 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorService.getSectorTypes().subscribe(
       data => {
         if (data) {
-          console.log(data);
           this.sectorTypes = data;
           var primaryType = this.sectorTypes.filter(s => s.isPrimary == true);
           if (primaryType.length > 0) {
@@ -419,10 +418,9 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorService.getAllSectors().subscribe(
       data => {
         if (data) {
-          console.log(data);
-        this.sectorsList = data;
-        this.typeSectorsList = [];
-        this.defaultSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.primarySectorTypeId);
+          this.sectorsList = data;
+          this.typeSectorsList = [];
+          this.defaultSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.primarySectorTypeId);
         }
       },
       error => {
@@ -694,6 +692,8 @@ export class ProjectEntryComponent implements OnInit {
   getSectorMappings() {
     var sectorName = this.sectorModel.sectorName;
     this.mappingsCount = 0;
+    this.sectorMappings = [];
+
     this.sectorService.getMappingsForSectorByName(sectorName).subscribe(
       data => {
         if (data && data.length > 0) {
@@ -703,7 +703,7 @@ export class ProjectEntryComponent implements OnInit {
           this.mappedSectorsList = data;
           this.mappingsCount = data.length;
           if (data.length >= 1) {
-            this.sectorModel.sectorId = data[0].id;
+            this.sectorModel.mappingId = data[0].id;
           }
         } else {
           this.mappingsCount = 0;
@@ -1068,7 +1068,7 @@ export class ProjectEntryComponent implements OnInit {
 
           if (data.funders && data.funders.length > 0) {
             this.currentProjectFundersList = data.funders;
-          } 
+          }
 
           if (data.implementers && data.implementers.length > 0) {
             this.currentProjectImplementersList = data.implementers;
@@ -1166,6 +1166,12 @@ export class ProjectEntryComponent implements OnInit {
   showSectorsForType() {
     if (this.sectorModel.sectorTypeId) {
       this.sectorModel.sectorId = null;
+      this.sectorMappings = [];
+      this.mappedSectorsList = [];
+      this.sectorModel.mappingId = null;
+      this.mappingsCount = 0;
+      this.showMappingAuto = false;
+      this.showMappingManual = true;
       this.typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
     }
   }
@@ -1399,25 +1405,40 @@ export class ProjectEntryComponent implements OnInit {
       }
     }
 
+    var sectorName = null;
+    var displaySector = null;
+
+    if (this.sectorModel.mappingId && (this.sectorModel.mappingId != null || this.sectorModel.mappingId != 'null' )) {
+      displaySector = this.defaultSectorsList.filter(s => s.id == this.sectorModel.mappingId);
+      if (displaySector.length > 0) {
+        sectorName = displaySector[0].sectorName;
+      } 
+    } else {
+      displaySector = this.typeSectorsList.filter(s => s.id == this.sectorModel.sectorId);
+      if (displaySector.length > 0) {
+        sectorName = displaySector[0].sectorName;
+      }
+    }
+
     var projectSectorModel = {
       projectId: projectId,
-      sectorId: this.sectorModel.sectorId,
+      sectorId: this.sectorModel.mappingId,
       fundsPercentage: this.sectorModel.fundsPercentage,
     };
 
     this.blockUI.start('Saving Sector...');
     if (this.sectorEntryType == 'iati') {
       var sectorModel = {
+        sectorTypeId: this.sectorModel.sectorTypeId,
         sectorName: this.sectorModel.sectorName,
         parentId: 0,
+        sectorId: 0,
         mappingSectorId: this.sectorModel.sectorId
       };
-      this.sectorService.addIATISector(sectorModel).subscribe(
+      this.sectorService.addSectorWithMapping(sectorModel).subscribe(
         data => {
           if (data) {
-            //this.sectorModel.sectorId = data;
             this.selectedSectorId = this.sectorModel.sectorId;
-            projectSectorModel.sectorId = this.sectorModel.sectorId;
             this.addProjectSector(projectSectorModel);
           } else {
             this.blockUI.stop();
@@ -1428,7 +1449,35 @@ export class ProjectEntryComponent implements OnInit {
         }
       )
     } else {
-      this.addProjectSector(projectSectorModel);
+      if (this.sectorModel.sectorTypeId == this.primarySectorTypeId) {
+        projectSectorModel.sectorId = this.sectorModel.sectorId;
+        this.addProjectSector(projectSectorModel);
+      } else {
+        if (!this.sectorModel.mappingId) {
+          this.errorMessage = 'Sector mapping is required';
+          this.errorModal.openModal();
+          return false;
+        }
+
+        var mappedSectorModel = {
+          sectorTypeId: this.sectorModel.sectorTypeId,
+          sectorId: this.sectorModel.sectorId,
+          sectorName: sectorName,
+          parentId: 0,
+          mappingSectorId: this.sectorModel.mappingId
+        };
+
+        this.sectorService.addSectorWithMapping(mappedSectorModel).subscribe(
+          data => {
+            if (data) {
+              this.addProjectSector(projectSectorModel);
+            } else {
+              this.blockUI.stop();
+            }
+          }
+        );
+
+      }
     }
   }
 
@@ -1452,7 +1501,7 @@ export class ProjectEntryComponent implements OnInit {
           };
 
           if (model.sectorId) {
-            var selectedSector = this.defaultSectorsList.filter(s => s.id == model.sectorId);
+            var selectedSector = this.sectorsList.filter(s => s.id == model.sectorId);
             if (selectedSector.length > 0) {
               sectorObj.sector = selectedSector[0].sectorName;
             }
@@ -1484,7 +1533,7 @@ export class ProjectEntryComponent implements OnInit {
         this.blockUI.stop();
         this.errorModal.openModal();
       }
-    )
+    );
   }
 
   deleteProjectSector(e) {
@@ -1732,8 +1781,8 @@ export class ProjectEntryComponent implements OnInit {
         && f.fundingTypeId == this.funderModel.fundingTypeId);
       if (funderExists.length > 0) {
         var funderName = (this.funderInput.value && this.funderInput.value.organizationName) ? this.funderInput.value.organizationName : this.funderInput.value;
-        if (funderName && funderName.toLowerCase().trim() != funderExists[0].funder.toLowerCase().trim() && 
-        this.funderModel.fundingTypeId != funderExists[0].fundingTypeId) {
+        if (funderName && funderName.toLowerCase().trim() != funderExists[0].funder.toLowerCase().trim() &&
+          this.funderModel.fundingTypeId != funderExists[0].fundingTypeId) {
           this.funderModel.funderId = 0;
           this.funderModel.funder = funderName;
           isNewFunder = true;
@@ -2036,7 +2085,7 @@ export class ProjectEntryComponent implements OnInit {
     } else {
       totalDisbursement += parseFloat(this.disbursementModel.amount.toString());
     }
-    
+
 
     if (totalDisbursement > totalFund) {
       this.errorMessage = Messages.INVALID_DISBURSEMENT;
@@ -2113,7 +2162,7 @@ export class ProjectEntryComponent implements OnInit {
           this.currentSelectedFieldValues.push(newTextField);
         }
       }
-    }  else {
+    } else {
       result = this.customFieldsList.filter(f => f.fieldType == fieldType && f.id == fieldId).map(f => f.values)[0].filter(v => parseInt(v.id) == id);
       if (result.length > 0) {
         var values: any = [];
@@ -2291,16 +2340,16 @@ export class ProjectEntryComponent implements OnInit {
 
   selectExRateSource(eFor: string) {
     if (eFor == this.exRateFor.FUNDING) {
-      if (!this.funderModel.exRateSource || this.funderModel.exRateSource == 'null' ){
+      if (!this.funderModel.exRateSource || this.funderModel.exRateSource == 'null') {
         this.isFundingExRateReadonly = true;
         return false;
       }
       this.isFundingExRateReadonly = true;
 
       if (this.funderModel.exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
-        this.filteredCurrencyList = this.currencyList.filter(c => c.currency == this.defaultCurrency || 
+        this.filteredCurrencyList = this.currencyList.filter(c => c.currency == this.defaultCurrency ||
           c.currency == this.nationalCurrency);
-      } else if(this.funderModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
+      } else if (this.funderModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
         this.filteredCurrencyList = this.currencyList;
       } else if (this.funderModel.exRateSource == this.exRateSourceCodes.MANUAL) {
         this.filteredCurrencyList = this.currencyList;
@@ -2309,16 +2358,16 @@ export class ProjectEntryComponent implements OnInit {
       }
       this.getExchangeRates('1');
     } else if (eFor == this.exRateFor.DISBURSEMENT) {
-      if (!this.disbursementModel.exRateSource || this.disbursementModel.exRateSource == 'null' ){
+      if (!this.disbursementModel.exRateSource || this.disbursementModel.exRateSource == 'null') {
         this.isDisbursementExRateReadonly = true;
         return false;
       }
       this.isDisbursementExRateReadonly = true;
 
       if (this.disbursementModel.exRateSource == this.exRateSourceCodes.AFRICAN_BANK) {
-        this.filteredCurrencyList = this.currencyList.filter(c => c.currency == this.defaultCurrency || 
+        this.filteredCurrencyList = this.currencyList.filter(c => c.currency == this.defaultCurrency ||
           c.currency == this.nationalCurrency);
-      } else if(this.disbursementModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
+      } else if (this.disbursementModel.exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
         this.filteredCurrencyList = this.currencyList;
       } else if (this.disbursementModel.exRateSource == this.exRateSourceCodes.MANUAL) {
         this.filteredCurrencyList = this.currencyList;
@@ -2359,7 +2408,7 @@ export class ProjectEntryComponent implements OnInit {
       this.blockUI.stop();
       return false;
     }
-    
+
     if (exRateSource == this.exRateSourceCodes.OPEN_EXCHANGE) {
       this.currencyService.getExchangeRatesForDate(dated).subscribe(
         data => {
@@ -2390,7 +2439,7 @@ export class ProjectEntryComponent implements OnInit {
       if (this.funderModel.currency == this.defaultCurrency) {
         this.funderModel.exchangeRate = 1;
         this.blockUI.stop();
-      } else if(this.disbursementModel.currency == this.defaultCurrency) {
+      } else if (this.disbursementModel.currency == this.defaultCurrency) {
         this.disbursementModel.exchangeRate = 1;
         this.blockUI.stop();
       } else {
@@ -2419,13 +2468,13 @@ export class ProjectEntryComponent implements OnInit {
     var exRate = null;
     if (this.exchangeRatesList.length > 0) {
       this.exRatePlaceHolder = 'Fetching latest rate...';
-      
+
       var foundRate = this.exchangeRatesList.filter(e => e.currency == currency);
       var defaultCurrencyRate = this.exchangeRatesList.filter(e => e.currency == this.defaultCurrency);
       var proposedRate = 0;
       if (foundRate.length > 0) {
         proposedRate = parseFloat(foundRate[0].rate);
-      } 
+      }
       if (defaultCurrencyRate.length > 0) {
         var defaultRate = parseFloat(defaultCurrencyRate[0].rate);
         if (defaultRate == 1) {
@@ -2464,8 +2513,8 @@ export class ProjectEntryComponent implements OnInit {
 
   getCurrencyManualExchangeRate() {
     if (this.funderModel.dated) {
-      var dated  = new Date(this.funderModel.dated.year + '-' + this.funderModel.dated.month + '-'
-      + this.funderModel.dated.date);
+      var dated = new Date(this.funderModel.dated.year + '-' + this.funderModel.dated.month + '-'
+        + this.funderModel.dated.date);
       this.currencyService.getManualExRatesByDate(dated.toString()).subscribe(
         data => {
         }
