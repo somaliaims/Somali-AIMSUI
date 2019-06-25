@@ -84,10 +84,10 @@
                     </option>
                   </select>&nbsp;
                   <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
-                    <b><i>Exchange rate: {{manualExRate}} on {{datedToday}}</i></b>
+                    <b><i>Exchange rate: 1 USD = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
                   </span>
                   <span *ngIf="manualExRate != 0 && model.selectedCurrency == defaultCurrency" class="text-warning">
-                    <b><i>Exchange rate: 1 on {{datedToday}}</i></b>
+                    <b><i>Exchange rate: 1 USD = 1 {{defaultCurrency}} on {{datedToday}}</i></b>
                   </span>
                   <span *ngIf="manualExRate == 0" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
@@ -154,10 +154,10 @@
               <tr *ngFor="let sectorProject of reportDataList.sectorProjectsList; let i = index;">
                 <table class="table table-bordered" style="margin-bottom: 0rem !important">
                   <tr *ngIf="i == 0">
-                    <th>Projects</th>
+                    <th>Project</th>
                     <th>Funders</th>
                     <th>Implementers</th>
-                    <th>Project cost</th>
+                    <th>Project value</th>
                     <th>Disbursements actual</th>
                     <th>Disbursements planned</th>
                   </tr>
