@@ -239,6 +239,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getSectorType + id);
     }
 
+    getSectorTypesUrl() {
+        return(this.BASE_URL + urlsList.urls.sectorTypesUrl);
+    }
+
     getSearchSectorTypeUrl(criteria: string) {
         return (this.BASE_URL + urlsList.urls.sectorTypesUrl + '/' + criteria);
     }
@@ -305,6 +309,10 @@ export class UrlHelperService {
 
     deleteSectorUrl(id: string, newId: string) {
         return (this.BASE_URL + urlsList.urls.deleteSector + id + '/' + newId);
+    }
+
+    getAllSectors() {
+        return (this.BASE_URL + urlsList.urls.sectorsUrl);
     }
 
     getDefaultSectorsUrl() {

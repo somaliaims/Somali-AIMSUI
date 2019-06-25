@@ -279,6 +279,7 @@
       <div class="col-md-6 col-sm-6">
 
         <div class="card card-signin my-5">
+
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
@@ -296,10 +297,23 @@
               #projectSectorForm="ngForm">
 
               <div *ngIf="sectorEntryType == 'aims'" class="form-group">
-                <label for="sectorId">AIMS sector</label>
+                <label for="sectorTypeId">Sector type</label>
+                <select class="form-control" id="sectorTypeId" [(ngModel)]="sectorModel.sectorTypeId" name="sectorTypeId"
+                  #sectorTypeId="ngModel" (change)="showSectorsForType()" required>
+                  <option value="null">--Select sector type--</option>
+                  <option *ngFor="let sType of sectorTypes" [value]="sType.id">{{sType.typeName}}</option>
+                </select>
+                <div *ngIf="projectSectorForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
+                  Sector type is required
+                </div>
+              </div>
+
+              <div *ngIf="sectorEntryType == 'aims'" class="form-group">
+                <label for="sectorId">Sector</label>
                 <select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
-                  #sectorId="ngModel" required>
-                  <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}</option>
+                  #sectorId="ngModel" (change)="showSectorMappings()" required>
+                  <option value="null">--Select sector--</option>
+                  <option *ngFor="let sector of typeSectorsList" [value]="sector.id">{{sector.sectorName}}</option>
                 </select>
                 <div *ngIf="projectSectorForm.submitted" [hidden]="sectorId.valid" class="alert alert-danger">
                   Sector is required
@@ -315,7 +329,7 @@
                 </div>
               </div>
 
-              <div *ngIf="sectorEntryType == 'iati'" class="form-group">
+              <div *ngIf="(sectorModel.sectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId" class="form-group">
                 <label for="sectorName">Sector mappings</label>
                 <select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
                   #sectorId="ngModel" required>

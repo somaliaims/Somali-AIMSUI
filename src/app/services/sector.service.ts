@@ -88,6 +88,19 @@ export class SectorService {
     );
   }
 
+  getSectorTypes() {
+    var url = this.urlHelper.getSectorTypesUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sector Types')));
+  }
+
+  getAllSectors() {
+    var url = this.urlHelper.getAllSectors();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sectors'))
+    );
+  }
+
   getDefaultSectors() {
     var url = this.urlHelper.getDefaultSectorsUrl();
     return this.httpClient.get(url, httpOptions).pipe(

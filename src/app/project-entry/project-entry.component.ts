@@ -43,6 +43,7 @@ export class ProjectEntryComponent implements OnInit {
   selectedParentSectorId: number = 0;
   sectorTotalPercentage: number = 0;
   locationTotalPercentage: number = 0;
+  primarySectorTypeId: number = 0;
   totalFunds: number = 0;
   mappingsCount: number = 0;
   totalDisbursements: number = 0;
@@ -110,8 +111,10 @@ export class ProjectEntryComponent implements OnInit {
   currencyList: any = [];
   filteredCurrencyList: any = [];
   sectorTypesList: any = [];
+  typeSectorsList: any = [];
   sectorsList: any = [];
   locationsList: any = [];
+  sectorTypes: any = [];
   mappedSectorsList: any = [];
   organizationsList: any = [];
   customFieldsList: any = [];
@@ -327,6 +330,7 @@ export class ProjectEntryComponent implements OnInit {
       this.endingYearsList.push(y);
     }
 
+    this.loadSectorTypes();
     this.loadSectorsList();
     this.loadLocationsList();
     this.loadOrganizationsList();
@@ -365,7 +369,6 @@ export class ProjectEntryComponent implements OnInit {
             project.isTransactionVisible = false;
           });
         }
-        console.log(this.iatiProjects);
         this.isIatiLoading = false;
       },
       error => {
@@ -392,22 +395,40 @@ export class ProjectEntryComponent implements OnInit {
         this.isAimsLoading = false;
       },
       error => {
-        console.log(error);
         this.isAimsLoading = false;
       }
-    )
+    );
+  }
+
+  loadSectorTypes() {
+    this.sectorService.getSectorTypes().subscribe(
+      data => {
+        if (data) {
+          console.log(data);
+          this.sectorTypes = data;
+          var primaryType = this.sectorTypes.filter(s => s.isPrimary == true);
+          if (primaryType.length > 0) {
+            this.primarySectorTypeId = primaryType[0].id;
+          }
+        }
+      }
+    );
   }
 
   loadSectorsList() {
-    this.sectorService.getDefaultSectors().subscribe(
+    this.sectorService.getAllSectors().subscribe(
       data => {
+        if (data) {
+          console.log(data);
         this.sectorsList = data;
-        this.defaultSectorsList = data;
+        this.typeSectorsList = [];
+        this.defaultSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.primarySectorTypeId);
+        }
       },
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   loadLocationsList() {
@@ -418,7 +439,7 @@ export class ProjectEntryComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   loadDefaultCurrency() {
@@ -428,7 +449,7 @@ export class ProjectEntryComponent implements OnInit {
           this.defaultCurrency = data.currency;
         }
       }
-    )
+    );
   }
 
   loadNationalCurrency() {
@@ -1139,6 +1160,23 @@ export class ProjectEntryComponent implements OnInit {
       var isExists = this.currentProjectImplementersList.filter(i =>
         i.implementer.trim().toLowerCase() == implementer.trim().toLowerCase());
       return isExists.length > 0 ? true : false;
+    }
+  }
+
+  showSectorsForType() {
+    if (this.sectorModel.sectorTypeId) {
+      this.sectorModel.sectorId = null;
+      this.typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
+    }
+  }
+
+  showSectorMappings() {
+    if (this.sectorModel.sectorId) {
+      var selectedSector = this.typeSectorsList.filter(s => s.id == this.sectorModel.sectorId);
+      if (selectedSector.length > 0) {
+        this.sectorModel.sectorName = selectedSector[0].sectorName;
+        this.getSectorMappings();
+      }
     }
   }
 
@@ -2430,7 +2468,6 @@ export class ProjectEntryComponent implements OnInit {
       + this.funderModel.dated.date);
       this.currencyService.getManualExRatesByDate(dated.toString()).subscribe(
         data => {
-          console.log(data);
         }
       );
     }
