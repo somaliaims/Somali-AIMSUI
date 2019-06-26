@@ -1441,6 +1441,7 @@ export class ProjectEntryComponent implements OnInit {
     }
 
     var projectSectorModel = {
+      sectorTypeId: this.sectorModel.sectorTypeId,
       projectId: projectId,
       sectorId: this.sectorModel.mappingId,
       fundsPercentage: this.sectorModel.fundsPercentage,
@@ -1478,7 +1479,8 @@ export class ProjectEntryComponent implements OnInit {
         this.sectorService.addSectorWithMapping(newSectorModel).subscribe(
           data => {
             if (data) {
-              this.selectedSectorId = this.sectorModel.sectorId;
+              projectSectorModel.sectorId = data;
+              this.selectedSectorId = data;
               this.addProjectSector(projectSectorModel);
             } else {
               this.blockUI.stop();
@@ -1486,8 +1488,6 @@ export class ProjectEntryComponent implements OnInit {
           }
         );
       }
-
-      
     } else {
       if (this.sectorModel.sectorTypeId == this.primarySectorTypeId) {
         projectSectorModel.sectorId = this.sectorModel.sectorId;
@@ -1544,6 +1544,17 @@ export class ProjectEntryComponent implements OnInit {
             var selectedSector = this.sectorsList.filter(s => s.id == model.sectorId);
             if (selectedSector.length > 0) {
               sectorObj.sector = selectedSector[0].sectorName;
+            } else {
+              var newSector = {
+                id: model.sectorId,
+                sectorTypeId: model.sectorTypeId,
+                sectorName: this.sectorModel.sectorName,
+                parentSector: null,
+                isDefault: false,
+                isSourceType: true
+              };
+
+              this.sectorsList.push(newSector);
             }
           }
 
