@@ -296,9 +296,9 @@
             <form class="form-signin" (ngSubmit)="projectSectorForm.form.valid && saveProjectSector(projectSectorForm)"
               #projectSectorForm="ngForm">
 
-              <div *ngIf="sectorEntryType == 'aims'" class="form-group">
+              <div class="form-group">
                 <label for="sectorTypeId">Sector type</label>
-                <select class="form-control" id="sectorTypeId" [(ngModel)]="sectorModel.sectorTypeId" name="sectorTypeId"
+                <select [class.disable]="isSectorTypeDisabled" class="form-control" id="sectorTypeId" [(ngModel)]="sectorModel.sectorTypeId" name="sectorTypeId"
                   #sectorTypeId="ngModel" (change)="showSectorsForType()" required>
                   <option value="null">--Select sector type--</option>
                   <option *ngFor="let sType of sectorTypes" [value]="sType.id">{{sType.typeName}}</option>
