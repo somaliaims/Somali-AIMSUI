@@ -8,19 +8,18 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card card-signin my-5">
+      <div class="col-sm-12 col-md-10 col-lg-10 mx-auto">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <div *ngIf="isError" class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
               <strong>Error!</strong> {{errorMessage}}
             </div>
+            <span class="text-center"><h5>Contact form</h5></span>
             <div *ngIf="isSuccess" class="alert alert-success alert-dismissible">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
               <strong>Information!</strong> {{successMessage}}
             </div>
-            <h5 class="card-title text-center">Contact us</h5>
-
             <form class="form-signin" (ngSubmit)="contactForm.form.valid && sendEmailRequest(contactForm)"
               #contactForm="ngForm">
 
@@ -53,10 +52,10 @@
                 </select>
               </div>
 
-              <div *ngIf="model.emailType == emailTypeCodes.INFORMATION" class="form-group">
-                <inpu [class.disable]="model.projectId != 0" type="text" placeholder="Enter project name to search"
+              <div *ngIf="model.emailType == emailTypeCodes.INFORMATION" class="input-group">
+                <input [class.disable]="model.projectId != 0" type="text" placeholder="Enter project name to search"
                   class="form-control" id="criteria" (input)="filterProjects()" [(ngModel)]="criteria" name="criteria"
-                  #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;" maxlength="50" required>
+                  #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;" maxlength="50" required />&nbsp;
                   <span class="input-group-btn">
                     <button [class.disable]="isShowList" title="Show projects list" class="btn btn-success btn-lg" (click)="showProjectsList()" type="button">
                       <i class="fa fa-list"></i>
@@ -69,8 +68,8 @@
                   </span>
               </div>
 
-              <div *ngIf="model.emailType == emailTypeCodes.INFORMATION && isShowList" class="iati-box">
-                <table *ngIf="filteredProjects.length > 0" class="table table-bordered">
+              <div *ngIf="model.emailType == emailTypeCodes.INFORMATION && isShowList == true" class="iati-box margin-top-5">
+                <table *ngIf="filteredProjectsList.length > 0" class="table table-bordered">
                   <tr *ngFor="let project of filteredProjectsList">
                     <td>{{project.title}}</td>
                     <td>
@@ -80,7 +79,7 @@
                     </td>
                   </tr>
                 </table>
-                <span class="text-info" *ngIf="filteredProjects.length == 0 && !isLoading">
+                <span class="text-info" *ngIf="filteredProjectsList.length == 0 && !isLoading">
                   <i>No projects to show</i>
                 </span>
                 <span *ngIf="isLoading" class="text-center">
@@ -88,14 +87,14 @@
                 </span>
               </div>
 
-              <div class="form-group">
+              <div *ngIf="!isShowList" class="form-group">
                 <label for="subject">Subject</label>
-                <input type="text" class="form-control" id="subject" [(ngModel)]="subject" name="subject"
+                <input type="text" class="form-control" id="subject" [(ngModel)]="model.subject" name="subject"
                   #subject="ngModel" maxlength="50" required>
                 <div *ngIf="contactForm.submitted" [hidden]="subject.valid" class="alert alert-danger">
                 </div>
 
-                <div class="form-group">
+                <div *ngIf="!isShowList" class="form-group">
                   <label>Message</label>
                   <textarea rows="5" class="form-control" id="message" [(ngModel)]="model.message" name="message"
                     #message="ngModel" maxlength="500" required></textarea>
@@ -103,6 +102,7 @@
                     Message is required
                   </div>
                 </div>
+              </div>
 
                 <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Send request</button>
             </form>

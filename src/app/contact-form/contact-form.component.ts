@@ -60,6 +60,7 @@ export class ContactFormComponent implements OnInit {
         if (data) {
           this.successMessage = "Your request is submitted successfully";
           this.isShowSuccessMessage = true;
+          this.resetModel();
         }
         this.blockUI.stop();
       }
@@ -72,6 +73,8 @@ export class ContactFormComponent implements OnInit {
       data => {
         if (data) {
           this.projectsList = data;
+          this.filteredProjectsList = data;
+          this.isShowList = true;
         }
         this.isLoading = false;
       }
@@ -112,10 +115,24 @@ export class ContactFormComponent implements OnInit {
     }
   }
 
+  showProjectsList() {
+    this.isShowList = true;
+    this.criteria = null;
+    this.model.projectId = 0;
+    this.filteredProjectsList = this.projectsList;
+  }
+
+  resetModel() {
+    this.model = { emailType: null, senderName: null, senderEmail: null, 
+      projectId: 0, subject: null, message: null 
+    };
+  }
+
   clear() {
     this.criteria = null;
     this.model.projectId = 0;
     this.isShowList = true;
+    this.filteredProjectsList = this.projectsList;
   }
 
 }
