@@ -572,4 +572,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.unApproveProjectMembership);
     }
 
+    getContactUrl() {
+        return (this.BASE_URL + urlsList.urls.contactUrl);
+    }
+
 }

@@ -37,6 +37,10 @@ export class SecurityHelperService {
       localStorage.setItem('isLoggedIn', true.toString());
     }
   }
+
+  checkIsLoggedIn() {
+    return (localStorage.getItem('isLoggedIn') == 'true') ? true : false;
+  }
   
   getUserOrganizationId() {
     return localStorage.getItem('organizationId');
