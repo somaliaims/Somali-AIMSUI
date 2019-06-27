@@ -21,7 +21,7 @@ export class ContactFormComponent implements OnInit {
   filteredProjectsList: any = [];
   criteria: string = null;
   isLoading: boolean = false;
-  model: any = { emailType: null, senderName: null, senderEmail: null, 
+  model: any = { emailType: null, senderName: null, projectTitle: null, senderEmail: null, 
     projectId: 0, subject: null, message: null 
   };
 
@@ -47,20 +47,23 @@ export class ContactFormComponent implements OnInit {
     
   }
 
-  sendEmailRequest() {
-    if (this.model.emailType == this.emailTypeCodes.INFORMATION && this.model.projectId <= 0) {
+  sendEmailRequest(frm: any) {
+    this.isShowSuccessMessage = false;
+    if (this.model.emailType == this.emailTypeCodes.INFORMATION && this.model.projectId == 0) {
       this.errorMessage = Messages.PROJECT_FOR_INFORMATION_REQUIRED;
       this.errorModal.openModal();
       return false;
     }
 
     this.blockUI.start('Submitting request...');
+    this.model.projectTitle = this.criteria;
     this.contactService.sendContactEmail(this.model).subscribe(
       data => {
         if (data) {
           this.successMessage = "Your request is submitted successfully";
           this.isShowSuccessMessage = true;
           this.resetModel();
+          frm.resetForm();
         }
         this.blockUI.stop();
       }
@@ -93,7 +96,7 @@ export class ContactFormComponent implements OnInit {
   }
 
   selectProject(e) {
-    var id = e.currentTarget.id.split('-')[1];
+    var id = parseInt(e.currentTarget.id.split('-')[1]);
     if (id) {
       var selectedProject = this.projectsList.filter(p => p.id == id);
       if (selectedProject.length > 0) {
@@ -123,7 +126,7 @@ export class ContactFormComponent implements OnInit {
   }
 
   resetModel() {
-    this.model = { emailType: null, senderName: null, senderEmail: null, 
+    this.model = { emailType: null, senderName: null, projectTitle: null, senderEmail: null, 
       projectId: 0, subject: null, message: null 
     };
   }
