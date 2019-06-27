@@ -125,5 +125,6 @@ export const urls = {
 	userProjects: "Project/GetUserProjects",
 	projectMembershipUrl: "ProjectMembership",
 	approveProjectMembership: "ProjectMembership/ApproveRequest",
-	unApproveProjectMembership: "ProjectMembership/UnApproveRequest"
+	unApproveProjectMembership: "ProjectMembership/UnApproveRequest",
+	contactUrl: "Contact"
 };

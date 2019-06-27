@@ -45,12 +45,47 @@
               <div class="form-group">
                 <label for="emailType">Request type</label>
                 <select class="form-control" id="emailType" [(ngModel)]="model.emailType" name="emailType"
-                  #emailType="ngModel" required>
+                  #emailType="ngModel" (change)="changeRequest()" required>
                   <option value="null">-- Request type --</option>
                   <option *ngFor="let type of emailTypes" value="{{type.val}}">
                     {{type.text}}
                   </option>
                 </select>
+              </div>
+
+              <div *ngIf="model.emailType == emailTypeCodes.INFORMATION" class="form-group">
+                <inpu [class.disable]="model.projectId != 0" type="text" placeholder="Enter project name to search"
+                  class="form-control" id="criteria" (input)="filterProjects()" [(ngModel)]="criteria" name="criteria"
+                  #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;" maxlength="50" required>
+                  <span class="input-group-btn">
+                    <button [class.disable]="isShowList" title="Show projects list" class="btn btn-success btn-lg" (click)="showProjectsList()" type="button">
+                      <i class="fa fa-list"></i>
+                    </button>
+                    &nbsp;
+                    <button [class.disable]="model.projectId == 0" title="Clear" class="btn btn-danger btn-lg" (click)="clear()"
+                      type="button">
+                      <i class="fa fa-close"></i>
+                    </button>
+                  </span>
+              </div>
+
+              <div *ngIf="model.emailType == emailTypeCodes.INFORMATION && isShowList" class="iati-box">
+                <table *ngIf="filteredProjects.length > 0" class="table table-bordered">
+                  <tr *ngFor="let project of filteredProjectsList">
+                    <td>{{project.title}}</td>
+                    <td>
+                      <button [class.disable]="model.projectId == project.id" type="button" id="project-{{project.id}}"
+                        (click)="selectProject($event)" class="btn btn-success"><i id="iproject-{{project.id}}"
+                          class="fa fa-check"></i></button>
+                    </td>
+                  </tr>
+                </table>
+                <span class="text-info" *ngIf="filteredProjects.length == 0 && !isLoading">
+                  <i>No projects to show</i>
+                </span>
+                <span *ngIf="isLoading" class="text-center">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+                </span>
               </div>
 
               <div class="form-group">

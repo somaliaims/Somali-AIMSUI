@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { ContactService } from '../services/contact.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { Messages } from '../config/messages';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -17,10 +16,11 @@ export class ContactFormComponent implements OnInit {
   errorMessage: string = null;
   successMessage: string = null;
   isShowSuccessMessage: boolean = false;
+  isShowList: boolean = false;
   projectsList: any = [];
   filteredProjectsList: any = [];
-  projectCriteria: string = null;
-
+  criteria: string = null;
+  isLoading: boolean = false;
   model: any = { emailType: null, senderName: null, senderEmail: null, 
     projectId: 0, subject: null, message: null 
   };
@@ -67,32 +67,55 @@ export class ContactFormComponent implements OnInit {
   }
 
   getProjects() {
+    this.isLoading = true;
     this.projectService.getProjectsList().subscribe(
       data => {
         if (data) {
           this.projectsList = data;
         }
+        this.isLoading = false;
       }
     );
   }
 
   filterProjects() {
     if (!this.criteria) {
-      if (this.model.sectorTypeId == 0) {
-        this.filteredSectorsList = this.sectorsList;
-      } else {
-        this.filteredSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.model.sectorTypeId);
-      }
+      this.filteredProjectsList = this.projectsList;
     } else {
-      if (this.sectorsList.length > 0) {
+      if (this.projectsList.length > 0) {
         var criteria = this.criteria.toLowerCase();
-        if (this.model.sectorTypeId > 0) {
-          this.filteredSectorsList = this.sectorsList.filter(s => (s.sectorTypeId == this.model.sectorTypeId && s.sectorName.toLowerCase().indexOf(criteria) != -1));
-        } else {
-          this.filteredSectorsList = this.sectorsList.filter(s => (s.sectorName.toLowerCase().indexOf(criteria) != -1));
-        }
+        this.filteredProjectsList = this.projectsList.filter(s => (s.title.toLowerCase().indexOf(criteria) != -1));
       }
     }
+  }
+
+  selectProject(e) {
+    var id = e.currentTarget.id.split('-')[1];
+    if (id) {
+      var selectedProject = this.projectsList.filter(p => p.id == id);
+      if (selectedProject.length > 0) {
+        this.model.projectId = id;
+        this.criteria = selectedProject[0].title;
+        this.isShowList = false;
+      }
+    }
+  }
+
+  changeRequest() {
+    if (this.model.emailType == this.emailTypeCodes.INFORMATION) {
+      this.isShowList = true;
+      if (this.projectsList.length == 0) {
+        this.getProjects();
+      }
+    } else {
+      this.isShowList = false;
+    }
+  }
+
+  clear() {
+    this.criteria = null;
+    this.model.projectId = 0;
+    this.isShowList = true;
   }
 
 }
