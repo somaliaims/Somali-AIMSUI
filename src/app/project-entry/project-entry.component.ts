@@ -749,18 +749,14 @@ export class ProjectEntryComponent implements OnInit {
     var selectProject = this.aimsProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
       this.isSectorTypeDisabled = false;
-      var sectors = selectProject[0].sectors;
-      if (sectors && sectors.length > 0) {
-        var selectSector = sectors.filter(s => s.sectorId == sectorId);
+        var selectSector = this.sectorsList.filter(s => s.id == sectorId);
         if (selectSector && selectSector.length > 0) {
           this.sectorEntryType = 'aims';
           this.isSectorVisible = true;
-          var sectorObj = { id: selectProject[0].id, sectorName: selectSector[0].sectorName }
-          this.sectorInput.setValue(sectorObj);
           this.sectorModel.fundsPercentage = selectSector[0].fundsPercentage;
-          this.sectorModel.sectorId = selectSector[0].sectorId;
+          this.sectorModel.sectorTypeId = selectSector[0].sectorTypeId;
+          this.showSectorsForType(selectSector[0].id);
         }
-      }
     }
   }
 
@@ -1180,10 +1176,9 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
-  showSectorsForType() {
+  showSectorsForType(setSectorId: number = 0) {
     if (this.sectorModel.sectorTypeId) {
       this.sectorModel.sectorId = null;
-
       if (this.sectorEntryType == 'aims') {
         this.sectorMappings = [];
       }
@@ -1193,6 +1188,9 @@ export class ProjectEntryComponent implements OnInit {
       this.showMappingAuto = false;
       this.showMappingManual = true;
       this.typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
+      if (setSectorId != 0) {
+        this.sectorModel.sectorId = setSectorId;
+      }
     }
   }
 
@@ -1451,15 +1449,15 @@ export class ProjectEntryComponent implements OnInit {
     if (this.sectorEntryType == 'iati') {
       var foundSector = this.sectorsList.filter(s => s.sectorName.toLowerCase().trim() == this.sectorModel.sectorName.toLowerCase().trim());
       if (foundSector.length > 0) {
-        var sectorModel = {
+        var iatiSectorModel = {
           sectorTypeId: foundSector[0].sectorTypeId,
           sectorName: this.sectorModel.sectorName,
           parentId: 0,
-          sectorId: foundSector[0].sectorId,
+          sectorId: foundSector[0].id,
           mappingSectorId: this.sectorModel.mappingId
         };
-        this.selectedSectorId = this.sectorModel.sectorId;
-        this.sectorService.addSectorWithMapping(sectorModel).subscribe(
+        this.selectedSectorId = iatiSectorModel.sectorId;
+        this.sectorService.addSectorWithMapping(iatiSectorModel).subscribe(
           data => {
             if (data) {
               this.addProjectSector(projectSectorModel);
@@ -1479,8 +1477,6 @@ export class ProjectEntryComponent implements OnInit {
         this.sectorService.addSectorWithMapping(newSectorModel).subscribe(
           data => {
             if (data) {
-              projectSectorModel.sectorId = data;
-              this.selectedSectorId = data;
               this.addProjectSector(projectSectorModel);
             } else {
               this.blockUI.stop();
@@ -2663,6 +2659,7 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorModel.projectId = 0;
     this.sectorModel.sectorId = null;
     this.sectorModel.sectorName = null;
+    this.isSectorTypeDisabled = false;
     this.showMappingAuto = false;
     this.showMappingManual = false;
   }
