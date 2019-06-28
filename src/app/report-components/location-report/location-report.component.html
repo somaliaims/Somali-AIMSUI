@@ -68,7 +68,7 @@
               <div class="row margin-top-10">
                 <div class="col-md-6">
                   <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                    #chartType="ngModel" (change)="manageChartTypeDisplay()" required>
+                    #chartType="ngModel" (change)="manageDataToDisplay()" required>
                     <option value="null">-- Chart type --</option>
                     <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
                       {{chart.title}}
@@ -119,7 +119,7 @@
     <div class="row margin-top-10">
         <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
           <div class="col-md-12">
-            <div *ngIf="multiDataDisplay" class="float-right form-inline">
+            <!--<div *ngIf="multiDataDisplay" class="float-right form-inline">
               <label class="text-warning"><b><i>Data display options for chart:&nbsp;</i></b></label>
               <ng-multiselect-dropdown [placeholder]="'-- Chart data option/s --'" [data]="dataOptions"
                 [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
@@ -127,12 +127,12 @@
                 (onSelectAll)="onDataOptionSelectAll($event)" (onDeSelectAll)="onDataOptionDeSelectAll($event)"
                 name="selectedDataOptions" #selectedDataOptions="ngModel">
               </ng-multiselect-dropdown>
-            </div>
+            </div>-->
 
-            <div *ngIf="!multiDataDisplay" class="float-right form-inline">
+            <div class="float-right form-inline">
               <label><b><i>Data display options for chart:&nbsp;</i></b></label>
               <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
-                #dataOption="ngModel" (change)="selectDataOption()" required>
+                #dataOption="ngModel" (change)="manageDataToDisplay()" required>
                 <option value="null">-- Chart data option --</option>
                 <option *ngFor="let option of dataOptions" value="{{option.id}}">
                   {{option.value}}

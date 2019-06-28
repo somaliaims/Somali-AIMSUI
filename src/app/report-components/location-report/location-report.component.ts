@@ -282,11 +282,7 @@ export class LocationReportComponent implements OnInit {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();
           }
-          if (this.multiDataDisplay) {
-            this.manageDataOptions();
-          } else {
-            this.manageChartTypeDisplay();
-          }
+          this.manageDataToDisplay();
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
         }
@@ -610,10 +606,10 @@ export class LocationReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
         if (isDataExists.length == 0) {
-          var sectorProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
+          var locationProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
+          var chartData = { data: locationProjects, label: this.dataOptionLabels.PROJECTS };
           this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorProjects);
+          this.doughnutChartData.push(locationProjects);
           this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
         }
       } else {
@@ -671,42 +667,34 @@ export class LocationReportComponent implements OnInit {
     }
   }
 
-  manageChartTypeDisplay() {
-    var chartType = this.model.chartType;
-
-    if (this.reportDataList && this.reportDataList.locationProjectsList) {
-      if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
-        this.multiDataDisplay = false;
-        this.chartData = [];
-        this.selectedDataOptions = [];
-        this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-        var sectorProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
-        this.chartData.push(sectorProjects);
-        this.model.selectedDataOptions = [];
-        var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
-        if (defaultOption.length > 0) {
-          this.model.selectedDataOptions.push(defaultOption[0]);
-          this.model.selectedDataOption = this.dataOptionsCodes.PROJECTS;
-        }
-      } else {
-        if (!this.multiDataDisplay) {
-          this.chartData = [];
-          this.doughnutChartData = [];
-          this.selectedDataOptions = [];
-          var sectorProjects = this.reportDataList.locationProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
-          this.chartData.push(chartData);
-          this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-          this.doughnutChartData.push(sectorProjects);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
-          if (this.model.selectedDataOptions.length == 0) {
-            var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
-            if (defaultOption.length > 0) {
-              this.model.selectedDataOptions.push(defaultOption[0]);
-            }
-          }
-        }
-        this.multiDataDisplay = true;
+  manageDataToDisplay() {
+    this.chartData = [];
+    var selectedDataOption = 1;
+    if (this.model.selectedDataOption) {
+      this.selectedDataOptions = [];
+      selectedDataOption = parseInt(this.model.selectedDataOption);
+      this.selectedDataOptions.push(selectedDataOption);
+    }
+    selectedDataOption = parseInt(this.model.selectedDataOption);
+    if (this.model.chartType != this.chartTypes.PIE && this.model.chartType != this.chartTypes.POLAR) {
+      this.manageDataOptions();
+    } else {
+      switch (selectedDataOption) {
+        case this.dataOptionsCodes.PROJECTS:
+          this.chartData = this.reportDataList.locationProjectsList.map(p => p.projects.length);
+          break;
+  
+        case this.dataOptionsCodes.FUNDING:
+          this.chartData = this.reportDataList.locationProjectsList.map(p => p.totalFunding);
+          break;
+  
+        case this.dataOptionsCodes.DISBURSEMENTS:
+          this.chartData = this.reportDataList.locationProjectsList.map(p => p.totalDisbursements);
+          break;
+  
+        default:
+          this.chartData = this.reportDataList.locationProjectsList.map(p => p.projects.length);
+          break;
       }
     }
   }
