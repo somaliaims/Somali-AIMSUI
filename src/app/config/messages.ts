@@ -35,6 +35,7 @@ export const Messages = {
     EX_RATE_NOT_FOUND: 'Exchange rate could not be found for the selected source. Please select another source or contact administrator',
     INVALID_ENVELOPE_MANUAL_AMOUNT: 'Manually entered amount cannot be less than total expected amount',
     SELECT_IMPLEMENTER_FROM_LIST: 'You must select an implementer from the list',
+    INVALID_IMPLEMENTER: 'Enter/Select a valid implementer name',
     PROJECT_FOR_INFORMATION_REQUIRED: 'Select a project before your proceed with the information request',
     MEMBERSHIP_REQUEST_MESSAGE: 'Your request is submitted successfully, you will get a notification about the status of this request through email'
 }

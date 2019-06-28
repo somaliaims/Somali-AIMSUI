@@ -1979,7 +1979,19 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    var implementerName = (this.implementerInput.value && this.implementerInput.value.organizationName) ? this.implementerInput.value.organizationName : this.implementerInput.value;
+    var implementerName = null;
+    if (this.implementerEntryType == 'iati') {
+      implementerName = this.implementerModel.implementer;
+    } else {
+      implementerName = (this.implementerInput.value && this.implementerInput.value.organizationName) ? this.implementerInput.value.organizationName : this.implementerInput.value;
+    }
+    
+    if (!implementerName) {
+      this.errorMessage = Messages.INVALID_IMPLEMENTER;
+      this.errorModal.openModal();
+      return false;
+    }
+
     implementerName = implementerName.toLowerCase().trim();
     if (this.selectedImplementerId == 0) {
       var isImplementerExists = this.organizationsList.filter(o => o.organizationName.toLowerCase().trim() == implementerName);
