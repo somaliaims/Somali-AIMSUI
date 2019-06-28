@@ -68,7 +68,7 @@
               <div class="row margin-top-10">
                 <div class="col-md-6">
                   <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                    #chartType="ngModel" (change)="manageChartTypeDisplay()" required>
+                    #chartType="ngModel" (change)="manageDataToDisplay()" required>
                     <option value="null">-- Chart type --</option>
                     <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
                       {{chart.title}}
@@ -132,7 +132,7 @@
             <div class="float-right form-inline">
               <label><b><i>Data display options for chart:&nbsp;</i></b></label>
               <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType" #dataOption="ngModel"
-                (change)="selectDataOption()" required>
+                (change)="manageDataToDisplay()" required>
                 <option value="null">-- Chart data option --</option>
                 <option *ngFor="let option of dataOptions" value="{{option.id}}">
                   {{option.value}}

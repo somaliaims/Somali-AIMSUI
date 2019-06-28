@@ -298,11 +298,7 @@ export class SectorReportComponent implements OnInit {
             this.setExcelFile();
           }
 
-          if (this.multiDataDisplay) {
-            this.manageDataOptions();
-          } else {
-            this.manageChartTypeDisplay();
-          }
+          this.manageDataToDisplay();
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
         }
@@ -610,7 +606,7 @@ export class SectorReportComponent implements OnInit {
     this.manageDataOptions();
   }
 
-  selectDataOption() {
+  manageDataToDisplay() {
     this.chartData = [];
     var selectedDataOption = 1;
     if (this.model.selectedDataOption) {
@@ -618,7 +614,7 @@ export class SectorReportComponent implements OnInit {
       selectedDataOption = parseInt(this.model.selectedDataOption);
       this.selectedDataOptions.push(selectedDataOption);
     }
-
+    selectedDataOption = parseInt(this.model.selectedDataOption);
     if (this.model.chartType != this.chartTypes.PIE && this.model.chartType != this.chartTypes.POLAR) {
       this.manageDataOptions();
     } else {
@@ -796,47 +792,6 @@ export class SectorReportComponent implements OnInit {
     if (this.excelFile) {
       this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
     }
-  }
-
-  manageChartTypeDisplay() {
-    var chartType = this.model.chartType;
-
-    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
-      if (chartType == this.chartTypes.PIE || chartType == this.chartTypes.POLAR) {
-        this.multiDataDisplay = false;
-        this.chartData = [];
-        this.selectedDataOptions = [];
-        this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-        var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-        this.chartData.push(sectorProjects);
-        this.model.selectedDataOptions = [];
-        var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
-        if (defaultOption.length > 0) {
-          this.model.selectedDataOptions.push(defaultOption[0]);
-          this.model.selectedDataOption = this.dataOptionsCodes.PROJECTS;
-        }
-      } else {
-        if (!this.multiDataDisplay) {
-          this.chartData = [];
-          this.doughnutChartData = [];
-          this.selectedDataOptions = [];
-          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
-          this.chartData.push(chartData);
-          this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-          this.doughnutChartData.push(sectorProjects);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
-          if (this.model.selectedDataOptions.length == 0) {
-            var defaultOption = this.dataOptions.filter(o => o.id == this.dataOptionsCodes.PROJECTS);
-            if (defaultOption.length > 0) {
-              this.model.selectedDataOptions.push(defaultOption[0]);
-            }
-          }
-        }
-        this.multiDataDisplay = true;
-      }
-    }
-
   }
 
 }
