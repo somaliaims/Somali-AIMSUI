@@ -69,6 +69,15 @@ export class SectorReportComponent implements OnInit {
     POLAR: 'polarArea'
   };
 
+  chartTypeCodes: any = {
+    BAR: 1,
+    PIE: 2,
+    DOUGHNUT: 3,
+    LINE: 4,
+    RADAR: 5,
+    POLAR: 6
+  };
+
   dataOptions: any = [
     { id: 1, type: 'projects', value: 'Number of Projects' },
     { id: 2, type: 'funding', value: 'Funding' },
@@ -605,25 +614,31 @@ export class SectorReportComponent implements OnInit {
     this.chartData = [];
     var selectedDataOption = 1;
     if (this.model.selectedDataOption) {
+      this.selectedDataOptions = [];
       selectedDataOption = parseInt(this.model.selectedDataOption);
+      this.selectedDataOptions.push(selectedDataOption);
     }
 
-    switch (selectedDataOption) {
-      case this.dataOptionsCodes.PROJECTS:
-        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-        break;
-
-      case this.dataOptionsCodes.FUNDING:
-        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
-        break;
-
-      case this.dataOptionsCodes.DISBURSEMENTS:
-        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
-        break;
-
-      default:
-        this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-        break;
+    if (this.model.chartType != this.chartTypes.PIE && this.model.chartType != this.chartTypes.POLAR) {
+      this.manageDataOptions();
+    } else {
+      switch (selectedDataOption) {
+        case this.dataOptionsCodes.PROJECTS:
+          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          break;
+  
+        case this.dataOptionsCodes.FUNDING:
+          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+          break;
+  
+        case this.dataOptionsCodes.DISBURSEMENTS:
+          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+          break;
+  
+        default:
+          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          break;
+      }
     }
   }
 
