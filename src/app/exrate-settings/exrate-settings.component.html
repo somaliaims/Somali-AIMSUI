@@ -24,13 +24,16 @@
     <div class="row">
       <div *ngIf="currentTab == 'exrates'" class="col-md-12 margin-top-10">
         <div class="input-group">
-          <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="searchDate"
+          <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="searchDate"
             [(ngModel)]="model.searchDate" [maxDate]="calendarMaxDate" ngbDatepicker #c="ngbDatepicker" required>
+          <div class="input-group-append">
+            <button class="btn btn-outline-warning calendar" (click)="c.toggle()" type="button"></button>&nbsp;
+          </div>
           <span class="input-group-btn">
             <button title="Search" class="btn btn-outline-info btn-lg" (click)="searchManualRates()" type="button">
               <i class="fa fa-search"></i>
             </button>&nbsp;
-            <button title="Show all" class="btn btn-outline-warning btn-lg" (click)="showAllManualRates()"
+            <button title="Show all" class="btn btn-outline-success btn-lg" (click)="showAllManualRates()"
               type="button">
               <i class="fa fa-list"></i>
             </button>
@@ -41,15 +44,20 @@
           <div class="card-body iati-box">
             <form class="form-inline" (ngSubmit)="rateForm.form.valid && saveRate(rateForm)" #rateForm="ngForm">
               <div class="form-group mb-2">
-                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="exchangeRate" [(ngModel)]="model.exchangeRate"
-                  name="exchangeRate" #exchangeRate="ngModel" maxlength="6" required>
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="exchangeRate"
+                  [(ngModel)]="model.exchangeRate" name="exchangeRate" #exchangeRate="ngModel" maxlength="6" required>
                 <div *ngIf="rateForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
                   Valid exchange rate is required (Max. 2 decimal points)
                 </div>
               </div>
               <div class="form-group mx-sm-3 mb-2">
-                <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated" [(ngModel)]="model.dated"
-                  ngbDatepicker #s="ngbDatepicker" required>
+                <div class="input-group">
+                  <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
+                    [(ngModel)]="model.dated" ngbDatepicker #s="ngbDatepicker" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>&nbsp;
+                  </div>
+                </div>
               </div>
               <button type="submit" class="btn btn-warning mb-2 text-uppercase">Save new rate</button>
             </form>

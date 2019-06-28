@@ -159,11 +159,11 @@
                 <div class="form-group">
                   <label for="title">Start date</label>
                   <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="startDate"
-                      [(ngModel)]="model.startDate" [maxDate]="calendarMaxDate" ngbDatepicker #s="ngbDatepicker"
+                    <input type="text" [readonly]="true" class="form-control" placeholder="yyyy-mm-dd" name="startDate"
+                      [(ngModel)]="model.startDate" #c="ngModel" [maxDate]="calendarMaxDate" ngbDatepicker #s="ngbDatepicker"
                       required>
                     <div class="input-group-append">
-                      <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                      <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>
                     </div>
                   </div>
                 </div>
@@ -171,10 +171,10 @@
                 <div class="form-group">
                   <label for="title">End date</label>
                   <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="endDate"
+                    <input type="text" class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" name="endDate"
                       [(ngModel)]="model.endDate" [maxDate]="calendarMaxDate" ngbDatepicker #e="ngbDatepicker" required>
                     <div class="input-group-append">
-                      <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
+                      <button class="btn btn-outline-warning calendar" (click)="e.toggle()" type="button"></button>
                     </div>
                   </div>
                 </div>
@@ -989,11 +989,11 @@
               <div class="form-group">
                 <label for="title">Funding date </label>
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
+                  <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
                     [(ngModel)]="funderModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(1)" ngbDatepicker #s="ngbDatepicker"
                     required>
                   <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                    <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>
                   </div>
                 </div>
               </div>
@@ -1361,11 +1361,11 @@
               <div class="form-group">
                 <label for="title">Date </label>
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dated"
+                  <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
                     [(ngModel)]="disbursementModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(2)" ngbDatepicker
                     #dd="ngbDatepicker" required>
                   <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="dd.toggle()" type="button"></button>
+                    <button class="btn btn-outline-warning calendar" (click)="dd.toggle()" type="button"></button>
                   </div>
                 </div>
               </div>
