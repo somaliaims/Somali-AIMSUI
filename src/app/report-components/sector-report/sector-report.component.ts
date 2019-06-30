@@ -540,7 +540,7 @@ export class SectorReportComponent implements OnInit {
               if (org.length > 0) {
                 this.model.selectedOrganizations.push(org[0]);
               }
-            });
+            }.bind(this));
           }
           this.searchProjectsByCriteriaReport();
         }

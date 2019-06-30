@@ -10,6 +10,7 @@ import * as html2canvas from 'html2canvas';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { Messages } from 'src/app/config/messages';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'location-report',
@@ -44,6 +45,10 @@ export class LocationReportComponent implements OnInit {
   chartCategory: number = 1;
   multiDataDisplay: boolean = true;
   datedToday: string = null;
+  paramLocationIds: any = [];
+  paramOrgIds: any = [];
+  loadReport: boolean = false;
+  isLoading: boolean = true;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -159,12 +164,26 @@ export class LocationReportComponent implements OnInit {
   constructor(private reportService: ReportService, private storeService: StoreService,
     private locationService: LocationService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private currencyService: CurrencyService,
-    private errorModal: ErrorModalComponent
+    private errorModal: ErrorModalComponent, private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
 
-    this.getLocationsList();
+    if (this.route.snapshot.queryParams.load) {
+      this.route.queryParams.subscribe(params => {
+        if (params) {
+          this.model.title = (params.title) ? params.title : null;
+          this.model.startingYear = (params.syear) ? params.syear : 0;
+          this.model.endingYear = (params.eyear) ? params.eyear : 0;
+          this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
+          this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
+          this.loadReport = true;
+        } 
+      });
+    } else {
+      this.isLoading = false;
+    }
+
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
@@ -266,8 +285,8 @@ export class LocationReportComponent implements OnInit {
       title: this.model.title,
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
-      organizationIds: this.selectedOrganizations,
-      locationIds: this.selectedLocations,
+      organizationIds: this.model.selectedOrganizations.map(o => o.id),
+      locationIds: this.model.selectedLocations.map(l => l.id),
     };
 
     this.resetSearchResults();
@@ -292,7 +311,11 @@ export class LocationReportComponent implements OnInit {
         console.log(error);
         this.blockUI.stop();
       }
-    )
+    );
+
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
   }
 
   resetSearchResults() {
@@ -383,6 +406,16 @@ export class LocationReportComponent implements OnInit {
     this.locationService.getLocationsList().subscribe(
       data => {
         this.locationsList = data;
+        if (this.loadReport) {
+          if (this.paramLocationIds.length > 0) {
+            this.paramLocationIds.forEach(function (id) {
+              var location = this.locationsList.filter(s => s.id == id);
+              if (location.length > 0) {
+                this.model.selectedLocations.push(location[0]);
+              }
+            }.bind(this));
+          }
+        }
       },
       error => {
         console.log(error);
@@ -394,6 +427,18 @@ export class LocationReportComponent implements OnInit {
     this.organizationService.getOrganizationsList().subscribe(
       data => {
         this.organizationsList = data;
+
+        if (this.loadReport) {
+          if (this.paramOrgIds.length > 0) {
+            this.paramOrgIds.forEach(function (id) {
+              var org = this.organizationsList.filter(o => o.id == id);
+              if (org.length > 0) {
+                this.model.selectedOrganizations.push(org[0]);
+              }
+            }.bind(this));
+          }
+          this.searchProjectsByCriteriaReport();
+        }
       },
       error => {
         console.log(error);
@@ -403,50 +448,49 @@ export class LocationReportComponent implements OnInit {
 
   onLocationSelect(item: any) {
     var id = item.id;
-    if (this.selectedLocations.indexOf(id) == -1) {
+    /*if (this.selectedLocations.indexOf(id) == -1) {
       this.selectedLocations.push(id);
-    }
+    }*/
   }
 
   onLocationDeSelect(item: any) {
     var id = item.id;
-    var index = this.selectedLocations.indexOf(id);
-    this.selectedLocations.splice(index, 1);
+    /*var index = this.selectedLocations.indexOf(id);
+    this.selectedLocations.splice(index, 1);*/
 
     this.searchProjectsByCriteriaReport();
   }
 
   onLocationSelectAll(items: any) {
-    items.forEach(function (item) {
+    /*items.forEach(function (item) {
       var id = item.id;
       if (this.selectedLocations.indexOf(id) == -1) {
         this.selectedLocations.push(id);
       }
-    }.bind(this))
+    }.bind(this));*/
   }
 
   onOrganizationSelect(item: any) {
     var id = item.id;
-    if (this.selectedOrganizations.indexOf(id) == -1) {
+    /*if (this.selectedOrganizations.indexOf(id) == -1) {
       this.selectedOrganizations.push(id);
-    }
+    }*/
   }
 
   onOrganizationDeSelect(item: any) {
     var id = item.id;
-    var index = this.selectedOrganizations.indexOf(id);
-    this.selectedOrganizations.splice(index, 1);
-
+    /*var index = this.selectedOrganizations.indexOf(id);
+    this.selectedOrganizations.splice(index, 1);*/
     this.searchProjectsByCriteriaReport();
   }
 
   onOrganizationSelectAll(items: any) {
-    items.forEach(function (item) {
+    /*items.forEach(function (item) {
       var id = item.id;
       if (this.selectedOrganizations.indexOf(id) == -1) {
         this.selectedOrganizations.push(id);
       }
-    }.bind(this));
+    }.bind(this));*/
   }
 
   onDataOptionSelect(item: any) {

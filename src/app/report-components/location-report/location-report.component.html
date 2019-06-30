@@ -11,7 +11,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12">
+      <div *ngIf="!isLoading" class="col-md-12">
         <div class="card">
           <div class="card-body">
             <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
@@ -114,21 +114,15 @@
           </div>
         </div>
       </div>
+
+      <div *ngIf="isLoading" class="col-md-12 text-center">
+        <img src="assets/images/loader-md.gif" /><span>&nbsp;Setting up report...</span>
+      </div>
     </div>
 
-    <div class="row margin-top-10">
+    <div *ngIf="!isLoading" class="row margin-top-10">
         <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
           <div class="col-md-12">
-            <!--<div *ngIf="multiDataDisplay" class="float-right form-inline">
-              <label class="text-warning"><b><i>Data display options for chart:&nbsp;</i></b></label>
-              <ng-multiselect-dropdown [placeholder]="'-- Chart data option/s --'" [data]="dataOptions"
-                [(ngModel)]="model.selectedDataOptions" [settings]="dataOptionSettings"
-                (onSelect)="onDataOptionSelect($event)" (onDeSelect)="onDataOptionDeSelect($event)"
-                (onSelectAll)="onDataOptionSelectAll($event)" (onDeSelectAll)="onDataOptionDeSelectAll($event)"
-                name="selectedDataOptions" #selectedDataOptions="ngModel">
-              </ng-multiselect-dropdown>
-            </div>-->
-
             <div class="float-right form-inline">
               <label><b><i>Data display options for chart:&nbsp;</i></b></label>
               <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
