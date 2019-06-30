@@ -11,7 +11,7 @@ import * as html2canvas from 'html2canvas';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'sector-report',
@@ -50,6 +50,10 @@ export class SectorReportComponent implements OnInit {
   chartCategory: number = 1;
   multiDataDisplay: boolean = true;
   datedToday: string = null;
+  paramSectorIds: any = [];
+  paramOrgIds: any = [];
+  loadReport: boolean = false;
+  isLoading: boolean = true;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -174,10 +178,25 @@ export class SectorReportComponent implements OnInit {
   constructor(private reportService: ReportService, private storeService: StoreService,
     private sectorService: SectorService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private locationService: LocationService,
-    private currencyService: CurrencyService, private errorModal: ErrorModalComponent
+    private currencyService: CurrencyService, private errorModal: ErrorModalComponent,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    if (this.route.snapshot.queryParams.load) {
+      this.route.queryParams.subscribe(params => {
+        if (params) {
+          this.model.title = (params.title) ? params.title : null;
+          this.model.startingYear = (params.syear) ? params.syear : 0;
+          this.model.endingYear = (params.eyear) ? params.eyear : 0;
+          this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
+          this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
+          this.loadReport = true;
+        } 
+      });
+    } else {
+      this.isLoading = false;
+    }
 
     this.getSectorsList();
     this.getLocationsList();
@@ -275,18 +294,19 @@ export class SectorReportComponent implements OnInit {
   }
 
   searchProjectsByCriteriaReport() {
+    this.blockUI.start('Searching Projects...');
+
     this.chartLables = [];
     this.chartData = [];
     var searchModel = {
       title: this.model.title,
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
-      organizationIds: this.selectedOrganizations,
-      sectorIds: this.selectedSectors,
+      organizationIds: this.model.selectedOrganizations.map(o => o.id),
+      sectorIds: this.model.selectedSectors.map(s => s.id),
     };
 
     this.resetSearchResults();
-    this.blockUI.start('Searching Projects...');
     this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(
       data => {
         this.reportDataList = data;
@@ -309,6 +329,11 @@ export class SectorReportComponent implements OnInit {
         this.blockUI.stop();
       }
     )
+
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
+    
   }
 
   resetSearchResults() {
@@ -475,6 +500,16 @@ export class SectorReportComponent implements OnInit {
         var sectorsList = data;
         this.sectorsList = sectorsList.filter(s => s.parentSectorId == null);
         this.subSectorsList = [];
+        if (this.loadReport) {
+          if (this.paramSectorIds.length > 0) {
+            this.paramSectorIds.forEach(function (id) {
+              var sector = this.sectorsList.filter(s => s.id == id);
+              if (sector.length > 0) {
+                this.model.selectedSectors.push(sector[0]);
+              }
+            }.bind(this));
+          }
+        }
       },
       error => {
         console.log(error);
@@ -497,6 +532,18 @@ export class SectorReportComponent implements OnInit {
     this.organizationService.getOrganizationsList().subscribe(
       data => {
         this.organizationsList = data;
+
+        if (this.loadReport) {
+          if (this.paramOrgIds.length > 0) {
+            this.paramOrgIds.forEach(function (id) {
+              var org = this.organizationsList.filter(o => o.id == id);
+              if (org.length > 0) {
+                this.model.selectedOrganizations.push(org[0]);
+              }
+            });
+          }
+          this.searchProjectsByCriteriaReport();
+        }
       },
       error => {
         console.log(error);
@@ -530,50 +577,49 @@ export class SectorReportComponent implements OnInit {
 
   onOrganizationSelect(item: any) {
     var id = item.id;
-    if (this.selectedOrganizations.indexOf(id) == -1) {
+    /*if (this.selectedOrganizations.indexOf(id) == -1) {
       this.selectedOrganizations.push(id);
-    }
+    }*/
   }
 
   onOrganizationDeSelect(item: any) {
     var id = item.id;
-    var index = this.selectedOrganizations.indexOf(id);
-    this.selectedOrganizations.splice(index, 1);
+    /*var index = this.selectedOrganizations.indexOf(id);
+    this.selectedOrganizations.splice(index, 1);*/
 
     this.searchProjectsByCriteriaReport();
   }
 
   onOrganizationSelectAll(items: any) {
-    items.forEach(function (item) {
+    /*items.forEach(function (item) {
       var id = item.id;
       if (this.selectedOrganizations.indexOf(id) == -1) {
         this.selectedOrganizations.push(id);
       }
-    }.bind(this));
+    }.bind(this));*/
   }
 
   onLocationSelect(item: any) {
     var id = item.id;
-    if (this.selectedLocations.indexOf(id) == -1) {
+    /*if (this.selectedLocations.indexOf(id) == -1) {
       this.selectedLocations.push(id);
-    }
+    }*/
   }
 
   onLocationDeSelect(item: any) {
     var id = item.id;
-    var index = this.selectedLocations.indexOf(id);
-    this.selectedLocations.splice(index, 1);
-
+    /*var index = this.selectedLocations.indexOf(id);
+    this.selectedLocations.splice(index, 1);*/
     this.searchProjectsByCriteriaReport();
   }
 
   onLocationSelectAll(items: any) {
-    items.forEach(function (item) {
+    /*items.forEach(function (item) {
       var id = item.id;
       if (this.selectedLocations.indexOf(id) == -1) {
         this.selectedLocations.push(id);
       }
-    }.bind(this));
+    }.bind(this));*/
   }
 
   onDataOptionSelect(item: any) {
