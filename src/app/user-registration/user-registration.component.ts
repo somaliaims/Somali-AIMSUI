@@ -30,7 +30,7 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.model = new RegistrationModel('', '', '', '', '', '', false);
+    this.model = new RegistrationModel(null, null, null, null, null, null, false);
     this.fillUserTypes();
   }
 

@@ -4,34 +4,35 @@
           <div class="card card-signin my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Register</h5>
-              <form (ngSubmit)="proceedRegistration()" #registrationForm="ngForm">
+              <form (ngSubmit)="registrationForm.form.valid && proceedRegistration()" #registrationForm="ngForm">
                 
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" class="form-control" [class.disable]='disableEmail' id="Email" [(ngModel)]="model.Email" (input)="resetEmailAvailable($event)" [elFocus]="isEmailFocus" name="Email" #Email="ngModel" required email>
-                  <div [hidden]="Email.valid" class="alert alert-danger">
-                    Enter valid email address
+                  <div [hidden]="Email.valid" class="alert alert-warning">
+                    Enter valid email address to check availability
                   </div>
                   <div [hidden]="!emailNotAvailable" class="alert alert-danger">
                     Email Address already taken
                   </div>
-                  <button *ngIf="!isEmailOk" [class.disable]="isSearchingEmail" class="btn btn-sm btn-info btn-block text-uppercase" type="button" (click)="checkIfEmailAvailable()">{{btnCheckEmailTitle}}</button>
+                  <button *ngIf="!isEmailOk" [class.disable]="isSearchingEmail" class="btn btn-sm btn-info btn-block text-uppercase margin-top-5" type="button" (click)="checkIfEmailAvailable()">{{btnCheckEmailTitle}}</button>
                 </div>
                 
                 <div *ngIf="isEmailOk">
-        
                   <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" [elFocus]="isPasswordFocus" class="form-control" id="password" [(ngModel)]="model.Password" required [(ngModel)]="model.Password" name="Password" #Password="ngModel">
-                    <div [hidden]="Password.valid || Password.pristine" class="alert alert-danger">
+                    <input type="password" [elFocus]="isPasswordFocus" class="form-control" id="password" [(ngModel)]="model.Password"
+                     [(ngModel)]="model.Password" name="Password" #Password="ngModel" required>
+                    <div *ngIf="registrationForm.submitted" [hidden]="Password.valid" class="alert alert-danger">
                       Password is required
                     </div>
                   </div>
         
                   <div class="form-group">
                     <label for="confirmPassword">Confirm password</label>
-                    <input type="password" class="form-control" id="ConfirmPassword" [(ngModel)]="model.ConfirmPassword" required [(ngModel)]="model.ConfirmPassword" name="ConfirmPassword" #ConfirmPassword="ngModel">
-                    <div [hidden]="model.Password == model.ConfirmPassword || model.ConfirmPassword.length == 0" class="alert alert-danger">
+                    <input type="password" class="form-control" id="ConfirmPassword" [(ngModel)]="model.ConfirmPassword" 
+                    [(ngModel)]="model.ConfirmPassword" name="ConfirmPassword" #ConfirmPassword="ngModel" required>
+                    <div *ngIf="registrationForm.submitted" [hidden]="model.Password == model.ConfirmPassword" class="alert alert-danger">
                       Passwords do not match
                     </div>
                   </div>

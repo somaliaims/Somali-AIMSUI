@@ -13,6 +13,7 @@ import { ProjectService } from '../services/project.service';
 })
 export class ContactFormComponent implements OnInit {
   isLoggedIn: boolean = false;
+  isError: boolean = false;
   errorMessage: string = null;
   successMessage: string = null;
   isShowSuccessMessage: boolean = false;
