@@ -1081,6 +1081,8 @@ export class ProjectEntryComponent implements OnInit {
 
           if (data.funders && data.funders.length > 0) {
             this.currentProjectFundersList = data.funders;
+          } else {
+            this.funderModel.dated = this.model.startDate;
           }
 
           if (data.implementers && data.implementers.length > 0) {
@@ -1344,6 +1346,9 @@ export class ProjectEntryComponent implements OnInit {
             this.resetProjectEntry();
             this.blockUI.stop();
             this.currentTab = 'funder';
+            if (this.currentProjectFundersList.length == 0) {
+              this.funderModel.dated = this.model.startDate;
+            }
           } else {
             this.resetProjectEntry();
           }

@@ -525,7 +525,7 @@ export class SectorReportComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   getOrganizationsList() {

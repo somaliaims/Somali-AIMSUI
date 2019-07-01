@@ -131,6 +131,7 @@ export class NotificationComponent implements OnInit {
     };
 
     if (model.projectId && model.userId) {
+      this.blockUI.start('Wait submitting request...');
       this.projectService.unApproveProjectMembership(model).subscribe(
         data => {
           if (data) {
