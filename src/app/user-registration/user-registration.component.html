@@ -9,8 +9,8 @@
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" class="form-control" [class.disable]='disableEmail' id="Email" [(ngModel)]="model.Email" (input)="resetEmailAvailable($event)" [elFocus]="isEmailFocus" name="Email" #Email="ngModel" required email>
-                  <div [hidden]="Email.valid" class="alert alert-warning">
-                    Enter valid email address to check availability
+                  <div *ngIf="invalidEmail && Email.invalid" [hidden]="!Email.errors && !Email.errors.email" class="alert alert-danger">
+                    Email valid email address
                   </div>
                   <div [hidden]="!emailNotAvailable" class="alert alert-danger">
                     Email Address already taken

@@ -19,6 +19,7 @@ export class UserRegistrationComponent implements OnInit {
   isEmailFocus: boolean = false;
   isPasswordFocus: boolean = true;
   isSearchingEmail: boolean = false;
+  invalidEmail: boolean = false;
   btnCheckEmailTitle: string = 'Check Availability';
 
   constructor(private userService: UserService, private router: Router, private storeService: StoreService) { 
@@ -47,9 +48,13 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   checkIfEmailAvailable() {
+    if (!this.model.Email) {
+      this.invalidEmail = true;
+      return false;
+    }
+
     this.isSearchingEmail = true;
     this.btnCheckEmailTitle = 'Wait processing...';
-
     this.userService.checkEmailAvailability(this.model.Email).subscribe(
       data => {
         console.log(data);
