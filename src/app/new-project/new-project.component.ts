@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
@@ -12,6 +12,8 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ProjectInfoModalComponent } from '../project-info-modal/project-info-modal.component';
+import { fromEvent } from 'rxjs';
+import { map, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-project',
@@ -20,6 +22,7 @@ import { ProjectInfoModalComponent } from '../project-info-modal/project-info-mo
 })
 export class NewProjectComponent implements OnInit {
 
+  @ViewChild('title') title: ElementRef;
   @Input()
   displayTime: number = Settings.displayMessageTime;
   isProjectLoaded: boolean = false;
@@ -97,6 +100,18 @@ export class NewProjectComponent implements OnInit {
     });
     localStorage.setItem('selected-projects', null);
     localStorage.setItem('active-project', '0');
+
+    //Register keyup event for search bar
+    fromEvent(this.title.nativeElement, 'keyup').pipe(
+      map((event: any) => {
+        return event.target.value;
+      })
+      ,filter(res => res.length > 2)
+      ,debounceTime(1000)        
+      ,distinctUntilChanged()
+      ).subscribe((text: string) => {
+        this.filterIATIMatchingProjects(text);
+      });
   }
 
   loadUserProjects() {
@@ -120,11 +135,11 @@ export class NewProjectComponent implements OnInit {
       data => {
         if (data) {
           this.iatiProjects = data;
-          //this.filteredIatiProjects = data;
-          this.filteredIatiProjects = this.filteredIatiProjects.forEach(() => {
-            p => p.isMatched = false;
-          });
-          console.log(this.filteredIatiProjects);
+          this.filteredIatiProjects = data;
+          console.log(data);
+          this.filteredIatiProjects.forEach(function (p) {
+            p.isMatched = false;
+          }.bind(this));
         }
         this.isProjectLoaded = true;
         this.isTextReadOnly = false;
@@ -145,25 +160,18 @@ export class NewProjectComponent implements OnInit {
     this.filterIATIMatchingProjects(e);
   }
 
-  filterIATIMatchingProjects(e) {
-    this.isIATILoading = true;
-    var str = e.target.value.toLowerCase();
+  filterIATIMatchingProjects(str) {
+    var str = str.toLowerCase();
     if (this.iatiProjects.length > 0) {
-      this.filteredIatiProjects = this.iatiProjects.filter(project =>
-        (project.title.toLowerCase().indexOf(str) != -1));
-
-      if (this.filteredIatiProjects.length == 0) {
-        this.filteredIatiProjects = this.iatiProjects.filter(function (p) {
-         if (p.organizations.filter(o => o.name.toLowerCase().indexOf(str) != -1).length > 0 ) {
-            p.isMatched = true;
-            return p;
-         } else {
-           p.isMatched = false;
-         }
-        }.bind(this));
-      }
+      this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
+        if ((project.title.toLowerCase().indexOf(str) != -1) || (project.organizations.map(p => p.name).indexOf(str) != -1)) {
+          project.isMatched = true;
+          return project;
+        } else {
+          project.isMatched = false;
+        }
+      });
     }
-    this.isIATILoading = false;
   }
 
   filterAIMSMatchingProjects(e) {

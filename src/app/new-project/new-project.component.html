@@ -14,7 +14,7 @@
       <div class="col-md-6 margin-top-10">
         <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
           <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
-            (input)="filterMatchingProjects($event)" [(ngModel)]="model.title" name="title" #title="ngModel"
+            [(ngModel)]="model.title" name="title" #title
             onkeypress="return event.keyCode != 13;" required>
           <span class="input-group-btn">
             <button class="btn btn-outline-info btn-lg" type="button">
@@ -84,9 +84,9 @@
                       <b>End Date: </b>{{project.endDate}}<br />
                       </span>
                     </div>
-                    <div *ngIf="project.isMatched && project.isMatched == 'true' ">
+                    <div *ngIf="project.isMatched">
                       <table class="table table-bordered">
-                        <tr *ngFor="let org of p.organizations">
+                        <tr *ngFor="let org of project.organizations" class="bg-warning">
                           <td>{{org.name}}</td>
                         </tr>
                       </table>
