@@ -80,12 +80,20 @@
                     <div class="float-left">
                       <span class="margin-right-60">
                         <b>Project Title: </b>{{project.title}}<br />
-                        <!--<b>Currency: </b>{{project.defaultCurrency}}<br />-->
+                        <b>Start Date: </b>{{project.startDate}}<br />
+                      <b>End Date: </b>{{project.endDate}}<br />
                       </span>
+                    </div>
+                    <div *ngIf="project.isMatched && project.isMatched == 'true' ">
+                      <table class="table table-bordered">
+                        <tr *ngFor="let org of p.organizations">
+                          <td>{{org.name}}</td>
+                        </tr>
+                      </table>
                     </div>
                     <div class="float-right margin-right-60">
                       <button id="{{project.id}}" title="Show Project Description" class="btn btn-info btn-sm"
-                        (click)="showProjectDescription($event)">Description</button>
+                        (click)="showProjectDescription($event)">View detail</button>
                       &nbsp;
                       <button [class.disable]="checkIfIATIEntered(project.title)" type="button" id="{{project.id}}"
                         class="btn btn-success btn-sm"
@@ -184,9 +192,17 @@
     <div class="col-md-12">
       <div class="card card-signin my-5">
         <div class="card-body">
-          <h5 class="card-title text-center">Project Description</h5>
+          <h5 class="card-title text-center">{{selectedProjectTitle}}</h5>
           <div>
-            {{selectedProjectDescription}}
+            <p>
+                <b>Description:</b> {{selectedProjectDescription}}
+            </p>
+            <table *ngIf="selectedProjectOrgs.length > 0" class="table table-bordered">
+              <tr *ngFor="let org of selectedProjectOrgs">
+                <td>{{org.name}}</td>
+              </tr>
+            </table>
+            <span *ngIf="selectedProjectOrgs.length == 0" class="text-info"><i>No member organizations to show</i></span>
           </div>
         </div>
       </div>

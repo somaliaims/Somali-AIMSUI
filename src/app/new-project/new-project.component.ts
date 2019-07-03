@@ -27,7 +27,9 @@ export class NewProjectComponent implements OnInit {
   isAIMSLoading: boolean = false;
   isBtnDisabled: boolean = false;
   isTextReadOnly: boolean = true;
-  selectedProjectDescription: string = '';
+  selectedProjectTitle: string = null;
+  selectedProjectDescription: string = null;
+  selectedProjectOrgs: any = [];
   inputTextHolder: string = 'Setting up IATI...';
   counter: number = 0;
   btnText: string = 'Manual entry only';
@@ -100,7 +102,6 @@ export class NewProjectComponent implements OnInit {
   loadUserProjects() {
     this.projectService.getUserProjects().subscribe(
       data => {
-        console.log(data);
         if (data) {
           this.userProjectIds = data;
         }
@@ -119,7 +120,11 @@ export class NewProjectComponent implements OnInit {
       data => {
         if (data) {
           this.iatiProjects = data;
-          this.filteredIatiProjects = data;
+          //this.filteredIatiProjects = data;
+          this.filteredIatiProjects = this.filteredIatiProjects.forEach(() => {
+            p => p.isMatched = false;
+          });
+          console.log(this.filteredIatiProjects);
         }
         this.isProjectLoaded = true;
         this.isTextReadOnly = false;
@@ -145,7 +150,18 @@ export class NewProjectComponent implements OnInit {
     var str = e.target.value.toLowerCase();
     if (this.iatiProjects.length > 0) {
       this.filteredIatiProjects = this.iatiProjects.filter(project =>
-        project.title.toLowerCase().indexOf(str) != -1);
+        (project.title.toLowerCase().indexOf(str) != -1));
+
+      if (this.filteredIatiProjects.length == 0) {
+        this.filteredIatiProjects = this.iatiProjects.filter(function (p) {
+         if (p.organizations.filter(o => o.name.toLowerCase().indexOf(str) != -1).length > 0 ) {
+            p.isMatched = true;
+            return p;
+         } else {
+           p.isMatched = false;
+         }
+        }.bind(this));
+      }
     }
     this.isIATILoading = false;
   }
@@ -233,7 +249,6 @@ export class NewProjectComponent implements OnInit {
         this.isAIMSLoading = false;
       },
       error => {
-        console.log(error);
         this.isAIMSLoading = false;
       }
     )
@@ -251,7 +266,9 @@ export class NewProjectComponent implements OnInit {
     var id = e.target.id;
     var project = this.filteredIatiProjects.filter(project => project.id == id);
     if (project && project.length) {
-      this.selectedProjectDescription = project[0].description;
+      this.selectedProjectTitle = project[0].title;
+      this.selectedProjectDescription = (project[0].description) ? project[0].description : 'Not available';
+      this.selectedProjectOrgs = project[0].organizations;
     }
     this.openModal('project-description');
   }
@@ -445,6 +462,8 @@ export class NewProjectComponent implements OnInit {
         }
       );
     }
+
+
 
   }
 }
