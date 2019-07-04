@@ -84,10 +84,11 @@
                       <b>End Date: </b>{{project.endDate}}<br />
                       </span>
                     </div>
-                    <div *ngIf="project.isMatched">
-                      <table class="table table-bordered">
+                    <div>
+                      <table class="table table-bordered table-condensed">
+                        <tr><th class="bg-info text-white"><small><b>Member organizations</b></small></th></tr>
                         <tr *ngFor="let org of project.organizations" class="bg-warning">
-                          <td>{{org.name}}</td>
+                          <td><small>{{org.name}}</small></td>
                         </tr>
                       </table>
                     </div>

@@ -104,9 +104,10 @@ export class NewProjectComponent implements OnInit {
     //Register keyup event for search bar
     fromEvent(this.title.nativeElement, 'keyup').pipe(
       map((event: any) => {
+        this.isIATILoading = true;
         return event.target.value;
       })
-      ,filter(res => res.length > 2)
+      //,filter(res => res.length > 0)
       ,debounceTime(1000)        
       ,distinctUntilChanged()
       ).subscribe((text: string) => {
@@ -157,7 +158,7 @@ export class NewProjectComponent implements OnInit {
 
   filterMatchingProjects(e) {
     this.filterAIMSMatchingProjects(e);
-    this.filterIATIMatchingProjects(e);
+    //this.filterIATIMatchingProjects(e);
   }
 
   filterIATIMatchingProjects(str) {
@@ -165,13 +166,12 @@ export class NewProjectComponent implements OnInit {
     if (this.iatiProjects.length > 0) {
       this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
         if ((project.title.toLowerCase().indexOf(str) != -1) || (project.organizations.map(p => p.name).indexOf(str) != -1)) {
-          project.isMatched = true;
+          //project.isMatched = true;
           return project;
-        } else {
-          project.isMatched = false;
-        }
+        } 
       });
     }
+    this.isIATILoading = false;
   }
 
   filterAIMSMatchingProjects(e) {
