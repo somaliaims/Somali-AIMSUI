@@ -2164,6 +2164,7 @@ export class ProjectEntryComponent implements OnInit {
     this.projectService.addProjectDisbursement(model).subscribe(
       data => {
         if (data) {
+          model.id = data;
           this.currentProjectDisbursementsList.push(model);
           this.totalDisbursements = this.calculateProjectDisbursement();
           this.resetDisbursementEntry();
