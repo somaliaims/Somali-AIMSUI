@@ -189,6 +189,15 @@ html {
     overflow-x: hidden; 
   }
 
+  .table-fixed-layout {
+    table-layout: fixed; 
+    width: 100%;
+  }
+
+  .word-wrap {
+    word-wrap: break-word;
+  }
+
   .list-box-small {
     max-height: 350px;
     overflow-y: auto;

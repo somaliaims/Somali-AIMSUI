@@ -74,25 +74,25 @@
               Loading IATI projects...
             </div>
             <div *ngIf="!isIATILoading">
-              <table *ngIf="filteredIatiProjects.length > 0" class="table table-bordered">
+              <table *ngIf="filteredIatiProjects.length > 0" class="table table-bordered table-fixed-layout">
                 <tr *ngFor="let project of filteredIatiProjects">
                   <td>
                     <div class="float-left">
-                      <span class="margin-right-60">
+                      <span class="overflow-wrap">
                         <b>Project Title: </b>{{project.title}}<br />
                         <b>Start Date: </b>{{project.startDate}}<br />
                       <b>End Date: </b>{{project.endDate}}<br />
                       </span>
                     </div>
-                    <div>
+                    <!--<div>
                       <table class="table table-bordered table-condensed">
                         <tr><th class="bg-info text-white"><small><b>Member organizations</b></small></th></tr>
                         <tr *ngFor="let org of project.organizations" class="bg-warning">
                           <td><small>{{org.name}}</small></td>
                         </tr>
                       </table>
-                    </div>
-                    <div class="float-right margin-right-60">
+                    </div>-->
+                    <div class="float-right">
                       <button id="{{project.id}}" title="Show Project Description" class="btn btn-info btn-sm"
                         (click)="showProjectDescription($event)">View detail</button>
                       &nbsp;
@@ -123,7 +123,7 @@
               <table *ngIf="filteredAIMSProjects.length > 0" class="table table-bordered">
                 <tr *ngFor="let project of filteredAIMSProjects">
                   <td>
-                    <span class="float-left">
+                    <span class="float-left overflow-wrap">
                       <b>Project Title: </b>{{project.title}}<br />
                       <b>Start Date: </b>{{project.startDate}}<br />
                       <b>End Date: </b>{{project.endDate}}<br />
