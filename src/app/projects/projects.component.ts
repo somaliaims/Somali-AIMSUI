@@ -139,12 +139,14 @@ export class ProjectsComponent implements OnInit {
   getFinancialYearsList() {
     this.fyService.getYearsList().subscribe(
       data => {
-        this.yearsList = data;
+        if (data) {
+          this.yearsList = data;
+        }
       },
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   getSectorsList() {
@@ -155,7 +157,7 @@ export class ProjectsComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   getLocationsList() {
@@ -166,7 +168,7 @@ export class ProjectsComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   getOrganizationsList() {
@@ -177,7 +179,7 @@ export class ProjectsComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   /*searchProjects() {

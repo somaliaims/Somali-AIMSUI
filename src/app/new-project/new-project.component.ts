@@ -14,6 +14,10 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ProjectInfoModalComponent } from '../project-info-modal/project-info-modal.component';
 import { fromEvent } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FinancialYearService } from '../services/financial-year.service';
+import { LocationService } from '../services/location.service';
+import { SectorService } from '../services/sector.service';
+import { OrganizationService } from '../services/organization-service';
 
 @Component({
   selector: 'app-new-project',
@@ -50,7 +54,17 @@ export class NewProjectComponent implements OnInit {
   isProjectPermitted: boolean = true;
   timer: any = null;
 
-  permissions: any = [];
+  sectorsSettings: any = {};
+  locationsSettings: any = {};
+  organizationsSettings: any = {};
+  yearsList: any = [];
+  sectorsList: any = [];
+  selectedSectors: any = [];
+  organizationsList: any = [];
+  selectedOrganizations: any = [];
+  locationsList: any = [];
+  selectedLocations: any = [];
+  permissions: any = {};
   iatiProjects: any = [];
   filteredIatiProjects: any = [];
   filteredAIMSProjects: any = [];
@@ -70,14 +84,17 @@ export class NewProjectComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
 
-  model = { id: 0, title: '', startDate: null, endDate: null, description: null };
+  model = { id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0, 
+  endingYear: 0, selectedOrganizations: [], selectedSectors: [], selectedLocations: [] };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
     private storeService: StoreService, private iatiService: IATIService,
     private modalService: ModalService, private securityService: SecurityHelperService,
     private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent,
-    private projectInfoModal: ProjectInfoModalComponent) {
+    private projectInfoModal: ProjectInfoModalComponent, private locationService: LocationService,
+    private sectorService: SectorService, private fyService: FinancialYearService,
+    private organizationService: OrganizationService) {
   }
 
   ngOnInit() {
@@ -87,6 +104,10 @@ export class NewProjectComponent implements OnInit {
     }
 
     this.requestNo = this.storeService.getCurrentRequestId();
+    this.getFinancialYearsList();
+    this.getSectorsList();
+    this.getLocationsList();
+    this.getOrganizationsList();
     this.loadUserProjects();
     this.loadIATIProjects();
     this.loadAIMSProjects();
@@ -113,6 +134,36 @@ export class NewProjectComponent implements OnInit {
       ).subscribe((text: string) => {
         this.filterIATIMatchingProjects(text);
       });
+
+      this.sectorsSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'sectorName',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 5,
+        allowSearchFilter: true
+      };
+  
+      this.organizationsSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'organizationName',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 5,
+        allowSearchFilter: true
+      };
+  
+      this.locationsSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'location',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 5,
+        allowSearchFilter: true
+      };
   }
 
   loadUserProjects() {
@@ -153,7 +204,31 @@ export class NewProjectComponent implements OnInit {
         this.inputTextHolder = projectTitle;
         this.isIATILoading = false;
       }
-    )
+    );
+  }
+
+  getSectorsList() {
+    this.sectorService.getSectorsList().subscribe(
+      data => {
+        this.sectorsList = data;
+      }
+    );
+  }
+
+  getLocationsList() {
+    this.locationService.getLocationsList().subscribe(
+      data => {
+        this.locationsList = data;
+      }
+    );
+  }
+
+  getOrganizationsList() {
+    this.organizationService.getOrganizationsList().subscribe(
+      data => {
+        this.organizationsList = data;
+      }
+    );
   }
 
   filterMatchingProjects(e) {
@@ -223,6 +298,16 @@ export class NewProjectComponent implements OnInit {
         this.isProjectPermitted = this.checkIfProjectPermittedToUser(id);
       }
     }
+  }
+
+  getFinancialYearsList() {
+    this.fyService.getYearsList().subscribe(
+      data => {
+        if (data) {
+          this.yearsList = data;
+        }
+      }
+    );
   }
 
   searchAIMSProject() {

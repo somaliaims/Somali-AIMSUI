@@ -11,8 +11,75 @@
     </div>
 
     <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form class="form-signin" #searchForm="ngForm">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+                    <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
+                      [(ngModel)]="model.title" name="title" #title onkeypress="return event.keyCode != 13;" required>
+                    <span class="input-group-btn">
+                      <button class="btn btn-outline-info btn-lg" type="button">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <table>
+                    <tr>
+                      <td>
+                        <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
+                          name="startingYear" #startingYear="ngModel" required>
+                          <option value="0">--Starting year--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">FY-{{year.financialYear}}
+                          </option>
+                        </select>
+                      </td>
+                      <td>&nbsp;&nbsp;</td>
+                      <td>
+                        <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
+                          #endingYear="ngModel" required>
+                          <option value="0">--Ending year--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">FY-{{year.financialYear}}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row margin-top-10">
+                <div class="col-md-4">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList"
+                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                    #selectedSectors="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-4">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList"
+                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
+                    name="selectedOrganizations" #selectedOrganizations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-4">
+                  <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'" [data]="locationsList"
+                    [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
+                    #selectedLocations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="col-md-6 margin-top-10">
-        <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+        <!--<div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
           <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
             [(ngModel)]="model.title" name="title" #title
             onkeypress="return event.keyCode != 13;" required>
@@ -21,7 +88,7 @@
               <i class="fa fa-search"></i>
             </button>
           </span>
-        </div>
+        </div>-->
       </div>
 
       <div class="col-md-6 margin-top-10">
@@ -81,7 +148,7 @@
                       <span class="overflow-wrap">
                         <b>Project Title: </b>{{project.title}}<br />
                         <b>Start Date: </b>{{project.startDate}}<br />
-                      <b>End Date: </b>{{project.endDate}}<br />
+                        <b>End Date: </b>{{project.endDate}}<br />
                       </span>
                     </div>
                     <!--<div>
@@ -196,14 +263,15 @@
           <h5 class="card-title text-center">{{selectedProjectTitle}}</h5>
           <div>
             <p>
-                <b>Description:</b> {{selectedProjectDescription}}
+              <b>Description:</b> {{selectedProjectDescription}}
             </p>
             <table *ngIf="selectedProjectOrgs.length > 0" class="table table-bordered">
               <tr *ngFor="let org of selectedProjectOrgs">
                 <td>{{org.name}}</td>
               </tr>
             </table>
-            <span *ngIf="selectedProjectOrgs.length == 0" class="text-info"><i>No member organizations to show</i></span>
+            <span *ngIf="selectedProjectOrgs.length == 0" class="text-info"><i>No member organizations to
+                show</i></span>
           </div>
         </div>
       </div>
