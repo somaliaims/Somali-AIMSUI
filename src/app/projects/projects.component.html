@@ -108,7 +108,7 @@
             <th>End date</th>
             <th>Updated on</th>
           </tr>
-          <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+          <tr *ngFor="let project of projectsList | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }">
             <td>
               <a title="View Details" class="text-info" [routerLink]="['/view-project', project.id]">
                 {{project.title}}
@@ -119,7 +119,7 @@
             <td>{{project.dateUpdated}}</td>
           </tr>
         </table>
-        <pagination-controls (pageChange)="p=$event"></pagination-controls>
+        <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
       </div>
     </div>
     <div *ngIf="projectsList.length == 0" class="row">

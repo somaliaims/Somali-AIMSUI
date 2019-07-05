@@ -126,16 +126,15 @@ export class NewProjectComponent implements OnInit {
     localStorage.setItem('active-project', '0');
 
     //Register keyup event for search bar
-    fromEvent(this.title.nativeElement, 'keyup').pipe(
+     fromEvent(this.title.nativeElement, 'keyup').pipe(
       map((event: any) => {
-        this.isIATILoading = true;
         return event.target.value;
       })
       //,filter(res => res.length > 0)
       ,debounceTime(1000)        
       ,distinctUntilChanged()
       ).subscribe((text: string) => {
-        this.filterIATIMatchingProjects(text);
+        this.filterProjectMatches();
       });
 
       this.sectorsSettings = {
@@ -238,17 +237,32 @@ export class NewProjectComponent implements OnInit {
     //this.filterIATIMatchingProjects(e);
   }
 
-  filterIATIMatchingProjects(str) {
-    var str = str.toLowerCase();
+  filterProjectMatches() {
+    var str = this.model.title;
     if (this.iatiProjects.length > 0) {
-      this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
-        if ((project.title.toLowerCase().indexOf(str) != -1) || (project.organizations.map(p => p.name).indexOf(str) != -1)) {
-          //project.isMatched = true;
-          return project;
-        } 
-      });
+      
+      if (this.model.title) {
+        str = str.toLowerCase();
+        this.filteredIatiProjects = this.iatiProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
+        this.filteredAIMSProjects = this.aimsProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
+      } else {
+        this.filteredIatiProjects = this.iatiProjects;
+        this.filteredAIMSProjects = this.aimsProjects;
+      }
+
+      if (this.model.selectedOrganizations.length > 0) {
+        var orgs = this.model.selectedOrganizations.map(o => o.name);
+        this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
+          orgs.forEach((o) => {
+            if (project.organizations.map(o => o.name).indexOf(o) != -1) {
+              return project;
+            }
+          });
+           
+        }.bind(this));
+      }
+      
     }
-    this.isIATILoading = false;
   }
 
   filterAIMSMatchingProjects(e) {
