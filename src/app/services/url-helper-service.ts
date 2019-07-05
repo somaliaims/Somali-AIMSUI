@@ -375,6 +375,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectsUrl);
     }
 
+    getProjectsWithDetail() {
+        return (this.BASE_URL + urlsList.urls.projectsDetailUrl);
+    }
+
     getProjectLocationsUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getProjectLocationsUrl + id);
     }

@@ -10,6 +10,7 @@ export const Settings = {
         }
     },
     rowsPerPage: 10,
+    mediumRowsPerPage: 20,
     displayMessageTime: 10000,
     permissions: {
         standard: {

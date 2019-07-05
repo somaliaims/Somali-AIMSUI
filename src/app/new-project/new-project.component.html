@@ -1,3 +1,54 @@
+<jw-modal id="project-description">
+  <div class="row">
+    <div class="col-md-12">
+      <span class="float-right">
+        <button class="btn btn-danger" (click)="closeModal('project-description');">Close</button>
+      </span>
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">{{selectedProjectTitle}}</h5>
+          <div>
+            <p>
+              <b>Description:</b> {{selectedProjectDescription}}
+            </p>
+            <h6>Member organizations</h6>
+            <table *ngIf="selectedProjectOrganizations.length > 0" class="table table-bordered">
+              <tr *ngFor="let org of selectedProjectOrganizations">
+                <td>{{org.name}}</td>
+              </tr>
+            </table>
+            <span *ngIf="selectedProjectOrganizations.length == 0" class="text-info">
+              <i>No member organizations to show</i>
+            </span>
+
+            <h6>Sectors</h6>
+            <table *ngIf="selectedProjectSectors.length > 0" class="table table-bordered">
+              <tr *ngFor="let sector of selectedProjectSectors">
+                <td>{{sector.name}}</td>
+              </tr>
+            </table>
+            <span *ngIf="selectedProjectSectors.length == 0" class="text-info">
+              <i>No member sectors to show</i>
+            </span>
+
+            <h6>Locations</h6>
+            <table *ngIf="selectedProjectLocations.length > 0" class="table table-bordered">
+              <tr *ngFor="let loc of selectedProjectLocations">
+                <td>{{loc.name}}</td>
+              </tr>
+            </table>
+            <span *ngIf="selectedProjectLocations.length == 0" class="text-info">
+              <i>No member locations to show</i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <span class="float-right">
+        <button class="btn btn-danger" (click)="closeModal('project-description');">Close</button>
+      </span>
+    </div>
+  </div>
+</jw-modal>
 <div class="container-fluid view-area">
   <block-ui>
     <div class="row">
@@ -53,19 +104,19 @@
               </div>
               <div class="row margin-top-10">
                 <div class="col-md-4">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
                     #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-4">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" [data]="organizationsList"
                     [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
                     name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-4">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'" [data]="locationsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" [data]="locationsList"
                     [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
                     #selectedLocations="ngModel">
                   </ng-multiselect-dropdown>
@@ -134,42 +185,39 @@
     <div class="row">
       <!--IATI Activity Box-->
       <div class="col-md-4 col-sm-6">
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-5">
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Projects from IATI</h5>
             <div *ngIf="isIATILoading">
               Loading IATI projects...
             </div>
             <div *ngIf="!isIATILoading">
-              <table *ngIf="filteredIatiProjects.length > 0" class="table table-bordered table-fixed-layout">
-                <tr *ngFor="let project of filteredIatiProjects">
-                  <td>
-                    <div class="float-left">
-                      <span class="overflow-wrap">
-                        <b>Project Title: </b>{{project.title}}<br />
-                        <b>Start Date: </b>{{project.startDate}}<br />
-                        <b>End Date: </b>{{project.endDate}}<br />
-                      </span>
-                    </div>
-                    <!--<div>
-                      <table class="table table-bordered table-condensed">
-                        <tr><th class="bg-info text-white"><small><b>Member organizations</b></small></th></tr>
-                        <tr *ngFor="let org of project.organizations" class="bg-warning">
-                          <td><small>{{org.name}}</small></td>
-                        </tr>
-                      </table>
-                    </div>-->
-                    <div class="float-right">
-                      <button id="{{project.id}}" title="Show Project Description" class="btn btn-info btn-sm"
-                        (click)="showProjectDescription($event)">View detail</button>
-                      &nbsp;
-                      <button [class.disable]="checkIfIATIEntered(project.title)" type="button" id="{{project.id}}"
-                        class="btn btn-success btn-sm"
-                        (click)="selectIATIProject($event)">{{checkIfIATIAdded(project.title)}}</button>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+              <div *ngIf="filteredIatiProjects.length > 0">
+                <table class="table table-bordered table-fixed-layout">
+                  <tr
+                    *ngFor="let project of filteredIatiProjects | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }">
+                    <td>
+                      <div class="float-left">
+                        <span class="overflow-wrap">
+                          <b>Project Title: </b>{{project.title}}<br />
+                          <b>Start Date: </b>{{getLongDateString(project.startDate)}}<br />
+                          <b>End Date: </b>{{getLongDateString(project.endDate)}}<br />
+                        </span>
+                      </div>
+                      <div class="float-right">
+                        <button id="{{project.id}}" title="Show Project Description" class="btn btn-info btn-sm"
+                          (click)="showProjectDescription($event)">View detail</button>
+                        &nbsp;
+                        <button [class.disable]="checkIfIATIEntered(project.title)" type="button" id="{{project.id}}"
+                          class="btn btn-success btn-sm"
+                          (click)="selectIATIProject($event)">{{checkIfIATIAdded(project.title)}}</button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
+              </div>
+
               <span *ngIf="filteredIatiProjects.length == 0" class="text-info">
                 No matches from IATI.
               </span>
@@ -180,38 +228,43 @@
 
       <!--Projects box from AIMS-->
       <div class="col-md-4 col-sm-6">
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-5">
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Matches from AIMS</h5>
             <div *ngIf="isAIMSLoading">
               Loading AIMS projects...
             </div>
             <div *ngIf="!isAIMSLoading">
-              <table *ngIf="filteredAIMSProjects.length > 0" class="table table-bordered">
-                <tr *ngFor="let project of filteredAIMSProjects">
-                  <td>
-                    <span class="float-left overflow-wrap">
-                      <b>Project Title: </b>{{project.title}}<br />
-                      <b>Start Date: </b>{{project.startDate}}<br />
-                      <b>End Date: </b>{{project.endDate}}<br />
-                    </span>
+              <div *ngIf="filteredAIMSProjects.length > 0">
+                <table class="table table-bordered">
+                  <tr
+                    *ngFor="let project of filteredAIMSProjects | paginate: { itemsPerPage: pagingSize, currentPage: p, id: 'p' }">
+                    <td>
+                      <span class="float-left overflow-wrap">
+                        <b>Project Title: </b>{{project.title}}<br />
+                        <b>Start Date: </b>{{getLongDateString(project.startDate)}}<br />
+                        <b>End Date: </b>{{getLongDateString(project.endDate)}}<br />
+                      </span>
 
-                    <span class="float-right margin-right-15">
-                      <button [class.disable]="checkIfProjectPermittedToUser(project.id)" type="button"
-                        id="raims-{{project.id}}" class="btn btn-warning btn-sm"
-                        (click)="applyForProjectMembership($event)">Request permission</button>&nbsp;
+                      <span class="float-right margin-right-15">
+                        <button [class.disable]="checkIfProjectPermittedToUser(project.id)" type="button"
+                          id="raims-{{project.id}}" class="btn btn-warning btn-sm"
+                          (click)="applyForProjectMembership($event)">Request permission</button>&nbsp;
 
-                      <button type="button" id="vaims-{{project.id}}" class="btn btn-info btn-sm"
-                        (click)="loadAIMSProjectData($event)">View detail</button>
-                      &nbsp;
-                      <button
-                        [class.disable]="!checkIfProjectPermittedToUser(project.id) || checkAIMSAdded(project.title)"
-                        type="button" id="saims-{{project.id}}" class="btn btn-success btn-sm"
-                        (click)="selectAIMSProject($event)">Select</button>
-                    </span>
-                  </td>
-                </tr>
-              </table>
+                        <button type="button" id="vaims-{{project.id}}" class="btn btn-info btn-sm"
+                          (click)="showAIMSProjectDescription($event)">View detail</button>
+                        &nbsp;
+                        <button
+                          [class.disable]="!checkIfProjectPermittedToUser(project.id) || checkAIMSAdded(project.title)"
+                          type="button" id="saims-{{project.id}}" class="btn btn-success btn-sm"
+                          (click)="selectAIMSProject($event)">Select</button>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+                <pagination-controls (pageChange)="p = $event" id="p"></pagination-controls>
+              </div>
+
               <span *ngIf="filteredAIMSProjects.length == 0" class="text-info">
                 No matches from AIMS
               </span>
@@ -222,7 +275,7 @@
 
       <!--Selected projects box-->
       <div class="col-md-4 col-sm-6">
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-5">
           <div class="card-body iati-box">
             <h5 class="card-title text-center">Selected Projects</h5>
             <div>
@@ -254,33 +307,6 @@
 </div>
 
 <error-modal message={{errorMessage}}></error-modal>
-
-<jw-modal id="project-description">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card card-signin my-5">
-        <div class="card-body">
-          <h5 class="card-title text-center">{{selectedProjectTitle}}</h5>
-          <div>
-            <p>
-              <b>Description:</b> {{selectedProjectDescription}}
-            </p>
-            <table *ngIf="selectedProjectOrgs.length > 0" class="table table-bordered">
-              <tr *ngFor="let org of selectedProjectOrgs">
-                <td>{{org.name}}</td>
-              </tr>
-            </table>
-            <span *ngIf="selectedProjectOrgs.length == 0" class="text-info"><i>No member organizations to
-                show</i></span>
-          </div>
-        </div>
-      </div>
-      <span class="float-right">
-        <button class="btn btn-danger" (click)="closeModal('project-description');">Close</button>
-      </span>
-    </div>
-  </div>
-</jw-modal>
 
 <jw-modal id="confirmation-modal">
   <div class="row">

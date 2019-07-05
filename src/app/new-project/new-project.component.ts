@@ -36,7 +36,9 @@ export class NewProjectComponent implements OnInit {
   isTextReadOnly: boolean = true;
   selectedProjectTitle: string = null;
   selectedProjectDescription: string = null;
-  selectedProjectOrgs: any = [];
+  selectedProjectOrganizations: any = [];
+  selectedProjectLocations: any = [];
+  selectedProjectSectors: any = [];
   inputTextHolder: string = 'Setting up IATI...';
   counter: number = 0;
   btnText: string = 'Manual entry only';
@@ -53,6 +55,7 @@ export class NewProjectComponent implements OnInit {
   isAIMSSearchInProgress: boolean = false;
   isProjectPermitted: boolean = true;
   timer: any = null;
+  pagingSize: number = Settings.mediumRowsPerPage;
 
   sectorsSettings: any = {};
   locationsSettings: any = {};
@@ -188,7 +191,6 @@ export class NewProjectComponent implements OnInit {
         if (data) {
           this.iatiProjects = data;
           this.filteredIatiProjects = data;
-          console.log(data);
           this.filteredIatiProjects.forEach(function (p) {
             p.isMatched = false;
           }.bind(this));
@@ -335,7 +337,7 @@ export class NewProjectComponent implements OnInit {
 
   loadAIMSProjects() {
     this.isAIMSLoading = true;
-    this.projectService.getProjectsList().subscribe(
+    this.projectService.getProjectsWithDetail().subscribe(
       data => {
         this.aimsProjects = data;
         this.filteredAIMSProjects = data;
@@ -356,23 +358,37 @@ export class NewProjectComponent implements OnInit {
   }
 
   showProjectDescription(e) {
+    this.blockUI.start('Loading...');
+    setTimeout(() => {
+    }, 1000);
     var id = e.target.id;
     var project = this.filteredIatiProjects.filter(project => project.id == id);
     if (project && project.length) {
       this.selectedProjectTitle = project[0].title;
       this.selectedProjectDescription = (project[0].description) ? project[0].description : 'Not available';
-      this.selectedProjectOrgs = project[0].organizations;
+      this.selectedProjectOrganizations = project[0].organizations;
+      this.selectedProjectSectors = project[0].sectors;
+      this.selectedProjectLocations = project[0].locations;
     }
     this.openModal('project-description');
+    this.blockUI.stop();
   }
 
   showAIMSProjectDescription(e) {
+    this.blockUI.start('Loading...');
+    setTimeout(() => {
+    }, 1000);
     var id = e.target.id.split('-')[1];
     var project = this.filteredAIMSProjects.filter(project => project.id == id);
     if (project && project.length) {
-      this.selectedProjectDescription = project[0].description;
+      this.selectedProjectTitle = project[0].title;
+      this.selectedProjectDescription = (project[0].description) ? project[0].description : 'Not available';
+      this.selectedProjectOrganizations = project[0].organizations;
+      this.selectedProjectSectors = project[0].sectors;
+      this.selectedProjectLocations = project[0].locations;
     }
     this.openModal('project-description');
+    this.blockUI.stop();
   }
 
   addProject(project) {
@@ -555,8 +571,9 @@ export class NewProjectComponent implements OnInit {
         }
       );
     }
+  }
 
-
-
+  getLongDateString(dated) {
+      return this.storeService.getLongDateString(dated);
   }
 }

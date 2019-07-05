@@ -21,6 +21,13 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('Projects')));
     }
 
+    getProjectsWithDetail() {
+      var url = this.urlHelper.getProjectsWithDetail();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Projects Detail'))
+      );
+    }
+
     filterProjects(criteria: string) {
       var url = this.urlHelper.getSearchProjectsUrl(criteria);
       return this.httpClient.get(url, httpOptions).pipe(

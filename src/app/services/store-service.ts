@@ -173,13 +173,17 @@ export class StoreService {
     var validDate = Date.parse(dated);
     if (!isNaN(validDate)) {
       return new Date(dated).toLocaleDateString('en-GB', {  
-        day : 'numeric',
+        day : '2-digit',
         month : 'short',
         year : 'numeric'
       });
     }
-    return 'Invalid date';
+    return 'N/a';
   }
+
+  dateOrdinal(d) {
+    return d+(31==d||21==d||1==d?"st":22==d||2==d?"nd":23==d||3==d?"rd":"th")
+  };
 
   getCurrentDateSQLFormat() {
     var dated = new Date();
