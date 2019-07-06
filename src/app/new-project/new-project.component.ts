@@ -630,10 +630,6 @@ export class NewProjectComponent implements OnInit {
     this.router.navigateByUrl('project-entry');
   }
 
-  proceedConfirmation() {
-    this.proceedToDataEntry();
-  }
-
   closeConfirmationModal() {
     this.modalService.close('confirmation-modal');
   }

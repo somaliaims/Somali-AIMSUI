@@ -250,6 +250,7 @@ export class ProjectEntryComponent implements OnInit {
     this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
+    
     if (projectId && projectId != '0') {
       this.blockUI.start('Loading project data...');
       this.isForEdit = true;

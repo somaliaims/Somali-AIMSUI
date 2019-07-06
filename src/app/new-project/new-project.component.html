@@ -167,7 +167,7 @@
                   (click)="proceedConfirmation()">Manual entry only</button>
 
                 <button *ngIf="selectedProjects.length > 0" [class.disable]='isSearchingProjects'
-                  class="btn btn-info btn-lg float-right text-uppercase" (click)="proceedConfirmation()">Proceed with
+                  class="btn btn-info btn-lg float-right text-uppercase" (click)="proceedToDataEntry()">Proceed with
                   selected source projects</button>
               </td>
             </tr>
