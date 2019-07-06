@@ -119,7 +119,7 @@ export const routes: Routes = [
   { path: 'user-subscriptions', component: UserSubscriptionComponent },
   { path: 'merge-projects', component: MergeProjectsComponent },
   { path: 'merge-organizations', component: MergeOrganizationComponent},
-  { path: 'exrate-settings', component: ExrateSettingsComponent },
+  { path: 'exchange-rate-settings', component: ExrateSettingsComponent },
   { path: 'envelope', component: EnvelopeComponent},
   { path: 'custom-fields', component: CustomFieldsComponent },
   { path: 'manage-custom-field', component: ManageCustomFieldsComponent },

@@ -290,7 +290,9 @@ export class ExrateSettingsComponent implements OnInit {
       data => {
         if (data) {
           this.exchangeRateDate = this.storeService.getLongDateString(data.dated);
-          this.exchangeRates = data.rates;
+          if (data.rates) {
+            this.exchangeRates = data.rates;
+          }
         }
       }
     )
