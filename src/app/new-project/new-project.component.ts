@@ -267,16 +267,40 @@ export class NewProjectComponent implements OnInit {
       }
 
       if (this.model.selectedOrganizations.length > 0) {
-        var orgs = this.model.selectedOrganizations.map(o => o.name);
+        var orgs = this.model.selectedOrganizations.map(o => o.organizationName);
+        
+        //IATI
         this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
-          orgs.forEach((o) => {
-            if (project.sectors.map(o => o.name).indexOf(o) != -1) {
-              return project;
+         var isMatched = false;
+         var projectOrgs = project.organizations.map(o => o.name);
+          for(var i=0; i < projectOrgs.length; i++) {
+            if (orgs.includes(projectOrgs[i])) {
+              isMatched = true;
+              break;
             }
-          });
+          }
+          if (isMatched) {
+            return project;
+          }
+        }.bind(this));
+
+        //AIMS
+        this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function(project) {
+          var isMatched = false;
+         var projectOrgs = project.organizations.map(o => o.name);
+          for(var i=0; i < projectOrgs.length; i++) {
+            if (orgs.includes(projectOrgs[i])) {
+              isMatched = true;
+              break;
+            }
+          }
+          if (isMatched) {
+            return project;
+          }
         }.bind(this));
       }
 
+      //IATI
       if (this.model.selectedSectors.length > 0) {
         var sectors = this.model.selectedSectors.map(o => o.name);
         this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
@@ -286,8 +310,17 @@ export class NewProjectComponent implements OnInit {
             }
           });
         }.bind(this));
+
+        this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function(project) {
+          sectors.forEach((o) => {
+            if (project.sectors.map(o => o.name).indexOf(o) != -1) {
+              return project;
+            }
+          });
+        }.bind(this));
       }
 
+      //IATI
       if (this.model.selectedLocations.length > 0) {
         var locations = this.model.selectedLocations.map(o => o.name);
         this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
@@ -297,8 +330,16 @@ export class NewProjectComponent implements OnInit {
             }
           });
         }.bind(this));
+
+        this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function(project) {
+          locations.forEach((o) => {
+            if (project.locations.map(o => o.name).indexOf(o) != -1) {
+              return project;
+            }
+          });
+        }.bind(this));
       }
-      
+
     }
   }
 
