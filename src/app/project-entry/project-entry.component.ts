@@ -77,6 +77,7 @@ export class ProjectEntryComponent implements OnInit {
   enableFundingCurrency: boolean = false;
   enableDisbursementCurrency: boolean = false;
   isSectorTypeDisabled: boolean = false;
+  isShowSources: boolean = true;
   errorMessage: string = '';
   startDateModel: NgbDateStruct;
   currentTab: string = 'project';
@@ -96,6 +97,7 @@ export class ProjectEntryComponent implements OnInit {
   implementerEntryType: string = 'aims';
   disbursementEntryType: string = 'aims';
   defaultCurrency: string = null;
+  defaultCurrencyRate: number = 0;
   nationalCurrency: string = null;
   viewProject: any = {};
   currentEntryForm: any = null;
@@ -128,6 +130,7 @@ export class ProjectEntryComponent implements OnInit {
   currentProjectDisbursementsList: any = [];
   currentProjectFieldsList: any = [];
   currentSelectedFieldValues: any = [];
+  todaysExchangeRates: any = [];
   exchangeRatesList: any = [];
   selectedProjectFields: any = [];
   userMembershipProjects: any = [];
@@ -269,7 +272,6 @@ export class ProjectEntryComponent implements OnInit {
       implementerInput: null,
     });
 
-
     this.locationSelectionForm = this.fb.group({
       locationInput: null,
     });
@@ -286,29 +288,34 @@ export class ProjectEntryComponent implements OnInit {
     if (projects) {
       var parsedProjects = JSON.parse(projects);
       this.selectedProjects = parsedProjects;
-      //Load iati projects
-      var filteredIATI = this.selectedProjects.filter(function (project) {
-        return project.type == 'IATI';
-      });
 
-      var iatiIdsArr = [];
-      filteredIATI.forEach(function (project) {
-        var obj = { identifier: project.identifier };
-        iatiIdsArr.push(obj);
-      }.bind(this));
-      this.loadIATIProjectsForIds(iatiIdsArr);
+      if (this.selectedProjects.length > 0) {
+        //Load iati projects
+        var filteredIATI = this.selectedProjects.filter(function (project) {
+          return project.type == 'IATI';
+        });
 
-      //Load aims projects
-      var filteredAIMS = this.selectedProjects.filter(function (project) {
-        return project.type == 'AIMS';
-      });
-      var aimsIdsArr = [];
-      filteredAIMS.forEach(function (project) {
-        var id = project.identifier;
-        aimsIdsArr.push(id);
-      });
-      this.loadAIMSProjectsForIds(aimsIdsArr);
-      this.getExRateSettings();
+        var iatiIdsArr = [];
+        filteredIATI.forEach(function (project) {
+          var obj = { identifier: project.identifier };
+          iatiIdsArr.push(obj);
+        }.bind(this));
+        this.loadIATIProjectsForIds(iatiIdsArr);
+
+        //Load aims projects
+        var filteredAIMS = this.selectedProjects.filter(function (project) {
+          return project.type == 'AIMS';
+        });
+        var aimsIdsArr = [];
+        filteredAIMS.forEach(function (project) {
+          var id = project.identifier;
+          aimsIdsArr.push(id);
+        });
+        this.loadAIMSProjectsForIds(aimsIdsArr);
+      } else {
+        this.isShowSources = false;
+      }
+      //this.getExRateSettings();
     }
 
     this.currencyService.getCurrenciesList().subscribe(
@@ -669,7 +676,7 @@ export class ProjectEntryComponent implements OnInit {
     var projectId = arr[1];
 
     var code = null;
-    for(var i=2; i < arr.length; i++) {
+    for (var i = 2; i < arr.length; i++) {
       if (!code) {
         code = arr[i];
       } else {
@@ -749,14 +756,14 @@ export class ProjectEntryComponent implements OnInit {
     var selectProject = this.aimsProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
       this.isSectorTypeDisabled = false;
-        var selectSector = this.sectorsList.filter(s => s.id == sectorId);
-        if (selectSector && selectSector.length > 0) {
-          this.sectorEntryType = 'aims';
-          this.isSectorVisible = true;
-          this.sectorModel.fundsPercentage = selectSector[0].fundsPercentage;
-          this.sectorModel.sectorTypeId = selectSector[0].sectorTypeId;
-          this.showSectorsForType(selectSector[0].id);
-        }
+      var selectSector = this.sectorsList.filter(s => s.id == sectorId);
+      if (selectSector && selectSector.length > 0) {
+        this.sectorEntryType = 'aims';
+        this.isSectorVisible = true;
+        this.sectorModel.fundsPercentage = selectSector[0].fundsPercentage;
+        this.sectorModel.sectorTypeId = selectSector[0].sectorTypeId;
+        this.showSectorsForType(selectSector[0].id);
+      }
     }
   }
 
@@ -1101,7 +1108,7 @@ export class ProjectEntryComponent implements OnInit {
           this.blockUI.stop();
         }, 1000);
       }
-    )
+    );
   }
 
   loadUserProjects(projectId: number) {
@@ -1431,11 +1438,11 @@ export class ProjectEntryComponent implements OnInit {
     var sectorName = null;
     var displaySector = null;
 
-    if (this.sectorModel.mappingId && (this.sectorModel.mappingId != null || this.sectorModel.mappingId != 'null' )) {
+    if (this.sectorModel.mappingId && (this.sectorModel.mappingId != null || this.sectorModel.mappingId != 'null')) {
       displaySector = this.defaultSectorsList.filter(s => s.id == this.sectorModel.mappingId);
       if (displaySector.length > 0) {
         sectorName = displaySector[0].sectorName;
-      } 
+      }
     } else {
       displaySector = this.typeSectorsList.filter(s => s.id == this.sectorModel.sectorId);
       if (displaySector.length > 0) {
@@ -1986,7 +1993,7 @@ export class ProjectEntryComponent implements OnInit {
     } else {
       implementerName = (this.implementerInput.value && this.implementerInput.value.organizationName) ? this.implementerInput.value.organizationName : this.implementerInput.value;
     }
-    
+
     if (!implementerName) {
       this.errorMessage = Messages.INVALID_IMPLEMENTER;
       this.errorModal.openModal();
@@ -2379,28 +2386,13 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   getExchangeRatesList() {
-    if (this.isExRateAutoConvert) {
-      if (this.model.startDate && this.model.startDate.year) {
-        var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
-          this.model.startDate.day;
-
-        this.currencyService.getExchangeRatesForDate(startDate).subscribe(
-          data => {
-            if (data) {
-              this.exchangeRatesList = data.rates;
-            }
-          }
-        )
-      } else {
-        this.currencyService.getExchangeRatesList().subscribe(
-          data => {
-            if (data) {
-              this.exchangeRatesList = data.rates;
-            }
-          }
-        );
+    this.currencyService.getExchangeRatesList().subscribe(
+      data => {
+        if (data) {
+          this.todaysExchangeRates = data.rates;
+        }
       }
-    }
+    );
   }
 
   selectExRateSource(eFor: string) {

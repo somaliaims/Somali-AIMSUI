@@ -5,7 +5,7 @@
 
       <div class="col-md-12">
         <ul class="nav nav-tabs">
-          
+
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#"
               class="nav-link text-info" (click)="showProjects()" data-toggle="tab">Name/Description</a>
@@ -57,11 +57,11 @@
     <!--Data entry tab for projects-->
     <div *ngIf="currentTab == 'project'" class="row">
 
-      <div class="col-md-6">
+      <div *ngIf="isShowSources" class="col-md-6">
         <div class="col-md-12 col-sm-12">
-          <div class="card card-signin my-5">
+          <div class="card card-signin my-5 margin-top-10">
             <div class="card-body iati-box">
-              <h5 class="card-title text-center">Source projects</h5>
+              <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngIf="isAimsLoading">
                   <span class="text-info">Wait loading aims data...</span>
@@ -131,16 +131,16 @@
 
       </div>
 
-      <div class="col-md-6">
+      <div [ngClass]="{'col-md-6': isShowSources, 'col-md-12': !isShowSources}">
         <!--Data entry box-->
         <div class="col-md-12 col-sm-12">
-          <div class="card card-signin my-5">
+          <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
               <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject()" #projectForm="ngForm">
                 <div class="row">
                   <div class="col-md-12">
                     <span class="float-left">
-                      <h5 class="card-title">New project</h5>
+                      <h6 class="card-title">New project</h6>
                     </span>
                     <span class="float-right">
                       <button class="btn btn-info" [class.disable]="isProjectBtnDisabled"
@@ -160,8 +160,8 @@
                   <label for="title">Start date</label>
                   <div class="input-group">
                     <input type="text" [readonly]="true" class="form-control" placeholder="yyyy-mm-dd" name="startDate"
-                      [(ngModel)]="model.startDate" #c="ngModel" [maxDate]="calendarMaxDate" ngbDatepicker #s="ngbDatepicker"
-                      required>
+                      [(ngModel)]="model.startDate" #c="ngModel" [maxDate]="calendarMaxDate" ngbDatepicker
+                      #s="ngbDatepicker" required>
                     <div class="input-group-append">
                       <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>
                     </div>
@@ -201,12 +201,12 @@
     <!--Sectors tab for projects-->
     <div *ngIf="currentTab == 'sector'" class="row">
 
-      <div class="col-md-6 col-sm-6">
+      <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
 
         <div class="col-md-12">
-          <div class="card card-signin my-5">
+          <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
-              <h5 class="card-title text-center">Source projects</h5>
+              <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
@@ -276,15 +276,14 @@
       </div>
 
       <!--Selected Sectors List-->
-      <div class="col-md-6 col-sm-6">
+      <div [ngClass]="{'col-md-6': isShowSources, 'col-md-12': !isShowSources}">
 
-        <div class="card card-signin my-5">
-
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage sectors</h5>
+                  <h6 class="card-title">Manage sectors</h6>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase" (click)="showLocations()"
@@ -298,8 +297,9 @@
 
               <div class="form-group">
                 <label for="sectorTypeId">Sector type</label>
-                <select [class.disable]="isSectorTypeDisabled" class="form-control" id="sectorTypeId" [(ngModel)]="sectorModel.sectorTypeId" name="sectorTypeId"
-                  #sectorTypeId="ngModel" (change)="showSectorsForType()" required>
+                <select [class.disable]="isSectorTypeDisabled" class="form-control" id="sectorTypeId"
+                  [(ngModel)]="sectorModel.sectorTypeId" name="sectorTypeId" #sectorTypeId="ngModel"
+                  (change)="showSectorsForType()" required>
                   <option value="null">--Select sector type--</option>
                   <option *ngFor="let sType of sectorTypes" [value]="sType.id">{{sType.typeName}}</option>
                 </select>
@@ -322,14 +322,16 @@
 
               <div *ngIf="sectorEntryType == 'iati'" class="form-group">
                 <label for="sectorName">New sector</label>
-                <input type="text" [readonly]="true" class="form-control" id="sectorName" [(ngModel)]="sectorModel.sectorName"
-                  name="sectorName" #sectorName="ngModel" required>
+                <input type="text" [readonly]="true" class="form-control" id="sectorName"
+                  [(ngModel)]="sectorModel.sectorName" name="sectorName" #sectorName="ngModel" required>
                 <div *ngIf="projectSectorForm.submitted" [hidden]="sectorName.valid" class="alert alert-danger">
                   Sector name is required
                 </div>
               </div>
 
-              <div *ngIf="(sectorModel.sectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId" class="form-group">
+              <div
+                *ngIf="(sectorModel.sectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId"
+                class="form-group">
                 <label for="sectorName">Sector mappings</label>
                 <select class="form-control" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
                   #mappingId="ngModel" required>
@@ -367,8 +369,8 @@
                 </div>
               </div>
 
-              <button [class.disable]="isProjectSectorBtnDisabled"
-                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectSectorText}}</button>
+              <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">{{btnProjectSectorText}}</button>
 
               <!--<button [class.disable]="isProjectSectorBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button" (click)="resetSectorEntry()">Reset
@@ -380,7 +382,7 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project sectors</h5>
+            <h6 class="card-title text-center">Project sectors</h6>
             <table class="table table-bordered">
               <tr>
                 <th>Sector</th>
@@ -420,12 +422,12 @@
     <!--Locations tab for projects-->
     <div *ngIf="currentTab == 'location'" class="row">
 
-      <div class="col-md-6 col-sm-6">
+      <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
 
         <div class="col-md-12">
-          <div class="card card-signin my-5">
+          <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
-              <h5 class="card-title text-center">Source projects</h5>
+              <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
@@ -490,14 +492,14 @@
       </div>
 
       <!--Selected Locations List-->
-      <div class="col-md-6 col-sm-6">
+      <div [ngClass]="{'col-md-6': isShowSources, 'col-md-12': !isShowSources}">
 
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage locations</h5>
+                  <h6 class="card-title">Manage locations</h6>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase" (click)="showDocuments()"
@@ -523,8 +525,8 @@
 
               <div *ngIf="locationEntryType == 'iati'" class="form-group">
                 <label for="location">New location</label>
-                <input type="text" [readonly]="true" class="form-control" id="location" [(ngModel)]="locationModel.location"
-                  name="location" #location="ngModel" required>
+                <input type="text" [readonly]="true" class="form-control" id="location"
+                  [(ngModel)]="locationModel.location" name="location" #location="ngModel" required>
                 <div *ngIf="projectLocationForm.submitted" [hidden]="location.valid" class="alert alert-danger">
                   Location is required
                 </div>
@@ -542,8 +544,7 @@
               </div>
 
               <button [class.disable]="isProjectLocationBtnDisabled"
-                class="btn btn-lg btn-info btn-block text-uppercase"
-                type="submit">{{btnProjectLocationText}}</button>
+                class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnProjectLocationText}}</button>
 
               <!--<button [class.disable]="isProjectLocationBtnDisabled"
                 class="btn btn-lg btn-warning btn-block text-uppercase" type="button"
@@ -555,7 +556,7 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project locations</h5>
+            <h6 class="card-title text-center">Project locations</h6>
             <table class="table table-bordered">
               <tr>
                 <th>Location</th>
@@ -594,12 +595,11 @@
     <!--Documents tab for projects-->
     <div *ngIf="currentTab == 'document'" class="row">
 
-      <div class="col-md-6 col-sm-6">
-
+      <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
         <div class="col-md-12">
-          <div class="card card-signin my-5">
+          <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
-              <h5 class="card-title text-center">Source Projects</h5>
+              <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
@@ -668,14 +668,14 @@
       </div>
 
       <!--Selected Documents List-->
-      <div class="col-md-6 col-sm-6">
+      <div [ngClass]="{'col-md-6': isShowSources, 'col-md-12': !isShowSources}">
 
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage documents & links</h5>
+                  <h6 class="card-title">Manage documents & links</h6>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase"
@@ -717,7 +717,7 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project documents and links</h5>
+            <h6 class="card-title text-center">Project documents and links</h6>
             <table class="table table-bordered">
               <tr>
                 <th>Document title</th>
@@ -747,12 +747,11 @@
     <!--Funders tab for projects-->
     <div *ngIf="currentTab == 'funder'" class="row">
 
-      <div class="col-md-6 col-sm-6">
-
+      <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
         <div class="col-md-12">
-          <div class="card card-signin my-5">
+          <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
-              <h5 class="card-title text-center">Source Projects</h5>
+              <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
@@ -761,22 +760,22 @@
                       Details</a><br />
                     <span class="badge badge-warning">AIMS</span>
 
-                      <table *ngIf="project.funders.length > 0" class="table table-bordered">
-                        <tr>
-                          <th>Funder name</th>
-                          <th>Action</th>
-                        </tr>
-                        <tr *ngFor="let funder of project.funders">
-                          <td>
-                            {{funder.funder}}
-                          </td>
-                          <td [class.disable]="checkIfFunderAdded(funder.funder)">
-                            <button id="aFunder-{{project.id}}-{{funder.funderId}}" (click)="enterAIMSFunder($event)"
-                              class="btn btn-success btn-sm">Enter >></button>
-                          </td>
-                        </tr>
-                      </table>
-                      <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from AIMS found.</i></div>
+                    <table *ngIf="project.funders.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Funder name</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let funder of project.funders">
+                        <td>
+                          {{funder.funder}}
+                        </td>
+                        <td [class.disable]="checkIfFunderAdded(funder.funder)">
+                          <button id="aFunder-{{project.id}}-{{funder.funderId}}" (click)="enterAIMSFunder($event)"
+                            class="btn btn-success btn-sm">Enter >></button>
+                        </td>
+                      </tr>
+                    </table>
+                    <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from AIMS found.</i></div>
                   </td>
                 </tr>
               </table>
@@ -790,11 +789,14 @@
 
                     <div class="badge badge-warning float-right">IATI</div>
                     <div class="btn-group">
-                      <button (click)="showFunderTab(project.id)" [ngClass]="{'active': checkIfFunderTabSelected(project.id)}" type="button"
+                      <button (click)="showFunderTab(project.id)"
+                        [ngClass]="{'active': checkIfFunderTabSelected(project.id)}" type="button"
                         class="btn btn-warning">Funders</button>
-                      <button (click)="showBudgetTab(project.id)" [ngClass]="{'active': checkIfBudgetTabSelected(project.id)}" type="button"
+                      <button (click)="showBudgetTab(project.id)"
+                        [ngClass]="{'active': checkIfBudgetTabSelected(project.id)}" type="button"
                         class="btn btn-warning">Budget</button>
-                      <button (click)="showTransactionTab(project.id)" [ngClass]="{'active': checkIfTransactionTabSelected(project.id)}" type="button"
+                      <button (click)="showTransactionTab(project.id)"
+                        [ngClass]="{'active': checkIfTransactionTabSelected(project.id)}" type="button"
                         class="btn btn-warning">Transactions</button>
                     </div>
 
@@ -815,67 +817,68 @@
                         </tr>
                       </table>
                       <div class="text-info" *ngIf="project.funders.length == 0">
-                            <i>No funders to show.</i>
+                        <i>No funders to show.</i>
                       </div>
                     </div>
 
                     <div *ngIf="project.isBudgetVisible" class="margin-top-10">
-                        <table *ngIf="project.budgets.length > 0" class="table table-bordered margin-top-5">
-                          <tr>
-                            <th>Amount</th>
-                            <th>Currency</th>
-                            <th>Dated</th>
-                            <th>Action</th>
-                          </tr>
-                          <tr *ngFor="let budget of project.budgets">
-                            <td [ngClass]="{'bg-warning': !budget.amount}">
-                              {{displayNull(budget.amount)}}
-                            </td>
-                            <td [ngClass]="{'bg-warning': !budget.currency}">
-                              {{displayNull(budget.currency)}}
-                            </td>
-                            <td [ngClass]="{'bg-warning': !budget.endDate}">
-                              {{displayNull(budget.endDate)}}
-                            </td>
-                            <td>
-                              <button id="dbudget-{{project.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
-                                class="btn btn-success btn-sm">Enter >></button>
-                            </td>
-                          </tr>
-                        </table>
-                        <div class="text-info" *ngIf="project.budgets.length == 0">
-                              <i>No budgets to show.</i>
-                        </div>
+                      <table *ngIf="project.budgets.length > 0" class="table table-bordered margin-top-5">
+                        <tr>
+                          <th>Amount</th>
+                          <th>Currency</th>
+                          <th>Dated</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let budget of project.budgets">
+                          <td [ngClass]="{'bg-warning': !budget.amount}">
+                            {{displayNull(budget.amount)}}
+                          </td>
+                          <td [ngClass]="{'bg-warning': !budget.currency}">
+                            {{displayNull(budget.currency)}}
+                          </td>
+                          <td [ngClass]="{'bg-warning': !budget.endDate}">
+                            {{displayNull(budget.endDate)}}
+                          </td>
+                          <td>
+                            <button id="dbudget-{{project.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
+                              class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.budgets.length == 0">
+                        <i>No budgets to show.</i>
                       </div>
+                    </div>
 
-                      <div *ngIf="project.isTransactionVisible" class="margin-top-10">
-                        <table *ngIf="project.fundingTransactions.length > 0" class="table table-bordered margin-top-5">
-                          <tr>
-                            <th>Amount</th>
-                            <th>Type</th>
-                            <th>Dated</th>
-                            <th>Action</th>
-                          </tr>
-                          <tr *ngFor="let transaction of project.fundingTransactions">
-                            <td [ngClass]="{'bg-warning': !transaction.amount}">
-                              {{displayNull(transaction.amount)}}
-                            </td>
-                            <td>
-                              {{transaction.transactionType}}
-                            </td>
-                            <td [ngClass]="{'bg-warning': !transaction.dated}">
-                              {{displayNull(transaction.dated)}}
-                            </td>
-                            <td>
-                              <button id="dtransaction-{{project.id}}-{{transaction.id}}" (click)="enterIATIFundingTransaction($event)"
-                                class="btn btn-success btn-sm">Enter >></button>
-                            </td>
-                          </tr>
-                        </table>
-                        <div class="text-info" *ngIf="project.fundingTransactions.length == 0">
-                              <i>No transactions to show.</i>
-                        </div>
+                    <div *ngIf="project.isTransactionVisible" class="margin-top-10">
+                      <table *ngIf="project.fundingTransactions.length > 0" class="table table-bordered margin-top-5">
+                        <tr>
+                          <th>Amount</th>
+                          <th>Type</th>
+                          <th>Dated</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let transaction of project.fundingTransactions">
+                          <td [ngClass]="{'bg-warning': !transaction.amount}">
+                            {{displayNull(transaction.amount)}}
+                          </td>
+                          <td>
+                            {{transaction.transactionType}}
+                          </td>
+                          <td [ngClass]="{'bg-warning': !transaction.dated}">
+                            {{displayNull(transaction.dated)}}
+                          </td>
+                          <td>
+                            <button id="dtransaction-{{project.id}}-{{transaction.id}}"
+                              (click)="enterIATIFundingTransaction($event)" class="btn btn-success btn-sm">Enter
+                              >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.fundingTransactions.length == 0">
+                        <i>No transactions to show.</i>
                       </div>
+                    </div>
 
                   </td>
                 </tr>
@@ -887,14 +890,14 @@
       </div>
 
       <!--Selected Funders List-->
-      <div class="col-md-6 col-sm-6">
+      <div [ngClass]="{'col-md-6': isShowSources, 'col-md-12': !isShowSources}">
 
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10 margin-bottom-10">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage funders</h5>
+                  <h6 class="card-title">Manage funders</h6>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase"
@@ -954,10 +957,11 @@
 
               <div class="form-group">
                 <label for="currency">Funding currency</label>
-                <select [class.disable]="funderModel.exRateSource == null" class="form-control" id="currency" (change)="getExchangeRates(1)"
-                  [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
+                <select [class.disable]="funderModel.exRateSource == null" class="form-control" id="currency"
+                  (change)="getExchangeRates(1)" [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
                   required>
-                  <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">{{currency.currencyName}}
+                  <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">
+                    {{currency.currencyName}}
                   </option>
                 </select>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
@@ -968,7 +972,8 @@
               <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
                 <input type="number" [readonly]="isFundingExRateReadonly" class="form-control" id="exchangeRate"
-                  [(ngModel)]="funderModel.exchangeRate" name="exchangeRate" min="0.1" max="10000" #exchangeRate="ngModel" required />
+                  [(ngModel)]="funderModel.exchangeRate" name="exchangeRate" min="0.1" max="10000"
+                  #exchangeRate="ngModel" required />
                 <div *ngIf="projectFunderForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
                   Enter valid exchange rate for {{defaultCurrency}} (Min: 0.1, Max: 10000)
                 </div>
@@ -979,9 +984,10 @@
 
               <div class="form-group">
                 <label for="documentUrl">Funding amount</label>
-                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount" [(ngModel)]="funderModel.amount" name="amount"
-                  #amount="ngModel" maxlength="11" required>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value && amount.value > 0" class="alert alert-danger">
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount"
+                  [(ngModel)]="funderModel.amount" name="amount" #amount="ngModel" maxlength="11" required>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value && amount.value > 0"
+                  class="alert alert-danger">
                   Enter valid amount
                 </div>
               </div>
@@ -990,8 +996,8 @@
                 <label for="title">Funding date </label>
                 <div class="input-group">
                   <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
-                    [(ngModel)]="funderModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(1)" ngbDatepicker #s="ngbDatepicker"
-                    required>
+                    [(ngModel)]="funderModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(1)"
+                    ngbDatepicker #s="ngbDatepicker" required>
                   <div class="input-group-append">
                     <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>
                   </div>
@@ -1008,10 +1014,10 @@
           </div>
         </div>
 
-        <div class="card card-signin">
+        <div class="card card-signin margin-top-5 margin-bottom-10">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project funders</h5>
-            <table class="table table-bordered">
+            <h6 class="card-title text-center">Project funders</h6>
+            <table class="table table-bordered table-condensed">
               <tr>
                 <th>Funder</th>
                 <th>Type</th>
@@ -1046,12 +1052,11 @@
     <!--Implementers tab for projects-->
     <div *ngIf="currentTab == 'implementer'" class="row">
 
-      <div class="col-md-6 col-sm-6">
-
+      <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
         <div class="col-md-12">
-          <div class="card card-signin my-5">
+          <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
-              <h5 class="card-title text-center">Source projects</h5>
+              <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
@@ -1114,14 +1119,14 @@
       </div>
 
       <!--Selected Implementers List-->
-      <div class="col-md-6 col-sm-6">
+      <div [ngClass]="{'col-md-6': isShowSources, 'col-md-12': !isShowSources}">
 
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage Implementer</h5>
+                  <h6 class="card-title">Manage Implementers</h6>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase" (click)="showSectors()"
@@ -1134,8 +1139,8 @@
               <div class="form-group">
                 <form class="example-form" [formGroup]='implementerForm'>
                   <mat-form-field class="example-full-width margin-left-5">
-                    <input matInput placeholder="Enter/Select Implementer" aria-label="Implementer" [matAutocomplete]="auto"
-                      [formControl]="implementerInput">
+                    <input matInput placeholder="Enter/Select Implementer" aria-label="Implementer"
+                      [matAutocomplete]="auto" [formControl]="implementerInput">
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayImplementer.bind(this)">
                       <mat-option *ngFor="let org of filteredImplementers | async" [value]="org">
                         <span>{{org.organizationName}}</span>
@@ -1212,12 +1217,11 @@
     <!--Disbursements tab for projects-->
     <div *ngIf="currentTab == 'disbursement'" class="row">
 
-      <div class="col-md-6 col-sm-6">
-
-        <div class="col-md-12">
-          <div class="card card-signin my-5">
+      <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
+        <div  class="col-md-12">
+          <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
-              <h5 class="card-title text-center">Source Projects</h5>
+              <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
@@ -1295,14 +1299,14 @@
       </div>
 
       <!--Selected Disbursements List-->
-      <div class="col-md-6 col-sm-6">
+      <div [ngClass]="{'col-md-6': isShowSources, 'col-md-12': !isShowSources}">
 
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Manage disbursements</h5>
+                  <h6 class="card-title">Manage disbursements</h6>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase"
@@ -1327,9 +1331,11 @@
 
               <div class="form-group">
                 <label for="currency">Currency</label>
-                <select [class.disable]="disbursementModel.exRateSource == null" class="form-control" id="dcurrency" [(ngModel)]="disbursementModel.currency" name="dcurrency"
-                  #dcurrency="ngModel" (change)="getExchangeRates(2)" required>
-                  <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">{{currency.currencyName}}
+                <select [class.disable]="disbursementModel.exRateSource == null" class="form-control" id="dcurrency"
+                  [(ngModel)]="disbursementModel.currency" name="dcurrency" #dcurrency="ngModel"
+                  (change)="getExchangeRates(2)" required>
+                  <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">
+                    {{currency.currencyName}}
                   </option>
                 </select>
                 <div *ngIf="disbursementForm.submitted" [hidden]="dcurrency.valid" class="alert alert-danger">
@@ -1340,7 +1346,8 @@
               <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
                 <input type="number" [readonly]="isDisbursementExRateReadonly" class="form-control" id="dexchangeRate"
-                  [(ngModel)]="disbursementModel.exchangeRate" name="dexchangeRate" min="0.1" max="10000" #dexchangeRate="ngModel" required />
+                  [(ngModel)]="disbursementModel.exchangeRate" name="dexchangeRate" min="0.1" max="10000"
+                  #dexchangeRate="ngModel" required />
                 <div *ngIf="disbursementForm.submitted" [hidden]="dexchangeRate.valid" class="alert alert-danger">
                   Enter valid exchange rate for {{defaultCurrency}} (Min: 0.1, Max: 10000)
                 </div>
@@ -1351,8 +1358,8 @@
 
               <div class="form-group">
                 <label for="text">Amount</label>
-                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="damount" [(ngModel)]="disbursementModel.amount"
-                  name="damount" #damount="ngModel" maxlength="11" required>
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="damount"
+                  [(ngModel)]="disbursementModel.amount" name="damount" #damount="ngModel" maxlength="11" required>
                 <div *ngIf="disbursementForm.submitted" [hidden]="damount.valid" class="alert alert-danger">
                   Enter valid amount
                 </div>
@@ -1362,8 +1369,8 @@
                 <label for="title">Date </label>
                 <div class="input-group">
                   <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
-                    [(ngModel)]="disbursementModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(2)" ngbDatepicker
-                    #dd="ngbDatepicker" required>
+                    [(ngModel)]="disbursementModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(2)"
+                    ngbDatepicker #dd="ngbDatepicker" required>
                   <div class="input-group-append">
                     <button class="btn btn-outline-warning calendar" (click)="dd.toggle()" type="button"></button>
                   </div>
@@ -1382,7 +1389,7 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h5 class="card-title text-center">Project Disbursements</h5>
+            <h6 class="card-title text-center">Project Disbursements</h6>
             <table class="table table-bordered">
               <tr>
                 <th>Dated</th>
@@ -1421,7 +1428,7 @@
 
     <!--Custom fields tab for projects-->
     <div *ngIf="currentTab == 'customFields'" class="row">
-      <div class="col-md-6 margin-top-10">
+      <div class="col-md-6">
         <div *ngFor="let field of customFieldsList" class="card margin-top-10">
           <div class="card-header bg-info text-white">
             <h6>{{field.fieldTitle}}</h6>
@@ -1460,19 +1467,20 @@
             </div>
 
             <span class="float-right margin-top-10">
-              <button class="btn btn-info btn-lg btn-block text-uppercase" (click)="saveProjectFields(field.id)"
+              <button class="btn btn-info btn-sm btn-block text-uppercase" (click)="saveProjectFields(field.id)"
                 type="button">Save Fields</button>
             </span>
           </div>
         </div>
       </div>
-      <div class="col-md-6 margin-top-10">
-        <div class="card card-signin my-5">
+      <div class="col-md-6">
+
+        <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <span class="float-left">
-                  <h5 class="card-title">Project fields</h5>
+                  <h6 class="card-title">Project fields</h6>
                 </span>
                 <span class="float-right">
                   <button class="btn btn-info" class="btn btn-info btn-block text-uppercase"
@@ -1483,13 +1491,11 @@
             <table class="table table-bordered margin-top-10">
               <tr>
                 <th>Field title</th>
-                <th>Type</th>
                 <th>Values</th>
                 <th>Actions</th>
               </tr>
               <tr *ngFor="let field of currentProjectFieldsList">
                 <td>{{field.fieldTitle}}</td>
-                <td>{{getFieldType(field.fieldType)}}</td>
                 <td>{{displayFieldValues(field.values)}}</td>
                 <td>
                   <button id="ffield-{{activeProjectId}}-{{field.customFieldId}}" (click)="deleteProjectField($event)"
@@ -1513,7 +1519,7 @@
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
-            <h5 class="card-title text-center">Finish Project</h5>
+            <h6 class="card-title text-center">Finish Project</h6>
 
             <table class="table">
               <tr>
