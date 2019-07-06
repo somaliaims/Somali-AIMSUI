@@ -87,8 +87,10 @@ export class NewProjectComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
 
-  model = { id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0, 
-  endingYear: 0, selectedOrganizations: [], selectedSectors: [], selectedLocations: [] };
+  model = {
+    id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0,
+    endingYear: 0, selectedOrganizations: [], selectedSectors: [], selectedLocations: []
+  };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private calendar: NgbCalendar,
@@ -126,46 +128,46 @@ export class NewProjectComponent implements OnInit {
     localStorage.setItem('active-project', '0');
 
     //Register keyup event for search bar
-     fromEvent(this.title.nativeElement, 'keyup').pipe(
+    fromEvent(this.title.nativeElement, 'keyup').pipe(
       map((event: any) => {
         return event.target.value;
       })
       //,filter(res => res.length > 0)
-      ,debounceTime(1000)        
-      ,distinctUntilChanged()
-      ).subscribe((text: string) => {
-        this.filterProjectMatches();
-      });
+      , debounceTime(1000)
+      , distinctUntilChanged()
+    ).subscribe((text: string) => {
+      this.filterProjectMatches();
+    });
 
-      this.sectorsSettings = {
-        singleSelection: false,
-        idField: 'id',
-        textField: 'sectorName',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 5,
-        allowSearchFilter: true
-      };
-  
-      this.organizationsSettings = {
-        singleSelection: false,
-        idField: 'id',
-        textField: 'organizationName',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 5,
-        allowSearchFilter: true
-      };
-  
-      this.locationsSettings = {
-        singleSelection: false,
-        idField: 'id',
-        textField: 'location',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 5,
-        allowSearchFilter: true
-      };
+    this.sectorsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'sectorName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.organizationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'organizationName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.locationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'location',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
   }
 
   loadUserProjects() {
@@ -255,91 +257,155 @@ export class NewProjectComponent implements OnInit {
 
   filterProjectMatches() {
     var str = this.model.title;
-    if (this.iatiProjects.length > 0) {
-      
-      if (this.model.title) {
-        str = str.toLowerCase();
-        this.filteredIatiProjects = this.iatiProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
-        this.filteredAIMSProjects = this.aimsProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
-      } else {
-        this.filteredIatiProjects = this.iatiProjects;
-        this.filteredAIMSProjects = this.aimsProjects;
-      }
 
-      if (this.model.selectedOrganizations.length > 0) {
-        var orgs = this.model.selectedOrganizations.map(o => o.organizationName);
-        
-        //IATI
-        this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
-         var isMatched = false;
-         var projectOrgs = project.organizations.map(o => o.name);
-          for(var i=0; i < projectOrgs.length; i++) {
-            if (orgs.includes(projectOrgs[i])) {
-              isMatched = true;
-              break;
-            }
+    if (this.model.title) {
+      str = str.toLowerCase();
+      this.filteredIatiProjects = this.iatiProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
+      this.filteredAIMSProjects = this.aimsProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
+    } else {
+      this.filteredIatiProjects = this.iatiProjects;
+      this.filteredAIMSProjects = this.aimsProjects;
+    }
+
+    if (this.model.selectedOrganizations.length > 0) {
+      var orgs = this.model.selectedOrganizations.map(o => o.organizationName);
+      //IATI
+      this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
+        var isMatched = false;
+        var projectOrgs = project.organizations.map(o => o.name);
+        for (var i = 0; i < projectOrgs.length; i++) {
+          if (orgs.includes(projectOrgs[i])) {
+            isMatched = true;
+            break;
           }
-          if (isMatched) {
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+
+      //AIMS
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
+        var isMatched = false;
+        var projectOrgs = project.organizations.map(o => o.name);
+        for (var i = 0; i < projectOrgs.length; i++) {
+          if (orgs.includes(projectOrgs[i])) {
+            isMatched = true;
+            break;
+          }
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+    }
+
+    //IATI
+    if (this.model.selectedSectors.length > 0) {
+      var sectors = this.model.selectedSectors.map(s => s.sectorName);
+      //IATI
+      this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
+        var isMatched = false;
+        var projectSectors = project.sectors.map(o => o.name);
+        for (var i = 0; i < projectSectors.length; i++) {
+          if (sectors.includes(projectSectors[i])) {
+            isMatched = true;
+            break;
+          }
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+
+      //AIMS
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
+        var isMatched = false;
+        var projectSectors = project.sectors.map(o => o.name);
+        for (var i = 0; i < projectSectors.length; i++) {
+          if (sectors.includes(projectSectors[i])) {
+            isMatched = true;
+            break;
+          }
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+    }
+
+    //IATI
+    if (this.model.selectedLocations.length > 0) {
+      var locations = this.model.selectedLocations.map(l => l.locationName);
+      //IATI
+      this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
+        var isMatched = false;
+        var projectLocations = project.locations.map(o => o.name);
+        for (var i = 0; i < projectLocations.length; i++) {
+          if (locations.includes(projectLocations[i])) {
+            isMatched = true;
+            break;
+          }
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+
+      //AIMS
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
+        var isMatched = false;
+        var projectLocations = project.locations.map(o => o.name);
+        for (var i = 0; i < projectLocations.length; i++) {
+          if (sectors.includes(projectLocations[i])) {
+            isMatched = true;
+            break;
+          }
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+    }
+
+    if (this.model.startingYear) {
+      this.filteredIatiProjects = this.filteredIatiProjects.filter((project) => {
+        if (Date.parse(project.startDate)) {
+          var dated = new Date(project.startDate);
+          var year = dated.getFullYear();
+          if (year >= this.model.startingYear) {
             return project;
           }
-        }.bind(this));
+        }
+      });
 
-        //AIMS
-        this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function(project) {
-          var isMatched = false;
-         var projectOrgs = project.organizations.map(o => o.name);
-          for(var i=0; i < projectOrgs.length; i++) {
-            if (orgs.includes(projectOrgs[i])) {
-              isMatched = true;
-              break;
-            }
-          }
-          if (isMatched) {
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter((project) => {
+        var dated = new Date(project.startDate);
+        var year = dated.getFullYear();
+        if (year >= this.model.startingYear) {
+          return project;
+        }
+      });
+    }
+
+    if (this.model.endingYear) {
+      this.filteredIatiProjects = this.filteredIatiProjects.filter((project) => {
+        if (Date.parse(project.startDate)) {
+          var dated = new Date(project.startDate);
+          var year = dated.getFullYear();
+          if (year <= this.model.endingYear) {
             return project;
           }
-        }.bind(this));
-      }
+        }
+      });
 
-      //IATI
-      if (this.model.selectedSectors.length > 0) {
-        var sectors = this.model.selectedSectors.map(o => o.name);
-        this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
-          sectors.forEach((o) => {
-            if (project.sectors.map(o => o.name).indexOf(o) != -1) {
-              return project;
-            }
-          });
-        }.bind(this));
-
-        this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function(project) {
-          sectors.forEach((o) => {
-            if (project.sectors.map(o => o.name).indexOf(o) != -1) {
-              return project;
-            }
-          });
-        }.bind(this));
-      }
-
-      //IATI
-      if (this.model.selectedLocations.length > 0) {
-        var locations = this.model.selectedLocations.map(o => o.name);
-        this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
-          locations.forEach((o) => {
-            if (project.locations.map(o => o.name).indexOf(o) != -1) {
-              return project;
-            }
-          });
-        }.bind(this));
-
-        this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function(project) {
-          locations.forEach((o) => {
-            if (project.locations.map(o => o.name).indexOf(o) != -1) {
-              return project;
-            }
-          });
-        }.bind(this));
-      }
-
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter((project) => {
+        var dated = new Date(project.endDate);
+        var year = dated.getFullYear();
+        if (year <= this.model.endingYear) {
+          return project;
+        }
+      });
     }
   }
 
@@ -666,6 +732,6 @@ export class NewProjectComponent implements OnInit {
   }
 
   getLongDateString(dated) {
-      return this.storeService.getLongDateString(dated);
+    return this.storeService.getLongDateString(dated);
   }
 }

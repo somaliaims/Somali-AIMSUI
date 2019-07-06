@@ -62,13 +62,13 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12" [ngClass]="{disabledDiv: isTextReadOnly}">
         <div class="card">
           <div class="card-body">
             <form class="form-signin" #searchForm="ngForm">
               <div class="row">
                 <div class="col-md-8">
-                  <div class="input-group" [ngClass]="{disabledDiv: isTextReadOnly}">
+                  <div class="input-group">
                     <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
                       [(ngModel)]="model.title" name="title" #title onkeypress="return event.keyCode != 13;" required>
                     <span class="input-group-btn">
@@ -83,7 +83,7 @@
                     <tr>
                       <td>
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
-                          name="startingYear" #startingYear="ngModel" required>
+                          name="startingYear" (change)="filterProjectMatches()" #startingYear="ngModel" required>
                           <option value="0">--Starting year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">FY-{{year.financialYear}}
                           </option>
@@ -92,7 +92,7 @@
                       <td>&nbsp;&nbsp;</td>
                       <td>
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
-                          #endingYear="ngModel" required>
+                          #endingYear="ngModel" (change)="filterProjectMatches()" required>
                           <option value="0">--Ending year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">FY-{{year.financialYear}}
                           </option>
