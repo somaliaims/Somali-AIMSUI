@@ -232,9 +232,25 @@ export class NewProjectComponent implements OnInit {
     );
   }
 
-  filterMatchingProjects(e) {
+  /*filterMatchingProjects(e) {
     this.filterAIMSMatchingProjects(e);
     //this.filterIATIMatchingProjects(e);
+  }*/
+
+  onItemSelect() {
+    this.filterProjectMatches();
+  }
+
+  onItemDeSelect() {
+    this.filterProjectMatches();
+  }
+
+  onItemSelectAll() {
+    this.filterProjectMatches();
+  }
+
+  onItemDeSelectAll() {
+    this.filterProjectMatches();
   }
 
   filterProjectMatches() {
@@ -254,11 +270,32 @@ export class NewProjectComponent implements OnInit {
         var orgs = this.model.selectedOrganizations.map(o => o.name);
         this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
           orgs.forEach((o) => {
-            if (project.organizations.map(o => o.name).indexOf(o) != -1) {
+            if (project.sectors.map(o => o.name).indexOf(o) != -1) {
               return project;
             }
           });
-           
+        }.bind(this));
+      }
+
+      if (this.model.selectedSectors.length > 0) {
+        var sectors = this.model.selectedSectors.map(o => o.name);
+        this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
+          sectors.forEach((o) => {
+            if (project.sectors.map(o => o.name).indexOf(o) != -1) {
+              return project;
+            }
+          });
+        }.bind(this));
+      }
+
+      if (this.model.selectedLocations.length > 0) {
+        var locations = this.model.selectedLocations.map(o => o.name);
+        this.filteredIatiProjects = this.filteredIatiProjects.filter(function(project) {
+          locations.forEach((o) => {
+            if (project.locations.map(o => o.name).indexOf(o) != -1) {
+              return project;
+            }
+          });
         }.bind(this));
       }
       

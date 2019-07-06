@@ -105,20 +105,23 @@
               <div class="row margin-top-10">
                 <div class="col-md-4">
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList"
-                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
-                    #selectedSectors="ngModel">
+                    [(ngModel)]="model.selectedSectors" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
+                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()"
+                    [settings]="sectorsSettings" name="selectedSectors" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-4">
                   <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" [data]="organizationsList"
-                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
-                    name="selectedOrganizations" #selectedOrganizations="ngModel">
+                    [(ngModel)]="model.selectedOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" 
+                    (onSelectAll)="onSelectAll()" (onDeSelectAll)="onDeSelectAll()"
+                    [settings]="organizationsSettings" name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-4">
                   <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" [data]="locationsList"
                     [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
-                    #selectedLocations="ngModel">
+                    (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" (onSelectAll)="onSelectAll()" 
+                    (onDeSelectAll)="onDeSelectAll()" #selectedLocations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
               </div>
