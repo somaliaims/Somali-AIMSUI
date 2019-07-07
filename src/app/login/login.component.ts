@@ -57,7 +57,11 @@ export class LoginComponent implements OnInit {
 
     this.userService.authenticateUser(this.model.Email, this.model.Password).subscribe(data => {
       if (data) {
-        if (data.token) {
+        if (!data.isApproved) {
+          this.errorMessage = 'Your account is not approved yet';
+          this.isError = true;
+          this.resetDefaultStatus();
+        } else if (data.token) {
           this.securityService.storeLoginData(data);
           location.reload();
         } else {
