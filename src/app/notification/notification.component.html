@@ -30,7 +30,8 @@
                 {{notification.message}}<br />
               </span>
               <span class="text-info">
-                <b>Organization name: {{notification.organization}}</b> <br />
+                <b>Organization name:</b> {{notification.organization}} <br />
+                <span *ngIf="notification.email"><b>User email:</b> {{notification.email}} <br /></span>
               </span>
               <span class="text-warning">
                 <b><i>Dated: {{getLongDateString(notification.dated)}}</i></b>
