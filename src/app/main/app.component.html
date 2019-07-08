@@ -55,14 +55,15 @@
               <a *ngIf="permissions.canEditEmailMessage" class="dropdown-item" [routerLink]="['/email-messages']">Email messages</a>
             </div>
           </li>
-          <li *ngIf="isLoggedIn && notificationsCount > 0" class="nav-item active"> 
-            <a class="nav-link" [routerLink]="['/notification']">Notifications <span *ngIf="notificationsCount > 0" class="badge badge-pill badge-danger">{{notificationsCount}}</span></a>
-          </li>
           <li class="nav-item active"> 
             <a class="nav-link" [routerLink]="['/contact']">Contact us</a>
           </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">
+          <li *ngIf="isLoggedIn && notificationsCount > 0" class="nav-item active">
+            <a class="nav-link" [routerLink]="['/notification']">Notifications <span *ngIf="notificationsCount > 0"
+                class="badge badge-pill badge-danger">{{notificationsCount}}</span></a>
+          </li>
           <li *ngIf="!isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="['/login']">Log in</a>
           <li *ngIf="isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="" (click)="logout($event)">Log out</a>
         </ul>
