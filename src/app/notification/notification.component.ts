@@ -22,6 +22,7 @@ export class NotificationComponent implements OnInit {
   errorMessage: string = null;
   requestNo: number = 0;
   isError: boolean = false;
+  displayOption: number = null;
   permissions: any = {};
   currentTab: string = 'notifications';
   @BlockUI() blockUI: NgBlockUI;
@@ -29,6 +30,16 @@ export class NotificationComponent implements OnInit {
   displayTabs: any = [
     { visible: true, identity: 'notifications' },
     { visible: false, identity: 'requests' },
+  ];
+
+  notificationTypeCodes: any = {
+    'NOTIFICATIONS': 1,
+    'REQUESTS': 2
+  };
+
+  notificationTypes: any = [
+    { id: 1, text: 'Notifications' },
+    { id: 2, text: 'Project permission requests' }
   ];
 
   constructor(private notificationService: NotificationService, private infoModal: InfoModalComponent,
@@ -51,8 +62,16 @@ export class NotificationComponent implements OnInit {
 
     this.getNotifications();
     this.getProjectRequests();
+    this.displayOption = this.notificationTypeCodes.NOTIFICATIONS;
   }
 
+  showNotificationType() {
+    if (this.displayOption == this.notificationTypeCodes.NOTIFICATIONS) {
+      this.showNotifications();
+    } else if (this.displayOption == this.notificationTypeCodes.REQUESTS) {
+      this.showRequests();
+    }
+  }
   getNotifications() {
     this.notificationService.getUserNotifications().subscribe(data => {
       if (data && data.length) {

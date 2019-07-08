@@ -1,28 +1,38 @@
-<div class="container view-area">
+<div class="container-fluid view-area">
   <block-ui>
-    <div class="row">
-      <div class="col-md-12">
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'notifications', 'text-info': currentTab != 'notifications'}" href="#"
-              class="nav-link text-info" (click)="showNotifications()" data-toggle="tab">General notifications</a>
-          </li>
-          <li *ngIf="!isLoading" class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'requests', 'text-info': currentTab != 'requests'}"
-              href="#" class="nav-link text-info" (click)="showRequests()" data-toggle="tab">Membership requests</a>
-          </li>
-        </ul>
-      </div>
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="btn-info"
+            href="#" class="nav-link text-info" data-toggle="tab">Notifications
+          </a>
+        </li>
+      </ul>
     </div>
-    
+
     <div class="row">
-      <div class="col-md-12 text-center" *ngIf="isLoading">
-          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+      <div class="col-md-12 margin-top-10">
+        <div class="float-right form-inline">
+          <label><b><i>Notification display type:&nbsp;</i></b></label>
+          <select class="form-control" id="displayOption" [(ngModel)]="displayOption" name="displayOption"
+            #displayOptionModel="ngModel" (change)="showNotificationType()" required>
+            <option value="null">-- Notification type --</option>
+            <option *ngFor="let type of notificationTypes" value="{{type.id}}">
+              {{type.text}}
+            </option>
+          </select>
+        </div>
       </div>
+
+      <div class="col-md-12 text-center" *ngIf="isLoading">
+        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+      </div>
+
       <div *ngIf="currentTab == 'notifications'" class="col-md-12 margin-top-10">
-        <table class="table table-stripped">
+
+        <table class="table table-bordered">
           <tr *ngFor="let notification of notifications; let i = index">
-            <td>
+            <td width="90%">
               <span class="badge badge-info lead">
                 {{i + 1}}
               </span>
@@ -37,13 +47,19 @@
                 <b><i>Dated: {{getLongDateString(notification.dated)}}</i></b>
               </span>
             </td>
-            <td *ngIf="notification.notificationType == 1">
+            <td width="10%" *ngIf="notification.notificationType == 1">
               <button class="btn btn-warning"
                 (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
             </td>
           </tr>
         </table>
-        <span *ngIf="notifications.length == 0" class="text-info"><i>No notifications to show</i></span>
+        <table *ngIf="notifications.length == 0" class="table table-bordered">
+          <tr>
+            <td class="text-info">
+                <i>No notifications to show</i>
+            </td>
+          </tr>
+        </table>
       </div>
 
       <div *ngIf="currentTab == 'requests'" class="col-md-12 margin-top-10">
@@ -67,13 +83,19 @@
             <td>
               <button class="btn btn-warning" id="btna-{{i}}-{{request.projectId}}-{{request.userId}}"
                 (click)="approveRequest($event)">Approve</button>&nbsp;
-                <button class="btn btn-danger" id="btnd-{{i}}-{{request.projectId}}-{{request.userId}}"
+              <button class="btn btn-danger" id="btnd-{{i}}-{{request.projectId}}-{{request.userId}}"
                 (click)="unApproveRequest($event)">Unapprove</button>
 
             </td>
           </tr>
         </table>
-        <span *ngIf="projectRequests.length == 0" class="text-info"><i>No project membership requests available to show</i></span>
+        <table *ngIf="projectRequests.length == 0" class="table table-bordered">
+            <tr>
+              <td class="text-info">
+                  <i>No project memebership requests to show</i>
+              </td>
+            </tr>
+          </table>
       </div>
 
     </div>
