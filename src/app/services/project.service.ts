@@ -71,6 +71,7 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('New Project')));
     }
 
+
     applyForProjectMembership(id) {
       var url = this.urlHelper.applyForProjectMembershipUrl(id);
       return this.httpClient.post(url, null, httpOptions).pipe(

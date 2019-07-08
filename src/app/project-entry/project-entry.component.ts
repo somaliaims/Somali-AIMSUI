@@ -1346,7 +1346,7 @@ export class ProjectEntryComponent implements OnInit {
     };
 
     this.isProjectBtnDisabled = true;
-    if (this.isForEdit) {
+    if (this.isForEdit || this.activeProjectId != 0) {
       this.btnProjectText = 'Updating...';
       this.blockUI.start('Updating Project...');
       this.projectService.updateProject(this.activeProjectId, model).subscribe(
@@ -2490,21 +2490,20 @@ export class ProjectEntryComponent implements OnInit {
               if (eFor == this.exRateFor.FUNDING) {
                 var rate = rates.filter(r => r.currency == this.funderModel.currency);
                 if (rate.length > 0) {
-                  if (this.defaultCurrencyRate == 1) {
+                  //if (this.defaultCurrencyRate == 1) {
                     this.funderModel.exchangeRate = rate[0].rate;
-                  } else {
-                    this.funderModel.exchangeRate = (this.defaultCurrencyRate / rate[0].rate);
-                  }
-                  
+                  //} else {
+                    //this.funderModel.exchangeRate = (this.defaultCurrencyRate / rate[0].rate);
+                  //}
                 }
               } else if (eFor == this.exRateFor.DISBURSEMENT) {
                 var rate = rates.filter(r => r.currency == this.disbursementModel.currency);
                 if (rate.length > 0) {
-                  if (this.defaultCurrencyRate == 1) {
+                  //if (this.defaultCurrencyRate == 1) {
                     this.disbursementModel.exchangeRate = rate[0].rate;
-                  } else {
-                    this.disbursementModel.exchangeRate = (this.defaultCurrencyRate / rate[0].rate);
-                  }
+                  //} else {
+                    //this.disbursementModel.exchangeRate = (this.defaultCurrencyRate / rate[0].rate);
+                  //}
                 }
               }
             }
