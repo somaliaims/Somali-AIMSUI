@@ -193,10 +193,11 @@ html {
     overflow-x: hidden; 
   }
 
-  .affix {
-    top:0;
-    width: 100%;
-    z-index: 9999 !important;
+  .sticky {
+    position: fixed;
+    top: 200;
+    overflow: hidden;
+    z-index: 10;
   }
 
   .table-fixed-layout {
