@@ -35,6 +35,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.mergeOrganization);
     }
 
+    getRenameOrganizationUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.renameOrganization + id);
+    }
+
     deleteOrganizationUrl(id: string, newId: string) {
         return (this.BASE_URL + urlsList.urls.deleteOrganization + id + '/' + newId);
     }

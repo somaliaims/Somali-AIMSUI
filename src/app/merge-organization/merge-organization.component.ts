@@ -91,7 +91,35 @@ export class MergeOrganizationComponent implements OnInit {
         }
         this.blockUI.stop();
       }
-    )
+    );
+  }
+
+  renameOrganization() {
+    if (this.selectedOrganizations.length == 0) {
+      this.errorMessage = 'Select an organization to rename';
+      this.errorModal.openModal();
+      return false;
+    } else if (this.selectedOrganizations.length > 1) {
+      this.errorMessage = Messages.ONLY_ONE_ORGANIZATION_RENAME;
+      this.errorModal.openModal;
+      return false;
+    }
+
+    var id = this.selectedOrganizations.map(org => org.id)[0];
+    var model = {
+      newName: this.model.name
+    };
+    this.blockUI.start('Renaming organization...');
+    this.organizationService.renameOrganization(id, model).subscribe(
+      data => {
+        if (data) {
+          var renameOrg = this.organizationsList.filter(o => o.id == id);
+          if (renameOrg.length > 0) {
+            renameOrg[0].organizationName = model.newName;
+          }
+        }
+      }
+    );
   }
 
 }
