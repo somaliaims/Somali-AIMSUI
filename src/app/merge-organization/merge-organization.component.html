@@ -34,7 +34,7 @@
             <tr>
                 <td>
                     <button [class.disable]='(selectedOrganizations.length != 1)'
-                      class="btn btn-info btn-lg pull-right float-right" (click)="renameOrganization()">Rename
+                      class="btn btn-warning btn-lg pull-right float-right" (click)="renameOrganization()">Rename
                       organization</button>
                   </td>
               <td>
@@ -84,7 +84,7 @@
             <form class="form-signin" (ngSubmit)="organizationForm.form.valid"
               #organizationForm="ngForm">
               <div class="form-group">
-                <label for="name">New name for merge</label>
+                <label for="name">New name for organization/s</label>
                 <input type="text" placeholder="Enter new name for merged organizations" class="form-control" id="name" maxlength="200" [(ngModel)]="model.name" name="name"
                   #title="ngModel" required>
                 <div *ngIf="organizationForm.submitted" [hidden]="name.valid" class="alert alert-danger">
