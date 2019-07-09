@@ -55,7 +55,7 @@ export class NewProjectComponent implements OnInit {
   isAIMSSearchInProgress: boolean = false;
   isProjectPermitted: boolean = true;
   timer: any = null;
-  pagingSize: number = Settings.mediumRowsPerPage;
+  pagingSize: number = Settings.rowsPerPage;
 
   sectorsSettings: any = {};
   locationsSettings: any = {};
@@ -182,6 +182,21 @@ export class NewProjectComponent implements OnInit {
 
   checkIfPermitted(id) {
     return (this.userProjectIds.map(p => p.id).indexOf(id) == -1) ? true : false;
+  }
+
+  checkIfCanMerge() {
+    var canMerge = true;
+    if (this.userProjectIds.length == 0) {
+      return false;
+    }
+    
+    var selectedIds = this.selectedAIMSProjects.map(p => p.id);
+    this.userProjectIds.map(p => p.id).forEach((id) => {
+      if (selectedIds.indexOf(id) == -1) {
+        canMerge = false;
+      }
+    });
+    return canMerge;
   }
 
   loadIATIProjects() {

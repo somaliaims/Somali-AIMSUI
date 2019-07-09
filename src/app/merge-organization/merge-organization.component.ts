@@ -113,10 +113,6 @@ export class MergeOrganizationComponent implements OnInit {
     this.organizationService.renameOrganization(id, model).subscribe(
       data => {
         if (data) {
-          /*var renameOrg = this.organizationsList.filter(o => o.id == id);
-          if (renameOrg.length > 0) {
-            renameOrg[0].organizationName = model.name;
-          }*/
           this.router.navigateByUrl('organizations');
         }
         this.blockUI.stop();

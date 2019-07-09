@@ -49,6 +49,7 @@
     </div>
   </div>
 </jw-modal>
+
 <div class="container-fluid view-area">
   <block-ui>
     <div class="row">
@@ -145,12 +146,12 @@
         </div>-->
       </div>
 
-      <div class="col-md-6 margin-top-10">
+      <div id="nav-buttons" class="col-md-6 margin-top-10" data-spy="affix" data-offset-top="300">
         <div class="float-right">
           <table>
             <tr>
               <td>
-                <button *ngIf='countAIMSProjects() > 1' [class.disable]='isSearchingProjects'
+                <button *ngIf='countAIMSProjects() > 1' [class.disable]='isSearchingProjects || !checkIfCanMerge()'
                   class="btn btn-warning btn-lg pull-right float-right text-uppercase" (click)="mergeProjects()">Merge
                   Projects</button>
               </td>
@@ -159,8 +160,7 @@
                   class="btn btn-success btn-lg float-right text-uppercase" (click)="editProject()">Edit
                   Project</button>
                 <button *ngIf="countAIMSProjects() == 1 && !isProjectPermitted" [class.disable]='isSearchingProjects'
-                  class="btn btn-warning btn-lg float-right text-uppercase" (click)="applyForMembership()">Become a
-                  member</button>
+                  class="btn btn-warning btn-lg float-right text-uppercase" (click)="applyForMembership()">Request permission</button>
               </td>
               <td>
                 <button *ngIf="selectedProjects.length == 0" class="btn btn-info btn-lg float-right text-uppercase"
@@ -185,46 +185,58 @@
         </div>
       </div>
     </div>
+    <div *ngIf="countAIMSProjects() > 1 && !checkIfCanMerge()" class="row">
+      <div class="col-md-12">
+        <div class="text-warning float-right">
+          <b><i>
+              You cannot merge, as there are projects selected for which you do not have permissions.
+            </i></b>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <!--IATI Activity Box-->
       <div class="col-md-4 col-sm-6">
         <div class="card card-signin my-5 margin-top-5">
-          <div class="card-body iati-box">
+          <div class="card-body">
             <h5 class="card-title text-center">Projects from IATI</h5>
-            <div *ngIf="isIATILoading">
-              Loading IATI projects...
-            </div>
-            <div *ngIf="!isIATILoading">
-              <div *ngIf="filteredIatiProjects.length > 0">
-                <table class="table table-bordered table-fixed-layout">
-                  <tr
-                    *ngFor="let project of filteredIatiProjects | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }">
-                    <td>
-                      <div class="float-left">
-                        <span class="overflow-wrap">
-                          <b>Project Title: </b>{{project.title}}<br />
-                          <b>Start Date: </b>{{getLongDateString(project.startDate)}}<br />
-                          <b>End Date: </b>{{getLongDateString(project.endDate)}}<br />
-                        </span>
-                      </div>
-                      <div class="float-right">
-                        <button id="{{project.id}}" title="Show Project Description" class="btn btn-info btn-sm"
-                          (click)="showProjectDescription($event)">View detail</button>
-                        &nbsp;
-                        <button [class.disable]="checkIfIATIEntered(project.title)" type="button" id="{{project.id}}"
-                          class="btn btn-success btn-sm"
-                          (click)="selectIATIProject($event)">{{checkIfIATIAdded(project.title)}}</button>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-                <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
+            <div>
+              <div *ngIf="isIATILoading">
+                Loading IATI projects...
               </div>
-
-              <span *ngIf="filteredIatiProjects.length == 0" class="text-info">
-                No matches from IATI.
-              </span>
+              <div *ngIf="!isIATILoading">
+                <div *ngIf="filteredIatiProjects.length > 0">
+                  <table class="table table-bordered table-fixed-layout">
+                    <tr
+                      *ngFor="let project of filteredIatiProjects | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }">
+                      <td>
+                        <div class="float-left">
+                          <span class="overflow-wrap">
+                            <b>Project Title: </b>{{project.title}}<br />
+                            <b>Start Date: </b>{{getLongDateString(project.startDate)}}<br />
+                            <b>End Date: </b>{{getLongDateString(project.endDate)}}<br />
+                          </span>
+                        </div>
+                        <div class="float-right">
+                          <button id="{{project.id}}" title="Show Project Description" class="btn btn-info btn-sm"
+                            (click)="showProjectDescription($event)">View detail</button>
+                          &nbsp;
+                          <button [class.disable]="checkIfIATIEntered(project.title)" type="button" id="{{project.id}}"
+                            class="btn btn-success btn-sm"
+                            (click)="selectIATIProject($event)">{{checkIfIATIAdded(project.title)}}</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
+                </div>
+  
+                <span *ngIf="filteredIatiProjects.length == 0" class="text-info">
+                  No matches from IATI.
+                </span>
+              </div>
             </div>
+            
           </div>
         </div>
       </div>
@@ -232,46 +244,49 @@
       <!--Projects box from AIMS-->
       <div class="col-md-4 col-sm-6">
         <div class="card card-signin my-5 margin-top-5">
-          <div class="card-body iati-box">
+          <div class="card-body">
             <h5 class="card-title text-center">Matches from AIMS</h5>
-            <div *ngIf="isAIMSLoading">
-              Loading AIMS projects...
-            </div>
-            <div *ngIf="!isAIMSLoading">
-              <div *ngIf="filteredAIMSProjects.length > 0">
-                <table class="table table-bordered">
-                  <tr
-                    *ngFor="let project of filteredAIMSProjects | paginate: { itemsPerPage: pagingSize, currentPage: p, id: 'p' }">
-                    <td>
-                      <span class="float-left overflow-wrap">
-                        <b>Project Title: </b>{{project.title}}<br />
-                        <b>Start Date: </b>{{getLongDateString(project.startDate)}}<br />
-                        <b>End Date: </b>{{getLongDateString(project.endDate)}}<br />
-                      </span>
-
-                      <span class="float-right margin-right-15">
-                        <button [class.disable]="checkIfProjectPermittedToUser(project.id)" type="button"
-                          id="raims-{{project.id}}" class="btn btn-warning btn-sm"
-                          (click)="applyForProjectMembership($event)">Request permission</button>&nbsp;
-
-                        <button type="button" id="vaims-{{project.id}}" class="btn btn-info btn-sm"
-                          (click)="showAIMSProjectDescription($event)">View detail</button>
-                        &nbsp;
-                        <button
-                          [class.disable]="!checkIfProjectPermittedToUser(project.id) || checkAIMSAdded(project.title)"
-                          type="button" id="saims-{{project.id}}" class="btn btn-success btn-sm"
-                          (click)="selectAIMSProject($event)">Select</button>
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-                <pagination-controls (pageChange)="p = $event" id="p"></pagination-controls>
+            <div class="iati-box">
+              <div *ngIf="isAIMSLoading">
+                Loading AIMS projects...
               </div>
-
-              <span *ngIf="filteredAIMSProjects.length == 0" class="text-info">
-                No matches from AIMS
-              </span>
+              <div *ngIf="!isAIMSLoading">
+                <div *ngIf="filteredAIMSProjects.length > 0">
+                  <table class="table table-bordered">
+                    <tr
+                      *ngFor="let project of filteredAIMSProjects | paginate: { itemsPerPage: pagingSize, currentPage: p, id: 'p' }">
+                      <td>
+                        <span class="float-left overflow-wrap">
+                          <b>Project Title: </b>{{project.title}}<br />
+                          <b>Start Date: </b>{{getLongDateString(project.startDate)}}<br />
+                          <b>End Date: </b>{{getLongDateString(project.endDate)}}<br />
+                        </span>
+  
+                        <span class="float-right margin-right-15">
+                          <button [class.disable]="checkIfProjectPermittedToUser(project.id)" type="button"
+                            id="raims-{{project.id}}" class="btn btn-warning btn-sm"
+                            (click)="applyForProjectMembership($event)">Request permission</button>&nbsp;
+  
+                          <button type="button" id="vaims-{{project.id}}" class="btn btn-info btn-sm"
+                            (click)="showAIMSProjectDescription($event)">View detail</button>
+                          &nbsp;
+                          <button
+                            [class.disable]="checkAIMSAdded(project.title)"
+                            type="button" id="saims-{{project.id}}" class="btn btn-success btn-sm"
+                            (click)="selectAIMSProject($event)">Select</button>
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                  <pagination-controls (pageChange)="p = $event" id="p"></pagination-controls>
+                </div>
+  
+                <span *ngIf="filteredAIMSProjects.length == 0" class="text-info">
+                  No matches from AIMS
+                </span>
+              </div>
             </div>
+            
           </div>
         </div>
       </div>
@@ -279,7 +294,7 @@
       <!--Selected projects box-->
       <div class="col-md-4 col-sm-6">
         <div class="card card-signin my-5 margin-top-5">
-          <div class="card-body iati-box">
+          <div class="card-body">
             <h5 class="card-title text-center">Selected Projects</h5>
             <div>
               <table class="table table-bordered">

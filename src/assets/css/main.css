@@ -193,6 +193,12 @@ html {
     overflow-x: hidden; 
   }
 
+  .affix {
+    top:0;
+    width: 100%;
+    z-index: 9999 !important;
+  }
+
   .table-fixed-layout {
     table-layout: fixed; 
     width: 100%;
