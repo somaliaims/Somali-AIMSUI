@@ -934,6 +934,18 @@
               </div>
 
               <div class="form-group">
+                <label for="title">Funding date </label>
+                <div class="input-group">
+                  <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
+                    [(ngModel)]="funderModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(1)"
+                    ngbDatepicker #s="ngbDatepicker" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="fundingType">Funding type</label>
                 <select class="form-control" id="fundingTypeId" [(ngModel)]="funderModel.fundingTypeId"
                   name="fundingType" #fundingTypeId="ngModel" required>
@@ -945,27 +957,38 @@
               </div>
 
               <div class="form-group">
-                <label for="exrate-source">Ex. rate source</label>
-                <select class="form-control" id="esource" (change)="selectExRateSource(1)"
-                  [(ngModel)]="funderModel.exRateSource" name="esource" #esource="ngModel" required>
-                  <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
-                </select>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="esource.valid" class="alert alert-danger">
-                  Exchange rate source is required
+                <label for="documentUrl">Funding amount</label>
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount"
+                  [(ngModel)]="funderModel.amount" name="amount" #amount="ngModel" maxlength="11" required>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value && amount.value > 0"
+                  class="alert alert-danger">
+                  Enter valid amount
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="currency">Funding currency</label>
-                <select [class.disable]="funderModel.exRateSource == null" class="form-control" id="currency"
+                <select class="form-control" id="currency"
                   (change)="getExchangeRates(1)" [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
                   required>
-                  <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">
+                  <option *ngFor="let currency of currencyList" [value]="currency.currency">
                     {{currency.currencyName}}
                   </option>
                 </select>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="currency.valid" class="alert alert-danger">
                   Currency is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="exrate-source">Ex. rate source</label>
+                <select [class.disable]="funderModel.currency == null" class="form-control" id="esource" (change)="selectExRateSource()" [(ngModel)]="funderModel.exRateSource" 
+                  name="esource" #esource="ngModel" required>
+                  <option value="null">--Select ex-rate source</option>
+                  <option *ngFor="let source of filteredExRateSources" [value]="source.id">{{source.value}}</option>
+                </select>
+                <div *ngIf="projectFunderForm.submitted" [hidden]="esource.valid" class="alert alert-danger">
+                  Exchange rate source is required
                 </div>
               </div>
 
@@ -983,25 +1006,10 @@
               </div>
 
               <div class="form-group">
-                <label for="documentUrl">Funding amount</label>
-                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount"
-                  [(ngModel)]="funderModel.amount" name="amount" #amount="ngModel" maxlength="11" required>
-                <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value && amount.value > 0"
-                  class="alert alert-danger">
-                  Enter valid amount
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="title">Funding date </label>
-                <div class="input-group">
-                  <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
-                    [(ngModel)]="funderModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(1)"
-                    ngbDatepicker #s="ngbDatepicker" required>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>
-                  </div>
-                </div>
+                <label for="calculated">Funding amount in {{defaultCurrency}}</label>
+                <input type="number" [readonly]="true" class="form-control" id="calculatedAmount"
+                  [(ngModel)]="funderModel.amountInDefaultCurrency" name="calculatedAmount" 
+                  #calculatedAmount="ngModel" required />
               </div>
 
               <button [class.disable]="(isProjectFunderBtnDisabled || !defaultCurrency)"
