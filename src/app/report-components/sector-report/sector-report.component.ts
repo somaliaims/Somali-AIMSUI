@@ -840,4 +840,8 @@ export class SectorReportComponent implements OnInit {
     }
   }
 
+  formatNumber(value: number) {
+    return this.storeService.getNumberWithCommas(value);
+  }
+
 }

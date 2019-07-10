@@ -54,17 +54,16 @@
     </div>
 
     <div class="row margin-top-10" id="rpt-budget-report">
-      <div class="row">
         <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
           <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
         </div>
 
         <div class="col-md-12">
-          <table *ngIf="reportDataList && reportDataList.projects" class="table table-bordered table-responsive"
+          <table *ngIf="reportDataList && reportDataList.projects" class="table table-condensed small"
             style="margin-bottom: 0rem !important">
 
             <tr *ngFor="let project of reportDataList.projects; let i = index;">
-              <table class="table table-bordered" style="margin-bottom: 0rem !important">
+              <table class="table table-condensed" style="margin-bottom: 0rem !important">
                 <tr *ngIf="i == 0">
                   <th>Projects</th>
                   <th>Project value</th>
@@ -73,42 +72,42 @@
                 </tr>
                 <tr>
                   <td width="40%">{{project.title}}</td>
-                  <td width="10%">{{project.projectValue}}</td>
+                  <td width="10%">{{formatNumber(project.projectValue)}}</td>
                   <td width="20%">
-                    <table class="table table-bordered">
+                    <table class="table">
                       <tr *ngFor="let funding of project.funding">
                         <td>{{funding.fundType}}</td>
-                        <td>{{funding.amount}}</td>
+                        <td>{{formatNumber(funding.amount)}}</td>
                       </tr>
                     </table>
                   </td>
                   <td width="30%">
-                    <table class="table table-bordered">
+                    <table class="table">
                       <tr>
                         <th>Year - Disbursements</th>
                       </tr>
                       <tr>
-                        <td>{{project.previousYear}} - {{project.previousYearDisbursements}}</td>
+                        <td>{{project.previousYear}} - {{formatNumber(project.previousYearDisbursements)}}</td>
                       </tr>
 
                       <tr>
                         <td>
-                          <table class="table table-bordered">
+                          <table class="table table-condensed" style="margin-bottom: 0rem !important">
                             <tr *ngFor="let disbursement of project.expectedDisbursements">
                               <td>
                                 <b>{{disbursement.year}}</b>
                               </td>
                               <td>
-                                {{disbursement.disbursements}}
+                                {{formatNumber(disbursement.disbursements)}}
                               </td>
 
-                              <table class="table table-bordered">
+                              <table class="table table-condensed">
                                 <tr>
                                   <th colspan="2">Sectors breakup</th>
                                 </tr>
                                 <tr *ngFor="let percentage of disbursement.sectorPercentages">
                                   <td>{{percentage.sector}}</td>
-                                  <td>{{percentage.disbursements}}</td>
+                                  <td>{{formatNumber(percentage.disbursements)}}</td>
                                 </tr>
                               </table>
 
@@ -118,7 +117,7 @@
                                 </tr>
                                 <tr *ngFor="let percentage of disbursement.locationPercentages">
                                   <td>{{percentage.location}}</td>
-                                  <td>{{percentage.disbursements}}</td>
+                                  <td>{{formatNumber(percentage.disbursements)}}</td>
                                 </tr>
                               </table>
                             </tr>
@@ -137,8 +136,8 @@
                 <span class="float-right">
                   <b>
                     <i>
-                      Funding total: {{grandTotalFunding}}&nbsp;&nbsp;
-                      Disbursement total: {{grandTotalDisbursements}}
+                      Funding total: {{formatNumber(grandTotalFunding)}}&nbsp;&nbsp;
+                      Disbursement total: {{formatNumber(grandTotalDisbursements)}}
                     </i>
                   </b>
                 </span>
@@ -146,7 +145,6 @@
             </tr>
           </table>
         </div>
-      </div>
 
     </div>
 

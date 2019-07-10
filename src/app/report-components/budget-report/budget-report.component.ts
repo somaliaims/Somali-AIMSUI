@@ -178,4 +178,8 @@ export class BudgetReportComponent implements OnInit {
     }
   }
 
+  formatNumber(value: number) {
+    return this.storeService.getNumberWithCommas(value);
+  }
+
 }

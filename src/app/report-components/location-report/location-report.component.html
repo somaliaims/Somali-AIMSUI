@@ -161,8 +161,8 @@
                 <td width="100%" colspan="6">
                   <b>
                     <i>
-                      {{locationProject.locationName}} - Project cost ({{locationProject.totalFunding}}) &nbsp;&nbsp;
-                      Disbursements ({{locationProject.totalDisbursements}})
+                      {{locationProject.locationName}} - Project cost ({{formatNumber(locationProject.totalFunding)}}) &nbsp;&nbsp;
+                      Disbursements ({{formatNumber(locationProject.totalDisbursements)}})
                     </i>
                   </b>
                 </td>
@@ -171,12 +171,12 @@
                 <td width="25%">{{project.title}}</td>
                 <td width="15%">{{project.funders}}</td>
                 <td width="15%">{{project.implementers}}</td>
-                <td class="text-center" width="15%">{{project.projectCost}}</td>
+                <td class="text-center" width="15%">{{formatNumber(project.projectCost)}}</td>
                 <td class="text-center" width="15%">
-                  {{project.actualDisbursements}}<br />
+                  {{formatNumber(project.actualDisbursements)}}<br />
                 </td>
                 <td class="text-center" width="15%">
-                  {{project.plannedDisbursements}}
+                  {{formatNumber(project.plannedDisbursements)}}
                 </td>
               </tr>
               <tr *ngIf="locationProject.projects.length == 0">
@@ -196,13 +196,13 @@
               <th width="15%">&nbsp;</th>
               <th class="text-center" width="15%">
                 <b>
-                  <i>Total: {{getGrandTotalFundingForLocation()}}</i>
+                  <i>Total: {{formatNumber(getGrandTotalFundingForLocation())}}</i>
                 </b>
               </th>
               <th class="text-center" width="15%">
                 <b>
                   <i>
-                    Total: {{getGrandTotalDisbursementForLocation()}}
+                    Total: {{formatNumber(getGrandTotalDisbursementForLocation())}}
                   </i>
                 </b>
               </th>

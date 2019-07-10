@@ -743,4 +743,8 @@ export class LocationReportComponent implements OnInit {
     }
   }
 
+  formatNumber(value: number) {
+    return this.storeService.getNumberWithCommas(value);
+  }
+
 }

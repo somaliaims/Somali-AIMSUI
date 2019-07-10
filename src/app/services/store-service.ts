@@ -209,5 +209,9 @@ export class StoreService {
     var timestamp = Date.parse(formattedDate);
     return (isNaN(timestamp) == false); 
   }
+
+  getNumberWithCommas(value: number) {
+    return value.toLocaleString();
+  }
   
 }
