@@ -210,11 +210,11 @@ export class ProjectEntryComponent implements OnInit {
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, dated: null, exRateSource: null, 
     fundingTypeId: null, funderId: null, amount: 0, currency: null, exchangeRate: 0,
-    amountInDefaultCurrency: 0 
+    amountInDefaultCurrency: 0, exRateDated: null
   };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
   disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, 
-    exchangeRate: 0, exRateSource: null, amountInDefaultCurrency: 0 };
+    exchangeRate: 0, exRateSource: null, amountInDefaultCurrency: 0, exRateDated: null };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
 
   displayTabs: any = [
@@ -2522,21 +2522,13 @@ export class ProjectEntryComponent implements OnInit {
               if (eFor == this.exRateFor.FUNDING) {
                 var rate = rates.filter(r => r.currency == this.funderModel.currency);
                 if (rate.length > 0) {
-                  //if (this.defaultCurrencyRate == 1) {
-                    this.funderModel.exchangeRate = rate[0].rate;
-                  //} else {
-                    //this.funderModel.exchangeRate = (this.defaultCurrencyRate / rate[0].rate);
-                  //}
+                  this.funderModel.exchangeRate = rate[0].rate;
                   this.calculateAmountInDefault(this.exRateFor.FUNDING);
                 }
               } else if (eFor == this.exRateFor.DISBURSEMENT) {
                 var rate = rates.filter(r => r.currency == this.disbursementModel.currency);
                 if (rate.length > 0) {
-                  //if (this.defaultCurrencyRate == 1) {
-                    this.disbursementModel.exchangeRate = rate[0].rate;
-                  //} else {
-                    //this.disbursementModel.exchangeRate = (this.defaultCurrencyRate / rate[0].rate);
-                  //}
+                  this.disbursementModel.exchangeRate = rate[0].rate;
                   this.calculateAmountInDefault(this.exRateFor.DISBURSEMENT);
                 }
               }
@@ -2562,9 +2554,11 @@ export class ProjectEntryComponent implements OnInit {
               if (data.exchangeRate) {
                 if (eFor == this.exRateFor.FUNDING) {
                   this.funderModel.exchangeRate = data.exchangeRate;
+                  this.funderModel.exRateDated = data.dated;
                   this.calculateAmountInDefault(this.exRateFor.FUNDING);
                 } else if (eFor == this.exRateFor.DISBURSEMENT) {
                   this.disbursementModel.exchangeRate = data.exchangeRate;
+                  this.disbursementModel.exRateDated = data.dated;
                   this.calculateAmountInDefault(this.exRateFor.DISBURSEMENT);
                 }
               }
