@@ -1405,7 +1405,7 @@
 
         <div class="card card-signin">
           <div class="card-body iati-box">
-            <h6 class="card-title text-center">Project Disbursements</h6>
+            <h6 class="card-title text-center">Project disbursements</h6>
             <table class="table table-bordered">
               <tr>
                 <th>Dated</th>
@@ -1415,7 +1415,7 @@
                 <th>Action</th>
               </tr>
               <tr *ngFor="let disbursement of currentProjectDisbursementsList">
-                <td>{{disbursement.dated}}</td>
+                <td>{{formatDateUKStyle(disbursement.dated)}}</td>
                 <td>{{disbursement.amount | number:0}}</td>
                 <td>{{disbursement.currency}}</td>
                 <td>{{disbursement.exchangeRate}}</td>

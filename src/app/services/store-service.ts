@@ -185,6 +185,15 @@ export class StoreService {
     return 'N/a';
   }
 
+  formatDateInUkStyle(year: number, month: number, day: number) {
+    var date = new Date(year, month, day);
+    return date.toLocaleDateString("en-GB", { 
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  }
+
   dateOrdinal(d) {
     return d+(31==d||21==d||1==d?"st":22==d||2==d?"nd":23==d||3==d?"rd":"th")
   };

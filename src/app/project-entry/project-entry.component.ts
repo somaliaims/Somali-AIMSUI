@@ -2710,6 +2710,15 @@ export class ProjectEntryComponent implements OnInit {
     return this.fieldType[id];
   }
 
+  formatDateUKStyle(dated: any) {
+    var validDate = Date.parse(dated);
+    if (isNaN(validDate)) {
+      return 'Invalid date';
+    }
+    var datesArr = dated.split('/');
+    return this.storeService.formatDateInUkStyle(parseInt(datesArr[2]), parseInt(datesArr[0]), parseInt(datesArr[1]));
+  }
+
   /*Reset form states*/
   resetProjectEntry() {
     if (this.activeProjectId != null && this.activeProjectId != 0) {

@@ -114,9 +114,9 @@
                 {{project.title}}
               </a>
             </td>
-            <td>{{project.startDate}}</td>
-            <td>{{project.endDate}}</td>
-            <td>{{project.dateUpdated}}</td>
+            <td>{{formatDateUKStyle(project.startDate)}}</td>
+            <td>{{formatDateUKStyle(project.endDate)}}</td>
+            <td>{{formatDateUKStyle(project.dateUpdated)}}</td>
           </tr>
         </table>
         <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
