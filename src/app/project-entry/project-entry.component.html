@@ -1364,7 +1364,7 @@
 
               <div class="form-group">
                 <label for="exrate-source">Ex. rate source</label>
-                <select class="form-control" id="desource" (change)="selectExRateSource(exRateFor.DISBURSEMENT)"
+                <select class="form-control" [class.disable]="disbursementModel.currency == null" id="desource" (change)="selectExRateSource(exRateFor.DISBURSEMENT)"
                   [(ngModel)]="disbursementModel.exRateSource" name="desource" #desource="ngModel" required>
                   <option *ngFor="let source of filteredExRateSources" [value]="source.id">{{source.value}}</option>
                 </select>
