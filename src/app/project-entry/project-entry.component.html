@@ -959,7 +959,7 @@
               <div class="form-group">
                 <label for="documentUrl">Funding amount</label>
                 <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="amount"
-                  [(ngModel)]="funderModel.amount" name="amount" #amount="ngModel" maxlength="11" required>
+                  [(ngModel)]="funderModel.amount" (input)="calculateAmountInDefault(exRateFor.FUNDING)" name="amount" #amount="ngModel" maxlength="11" required>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value && amount.value > 0"
                   class="alert alert-danger">
                   Enter valid amount
@@ -969,7 +969,7 @@
               <div class="form-group">
                 <label for="currency">Funding currency</label>
                 <select class="form-control" id="currency"
-                  (change)="filteredExRateSources(exRateFor.FUNDING)" [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
+                  (change)="filterExRateSources(exRateFor.FUNDING)" [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
                   required>
                   <option *ngFor="let currency of currencyList" [value]="currency.currency">
                     {{currency.currencyName}}
@@ -994,11 +994,11 @@
 
               <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
-                <input type="number" [readonly]="isFundingExRateReadonly" class="form-control" id="exchangeRate"
-                  [(ngModel)]="funderModel.exchangeRate" name="exchangeRate" min="0.1" max="10000"
+                <input type="text" pattern="^\d*(\.\d{0,4})?$" [readonly]="isFundingExRateReadonly" class="form-control" id="exchangeRate"
+                  [(ngModel)]="funderModel.exchangeRate" (input)="calculateAmountInDefault(exRateFor.FUNDING)" name="exchangeRate" maxlength="6"
                   #exchangeRate="ngModel" required />
                 <div *ngIf="projectFunderForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
-                  Enter valid exchange rate for {{defaultCurrency}} (Min: 0.1, Max: 10000)
+                  Enter exchange rate for {{defaultCurrency}}
                 </div>
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
                   Default currency is not set. Please contact administrator

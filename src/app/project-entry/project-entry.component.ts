@@ -2416,18 +2416,26 @@ export class ProjectEntryComponent implements OnInit {
 
   selectExRateSource(eFor: any) {
     if (eFor == this.exRateFor.FUNDING) {
-      if (!this.funderModel.exRateSource || this.funderModel.exRateSource == 'null') {
+      if (this.funderModel.exRateSource == this.exRateSourceCodes.MANUAL) {
+        this.isFundingExRateReadonly = false;
+      } else {
+        if (!this.funderModel.exRateSource || this.funderModel.exRateSource == 'null') {
+          this.isFundingExRateReadonly = true;
+          return false;
+        }
         this.isFundingExRateReadonly = true;
-        return false;
       }
-      this.isFundingExRateReadonly = true;
       this.getExchangeRates(eFor);
     } else if (eFor == this.exRateFor.DISBURSEMENT) {
-      if (!this.disbursementModel.exRateSource || this.disbursementModel.exRateSource == 'null') {
+      if (this.disbursementModel.exRateSource == this.exRateSourceCodes.MANUAL) {
+        this.isDisbursementExRateReadonly = false;
+      } else {
+        if (!this.disbursementModel.exRateSource || this.disbursementModel.exRateSource == 'null') {
+          this.isDisbursementExRateReadonly = true;
+          return false;
+        }
         this.isDisbursementExRateReadonly = true;
-        return false;
       }
-      this.isDisbursementExRateReadonly = true;
       this.getExchangeRates(eFor);
     }
   }
@@ -2452,12 +2460,14 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   calculateAmountInDefault(cFor: string) {
-    if (cFor == this.exRateSourceCodes.FUNDING) {
+    if (cFor == this.exRateFor.FUNDING) {
       var amount = this.funderModel.amount;
       var exRate = this.funderModel.exchangeRate;
       if (amount && exRate) {
-        this.funderModel.amountInDefaultCurrency = (amount * exRate);
+        this.funderModel.amountInDefaultCurrency = Math.round(((this.defaultCurrencyRate / exRate) * amount));
       }
+    } else {
+      this.funderModel.amountInDefaultCurrency = 0;
     }
   }
   
