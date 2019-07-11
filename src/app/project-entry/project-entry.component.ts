@@ -206,14 +206,15 @@ export class ProjectEntryComponent implements OnInit {
 
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
   sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, mappingId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
-  locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0.0 };
+  locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, dated: null, exRateSource: null, 
-    fundingTypeId: null, funderId: null, amount: 0.00, currency: null, exchangeRate: null,
-    amountInDefaultCurrency: null 
+    fundingTypeId: null, funderId: null, amount: 0, currency: null, exchangeRate: 0,
+    amountInDefaultCurrency: 0 
   };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
-  disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, exchangeRate: null, exRateSource: null };
+  disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, 
+    exchangeRate: 0, exRateSource: null, amountInDefaultCurrency: 0 };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
 
   displayTabs: any = [
@@ -2413,21 +2414,21 @@ export class ProjectEntryComponent implements OnInit {
     );
   }
 
-  selectExRateSource(eFor: string) {
+  selectExRateSource(eFor: any) {
     if (eFor == this.exRateFor.FUNDING) {
       if (!this.funderModel.exRateSource || this.funderModel.exRateSource == 'null') {
         this.isFundingExRateReadonly = true;
         return false;
       }
       this.isFundingExRateReadonly = true;
-      this.getExchangeRates('1');
+      this.getExchangeRates(eFor);
     } else if (eFor == this.exRateFor.DISBURSEMENT) {
       if (!this.disbursementModel.exRateSource || this.disbursementModel.exRateSource == 'null') {
         this.isDisbursementExRateReadonly = true;
         return false;
       }
       this.isDisbursementExRateReadonly = true;
-      this.getExchangeRates('2');
+      this.getExchangeRates(eFor);
     }
   }
 
@@ -2446,13 +2447,21 @@ export class ProjectEntryComponent implements OnInit {
     } else {
       this.filteredExRateSources = this.exRateSources;
     }
+
+    this.getExchangeRates(sFor);
   }
 
   calculateAmountInDefault(cFor: string) {
+    if (cFor == this.exRateSourceCodes.FUNDING) {
+      var amount = this.funderModel.amount;
+      var exRate = this.funderModel.exchangeRate;
+      if (amount && exRate) {
+        this.funderModel.amountInDefaultCurrency = (amount * exRate);
+      }
+    }
   }
   
   getExchangeRates(eFor: string) {
-    this.filterExRateSources(eFor);
     if (eFor == this.exRateFor.FUNDING) {
       if (!this.funderModel.dated || !this.funderModel.currency || !this.funderModel.exRateSource) {
         return false;
@@ -2498,6 +2507,7 @@ export class ProjectEntryComponent implements OnInit {
                   //} else {
                     //this.funderModel.exchangeRate = (this.defaultCurrencyRate / rate[0].rate);
                   //}
+                  this.calculateAmountInDefault(this.exRateFor.FUNDING);
                 }
               } else if (eFor == this.exRateFor.DISBURSEMENT) {
                 var rate = rates.filter(r => r.currency == this.disbursementModel.currency);
@@ -2507,6 +2517,7 @@ export class ProjectEntryComponent implements OnInit {
                   //} else {
                     //this.disbursementModel.exchangeRate = (this.defaultCurrencyRate / rate[0].rate);
                   //}
+                  this.calculateAmountInDefault(this.exRateFor.DISBURSEMENT);
                 }
               }
             }
@@ -2519,10 +2530,10 @@ export class ProjectEntryComponent implements OnInit {
       )
     } else if (exRateSource == this.exRateSourceCodes.CENTRAL_BANK) {
       if (this.funderModel.currency == this.defaultCurrency) {
-        this.funderModel.exchangeRate = 1;
+        this.funderModel.exchangeRate = this.defaultCurrencyRate;
         this.blockUI.stop();
       } else if (this.disbursementModel.currency == this.defaultCurrency) {
-        this.disbursementModel.exchangeRate = 1;
+        this.disbursementModel.exchangeRate = this.defaultCurrencyRate;
         this.blockUI.stop();
       } else {
         this.currencyService.getManualExRatesByDate(dated).subscribe(
@@ -2531,8 +2542,10 @@ export class ProjectEntryComponent implements OnInit {
               if (data.exchangeRate) {
                 if (eFor == this.exRateFor.FUNDING) {
                   this.funderModel.exchangeRate = data.exchangeRate;
+                  this.calculateAmountInDefault(this.exRateFor.FUNDING);
                 } else if (eFor == this.exRateFor.DISBURSEMENT) {
                   this.disbursementModel.exchangeRate = data.exchangeRate;
+                  this.calculateAmountInDefault(this.exRateFor.DISBURSEMENT);
                 }
               }
             } else {

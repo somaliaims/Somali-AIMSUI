@@ -228,7 +228,9 @@ export class NewProjectComponent implements OnInit {
   getSectorsList() {
     this.sectorService.getSectorsList().subscribe(
       data => {
-        this.sectorsList = data;
+        if (data) {
+          this.sectorsList = data;
+        }
       }
     );
   }
@@ -236,7 +238,9 @@ export class NewProjectComponent implements OnInit {
   getLocationsList() {
     this.locationService.getLocationsList().subscribe(
       data => {
-        this.locationsList = data;
+        if (data) {
+          this.locationsList = data;
+        }
       }
     );
   }
@@ -244,7 +248,9 @@ export class NewProjectComponent implements OnInit {
   getOrganizationsList() {
     this.organizationService.getOrganizationsList().subscribe(
       data => {
-        this.organizationsList = data;
+        if (data) {
+          this.organizationsList = data;
+        }
       }
     );
   }

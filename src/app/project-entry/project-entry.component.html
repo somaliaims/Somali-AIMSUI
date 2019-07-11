@@ -969,7 +969,7 @@
               <div class="form-group">
                 <label for="currency">Funding currency</label>
                 <select class="form-control" id="currency"
-                  (change)="getExchangeRates(1)" [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
+                  (change)="filteredExRateSources(exRateFor.FUNDING)" [(ngModel)]="funderModel.currency" name="currency" #currency="ngModel"
                   required>
                   <option *ngFor="let currency of currencyList" [value]="currency.currency">
                     {{currency.currencyName}}
@@ -982,7 +982,7 @@
 
               <div class="form-group">
                 <label for="exrate-source">Ex. rate source</label>
-                <select [class.disable]="funderModel.currency == null" class="form-control" id="esource" (change)="selectExRateSource()" [(ngModel)]="funderModel.exRateSource" 
+                <select [class.disable]="funderModel.currency == null" class="form-control" id="esource" (change)="selectExRateSource(exRateFor.FUNDING)" [(ngModel)]="funderModel.exRateSource" 
                   name="esource" #esource="ngModel" required>
                   <option value="null">--Select ex-rate source</option>
                   <option *ngFor="let source of filteredExRateSources" [value]="source.id">{{source.value}}</option>
@@ -1008,7 +1008,7 @@
               <div class="form-group">
                 <label for="calculated">Funding amount in {{defaultCurrency}}</label>
                 <input type="number" [readonly]="true" class="form-control" id="calculatedAmount"
-                  [(ngModel)]="funderModel.amountInDefaultCurrency" name="calculatedAmount" 
+                  [(ngModel)]="funderModel.amountInDefaultCurrency" (input)="calculateAmountInDefault(1)" name="calculatedAmount" 
                   #calculatedAmount="ngModel" required />
               </div>
 

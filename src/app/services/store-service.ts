@@ -67,7 +67,11 @@ export class StoreService {
       if (error.error) {
         errorMessage = error.error;
       } else {
-        errorMessage = error.message || error.statusText;
+        if (error.message || error.statusText) {
+          errorMessage = error.message || error.statusText;
+        } else {
+          errorMessage = 'Something went wrong';
+        }
       }
       model.errorMessage = errorMessage;
       model.errorStatus = error.status;
