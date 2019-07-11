@@ -962,7 +962,7 @@
                   [(ngModel)]="funderModel.amount" (input)="calculateAmountInDefault(exRateFor.FUNDING)" name="amount" #amount="ngModel" maxlength="11" required>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="amount.value && amount.value > 0"
                   class="alert alert-danger">
-                  Enter valid amount
+                  Enter valid amount having optionally 2 decimal points
                 </div>
               </div>
 
@@ -994,11 +994,11 @@
 
               <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
-                <input type="text" pattern="^\d*(\.\d{0,4})?$" [readonly]="isFundingExRateReadonly" class="form-control" id="exchangeRate"
-                  [(ngModel)]="funderModel.exchangeRate" (input)="calculateAmountInDefault(exRateFor.FUNDING)" name="exchangeRate" maxlength="6"
+                <input type="text" pattern="^\d*(\.\d{0,6})?$" [readonly]="isFundingExRateReadonly" class="form-control" id="exchangeRate"
+                  [(ngModel)]="funderModel.exchangeRate" (input)="calculateAmountInDefault(exRateFor.FUNDING)" name="exchangeRate" maxlength="10"
                   #exchangeRate="ngModel" required />
                 <div *ngIf="projectFunderForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
-                  Enter exchange rate for {{defaultCurrency}}
+                  Enter exchange rate for {{defaultCurrency}} (Max 6 decimal points)
                 </div>
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
                   Default currency is not set. Please contact administrator
@@ -1327,22 +1327,33 @@
               #disbursementForm="ngForm">
 
               <div class="form-group">
-                <label for="exrate-source">Ex. rate source</label>
-                <select class="form-control" id="desource" (change)="selectExRateSource(2)"
-                  [(ngModel)]="disbursementModel.exRateSource" name="desource" #desource="ngModel" required>
-                  <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
-                </select>
-                <div *ngIf="disbursementForm.submitted" [hidden]="desource.valid" class="alert alert-danger">
-                  Exchange rate source is required
+                <label for="title">Date </label>
+                <div class="input-group">
+                  <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
+                    [(ngModel)]="disbursementModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(exRateFor.DISBURSEMENT)"
+                    ngbDatepicker #dd="ngbDatepicker" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-warning calendar" (click)="dd.toggle()" type="button"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="text">Amount</label>
+                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="damount"
+                  [(ngModel)]="disbursementModel.amount" name="damount" #damount="ngModel"
+                  (input)="calculateAmountInDefault(exRateFor.DISBURSEMENT)" maxlength="11" required>
+                <div *ngIf="disbursementForm.submitted" [hidden]="damount.valid" class="alert alert-danger">
+                  Enter valid amount having optionally 2 decimal points
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="currency">Currency</label>
-                <select [class.disable]="disbursementModel.exRateSource == null" class="form-control" id="dcurrency"
+                <select class="form-control" id="dcurrency"
                   [(ngModel)]="disbursementModel.currency" name="dcurrency" #dcurrency="ngModel"
-                  (change)="getExchangeRates(2)" required>
-                  <option *ngFor="let currency of filteredCurrencyList" [value]="currency.currency">
+                  (change)="filterExRateSources(exRateFor.DISBURSEMENT)" required>
+                  <option *ngFor="let currency of currencyList" [value]="currency.currency">
                     {{currency.currencyName}}
                   </option>
                 </select>
@@ -1352,12 +1363,23 @@
               </div>
 
               <div class="form-group">
+                <label for="exrate-source">Ex. rate source</label>
+                <select class="form-control" id="desource" (change)="selectExRateSource(exRateFor.DISBURSEMENT)"
+                  [(ngModel)]="disbursementModel.exRateSource" name="desource" #desource="ngModel" required>
+                  <option *ngFor="let source of filteredExRateSources" [value]="source.id">{{source.value}}</option>
+                </select>
+                <div *ngIf="disbursementForm.submitted" [hidden]="desource.valid" class="alert alert-danger">
+                  Exchange rate source is required
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
-                <input type="number" [readonly]="isDisbursementExRateReadonly" class="form-control" id="dexchangeRate"
-                  [(ngModel)]="disbursementModel.exchangeRate" name="dexchangeRate" min="0.1" max="10000"
+                <input type="text" pattern="^\d*(\.\d{0,6})?$" class="form-control" id="dexchangeRate"
+                  [(ngModel)]="disbursementModel.exchangeRate" name="dexchangeRate" maxlength="10"
                   #dexchangeRate="ngModel" required />
                 <div *ngIf="disbursementForm.submitted" [hidden]="dexchangeRate.valid" class="alert alert-danger">
-                  Enter valid exchange rate for {{defaultCurrency}} (Min: 0.1, Max: 10000)
+                  Enter exchange rate for {{defaultCurrency}} (Max 6 decimal points)
                 </div>
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
                   Default currency is not set. Please contact administrator
@@ -1365,24 +1387,10 @@
               </div>
 
               <div class="form-group">
-                <label for="text">Amount</label>
-                <input type="text" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="damount"
-                  [(ngModel)]="disbursementModel.amount" name="damount" #damount="ngModel" maxlength="11" required>
-                <div *ngIf="disbursementForm.submitted" [hidden]="damount.valid" class="alert alert-danger">
-                  Enter valid amount
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="title">Date </label>
-                <div class="input-group">
-                  <input class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" type="text" name="dated"
-                    [(ngModel)]="disbursementModel.dated" [maxDate]="calendarMaxDate" (dateSelect)="getExchangeRates(2)"
-                    ngbDatepicker #dd="ngbDatepicker" required>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-warning calendar" (click)="dd.toggle()" type="button"></button>
-                  </div>
-                </div>
+                <label for="calculated">Funding amount in {{defaultCurrency}}</label>
+                <input type="number" [readonly]="true" class="form-control" id="calculatedAmount"
+                  [(ngModel)]="disbursementModel.amountInDefaultCurrency" (input)="calculateAmountInDefault(exRateFor.DISBURSEMENT)" name="calculatedAmount" 
+                  #calculatedAmount="ngModel" required />
               </div>
 
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"

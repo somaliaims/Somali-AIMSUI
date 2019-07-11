@@ -2465,9 +2465,19 @@ export class ProjectEntryComponent implements OnInit {
       var exRate = this.funderModel.exchangeRate;
       if (amount && exRate) {
         this.funderModel.amountInDefaultCurrency = Math.round(((this.defaultCurrencyRate / exRate) * amount));
+      } else {
+        this.funderModel.amountInDefaultCurrency = 0;
+      }
+    } else if (cFor == this.exRateFor.DISBURSEMENT) {
+      var amount = this.disbursementModel.amount;
+      var exRate = this.disbursementModel.exchangeRate;
+      if (amount && exRate) {
+        this.disbursementModel.amountInDefaultCurrency = Math.round(((this.defaultCurrencyRate / exRate) * amount));
+      } else {
+        this.disbursementModel.amountInDefaultCurrency = 0;
       }
     } else {
-      this.funderModel.amountInDefaultCurrency = 0;
+      this.disbursementModel.amountInDefaultCurrency = 0;
     }
   }
   
