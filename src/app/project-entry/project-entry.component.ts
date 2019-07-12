@@ -2464,7 +2464,11 @@ export class ProjectEntryComponent implements OnInit {
       var amount = this.funderModel.amount;
       var exRate = this.funderModel.exchangeRate;
       if (amount && exRate) {
-        this.funderModel.amountInDefaultCurrency = Math.round(((this.defaultCurrencyRate / exRate) * amount));
+        if (parseFloat(exRate.toString()) < 0.1) {
+          this.funderModel.amountInDefaultCurrency = 0;
+        } else {
+          this.funderModel.amountInDefaultCurrency = Math.round(((this.defaultCurrencyRate / exRate) * amount));
+        }
       } else {
         this.funderModel.amountInDefaultCurrency = 0;
       }
@@ -2472,7 +2476,12 @@ export class ProjectEntryComponent implements OnInit {
       var amount = this.disbursementModel.amount;
       var exRate = this.disbursementModel.exchangeRate;
       if (amount && exRate) {
-        this.disbursementModel.amountInDefaultCurrency = Math.round(((this.defaultCurrencyRate / exRate) * amount));
+        if (parseFloat(exRate.toString()) < 0.1) {
+          this.disbursementModel.amountInDefaultCurrency = 0;
+        } else {
+          this.disbursementModel.amountInDefaultCurrency = Math.round(((this.defaultCurrencyRate / exRate) * amount));
+        }
+        
       } else {
         this.disbursementModel.amountInDefaultCurrency = 0;
       }
@@ -2482,6 +2491,8 @@ export class ProjectEntryComponent implements OnInit {
   }
   
   getExchangeRates(eFor: string) {
+    this.funderModel.exRateDated = null;
+    this.disbursementModel.exRateDated = null;
     if (eFor == this.exRateFor.FUNDING) {
       if (!this.funderModel.dated || !this.funderModel.currency || !this.funderModel.exRateSource) {
         return false;
@@ -2523,12 +2534,14 @@ export class ProjectEntryComponent implements OnInit {
                 var rate = rates.filter(r => r.currency == this.funderModel.currency);
                 if (rate.length > 0) {
                   this.funderModel.exchangeRate = rate[0].rate;
+                  this.funderModel.exRateDated = data.dated; 
                   this.calculateAmountInDefault(this.exRateFor.FUNDING);
                 }
               } else if (eFor == this.exRateFor.DISBURSEMENT) {
                 var rate = rates.filter(r => r.currency == this.disbursementModel.currency);
                 if (rate.length > 0) {
                   this.disbursementModel.exchangeRate = rate[0].rate;
+                  this.disbursementModel.exRateDated = data.dated;
                   this.calculateAmountInDefault(this.exRateFor.DISBURSEMENT);
                 }
               }
@@ -2711,6 +2724,10 @@ export class ProjectEntryComponent implements OnInit {
     }
     var datesArr = dated.split('/');
     return this.storeService.formatDateInUkStyle(parseInt(datesArr[2]), parseInt(datesArr[0]), parseInt(datesArr[1]));
+  }
+
+  formatToLongDate(dated: string) {
+    return this.storeService.getLongDateString(dated);
   }
 
   /*Reset form states*/
