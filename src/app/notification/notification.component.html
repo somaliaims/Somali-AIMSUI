@@ -3,9 +3,7 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="btn-info"
-            href="#" class="nav-link text-info" data-toggle="tab">Notifications
-          </a>
+          <a class="nav-link active btn-info" data-toggle="tab">Notifications</a>
         </li>
       </ul>
     </div>
@@ -30,7 +28,7 @@
 
       <div *ngIf="currentTab == 'notifications'" class="col-md-12 margin-top-10">
 
-        <table class="table table-bordered">
+        <table class="table table-striped">
           <tr *ngFor="let notification of notifications; let i = index">
             <td width="90%">
               <span class="badge badge-info lead">
@@ -63,7 +61,7 @@
       </div>
 
       <div *ngIf="currentTab == 'requests'" class="col-md-12 margin-top-10">
-        <table *ngIf="projectRequests.length > 0" class="table table-stripped">
+        <table *ngIf="projectRequests.length > 0" class="table table-striped">
           <tr *ngFor="let request of projectRequests; let i = index">
             <td>
               <span class="badge badge-info lead">

@@ -996,7 +996,7 @@
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
                 <input type="text" pattern="^\d*(\.\d{0,6})?$" [readonly]="isFundingExRateReadonly" class="form-control" id="exchangeRate"
                   [(ngModel)]="funderModel.exchangeRate" (input)="calculateAmountInDefault(exRateFor.FUNDING)" name="exchangeRate" maxlength="10"
-                  #exchangeRate="ngModel" required />
+                  #funderExchangeRate #exchangeRate="ngModel" required />
                 <div *ngIf="funderModel.exRateDated">
                   <span class="text-warning"><i>Closest matching exchange rate found for the provided date is on {{formatToLongDate(funderModel.exRateDated)}}</i></span>
                 </div>
@@ -1378,9 +1378,9 @@
 
               <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
-                <input type="text" pattern="^\d*(\.\d{0,6})?$" class="form-control" id="dexchangeRate"
+                <input type="text" [readonly]="isDisbursementExRateReadonly" pattern="^\d*(\.\d{0,6})?$" class="form-control" id="dexchangeRate"
                   [(ngModel)]="disbursementModel.exchangeRate" name="dexchangeRate" maxlength="10"
-                  #dexchangeRate="ngModel" required />
+                  #disbursementExchangeRate #dexchangeRate="ngModel" required />
                   <div *ngIf="disbursementModel.exRateDated">
                     <span class="text-warning"><i>Closest matching exchange rate found for the provided date is on {{formatToLongDate(disbursementModel.exRateDated)}}</i></span>
                   </div>

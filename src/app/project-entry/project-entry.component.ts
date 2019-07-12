@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { StoreService } from '../services/store-service';
 import { IATIService } from '../services/iati.service';
 import { ProjectService } from '../services/project.service';
@@ -104,6 +104,7 @@ export class ProjectEntryComponent implements OnInit {
   currentEntryForm: any = null;
   calendarMaxDate: any = {};
   isEditProjectAllowed: boolean = false;
+  isFocusExRate: boolean = false;
 
   userProjectIds: any = [];
   userApprovedProjects: any[];
@@ -231,6 +232,8 @@ export class ProjectEntryComponent implements OnInit {
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
+  @ViewChild("funderExchangeRate") funderExRate: ElementRef;
+  @ViewChild("disbursementExchangeRate") disbursementExRate: ElementRef;
 
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private sectorService: SectorService,
@@ -2140,6 +2143,12 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
+    if (this.disbursementModel.exchangeRate <= 0) {
+      this.errorMessage = "Exchange rate for USD " + Messages.CANNOT_BE_ZERO;
+      this.errorModal.openModal();
+      return false;
+    }
+
     if (this.disbursementModel.dated == null) {
       this.errorMessage = Messages.INVALID_DATE;
       this.errorModal.openModal();
@@ -2159,7 +2168,7 @@ export class ProjectEntryComponent implements OnInit {
     var totalDisbursement = this.calculateProjectDisbursement();
 
     if (this.disbursementModel.exchangeRate != 1) {
-      totalDisbursement += (this.disbursementModel.amount * (1 / this.disbursementModel.exchangeRate));
+      totalDisbursement += parseFloat((this.disbursementModel.amount * (1 / this.disbursementModel.exchangeRate)).toString());
     } else {
       totalDisbursement += parseFloat(this.disbursementModel.amount.toString());
     }
@@ -2418,6 +2427,8 @@ export class ProjectEntryComponent implements OnInit {
     if (eFor == this.exRateFor.FUNDING) {
       if (this.funderModel.exRateSource == this.exRateSourceCodes.MANUAL) {
         this.isFundingExRateReadonly = false;
+        this.funderExRate.nativeElement.focus();
+        this.funderExRate.nativeElement.select();
       } else {
         if (!this.funderModel.exRateSource || this.funderModel.exRateSource == 'null') {
           this.isFundingExRateReadonly = true;
@@ -2429,6 +2440,8 @@ export class ProjectEntryComponent implements OnInit {
     } else if (eFor == this.exRateFor.DISBURSEMENT) {
       if (this.disbursementModel.exRateSource == this.exRateSourceCodes.MANUAL) {
         this.isDisbursementExRateReadonly = false;
+        this.disbursementExRate.nativeElement.focus();
+        this.disbursementExRate.nativeElement.select();
       } else {
         if (!this.disbursementModel.exRateSource || this.disbursementModel.exRateSource == 'null') {
           this.isDisbursementExRateReadonly = true;
@@ -2444,9 +2457,15 @@ export class ProjectEntryComponent implements OnInit {
     var sCurrency = null;
     if (sFor == this.exRateFor.FUNDING) {
       this.funderModel.exRateSource = null;
+      this.funderModel.exchangeRate = 0;
+      this.isFundingExRateReadonly = true;
+      this.funderModel.amountInDefaultCurrency = 0;
       sCurrency = this.funderModel.currency;
     } else {
       this.disbursementModel.exRateSource = null;
+      this.disbursementModel.exchangeRate = 0;
+      this.isDisbursementExRateReadonly = true;
+      this.disbursementModel.amountInDefaultCurrency = 0;
       sCurrency = this.disbursementModel.currency;
     }
 
@@ -2770,6 +2789,8 @@ export class ProjectEntryComponent implements OnInit {
     this.funderModel.amount = 0.00;
     this.funderModel.exchangeRate = 0.00;
     this.selectedFunderId = 0;
+    this.funderModel.amountInDefaultCurrency = 0;
+    this.funderModel.exRateDated = null;
     this.funderInput.setValue(null);
   }
 
@@ -2785,6 +2806,11 @@ export class ProjectEntryComponent implements OnInit {
     this.disbursementEntryType = 'aims';
     this.disbursementModel.dated = null;
     this.disbursementModel.amount = 0.00;
+    this.disbursementModel.exRateSource = null;
+    this.disbursementModel.currency = null;
+    this.disbursementModel.exRateDated = null;
+    this.disbursementModel.amountInDefaultCurrency = 0;
+    this.disbursementModel.exchangeRate = 0;
   }
 
   resetDocumentEntry() {
