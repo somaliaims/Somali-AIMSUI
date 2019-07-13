@@ -51,4 +51,11 @@ export class ReportService {
         JSON.stringify(model), httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Projects Report by Sectors')));
     }
+
+    getYearlyProjectsReport(model: any) {
+      var url = this.urlHelper.getYearlyProjectsReportUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Projects Report by Years')));
+    }
 }

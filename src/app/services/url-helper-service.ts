@@ -532,6 +532,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.locationProjectsReport);
     }
 
+    getYearlyProjectsReportUrl() {
+        return(this.BASE_URL + urlsList.urls.yearlyProjectsReport);
+    }
+
     getSearchProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.searchProjectsByCriteriaReport);
     }

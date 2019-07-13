@@ -60,6 +60,7 @@ import { BudgetReportComponent } from './report-components/budget-report/budget-
 import { ProjectMembershipComponent } from './project-membership/project-membership.component';
 import { MembershipRequestsComponent } from './membership-requests/membership-requests.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
+import { YearlyProjectsReportComponent } from './report-components/yearly-projects-report/yearly-projects-report.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -107,6 +108,7 @@ export const routes: Routes = [
   { path: 'sectors-report', component: SectorReportComponent },
   { path: 'projects-report', component: ProjectReportComponent },
   { path: 'locations-report', component: LocationReportComponent },
+  { path: 'yearly-projects-report', component: YearlyProjectsReportComponent },
   { path: 'budget-report', component: BudgetReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },

@@ -1,0 +1,269 @@
+<div class="container-fluid view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Yearly projects report</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div *ngIf="!isLoading" class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="model.title"
+                    name="title" #title="ngModel" aria-describedby="basic-addon2">
+                </div>
+                <div class="col-md-6">
+                  <table>
+                    <tr>
+                      <td>
+                        Financial years from/to:&nbsp;
+                      </td>
+                      <td>
+                        <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
+                          name="startingYear" #startingYear="ngModel" required>
+                          <option value="0">--Starting year--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
+                          </option>
+                        </select>
+                      </td>
+                      <td>&nbsp;&nbsp;</td>
+                      <td>
+                        <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
+                          #endingYear="ngModel" required>
+                          <option value="0">--Ending year--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList"
+                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                    (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" [data]="organizationsList"
+                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
+                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
+                    (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
+                    #selectedOrganizations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
+                    #chartType="ngModel" (change)="manageDataToDisplay()" required>
+                    <option value="null">-- Chart type --</option>
+                    <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
+                      {{chart.title}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
+                    id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
+                    #selectedCurrency="ngModel">
+                    <option value="null">-- Exchange rate in currency --</option>
+                    <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
+                      {{currency.currencyName}}
+                    </option>
+                  </select>&nbsp;
+                  <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
+                    <b><i>Exchange rate: 1 USD = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
+                  </span>
+                  <span *ngIf="manualExRate != 0 && model.selectedCurrency == defaultCurrency" class="text-warning">
+                    <b><i>Exchange rate: 1 USD = 1 {{defaultCurrency}} on {{datedToday}}</i></b>
+                  </span>
+                  <span *ngIf="manualExRate == 0" class="text-danger">
+                    <i>No exchange rate available, contact Administrator.</i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+
+                </div>
+                <div class="col-md-6">
+                  <span class="float-right">
+                    <button type="submit" class="btn btn-info">Get report</button>&nbsp;
+                    <!--<button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger" (click)="generatePDF()">Get PDF</button>&nbsp;-->
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get excel</a>&nbsp;
+                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
+                      class="btn btn-warning" (click)="printReport()">Print report</button>
+                  </span>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="isLoading" class="col-md-12 text-center">
+        <img src="assets/images/loader-md.gif" /><span>&nbsp;Setting up report...</span>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading" class="row margin-top-10">
+      <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="float-right form-inline">
+              <label><b><i>Data display options for chart:&nbsp;</i></b></label>
+              <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
+                #dataOption="ngModel" (change)="manageDataToDisplay()" required>
+                <option value="null">-- Chart data option --</option>
+                <option *ngFor="let option of dataOptions" value="{{option.id}}">
+                  {{option.value}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="reportDataList.reportSettings" class="row" id="rpt-sector-project">
+          <div class="col-md-12 text-center">
+            <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
+          </div>
+
+          <div *ngIf="reportDataList && reportDataList.yearlyProjectsList" class="col-md-12">
+              <table class="table table-striped small" style="margin-bottom: 0rem !important">
+                  <thead>
+                    <tr>
+                      <th width="25%">Project</th>
+                      <th width="15%">Funders</th>
+                      <th width="15%">Implementers</th>
+                      <th class="text-center" width="15%">Project value</th>
+                      <th class="text-center" width="15%">Disbursements actual</th>
+                      <th class="text-center" width="15%">Disbursements planned</th>
+                    </tr>
+                  </thead>
+                </table>
+            <div *ngFor="let yearProject of reportDataList.yearlyProjectsList; let i = index;">
+              <table class="table table-striped table-condensed small" style="margin-bottom: 0rem !important">
+                <tbody>
+                  <tr>
+                    <td colspan="6">
+                      <b>
+                        <i>
+                          {{yearProject.year}} - Project cost ({{formatNumber(yearProject.totalFunding)}}) &nbsp;&nbsp;
+                          Disbursements ({{formatNumber(yearProject.totalDisbursements)}})
+                        </i>
+                      </b>
+                    </td>
+                  </tr>
+                  <tr *ngFor="let project of yearProject.projects">
+                    <td width="25%">{{project.title}}</td>
+                    <td width="15%">{{project.funders}}</td>
+                    <td width="15%">{{project.implementers}}</td>
+                    <td class="text-center" width="15%">{{formatNumber(project.projectCost)}}</td>
+                    <td class="text-center" width="15%">
+                      {{formatNumber(project.actualDisbursements)}}<br />
+                    </td>
+                    <td class="text-center" width="15%">
+                      {{formatNumber(project.plannedDisbursements)}}
+                    </td>
+                  </tr>
+                  <tr *ngIf="yearProject.projects.length == 0">
+                    <td width="100%" colspan="6">
+                      <span class="text-info"><i>No projects found</i></span>
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+            <table class="table table-stiped small">
+              <thead>
+                <tr>
+                  <th width="25%">&nbsp;</th>
+                  <th width="15%">&nbsp;</th>
+                  <th width="15%">&nbsp;</th>
+                  <th class="text-center" width="15%">
+                    <b>
+                      <i>Total: {{formatNumber(getGrandTotalFundingForYear())}}</i>
+                    </b>
+                  </th>
+                  <th class="text-center" width="15%">
+                    <b>
+                      <i>
+                        Total: {{formatNumber(getGrandTotalDisbursementForYear())}}
+                      </i>
+                    </b>
+                  </th>
+                  <th width="15%">&nbsp;</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+
+        </div>
+
+        <div *ngIf="chartData.length > 0 && showChart" class="col-md-12 margin-top-50">
+          <div *ngIf="model.chartType == chartTypes.BAR" style="display: block;"
+            class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
+              [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.LINE" style="display: block;"
+            class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
+              [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.RADAR" style="display: block;"
+            class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="radarChartOptions"
+              [chartType]="model.chartType"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.DOUGHNUT" style="display: block;"
+            class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="chartLables" [options]="pieChartOptions"
+              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.PIE" style="display: block;"
+            class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [options]="pieChartOptions"
+              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.POLAR" style="display: block;"
+            class="canvas-container mx-auto col-md-10">
+            <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
+              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </block-ui>
+</div>
+<error-modal message={{errorMessage}}></error-modal>
