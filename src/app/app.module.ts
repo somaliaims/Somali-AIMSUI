@@ -82,6 +82,7 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
 import { ProjectMembershipComponent } from './project-membership/project-membership.component';
 import { MembershipRequestsComponent } from './membership-requests/membership-requests.component';
 import { YearlyProjectsReportComponent } from './report-components/yearly-projects-report/yearly-projects-report.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -155,6 +156,7 @@ import { YearlyProjectsReportComponent } from './report-components/yearly-projec
     ProjectMembershipComponent,
     MembershipRequestsComponent,
     YearlyProjectsReportComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
