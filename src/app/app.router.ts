@@ -61,6 +61,7 @@ import { ProjectMembershipComponent } from './project-membership/project-members
 import { MembershipRequestsComponent } from './membership-requests/membership-requests.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { YearlyProjectsReportComponent } from './report-components/yearly-projects-report/yearly-projects-report.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -76,7 +77,7 @@ export const routes: Routes = [
   { path: 'reports-panel', component: ReportsPanelComponent},
   { path: 'management', component: ManagementComponent },
   { path: 'notification', component: NotificationComponent },
-  { path: 'organizations', component: OrganizationsComponent },
+  { path: 'organizations', component: OrganizationsComponent},
   { path: 'delete-organization/:{id}', component: DeleteOrganizationComponent },
   { path: 'manage-organization/:{id}', component: ManageOrganizationComponent, data: { isForEdit: true } },
   { path: 'manage-organization', component: ManageOrganizationComponent },
@@ -135,7 +136,16 @@ export const routes: Routes = [
   { path: 'manage-email-message/:{id}', component: ManageEmailMessageComponent, data: { isForEdit: true } },
   { path: 'project-membership/:{id}', component: ProjectMembershipComponent },
   { path: 'membership-requests', component: MembershipRequestsComponent },
-  { path: 'contact', component: ContactFormComponent }
+  { path: 'contact', component: ContactFormComponent },
+  { path: '**', component: NotFoundComponent }
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);
+
+/*
+Adding children to main routes
+children: [
+    {path: '', redirectTo: 'tracks'},
+    {path: 'tracks', component: ArtistTrackListComponent},
+    {path: 'albums', component: ArtistAlbumListComponent},
+  ] },*/

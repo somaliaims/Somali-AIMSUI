@@ -1,3 +1,22 @@
-<p>
-  not-found works!
-</p>
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">Page not found</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="lead text-danger text-center col-md-12 margin-top-50">
+    <h4>
+      <b>Oops!</b> something went wrong. The page you are looking for not found. Click
+      below to go to home page.
+    </h4>
+  </div>
+
+  <div class="col-md-12 margin-top-20 text-center">
+    <a href="" class="btn btn-info btn-lg" [routerLink]="['/home']">Go to home</a>
+  </div>
+</div>

@@ -107,21 +107,22 @@
                 <div class="col-md-4">
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
-                    
+                    (onSelectAll)="onItemSelectAll($event)" (onDeSelectAll)="onItemDeSelectAll($event)"
                     [settings]="sectorsSettings" name="selectedSectors" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-4">
                   <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" [data]="organizationsList"
                     [(ngModel)]="model.selectedOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" 
-                    
+                    (onSelectAll)="onItemSelectAll($event)" (onDeSelectAll)="onItemDeSelectAll($event)"
                     [settings]="organizationsSettings" name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-4">
                   <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" [data]="locationsList"
                     [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
-                    (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" 
+                    (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
+                    (onSelectAll)="onItemSelectAll($event)" (onDeSelectAll)="onItemDeSelectAll($event)" 
                      #selectedLocations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
@@ -234,7 +235,6 @@
         <div class="card card-signin my-5 margin-top-5">
           <div class="card-body">
             <h5 class="card-title text-center">Matches from AIMS</h5>
-            <div class="iati-box">
               <div *ngIf="isAIMSLoading">
                 Loading AIMS projects...
               </div>
@@ -273,7 +273,6 @@
                   No matches from AIMS
                 </span>
               </div>
-            </div>
             
           </div>
         </div>

@@ -255,13 +255,8 @@ export class NewProjectComponent implements OnInit {
     );
   }
 
-  /*filterMatchingProjects(e) {
-    this.filterAIMSMatchingProjects(e);
-    //this.filterIATIMatchingProjects(e);
-  }*/
-
   onItemSelect() {
-    this.filterProjectMatches();
+      this.filterProjectMatches();
   }
 
   onItemDeSelect() {
@@ -269,11 +264,15 @@ export class NewProjectComponent implements OnInit {
   }
 
   onItemSelectAll() {
-    this.filterProjectMatches();
+    setTimeout(() => {
+      this.filterProjectMatches();
+    }, 500);
   }
 
   onItemDeSelectAll() {
-    this.filterProjectMatches();
+    setTimeout(() => {
+      this.filterProjectMatches();
+    }, 500);
   }
 
   filterProjectMatches() {
@@ -357,7 +356,7 @@ export class NewProjectComponent implements OnInit {
 
     //IATI
     if (this.model.selectedLocations.length > 0) {
-      var locations = this.model.selectedLocations.map(l => l.locationName);
+      var locations = this.model.selectedLocations.map(l => l.location);
       //IATI
       this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
         var isMatched = false;
@@ -378,7 +377,7 @@ export class NewProjectComponent implements OnInit {
         var isMatched = false;
         var projectLocations = project.locations.map(o => o.name);
         for (var i = 0; i < projectLocations.length; i++) {
-          if (sectors.includes(projectLocations[i])) {
+          if (locations.includes(projectLocations[i])) {
             isMatched = true;
             break;
           }
