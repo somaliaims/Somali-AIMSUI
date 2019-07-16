@@ -54,6 +54,7 @@ export class SectorReportComponent implements OnInit {
   paramOrgIds: any = [];
   loadReport: boolean = false;
   isLoading: boolean = true;
+  isDefaultCurrencySet: boolean = true;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -276,6 +277,8 @@ export class SectorReportComponent implements OnInit {
           this.oldCurrency = this.model.selectedCurrency;
           this.selectedCurrencyName = data.currencyName;
           this.currenciesList.push(data);
+        } else {
+          this.isDefaultCurrencySet = false;
         }
       }
     );

@@ -214,7 +214,7 @@ export class ProjectEntryComponent implements OnInit {
     amountInDefaultCurrency: 0, exRateDated: null
   };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
-  disbursementModel = { id: 0, projectId: 0, dated: null, amount: 0.0, currency: null, 
+  disbursementModel = { id: 0, projectId: 0, dated: null, formattedDate: null, amount: 0.0, currency: null, 
     exchangeRate: 0, exRateSource: null, amountInDefaultCurrency: 0, exRateDated: null };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
 
@@ -2158,6 +2158,7 @@ export class ProjectEntryComponent implements OnInit {
     var dModel = this.disbursementModel;
     var model = {
       dated: dModel.dated.year + '-' + dModel.dated.month + '-' + dModel.dated.day,
+      formattedDate: dModel.dated.year + '-' + dModel.dated.month + '-' + dModel.dated.day,
       projectId: this.disbursementModel.projectId,
       amount: this.disbursementModel.amount,
       currency: this.disbursementModel.currency,
@@ -2737,12 +2738,19 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   formatDateUKStyle(dated: any) {
+    dated = dated.split('T')[0];
     var validDate = Date.parse(dated);
     if (isNaN(validDate)) {
       return 'Invalid date';
     }
     var datesArr = dated.split('/');
-    return this.storeService.formatDateInUkStyle(parseInt(datesArr[2]), parseInt(datesArr[0]), parseInt(datesArr[1]));
+    if (datesArr.length == 1) {
+      datesArr = dated.split('-');
+      return this.storeService.formatDateInUkStyle(parseInt(datesArr[0]), parseInt(datesArr[1]), parseInt(datesArr[2]));
+    } else {
+      return this.storeService.formatDateInUkStyle(parseInt(datesArr[2]), parseInt(datesArr[0]), parseInt(datesArr[1]));
+    }
+    
   }
 
   formatToLongDate(dated: string) {
@@ -2805,6 +2813,7 @@ export class ProjectEntryComponent implements OnInit {
   resetDisbursementEntry() {
     this.disbursementEntryType = 'aims';
     this.disbursementModel.dated = null;
+    this.disbursementModel.formattedDate = null;
     this.disbursementModel.amount = 0.00;
     this.disbursementModel.exRateSource = null;
     this.disbursementModel.currency = null;

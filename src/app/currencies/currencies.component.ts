@@ -130,10 +130,10 @@ export class CurrenciesComponent implements OnInit {
       if (this.currenciesList.length > 0) {
         var criteria = this.criteria.toLowerCase();
         this.filteredCurrencies = this.currenciesList.filter(c => 
-          (c.currency.toLowerCase().indexOf(criteria) != -1 || c.currencyName.toLowerCase().indexOf(criteria) != -1));
+          (c.currency.toLowerCase().indexOf(criteria) != -1 || (((c.currencyName) ? c.currencyName.toLowerCase().indexOf(criteria) != -1 : false))));
       
         this.manualFilteredCurrencies = this.manualEnteredCurrencies.filter(c =>
-          (c.currency.toLowerCase().indexOf(criteria) != -1 || c.currencyName.toLowerCase().indexOf(criteria) != -1));
+          (c.currency.toLowerCase().indexOf(criteria) != -1 || (((c.currencyName) ? c.currencyName.toLowerCase().indexOf(criteria) != -1 : false))));
       }
     }
   }
