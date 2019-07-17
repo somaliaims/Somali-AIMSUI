@@ -14,11 +14,11 @@ import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'yearly-projects-report',
-  templateUrl: './yearly-projects-report.component.html',
-  styleUrls: ['./yearly-projects-report.component.css']
+  selector: 'time-trend-report',
+  templateUrl: './time-trend-report.component.html',
+  styleUrls: ['./time-trend-report.component.css']
 })
-export class YearlyProjectsReportComponent implements OnInit {
+export class TimeTrendReportComponent implements OnInit {
   sectorsSettings: any = [];
   selectedSectors: any = [];
   selectedOrganizations: any = [];

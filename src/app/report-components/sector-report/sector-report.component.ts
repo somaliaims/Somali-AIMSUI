@@ -262,7 +262,7 @@ export class SectorReportComponent implements OnInit {
         if (data) {
           if (data.exchangeRate) {
             this.manualExRate = data.exchangeRate;
-            this.oldCurrencyRate = 1;
+            this.oldCurrencyRate = this.defaultCurrencyRate;
           }
         }
       });

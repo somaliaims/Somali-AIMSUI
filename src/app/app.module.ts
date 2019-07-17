@@ -81,7 +81,7 @@ import { BudgetReportComponent } from './report-components/budget-report/budget-
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { ProjectMembershipComponent } from './project-membership/project-membership.component';
 import { MembershipRequestsComponent } from './membership-requests/membership-requests.component';
-import { YearlyProjectsReportComponent } from './report-components/yearly-projects-report/yearly-projects-report.component';
+import { TimeTrendReportComponent } from './report-components/time-trend-report/time-trend-report.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
@@ -155,7 +155,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     ContactFormComponent,
     ProjectMembershipComponent,
     MembershipRequestsComponent,
-    YearlyProjectsReportComponent,
+    TimeTrendReportComponent,
     NotFoundComponent,
   ],
   imports: [
