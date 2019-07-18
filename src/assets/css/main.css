@@ -197,6 +197,11 @@ html {
     overflow-x: hidden; 
   }
 
+  .bold-italic {
+    font-weight: bold;
+    font-style: italic;
+  }
+
   .sticky {
     position: fixed;
     top: 200;

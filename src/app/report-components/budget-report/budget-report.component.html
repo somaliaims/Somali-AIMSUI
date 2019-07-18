@@ -67,41 +67,70 @@
     
         <div *ngIf="reportDataList && reportDataList.projects" class="margin-bottom-none">
           <div *ngFor="let project of reportDataList.projects; let i = index;">
-            <span class="float-left lead">{{project.title}}</span><hr />
+            <span class="float-left lead"><b>{{project.title}}</b></span><hr />
             
             <table class="table table-striped table-condensed small margin-bottom-none">
               <thead>
                 <tr>
                     <th width="30%">Funder</th>
                     <th width="10%">Type</th>
-                    <th width="15%">Amount</th>
-                    <th width="10%">Currency</th>
-                    <th width="15%">Xrate to default</th>
-                    <th width="20%">Amount default</th>
+                    <th class="text-center" width="15%">Amount</th>
+                    <th class="text-center" width="10%">Currency</th>
+                    <th class="text-center" width="15%">Xrate to default</th>
+                    <th class="text-center" width="20%">Amount default</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let funder of project.funding">
                   <td>{{funder.funder}}</td>
                   <td>{{funder.fundType}}</td>
-                  <td>{{funder.amount}}</td>
-                  <td>{{funder.currency}}</td>
-                  <td>{{funder.exchangeRateToDefault}}</td>
-                  <td>{{funder.AmountInDefault}}</td>
+                  <td class="text-center">{{funder.amount}}</td>
+                  <td class="text-center">{{funder.currency}}</td>
+                  <td class="text-center">{{funder.exchangeRateToDefault}}</td>
+                  <td class="text-center">{{funder.amountInDefault}}</td>
                 </tr>
                 <tr>
                   <td colspan="6">&nbsp;</td>
                 </tr>
+              </table>
+
+              <table class="table table-condensed small">
                 <tr>
-                  <td>Project start</td>
-                  <td>{{funder.startDateString}}</td>
-                  <td>Project end</td>
-                  <td>{{funder.endDateString}}</td>
-                  <td>Total months</td>
-                  <td>{{project.totalMonths}}</td>
+                  <td class="bold-italic">Project start</td>
+                  <td class="bold-italic">{{project.startDateString}}</td>
+                  <td class="bold-italic">Project end</td>
+                  <td class="bold-italic">{{project.endDateString}}</td>
+                  <td class="bold-italic">Total months</td>
+                  <td class="bold-italic">{{project.totalMonths}}</td>
+                </tr>
+                <tr *ngFor="let share of project.fundShares">
+                  <td class="bold-italic">{{share.fundingType}} share</td>
+                  <td class="bold-italic">{{share.amount}}</td>
+                  <td class="bold-italic">{{share.percentage}}%</td>
                 </tr>
               </tbody>
             </table>
+
+            <h5 class="small"><b>Project disbursements</b></h5>
+            <table class="table table-striped small">
+              <tr>
+                <th width="15%">Date</th>
+                <th class="text-center" width="20%">Amount</th>
+                <th class="text-center" width="15%">Currency</th>
+                <th class="text-center" width="20%">Xrate to default</th>
+                <th class="text-center" width="30%">Amount default</th>
+              </tr>
+              <tbody>
+                <tr *ngFor="let disbursement of project.disbursements">
+                  <td>{{disbursement.dated}}</td>
+                  <td class="text-center">{{disbursement.amount}}</td>
+                  <td class="text-center">{{disbursement.currency}}</td>
+                  <td class="text-center">{{disbursement.exchangeRateToDefault}}</td>
+                  <td class="text-center">{{disbursement.amountInDefault}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
           </div>
         </div>
     
