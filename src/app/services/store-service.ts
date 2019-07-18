@@ -203,6 +203,10 @@ export class StoreService {
     return (dated.getFullYear() + '-' + (dated.getMonth() + 1) + '-' + dated.getDate());
   }
 
+  getCurrentYear() {
+    return new Date().getFullYear();
+  }
+
   getTodaysDateForDtPicker() {
     var dated = new Date();
     return { year: dated.getFullYear(), month: (dated.getMonth() + 1), day: dated.getDate() };

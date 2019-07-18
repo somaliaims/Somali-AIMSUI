@@ -178,8 +178,16 @@ export class BudgetReportComponent implements OnInit {
     }
   }
 
+  getCurrentYear() {
+    return this.storeService.getCurrentYear();
+  }
+
   formatNumber(value: number) {
     return this.storeService.getNumberWithCommas(value);
+  }
+
+  getLongDateString(dated: string) {
+    return this.storeService.getLongDateString(dated);
   }
 
 }

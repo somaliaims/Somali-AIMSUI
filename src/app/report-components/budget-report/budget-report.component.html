@@ -122,12 +122,68 @@
               </tr>
               <tbody>
                 <tr *ngFor="let disbursement of project.disbursements">
-                  <td>{{disbursement.dated}}</td>
+                  <td>{{getLongDateString(disbursement.dated)}}</td>
                   <td class="text-center">{{disbursement.amount}}</td>
                   <td class="text-center">{{disbursement.currency}}</td>
                   <td class="text-center">{{disbursement.exchangeRateToDefault}}</td>
                   <td class="text-center">{{disbursement.amountInDefault}}</td>
                 </tr>
+              </tbody>
+            </table>
+
+            <table class="table table-striped small">
+              <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th *ngFor="let yr of project.yearlyDisbursements">
+                      <b>{{yr.year}}</b>
+                    </th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td><b>Active months per year</b></td>
+                      <td *ngFor="let yr of project.yearlyDisbursements">
+                        {{yr.activeMonths}}
+                      </td>
+                  </tr>
+                  <tr>
+                      <td><b>Actual disbursements</b></td>
+                      <td *ngFor="let yr of project.yearlyDisbursements">
+                          {{yr.disbursements}}
+                      </td>
+                  </tr>
+                  <tr>
+                      <td><b>Expected disbursements</b></td>
+                      <td *ngFor="let yr of project.yearlyDisbursements">
+                          {{yr.expectedDisbursements}}
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
+
+            <table class="table table-striped small">
+              <tbody>
+                <tr>
+                  <td><b>{{getCurrentYear()}} active months</b></td>
+                  <td>{{project.monthsCurrentYear}}</td>
+                </tr>
+                <tr>
+                  <td><b>Months left</b></td>
+                  <td>{{project.monthsLeft}}</td>
+                </tr>
+                <tr>
+                  <td><b>Money previous 2 years</b></td>
+                  <td>{{project.moneyPreviousTwoYears}}</td>
+                </tr>
+                <tr>
+                  <td><b>Money left for the remaining years</b></td>
+                  <td>{{project.moneyLeftForYears}}</td>
+                </tr>
+                <tr>
+                    <td><b>Expected minus actual for {{getCurrentYear()}}</b></td>
+                    <td>{{project.expectedMinusActual}}</td>
+                  </tr>
               </tbody>
             </table>
             <br />
