@@ -27,11 +27,42 @@ export class BudgetReportComponent implements OnInit {
   grandTotalFunding: number = 0;
   grandTotalDisbursements: number = 0;
   datedToday: string = null;
+  chartDataList: any = [];
+  chartLegend: boolean = true;
+  chartType: string = 'bar';
+
+  chartOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        },
+        stacked: true
+      }],
+      xAxes: [{
+        beginAtZero: true,
+        ticks: {
+          autoSkip: false
+        },
+        stacked: true
+      }],
+    },
+    plugins: {
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+      }
+    }
+  };
 
   @BlockUI() blockUI: NgBlockUI;
   
   constructor(private reportService: ReportService, private errorModal: ErrorModalComponent,
     private storeService: StoreService, private currencyService: CurrencyService) { }
+
+  
 
   ngOnInit() {
     this.blockUI.start('Loading report...');
@@ -86,21 +117,56 @@ export class BudgetReportComponent implements OnInit {
       data => {
         if (data) {
           this.reportDataList = data;
-          this.getGrandTotalForFunding();
-          this.getGrandTotalForDisbursements();
+          if (this.reportDataList.projects) {
+            this.reportDataList.projects.forEach((p) => {
+              if (p.yearlyDisbursements) {
+                var labels = p.yearlyDisbursements.map(y => y.year);
+                var disbursements = p.yearlyDisbursements.map(y => y.disbursements);
+                var eDisbursements = p.yearlyDisbursements.map(y => y.expectedDisbursements);
+                this.chartDataList.push(
+                  {
+                    id: p.id,
+                    labels: labels,
+                    disbursements: disbursements,
+                    expectedDisbursements: eDisbursements
+                  }
+                );
+              }
+            });
+          }
         }
         this.blockUI.stop();
       }
-    )
+    );
   }
 
-  getGrandTotalForFunding() {
+  getChartData(id: number) {
+    var data = this.chartDataList.filter(d => d.id == id);
+    if (data.length > 0) {
+      return [{ 
+        data: data[0].disbursements, label: 'Disbursements', stack: '1',   
+      }, {
+        data: data[0].expectedDisbursements, label: 'Expected disbursements', stack: '2',   
+      }];
+    }
+    return [];
+  }
+
+  getChartLabels(id: number) {
+    var data = this.chartDataList.filter(d => d.id == id);
+    if (data.length > 0) {
+      return data[0].labels;
+    }
+    return [];
+  }
+
+  /*getGrandTotalForFunding() {
     this.grandTotalFunding = (this.reportDataList.projects.map(p => p.projectValue).reduce(this.storeService.sumValues, 0));
   }
 
   getGrandTotalForDisbursements() {
     this.grandTotalDisbursements = (this.reportDataList.projects.map(p => p.actualDisbursements).reduce(this.storeService.sumValues, 0));
-  }
+  }*/
 
   printReport() {
     this.storeService.printSimpleReport('rpt-budget-report', 'Budget report');
@@ -172,8 +238,8 @@ export class BudgetReportComponent implements OnInit {
 
           }
         });
-        this.getGrandTotalForFunding();
-        this.getGrandTotalForDisbursements();
+        /*this.getGrandTotalForFunding();
+        this.getGrandTotalForDisbursements();*/
       }
     }
   }
