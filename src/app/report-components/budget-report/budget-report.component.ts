@@ -42,18 +42,11 @@ export class BudgetReportComponent implements OnInit {
         stacked: true
       }],
       xAxes: [{
-        beginAtZero: true,
         ticks: {
           autoSkip: false
         },
         stacked: true
       }],
-    },
-    plugins: {
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-      }
     }
   };
 
@@ -61,8 +54,6 @@ export class BudgetReportComponent implements OnInit {
   
   constructor(private reportService: ReportService, private errorModal: ErrorModalComponent,
     private storeService: StoreService, private currencyService: CurrencyService) { }
-
-  
 
   ngOnInit() {
     this.blockUI.start('Loading report...');
@@ -144,9 +135,9 @@ export class BudgetReportComponent implements OnInit {
     var data = this.chartDataList.filter(d => d.id == id);
     if (data.length > 0) {
       return [{ 
-        data: data[0].disbursements, label: 'Disbursements', stack: '1',   
+        data: data[0].disbursements, label: 'Disbursements', stack: 1,   
       }, {
-        data: data[0].expectedDisbursements, label: 'Expected disbursements', stack: '2',   
+        data: data[0].expectedDisbursements, label: 'Expected disbursements', stack: 2,   
       }];
     }
     return [];

@@ -188,11 +188,14 @@
             </table>
             <br />
 
-            <div class="col-offset-3 col-md-6">
-                <canvas baseChart [datasets]="getChartData(project.id)" [labels]="getChartLabels(project.id)" [options]="chartOptions"
-                [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
+            <div class="col-md-12">
+                <div class="offset-3 col-md-6">
+                    <canvas baseChart [datasets]="getChartData(project.id)" [labels]="getChartLabels(project.id)" [options]="chartOptions"
+                    [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+                </div>
             </div>
+            
           </div>
         </div>
     
