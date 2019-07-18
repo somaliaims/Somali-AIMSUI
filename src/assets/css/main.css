@@ -187,6 +187,10 @@ html {
     margin-bottom: 0px;
   }
 
+  .margin-bottom-none {
+    margin-bottom: 0rem !important
+  }
+
   .iati-box {
     max-height: 620px;
     overflow-y: auto;
