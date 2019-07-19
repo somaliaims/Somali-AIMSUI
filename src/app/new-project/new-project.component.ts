@@ -388,7 +388,7 @@ export class NewProjectComponent implements OnInit {
       }.bind(this));
     }
 
-    if (this.model.startingYear) {
+    if (this.model.startingYear != 0) {
       this.filteredIatiProjects = this.iatiProjects.filter((project) => {
         if (Date.parse(project.startDate)) {
           var dated = new Date(project.startDate);
@@ -408,7 +408,7 @@ export class NewProjectComponent implements OnInit {
       });
     }
 
-    if (this.model.endingYear) {
+    if (this.model.endingYear != 0) {
       this.filteredIatiProjects = this.iatiProjects.filter((project) => {
         if (Date.parse(project.startDate)) {
           var dated = new Date(project.startDate);

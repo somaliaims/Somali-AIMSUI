@@ -14,6 +14,7 @@ import { Settings } from 'src/app/config/settings';
 })
 export class BudgetReportComponent implements OnInit {
   manualExRate: number = 0;
+  oldExRateToDefault: number = 0;
   oldCurrencyRate: number = 0;
   defaultCurrency: string = null;
   oldCurrency: string = null;
@@ -48,6 +49,12 @@ export class BudgetReportComponent implements OnInit {
         },
         stacked: true
       }],
+      plugins: {
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+        }
+      }
     }
   };
 
@@ -73,6 +80,7 @@ export class BudgetReportComponent implements OnInit {
           if (data.exchangeRate) {
             this.manualExRate = data.exchangeRate;
             this.oldCurrencyRate = 1;
+            this.oldExRateToDefault = 1;
           }
         }
       });
@@ -196,13 +204,14 @@ export class BudgetReportComponent implements OnInit {
     calculatedRate = (exRate / this.oldCurrencyRate);
     this.oldCurrencyRate = exRate;
     this.oldCurrency = this.model.selectedCurrency;
+    this.oldExRateToDefault = exRate;
 
-    if (calculatedRate > 0 && calculatedRate != 1) {
-      this.applyRateOnFinancials(calculatedRate);
-    }
+    //if (calculatedRate > 0 && calculatedRate != 1) {
+      this.applyRateOnFinancials(calculatedRate, exRate);
+    //}
   }
 
-  applyRateOnFinancials(calculatedRate = 1) {
+  applyRateOnFinancials(calculatedRate = 1, defaultRate = 1) {
     if (calculatedRate != 1) {
       if (this.reportDataList.projects && this.reportDataList.projects.length > 0) {
         this.reportDataList.projects.forEach(p => {
@@ -213,13 +222,17 @@ export class BudgetReportComponent implements OnInit {
 
           if (p.funding) {
             p.funding.forEach(f => {
+              f.exchangeRateToDefault = defaultRate;
               f.amount = Math.round(parseFloat((f.amount * calculatedRate).toFixed(2)));
+              f.amountInDefault = Math.round(parseFloat((f.amountInDefault * calculatedRate).toFixed(2)));
             });
           }
 
           if (p.disbursements) {
             p.disbursements.forEach(d => {
+                d.exchangeRateToDefault = defaultRate;
                 d.disbursements = Math.round(parseFloat((d.amount * calculatedRate).toFixed(2)));
+                d.amountInDefault = Math.round(parseFloat((d.amountInDefault * calculatedRate).toFixed(2)));
             });
           }
 
