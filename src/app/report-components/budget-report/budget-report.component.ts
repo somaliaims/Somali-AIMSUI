@@ -5,6 +5,7 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { StoreService } from 'src/app/services/store-service';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { Messages } from 'src/app/config/messages';
+import { Settings } from 'src/app/config/settings';
 
 @Component({
   selector: 'app-budget-report',
@@ -30,7 +31,7 @@ export class BudgetReportComponent implements OnInit {
   chartDataList: any = [];
   chartLegend: boolean = true;
   chartType: string = 'bar';
-
+  pagingSize: number = Settings.rowsPerPage;
   chartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -135,9 +136,9 @@ export class BudgetReportComponent implements OnInit {
     var data = this.chartDataList.filter(d => d.id == id);
     if (data.length > 0) {
       return [{ 
-        data: data[0].disbursements, label: 'Disbursements', stack: 1,   
+        data: data[0].disbursements, label: 'Disbursements', stack: '1' 
       }, {
-        data: data[0].expectedDisbursements, label: 'Expected disbursements', stack: 2,   
+        data: data[0].expectedDisbursements, label: 'Expected disbursements', stack: '2' 
       }];
     }
     return [];
@@ -206,9 +207,9 @@ export class BudgetReportComponent implements OnInit {
       if (this.reportDataList.projects && this.reportDataList.projects.length > 0) {
         this.reportDataList.projects.forEach(p => {
           p.projectValue = Math.round(parseFloat((p.projectValue * calculatedRate).toFixed(2)));
-          p.previousYearDisbursements = Math.round(parseFloat((p.previousYearDisbursements * calculatedRate).toFixed(2)));
-          p.actualDisbursements = Math.round(parseFloat((p.actualDisbursements * calculatedRate).toFixed(2)));
-          p.plannedDisbursements = Math.round(parseFloat((p.plannedDisbursements * calculatedRate).toFixed(2)));
+          p.moneyLeftForYears = Math.round(parseFloat((p.moneyLeftForYears * calculatedRate).toFixed(2)));
+          p.moneyPreviousTwoYears = Math.round(parseFloat((p.moneyPreviousTwoYears * calculatedRate).toFixed(2)));
+          p.expectedDisbursementsCurrentYear = Math.round(parseFloat((p.expectedDisbursementsCurrentYear * calculatedRate).toFixed(2)));
 
           if (p.funding) {
             p.funding.forEach(f => {
@@ -216,18 +217,19 @@ export class BudgetReportComponent implements OnInit {
             });
           }
 
-          if (p.expectedDisbursements) {
-            p.expectedDisbursements.forEach(d => {
-              d.sectorPercentages.forEach(s => {
-                s.disbursements = Math.round(parseFloat((s.disbursements * calculatedRate).toFixed(2)));
-              });
-
-              d.locationPercentages.forEach(l => {
-                l.disbursements = Math.round(parseFloat((l.disbursements * calculatedRate).toFixed(2)));
-              });
+          if (p.disbursements) {
+            p.disbursements.forEach(d => {
+                d.disbursements = Math.round(parseFloat((d.amount * calculatedRate).toFixed(2)));
             });
-
           }
+
+          if (p.yearlyDisbursements) {
+            p.yearlyDisbursements.forEach(d => {
+                d.disbursements = Math.round(parseFloat((d.disbursements * calculatedRate).toFixed(2)));
+                d.expectedDisbursements = Math.round(parseFloat((d.expectedDisbursements * calculatedRate).toFixed(2)));
+            });
+          }
+
         });
         /*this.getGrandTotalForFunding();
         this.getGrandTotalForDisbursements();*/

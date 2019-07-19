@@ -66,7 +66,7 @@
       <div class="col-md-12">
     
         <div *ngIf="reportDataList && reportDataList.projects" class="margin-bottom-none">
-          <div *ngFor="let project of reportDataList.projects; let i = index;">
+          <div *ngFor="let project of reportDataList.projects | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }; let i = index;">
             <span class="float-left lead"><b>{{project.title}}</b></span><hr />
             
             <table class="table table-striped table-condensed small margin-bottom-none">
@@ -135,7 +135,7 @@
               <thead>
                 <tr>
                     <th>&nbsp;</th>
-                    <th *ngFor="let yr of project.yearlyDisbursements">
+                    <th class="text-center" *ngFor="let yr of project.yearlyDisbursements">
                       <b>{{yr.year}}</b>
                     </th>
                 </tr>
@@ -143,19 +143,19 @@
               <tbody>
                   <tr>
                       <td><b>Active months per year</b></td>
-                      <td *ngFor="let yr of project.yearlyDisbursements">
+                      <td class="text-center" *ngFor="let yr of project.yearlyDisbursements">
                         {{yr.activeMonths}}
                       </td>
                   </tr>
                   <tr>
                       <td><b>Actual disbursements</b></td>
-                      <td *ngFor="let yr of project.yearlyDisbursements">
+                      <td class="text-center" *ngFor="let yr of project.yearlyDisbursements">
                           {{yr.disbursements}}
                       </td>
                   </tr>
                   <tr>
                       <td><b>Expected disbursements</b></td>
-                      <td *ngFor="let yr of project.yearlyDisbursements">
+                      <td class="text-center" *ngFor="let yr of project.yearlyDisbursements">
                           {{yr.expectedDisbursements}}
                       </td>
                   </tr>
@@ -165,24 +165,24 @@
             <table class="table table-striped small">
               <tbody>
                 <tr>
-                  <td><b>{{getCurrentYear()}} active months</b></td>
-                  <td>{{project.monthsCurrentYear}}</td>
+                  <td width="20%"><b>{{getCurrentYear()}} active months</b></td>
+                  <td width="80%" class="bold-italic float-left">{{project.monthsCurrentYear}}</td>
                 </tr>
                 <tr>
                   <td><b>Months left</b></td>
-                  <td>{{project.monthsLeft}}</td>
+                  <td class="bold-italic float-left">{{project.monthsLeft}}</td>
                 </tr>
                 <tr>
                   <td><b>Money previous 2 years</b></td>
-                  <td>{{project.moneyPreviousTwoYears}}</td>
+                  <td class="bold-italic float-left">{{project.moneyPreviousTwoYears}}</td>
                 </tr>
                 <tr>
                   <td><b>Money left for the remaining years</b></td>
-                  <td>{{project.moneyLeftForYears}}</td>
+                  <td class="bold-italic float-left">{{project.moneyLeftForYears}}</td>
                 </tr>
                 <tr>
                     <td><b>Expected minus actual for {{getCurrentYear()}}</b></td>
-                    <td>{{project.expectedMinusActual}}</td>
+                    <td class="bold-italic float-left">{{project.expectedMinusActual}}</td>
                   </tr>
               </tbody>
             </table>
@@ -196,6 +196,9 @@
                 </div>
             </div>
             
+          </div>
+          <div class="col-md-12 margin-top-20 text-center">
+            <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
           </div>
         </div>
     
