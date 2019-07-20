@@ -32,6 +32,7 @@ export class BudgetReportSummaryComponent implements OnInit {
   datedToday: string = null;
   selectedYearlyDisbursements: any = [];
   selectedProject: string = null;
+  excelFile: string = null;
 
   chartLabels: any = [];
   chartData: any = [];
@@ -118,6 +119,11 @@ export class BudgetReportSummaryComponent implements OnInit {
       data => {
         if (data) {
           this.reportDataList = data;
+          if (this.reportDataList.reportSettings) {
+            this.excelFile = this.reportDataList.reportSettings.excelReportName;
+            this.setExcelFile();
+          }
+
           if (this.reportDataList.totalYearlyDisbursements) {
             this.reportDataList.projects.forEach((d) => {
               d.showDetail = false;
@@ -232,6 +238,12 @@ export class BudgetReportSummaryComponent implements OnInit {
 
   getLongDateString(dated: string) {
     return this.storeService.getLongDateString(dated);
+  }
+
+  setExcelFile() {
+    if (this.excelFile) {
+      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+    }
   }
 
 }

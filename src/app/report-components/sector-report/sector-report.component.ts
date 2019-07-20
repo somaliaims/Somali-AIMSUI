@@ -262,7 +262,7 @@ export class SectorReportComponent implements OnInit {
         if (data) {
           if (data.exchangeRate) {
             this.manualExRate = data.exchangeRate;
-            this.oldCurrencyRate = this.defaultCurrencyRate;
+            this.oldCurrencyRate = 1;
           }
         }
       });
@@ -808,6 +808,9 @@ export class SectorReportComponent implements OnInit {
       exRate = this.manualExRate;
     }
 
+    if (this.oldCurrencyRate == 0) {
+      this.oldCurrencyRate = 1;
+    }
     calculatedRate = (exRate / this.oldCurrencyRate);
     this.oldCurrencyRate = exRate;
     this.oldCurrency = this.model.selectedCurrency;

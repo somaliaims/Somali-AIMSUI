@@ -27,7 +27,7 @@
                     </option>
                   </select>&nbsp;
                   <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
-                    <b><i>Exchange rate: 1 USD = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
+                    <b><i>Exchange rate: 1 {{defaultCurrency}} = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
                   </span>
                   
                   <span *ngIf="manualExRate == 0" class="text-danger">
@@ -38,6 +38,7 @@
                   <span [class.disable]="!defaultCurrency" class="float-right">
                     <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
                     <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get Excel</a>&nbsp;
                     <button *ngIf="reportDataList && reportDataList.projects" type="button" class="btn btn-warning"
                       (click)="printReport()">Print Report</button>
                   </span>

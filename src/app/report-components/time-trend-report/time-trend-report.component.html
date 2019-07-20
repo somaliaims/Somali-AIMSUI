@@ -84,10 +84,7 @@
                     </option>
                   </select>&nbsp;
                   <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
-                    <b><i>Exchange rate: 1 USD = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
-                  </span>
-                  <span *ngIf="manualExRate != 0 && model.selectedCurrency == defaultCurrency" class="text-warning">
-                    <b><i>Exchange rate: 1 USD = 1 {{defaultCurrency}} on {{datedToday}}</i></b>
+                    <b><i>Exchange rate: 1 {{defaultCurrency}} = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
                   </span>
                   <span *ngIf="manualExRate == 0" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
