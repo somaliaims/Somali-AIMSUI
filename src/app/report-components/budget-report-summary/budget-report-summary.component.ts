@@ -37,27 +37,20 @@ export class BudgetReportSummaryComponent implements OnInit {
   pagingSize: number = Settings.rowsPerPage;
 
   chartOptions: any = {
-    scaleShowVerticalLines: false,
     responsive: true,
     scales: {
       yAxes: [{
+        stacked: true,
         ticks: {
           beginAtZero: true
-        },
-        stacked: true
+        }
       }],
       xAxes: [{
+        stacked: true,
         ticks: {
-          autoSkip: false
-        },
-        stacked: true
-      }],
-      plugins: {
-        datalabels: {
-          anchor: 'end',
-          align: 'end',
+          beginAtZero: true
         }
-      }
+      }]
     }
   };
 
@@ -130,13 +123,13 @@ export class BudgetReportSummaryComponent implements OnInit {
             this.chartData.push({
               data: disbursements,
               label: 'Total disbursements',
-              stack: '1'
+              stack: 'Stack 0'
             });
 
             this.chartData.push({
               data: expectedDisbursements,
               label: 'Total expected disbursements',
-              stack: '2'
+              stack: 'Stack 0'
             });
           }
         }
