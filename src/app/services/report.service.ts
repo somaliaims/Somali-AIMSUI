@@ -32,6 +32,13 @@ export class ReportService {
         catchError(this.storeService.handleError<any>('Budget Report')));
     }
 
+    getBudgetSummaryReport() {
+      var url = this.urlHelper.getBudgetSummaryReportUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Budget Report')));
+    }
+
+
     getReportNames() {
       var url = this.urlHelper.getReportNamesUrl();
       return this.httpClient.get(url, httpOptions).pipe(

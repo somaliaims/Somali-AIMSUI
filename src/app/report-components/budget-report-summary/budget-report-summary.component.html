@@ -1,0 +1,103 @@
+<div class="container-fluid view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Budget report</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form class="form-signin" (ngSubmit)="getBudgetReport()" #searchForm="ngForm">
+
+              <div class="row margin-top-10">
+                <div class="col-md-6 form-inline">
+                  <label>Currency: </label>&nbsp;&nbsp;
+                  <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
+                    id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
+                    #selectedCurrency="ngModel">
+                    <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
+                      {{currency.currencyName}}
+                    </option>
+                  </select>&nbsp;
+                  <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
+                    <b><i>Exchange rate: 1 USD = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
+                  </span>
+                  <span *ngIf="manualExRate != 0 && model.selectedCurrency == defaultCurrency" class="text-warning">
+                    <b><i>Exchange rate: 1 USD = 1 {{defaultCurrency}} on {{datedToday}}</i></b>
+                  </span>
+                  <span *ngIf="manualExRate == 0" class="text-danger">
+                    <i>No exchange rate available, contact Administrator.</i>
+                  </span>
+                </div>
+                <div class="col-md-6">
+                  <span [class.disable]="!defaultCurrency" class="float-right">
+                    <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
+                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
+                    <button *ngIf="reportDataList && reportDataList.projects" type="button" class="btn btn-warning"
+                      (click)="printReport()">Print Report</button>
+                  </span>
+                </div>
+                <div *ngIf="!defaultCurrency" class="col-md-12">
+                  <span class="text-danger">
+                    Default currency is not set and it may produce errors on reports.
+                    Please contact administrator.
+                  </span>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row margin-top-10" id="rpt-budget-report">
+      <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
+        <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
+      </div>
+    
+      <div class="col-md-12">
+    
+        <div *ngIf="reportDataList && reportDataList.projects && chartLabels.length > 0" class="margin-bottom-none">
+          <table class="table table-striped small">
+            <thead>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+              <th *ngFor="let label of chartLabels">
+                {{label}}
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let project of reportDataList.projects">
+                <td>{{project.title}}</td>
+                <td>Disbursements</td>
+                <td *ngFor="let d of project.yearlyDisbursements">
+                  {{d.disbursements}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div *ngIf="chartData.length > 0" class="col-md-12">
+            <div class="offset-3 col-md-6">
+                <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+        </div>
+        </div>
+    
+      </div>
+    </div>
+
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>

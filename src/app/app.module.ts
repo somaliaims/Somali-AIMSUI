@@ -83,6 +83,7 @@ import { ProjectMembershipComponent } from './project-membership/project-members
 import { MembershipRequestsComponent } from './membership-requests/membership-requests.component';
 import { TimeTrendReportComponent } from './report-components/time-trend-report/time-trend-report.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { BudgetReportSummaryComponent } from './report-components/budget-report-summary/budget-report-summary.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     MembershipRequestsComponent,
     TimeTrendReportComponent,
     NotFoundComponent,
+    BudgetReportSummaryComponent,
   ],
   imports: [
     BrowserModule,
