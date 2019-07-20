@@ -115,6 +115,9 @@ export class BudgetReportSummaryComponent implements OnInit {
         if (data) {
           this.reportDataList = data;
           if (this.reportDataList.totalYearlyDisbursements) {
+            this.reportDataList.projects.forEach((d) => {
+              d.showDetail = false;
+            });
             var yearlyDisbursements = this.reportDataList.totalYearlyDisbursements;
             this.chartLabels = yearlyDisbursements.map(y => y.year);
             var disbursements = yearlyDisbursements.map(y => y.totalDisbursements);
@@ -175,47 +178,28 @@ export class BudgetReportSummaryComponent implements OnInit {
     this.oldCurrencyRate = exRate;
     this.oldCurrency = this.model.selectedCurrency;
     this.oldExRateToDefault = exRate;
-
-    //if (calculatedRate > 0 && calculatedRate != 1) {
-      this.applyRateOnFinancials(calculatedRate, exRate);
-    //}
+    this.applyRateOnFinancials(calculatedRate, exRate);
   }
 
   applyRateOnFinancials(calculatedRate = 1, defaultRate = 1) {
     if (calculatedRate != 1) {
       if (this.reportDataList.projects && this.reportDataList.projects.length > 0) {
         this.reportDataList.projects.forEach(p => {
-          p.projectValue = Math.round(parseFloat((p.projectValue * calculatedRate).toFixed(2)));
-          p.moneyLeftForYears = Math.round(parseFloat((p.moneyLeftForYears * calculatedRate).toFixed(2)));
-          p.moneyPreviousTwoYears = Math.round(parseFloat((p.moneyPreviousTwoYears * calculatedRate).toFixed(2)));
-          p.expectedDisbursementsCurrentYear = Math.round(parseFloat((p.expectedDisbursementsCurrentYear * calculatedRate).toFixed(2)));
-
-          if (p.funding) {
-            p.funding.forEach(f => {
-              f.exchangeRateToDefault = defaultRate;
-              f.amount = Math.round(parseFloat((f.amount * calculatedRate).toFixed(2)));
-              f.amountInDefault = Math.round(parseFloat((f.amountInDefault * calculatedRate).toFixed(2)));
-            });
-          }
-
-          if (p.disbursements) {
-            p.disbursements.forEach(d => {
-                d.exchangeRateToDefault = defaultRate;
-                d.disbursements = Math.round(parseFloat((d.amount * calculatedRate).toFixed(2)));
-                d.amountInDefault = Math.round(parseFloat((d.amountInDefault * calculatedRate).toFixed(2)));
-            });
-          }
-
           if (p.yearlyDisbursements) {
-            p.yearlyDisbursements.forEach(d => {
-                d.disbursements = Math.round(parseFloat((d.disbursements * calculatedRate).toFixed(2)));
-                d.expectedDisbursements = Math.round(parseFloat((d.expectedDisbursements * calculatedRate).toFixed(2)));
+            p.yearlyDisbursements.forEach((d) => {
+              d.disbursements = Math.round(parseFloat((d.disbursements * calculatedRate).toFixed(2)));
+              d.actualDisbursements = Math.round(parseFloat((d.actualDisbursements * calculatedRate).toFixed(2)));
+              d.expectedDisbursements = Math.round(parseFloat((d.expectedDisbursements * calculatedRate).toFixed(2)));
             });
           }
-
         });
-        /*this.getGrandTotalForFunding();
-        this.getGrandTotalForDisbursements();*/
+      }
+
+      if (this.reportDataList.totalYearlyDisbursements && this.reportDataList.totalYearlyDisbursements.length > 0) {
+          this.reportDataList.totalYearlyDisbursements.forEach((t) => {
+            t.totalDisbursements = Math.round(parseFloat((t.totalDisbursements * calculatedRate).toFixed(2)));
+            t.totalExpectedDisbursements = Math.round(parseFloat((t.totalExpectedDisbursements * calculatedRate).toFixed(2)));
+          });
       }
     }
   }

@@ -197,6 +197,11 @@ html {
     overflow-x: hidden; 
   }
 
+  .row-highlight tr:hover {
+    background: lightgoldenrodyellow !important;
+    cursor: pointer;
+  }
+
   .bold-italic {
     font-weight: bold;
     font-style: italic;

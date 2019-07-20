@@ -29,9 +29,7 @@
                   <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
                     <b><i>Exchange rate: 1 USD = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
                   </span>
-                  <span *ngIf="manualExRate != 0 && model.selectedCurrency == defaultCurrency" class="text-warning">
-                    <b><i>Exchange rate: 1 USD = 1 {{defaultCurrency}} on {{datedToday}}</i></b>
-                  </span>
+                  
                   <span *ngIf="manualExRate == 0" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
@@ -66,11 +64,11 @@
       <div class="col-md-12">
     
         <div *ngIf="reportDataList && reportDataList.projects && chartLabels.length > 0" class="margin-bottom-none">
-          <table class="table table-striped small">
+          <table class="table table-striped row-highlight small">
             <thead>
-              <th>&nbsp;</th>
-              <th>&nbsp;</th>
-              <th *ngFor="let label of chartLabels">
+              <th width="25%">&nbsp;</th>
+              <th width="15%">&nbsp;</th>
+              <th width="12%" *ngFor="let label of chartLabels">
                 {{label}}
               </th>
             </thead>
@@ -84,8 +82,27 @@
               </tr>
             </tbody>
           </table>
+
+          <table class="table table-striped small">
+            <tbody>
+              <tr>
+                <td width="25%"><b>Total</b></td>
+                <td width="15%"><b>Actual disbursements</b></td>
+                <td width="12%" *ngFor="let d of reportDataList.totalYearlyDisbursements">
+                  {{d.totalDisbursements}}
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><b>Expected disbursements</b></td>
+                <td *ngFor="let d of reportDataList.totalYearlyDisbursements">
+                  {{d.totalExpectedDisbursements}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
           
-          <div *ngIf="chartData.length > 0" class="col-md-12">
+          <div *ngIf="chartData.length > 0" class="col-md-12 margin-top-30">
             <div class="offset-3 col-md-6">
                 <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
                 [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
