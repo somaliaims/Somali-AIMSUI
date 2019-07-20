@@ -6,6 +6,7 @@ import { StoreService } from 'src/app/services/store-service';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { Messages } from 'src/app/config/messages';
 import { Settings } from 'src/app/config/settings';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'budget-report-summary',
@@ -29,6 +30,8 @@ export class BudgetReportSummaryComponent implements OnInit {
   grandTotalFunding: number = 0;
   grandTotalDisbursements: number = 0;
   datedToday: string = null;
+  selectedYearlyDisbursements: any = [];
+  selectedProject: string = null;
 
   chartLabels: any = [];
   chartData: any = [];
@@ -57,7 +60,8 @@ export class BudgetReportSummaryComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   
   constructor(private reportService: ReportService, private errorModal: ErrorModalComponent,
-    private storeService: StoreService, private currencyService: CurrencyService) { }
+    private storeService: StoreService, private currencyService: CurrencyService,
+    private modalService: ModalService) { }
 
   ngOnInit() {
     this.blockUI.start('Loading report...');
@@ -141,8 +145,22 @@ export class BudgetReportSummaryComponent implements OnInit {
     );
   }
 
+  showDetail(id: number) {
+    var filteredProject = this.reportDataList.projects.filter(p => p.id == id);
+    if (filteredProject.length > 0) {
+      this.selectedProject = filteredProject[0].title;
+      this.selectedYearlyDisbursements = filteredProject[0].yearlyDisbursements;
+
+      this.modalService.open('disbursement-info-modal');
+    }
+  }
+
+  closeDetail() {
+    this.modalService.close('disbursement-info-modal');
+  }
+
   printReport() {
-    this.storeService.printSimpleReport('rpt-budget-report', 'Budget report');
+    this.storeService.printReport('rpt-budget-report', 'Budget report');
   }
 
   selectCurrency() {

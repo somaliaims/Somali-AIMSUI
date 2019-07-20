@@ -73,7 +73,7 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let project of reportDataList.projects">
+              <tr title="Click here to view detail" (click)="showDetail(project.id)" *ngFor="let project of reportDataList.projects">
                 <td>{{project.title}}</td>
                 <td>Disbursements</td>
                 <td *ngFor="let d of project.yearlyDisbursements">
@@ -103,7 +103,7 @@
           </table>
           
           <div *ngIf="chartData.length > 0" class="col-md-12 margin-top-30">
-            <div class="offset-3 col-md-6">
+            <div class="offset-2 col-md-8">
                 <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
                 [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
@@ -116,5 +116,47 @@
 
   </block-ui>
 </div>
+
+<jw-modal id="disbursement-info-modal">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-info text-white">Disbursements details for {{selectedProject}}</div>
+        <div class="card-body text-info">
+          <table *ngIf="selectedYearlyDisbursements.length > 0" class="table table-striped">
+            <tr>
+              <th width="20%">&nbsp;</th>
+              <th class="text-center" width="16%" *ngFor="let y of selectedYearlyDisbursements">
+                {{y.year}}
+              </th>
+            </tr>
+            <tr>
+              <td>Actual disbursements</td>
+              <td class="text-center" *ngFor="let d of selectedYearlyDisbursements">
+                {{d.actualDisbursements}}
+              </td>
+            </tr>
+            <tr>
+              <td>Expected disbursements</td>
+              <td class="text-center" *ngFor="let d of selectedYearlyDisbursements">
+                {{d.expectedDisbursements}}
+              </td>
+            </tr>
+            <tr>
+              <td>Total disbursements</td>
+              <td class="text-center" *ngFor="let d of selectedYearlyDisbursements">
+                {{d.disbursements}}
+              </td>
+            </tr>
+          </table>
+          <span *ngIf="selectedYearlyDisbursements.length == 0" class="text-info">
+            <i>No disbursements to show</i>
+          </span>
+        </div>
+      </div><br />
+      <button class="btn btn-info float-right" (click)="closeDetail();">Ok</button>
+    </div>
+  </div>
+</jw-modal>
 
 <error-modal message={{errorMessage}}></error-modal>
