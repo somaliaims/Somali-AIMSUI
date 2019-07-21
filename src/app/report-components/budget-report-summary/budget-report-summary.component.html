@@ -78,7 +78,7 @@
                 <td>{{project.title}}</td>
                 <td>Disbursements</td>
                 <td class="text-center" *ngFor="let d of project.yearlyDisbursements">
-                  {{d.disbursements}}
+                  {{formatNumber(d.disbursements)}}
                 </td>
               </tr>
             </tbody>
@@ -90,14 +90,14 @@
                 <td width="25%"><b>Total</b></td>
                 <td width="15%"><b>Actual disbursements</b></td>
                 <td class="text-center" width="12%" *ngFor="let d of reportDataList.totalYearlyDisbursements">
-                  {{d.totalDisbursements}}
+                  {{formatNumber(d.totalDisbursements)}}
                 </td>
               </tr>
               <tr>
                 <td></td>
                 <td><b>Expected disbursements</b></td>
                 <td class="text-center" *ngFor="let d of reportDataList.totalYearlyDisbursements">
-                  {{d.totalExpectedDisbursements}}
+                  {{formatNumber(d.totalExpectedDisbursements)}}
                 </td>
               </tr>
             </tbody>
@@ -110,6 +110,10 @@
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
         </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="reportDataList && reportDataList.projects && reportDataList.projects == 0">
+          <span class="text-info"><i>No budget data avaialable to show</i></span>
         </div>
     
       </div>
@@ -134,19 +138,19 @@
             <tr>
               <td>Actual disbursements</td>
               <td class="text-center" *ngFor="let d of selectedYearlyDisbursements">
-                {{d.actualDisbursements}}
+                {{formatNumber(d.actualDisbursements)}}
               </td>
             </tr>
             <tr>
               <td>Expected disbursements</td>
               <td class="text-center" *ngFor="let d of selectedYearlyDisbursements">
-                {{d.expectedDisbursements}}
+                {{formatNumber(d.expectedDisbursements)}}
               </td>
             </tr>
             <tr>
               <td>Total disbursements</td>
               <td class="text-center" *ngFor="let d of selectedYearlyDisbursements">
-                {{d.disbursements}}
+                {{formatNumber(d.disbursements)}}
               </td>
             </tr>
           </table>

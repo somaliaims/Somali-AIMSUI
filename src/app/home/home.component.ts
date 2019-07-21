@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '../services/store-service';
 import {Settings} from '../config/settings';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomeComponent implements OnInit {
   infoMessage: string = null;
   showMessage: boolean = false;
   
-  constructor(private storeService: StoreService) { }
+  constructor(private storeService: StoreService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
@@ -23,5 +24,4 @@ export class HomeComponent implements OnInit {
       this.showMessage = false;
     }, Settings.displayMessageTime);
   }
-
 }

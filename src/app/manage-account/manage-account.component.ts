@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user-service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import { ModalService } from '../services/modal.service';
@@ -25,9 +25,12 @@ export class ManageAccountComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router,
     private storeService: StoreService, private modalService: ModalService,
-    private securityService: SecurityHelperService) { }
+    private securityService: SecurityHelperService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    if (!this.securityService.checkIsLoggedIn()) {
+      this.router.navigateByUrl('home');
+    }
   }
 
   showPasswordTab() {
@@ -65,17 +68,13 @@ export class ManageAccountComponent implements OnInit {
     this.btnAccountText = 'Deleting Account...';
     this.userService.deleteUserAccount(this.dModel.password).subscribe(
       data => {
-
-        if (data.success) {
+        if (data) {
           this.storeService
             .newInfoMessage(Messages.ACCOUNT_DELETED);
           this.btnAccountText = 'Setting Environment...';
           this.securityService.clearLoginSession();
-
-          setTimeout(() => {
-            this.router.navigateByUrl('home');
-            location.reload();
-          }, 2000);
+          location.href += "?deleted=true";
+          location.reload();
         } else {
           this.errorMessage = data.message;
           this.isError = true;
