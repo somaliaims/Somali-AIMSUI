@@ -1001,7 +1001,7 @@
                   <span class="text-warning"><i>Closest matching exchange rate found for the provided date is on {{formatToLongDate(funderModel.exRateDated)}}</i></span>
                 </div>
                 <div *ngIf="projectFunderForm.submitted" [hidden]="exchangeRate.valid" class="alert alert-danger">
-                  Enter exchange rate for {{defaultCurrency}} (Max 6 decimal points)
+                  Enter valid exchange rate for {{defaultCurrency}} (Max 6 decimal points)
                 </div>
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
                   Default currency is not set. Please contact administrator
@@ -1378,14 +1378,14 @@
 
               <div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
-                <input type="text" [readonly]="isDisbursementExRateReadonly" pattern="^\d*(\.\d{0,6})?$" class="form-control" id="dexchangeRate"
+                <input type="text" pattern="^\d*(\.\d{0,6})?$" (input)="calculateAmountInDefault(exRateFor.DISBURSEMENT)" [readonly]="isDisbursementExRateReadonly" pattern="^\d*(\.\d{0,6})?$" class="form-control" id="dexchangeRate"
                   [(ngModel)]="disbursementModel.exchangeRate" name="dexchangeRate" maxlength="10"
                   #disbursementExchangeRate #dexchangeRate="ngModel" required />
                   <div *ngIf="disbursementModel.exRateDated">
                     <span class="text-warning"><i>Closest matching exchange rate found for the provided date is on {{formatToLongDate(disbursementModel.exRateDated)}}</i></span>
                   </div>
                 <div *ngIf="disbursementForm.submitted" [hidden]="dexchangeRate.valid" class="alert alert-danger">
-                  Enter exchange rate for {{defaultCurrency}} (Max 6 decimal points)
+                  Enter valid exchange rate for {{defaultCurrency}} (Max 6 decimal points)
                 </div>
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
                   Default currency is not set. Please contact administrator

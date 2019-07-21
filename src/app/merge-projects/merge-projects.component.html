@@ -18,7 +18,7 @@
       <div class="col-md-12">
         <span class="float-right margin-top-10">
           <button class="btn btn-info" [class.disable]="isProjectBtnDisabled"
-            class="btn btn-info btn-lg text-uppercase" type="submit">Merge projects</button>
+            class="btn btn-info btn-lg text-uppercase" type="button" (click)="mergeAndSaveProject()">Merge projects</button>
         </span>
       </div>
     </div>
@@ -95,13 +95,13 @@
                         <tr>
                           <td class="text-right">
                             <b>Start Date: </b>{{project.startDate}}&nbsp;<button id="btnsdate-{{project.id}}"
-                              (click)="enterStartDate($event)" class="btn btn-sm btn-primary">>></button>
+                              (click)="enterStartDate($event)" class="btn btn-sm btn-success">>></button>
                           </td>
                         </tr>
                         <tr>
                           <td class="text-right">
                             <b>End Date: </b>{{project.endDate}}&nbsp;<button id="btnsdate-{{project.id}}"
-                              (click)="enterEndDate($event)" class="btn btn-sm btn-primary">>></button>
+                              (click)="enterEndDate($event)" class="btn btn-sm btn-success">>></button>
                           </td>
                         </tr>
                       </table>
@@ -150,10 +150,10 @@
               <div class="form-group">
                 <label for="title">Start date</label>
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="startDate"
+                  <input [readonly]="true" class="form-control" placeholder="yyyy-mm-dd" type="text" name="startDate"
                     [(ngModel)]="model.startDate" [maxDate]="calendarMaxDate" ngbDatepicker #s="ngbDatepicker" required>
                   <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="s.toggle()" type="button"></button>
+                    <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>
                   </div>
                 </div>
               </div>
@@ -161,10 +161,10 @@
               <div class="form-group">
                 <label for="title">End date</label>
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="endDate"
+                  <input [readonly]="true" class="form-control" placeholder="yyyy-mm-dd" type="text" name="endDate"
                     [(ngModel)]="model.endDate" [maxDate]="calendarMaxDate" ngbDatepicker #e="ngbDatepicker" required>
                   <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
+                    <button class="btn btn-outline-warning calendar" (click)="e.toggle()" type="button"></button>
                   </div>
                 </div>
               </div>

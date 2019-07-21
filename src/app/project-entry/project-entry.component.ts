@@ -1028,7 +1028,7 @@ export class ProjectEntryComponent implements OnInit {
 
     var selectProject = this.iatiProjects.filter(p => p.id == projectId);
     if (selectProject && selectProject.length > 0) {
-      var transactions = selectProject[0].transactions;
+      var transactions = selectProject[0].disbursementTransactions;
       this.disbursementEntryType = 'iati';
       var selectTransaction = transactions.filter(i => i.id == disbursementId);
       if (selectTransaction && selectTransaction.length > 0) {
@@ -1042,6 +1042,7 @@ export class ProjectEntryComponent implements OnInit {
           var dateFormatted = { year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2]) };
           this.disbursementModel.dated = dateFormatted;
         }
+        this.filterExRateSources(this.exRateFor.DISBURSEMENT);
       }
     }
   }
@@ -1058,12 +1059,14 @@ export class ProjectEntryComponent implements OnInit {
       var selectTransaction = disbursements.filter(i => i.id == id);
       if (selectTransaction && selectTransaction.length > 0) {
         this.disbursementModel.amount = selectTransaction[0].amount;
+        this.disbursementModel.currency = selectTransaction[0].currency;
         var dated = selectTransaction[0].dated;
         if (dated && dated.length > 0) {
           var dateArr = dated.split('-');
           var dateFormatted = { year: parseInt(dateArr[0]), month: parseInt(dateArr[1]), day: parseInt(dateArr[2]) };
           this.disbursementModel.dated = dateFormatted;
         }
+        this.filterExRateSources(this.exRateFor.DISBURSEMENT);
       }
     }
   }
@@ -1074,6 +1077,7 @@ export class ProjectEntryComponent implements OnInit {
         if (result && result.projectProfile) {
           var data = result.projectProfile;
           //Setting project data
+          console.log(data);
           this.model.title = data.title;
           this.model.description = data.description;
           var sDate = new Date(data.startDate);

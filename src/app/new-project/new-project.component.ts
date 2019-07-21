@@ -191,8 +191,8 @@ export class NewProjectComponent implements OnInit {
     }
     
     var selectedIds = this.selectedAIMSProjects.map(p => p.id);
-    this.userProjectIds.map(p => p.id).forEach((id) => {
-      if (selectedIds.indexOf(id) == -1) {
+    selectedIds.forEach((id) => {
+      if (this.userProjectIds.map(p => p.id).indexOf(id) == -1) {
         canMerge = false;
       }
     });
