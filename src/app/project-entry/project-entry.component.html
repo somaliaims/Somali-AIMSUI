@@ -180,9 +180,9 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="title">Description</label>
-                  <textarea class="form-control" id="description" [(ngModel)]="model.description" name="description"
-                    #description="ngModel" rows="7" maxlength="10000">
+                  <label for="title">Description <span class="text-info">(Max chars: 2000 Left: {{descriptionLimitLeft}})</span></label>
+                  <textarea class="form-control" id="description" (input)="getDescriptionLimitInfo()" [(ngModel)]="model.description" name="description"
+                    #description="ngModel" rows="7" maxlength="2000">
                       </textarea>
                 </div>
                 <!--<button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
@@ -1583,8 +1583,8 @@
 <error-modal message="{{errorMessage}}"></error-modal>
 
 <project-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
-  [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments"
-  [customFields]="viewProjectFields">
+  [funders]="viewProjectFunders" [disbursements]="viewProjectDisbursements" [implementers]="viewProjectImplementers" 
+  [documents]="viewProjectDocuments" [customFields]="viewProjectFields">
 </project-info-modal>
 
 <projecti-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"

@@ -15,7 +15,7 @@
           <div class="card-body">
 
             <h6 class="text-info"><b>Project data</b></h6>
-            <table class="table table-stripped">
+            <table class="table table-striped">
               <tr>
                 <td><b>Title: </b></td>
                 <td>{{project.title}}</td>
@@ -28,83 +28,73 @@
               </tr>
             </table>
 
-            <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project locations</b></h6>
-              <table *ngIf="locations.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Location</th>
-                </tr>
-                <tr *ngFor="let location of locations">
-                  <td>{{location.name}}</td>
-                </tr>
-              </table>
-              <span class="text-info"><i>No locations found</i></span>
-            </div>
+            <h6 class="text-info margin-top-10"><b>Project locations</b></h6>
+            <table *ngIf="locations.length > 0" class="table table-striped">
+              <tr>
+                <th>Location</th>
+              </tr>
+              <tr *ngFor="let location of locations">
+                <td>{{location.name}}</td>
+              </tr>
+            </table>
+            <span class="text-info"><i>No locations found</i></span>
 
-            <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project sectors</b></h6>
-              <table *ngIf="sectors.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Sector name</th>
-                  <th>Funds percentage</th>
-                </tr>
-                <tr *ngFor="let sector of sectors">
-                  <td>{{sector.sectorName}}</td>
-                  <td>{{sector.fundsPercentage}}</td>
-                </tr>
-              </table>
-              <span class="text-info" *ngIf="sectors.length == 0">
-                <i>No sectors found</i>
-              </span>
-            </div>
+            <h6 class="text-info margin-top-10"><b>Project sectors</b></h6>
+            <table *ngIf="sectors.length > 0" class="table table-striped">
+              <tr>
+                <th>Sector name</th>
+                <th class="text-center">Funds percentage</th>
+              </tr>
+              <tr *ngFor="let sector of sectors">
+                <td>{{sector.sectorName}}</td>
+                <td class="text-center">{{sector.fundsPercentage}}</td>
+              </tr>
+            </table>
+            <span class="text-info" *ngIf="sectors.length == 0">
+              <i>No sectors found</i>
+            </span>
 
 
-            <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Funders</b></h6>
-              <table *ngIf="funders.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Funder</th>
-                </tr>
-                <tr *ngFor="let org of funders">
-                  <td>{{org.name}}</td>
-                </tr>
-              </table>
-              <span class="text-info" *ngIf="funders.length == 0">
-                <i>No funders found</i>
-              </span>
-            </div>
+            <h6 class="text-info margin-top-10"><b>Funders</b></h6>
+            <table *ngIf="funders.length > 0" class="table table-striped">
+              <tr>
+                <th>Funder</th>
+              </tr>
+              <tr *ngFor="let org of funders">
+                <td>{{org.name}}</td>
+              </tr>
+            </table>
+            <span class="text-info" *ngIf="funders.length == 0">
+              <i>No funders found</i>
+            </span>
 
-            <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Implementers</b></h6>
-              <table *ngIf="implementers.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Implementer</th>
-                </tr>
-                <tr *ngFor="let org of funders">
-                  <td>{{org.name}}</td>
-                </tr>
-              </table>
-              <span class="text-info" *ngIf="funders.length == 0">
-                <i>No implementers found</i>
-              </span>
-            </div>
+            <h6 class="text-info margin-top-10"><b>Implementers</b></h6>
+            <table *ngIf="implementers.length > 0" class="table table-striped">
+              <tr>
+                <th>Implementer</th>
+              </tr>
+              <tr *ngFor="let org of funders">
+                <td>{{org.name}}</td>
+              </tr>
+            </table>
+            <span class="text-info" *ngIf="funders.length == 0">
+              <i>No implementers found</i>
+            </span>
 
-            <div class="col-md-12 margin-top-10">
-              <h6 class="text-info"><b>Project documents</b></h6>
-              <table *ngIf="documents.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Document title</th>
-                  <th>Url</th>
-                </tr>
-                <tr *ngFor="let document of documents">
-                  <td>{{document.documentTitle}}</td>
-                  <td>{{document.documentUrl}}</td>
-                </tr>
-              </table>
-              <span class="text-info" *ngIf="documents.length == 0">
-                <i>No documents found</i>
-              </span>
-            </div>
+            <h6 class="text-info margin-top-10"><b>Project documents</b></h6>
+            <table *ngIf="documents.length > 0" class="table table-striped">
+              <tr>
+                <th>Document title</th>
+                <th>Url</th>
+              </tr>
+              <tr *ngFor="let document of documents">
+                <td>{{document.documentTitle}}</td>
+                <td>{{document.documentUrl}}</td>
+              </tr>
+            </table>
+            <span class="text-info" *ngIf="documents.length == 0">
+              <i>No documents found</i>
+            </span>
 
           </div>
         </div>

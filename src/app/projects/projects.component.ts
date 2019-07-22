@@ -218,8 +218,10 @@ export class ProjectsComponent implements OnInit {
     this.blockUI.start('Searching Projects...');
     this.projectService.searchProjectsViewByCriteria(searchModel).subscribe(
       data => {
+        if (data) {
+          this.projectsList = data;  
+        }
         this.blockUI.stop();
-        this.projectsList = data;
       },
       error => {
         console.log(error);

@@ -27,6 +27,8 @@ export class ProjectInfoModalComponent implements OnInit {
   @Input()
   funders: any = [];
   @Input()
+  disbursements: any = [];
+  @Input()
   implementers: any = [];
   @Input()
   documents: any = [];
@@ -48,6 +50,10 @@ export class ProjectInfoModalComponent implements OnInit {
 
   displayFieldValues(json: any) {
     return this.storeService.parseAndDisplayJsonAsString(json);
+  }
+
+  getLongDateString(dated) {
+    return this.storeService.getLongDateString(dated);
   }
 
 }

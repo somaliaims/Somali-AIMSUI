@@ -105,6 +105,8 @@ export class ProjectEntryComponent implements OnInit {
   calendarMaxDate: any = {};
   isEditProjectAllowed: boolean = false;
   isFocusExRate: boolean = false;
+  descriptionLimit: number = 2000;
+  descriptionLimitLeft: number = 2000;
 
   userProjectIds: any = [];
   userApprovedProjects: any[];
@@ -558,6 +560,7 @@ export class ProjectEntryComponent implements OnInit {
     if (selectedProject && selectedProject.length > 0) {
       this.model.description = selectedProject[0].description.trim();
     }
+    this.getDescriptionLimitInfo();
   }
 
   enterStartDate(e) {
@@ -610,6 +613,7 @@ export class ProjectEntryComponent implements OnInit {
     if (selectedProject) {
       this.model.description = selectedProject[0].description.trim();
     }
+    this.getDescriptionLimitInfo();
   }
 
   viewCurrentProject() {
@@ -630,6 +634,7 @@ export class ProjectEntryComponent implements OnInit {
     this.viewProjectSectors = this.currentProjectSectorsList;
     this.viewProjectImplementers = this.currentProjectImplementersList;
     this.viewProjectDocuments = this.currentProjectDocumentsList;
+    this.viewProjectDisbursements = this.currentProjectDisbursementsList;
     this.viewProjectFields = this.currentProjectFieldsList;
     this.projectInfoModal.openModal();
   }
@@ -2853,6 +2858,10 @@ export class ProjectEntryComponent implements OnInit {
 
   displayNull(val: string) {
     return val ? val : 'N/a';
+  }
+
+  getDescriptionLimitInfo() {
+    this.descriptionLimitLeft = (this.descriptionLimit - this.model.description.length);
   }
 
 }
