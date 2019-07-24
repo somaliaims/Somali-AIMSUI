@@ -125,30 +125,32 @@ export class BudgetReportSummaryComponent implements OnInit {
           }
 
           if (this.reportDataList.totalYearlyDisbursements) {
-            this.reportDataList.projects.forEach((d) => {
-              d.showDetail = false;
-            });
-            var yearlyDisbursements = this.reportDataList.totalYearlyDisbursements;
-            this.chartLabels = yearlyDisbursements.map(y => y.year);
-            var disbursements = yearlyDisbursements.map(y => y.totalDisbursements);
-            var expectedDisbursements = yearlyDisbursements.map(y => y.totalExpectedDisbursements);
-          
-            this.chartData.push({
-              data: disbursements,
-              label: 'Total disbursements',
-              stack: 'Stack 0'
-            });
-
-            this.chartData.push({
-              data: expectedDisbursements,
-              label: 'Total expected disbursements',
-              stack: 'Stack 0'
-            });
+            this.setupChartData();
           }
         }
         this.blockUI.stop();
       }
     );
+  }
+
+  setupChartData() {
+    this.chartData = [];
+    var yearlyDisbursements = this.reportDataList.totalYearlyDisbursements;
+    this.chartLabels = yearlyDisbursements.map(y => y.year);
+    var disbursements = yearlyDisbursements.map(y => y.totalDisbursements);
+    var expectedDisbursements = yearlyDisbursements.map(y => y.totalExpectedDisbursements);
+
+    this.chartData.push({
+      data: disbursements,
+      label: 'Total disbursements',
+      stack: 'Stack 0'
+    });
+
+    this.chartData.push({
+      data: expectedDisbursements,
+      label: 'Total expected disbursements',
+      stack: 'Stack 0'
+    });
   }
 
   showDetail(id: number) {
@@ -224,6 +226,8 @@ export class BudgetReportSummaryComponent implements OnInit {
             t.totalDisbursements = Math.round(parseFloat((t.totalDisbursements * calculatedRate).toFixed(2)));
             t.totalExpectedDisbursements = Math.round(parseFloat((t.totalExpectedDisbursements * calculatedRate).toFixed(2)));
           });
+
+          this.setupChartData();
       }
     }
   }
