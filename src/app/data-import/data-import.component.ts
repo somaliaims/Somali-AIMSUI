@@ -17,7 +17,7 @@ export class DataImportComponent implements OnInit {
   ngOnInit() {
   }
  
-  public uploadFile = (files) => {
+  uploadFile(files){
     if (files.length === 0) {
       return;
     }

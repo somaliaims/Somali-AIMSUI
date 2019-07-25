@@ -27,9 +27,6 @@
               <tr *ngFor="let project of projectsList; let number = index">
                 <td>
                   <span class="float-left">
-                    <!--{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="aproject-{{project.id}}" (click)="viewProjectDetail($event)" class="text-info">View
-                      Details</a><br />-->
                       <span class="badge badge-info">{{number + 1}}</span> {{project.title}}
                   </span>
                 </td>

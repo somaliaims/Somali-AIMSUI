@@ -63,6 +63,7 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
 import { TimeTrendReportComponent } from './report-components/time-trend-report/time-trend-report.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BudgetReportSummaryComponent } from './report-components/budget-report-summary/budget-report-summary.component';
+import { DataImportComponent } from './data-import/data-import.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -137,6 +138,7 @@ export const routes: Routes = [
   { path: 'manage-email-message/:{id}', component: ManageEmailMessageComponent, data: { isForEdit: true } },
   { path: 'project-membership/:{id}', component: ProjectMembershipComponent },
   { path: 'membership-requests', component: MembershipRequestsComponent },
+  { path: 'data-import', component: DataImportComponent },
   { path: 'contact', component: ContactFormComponent },
   { path: '**', component: NotFoundComponent }
 ];

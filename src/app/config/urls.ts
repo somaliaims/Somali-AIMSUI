@@ -1,8 +1,8 @@
 export const urls = {
-	baseUrl: "http://104.140.103.166:7000/api/",
-	excelFilesUrl: "http://104.140.103.166:7000/ExcelFiles/",
-	//baseUrl: "http://localhost:60815/api/",
-	//excelFilesUrl: "http://localhost:60815/ExcelFiles/",
+	//baseUrl: "http://104.140.103.166:7000/api/",
+	//excelFilesUrl: "http://104.140.103.166:7000/ExcelFiles/",
+	baseUrl: "http://localhost:60815/api/",
+	excelFilesUrl: "http://localhost:60815/ExcelFiles/",
 	getToken: "User/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
