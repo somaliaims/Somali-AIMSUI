@@ -28,9 +28,9 @@
                 <button type="button" class="btn btn-lg btn-info btn-block text-uppercase" (click)="file.click()">Click
                   and select file</button>
               </div>
-              <div class="col-md-4">
+              <div class="row">
                 <span class="upload" *ngIf="progress > 0">
-                  {{progress}}%
+                  Uploaded {{progress}}%
                 </span>
                 <span class="upload" *ngIf="message">
                   {{message}}
