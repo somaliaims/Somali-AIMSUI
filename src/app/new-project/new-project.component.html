@@ -251,7 +251,7 @@
                         </span>
   
                         <span class="float-right margin-right-15">
-                          <button [class.disable]="checkIfProjectPermittedToUser(project.id)" type="button"
+                          <button *ngIf="!checkIfProjectPermittedToUser(project.id)" type="button"
                             id="raims-{{project.id}}" class="btn btn-warning btn-sm"
                             (click)="applyForProjectMembership($event)">Request permission</button>&nbsp;
   

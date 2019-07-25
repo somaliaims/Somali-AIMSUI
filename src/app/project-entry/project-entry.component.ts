@@ -105,8 +105,8 @@ export class ProjectEntryComponent implements OnInit {
   calendarMaxDate: any = {};
   isEditProjectAllowed: boolean = false;
   isFocusExRate: boolean = false;
-  descriptionLimit: number = 2000;
-  descriptionLimitLeft: number = 2000;
+  descriptionLimit: number = 4000;
+  descriptionLimitLeft: number = 4000;
 
   userProjectIds: any = [];
   userApprovedProjects: any[];

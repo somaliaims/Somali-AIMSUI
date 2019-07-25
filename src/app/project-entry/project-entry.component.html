@@ -180,9 +180,9 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="title">Description <span class="text-info">(Max chars: 2000 Left: {{descriptionLimitLeft}})</span></label>
+                  <label for="title">Description <span class="text-info">(Max chars: {{descriptionLimit}} Left: {{descriptionLimitLeft}})</span></label>
                   <textarea class="form-control" id="description" (input)="getDescriptionLimitInfo()" [(ngModel)]="model.description" name="description"
-                    #description="ngModel" rows="7" maxlength="2000">
+                    #description="ngModel" rows="7" maxlength="{{descriptionLimit}}">
                       </textarea>
                 </div>
                 <!--<button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"

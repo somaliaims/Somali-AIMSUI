@@ -588,6 +588,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.unApproveProjectMembership);
     }
 
+    getExcelImportUrl() {
+        return (this.BASE_URL + urlsList.urls.importExcelDataUrl);
+    }
+
     getContactUrl() {
         return (this.BASE_URL + urlsList.urls.contactUrl);
     }
