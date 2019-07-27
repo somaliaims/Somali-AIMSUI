@@ -12,8 +12,15 @@ export class FileUploadService {
     constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService,
         private storeService: StoreService) { }
 
-    uploadExcelFile(formData) {
-        var url = this.urlHelper.getExcelImportUrl();
+    uploadOldExcelFile(formData) {
+        var url = this.urlHelper.getOldExcelImportUrl();
+        return this.httpClient.post(url, 
+            formData, {reportProgress: true, observe: 'events'}
+        );
+    }
+
+    uploadNewExcelFile(formData) {
+        var url = this.urlHelper.getNewExcelImportUrl();
         return this.httpClient.post(url, 
             formData, {reportProgress: true, observe: 'events'}
         );

@@ -21,19 +21,35 @@
             </div>
 
             <div>
-              <h5 class="card-title text-center">Upload data file</h5>
+              <h5 class="card-title text-center">Upload data file 2017</h5>
               <div class="row">
-                <input type="file" accept=".xlsx" #file placeholder="Choose file" (change)="uploadFile(file.files)"
+                <input type="file" accept=".xlsx" #fileold placeholder="Choose file" (change)="uploadFileOld(fileold.files)"
                   style="display:none;">
-                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase" (click)="file.click()">Click
+                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase" (click)="fileold.click()">Click
                   and select file</button>
               </div>
               <div class="row">
-                <span class="upload" *ngIf="progress > 0">
-                  Uploaded {{progress}}%
+                <span class="upload" *ngIf="progressOld > 0">
+                  Uploaded {{progressOld}}%
                 </span>
-                <span class="upload" *ngIf="message">
-                  {{message}}
+                <span class="upload" *ngIf="messageOld">
+                  {{messageOld}}
+                </span>
+              </div>
+
+              <h5 class="card-title text-center margin-top-50">Upload data file 2018</h5>
+              <div class="row">
+                <input type="file" accept=".xlsx" #filenew placeholder="Choose file" (change)="uploadFileNew(filenew.files)"
+                  style="display:none;">
+                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase" (click)="filenew.click()">Click
+                  and select file</button>
+              </div>
+              <div class="row">
+                <span class="upload" *ngIf="progressNew > 0">
+                  Uploaded {{progressNew}}%
+                </span>
+                <span class="upload" *ngIf="messageNew">
+                  {{messageNew}}
                 </span>
               </div>
             </div>
