@@ -379,6 +379,7 @@ export class ProjectEntryComponent implements OnInit {
     this.isIatiLoading = true;
     this.iatiService.extractProjectsByIds(modelArr).subscribe(
       data => {
+        console.log(data);
         this.iatiProjects = data;
         if (this.iatiProjects.length > 0) {
           this.iatiProjects.forEach(function (project) {
