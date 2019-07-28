@@ -834,9 +834,32 @@ export class SectorReportComponent implements OnInit {
           });
         }
       });
-
       this.getGrandTotalFundingForSector();
       this.getGrandTotalDisbursementForSector();
+
+      this.showChart = false;
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
+          this.chartData = [];
+          var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+          var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
+          this.chartData.push(chartData);
+          this.doughnutChartData.push(sectorFunding);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
+      }
+
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
+          this.chartData = [];
+          var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+          var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
+          this.chartData.push(chartData);
+          this.doughnutChartData.push(sectorDisbursements);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
+      }
+
+      setTimeout(() => {
+        this.showChart = true;
+      }, 1000);
+
     }
   }
 

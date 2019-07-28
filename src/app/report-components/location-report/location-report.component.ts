@@ -638,6 +638,29 @@ export class LocationReportComponent implements OnInit {
 
       this.getGrandTotalFundingForLocation();
       this.getGrandTotalDisbursementForLocation();
+
+      this.showChart = false;
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
+          this.chartData = [];
+          var locationFunding = this.reportDataList.locationProjectsList.map(p => p.totalFunding);
+          var chartData = { data: locationFunding, label: this.dataOptionLabels.FUNDING };
+          this.chartData.push(chartData);
+          this.doughnutChartData.push(locationFunding);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
+      }
+
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
+          this.chartData = [];
+          var locationDisbursements = this.reportDataList.locationProjectsList.map(p => p.totalDisbursements);
+          var chartData = { data: locationDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
+          this.chartData.push(chartData);
+          this.doughnutChartData.push(locationDisbursements);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
+      }
+
+      setTimeout(() => {
+        this.showChart = true;
+      }, 1000);
     }
   }
 
@@ -664,10 +687,10 @@ export class LocationReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
         if (isDataExists.length == 0) {
-          var sectorFunding = this.reportDataList.locationProjectsList.map(p => p.totalFunding);
-          var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
+          var locationFunding = this.reportDataList.locationProjectsList.map(p => p.totalFunding);
+          var chartData = { data: locationFunding, label: this.dataOptionLabels.FUNDING };
           this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorFunding);
+          this.doughnutChartData.push(locationFunding);
           this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
         }
       } else {
@@ -678,10 +701,10 @@ export class LocationReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorDisbursements = this.reportDataList.locationProjectsList.map(p => p.totalDisbursements);
-          var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
+          var locationDisbursements = this.reportDataList.locationProjectsList.map(p => p.totalDisbursements);
+          var chartData = { data: locationDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
           this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorDisbursements);
+          this.doughnutChartData.push(locationDisbursements);
           this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
