@@ -332,7 +332,7 @@
               <div
                 *ngIf="(sectorModel.sectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId"
                 class="form-group">
-                <label for="sectorName">Sector mappings</label>
+                <label for="sectorName">{{defaultSectorType}}</label>
                 <select class="form-control" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
                   #mappingId="ngModel" required>
                   <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>

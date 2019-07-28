@@ -24,6 +24,7 @@ import { startWith, map } from 'rxjs/operators';
 import { CustomeFieldService } from '../services/custom-field.service';
 import { Settings } from '../config/settings';
 import { FundingTypeService } from '../services/funding-type.service';
+import { SectorTypeService } from '../services/sector-types.service';
 
 @Component({
   selector: 'app-project-entry',
@@ -98,6 +99,7 @@ export class ProjectEntryComponent implements OnInit {
   implementerEntryType: string = 'aims';
   disbursementEntryType: string = 'aims';
   defaultCurrency: string = null;
+  defaultSectorType: string = null;
   defaultCurrencyRate: number = 0;
   nationalCurrency: string = null;
   viewProject: any = {};
@@ -247,7 +249,8 @@ export class ProjectEntryComponent implements OnInit {
     private errorModal: ErrorModalComponent,
     private currencyService: CurrencyService,
     private customFieldService: CustomeFieldService,
-    private fundingTypeService: FundingTypeService
+    private fundingTypeService: FundingTypeService,
+    private sectorTypeService: SectorTypeService
   ) { }
 
   ngOnInit() {
@@ -353,6 +356,7 @@ export class ProjectEntryComponent implements OnInit {
     this.loadLocationsList();
     this.loadOrganizationsList();
     this.loadDefaultCurrency();
+    this.loadDefaultSectorType();
     this.loadNationalCurrency();
     this.loadActiveCustomFields();
     this.loadFundingTypes();
@@ -379,22 +383,23 @@ export class ProjectEntryComponent implements OnInit {
     this.isIatiLoading = true;
     this.iatiService.extractProjectsByIds(modelArr).subscribe(
       data => {
-        console.log(data);
-        this.iatiProjects = data;
-        if (this.iatiProjects.length > 0) {
-          this.iatiProjects.forEach(function (project) {
-            project.isFunderVisible = true;
-            project.isImplementerVisible = true;
-            project.isBudgetVisible = false;
-            project.isTransactionVisible = false;
-          });
+        if (data) {
+          this.iatiProjects = data;
+          if (this.iatiProjects.length > 0) {
+            this.iatiProjects.forEach(function (project) {
+              project.isFunderVisible = true;
+              project.isImplementerVisible = true;
+              project.isBudgetVisible = false;
+              project.isTransactionVisible = false;
+            });
+          }
+          this.isIatiLoading = false;
         }
-        this.isIatiLoading = false;
       },
       error => {
         this.isIatiLoading = false;
       }
-    )
+    );
   }
 
   loadUserApprovedProjects() {
@@ -411,10 +416,9 @@ export class ProjectEntryComponent implements OnInit {
     this.isAimsLoading = true;
     this.projectService.extractProjectsByIds(modelArr).subscribe(
       data => {
-        this.aimsProjects = data;
-        this.isAimsLoading = false;
-      },
-      error => {
+        if (data) {
+          this.aimsProjects = data;
+        }
         this.isAimsLoading = false;
       }
     );
@@ -469,6 +473,16 @@ export class ProjectEntryComponent implements OnInit {
         }
       }
     );
+  }
+
+  loadDefaultSectorType() {
+    this.sectorTypeService.getDefaultSectorType().subscribe(
+      data => {
+        if (data) {
+          this.defaultSectorType = data.typeName;
+        }
+      }
+    )
   }
 
   loadNationalCurrency() {

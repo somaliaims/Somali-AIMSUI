@@ -239,6 +239,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.emailMessageUrl + '/' + id);
     }
 
+    getDefaultSectorTypeUrl() {
+        return (this.BASE_URL + urlsList.urls.defaultSectorTypeUrl);
+    }
+
     getSingleSectorTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getSectorType + id);
     }
