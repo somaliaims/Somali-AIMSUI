@@ -308,16 +308,24 @@
                 </div>
               </div>
 
-              <div *ngIf="sectorEntryType == 'aims'" class="form-group">
-                <label for="sectorId">Sector</label>
-                <select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
+              <div [class.disable]="sectorModel.sectorTypeId == null" *ngIf="sectorEntryType == 'aims'" class="form-group">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Enter/Select sector" aria-label="Sector" [matAutocomplete]="auto"
+                  name="sector" #sector="ngModel" [(ngModel)]="sectorModel.sectorObj" (ngModelChange)="showSectorMappings()">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySectorFn.bind(this)">
+                    <mat-option *ngFor="let sector of typeSectorsList" [value]="sector">
+                      <span>{{sector.sectorName}}</span>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <!--<select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
                   #sectorId="ngModel" (change)="showSectorMappings()" required>
                   <option value="null">--Select sector--</option>
                   <option *ngFor="let sector of typeSectorsList" [value]="sector.id">{{sector.sectorName}}</option>
                 </select>
                 <div *ngIf="projectSectorForm.submitted" [hidden]="sectorId.valid" class="alert alert-danger">
                   Sector is required
-                </div>
+                </div>-->
               </div>
 
               <div *ngIf="sectorEntryType == 'iati'" class="form-group">

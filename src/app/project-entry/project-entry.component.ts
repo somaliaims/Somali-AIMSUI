@@ -210,7 +210,7 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   model = { id: 0, title: '', startDate: null, endDate: null, description: null };
-  sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, mappingId: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
+  sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, mappingId: null, sectorObj: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = { id: 0, projectId: 0, funder: null, dated: null, exRateSource: null, 
@@ -792,6 +792,7 @@ export class ProjectEntryComponent implements OnInit {
         this.isSectorVisible = true;
         this.sectorModel.fundsPercentage = selectSector[0].fundsPercentage;
         this.sectorModel.sectorTypeId = selectSector[0].sectorTypeId;
+        this.sectorModel.sectorId = selectSector[0].id;
         this.showSectorsForType(selectSector[0].id);
       }
     }
@@ -1232,6 +1233,13 @@ export class ProjectEntryComponent implements OnInit {
       this.showMappingManual = true;
       this.typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
       if (setSectorId != 0) {
+        var selectSector = this.sectorsList.filter(s => s.id == setSectorId);
+        if (selectSector.length > 0) {
+          this.sectorModel.sectorObj = selectSector[0];
+          this.selectedSectorId = setSectorId;
+          this.sectorModel.sectorId = setSectorId;
+          this.showSectorMappings();
+        }
         this.sectorModel.sectorId = setSectorId;
       }
     }
