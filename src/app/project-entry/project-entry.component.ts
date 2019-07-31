@@ -100,6 +100,7 @@ export class ProjectEntryComponent implements OnInit {
   disbursementEntryType: string = 'aims';
   defaultCurrency: string = null;
   defaultSectorType: string = null;
+  defaultSectorTypeId: number = 0;
   defaultCurrencyRate: number = 0;
   nationalCurrency: string = null;
   viewProject: any = {};
@@ -479,6 +480,7 @@ export class ProjectEntryComponent implements OnInit {
     this.sectorTypeService.getDefaultSectorType().subscribe(
       data => {
         if (data) {
+          this.defaultSectorTypeId = data.id;
           this.defaultSectorType = data.typeName;
         }
       }
@@ -1503,6 +1505,9 @@ export class ProjectEntryComponent implements OnInit {
     if (this.sectorEntryType == 'iati') {
       var foundSector = this.sectorsList.filter(s => s.sectorName.toLowerCase().trim() == this.sectorModel.sectorName.toLowerCase().trim());
       if (foundSector.length > 0) {
+        if (foundSector[0].sectorTypeId == this.defaultSectorTypeId) {
+          this.sectorModel.mappingId = 0;
+        }
         var iatiSectorModel = {
           sectorTypeId: foundSector[0].sectorTypeId,
           sectorName: this.sectorModel.sectorName,
@@ -1514,6 +1519,7 @@ export class ProjectEntryComponent implements OnInit {
         this.sectorService.addSectorWithMapping(iatiSectorModel).subscribe(
           data => {
             if (data) {
+              projectSectorModel.sectorId = iatiSectorModel.sectorId;
               this.addProjectSector(projectSectorModel);
             } else {
               this.blockUI.stop();
