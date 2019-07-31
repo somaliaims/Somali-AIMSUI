@@ -36,6 +36,7 @@ export class ProjectEntryComponent implements OnInit {
   isExRateAutoConvert = false;
   filteredOrganizations: Observable<Organization[]>;
   filteredImplementers: Observable<Organization[]>;
+  filteredSectors: Observable<Sector[]>;
   activeProjectId: number = 0;
   selectedSectorId: number = 0;
   selectedFunderId: number = 0;
@@ -445,6 +446,7 @@ export class ProjectEntryComponent implements OnInit {
         if (data) {
           this.sectorsList = data;
           this.typeSectorsList = [];
+          this.filteredSectors = this.typeSectorsList;
           this.defaultSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.primarySectorTypeId);
         }
       },
@@ -798,6 +800,11 @@ export class ProjectEntryComponent implements OnInit {
         this.showSectorsForType(selectSector[0].id);
       }
     }
+  }
+
+  filterSector() {
+    this.filteredSectors = this.typeSectorsList.filter(s => 
+      s.sectorName.toLowerCase().includes(this.sectorModel.sectorObj))
   }
 
   enterIATILocation(e) {
@@ -1234,6 +1241,7 @@ export class ProjectEntryComponent implements OnInit {
       this.showMappingAuto = false;
       this.showMappingManual = true;
       this.typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
+      this.filteredSectors = this.typeSectorsList;
       if (setSectorId != 0) {
         var selectSector = this.sectorsList.filter(s => s.id == setSectorId);
         if (selectSector.length > 0) {
@@ -1467,6 +1475,20 @@ export class ProjectEntryComponent implements OnInit {
       }
     }
 
+    if (this.sectorEntryType == 'aims') {
+      if (this.selectedSectorId != 0) {
+        var selectSector = this.sectorsList.filter(s => s.id == this.selectedSectorId);
+        if (selectSector.length > 0) {
+          var sectorName = selectSector[0].sectorName;
+          if (sectorName != this.sectorModel.sectorObj.sectorName) {
+            this.errorMessage = 'Select a valid sector';
+            this.errorModal.openModal();
+            return false;
+          }
+        }
+      }
+    }
+
     if (this.currentProjectSectorsList.length > 0) {
       var percentageEntered = this.calculateSectorPercentage();
       var enteredPercentage = this.sectorModel.fundsPercentage;
@@ -1519,7 +1541,7 @@ export class ProjectEntryComponent implements OnInit {
         this.sectorService.addSectorWithMapping(iatiSectorModel).subscribe(
           data => {
             if (data) {
-              projectSectorModel.sectorId = iatiSectorModel.sectorId;
+              projectSectorModel.sectorId = iatiSectorModel.mappingSectorId;
               this.addProjectSector(projectSectorModel);
             } else {
               this.blockUI.stop();

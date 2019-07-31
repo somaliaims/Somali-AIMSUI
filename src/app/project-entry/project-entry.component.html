@@ -207,7 +207,7 @@
           <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
               <h6 class="card-title text-center">Source projects</h6>
-              <table class="table table-bordered">
+              <table class="table table-bordered iati-box">
                 <tr *ngFor="let project of aimsProjects">
                   <td>
                     <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
@@ -311,9 +311,9 @@
               <div [class.disable]="sectorModel.sectorTypeId == null" *ngIf="sectorEntryType == 'aims'" class="form-group">
                 <mat-form-field class="example-full-width">
                   <input matInput placeholder="Enter/Select sector" aria-label="Sector" [matAutocomplete]="auto"
-                  name="sector" #sector="ngModel" [(ngModel)]="sectorModel.sectorObj" (ngModelChange)="showSectorMappings()">
+                  name="sector" #sector="ngModel" [(ngModel)]="sectorModel.sectorObj" (ngModelChange)="filterSector()">
                   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySectorFn.bind(this)">
-                    <mat-option *ngFor="let sector of typeSectorsList" [value]="sector">
+                    <mat-option *ngFor="let sector of filteredSectors" [value]="sector">
                       <span>{{sector.sectorName}}</span>
                     </mat-option>
                   </mat-autocomplete>

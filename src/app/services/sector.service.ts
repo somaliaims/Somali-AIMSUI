@@ -28,7 +28,7 @@ export class SectorService {
       catchError(this.storeService.handleError<any>('Sector Children')));
   }
 
-  searchSectors(filter: { name: string } = { name: '' }, page = 1): Observable<Sector[]> {
+  /*searchSectors(filter: { name: string } = { name: '' }, page = 1): Observable<Sector[]> {
     var url = this.urlHelper.getSearchSectorsUrl(name);
     return this.httpClient.get<Sector[]>(url)
       .pipe(
@@ -41,7 +41,7 @@ export class SectorService {
           return response;
         })
       );
-  }
+  }*/
 
   filterSectors(criteria: string) {
     var url = this.urlHelper.getSearchSectorsUrl(criteria);
