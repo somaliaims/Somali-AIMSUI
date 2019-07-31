@@ -1346,6 +1346,7 @@ export class ProjectEntryComponent implements OnInit {
     if (sector) {
       this.selectedSectorId = sector.id;
       this.sectorModel.sectorName = sector.sectorName;
+      this.sectorModel.sectorId = sector.id;
       if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
         this.getSectorMappings();
       }
@@ -1475,26 +1476,32 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    if (this.sectorModel.sectorName != null && this.sectorModel.sectorName != '') {
+    /*if (this.sectorModel.sectorName != null && this.sectorModel.sectorName != '') {
       var isSectorExists = this.currentProjectSectorsList.filter(s => s.sector.toLowerCase() == this.sectorModel.sectorName.toLowerCase());
       if (isSectorExists.length > 0) {
         this.errorMessage = 'Selected sector' + Messages.ALREADY_IN_LIST;
         this.errorModal.openModal();
         return false;
       }
-    }
+    }*/
 
     if (this.sectorEntryType == 'aims') {
-      if (this.selectedSectorId != 0) {
-        var selectSector = this.sectorsList.filter(s => s.id == this.selectedSectorId);
+      if (this.sectorModel.sectorId != 0) {
+        var selectSector = this.sectorsList.filter(s => s.id == this.sectorModel.sectorId);
         if (selectSector.length > 0) {
           var sectorName = selectSector[0].sectorName;
-          if (sectorName != this.sectorModel.sectorObj.sectorName) {
-            this.errorMessage = 'Select a valid sector';
-            this.errorModal.openModal();
-            return false;
+          if (typeof this.sectorModel.sectorObj == 'string') {
+            if (sectorName != this.sectorModel.sectorObj) {
+              this.errorMessage = 'Select a valid sector from list';
+              this.errorModal.openModal();
+              return false;
+            }
           }
         }
+      } else {
+        this.errorMessage = 'Select a sector from list';
+        this.errorModal.openModal();
+        return false;
       }
     }
 
