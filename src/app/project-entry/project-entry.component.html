@@ -205,7 +205,7 @@
 
         <div class="col-md-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body">
+            <div class="card-body iati-box">
               <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered iati-box">
                 <tr *ngFor="let project of aimsProjects">
@@ -338,7 +338,7 @@
               </div>
 
               <div
-                *ngIf="(sectorModel.sectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId"
+                *ngIf="(selectedSectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId"
                 class="form-group">
                 <label for="sectorName">{{defaultSectorType}}</label>
                 <select class="form-control" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
@@ -758,7 +758,7 @@
       <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
         <div class="col-md-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body">
+            <div class="card-body iati-box">
               <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
@@ -1074,7 +1074,7 @@
       <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
         <div class="col-md-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body">
+            <div class="card-body iati-box">
               <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">

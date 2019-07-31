@@ -215,13 +215,16 @@ export class ProjectEntryComponent implements OnInit {
   sectorModel = { projectId: 0, sectorTypeId: null, sectorId: null, mappingId: null, sectorObj: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
-  funderModel = { id: 0, projectId: 0, funder: null, dated: null, exRateSource: null, 
+  funderModel = {
+    id: 0, projectId: 0, funder: null, dated: null, exRateSource: null,
     fundingTypeId: null, funderId: null, amount: 0, currency: null, exchangeRate: 0,
     amountInDefaultCurrency: 0, exRateDated: null
   };
   implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: null };
-  disbursementModel = { id: 0, projectId: 0, dated: null, formattedDate: null, amount: 0.0, currency: null, 
-    exchangeRate: 0, exRateSource: null, amountInDefaultCurrency: 0, exRateDated: null };
+  disbursementModel = {
+    id: 0, projectId: 0, dated: null, formattedDate: null, amount: 0.0, currency: null,
+    exchangeRate: 0, exRateSource: null, amountInDefaultCurrency: 0, exRateDated: null
+  };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
 
   displayTabs: any = [
@@ -332,7 +335,7 @@ export class ProjectEntryComponent implements OnInit {
       }
     }
 
-    
+
     this.currencyService.getCurrenciesList().subscribe(
       data => {
         this.currencyList = data;
@@ -805,7 +808,7 @@ export class ProjectEntryComponent implements OnInit {
   filterSector() {
     var filterValue = (this.sectorModel.sectorObj && (typeof this.sectorModel.sectorObj == 'string')) ? this.sectorModel.sectorObj.toLowerCase() : this.sectorModel.sectorObj;
     if (typeof filterValue == 'string') {
-      this.filteredSectors = this.typeSectorsList.filter(s => 
+      this.filteredSectors = this.typeSectorsList.filter(s =>
         s.sectorName.toLowerCase().indexOf(filterValue) != -1);
     }
   }
@@ -1339,10 +1342,13 @@ export class ProjectEntryComponent implements OnInit {
     return organization ? organization.organizationName : undefined;
   }
 
-  /*Project sectors filtering and display functions*/
   displaySectorFn(sector?: Sector): string | undefined {
     if (sector) {
       this.selectedSectorId = sector.id;
+      this.sectorModel.sectorName = sector.sectorName;
+      if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
+        this.getSectorMappings();
+      }
     } else {
       this.selectedSectorId = 0;
     }
@@ -1526,6 +1532,10 @@ export class ProjectEntryComponent implements OnInit {
       fundsPercentage: this.sectorModel.fundsPercentage,
     };
 
+    if (this.sectorModel.sectorTypeId == this.defaultSectorTypeId) {
+      projectSectorModel.sectorId = this.selectedSectorId;
+    }
+
     this.blockUI.start('Saving Sector...');
     if (this.sectorEntryType == 'iati') {
       var foundSector = this.sectorsList.filter(s => s.sectorName.toLowerCase().trim() == this.sectorModel.sectorName.toLowerCase().trim());
@@ -1571,7 +1581,7 @@ export class ProjectEntryComponent implements OnInit {
       }
     } else {
       if (this.sectorModel.sectorTypeId == this.primarySectorTypeId) {
-        projectSectorModel.sectorId = this.sectorModel.sectorId;
+        projectSectorModel.sectorId = this.selectedSectorId;
         this.addProjectSector(projectSectorModel);
       } else {
         if (!this.sectorModel.mappingId) {
@@ -2517,7 +2527,7 @@ export class ProjectEntryComponent implements OnInit {
     }
   }
 
-  filterExRateSources (sFor: string) {
+  filterExRateSources(sFor: string) {
     var sCurrency = null;
     if (sFor == this.exRateFor.FUNDING) {
       this.funderModel.exRateSource = null;
@@ -2564,7 +2574,7 @@ export class ProjectEntryComponent implements OnInit {
         } else {
           this.disbursementModel.amountInDefaultCurrency = Math.round(((this.defaultCurrencyRate / exRate) * amount));
         }
-        
+
       } else {
         this.disbursementModel.amountInDefaultCurrency = 0;
       }
@@ -2572,7 +2582,7 @@ export class ProjectEntryComponent implements OnInit {
       this.disbursementModel.amountInDefaultCurrency = 0;
     }
   }
-  
+
   getExchangeRates(eFor: string) {
     this.funderModel.exRateDated = null;
     this.disbursementModel.exRateDated = null;
@@ -2617,7 +2627,7 @@ export class ProjectEntryComponent implements OnInit {
                 var rate = rates.filter(r => r.currency == this.funderModel.currency);
                 if (rate.length > 0) {
                   this.funderModel.exchangeRate = rate[0].rate;
-                  this.funderModel.exRateDated = data.dated; 
+                  this.funderModel.exRateDated = data.dated;
                   this.calculateAmountInDefault(this.exRateFor.FUNDING);
                 }
               } else if (eFor == this.exRateFor.DISBURSEMENT) {
@@ -2813,7 +2823,7 @@ export class ProjectEntryComponent implements OnInit {
     } else {
       return this.storeService.formatDateInUkStyle(parseInt(datesArr[2]), parseInt(datesArr[0]), parseInt(datesArr[1]));
     }
-    
+
   }
 
   formatToLongDate(dated: string) {
