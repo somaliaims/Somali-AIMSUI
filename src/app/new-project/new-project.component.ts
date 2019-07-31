@@ -56,6 +56,7 @@ export class NewProjectComponent implements OnInit {
   isProjectPermitted: boolean = true;
   timer: any = null;
   pagingSize: number = Settings.rowsPerPage;
+  isShowContact: boolean = false;
 
   sectorsSettings: any = {};
   locationsSettings: any = {};
@@ -738,6 +739,8 @@ export class NewProjectComponent implements OnInit {
               this.viewProjectFields = data.customFields;
             }
           }
+          this.isShowContact = this.isShowContactToUser(projectId);
+          
           setTimeout(() => {
             this.projectInfoModal.openModal();
             this.blockUI.stop();
@@ -745,6 +748,10 @@ export class NewProjectComponent implements OnInit {
         }
       );
     }
+  }
+
+  isShowContactToUser(id: number) {
+    return (this.userProjectIds.indexOf(id) != -1) ? false : true;
   }
 
   getLongDateString(dated) {
