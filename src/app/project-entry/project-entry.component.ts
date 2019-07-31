@@ -803,8 +803,11 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   filterSector() {
-    this.filteredSectors = this.typeSectorsList.filter(s => 
-      s.sectorName.toLowerCase().includes(this.sectorModel.sectorObj))
+    var filterValue = (this.sectorModel.sectorObj && (typeof this.sectorModel.sectorObj == 'string')) ? this.sectorModel.sectorObj.toLowerCase() : this.sectorModel.sectorObj;
+    if (typeof filterValue == 'string') {
+      this.filteredSectors = this.typeSectorsList.filter(s => 
+        s.sectorName.toLowerCase().indexOf(filterValue) != -1);
+    }
   }
 
   enterIATILocation(e) {
