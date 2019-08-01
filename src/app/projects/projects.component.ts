@@ -57,15 +57,19 @@ export class ProjectsComponent implements OnInit {
     private locationService: LocationService, private fyService: FinancialYearService) { }
 
   ngOnInit() {
+    this.blockUI.start('Loading Projects...');
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
     if (this.isLoggedIn) {
       this.loadUserProjects();
+    } else {
+      this.getProjectsList();
     }
 
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;
     }
+
     setTimeout(() => {
       this.storeService.newInfoMessage('');
       this.showMessage = false;
@@ -76,7 +80,6 @@ export class ProjectsComponent implements OnInit {
     this.getOrganizationsList();
     this.getLocationsList();
     this.getFinancialYearsList();
-    this.getProjectsList();
 
     this.sectorsSettings = {
       singleSelection: false,
@@ -127,7 +130,6 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProjectsList() {
-    this.blockUI.start('Loading Projects...');
     this.projectService.getProjectsList().subscribe(
       data => {
         if (data && data.length) {
@@ -144,6 +146,7 @@ export class ProjectsComponent implements OnInit {
         if (data) {
           this.userProjectIds = data;
         }
+        this.getProjectsList();
       }
     );
   }

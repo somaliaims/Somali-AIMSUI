@@ -114,7 +114,7 @@
                 {{project.title}}
               </a>
               <span class="margin-left-10" *ngIf="isLoggedIn && isShowContactToUser(project.id)">
-                <button class="btn btn-sm btn-warning" (click)="contactProject(project.id)">Request a change</button>
+                <button class="btn btn-sm btn-outline-warning" (click)="contactProject(project.id)">Request a change</button>
               </span>
             </td>
             <td>{{formatDateUKStyle(project.startDate)}}</td>

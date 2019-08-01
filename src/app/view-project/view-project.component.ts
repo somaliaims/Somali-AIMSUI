@@ -15,6 +15,7 @@ export class ViewProjectComponent implements OnInit {
   errorMessage: string = '';
   isError: boolean = false;
   isLoading: boolean = true;
+  isLoggedIn: boolean = false;
   isLocationLoading: boolean = true;
   isSectorLoading: boolean = true;
   isFunderLoading: boolean = true;
@@ -23,6 +24,7 @@ export class ViewProjectComponent implements OnInit {
   isDocumentLoading: boolean = true;
   projectId: number = 0;
   delayTime: number = 2000;
+  userProjectIds: any = [];
   permissions: any = {};
   monthStrings: any = { 
     "1": "January", "2": "February", "3": "March", "4": "April", "5": "May", "6": "June",
@@ -46,12 +48,18 @@ export class ViewProjectComponent implements OnInit {
     private storeService: StoreService, private securityService: SecurityHelperService) { }
 
   ngOnInit() {
+    this.isLoggedIn = this.securityService.checkIsLoggedIn();
     this.permissions = this.securityService.getUserPermissions();
     if (this.route.snapshot.data) {
       var id = this.route.snapshot.params["{id}"];
       this.projectId = id;
       if (id) {
-        this.loadProjectData(id);   
+        if (this.isLoggedIn) {
+          this.loadUserProjects();
+        } else {
+          this.loadProjectData(id);   
+        }
+        
 
         setTimeout(() => {
           this.loadProjectLocations(id);
@@ -198,6 +206,17 @@ export class ViewProjectComponent implements OnInit {
     )
   }
 
+  loadUserProjects() {
+    this.projectService.getUserProjects().subscribe(
+      data => {
+        if (data) {
+          this.userProjectIds = data;
+        }
+        this.loadProjectData(this.projectId);
+      }
+    );
+  }
+
   deleteProjectLocation(projectId, locationId) {
     this.blockUI.start('Working...');
     this.projectService.deleteProjectLocation(projectId, locationId).subscribe(
@@ -285,6 +304,14 @@ export class ViewProjectComponent implements OnInit {
 
   convertDateToLongString(dated: string) {
     return (this.storeService.getLongDateString(dated));
+  }
+
+  isShowContactToUser(id: number) {
+    return (this.userProjectIds.filter(ids => ids.id).length > 0) ? false : true;
+  }
+
+  contactProject(id) {
+    
   }
 
   hideLoader() {

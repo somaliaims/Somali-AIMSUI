@@ -21,7 +21,16 @@
       <div class="col margin-top-10">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">Project Detail</div>
+            <div class="card-header">
+              <span class="float-left">
+                Project detail
+              </span>
+              <span class="float-right" *ngIf="isLoggedIn && isShowContactToUser(projectData.id)">
+                <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
+                    Request for change
+                </button>
+              </span>
+            </div>
             <div class="card-body">
               <div class="row text-center" *ngIf="isLoading">
                 <div class="col-md-12">
@@ -270,6 +279,11 @@
               <span class="float-left">
                 Project Documents
               </span>
+              <span class="float-right" *ngIf="isLoggedIn && isShowContactToUser(projectData.id)">
+                  <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
+                      Request for change
+                  </button>
+                </span>
               <!--<span *ngIf="permissions.canEditProject" class="float-right">
                 <button class="btn btn-success" (click)="addProjectDocument()">Add Project Document</button>
               </span>-->
