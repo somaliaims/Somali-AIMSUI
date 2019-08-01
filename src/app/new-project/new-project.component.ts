@@ -566,6 +566,7 @@ export class NewProjectComponent implements OnInit {
       this.selectedProjectSectors = project[0].sectors;
       this.selectedProjectLocations = project[0].locations;
     }
+    this.isShowContact = this.isShowContactToUser(parseInt(id));
     this.openModal('project-description');
     this.blockUI.stop();
   }
@@ -751,7 +752,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   isShowContactToUser(id: number) {
-    return (this.userProjectIds.indexOf(id) != -1) ? false : true;
+    return (this.userProjectIds.filter(ids => ids.id).length > 0) ? false : true;
   }
 
   getLongDateString(dated) {

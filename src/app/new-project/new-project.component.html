@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <span class="float-right">
+        <button *ngIf="isShowContact" class="btn btn-info" (click)="contactProject();">Contact project</button>&nbsp;
         <button class="btn btn-danger" (click)="closeModal('project-description');">Close</button>
       </span>
       <div class="card card-signin my-5">
@@ -44,6 +45,7 @@
         </div>
       </div>
       <span class="float-right">
+        <button *ngIf="isShowContact" class="btn btn-info" (click)="contactProject();">Contact project</button>&nbsp;
         <button class="btn btn-danger" (click)="closeModal('project-description');">Close</button>
       </span>
     </div>
@@ -333,5 +335,5 @@
 
 <project-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
   [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments"
-  [customFields]="viewProjectFields">
+  [customFields]="viewProjectFields" [isShowContact]="isShowContact">
 </project-info-modal>

@@ -34,6 +34,8 @@ export class ProjectInfoModalComponent implements OnInit {
   documents: any = [];
   @Input()
   customFields: any = [];
+  @Input()
+  isShowContact: boolean = false;
 
   constructor(private modalService: ModalService, private storeService: StoreService) { }
 
