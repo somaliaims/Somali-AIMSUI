@@ -113,6 +113,9 @@
               <a title="View Details" class="text-info" [routerLink]="['/view-project', project.id]">
                 {{project.title}}
               </a>
+              <span class="margin-left-10" *ngIf="isLoggedIn && isShowContactToUser(project.id)">
+                <button class="btn btn-sm btn-warning" (click)="contactProject(project.id)">Request a change</button>
+              </span>
             </td>
             <td>{{formatDateUKStyle(project.startDate)}}</td>
             <td>{{formatDateUKStyle(project.endDate)}}</td>

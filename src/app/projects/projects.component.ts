@@ -26,6 +26,7 @@ export class ProjectsComponent implements OnInit {
   isLoading: boolean = false;
   infoMessage: string = null;
   showMessage: boolean = false;
+  isLoggedIn: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
   permissions: any = {};
   sectorsSettings: any = [];
@@ -38,6 +39,7 @@ export class ProjectsComponent implements OnInit {
   sectorsList: any = [];
   organizationsList: any = [];
   locationsList: any = [];
+  userProjectIds: any = [];
   searchField: FormControl;
 
   model: any = {
@@ -55,6 +57,11 @@ export class ProjectsComponent implements OnInit {
     private locationService: LocationService, private fyService: FinancialYearService) { }
 
   ngOnInit() {
+    this.isLoggedIn = this.securityService.checkIsLoggedIn();
+    if (this.isLoggedIn) {
+      this.loadUserProjects();
+    }
+
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;
@@ -65,11 +72,11 @@ export class ProjectsComponent implements OnInit {
     }, Settings.displayMessageTime);
 
     this.permissions = this.securityService.getUserPermissions();
-    this.getProjectsList();
     this.getSectorsList();
     this.getOrganizationsList();
     this.getLocationsList();
     this.getFinancialYearsList();
+    this.getProjectsList();
 
     this.sectorsSettings = {
       singleSelection: false,
@@ -126,12 +133,17 @@ export class ProjectsComponent implements OnInit {
         if (data && data.length) {
           this.projectsList = data;
         }
+        this.blockUI.stop();
+      }
+    );
+  }
 
-        this.blockUI.stop();
-      },
-      error => {
-        this.blockUI.stop();
-        console.log(error);
+  loadUserProjects() {
+    this.projectService.getUserProjects().subscribe(
+      data => {
+        if (data) {
+          this.userProjectIds = data;
+        }
       }
     );
   }
@@ -142,9 +154,6 @@ export class ProjectsComponent implements OnInit {
         if (data) {
           this.yearsList = data;
         }
-      },
-      error => {
-        console.log(error);
       }
     );
   }
@@ -152,10 +161,10 @@ export class ProjectsComponent implements OnInit {
   getSectorsList() {
     this.sectorService.getSectorsList().subscribe(
       data => {
-        this.sectorsList = data;
-      },
-      error => {
-        console.log(error);
+        if (data) {
+          this.sectorsList = data;
+        }
+        
       }
     );
   }
@@ -163,10 +172,9 @@ export class ProjectsComponent implements OnInit {
   getLocationsList() {
     this.locationService.getLocationsList().subscribe(
       data => {
-        this.locationsList = data;
-      },
-      error => {
-        console.log(error);
+        if (data) {
+          this.locationsList = data;
+        }
       }
     );
   }
@@ -174,10 +182,9 @@ export class ProjectsComponent implements OnInit {
   getOrganizationsList() {
     this.organizationService.getOrganizationsList().subscribe(
       data => {
-        this.organizationsList = data;
-      },
-      error => {
-        console.log(error);
+        if (data) {
+          this.organizationsList = data;
+        }
       }
     );
   }
@@ -321,4 +328,15 @@ export class ProjectsComponent implements OnInit {
     var datesArr = dated.split('/');
     return this.storeService.formatDateInUkStyle(parseInt(datesArr[2]), parseInt(datesArr[0]), parseInt(datesArr[1]));
   }
+
+  isShowContactToUser(id: number) {
+    return (this.userProjectIds.filter(ids => ids.id).length > 0) ? false : true;
+  }
+
+  contactProject(id: number) {
+    if (id) {
+      
+    }
+  }
+
 }
