@@ -85,6 +85,7 @@ import { TimeTrendReportComponent } from './report-components/time-trend-report/
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BudgetReportSummaryComponent } from './report-components/budget-report-summary/budget-report-summary.component';
 import { DataImportComponent } from './data-import/data-import.component';
+import { ContactProjectComponent } from './contact-project/contact-project.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,7 @@ import { DataImportComponent } from './data-import/data-import.component';
     NotFoundComponent,
     BudgetReportSummaryComponent,
     DataImportComponent,
+    ContactProjectComponent,
   ],
   imports: [
     BrowserModule,

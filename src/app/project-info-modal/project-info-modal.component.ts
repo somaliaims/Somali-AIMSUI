@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { ModalService } from '../services/modal.service';
 import { StoreService } from '../services/store-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'project-info-modal',
@@ -21,6 +22,8 @@ export class ProjectInfoModalComponent implements OnInit {
     endDate: '',
   };
   @Input()
+  projectId: number = 0;
+  @Input()
   sectors: any = [];
   @Input()
   locations: any = [];
@@ -37,7 +40,8 @@ export class ProjectInfoModalComponent implements OnInit {
   @Input()
   isShowContact: boolean = false;
 
-  constructor(private modalService: ModalService, private storeService: StoreService) { }
+  constructor(private modalService: ModalService, private storeService: StoreService,
+    private router: Router) { }
 
   ngOnInit() {
   }
@@ -56,6 +60,12 @@ export class ProjectInfoModalComponent implements OnInit {
 
   getLongDateString(dated) {
     return this.storeService.getLongDateString(dated);
+  }
+
+  contactProject() {
+    if (this.projectId != 0) {
+      this.router.navigateByUrl('contact-project/' + this.projectId);
+    }
   }
 
 }

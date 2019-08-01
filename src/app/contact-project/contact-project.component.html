@@ -1,0 +1,77 @@
+<div class="container-fluid view-area">
+    <block-ui>
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active btn-info" data-toggle="tab">Contact us</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-12 col-md-10 col-lg-10 mx-auto">
+          <div class="card card-signin my-5 margin-top-10">
+            <div class="card-body">
+              <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Error!</strong> {{errorMessage}}
+              </div>
+              <span class="text-center"><h5>Project help form</h5></span>
+              <div *ngIf="isSuccess" class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Information!</strong> {{successMessage}}
+              </div>
+              <form class="form-signin" (ngSubmit)="contactForm.form.valid && sendSuggestion(contactForm)"
+                #contactForm="ngForm">
+  
+                <div class="form-group">
+                  <label for="senderName">Your name</label>
+                  <input type="text" class="form-control" id="senderName" [(ngModel)]="model.senderName" name="senderName"
+                    #senderName="ngModel" maxlength="30" required />
+                  <div *ngIf="contactForm.submitted" [hidden]="senderName.valid" class="alert alert-danger">
+                    Name is required
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label for="suggesstionType">Suggestion for</label>
+                  <select class="form-control" id="suggesstionType" [(ngModel)]="model.suggesstionType" name="suggesstionType"
+                    #suggesstionType="ngModel" (change)="changeRequest()" required>
+                    <option>-- Suggestion type --</option>
+                    <option *ngFor="let question of questions" value="{{question.id}}">
+                      {{question.question}}
+                    </option>
+                  </select>
+                  <div *ngIf="contactForm.submitted" [hidden]="suggesstionType.valid" class="alert alert-danger">
+                    Suggestion type is required
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="subject">Subject</label>
+                  <input type="text" class="form-control" id="subject" [(ngModel)]="model.subject" name="subject"
+                    #subject="ngModel" maxlength="50" required />
+                  <div *ngIf="contactForm.submitted" [hidden]="subject.valid" class="alert alert-danger">
+                    Subject is required
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Message (Max chars 500)</label>
+                    <textarea rows="5" class="form-control" id="message" [(ngModel)]="model.message" name="message"
+                      #message="ngModel" maxlength="500" required></textarea>
+                    <div *ngIf="contactForm.submitted" [hidden]="message.valid" class="alert alert-danger">
+                      Message is required
+                    </div>
+                  </div>
+                </div>
+  
+                  <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Send request</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </block-ui>
+  </div>
+  
+  <error-modal message={{errorMessage}}></error-modal>

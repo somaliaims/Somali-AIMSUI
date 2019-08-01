@@ -22,4 +22,10 @@ export class ContactService {
         );
     }
 
+    sendProjectContactEmail(model: any) {
+        var url = this.urlHelper.getProjectContactUrl();
+        return this.httpClient.post(url, model, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Project Contact Email')));
+    }
+
 }

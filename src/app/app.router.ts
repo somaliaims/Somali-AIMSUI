@@ -64,6 +64,7 @@ import { TimeTrendReportComponent } from './report-components/time-trend-report/
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BudgetReportSummaryComponent } from './report-components/budget-report-summary/budget-report-summary.component';
 import { DataImportComponent } from './data-import/data-import.component';
+import { ContactProjectComponent } from './contact-project/contact-project.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -137,6 +138,7 @@ export const routes: Routes = [
   { path: 'manage-email-message', component: ManageEmailMessageComponent },
   { path: 'manage-email-message/:{id}', component: ManageEmailMessageComponent, data: { isForEdit: true } },
   { path: 'project-membership/:{id}', component: ProjectMembershipComponent },
+  { path: 'contact-project/:{id}', component: ContactProjectComponent },
   { path: 'membership-requests', component: MembershipRequestsComponent },
   { path: 'data-import', component: DataImportComponent },
   { path: 'contact', component: ContactFormComponent },

@@ -54,7 +54,8 @@ export class ProjectsComponent implements OnInit {
   constructor(private projectService: ProjectService, private router: Router,
     private storeService: StoreService, private securityService: SecurityHelperService,
     private sectorService: SectorService, private organizationService: OrganizationService,
-    private locationService: LocationService, private fyService: FinancialYearService) { }
+    private locationService: LocationService, private fyService: FinancialYearService,
+  ) { }
 
   ngOnInit() {
     this.blockUI.start('Loading Projects...');
@@ -338,7 +339,7 @@ export class ProjectsComponent implements OnInit {
 
   contactProject(id: number) {
     if (id) {
-      
+      this.router.navigateByUrl('contact-project/' + id);
     }
   }
 

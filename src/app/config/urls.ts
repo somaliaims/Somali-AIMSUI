@@ -133,5 +133,6 @@ export const urls = {
 	unApproveProjectMembership: "ProjectMembership/UnApproveRequest",
 	importNewExcelDataUrl: "ImportData/UploadDataImportFileEighteen",
 	importOldExcelDataUrl: "ImportData/UploadDataImportFileSeventeen",
-	contactUrl: "Contact"
+	contactUrl: "Contact",
+	projectEmailUrl: "Contact/SendSuggestionEmailForProject"
 };

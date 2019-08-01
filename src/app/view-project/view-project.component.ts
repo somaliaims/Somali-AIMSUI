@@ -311,7 +311,7 @@ export class ViewProjectComponent implements OnInit {
   }
 
   contactProject(id) {
-    
+    this.router.navigateByUrl('contact-project/' + id);
   }
 
   hideLoader() {

@@ -604,4 +604,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.contactUrl);
     }
 
+    getProjectContactUrl() {
+        return (this.BASE_URL + urlsList.urls.projectEmailUrl);
+    }
+
 }
