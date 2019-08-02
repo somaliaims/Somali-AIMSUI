@@ -26,7 +26,7 @@ export class ContactProjectComponent implements OnInit {
   messageLimitLeft: number = 0;
   @BlockUI() blockUI: NgBlockUI;
 
-  model = { senderName: null, senderEmail: null, suggestionType: null, subject: null, message: null, 
+  model = { senderName: null, senderEmail: null, suggesstionType: null, subject: null, message: null, 
     projectId: 0, projectTitle: null };
   
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
@@ -61,6 +61,7 @@ export class ContactProjectComponent implements OnInit {
       return false;
     }
     
+    this.blockUI.start('Sending suggestion...');
     this.contactService.sendProjectContactEmail(this.model).subscribe(
       data => {
         if (data) {
@@ -68,6 +69,7 @@ export class ContactProjectComponent implements OnInit {
           this.isSuccess = true;
           frm.resetForm();
         }
+        this.blockUI.stop();
       }
     );
   }
