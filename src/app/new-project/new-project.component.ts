@@ -45,6 +45,7 @@ export class NewProjectComponent implements OnInit {
   errorMessage: string = null;
   successMessage: string = null;
   requestNo: number = 0;
+  viewProjectId: number = 0;
   isError: boolean = false;
   isSearchingProjects: boolean = false;
   isSearchedResults: boolean = false;
@@ -52,6 +53,7 @@ export class NewProjectComponent implements OnInit {
   projectIdCounter: number = 0;
   timerCounter: number = 0;
   timeoutForSearch: number = 2000;
+  currentProjectId: number = 0;
   isAIMSSearchInProgress: boolean = false;
   isProjectPermitted: boolean = true;
   timer: any = null;
@@ -541,6 +543,7 @@ export class NewProjectComponent implements OnInit {
     setTimeout(() => {
     }, 1000);
     var id = e.target.id;
+    this.currentProjectId = id;
     var project = this.filteredIatiProjects.filter(project => project.id == id);
     if (project && project.length) {
       this.selectedProjectTitle = project[0].title;
@@ -558,6 +561,7 @@ export class NewProjectComponent implements OnInit {
     setTimeout(() => {
     }, 1000);
     var id = e.target.id.split('-')[1];
+    this.currentProjectId = id;
     var project = this.filteredAIMSProjects.filter(project => project.id == id);
     if (project && project.length) {
       this.selectedProjectTitle = project[0].title;
@@ -569,6 +573,12 @@ export class NewProjectComponent implements OnInit {
     this.isShowContact = this.isShowContactToUser(parseInt(id));
     this.openModal('project-description');
     this.blockUI.stop();
+  }
+
+  contactProject(id) {
+    if (id != 0) {
+      this.router.navigateByUrl('contact-project/' + id);
+    }
   }
 
   addProject(project) {
@@ -704,6 +714,7 @@ export class NewProjectComponent implements OnInit {
     var projectId = e.target.id.split('-')[1];
 
     if (projectId) {
+      this.viewProjectId = projectId;
       this.blockUI.start('Loading project data...')
       this.projectService.getProjectProfileReport(projectId).subscribe(
         result => {

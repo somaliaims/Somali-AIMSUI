@@ -22,10 +22,12 @@ export class ContactProjectComponent implements OnInit {
   isSuccess: boolean = false;
   isError: boolean = false;
   requestNo: number = 0;
+  messageLimit: number = 500;
+  messageLimitLeft: number = 0;
+  @BlockUI() blockUI: NgBlockUI;
 
   model = { senderName: null, senderEmail: null, suggestionType: null, subject: null, message: null, 
     projectId: 0, projectTitle: null };
-  @BlockUI() blockUI: NgBlockUI;
   
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private contactService: ContactService, private errorModal: ErrorModalComponent,
@@ -52,7 +54,7 @@ export class ContactProjectComponent implements OnInit {
     });
   }
 
-  sendSugggestion(frm: any) {
+  sendProjectSugggestion(frm: any) {
     if (this.model.projectId == 0) {
       this.errorMessage = 'Select a valid project before proceeding with this request';
       this.errorModal.openModal();
@@ -78,6 +80,10 @@ export class ContactProjectComponent implements OnInit {
         }
       }
     );
+  }
+
+  getMessageLimitInfo() {
+    this.messageLimitLeft = (this.messageLimit - this.model.message.length);
   }
 
 }
