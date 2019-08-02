@@ -46,6 +46,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorTotalPercentage: number = 0;
   locationTotalPercentage: number = 0;
   primarySectorTypeId: number = 0;
+  aimsProjectId: number = 0;
   totalFunds: number = 0;
   mappingsCount: number = 0;
   totalDisbursements: number = 0;
@@ -109,6 +110,7 @@ export class ProjectEntryComponent implements OnInit {
   calendarMaxDate: any = {};
   isEditProjectAllowed: boolean = false;
   isFocusExRate: boolean = false;
+  isShowContact: boolean = false;
   descriptionLimit: number = 4000;
   descriptionLimitLeft: number = 4000;
 
@@ -664,6 +666,8 @@ export class ProjectEntryComponent implements OnInit {
   viewAIMSProject(e) {
     var projectId = e.target.id.split('-')[1];
     if (projectId && projectId != 0) {
+      this.aimsProjectId = projectId;
+      this.isShowContact = !(this.checkIfProjectPermittedToUser(projectId));
       var selectProject = this.aimsProjects.filter(p => p.id == projectId);
       if (selectProject && selectProject.length > 0) {
         var projectData = selectProject[0];
@@ -1174,6 +1178,10 @@ export class ProjectEntryComponent implements OnInit {
         }
       }
     );
+  }
+
+  checkIfProjectPermittedToUser(id) {
+    return this.userProjectIds.filter(p => p.id == id).length > 0 ? true : false;
   }
 
   checkIfFunderTabSelected(id) {

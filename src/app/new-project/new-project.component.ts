@@ -443,7 +443,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   selectIATIProject(e) {
-    this.isProjectPermitted = true;
+    //this.isProjectPermitted = true;
     var id = e.target.id;
     var selectedProject = this.filteredIatiProjects.filter(
       iati => iati.id == id
@@ -462,7 +462,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   selectAIMSProject(e) {
-    this.isProjectPermitted = true;
+    //this.isProjectPermitted = true;
     var id = e.target.id.split('-')[1];
     var selectedProject = this.filteredAIMSProjects.filter(
       aims => aims.id == id
