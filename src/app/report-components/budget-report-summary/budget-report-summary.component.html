@@ -27,9 +27,10 @@
                     </option>
                   </select>&nbsp;
                   <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
-                    <b><i>Exchange rate: 1 {{defaultCurrency}} = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
+                    <b><i>Exchange rate: 1 {{defaultCurrency}} = {{manualExRate}} {{nationalCurrencyName}} on
+                        {{datedToday}}</i></b>
                   </span>
-                  
+
                   <span *ngIf="manualExRate == 0" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
@@ -61,11 +62,11 @@
       <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
         <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
       </div>
-    
+
       <div class="col-md-12">
-    
+
         <div *ngIf="reportDataList && reportDataList.projects && chartLabels.length > 0" class="margin-bottom-none">
-          <table class="table table-striped row-highlight small">
+          <table class="table table-striped row-highlight small margin-bottom-none">
             <thead>
               <th width="25%">&nbsp;</th>
               <th width="15%">&nbsp;</th>
@@ -74,13 +75,31 @@
               </th>
             </thead>
             <tbody>
-              <tr title="Click here to view detail" (click)="showDetail(project.id)" *ngFor="let project of reportDataList.projects">
-                <td>{{project.title}}</td>
-                <td>Disbursements</td>
-                <td class="text-center" *ngFor="let d of project.yearlyDisbursements">
-                  {{formatNumber(d.disbursements)}}
-                </td>
-              </tr>
+          </table>
+          
+          <table class="table table-striped small" *ngFor="let project of reportDataList.projects">
+            <tbody>
+                <tr title="Click here to view detail" (click)="showDetail(project.id)">
+                  <td width="25%">{{project.title}}</td>
+                  <td width="15%">Disbursements</td>
+                  <td class="text-center" width="12%" *ngFor="let d of project.yearlyDisbursements">
+                    {{formatNumber(d.disbursements)}}
+                  </td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>Actual</td>
+                  <td class="text-center" width="12%" *ngFor="let d of project.disbursementsBreakup">
+                      {{formatNumber(d.actualDisbursements)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>Expected</td>
+                    <td class="text-center" width="12%" *ngFor="let d of project.disbursementsBreakup">
+                        {{formatNumber(d.expectedDisbursements)}}
+                      </td>
+                  </tr>
             </tbody>
           </table>
 
@@ -102,20 +121,20 @@
               </tr>
             </tbody>
           </table>
-          
+
           <div *ngIf="chartData.length > 0" class="col-md-12 margin-top-30">
             <div class="offset-2 col-md-8">
-                <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+              <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
                 [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
-        </div>
+          </div>
         </div>
 
         <div class="col-md-12" *ngIf="reportDataList && reportDataList.projects && reportDataList.projects == 0">
           <span class="text-info"><i>No budget data avaialable to show</i></span>
         </div>
-    
+
       </div>
     </div>
 
