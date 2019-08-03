@@ -124,6 +124,12 @@ export class BudgetReportSummaryComponent implements OnInit {
             this.setExcelFile();
           }
 
+          if (this.reportDataList.projects) {
+            this.reportDataList.projects.forEach((p) => {
+              p.isDisplay = false;
+            });
+          }
+
           if (this.reportDataList.totalYearlyDisbursements) {
             this.setupChartData();
           }
@@ -131,6 +137,15 @@ export class BudgetReportSummaryComponent implements OnInit {
         this.blockUI.stop();
       }
     );
+  }
+
+  displayHideRow(id) {
+    if (this.reportDataList.projects) {
+      var selectProject = this.reportDataList.projects.filter(p => p.id == id);
+      if (selectProject.length > 0) {
+        selectProject[0].isDisplay = !selectProject[0].isDisplay;
+      }
+    }
   }
 
   setupChartData() {

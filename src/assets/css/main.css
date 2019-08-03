@@ -197,9 +197,13 @@ html {
     overflow-x: hidden; 
   }
 
-  .row-highlight tr:hover {
+  table.row-highlight tr:first-child:hover {
     background: lightgoldenrodyellow !important;
     cursor: pointer;
+  }
+
+  table tr.child {
+    background: #eeeeee;
   }
 
   .bold-italic {

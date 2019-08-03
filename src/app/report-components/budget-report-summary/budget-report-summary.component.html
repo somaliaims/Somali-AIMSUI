@@ -66,7 +66,7 @@
       <div class="col-md-12">
 
         <div *ngIf="reportDataList && reportDataList.projects && chartLabels.length > 0" class="margin-bottom-none">
-          <table class="table table-striped row-highlight small margin-bottom-none">
+          <table class="table table-striped small margin-bottom-none">
             <thead>
               <th width="25%">&nbsp;</th>
               <th width="15%">&nbsp;</th>
@@ -77,25 +77,25 @@
             <tbody>
           </table>
           
-          <table class="table table-striped small" *ngFor="let project of reportDataList.projects">
+          <table class="table small margin-bottom-none row-highlight" *ngFor="let project of reportDataList.projects">
             <tbody>
-                <tr title="Click here to view detail" (click)="showDetail(project.id)">
+                <tr title="Click here to view detail" (click)="displayHideRow(project.id)">
                   <td width="25%">{{project.title}}</td>
                   <td width="15%">Disbursements</td>
                   <td class="text-center" width="12%" *ngFor="let d of project.yearlyDisbursements">
                     {{formatNumber(d.disbursements)}}
                   </td>
                 </tr>
-                <tr>
+                <tr class="child" *ngIf="project.isDisplay">
                   <td>&nbsp;</td>
-                  <td>Actual</td>
+                  <td><i>Actual</i></td>
                   <td class="text-center" width="12%" *ngFor="let d of project.disbursementsBreakup">
                       {{formatNumber(d.actualDisbursements)}}
                     </td>
                 </tr>
-                <tr>
+                <tr class="child" *ngIf="project.isDisplay">
                     <td>&nbsp;</td>
-                    <td>Expected</td>
+                    <td><i>Expected</i></td>
                     <td class="text-center" width="12%" *ngFor="let d of project.disbursementsBreakup">
                         {{formatNumber(d.expectedDisbursements)}}
                       </td>
