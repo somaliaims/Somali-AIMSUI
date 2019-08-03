@@ -434,7 +434,7 @@
 
         <div class="col-md-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body">
+            <div class="card-body iati-box">
               <h6 class="card-title text-center">Source projects</h6>
               <table class="table table-bordered">
                 <tr *ngFor="let project of aimsProjects">
@@ -477,16 +477,15 @@
                     <table *ngIf="project.locations.length > 0" class="table table-bordered">
                       <tr>
                         <th>Location</th>
-                        <th>Action</th>
                       </tr>
                       <tr *ngFor="let location of project.locations">
                         <td>
                           {{location.name}}
                         </td>
-                        <td [class.disable]="checkIfLocationAdded(location.name)">
+                        <!--<td [class.disable]="checkIfLocationAdded(location.name)">
                           <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATILocation($event)"
                             class="btn btn-success btn-sm">Enter >></button>
-                        </td>
+                        </td>-->
                       </tr>
                     </table>
                     <div class="text-info" *ngIf="project.locations.length == 0"><i>No locations available</i></div>
