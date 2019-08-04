@@ -99,6 +99,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationUrl);
     }
 
+    getAllOrganizationsUrl() {
+        return (this.BASE_URL + urlsList.urls.allOrganizationsList);
+    }
+
     getCurrencyUrl() {
         return (this.BASE_URL + urlsList.urls.getCurrency);
     }

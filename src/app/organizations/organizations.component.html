@@ -27,9 +27,9 @@
     </div>
   </div>
 
-  <div *ngIf="!isLoading" class="row">
-    <div class="col margin-top-10">
-      <table class="table table-bordered table-stripped">
+  <div *ngIf="!isLoading" class="col-md-12">
+    <div *ngIf="filteredOrganizationsList.length > 0" class="margin-top-10">
+      <table  class="table table-bordered table-stripped">
         <tr>
           <th>Organization Name</th>
           <th>Actions</th>
@@ -44,6 +44,9 @@
         </tr>
       </table>
       <pagination-controls (pageChange)="p=$event"></pagination-controls>
+    </div>
+    <div class="col-md-12 margin-top-10" *ngIf="filteredOrganizationsList.length == 0" class="text-info margin-left-10">
+          <i>No organizations to show</i>
     </div>
   </div>
 </div>
