@@ -147,7 +147,10 @@ export class ProjectsComponent implements OnInit {
         if (data) {
           this.userProjectIds = data;
         }
-        this.getProjectsList();
+        setTimeout(() => {
+          this.getProjectsList();
+        }, 1000);
+        
       }
     );
   }
@@ -334,7 +337,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   isShowContactToUser(id: number) {
-    return (this.userProjectIds.filter(ids => ids.id).length > 0) ? false : true;
+    return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? false : true;
   }
 
   contactProject(id: number) {

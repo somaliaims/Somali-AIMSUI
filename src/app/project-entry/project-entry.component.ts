@@ -523,7 +523,7 @@ export class ProjectEntryComponent implements OnInit {
   }
 
   loadOrganizationsList() {
-    this.organizationService.getOrganizationsList().subscribe(
+    this.organizationService.getAllOrganizationsList().subscribe(
       data => {
         this.organizationsList = data;
         if (this.currentProjectFundersList.length == 0) {
@@ -1569,7 +1569,12 @@ export class ProjectEntryComponent implements OnInit {
         this.sectorService.addSectorWithMapping(iatiSectorModel).subscribe(
           data => {
             if (data) {
-              projectSectorModel.sectorId = iatiSectorModel.mappingSectorId;
+              if (foundSector[0].sectorTypeId != this.defaultSectorTypeId) {
+                projectSectorModel.sectorId = iatiSectorModel.mappingSectorId;
+              } else {
+                projectSectorModel.sectorId = iatiSectorModel.sectorId;
+              }
+              
               this.addProjectSector(projectSectorModel);
             } else {
               this.blockUI.stop();

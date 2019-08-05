@@ -91,9 +91,6 @@ export class ManageSectortypeComponent implements OnInit {
     };
 
     this.isBtnDisabled = true;
-    if (!model.isSourceType) {
-      model.isSourceType = false;
-    }
     if (!model.isPrimary) {
       model.isPrimary = false;
     }
@@ -117,6 +114,7 @@ export class ManageSectortypeComponent implements OnInit {
       );
     } else {
       this.btnText = 'Saving...';
+      model.isSourceType = false;
       this.sectorTypeService.addSectorType(model).subscribe(
         data => {
           if (!this.isError) {

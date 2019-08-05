@@ -520,14 +520,13 @@ export class NewProjectComponent implements OnInit {
     this.isAIMSLoading = true;
     this.projectService.getProjectsWithDetail().subscribe(
       data => {
-        this.aimsProjects = data;
-        this.filteredAIMSProjects = data;
-        this.isAIMSLoading = false;
-      },
-      error => {
-        this.isAIMSLoading = false;
+        if (data) {
+          this.aimsProjects = data;
+          this.filteredAIMSProjects = data;
+          this.isAIMSLoading = false;
+        }
       }
-    )
+    );
   }
 
   showProjectProfile(e) {
@@ -763,7 +762,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   isShowContactToUser(id: number) {
-    return (this.userProjectIds.filter(ids => ids.id).length > 0) ? false : true;
+    return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? false : true;
   }
 
   getLongDateString(dated) {

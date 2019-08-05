@@ -45,12 +45,15 @@ export class ManageSectorComponent implements OnInit {
       this.router.navigateByUrl('sectors');
     }
 
-    this.getSectors();
-    this.getSectorTypes();
-
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
+        this.model.id = id;
+      }
+    }
+    
+    this.getSectorTypes();
+    if (this.model.id != 0) {
         this.btnText = 'Edit Sector';
         this.sectorTabText = 'Edit sector';
         this.isForEdit = true;
@@ -58,7 +61,6 @@ export class ManageSectorComponent implements OnInit {
         this.loadSectorData();
         this.getSectorChildren(id);
         this.isDvDisabled = false;
-      }
     }
 
     this.storeService.currentRequestTrack.subscribe(model => {
@@ -74,6 +76,11 @@ export class ManageSectorComponent implements OnInit {
       data => {
         if (data) {
           this.sectorTypes = data;
+          var sectorType = this.sectorTypes.filter(s => s.isPrimary == true);
+          if (sectorType.length > 0) {
+            this.model.sectorTypeId = sectorType[0].id;
+            this.getSectors();
+          }
         }
       }
     )
@@ -83,7 +90,13 @@ export class ManageSectorComponent implements OnInit {
     this.sectorService.getSectorsList().subscribe(
       data => {
         if (data) {
-          this.sectors = data;
+          var sectors = data;
+          this.sectors = sectors.filter(s => s.sectorTypeId == this.model.sectorTypeId);
+          if (this.model.id != 0) {
+            if (this.sectors.filter(s => s.id == this.model.id).length == 0) {
+              this.router.navigateByUrl('sectors');
+            }
+          }
         }
       },
       error => {

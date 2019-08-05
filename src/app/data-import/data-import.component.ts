@@ -8,10 +8,12 @@ import { FileUploadService } from '../services/fileupload.service';
   styleUrls: ['./data-import.component.css']
 })
 export class DataImportComponent implements OnInit {
-  public progressOld: number;
-  public messageOld: string;
-  public progressNew: number;
-  public messageNew: string;
+  progressOld: number = 0;
+  messageOld: string = null;
+  progressNew: number = 0;
+  messageNew: string = null;
+  isError: boolean = false;
+  isInfo: boolean = false;
   @Output() public onUploadFinished = new EventEmitter();
  
   constructor(private httpClient: HttpClient, private fileUploadService: FileUploadService) { }

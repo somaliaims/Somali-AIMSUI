@@ -18,7 +18,6 @@
     <div class="input-group mb-3">
       <select placeholder="Select sector type" class="form-control" id="sectorTypeId" [(ngModel)]="model.sectorTypeId"
         name="sectorTypeId" #sectorTypeId="ngModel" (change)="getSectorsForType()">
-        <option value="0">--Select sector type--</option>
         <option *ngFor="let sectorType of sectorTypesList" [value]="sectorType.id">{{sectorType.typeName}}</option>
       </select>&nbsp;
       <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria" (input)="searchSectors()"
@@ -43,12 +42,12 @@
       <tr>
         <th>Sector name</th>
         <th>Sector type</th>
-        <th>Actions</th>
+        <th *ngIf="selectedSectorTypeId == defaultSectorTypeId">Actions</th>
       </tr>
       <tr *ngFor="let sector of filteredSectorsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
         <td>{{sector.sectorName}}</td>
         <td>{{sector.sectorType}}</td>
-        <td>
+        <td *ngIf="selectedSectorTypeId == defaultSectorTypeId">
           <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
           &nbsp;
           <a title="Delete" (click)="delete(sector.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>

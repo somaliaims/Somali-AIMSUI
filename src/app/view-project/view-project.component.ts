@@ -307,7 +307,7 @@ export class ViewProjectComponent implements OnInit {
   }
 
   isShowContactToUser(id: number) {
-    return (this.userProjectIds.filter(ids => ids.id).length > 0) ? false : true;
+    return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? false : true;
   }
 
   contactProject(id) {

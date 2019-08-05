@@ -13,6 +13,8 @@ import { SectorTypeService } from '../services/sector-types.service';
 })
 export class SectorsComponent implements OnInit {
 
+  defaultSectorTypeId: number = 0;
+  selectedSectorTypeId: number = 0;
   sectorsList: any = [];
   inputTextHolder: string = 'Enter sector name';
   filteredSectorsList: any = [];
@@ -45,7 +47,7 @@ export class SectorsComponent implements OnInit {
     }, Settings.displayMessageTime);
 
     this.getSectorTypesList();
-    this.getSectorsList();
+    //this.getSectorsList();
   }
 
   getSectorTypesList() {
@@ -53,6 +55,13 @@ export class SectorsComponent implements OnInit {
       data => {
         if (data) {
           this.sectorTypesList = data;
+          var sectorType = this.sectorTypesList.filter(t => t.isPrimary == true);
+          if (sectorType.length > 0) {
+            var typeId = sectorType[0].id;
+            this.defaultSectorTypeId = typeId;
+            this.model.sectorTypeId = typeId;
+            this.getSectorsList();
+          }
         }
       }
     )
@@ -60,6 +69,7 @@ export class SectorsComponent implements OnInit {
 
   getSectorsForType() {
     var typeId = this.model.sectorTypeId;
+    this.selectedSectorTypeId = parseInt(typeId);
     this.criteria = null;
     if (typeId != null && typeId > 0) {
       this.filteredSectorsList = this.sectorsList.filter(s => s.sectorTypeId == typeId);
@@ -75,6 +85,9 @@ export class SectorsComponent implements OnInit {
         if (data && data.length) {
           this.sectorsList = data;
           this.filteredSectorsList = data;
+          if (this.model.sectorTypeId != 0) {
+            this.getSectorsForType();
+          }
         }
       },
       error => {

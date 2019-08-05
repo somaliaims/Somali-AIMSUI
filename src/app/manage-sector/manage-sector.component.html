@@ -26,7 +26,7 @@
 
             <form class="form-signin" (ngSubmit)="sectorForm.form.valid && saveSector()" #sectorForm="ngForm">
 
-              <div class="form-group">
+              <div [class.disable]="true" class="form-group">
                 <label for="sectorTypeId">Sector Type</label>
                 <select class="form-control" id="sectorTypeId" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
                   #sectorTypeId="ngModel">
