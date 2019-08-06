@@ -45,17 +45,22 @@ export class ManageAccountComponent implements OnInit {
 
   changePassword() {
     this.isBtnDisabled = true;
-    this.btnPasswordText = 'Updating Password...';
+    this.btnPasswordText = 'Updating password...';
     this.userService.editUserPassword(this.model.password).subscribe(
       data => {
-        this.infoMessage = Messages.PASSWORD_UPDATED;
-        this.isInfo = true;
-        this.resetFormsState();
-      },
-      error => {
-        this.resetFormsState();
+        if (data) {
+          this.modalService.open('reset-info-modal');
+          this.btnPasswordText = 'Redirecting...';
+          this.securityService.clearLoginSession();
+
+          setTimeout(() => {
+            location.reload();
+          }, 3000);
+        } else {
+          this.resetFormsState();
+        }
       }
-    )
+    );
   }
 
   confirmDeleteAccount() {
@@ -65,7 +70,7 @@ export class ManageAccountComponent implements OnInit {
   deleteAccount() {
     this.modalService.close('confirmation-modal');
     this.isBtnDisabled = true;
-    this.btnAccountText = 'Deleting Account...';
+    this.btnAccountText = 'Deleting account...';
     this.userService.deleteUserAccount(this.dModel.password).subscribe(
       data => {
         if (data) {

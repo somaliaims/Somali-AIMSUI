@@ -60,7 +60,7 @@
                   <label for="password">Enter Current Password</label>
                   <input type="password" class="form-control" id="password" [(ngModel)]="dModel.password"
                     name="password" #password="ngModel" required>
-                  <div [hidden]="password.valid" class="alert alert-danger">
+                  <div *ngIf="dAccountForm.submitted" [hidden]="password.valid" class="alert alert-danger">
                     Password is required
                   </div>
                 </div>
@@ -89,6 +89,19 @@
         <button class="btn btn-info" (click)="deleteAccount()">Yes Delete Account</button>
         &nbsp;
         <button class="btn btn-danger" (click)="closeModal();">No</button>
+    </div>
+  </div>
+</jw-modal>
+
+<jw-modal id="reset-info-modal">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-info text-white">Information Message</div>
+          <div class="card-body text-info">
+              Your password is reset successfully. You must use new password on next login.
+          </div>
+        </div><br />
     </div>
   </div>
 </jw-modal>

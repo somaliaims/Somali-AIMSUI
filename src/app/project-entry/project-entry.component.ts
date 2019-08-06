@@ -2059,6 +2059,9 @@ export class ProjectEntryComponent implements OnInit {
     var arr = e.target.id.split('-');
     var projectId = arr[1];
     var funderId = arr[2];
+    var totalFunding = this.calculateProjectFunding();
+    var totalDisbursement = this.calculateProjectDisbursement();
+    var deleteFunder = this.currentProjectFundersList.filter(f => f.funderId == funderId);
 
     this.blockUI.start('Removing Funder...');
     this.projectService.deleteProjectFunder(projectId, funderId).subscribe(
