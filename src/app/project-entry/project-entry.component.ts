@@ -2252,6 +2252,16 @@ export class ProjectEntryComponent implements OnInit {
     }
 
     var dModel = this.disbursementModel;
+    var formattedDate = dModel.dated.year + '-' + dModel.dated.month + '-' + dModel.dated.day
+    var todaysDate = new Date(this.storeService.getCurrentDateSQLFormat());
+    var disbursementDate = new Date(formattedDate);
+
+    if (disbursementDate > todaysDate) {
+      this.errorMessage = Messages.INVALID_FUTURE_DATE;
+      this.errorModal.openModal();
+      return false;
+    }
+
     var model = {
       dated: dModel.dated.year + '-' + dModel.dated.month + '-' + dModel.dated.day,
       formattedDate: dModel.dated.year + '-' + dModel.dated.month + '-' + dModel.dated.day,
