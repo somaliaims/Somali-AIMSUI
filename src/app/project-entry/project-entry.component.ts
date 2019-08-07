@@ -1732,6 +1732,18 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
+    if (this.currentProjectLocationsList.length > 0) {
+      var percentageEntered = this.calculateLocationPercentage();
+      var enteredPercentage = this.locationModel.fundsPercentage;
+      var percentageTotal = parseInt(percentageEntered) + parseInt(enteredPercentage.toString());
+
+      if (percentageTotal > 100) {
+        this.errorMessage = Messages.INVALID_PERCENTAGE;
+        this.errorModal.openModal();
+        return false;
+      }
+    }
+
     var activeProject = localStorage.getItem('active-project');
     var projectId = 0;
 
