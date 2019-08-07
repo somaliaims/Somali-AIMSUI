@@ -23,6 +23,7 @@ export const Messages = {
     INVALID_EXRATE_SAVE: 'You must provide some updated exchange rates to save',
     INVALID_ENVELOPE: 'The sum of all actual allocations shall not be less than total committed funds',
     NULL_VALUE: 'Value cannot be set null for ',
+    INVALID_TRANSACTION_DATE: ' date must be between project start and end date',
     INVALID_RADIO_VALUES: 'Provide values of both options for radio button',
     INVALID_OPTIONS_LIST: 'Provide at least one option for list/dropdown/checkbox',
     INVALID_OPTION_VALUE: 'You must provide at least single value for the selected field',

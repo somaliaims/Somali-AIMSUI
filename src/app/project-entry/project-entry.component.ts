@@ -1937,6 +1937,22 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
+    var pModel = this.model;
+    var startDate = pModel.startDate.year + '-' + pModel.startDate.month + '-' + pModel.startDate.day;
+    var endDate = pModel.endDate.year + '-' + pModel.endDate.month + '-' + pModel.endDate.day;
+    var fundingFormattedDate = this.funderModel.dated.year + '-' + this.funderModel.dated.month + '-' +
+      this.funderModel.dated.day;
+
+    var projectStartDate = new Date(startDate);
+    var projectEndDate = new Date(endDate);
+    var fundingDate = new Date(fundingFormattedDate);
+
+    if ((fundingDate < projectStartDate) || (fundingDate > projectEndDate)) {
+      this.errorMessage = "Funding" + Messages.INVALID_TRANSACTION_DATE;
+      this.errorModal.openModal();
+      return false;
+    }
+
     if (this.selectedFunderId != 0) {
       this.funderModel.funderId = this.selectedFunderId;
       var funderExists = this.currentProjectFundersList.filter(f => f.funderId == this.selectedFunderId
