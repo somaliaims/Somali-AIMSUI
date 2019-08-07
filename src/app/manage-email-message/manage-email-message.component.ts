@@ -18,7 +18,7 @@ export class ManageEmailMessageComponent implements OnInit {
   isForEdit: boolean = false;
   isError: boolean = false;
   messagesList: any = [];
-  model = { id: 0, messageType: null, subject: null, typeDefinition: null, message: null };
+  model = { id: 0, messageType: null, subject: null, typeDefinition: null, message: null, footerMessage: null };
   entryForm: any = null;
   permissions: any = {};
 
@@ -63,7 +63,9 @@ export class ManageEmailMessageComponent implements OnInit {
               var messageData = message[0];
               this.model.messageType = messageData.messageType;
               this.model.typeDefinition = messageData.typeDefinition;
+              this.model.subject = messageData.subject;
               this.model.message = messageData.message;
+              this.model.footerMessage = messageData.footerMessage;
             }
           }
         }

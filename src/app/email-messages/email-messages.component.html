@@ -42,16 +42,16 @@
         <div *ngIf="filteredEmailMessagesList.length > 0" class="col margin-top-10">
           <table class="table table-bordered table-stripped">
             <tr>
-              <th>Definition</th>
               <th>Subject</th>
               <th>Message</th>
+              <th>Footer message</th>
               <th *ngIf="permissions.canEditEmailMessage">Actions</th>
             </tr>
             <tr *ngFor="let msg of filteredEmailMessagesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
-              <td>{{msg.typeDefinition}}</td>
               <td>{{msg.subject}}</td>
               <td>{{msg.message | truncate}} <a href="#" title="View message detail" id="msg-{{msg.id}}"
-                  (click)="viewEmailMessage($event)" class="text-info"><b>>></b></a><br /></td>
+                  (click)="viewEmailMessage($event)" class="text-info"><b>View detail</b></a><br /></td>
+              <td>{{msg.footerMessage}}</td>
               <td *ngIf="permissions.canEditEmailMessage">
                 <a title="Edit" (click)="edit(msg.id)" class="btn btn-info"><i class="fa fa-edit color-white"></i></a>
                 <!--&nbsp;
