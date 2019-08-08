@@ -60,71 +60,74 @@
       <div *ngIf="isShowSources" class="col-md-6">
         <div class="col-md-12 col-sm-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body iati-box">
+            <div class="card-body">
               <h6 class="card-title text-center">Source projects</h6>
-              <table class="table table-bordered">
-                <tr *ngIf="isAimsLoading">
-                  <span class="text-info">Wait loading aims data...</span>
-                </tr>
-                <tr *ngFor="let project of aimsProjects">
-                  <td>
-                    <span class="float-left">
-                      <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="aimst-{{project.id}}"
-                        class="btn btn-info btn-sm" (click)="enterProjectTitleAIMS($event)">Title
-                        >></button>&nbsp;<a href="#" title="View Project Details" id="aproject-{{project.id}}"
-                        (click)="viewAIMSProject($event)" class="text-info">View
-                        Details</a><br />
-
-                      <div class="margin-top-5">
-                        <b>Start date: </b>{{project.startDate}}&nbsp;<button id="btnsdate-{{project.id}}"
-                          (click)="enterStartDate($event)" class="btn btn-sm btn-success">>></button><br />
-                      </div>
-                      <div class="margin-top-5">
-                        <b>End date: </b>{{project.endDate}}&nbsp;<button id="btnedate-{{project.id}}"
-                          (click)="enterEndDate($event)" class="btn btn-sm btn-success">>></button><br />
-                      </div>
-                      <span class="badge badge-warning">AIMS</span>
-                    </span>
-                    <span class="float-right">
-                      <button id="aimsd-{{project.id}}" class="btn btn-warning btn-sm"
-                        (click)="enterProjectDescAIMS($event)">Description
-                        >></button>
-                    </span>
-                  </td>
-                </tr>
-
-                <tr *ngIf="isIatiLoading">
-                  <span class="text-info">Wait loading iati data...</span>
-                </tr>
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <span class="float-left">
-                      <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="iatit-{{project.id}}"
-                        class="btn btn-info btn-sm" (click)="enterProjectTitleIATI($event)">Title
-                        >></button>&nbsp;<a href="#" title="View Project Details" id="iproject-{{project.id}}"
-                        (click)="viewIATIProject($event)" class="text-info">View
-                        Details</a><br />
-                      <div class="margin-top-5">
-                        <b>Start date: </b>{{project.startDate}}&nbsp;<button *ngIf="project.startDate"
-                          id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)"
-                          class="btn btn-sm btn-success">>></button><br />
-                      </div>
-                      <div class="margin-top-5">
-                        <b>End date: </b>{{project.endDate}}&nbsp;<button *ngIf="project.endDate"
-                          id="btniedate-{{project.id}}" (click)="enterEndDateIATI($event)"
-                          class="btn btn-sm btn-success">>></button><br />
-                      </div>
-                      <span class="badge badge-warning">IATI</span>
-                    </span>
-                    <span class="float-right">
-
-                      <button id="iatid-{{project.id}}" class="btn btn-warning btn-sm"
-                        (click)="enterProjectDescIATI($event)">Description
-                        >></button>
-                    </span>
-                  </td>
-                </tr>
-              </table>
+              
+              <div class="iati-box">
+                <table class="table table-bordered">
+                  <tr *ngIf="isAimsLoading">
+                    <span class="text-info">Wait loading aims data...</span>
+                  </tr>
+                  <tr *ngFor="let project of aimsProjects">
+                    <td>
+                      <span class="float-left">
+                        <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="aimst-{{project.id}}"
+                          class="btn btn-info btn-sm" (click)="enterProjectTitleAIMS($event)">Title
+                          >></button>&nbsp;<a href="#" title="View Project Details" id="aproject-{{project.id}}"
+                          (click)="viewAIMSProject($event)" class="text-info">View
+                          Details</a><br />
+  
+                        <div class="margin-top-5">
+                          <b>Start date: </b>{{project.startDate}}&nbsp;<button id="btnsdate-{{project.id}}"
+                            (click)="enterStartDate($event)" class="btn btn-sm btn-success">>></button><br />
+                        </div>
+                        <div class="margin-top-5">
+                          <b>End date: </b>{{project.endDate}}&nbsp;<button id="btnedate-{{project.id}}"
+                            (click)="enterEndDate($event)" class="btn btn-sm btn-success">>></button><br />
+                        </div>
+                        <span class="badge badge-warning">AIMS</span>
+                      </span>
+                      <span class="float-right">
+                        <button id="aimsd-{{project.id}}" class="btn btn-warning btn-sm"
+                          (click)="enterProjectDescAIMS($event)">Description
+                          >></button>
+                      </span>
+                    </td>
+                  </tr>
+  
+                  <tr *ngIf="isIatiLoading">
+                    <span class="text-info">Wait loading iati data...</span>
+                  </tr>
+                  <tr *ngFor="let project of iatiProjects">
+                    <td>
+                      <span class="float-left">
+                        <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="iatit-{{project.id}}"
+                          class="btn btn-info btn-sm" (click)="enterProjectTitleIATI($event)">Title
+                          >></button>&nbsp;<a href="#" title="View Project Details" id="iproject-{{project.id}}"
+                          (click)="viewIATIProject($event)" class="text-info">View
+                          Details</a><br />
+                        <div class="margin-top-5">
+                          <b>Start date: </b>{{project.startDate}}&nbsp;<button *ngIf="project.startDate"
+                            id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)"
+                            class="btn btn-sm btn-success">>></button><br />
+                        </div>
+                        <div class="margin-top-5">
+                          <b>End date: </b>{{project.endDate}}&nbsp;<button *ngIf="project.endDate"
+                            id="btniedate-{{project.id}}" (click)="enterEndDateIATI($event)"
+                            class="btn btn-sm btn-success">>></button><br />
+                        </div>
+                        <span class="badge badge-warning">IATI</span>
+                      </span>
+                      <span class="float-right">
+  
+                        <button id="iatid-{{project.id}}" class="btn btn-warning btn-sm"
+                          (click)="enterProjectDescIATI($event)">Description
+                          >></button>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -205,70 +208,73 @@
 
         <div class="col-md-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body iati-box">
+            <div class="card-body">
               <h6 class="card-title text-center">Source projects</h6>
-              <table class="table table-bordered iati-box">
-                <tr *ngFor="let project of aimsProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">AIMS</span>
-                    <table *ngIf="project.sectors.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Sector</th>
-                        <th>Funds %</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let sector of project.sectors">
-                        <td>
-                          {{sector.sector}}
-                        </td>
-                        <td>
-                          {{sector.fundsPercentage}}
-                        </td>
-                        <td [class.disable]="checkIfSectorAdded(sector.sector)">
-                          <button id="asector-{{project.id}}-{{sector.sectorId}}" (click)="enterAIMSSector($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.sectors.length == 0"><i>No sectors available</i></div>
-                  </td>
-                </tr>
-              </table>
-
-              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.sectors.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Sector</th>
-                        <th>Funds %</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let sector of project.sectors">
-                        <td>
-                          {{sector.sectorName}}
-                        </td>
-                        <td>
-                          {{sector.fundsPercentage}}
-                        </td>
-                        <td [class.disable]="checkIfSectorAdded(sector.sectorName)">
-                          <button id="isector-{{project.id}}-{{sector.code}}" (click)="enterIATISector($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.sectors.length == 0"><i>No sectors available</i></div>
-                  </td>
-                </tr>
-              </table>
-
+              <div class="iati-box">
+                <table class="table table-bordered iati-box">
+                  <tr *ngFor="let project of aimsProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">AIMS</span>
+                      <table *ngIf="project.sectors.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Sector</th>
+                          <th>Funds %</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let sector of project.sectors">
+                          <td>
+                            {{sector.sector}}
+                          </td>
+                          <td>
+                            {{sector.fundsPercentage}}
+                          </td>
+                          <td [class.disable]="checkIfSectorAdded(sector.sector)">
+                            <button id="asector-{{project.id}}-{{sector.sectorId}}" (click)="enterAIMSSector($event)"
+                              class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.sectors.length == 0"><i>No sectors available</i></div>
+                    </td>
+                  </tr>
+                </table>
+  
+                <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                  <tr *ngFor="let project of iatiProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">IATI</span>
+                      <table *ngIf="project.sectors.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Sector</th>
+                          <th>Funds %</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let sector of project.sectors">
+                          <td>
+                            {{sector.sectorName}}
+                          </td>
+                          <td>
+                            {{sector.fundsPercentage}}
+                          </td>
+                          <td [class.disable]="checkIfSectorAdded(sector.sectorName)">
+                            <button id="isector-{{project.id}}-{{sector.code}}" (click)="enterIATISector($event)"
+                              class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.sectors.length == 0"><i>No sectors available</i></div>
+                    </td>
+                  </tr>
+                </table>
+  
+              </div>
+              
             </div>
           </div>
         </div>
@@ -318,14 +324,6 @@
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
-                <!--<select class="form-control" id="sectorId" [(ngModel)]="sectorModel.sectorId" name="sectorId"
-                  #sectorId="ngModel" (change)="showSectorMappings()" required>
-                  <option value="null">--Select sector--</option>
-                  <option *ngFor="let sector of typeSectorsList" [value]="sector.id">{{sector.sectorName}}</option>
-                </select>
-                <div *ngIf="projectSectorForm.submitted" [hidden]="sectorId.valid" class="alert alert-danger">
-                  Sector is required
-                </div>-->
               </div>
 
               <div *ngIf="sectorEntryType == 'iati'" class="form-group">
@@ -380,9 +378,6 @@
               <button [class.disable]="isProjectSectorBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">{{btnProjectSectorText}}</button>
 
-              <!--<button [class.disable]="isProjectSectorBtnDisabled"
-                class="btn btn-lg btn-warning btn-block text-uppercase" type="button" (click)="resetSectorEntry()">Reset
-                Sector</button>-->
             </form>
 
           </div>
@@ -434,64 +429,68 @@
 
         <div class="col-md-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body iati-box">
+            <div class="card-body">
               <h6 class="card-title text-center">Source projects</h6>
-              <table class="table table-bordered">
-                <tr *ngFor="let project of aimsProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">AIMS</span>
-                    <table *ngIf="project.locations.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Location</th>
-                        <th>Funds %</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let location of project.locations">
-                        <td>
-                          {{location.location}}
-                        </td>
-                        <td>
-                          {{location.fundsPercentage}}
-                        </td>
-                        <td [class.disable]="checkIfLocationAdded(location.location)">
-                          <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.locations.length == 0"><i>No locations available</i></div>
-                  </td>
-                </tr>
-              </table>
 
-              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.locations.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Location</th>
-                      </tr>
-                      <tr *ngFor="let location of project.locations">
-                        <td>
-                          {{location.name}}
-                        </td>
-                        <!--<td [class.disable]="checkIfLocationAdded(location.name)">
-                          <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATILocation($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
-                        </td>-->
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.locations.length == 0"><i>No locations available</i></div>
-                  </td>
-                </tr>
-              </table>
+              <div class="iati-box">
+                <table class="table table-bordered">
+                  <tr *ngFor="let project of aimsProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">AIMS</span>
+                      <table *ngIf="project.locations.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Location</th>
+                          <th>Funds %</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let location of project.locations">
+                          <td>
+                            {{location.location}}
+                          </td>
+                          <td>
+                            {{location.fundsPercentage}}
+                          </td>
+                          <td [class.disable]="checkIfLocationAdded(location.location)">
+                            <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)"
+                              class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.locations.length == 0"><i>No locations available</i></div>
+                    </td>
+                  </tr>
+                </table>
+  
+                <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                  <tr *ngFor="let project of iatiProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">IATI</span>
+                      <table *ngIf="project.locations.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Location</th>
+                        </tr>
+                        <tr *ngFor="let location of project.locations">
+                          <td>
+                            {{location.name}}
+                          </td>
+                          <!--<td [class.disable]="checkIfLocationAdded(location.name)">
+                            <button id="ilocation-{{project.id}}-{{location.name}}" (click)="enterIATILocation($event)"
+                              class="btn btn-success btn-sm">Enter >></button>
+                          </td>-->
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.locations.length == 0"><i>No locations available</i></div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -607,67 +606,71 @@
           <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
               <h6 class="card-title text-center">Source projects</h6>
-              <table class="table table-bordered">
-                <tr *ngFor="let project of aimsProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">AIMS</span>
-                    <table *ngIf="project.documents.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Document title</th>
-                        <th>Url</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let document of project.documents">
-                        <td>
-                          {{document.documentTitle}}
-                        </td>
-                        <td>
-                          {{document.documentUrl}}
-                        </td>
-                        <td>
-                          <button id="aDocument-{{project.id}}-{{document.id}}" (click)="enterAIMSDocument($event)"
-                            class="btn btn-success btn-sm">Enter</button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.documents.length == 0"><i>No documents available</i></div>
-                  </td>
-                </tr>
-              </table>
 
-              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.documents.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Document title</th>
-                        <th>Document url</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let document of project.documents">
-                        <td>
-                          {{document.documentTitle}}
-                        </td>
-                        <td class="dont-break-out">
-                          {{document.documentUrl}}
-                        </td>
-                        <td>
-                          <button id="ddocument-{{project.id}}-{{document.id}}" (click)="enterIATIDocument($event)"
-                            class="btn btn-success btn-sm">Enter</button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.documents.length == 0"><i>No documents available</i></div>
-                  </td>
-                </tr>
-              </table>
+              <div class="iati-box">
+                <table class="table table-bordered">
+                  <tr *ngFor="let project of aimsProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">AIMS</span>
+                      <table *ngIf="project.documents.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Document title</th>
+                          <th>Url</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let document of project.documents">
+                          <td>
+                            {{document.documentTitle}}
+                          </td>
+                          <td>
+                            {{document.documentUrl}}
+                          </td>
+                          <td>
+                            <button id="aDocument-{{project.id}}-{{document.id}}" (click)="enterAIMSDocument($event)"
+                              class="btn btn-success btn-sm">Enter</button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.documents.length == 0"><i>No documents available</i></div>
+                    </td>
+                  </tr>
+                </table>
+  
+                <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                  <tr *ngFor="let project of iatiProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">IATI</span>
+                      <table *ngIf="project.documents.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Document title</th>
+                          <th>Document url</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let document of project.documents">
+                          <td>
+                            {{document.documentTitle}}
+                          </td>
+                          <td class="dont-break-out">
+                            {{document.documentUrl}}
+                          </td>
+                          <td>
+                            <button id="ddocument-{{project.id}}-{{document.id}}" (click)="enterIATIDocument($event)"
+                              class="btn btn-success btn-sm">Enter</button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.documents.length == 0"><i>No documents available</i></div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -757,139 +760,143 @@
       <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
         <div class="col-md-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body iati-box">
+            <div class="card-body">
               <h6 class="card-title text-center">Source projects</h6>
-              <table class="table table-bordered">
-                <tr *ngFor="let project of aimsProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">AIMS</span>
 
-                    <table *ngIf="project.funders.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Funder name</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let funder of project.funders">
-                        <td>
-                          {{funder.funder}}
-                        </td>
-                        <td [class.disable]="checkIfFunderAdded(funder.funder)">
-                          <button id="aFunder-{{project.id}}-{{funder.funderId}}" (click)="enterAIMSFunder($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from AIMS found.</i></div>
-                  </td>
-                </tr>
-              </table>
-
-              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a><br />
-
-                    <div class="badge badge-warning float-right">IATI</div>
-                    <div class="btn-group">
-                      <button (click)="showFunderTab(project.id)"
-                        [ngClass]="{'active': checkIfFunderTabSelected(project.id)}" type="button"
-                        class="btn btn-warning">Funders</button>
-                      <button (click)="showBudgetTab(project.id)"
-                        [ngClass]="{'active': checkIfBudgetTabSelected(project.id)}" type="button"
-                        class="btn btn-warning">Budget</button>
-                      <button (click)="showTransactionTab(project.id)"
-                        [ngClass]="{'active': checkIfTransactionTabSelected(project.id)}" type="button"
-                        class="btn btn-warning">Transactions</button>
-                    </div>
-
-                    <div *ngIf="project.isFunderVisible" class="margin-top-10">
-                      <table *ngIf="project.funders.length > 0" class="table table-bordered margin-top-5">
+              <div class="iati-box">
+                <table class="table table-bordered">
+                  <tr *ngFor="let project of aimsProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">AIMS</span>
+  
+                      <table *ngIf="project.funders.length > 0" class="table table-bordered">
                         <tr>
                           <th>Funder name</th>
                           <th>Action</th>
                         </tr>
                         <tr *ngFor="let funder of project.funders">
                           <td>
-                            {{funder.name}}
+                            {{funder.funder}}
                           </td>
-                          <td [class.disable]="checkIfFunderAdded(funder.name)">
-                            <button id="dfunder-{{project.id}}-{{funder.id}}" (click)="enterIATIFunder($event)"
+                          <td [class.disable]="checkIfFunderAdded(funder.funder)">
+                            <button id="aFunder-{{project.id}}-{{funder.funderId}}" (click)="enterAIMSFunder($event)"
                               class="btn btn-success btn-sm">Enter >></button>
                           </td>
                         </tr>
                       </table>
-                      <div class="text-info" *ngIf="project.funders.length == 0">
-                        <i>No funders to show.</i>
+                      <div class="text-info" *ngIf="project.funders.length == 0"><i>No funders from AIMS found.</i></div>
+                    </td>
+                  </tr>
+                </table>
+  
+                <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                  <tr *ngFor="let project of iatiProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
+                        Details</a><br />
+  
+                      <div class="badge badge-warning float-right">IATI</div>
+                      <div class="btn-group">
+                        <button (click)="showFunderTab(project.id)"
+                          [ngClass]="{'active': checkIfFunderTabSelected(project.id)}" type="button"
+                          class="btn btn-warning">Funders</button>
+                        <button (click)="showBudgetTab(project.id)"
+                          [ngClass]="{'active': checkIfBudgetTabSelected(project.id)}" type="button"
+                          class="btn btn-warning">Budget</button>
+                        <button (click)="showTransactionTab(project.id)"
+                          [ngClass]="{'active': checkIfTransactionTabSelected(project.id)}" type="button"
+                          class="btn btn-warning">Transactions</button>
                       </div>
-                    </div>
-
-                    <div *ngIf="project.isBudgetVisible" class="margin-top-10">
-                      <table *ngIf="project.budgets.length > 0" class="table table-bordered margin-top-5">
-                        <tr>
-                          <th>Amount</th>
-                          <th>Currency</th>
-                          <th>Dated</th>
-                          <th>Action</th>
-                        </tr>
-                        <tr *ngFor="let budget of project.budgets">
-                          <td [ngClass]="{'bg-warning': !budget.amount}">
-                            {{displayNull(budget.amount)}}
-                          </td>
-                          <td [ngClass]="{'bg-warning': !budget.currency}">
-                            {{displayNull(budget.currency)}}
-                          </td>
-                          <td [ngClass]="{'bg-warning': !budget.endDate}">
-                            {{displayNull(budget.endDate)}}
-                          </td>
-                          <td>
-                            <button id="dbudget-{{project.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
-                              class="btn btn-success btn-sm">Enter >></button>
-                          </td>
-                        </tr>
-                      </table>
-                      <div class="text-info" *ngIf="project.budgets.length == 0">
-                        <i>No budgets to show.</i>
+  
+                      <div *ngIf="project.isFunderVisible" class="margin-top-10">
+                        <table *ngIf="project.funders.length > 0" class="table table-bordered margin-top-5">
+                          <tr>
+                            <th>Funder name</th>
+                            <th>Action</th>
+                          </tr>
+                          <tr *ngFor="let funder of project.funders">
+                            <td>
+                              {{funder.name}}
+                            </td>
+                            <td [class.disable]="checkIfFunderAdded(funder.name)">
+                              <button id="dfunder-{{project.id}}-{{funder.id}}" (click)="enterIATIFunder($event)"
+                                class="btn btn-success btn-sm">Enter >></button>
+                            </td>
+                          </tr>
+                        </table>
+                        <div class="text-info" *ngIf="project.funders.length == 0">
+                          <i>No funders to show.</i>
+                        </div>
                       </div>
-                    </div>
-
-                    <div *ngIf="project.isTransactionVisible" class="margin-top-10">
-                      <table *ngIf="project.fundingTransactions.length > 0" class="table table-bordered margin-top-5">
-                        <tr>
-                          <th>Amount</th>
-                          <th>Type</th>
-                          <th>Dated</th>
-                          <th>Action</th>
-                        </tr>
-                        <tr *ngFor="let transaction of project.fundingTransactions">
-                          <td [ngClass]="{'bg-warning': !transaction.amount}">
-                            {{displayNull(transaction.amount)}}
-                          </td>
-                          <td>
-                            {{transaction.transactionType}}
-                          </td>
-                          <td [ngClass]="{'bg-warning': !transaction.dated}">
-                            {{displayNull(transaction.dated)}}
-                          </td>
-                          <td>
-                            <button id="dtransaction-{{project.id}}-{{transaction.id}}"
-                              (click)="enterIATIFundingTransaction($event)" class="btn btn-success btn-sm">Enter
-                              >></button>
-                          </td>
-                        </tr>
-                      </table>
-                      <div class="text-info" *ngIf="project.fundingTransactions.length == 0">
-                        <i>No transactions to show.</i>
+  
+                      <div *ngIf="project.isBudgetVisible" class="margin-top-10">
+                        <table *ngIf="project.budgets.length > 0" class="table table-bordered margin-top-5">
+                          <tr>
+                            <th>Amount</th>
+                            <th>Currency</th>
+                            <th>Dated</th>
+                            <th>Action</th>
+                          </tr>
+                          <tr *ngFor="let budget of project.budgets">
+                            <td [ngClass]="{'bg-warning': !budget.amount}">
+                              {{displayNull(budget.amount)}}
+                            </td>
+                            <td [ngClass]="{'bg-warning': !budget.currency}">
+                              {{displayNull(budget.currency)}}
+                            </td>
+                            <td [ngClass]="{'bg-warning': !budget.endDate}">
+                              {{displayNull(budget.endDate)}}
+                            </td>
+                            <td>
+                              <button id="dbudget-{{project.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
+                                class="btn btn-success btn-sm">Enter >></button>
+                            </td>
+                          </tr>
+                        </table>
+                        <div class="text-info" *ngIf="project.budgets.length == 0">
+                          <i>No budgets to show.</i>
+                        </div>
                       </div>
-                    </div>
-
-                  </td>
-                </tr>
-              </table>
+  
+                      <div *ngIf="project.isTransactionVisible" class="margin-top-10">
+                        <table *ngIf="project.fundingTransactions.length > 0" class="table table-bordered margin-top-5">
+                          <tr>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Dated</th>
+                            <th>Action</th>
+                          </tr>
+                          <tr *ngFor="let transaction of project.fundingTransactions">
+                            <td [ngClass]="{'bg-warning': !transaction.amount}">
+                              {{displayNull(transaction.amount)}}
+                            </td>
+                            <td>
+                              {{transaction.transactionType}}
+                            </td>
+                            <td [ngClass]="{'bg-warning': !transaction.dated}">
+                              {{displayNull(transaction.dated)}}
+                            </td>
+                            <td>
+                              <button id="dtransaction-{{project.id}}-{{transaction.id}}"
+                                (click)="enterIATIFundingTransaction($event)" class="btn btn-success btn-sm">Enter
+                                >></button>
+                            </td>
+                          </tr>
+                        </table>
+                        <div class="text-info" *ngIf="project.fundingTransactions.length == 0">
+                          <i>No transactions to show.</i>
+                        </div>
+                      </div>
+  
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -1073,62 +1080,65 @@
       <div *ngIf="isShowSources" class="col-md-6 col-sm-6">
         <div class="col-md-12">
           <div class="card card-signin my-5 margin-top-10">
-            <div class="card-body iati-box">
+            <div class="card-body">
               <h6 class="card-title text-center">Source projects</h6>
-              <table class="table table-bordered">
-                <tr *ngFor="let project of aimsProjects">
-                  <td>
-                    <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">AIMS</span>
-                    <table *ngIf="project.implementers.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Implementer name</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let implementer of project.implementers">
-                        <td>
-                          {{implementer.implementer}}
-                        </td>
-                        <td [class.disable]="checkIfImplementerAdded(implementer.implementer)">
-                          <button id="aImplementer-{{project.id}}-{{implementer.implementerId}}"
-                            (click)="enterAIMSImplementer($event)" class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.implementers.length == 0"><i>No implementers found.</i></div>
-                  </td>
-                </tr>
-              </table>
 
-              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.implementers.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Implementer Name</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let implementer of project.implementers">
-                        <td>
-                          {{implementer.name}}
-                        </td>
-                        <td [class.disable]="checkIfImplementerAdded(implementer.name)">
-                          <button id="dimplementer-{{project.id}}-{{implementer.id}}"
-                            (click)="enterIATIImplementer($event)" class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.implementers.length == 0"><i>No implementers
-                        found.</i></div>
-                  </td>
-                </tr>
-              </table>
+              <div class="iati-box">
+                <table class="table table-bordered">
+                  <tr *ngFor="let project of aimsProjects">
+                    <td>
+                      <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">AIMS</span>
+                      <table *ngIf="project.implementers.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Implementer name</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let implementer of project.implementers">
+                          <td>
+                            {{implementer.implementer}}
+                          </td>
+                          <td [class.disable]="checkIfImplementerAdded(implementer.implementer)">
+                            <button id="aImplementer-{{project.id}}-{{implementer.implementerId}}"
+                              (click)="enterAIMSImplementer($event)" class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.implementers.length == 0"><i>No implementers found.</i></div>
+                    </td>
+                  </tr>
+                </table>
+  
+                <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                  <tr *ngFor="let project of iatiProjects">
+                    <td>
+                      <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">IATI</span>
+                      <table *ngIf="project.implementers.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Implementer Name</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let implementer of project.implementers">
+                          <td>
+                            {{implementer.name}}
+                          </td>
+                          <td [class.disable]="checkIfImplementerAdded(implementer.name)">
+                            <button id="dimplementer-{{project.id}}-{{implementer.id}}"
+                              (click)="enterIATIImplementer($event)" class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.implementers.length == 0"><i>No implementers
+                          found.</i></div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
 
             </div>
           </div>
@@ -1240,75 +1250,78 @@
           <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
               <h6 class="card-title text-center">Source projects</h6>
-              <table class="table table-bordered">
-                <tr *ngFor="let project of aimsProjects">
-                  <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">AIMS</span>
-                    <table *ngIf="project.disbursements.length > 0" class="table table-bordered">
-                      <tr>
-                        <th>Month/Year</th>
-                        <th>Amount</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let disbursement of project.disbursements">
-                        <td>
-                          {{disbursement.year}} / {{disbursement.month}}
-                        </td>
-                        <td>
-                          {{disbursement.amount | number:0}}
-                        </td>
-                        <td>
-                          <button id="adisbursement-{{project.id}}-{{disbursement.year}}-{{disbursement.month}}"
-                            (click)="enterAIMSDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.disbursements.length == 0"><i>No disbursements available</i>
-                    </div>
-                  </td>
-                </tr>
-              </table>
 
-              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
-                      id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a><br />
-                    <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.disbursementTransactions.length != 0" class="table table-bordered">
-                      <tr>
-                        <th>Type</th>
-                        <th>Currency</th>
-                        <th>Amount</th>
-                        <th>Dated</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let disbursement of project.disbursementTransactions">
-                        <td [ngClass]="{'bg-warning': !disbursement.transactionType}">
-                          {{disbursement.transactionType}}
-                        </td>
-                        <td [ngClass]="{'bg-warning': !disbursement.currency}">
-                          {{displayNull(disbursement.currency)}}
-                        </td>
-                        <td [ngClass]="{'bg-warning': !disbursement.amount}">
-                          {{disbursement.amount | number:0}}
-                        </td>
-                        <td [ngClass]="{'bg-warning': !disbursement.dated}">
-                          {{displayNull(disbursement.dated)}}
-                        </td>
-                        <td>
-                          <button id="idisbursement-{{project.id}}-{{disbursement.id}}"
-                            (click)="enterIATIDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.transactions.length == 0"><i>No disbursements available</i>
-                    </div>
-              </table>
+              <div class="iati-box">
+                <table class="table table-bordered">
+                  <tr *ngFor="let project of aimsProjects">
+                    <td>
+                      <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">AIMS</span>
+                      <table *ngIf="project.disbursements.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Month/Year</th>
+                          <th>Amount</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let disbursement of project.disbursements">
+                          <td>
+                            {{disbursement.year}} / {{disbursement.month}}
+                          </td>
+                          <td>
+                            {{disbursement.amount | number:0}}
+                          </td>
+                          <td>
+                            <button id="adisbursement-{{project.id}}-{{disbursement.year}}-{{disbursement.month}}"
+                              (click)="enterAIMSDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.disbursements.length == 0"><i>No disbursements available</i>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+  
+                <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                  <tr *ngFor="let project of iatiProjects">
+                    <td>
+                      <b>Project Title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+                        id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
+                        Details</a><br />
+                      <span class="badge badge-warning">IATI</span>
+                      <table *ngIf="project.disbursementTransactions.length != 0" class="table table-bordered">
+                        <tr>
+                          <th>Type</th>
+                          <th>Currency</th>
+                          <th>Amount</th>
+                          <th>Dated</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let disbursement of project.disbursementTransactions">
+                          <td [ngClass]="{'bg-warning': !disbursement.transactionType}">
+                            {{disbursement.transactionType}}
+                          </td>
+                          <td [ngClass]="{'bg-warning': !disbursement.currency}">
+                            {{displayNull(disbursement.currency)}}
+                          </td>
+                          <td [ngClass]="{'bg-warning': !disbursement.amount}">
+                            {{disbursement.amount | number:0}}
+                          </td>
+                          <td [ngClass]="{'bg-warning': !disbursement.dated}">
+                            {{displayNull(disbursement.dated)}}
+                          </td>
+                          <td>
+                            <button id="idisbursement-{{project.id}}-{{disbursement.id}}"
+                              (click)="enterIATIDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
+                          </td>
+                        </tr>
+                      </table>
+                      <div class="text-info" *ngIf="project.transactions.length == 0"><i>No disbursements available</i>
+                      </div>
+                </table>
+              </div>
 
             </div>
           </div>
