@@ -93,6 +93,18 @@ html {
     margin: 70px 10px 10px 10px !important;
   }
 
+  .view-area-shrinked {
+    margin: 50px 10px 10px 10px !important;
+  }
+
+  .padding-top-10 {
+    padding-top: 10px;
+  }
+
+  .padding-top-20 {
+    padding-top: 20px;
+  }
+
   .ten-px-left-padding {
     padding-left: 10px !important;
   }
@@ -167,6 +179,10 @@ html {
     margin-top: 50px !important;
   }
 
+  .margin-top-55 {
+    margin-top: 55px !important;
+  }
+
   .margin-left-15 {
     margin-left: 15px !important;
   }
@@ -195,6 +211,14 @@ html {
     max-height: 620px;
     overflow-y: auto;
     overflow-x: hidden; 
+  }
+
+  .stay-on-top {
+    z-index: 1000;
+  }
+
+  .background-white {
+    background: white !important;
   }
 
   table.row-highlight tr:first-child:hover {
