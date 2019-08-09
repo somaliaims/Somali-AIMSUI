@@ -16,6 +16,7 @@ import { ProjectService } from '../services/project.service';
 export class NotificationComponent implements OnInit {
   notifications: any = [];
   projectRequests: any = [];
+  projectDeletionRequests: any = [];
   isLoading: boolean = true;
   showNoFound: boolean = false;
   infoMessage: string = null;
@@ -27,19 +28,28 @@ export class NotificationComponent implements OnInit {
   currentTab: string = 'notifications';
   @BlockUI() blockUI: NgBlockUI;
 
+  tabConstants: any = {
+    'NOTIFICATIONS': 'notifications',
+    'REQUESTS': 'requests',
+    'DELETION_REQUESTS': 'deletionRequests'
+  };
+
   displayTabs: any = [
     { visible: true, identity: 'notifications' },
     { visible: false, identity: 'requests' },
+    { visible: false, identity: 'deletionRequests' }
   ];
 
   notificationTypeCodes: any = {
     'NOTIFICATIONS': 1,
-    'REQUESTS': 2
+    'REQUESTS': 2,
+    'PROJECT_DELETION_REQUESTS': 3
   };
 
   notificationTypes: any = [
     { id: 1, text: 'Notifications' },
-    { id: 2, text: 'Project permission requests' }
+    { id: 2, text: 'Project permission requests' },
+    { id: 3, text: 'Project deletion requests' },
   ];
 
   constructor(private notificationService: NotificationService, private infoModal: InfoModalComponent,
@@ -70,8 +80,11 @@ export class NotificationComponent implements OnInit {
       this.showNotifications();
     } else if (this.displayOption == this.notificationTypeCodes.REQUESTS) {
       this.showRequests();
+    } else if (this.displayOption == this.notificationTypeCodes.PROJECT_DELETION_REQUESTS) {
+      this.showDeletionRequests();
     }
   }
+
   getNotifications() {
     this.notificationService.getUserNotifications().subscribe(data => {
       if (data && data.length) {
@@ -95,11 +108,15 @@ export class NotificationComponent implements OnInit {
   }
 
   showNotifications() {
-    this.manageTabsDisplay('notifications');
+    this.manageTabsDisplay(this.tabConstants.NOTIFICATIONS);
   }
 
   showRequests() {
-    this.manageTabsDisplay('requests');
+    this.manageTabsDisplay(this.tabConstants.REQUESTS);
+  }
+
+  showDeletionRequests() {
+    this.manageTabsDisplay(this.tabConstants.DELETION_REQUESTS);
   }
 
   reloadPage() {
@@ -114,6 +131,16 @@ export class NotificationComponent implements OnInit {
           this.projectRequests = data;
         }
         this.isLoading = false;
+      }
+    );
+  }
+
+  getProjectDeletionRequests() {
+    this.projectService.getProjectDeletionActiveRequests().subscribe(
+      data => {
+        if (data) {
+          this.projectDeletionRequests = data;
+        }
       }
     );
   }
@@ -160,6 +187,14 @@ export class NotificationComponent implements OnInit {
         }
       );
     }
+  }
+
+  approveDeletionRequest(e) {
+    var arr = e.currentTarget.id.split('-');
+  }
+
+  unApproveDeletionRequest(e) {
+    var arr = e.currentTarget.id.split('-');
   }
 
 

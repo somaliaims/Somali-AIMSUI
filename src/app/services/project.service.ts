@@ -171,6 +171,13 @@ export class ProjectService {
       );
     }
 
+    getProjectDeletionActiveRequests() {
+      var url = this.urlHelper.getProjectDeletionActiveRequestsUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Deletion Active Requests'))
+      );
+    }
+
     //Project funder functions
     addProjectFunder(model: any) {
       var url  = this.urlHelper.addProjectFunderUrl();

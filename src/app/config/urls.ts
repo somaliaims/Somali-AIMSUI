@@ -137,5 +137,6 @@ export const urls = {
 	contactUrl: "Contact",
 	projectEmailUrl: "Contact/SendSuggestionEmailForProject",
 	deleteProjectIdsUrl: "ProjectDeletionRequest/GetProjectIds",
-	projectDeletionRequestUrl: "ProjectDeletionRequest"
+	projectDeletionRequestUrl: "ProjectDeletionRequest",
+	projectDeletionActiveRequestsUrl: "ProjectDeletionRequest/GetActiveRequests",
 };

@@ -620,4 +620,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectDeletionRequestUrl);
     }
 
+    getProjectDeletionActiveRequestsUrl() {
+        return (this.BASE_URL + urlsList.urls.projectDeletionActiveRequestsUrl);
+    }
+
 }

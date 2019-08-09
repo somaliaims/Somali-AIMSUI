@@ -14,6 +14,8 @@ import { ReactiveFormsModule, FormControl, FormsModule } from "@angular/forms";
 import { debounceTime, distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
 import { Identifiers } from '@angular/compiler';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { Messages } from '../config/messages';
 
 @Component({
   selector: 'app-projects',
@@ -25,6 +27,7 @@ export class ProjectsComponent implements OnInit {
   isSearchVisible = false;
   projectsList: any = [];
   errorMessage: string = null;
+  successMessage: string = null;
   criteria: string = null;
   isLoading: boolean = false;
   infoMessage: string = null;
@@ -60,7 +63,7 @@ export class ProjectsComponent implements OnInit {
     private storeService: StoreService, private securityService: SecurityHelperService,
     private sectorService: SectorService, private organizationService: OrganizationService,
     private locationService: LocationService, private fyService: FinancialYearService,
-    private errorModal: ErrorModalComponent
+    private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent
   ) { }
 
   ngOnInit() {
@@ -349,6 +352,8 @@ export class ProjectsComponent implements OnInit {
         data => {
           if (data) {
             this.deleteProjectIds.push(id);
+            this.successMessage = Messages.DELETION_REQUEST_INFO;
+            this.infoModal.openModal();
           }
           this.blockUI.stop();
         }

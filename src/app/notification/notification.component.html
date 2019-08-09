@@ -26,7 +26,7 @@
         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
       </div>
 
-      <div *ngIf="currentTab == 'notifications'" class="col-md-12 margin-top-10">
+      <div *ngIf="currentTab == tabConstants.NOTIFICATIONS" class="col-md-12 margin-top-10">
 
         <table class="table table-striped">
           <tr *ngFor="let notification of notifications; let i = index">
@@ -60,7 +60,7 @@
         </table>
       </div>
 
-      <div *ngIf="currentTab == 'requests'" class="col-md-12 margin-top-10">
+      <div *ngIf="currentTab == tabConstants.REQUESTS" class="col-md-12 margin-top-10">
         <table *ngIf="projectRequests.length > 0" class="table table-striped">
           <tr *ngFor="let request of projectRequests; let i = index">
             <td>
@@ -91,6 +91,42 @@
             <tr>
               <td class="text-info">
                   <i>No project memebership requests to show</i>
+              </td>
+            </tr>
+          </table>
+      </div>
+
+      <div *ngIf="currentTab == tabConstants.DELETION_REQUESTS" class="col-md-12 margin-top-10">
+        <table *ngIf="projectDeletionRequests.length > 0" class="table table-striped">
+          <tr *ngFor="let request of projectDeletionRequests; let i = index">
+            <td>
+              <span class="badge badge-info lead">
+                {{i + 1}}
+              </span>
+              <span class="text-info margin-left-5">
+                {{request.project}}<br />
+              </span>
+              <span class="text-info">
+                <b>Requesting organization: </b>{{request.userOrganization}} <br />
+                <b>Requesting user: </b>{{request.userEmail}} <br />
+              </span>
+              <span class="text-warning">
+                <b><i>Dated: {{getLongDateString(request.requestDate)}}</i></b>
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-warning" id="btnda-{{i}}-{{request.projectId}}-{{request.userId}}"
+                (click)="approveDeleteRequest($event)">Approve</button>&nbsp;
+              <button class="btn btn-danger" id="btndd-{{i}}-{{request.projectId}}-{{request.userId}}"
+                (click)="unApproveDeleteRequest($event)">Unapprove</button>
+
+            </td>
+          </tr>
+        </table>
+        <table *ngIf="projectDeletionRequests.length == 0" class="table table-bordered">
+            <tr>
+              <td class="text-info">
+                  <i>No project deletion requests to show</i>
               </td>
             </tr>
           </table>
