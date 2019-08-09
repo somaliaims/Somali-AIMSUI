@@ -612,4 +612,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectEmailUrl);
     }
 
+    getDeleteProjectIdsUrl() {
+        return (this.BASE_URL + urlsList.urls.deleteProjectIdsUrl);
+    }
+
+    getProjectDeletionRequestUrl() {
+        return (this.BASE_URL + urlsList.urls.projectDeletionRequestUrl);
+    }
+
 }

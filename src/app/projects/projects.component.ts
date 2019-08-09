@@ -12,6 +12,8 @@ import { FinancialYearService } from '../services/financial-year.service';
 import { Observable } from 'rxjs';
 import { ReactiveFormsModule, FormControl, FormsModule } from "@angular/forms";
 import { debounceTime, distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
+import { Identifiers } from '@angular/compiler';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 @Component({
   selector: 'app-projects',
@@ -22,12 +24,14 @@ export class ProjectsComponent implements OnInit {
 
   isSearchVisible = false;
   projectsList: any = [];
+  errorMessage: string = null;
   criteria: string = null;
   isLoading: boolean = false;
   infoMessage: string = null;
   showMessage: boolean = false;
   isLoggedIn: boolean = false;
   pagingSize: number = Settings.rowsPerPage;
+  requestNo: number = 0;
   permissions: any = {};
   sectorsSettings: any = [];
   selectedSectors: any = [];
@@ -40,6 +44,7 @@ export class ProjectsComponent implements OnInit {
   organizationsList: any = [];
   locationsList: any = [];
   userProjectIds: any = [];
+  deleteProjectIds: any = [];
   searchField: FormControl;
 
   model: any = {
@@ -55,6 +60,7 @@ export class ProjectsComponent implements OnInit {
     private storeService: StoreService, private securityService: SecurityHelperService,
     private sectorService: SectorService, private organizationService: OrganizationService,
     private locationService: LocationService, private fyService: FinancialYearService,
+    private errorModal: ErrorModalComponent
   ) { }
 
   ngOnInit() {
@@ -62,14 +68,18 @@ export class ProjectsComponent implements OnInit {
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
     if (this.isLoggedIn) {
       this.loadUserProjects();
+      this.getDeleteProjectIds();
     } else {
       this.getProjectsList();
     }
 
-    this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
-    if (this.infoMessage !== null && this.infoMessage !== '') {
-      this.showMessage = true;
-    }
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.errorModal.openModal();
+      }
+    });
 
     setTimeout(() => {
       this.storeService.newInfoMessage('');
@@ -196,28 +206,6 @@ export class ProjectsComponent implements OnInit {
     );
   }
 
-  /*searchProjects() {
-    //this.blockUI.start('Searching Projects...');
-    
-    if (this.criteria != null) {
-      this.projectService.filterProjects(this.criteria).subscribe(
-        data => {
-          if (data && data.length) {
-            this.projectsList = data;
-            //this.blockUI.stop();
-          } else {
-            this.projectsList = [];
-          }
-        },
-        error => {
-          //this.blockUI.stop();
-        }
-      );
-    } else {
-      this.getProjectsList();
-    }
-  }*/
-
   advancedSearchProjects() {
     var searchModel = {
       title: this.model.title,
@@ -340,10 +328,42 @@ export class ProjectsComponent implements OnInit {
     return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? false : true;
   }
 
+  isShowDeleteProject(id: number) {
+    if (this.deleteProjectIds.includes(id)) {
+      return false;
+    }
+    return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? true : false;
+  }
+
   contactProject(id: number) {
     if (id) {
       this.router.navigateByUrl('contact-project/' + id);
     }
+  }
+
+  makeDeleteRequest(id: number) {
+    if (id) {
+      var model = { projectId: id, userId: 0 };
+      this.blockUI.start('Making project delete request...');
+      this.projectService.makeProjectDeletionRequest(model).subscribe(
+        data => {
+          if (data) {
+            this.deleteProjectIds.push(id);
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  getDeleteProjectIds() {
+    this.projectService.getDeleteProjectIds().subscribe(
+      data => {
+        if (data) {
+          this.deleteProjectIds = data;
+        }
+      }
+    );
   }
 
 }

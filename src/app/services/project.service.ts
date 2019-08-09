@@ -157,6 +157,20 @@ export class ProjectService {
                 catchError(this.storeService.handleError<any>('Delete Project Sector')));
     }
 
+    getDeleteProjectIds() {
+      var url = this.urlHelper.getDeleteProjectIdsUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Delete Project Ids'))
+      );
+    }
+
+    makeProjectDeletionRequest(model: any) {
+      var url = this.urlHelper.getProjectDeletionRequestUrl();
+      return this.httpClient.post(url, model, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Deletion Request'))
+      );
+    }
+
     //Project funder functions
     addProjectFunder(model: any) {
       var url  = this.urlHelper.addProjectFunderUrl();

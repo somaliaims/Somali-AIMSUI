@@ -2975,6 +2975,10 @@ export class ProjectEntryComponent implements OnInit {
     this.router.navigateByUrl('new-project');
   }
 
+  deleteProject() {
+    //To write the logic
+  }
+
   goToHome() {
     localStorage.setItem('selected-projects', null);
     localStorage.setItem('active-project', '0');

@@ -135,5 +135,7 @@ export const urls = {
 	importNewExcelDataUrl: "ImportData/UploadDataImportFileEighteen",
 	importOldExcelDataUrl: "ImportData/UploadDataImportFileSeventeen",
 	contactUrl: "Contact",
-	projectEmailUrl: "Contact/SendSuggestionEmailForProject"
+	projectEmailUrl: "Contact/SendSuggestionEmailForProject",
+	deleteProjectIdsUrl: "ProjectDeletionRequest/GetProjectIds",
+	projectDeletionRequestUrl: "ProjectDeletionRequest"
 };
