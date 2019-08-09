@@ -72,6 +72,7 @@ export class NotificationComponent implements OnInit {
 
     this.getNotifications();
     this.getProjectRequests();
+    this.getProjectDeletionRequests();
     this.displayOption = this.notificationTypeCodes.NOTIFICATIONS;
   }
 
