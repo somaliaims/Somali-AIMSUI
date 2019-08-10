@@ -178,6 +178,27 @@ export class ProjectService {
       );
     }
 
+    approveProjectDeletion(id: string) {
+      var url = this.urlHelper.getProjectDeletionApprovalUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Deletion Request Approval'))
+      );
+    }
+
+    cancelProjectDeletion(id: string) {
+      var url = this.urlHelper.getProjectDeletionCancelUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Deletion Request Cancellation'))
+      );
+    }
+
+    deleteProject(id: string) {
+      var url = this.urlHelper.getProjectDeletionRequestUrl() + '/' + id;
+      return this.httpClient.delete(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Project Deletion'))
+      );
+    }
+
     //Project funder functions
     addProjectFunder(model: any) {
       var url  = this.urlHelper.addProjectFunderUrl();

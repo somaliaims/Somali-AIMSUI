@@ -114,12 +114,16 @@
                 <b><i>Dated: {{getLongDateString(request.requestedOn)}}</i></b>
               </span>
             </td>
-            <td>
+            <td *ngIf="request.status == deletionStatus.REQUESTED">
               <button class="btn btn-warning" id="btnda-{{i}}-{{request.projectId}}-{{request.userId}}"
-                (click)="approveDeleteRequest($event)">Approve request</button>&nbsp;
+                (click)="approveDeletionRequest($event)">Approve request</button>&nbsp;
               <button class="btn btn-danger" id="btndd-{{i}}-{{request.projectId}}-{{request.userId}}"
-                (click)="unApproveDeleteRequest($event)">Cancel request</button>
+                (click)="unApproveDeletionRequest($event)">Cancel request</button>
 
+            </td>
+            <td *ngIf="request.status == deletionStatus.APPROVED">
+              <button class="btn btn-danger" id="btndel-{{i}}-{{request.projectId}}-{{request.userId}}"
+                (click)="deleteProject($event)">Delete project</button>
             </td>
           </tr>
         </table>

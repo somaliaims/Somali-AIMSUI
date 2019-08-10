@@ -34,6 +34,12 @@ export class NotificationComponent implements OnInit {
     'DELETION_REQUESTS': 'deletionRequests'
   };
 
+  deletionStatus: any = {
+    'REQUESTED': 'Requested',
+    'APPROVED': 'Approved',
+    'CANCELLED': 'Cancelled'
+  };
+
   displayTabs: any = [
     { visible: true, identity: 'notifications' },
     { visible: false, identity: 'requests' },
@@ -192,10 +198,43 @@ export class NotificationComponent implements OnInit {
 
   approveDeletionRequest(e) {
     var arr = e.currentTarget.id.split('-');
+    var projectId = arr[2];
+    if (projectId) {
+      this.projectService.approveProjectDeletion(projectId).subscribe(
+        data => {
+          if (data) {
+            this.reloadPage();
+          }
+          this.stopScreenBlocker();
+        }
+      );
+    }
   }
 
   unApproveDeletionRequest(e) {
     var arr = e.currentTarget.id.split('-');
+    var projectId = arr[2];
+    if (projectId) {
+      this.projectService.cancelProjectDeletion(projectId).subscribe(
+        data => {
+          if (data) {
+            this.reloadPage();
+          }
+          this.stopScreenBlocker();
+        }
+      );
+    }
+  }
+
+  deleteProject(id: string) {
+    this.projectService.deleteProject(id).subscribe(
+      data => {
+        if (data) {
+          this.reloadPage();
+        }
+        this.stopScreenBlocker();
+      }
+    );
   }
 
 

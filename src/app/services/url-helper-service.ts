@@ -624,4 +624,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectDeletionActiveRequestsUrl);
     }
 
+    getProjectDeletionApprovalUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.projectDeletionApprovalUrl + id);
+    }
+
+    getProjectDeletionCancelUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.projectDeletionCancelUrl + id);
+    }
+
 }
