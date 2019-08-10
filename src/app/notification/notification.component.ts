@@ -226,15 +226,20 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  deleteProject(id: string) {
-    this.projectService.deleteProject(id).subscribe(
-      data => {
-        if (data) {
-          this.reloadPage();
+  deleteProject(e) {
+    var arr = e.currentTarget.id.split('-');
+    var projectId = arr[2];
+    if (projectId) {
+      this.blockUI.start('Deleting project...');
+      this.projectService.deleteProject(projectId).subscribe(
+        data => {
+          if (data) {
+            this.reloadPage();
+          }
+          this.stopScreenBlocker();
         }
-        this.stopScreenBlocker();
-      }
-    );
+      );
+    }
   }
 
 
