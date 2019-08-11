@@ -10,6 +10,9 @@ export const Settings = {
         }
     },
     rowsPerPage: 10,
+    descriptionLowLimit: 500,
+    descriptionMediumLimit: 800,
+    descriptionLongLimit: 3000,
     mediumRowsPerPage: 20,
     displayMessageTime: 10000,
     permissions: {

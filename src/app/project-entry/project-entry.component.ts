@@ -111,8 +111,8 @@ export class ProjectEntryComponent implements OnInit {
   isEditProjectAllowed: boolean = false;
   isFocusExRate: boolean = false;
   isShowContact: boolean = false;
-  descriptionLimit: number = 4000;
-  descriptionLimitLeft: number = 4000;
+  descriptionLimit: number = Settings.descriptionLongLimit;
+  descriptionLimitLeft: number = Settings.descriptionLongLimit;
 
   userProjectIds: any = [];
   userApprovedProjects: any[];
@@ -2991,6 +2991,9 @@ export class ProjectEntryComponent implements OnInit {
 
   getDescriptionLimitInfo() {
     this.descriptionLimitLeft = (this.descriptionLimit - this.model.description.length);
+    if (this.descriptionLimitLeft < 0) {
+      this.model.description = this.model.description.substring(0, (this.descriptionLimit - 1));
+    }
   }
 
 }

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { Messages } from '../config/messages';
 
 @Component({
   selector: 'app-view-project',
@@ -12,7 +14,8 @@ import { SecurityHelperService } from '../services/security-helper.service';
 })
 export class ViewProjectComponent implements OnInit {
   requestNo: number = 0;
-  errorMessage: string = '';
+  errorMessage: string = null;
+  successMessage: string = null;
   isError: boolean = false;
   isLoading: boolean = true;
   isLoggedIn: boolean = false;
@@ -25,6 +28,7 @@ export class ViewProjectComponent implements OnInit {
   projectId: number = 0;
   delayTime: number = 2000;
   userProjectIds: any = [];
+  deleteProjectIds: any = [];
   permissions: any = {};
   monthStrings: any = { 
     "1": "January", "2": "February", "3": "March", "4": "April", "5": "May", "6": "June",
@@ -45,7 +49,8 @@ export class ViewProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router,
-    private storeService: StoreService, private securityService: SecurityHelperService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService,
+    private infoModal: InfoModalComponent) { }
 
   ngOnInit() {
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
@@ -55,6 +60,7 @@ export class ViewProjectComponent implements OnInit {
       this.projectId = id;
       if (id) {
         if (this.isLoggedIn) {
+          this.getDeleteProjectIds();
           this.loadUserProjects();
         } else {
           this.loadProjectData(id);   
@@ -312,6 +318,40 @@ export class ViewProjectComponent implements OnInit {
 
   contactProject(id) {
     this.router.navigateByUrl('contact-project/' + id);
+  }
+
+  isShowDeleteProject(id: number) {
+    if (this.deleteProjectIds.includes(id)) {
+      return false;
+    }
+    return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? true : false;
+  }
+
+  makeDeleteRequest(id: number) {
+    if (id) {
+      var model = { projectId: id, userId: 0 };
+      this.blockUI.start('Making project delete request...');
+      this.projectService.makeProjectDeletionRequest(model).subscribe(
+        data => {
+          if (data) {
+            this.deleteProjectIds.push(id);
+            this.successMessage = Messages.DELETION_REQUEST_INFO;
+            this.infoModal.openModal();
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  getDeleteProjectIds() {
+    this.projectService.getDeleteProjectIds().subscribe(
+      data => {
+        if (data) {
+          this.deleteProjectIds = data;
+        }
+      }
+    );
   }
 
   hideLoader() {

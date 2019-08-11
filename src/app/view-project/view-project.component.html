@@ -25,9 +25,15 @@
               <span class="float-left">
                 Project detail
               </span>
-              <span class="float-right" *ngIf="isLoggedIn && isShowContactToUser(projectData.id)">
+              <span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowContactToUser(projectData.id)">
                 <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
                     Request for change
+                </button>
+                &nbsp;
+              </span>
+              <span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowDeleteProject(projectData.id)">
+                <button class="btn btn-danger btn-sm" (click)="makeDeleteRequest(projectData.id)">
+                    Make delete request
                 </button>
               </span>
             </div>
@@ -316,6 +322,6 @@
       </div>
     </div>
 
-
   </block-ui>
+  <info-modal message={{successMessage}}></info-modal>
 </div>

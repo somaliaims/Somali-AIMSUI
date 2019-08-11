@@ -30,7 +30,7 @@
 
         <table class="table table-striped">
           <tr *ngFor="let notification of notifications; let i = index">
-            <td width="80%">
+            <td width="75%">
               <span class="badge badge-info lead">
                 {{i + 1}}
               </span>
@@ -45,9 +45,9 @@
                 <b><i>Dated: {{getLongDateString(notification.dated)}}</i></b>
               </span>
             </td>
-            <td width="20%" *ngIf="notification.notificationType == 1">
+            <td width="25%" *ngIf="notification.notificationType == 1">
               <span class="float-right">
-                  <button class="btn btn-warning"
+                  <button class="btn btn-warning btn-sm"
                   (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
               </span>
             </td>
@@ -65,7 +65,7 @@
       <div *ngIf="currentTab == tabConstants.REQUESTS" class="col-md-12 margin-top-10">
         <table *ngIf="projectRequests.length > 0" class="table table-striped">
           <tr *ngFor="let request of projectRequests; let i = index">
-            <td width="80%">
+            <td width="75%">
               <span class="badge badge-info lead">
                 {{i + 1}}
               </span>
@@ -80,11 +80,11 @@
                 <b><i>Dated: {{getLongDateString(request.dated)}}</i></b>
               </span>
             </td>
-            <td width="20%">
+            <td width="25%">
               <span class="float-right">
-                  <button class="btn btn-warning" id="btna-{{i}}-{{request.projectId}}-{{request.userId}}"
+                  <button class="btn btn-warning btn-sm" id="btna-{{i}}-{{request.projectId}}-{{request.userId}}"
                   (click)="approveRequest($event)">Approve</button>&nbsp;
-                <button class="btn btn-danger" id="btnd-{{i}}-{{request.projectId}}-{{request.userId}}"
+                <button class="btn btn-danger btn-sm" id="btnd-{{i}}-{{request.projectId}}-{{request.userId}}"
                   (click)="unApproveRequest($event)">Unapprove</button>
               </span>
             </td>
@@ -102,7 +102,7 @@
       <div *ngIf="currentTab == tabConstants.DELETION_REQUESTS" class="col-md-12 margin-top-10">
         <table *ngIf="projectDeletionRequests.length > 0" class="table table-striped">
           <tr *ngFor="let request of projectDeletionRequests; let i = index">
-            <td width="80%">
+            <td width="75%">
               <span class="badge badge-info lead">
                 {{i + 1}}
               </span>
@@ -117,17 +117,17 @@
                 <b><i>Dated: {{getLongDateString(request.requestedOn)}}</i></b>
               </span>
             </td>
-            <td width="20%" *ngIf="request.status == deletionStatus.REQUESTED">
+            <td width="25%" *ngIf="request.status == deletionStatus.REQUESTED">
               <span class="float-right">
-                  <button class="btn btn-warning" id="btnda-{{i}}-{{request.projectId}}-{{request.userId}}"
+                  <button class="btn btn-warning btn-sm" id="btnda-{{i}}-{{request.projectId}}-{{request.userId}}"
                   (click)="approveDeletionRequest($event)">Approve request</button>&nbsp;
-                <button class="btn btn-danger" id="btndd-{{i}}-{{request.projectId}}-{{request.userId}}"
+                <button class="btn btn-danger btn-sm" id="btndd-{{i}}-{{request.projectId}}-{{request.userId}}"
                   (click)="unApproveDeletionRequest($event)">Cancel request</button>
               </span>
             </td>
-            <td width=20% *ngIf="request.status == deletionStatus.APPROVED">
+            <td width=25% *ngIf="request.status == deletionStatus.APPROVED">
               <span class="float-right">
-                  <button class="btn btn-danger" id="btndel-{{i}}-{{request.projectId}}-{{request.userId}}"
+                  <button class="btn btn-danger btn-sm" id="btndel-{{i}}-{{request.projectId}}-{{request.userId}}"
                   (click)="deleteProject($event)">Delete project</button>
               </span>
             </td>

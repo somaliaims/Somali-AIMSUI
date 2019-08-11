@@ -99,9 +99,9 @@
                 </div>
 
                 <div *ngIf="!isShowList" class="form-group">
-                  <label>Message</label>
-                  <textarea rows="5" class="form-control" id="message" [(ngModel)]="model.message" name="message"
-                    #message="ngModel" maxlength="500" required></textarea>
+                  <label>Message <span class="text-info">(Max characters: {{messageLimit}} Left: {{messageLimitLeft}})</span></label>
+                  <textarea rows="5" class="form-control" id="message" (input)="getMessageLimitInfo()" [(ngModel)]="model.message" name="message"
+                    #message="ngModel" maxlength="{{messageLimit}}" required></textarea>
                   <div *ngIf="contactForm.submitted" [hidden]="message.valid" class="alert alert-danger">
                     Message is required
                   </div>

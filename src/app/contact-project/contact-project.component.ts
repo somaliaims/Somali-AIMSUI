@@ -5,6 +5,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ContactService } from '../services/contact.service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { StoreService } from '../services/store-service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-contact-project',
@@ -22,8 +23,8 @@ export class ContactProjectComponent implements OnInit {
   isSuccess: boolean = false;
   isError: boolean = false;
   requestNo: number = 0;
-  messageLimit: number = 500;
-  messageLimitLeft: number = 0;
+  messageLimit: number = Settings.descriptionMediumLimit;
+  messageLimitLeft: number = Settings.descriptionMediumLimit;
   @BlockUI() blockUI: NgBlockUI;
 
   model = { senderName: null, senderEmail: null, suggesstionType: null, subject: null, message: null, 
@@ -86,6 +87,9 @@ export class ContactProjectComponent implements OnInit {
 
   getMessageLimitInfo() {
     this.messageLimitLeft = (this.messageLimit - this.model.message.length);
+    if (this.messageLimitLeft < 0) {
+      this.model.message = this.model.message.substring(0, (this.messageLimit - 1));
+    }
   }
 
 }

@@ -5,6 +5,7 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { Messages } from '../config/messages';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ProjectService } from '../services/project.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-contact-form',
@@ -22,6 +23,8 @@ export class ContactFormComponent implements OnInit {
   filteredProjectsList: any = [];
   criteria: string = null;
   isLoading: boolean = false;
+  messageLimit: number = Settings.descriptionMediumLimit;
+  messageLimitLeft: number = Settings.descriptionMediumLimit;
   model: any = { emailType: null, senderName: null, projectTitle: null, senderEmail: null, 
     projectId: 0, subject: null, message: null 
   };
@@ -130,6 +133,13 @@ export class ContactFormComponent implements OnInit {
     this.model = { emailType: null, senderName: null, projectTitle: null, senderEmail: null, 
       projectId: 0, subject: null, message: null 
     };
+  }
+
+  getMessageLimitInfo() {
+    this.messageLimitLeft = (this.messageLimit - this.model.message.length);
+    if (this.messageLimitLeft < 0) {
+      this.model.message = this.model.message.substring(0, (this.messageLimit - 1));
+    }
   }
 
   clear() {

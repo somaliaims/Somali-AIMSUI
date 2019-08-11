@@ -200,6 +200,7 @@ export class NotificationComponent implements OnInit {
     var arr = e.currentTarget.id.split('-');
     var projectId = arr[2];
     if (projectId) {
+      this.blockUI.start('Approving request...');
       this.projectService.approveProjectDeletion(projectId).subscribe(
         data => {
           if (data) {
@@ -215,6 +216,7 @@ export class NotificationComponent implements OnInit {
     var arr = e.currentTarget.id.split('-');
     var projectId = arr[2];
     if (projectId) {
+      this.blockUI.start('Cancelling request...');
       this.projectService.cancelProjectDeletion(projectId).subscribe(
         data => {
           if (data) {
