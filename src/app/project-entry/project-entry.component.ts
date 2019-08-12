@@ -1726,7 +1726,7 @@ export class ProjectEntryComponent implements OnInit {
       return false;
     }
 
-    if (this.locationModel.fundsPercentage <= 0) {
+    if (this.locationModel.fundsPercentage <= 0 || this.locationModel.fundsPercentage > 100) {
       this.errorMessage = 'Funds percentage ' + Messages.PERCENTAGE_RANGE;
       this.errorModal.openModal();
       return false;
