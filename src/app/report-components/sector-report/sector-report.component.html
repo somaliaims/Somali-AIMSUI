@@ -137,7 +137,50 @@
           </div>
         </div>
 
-        <div *ngIf="reportDataList.reportSettings" class="row" id="rpt-sector-project">
+        <div *ngIf="reportDataList.reportSettings && chartData.length > 0 && showChart" class="col-md-12 margin-top-50">
+          <div *ngIf="model.chartType == chartTypes.BAR" style="display: block;"
+            class="canvas-container mx-auto col-md-8">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
+              [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.LINE" style="display: block;"
+            class="canvas-container mx-auto col-md-8">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
+              [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.RADAR" style="display: block;"
+            class="canvas-container mx-auto col-md-8">
+            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="radarChartOptions"
+              [chartType]="model.chartType"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.DOUGHNUT" style="display: block;"
+            class="canvas-container mx-auto col-md-8">
+            <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="chartLables" [options]="pieChartOptions"
+              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.PIE" style="display: block;"
+            class="canvas-container mx-auto col-md-8">
+            <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [options]="pieChartOptions"
+              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+
+          <div *ngIf="model.chartType == chartTypes.POLAR" style="display: block;"
+            class="canvas-container mx-auto col-md-8">
+            <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
+              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+
+        <div *ngIf="reportDataList.reportSettings" class="row margin-top-20" id="rpt-sector-project">
           <div class="col-md-12 text-center">
             <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
           </div>
@@ -211,50 +254,6 @@
                 </tr>
               </thead>
             </table>
-          </div>
-
-        </div>
-
-        <div *ngIf="chartData.length > 0 && showChart" class="col-md-12 margin-top-50">
-          <div *ngIf="model.chartType == chartTypes.BAR" style="display: block;"
-            class="canvas-container mx-auto col-md-8">
-            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-              [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-          </div>
-
-          <div *ngIf="model.chartType == chartTypes.LINE" style="display: block;"
-            class="canvas-container mx-auto col-md-8">
-            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-              [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-          </div>
-
-          <div *ngIf="model.chartType == chartTypes.RADAR" style="display: block;"
-            class="canvas-container mx-auto col-md-8">
-            <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="radarChartOptions"
-              [chartType]="model.chartType"></canvas>
-          </div>
-
-          <div *ngIf="model.chartType == chartTypes.DOUGHNUT" style="display: block;"
-            class="canvas-container mx-auto col-md-8">
-            <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="chartLables" [options]="pieChartOptions"
-              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-          </div>
-
-          <div *ngIf="model.chartType == chartTypes.PIE" style="display: block;"
-            class="canvas-container mx-auto col-md-8">
-            <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [options]="pieChartOptions"
-              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-          </div>
-
-          <div *ngIf="model.chartType == chartTypes.POLAR" style="display: block;"
-            class="canvas-container mx-auto col-md-8">
-            <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
-              [chartType]="model.chartType" (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
           </div>
 
         </div>

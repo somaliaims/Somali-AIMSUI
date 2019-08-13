@@ -58,13 +58,20 @@
       </div>
     </div>
 
-    <div class="row margin-top-10" id="rpt-budget-report">
+    <div *ngIf="reportDataList && reportDataList.reportSettings && chartData.length > 0" class="col-md-12 margin-top-10">
+      <div class="offset-2 col-md-8">
+        <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+          [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+      </div>
+    </div>
+
+    <div class="row margin-top-20" id="rpt-budget-report">
       <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
         <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
       </div>
 
-      <div class="col-md-12">
-
+      <div class="col-md-12 margin-top-10">
         <div *ngIf="reportDataList && reportDataList.projects && chartLabels.length > 0" class="margin-bottom-none">
           <table class="table table-striped small margin-bottom-none">
             <thead>
@@ -126,13 +133,6 @@
             </tbody>
           </table>
 
-          <div *ngIf="chartData.length > 0" class="col-md-12 margin-top-30">
-            <div class="offset-2 col-md-8">
-              <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
-                [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
-            </div>
-          </div>
         </div>
 
         <div class="col-md-12" *ngIf="reportDataList && reportDataList.projects && reportDataList.projects == 0">

@@ -157,13 +157,13 @@ export class BudgetReportSummaryComponent implements OnInit {
 
     this.chartData.push({
       data: disbursements,
-      label: 'Total disbursements',
+      label: 'Actual disbursements',
       stack: 'Stack 0'
     });
 
     this.chartData.push({
       data: expectedDisbursements,
-      label: 'Total expected disbursements',
+      label: 'Expected disbursements',
       stack: 'Stack 0'
     });
   }

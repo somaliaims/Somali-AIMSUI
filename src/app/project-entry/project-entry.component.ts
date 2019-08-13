@@ -1955,9 +1955,16 @@ export class ProjectEntryComponent implements OnInit {
     var fundingFormattedDate = this.funderModel.dated.year + '-' + this.funderModel.dated.month + '-' +
       this.funderModel.dated.day;
 
+    var todaysDate = new Date(this.storeService.getCurrentDateSQLFormat());
     var projectStartDate = new Date(startDate);
     var projectEndDate = new Date(endDate);
     var fundingDate = new Date(fundingFormattedDate);
+
+    if (fundingDate > todaysDate) {
+      this.errorMessage = Messages.INVALID_FUTURE_DATE;
+      this.errorModal.openModal();
+      return false;
+    }
 
     if ((fundingDate < projectStartDate) || (fundingDate > projectEndDate)) {
       this.errorMessage = "Funding" + Messages.INVALID_TRANSACTION_DATE;
