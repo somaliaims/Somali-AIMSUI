@@ -48,16 +48,15 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   checkIfEmailAvailable() {
-    if (!this.model.Email) {
+    if (!this.model.email) {
       this.invalidEmail = true;
       return false;
     }
 
     this.isSearchingEmail = true;
     this.btnCheckEmailTitle = 'Wait processing...';
-    this.userService.checkEmailAvailability(this.model.Email).subscribe(
+    this.userService.checkEmailAvailability(this.model.email).subscribe(
       data => {
-        console.log(data);
         this.isEmailOk = data;
         if (!this.isEmailOk) {
           this.emailNotAvailable = true;

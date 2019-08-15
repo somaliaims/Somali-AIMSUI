@@ -8,8 +8,8 @@
                 
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input type="email" class="form-control" [class.disable]='disableEmail' id="Email" [(ngModel)]="model.Email" (input)="resetEmailAvailable($event)" [elFocus]="isEmailFocus" name="Email" #Email="ngModel" required email>
-                  <div *ngIf="invalidEmail && Email.invalid" [hidden]="!Email.errors && !Email.errors.email" class="alert alert-danger">
+                  <input type="email" class="form-control" [class.disable]='disableEmail' id="email" [(ngModel)]="model.email" (input)="resetEmailAvailable($event)" [elFocus]="isEmailFocus" name="email" #email="ngModel" required>
+                  <div *ngIf="invalidEmail && email.invalid" [hidden]="!email.errors && !email.errors.email" class="alert alert-danger">
                     Email valid email address
                   </div>
                   <div [hidden]="!emailNotAvailable" class="alert alert-danger">
@@ -21,18 +21,18 @@
                 <div *ngIf="isEmailOk">
                   <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" [elFocus]="isPasswordFocus" class="form-control" id="password" [(ngModel)]="model.Password"
-                     [(ngModel)]="model.Password" name="Password" #Password="ngModel" required>
-                    <div *ngIf="registrationForm.submitted" [hidden]="Password.valid" class="alert alert-danger">
+                    <input type="password" [elFocus]="isPasswordFocus" class="form-control" id="password" [(ngModel)]="model.password"
+                     [(ngModel)]="model.password" name="password" #Password="ngModel" required>
+                    <div *ngIf="registrationForm.submitted" [hidden]="password.valid" class="alert alert-danger">
                       Password is required
                     </div>
                   </div>
         
                   <div class="form-group">
                     <label for="confirmPassword">Confirm password</label>
-                    <input type="password" class="form-control" id="ConfirmPassword" [(ngModel)]="model.ConfirmPassword" 
-                    [(ngModel)]="model.ConfirmPassword" name="ConfirmPassword" #ConfirmPassword="ngModel" required>
-                    <div *ngIf="registrationForm.submitted" [hidden]="model.Password == model.ConfirmPassword" class="alert alert-danger">
+                    <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="model.confirmPassword" 
+                    [(ngModel)]="model.confirmPassword" name="confirmPassword" #confirmPassword="ngModel" required>
+                    <div *ngIf="registrationForm.submitted" [hidden]="model.password == model.confirmPassword" class="alert alert-danger">
                       Passwords do not match
                     </div>
                   </div>

@@ -34,7 +34,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   errorMessage: string = '';
-  model: any = { email: null, password: null, organizationTypeId: null, organizationId: null, IsNewOrganization: false, organizationName: null };
+  model: any = { email: null, password: null, organizationTypeId: null, organizationId: null, isNewOrganization: false, organizationName: null };
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
@@ -46,7 +46,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   ngOnInit() {
     this.storeService.currentRegistration.subscribe(model => {
       if (model) {
-        if (model.Email === '' || model.Email == null) {
+        if (model.email === '' || model.email == null) {
           this.router.navigateByUrl('user-registration');
         } else {
           this.model = model;
@@ -141,16 +141,18 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   registerUser() {
     if (this.selectedOrganizationId == 0) {
-      this.model.OrganizationName = this.model.organizationName;
-      if (this.model.OrganizationName.length == 0) {
+      this.model.organizationName = this.model.organizationName;
+      if (this.model.organizationName.length == 0) {
         return false;
-      } else if (this.model.IsNewOrganization) {
+      } else if (this.model.isNewOrganization) {
+        return false;
+      } else if (!this.model.organizationTypeId) {
         return false;
       }
-      this.model.IsNewOrganization = true;
-      this.model.OrganizationId = '0';
+      this.model.isNewOrganization = true;
+      this.model.organizationId = '0';
     } else if (this.selectedOrganizationId != 0) {
-      this.model.OrganizationId = this.selectedOrganizationId.toString();
+      this.model.organizationId = this.selectedOrganizationId.toString();
     }
 
     this.requestNo = this.storeService.getNewRequestNumber();

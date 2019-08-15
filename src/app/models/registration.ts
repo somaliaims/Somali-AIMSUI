@@ -1,11 +1,11 @@
 export class RegistrationModel {
     constructor(
-        public Email: string,
-        public Password: string,
-        public ConfirmPassword: string,
-        public OrganizationId: string,
-        public OrganizationName: string,
-        public OrganizationTypeId: string,
-        public IsNewOrganization: boolean
+        public email: string,
+        public password: string,
+        public confirmPassword: string,
+        public organizationId: string,
+        public organizationName: string,
+        public organizationTypeId: string,
+        public isNewOrganization: boolean
       ) {  }
 }
