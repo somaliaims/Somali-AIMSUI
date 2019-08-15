@@ -34,7 +34,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   errorMessage: string = '';
-  model: any = { email: null, password: null, organizationId: null, IsNewOrganization: false, organizationName: null };
+  model: any = { email: null, password: null, organizationTypeId: null, organizationId: null, IsNewOrganization: false, organizationName: null };
 
   constructor(private fb: FormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
@@ -62,6 +62,7 @@ export class UserOrgRegistrationComponent implements OnInit {
         this.isError = true;
       }
     });
+    this.loadOrganizationTypes();
     this.loadOrganizations();
   }
   
@@ -79,6 +80,10 @@ export class UserOrgRegistrationComponent implements OnInit {
     if (id) {
       var organization = this.organizations.filter(o => o.id == id);
       if (organization.length > 0) {
+        this.model.organizationTypeId = null;
+        if (organization[0].organizationTypeId != 0) {
+          this.model.organizationTypeId = organization[0].organizationTypeId;        
+        }
         this.selectedOrganizationId = organization[0].id;
         this.model.organizationName = organization[0].organizationName;
       }
@@ -87,16 +92,33 @@ export class UserOrgRegistrationComponent implements OnInit {
 
   filterOrganizations() {
     var org = this.model.organizationName;
+    var organizations = [];
+    if (this.model.organizationTypeId && this.model.organizationTypeId != 0) {
+      organizations = this.organizations.filter(o => o.organizationTypeId == this.model.organizationTypeId);
+    } else {
+      organizations = this.organizations;
+    }
+
     if (!org) {
-      this.filteredOrganizations = this.organizations;
+      this.filteredOrganizations = organizations;
     } else {
       org = org.toLowerCase();
-      this.filteredOrganizations = this.organizations.filter(o => o.organizationName.toLowerCase().indexOf(org) != -1);
+      this.filteredOrganizations = organizations.filter(o => o.organizationName.toLowerCase().indexOf(org) != -1);
     }
   }
 
+  loadOrganizationTypes() {
+    this.organizationService.getOrganizationTypes().subscribe(
+      data => {
+        if (data) {
+          this.organizationTypes = data;
+        }
+      }
+    );
+  }
+
   loadOrganizations() {
-    this.organizationService.getAllOrganizationsList().subscribe(
+    this.organizationService.getOrganizationsWithType().subscribe(
       data => {
         if (data) {
           this.organizations = data;
@@ -107,11 +129,20 @@ export class UserOrgRegistrationComponent implements OnInit {
     );
   }
 
+  filterOrganizationsList() {
+    var id = this.model.organizationTypeId;
+    if (id) {
+      this.model.organizationName = null;
+      this.model.organizationId = null;
+      this.selectedOrganizationId = 0;
+      this.filteredOrganizations = this.organizations.filter(o => o.organizationTypeId == id);
+    }
+  }
+
   registerUser() {
     if (this.selectedOrganizationId == 0) {
       this.model.OrganizationName = this.model.organizationName;
       if (this.model.OrganizationName.length == 0) {
-        console.log('error');
         return false;
       } else if (this.model.IsNewOrganization) {
         return false;

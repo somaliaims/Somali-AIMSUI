@@ -55,6 +55,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationTypesList);
     }
 
+    getOrganizationWithTypeUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationsWithTypeUrl);
+    }
+
     getNotificationsUrl() {
         return (this.BASE_URL + urlsList.urls.notifications);
     }

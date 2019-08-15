@@ -32,7 +32,14 @@ export class OrganizationService {
     getOrganizationTypes() {
       var url = this.urlHelper.organizationTypesUrl();
         return this.httpClient
-            .get<any>(url);
+            .get(url, httpOptions).pipe(
+              catchError(this.storeService.handleError<any>('Organization Types'))
+            );
+    }
+
+    getOrganizationsWithType() {
+      var url = this.urlHelper.getOrganizationWithTypeUrl();
+      return this.httpClient.get<any>(url);
     }
 
     getOrganizationsList() {

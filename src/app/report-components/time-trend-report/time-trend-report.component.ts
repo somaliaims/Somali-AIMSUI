@@ -373,7 +373,7 @@ export class TimeTrendReportComponent implements OnInit {
   }
 
   generatePDF() {
-    var quotes = document.getElementById('rpt-sector-project');
+    var quotes = document.getElementById('rpt-time-trend-report');
     html2canvas(quotes)
       .then((canvas) => {
         //! MAKE YOUR PDF
