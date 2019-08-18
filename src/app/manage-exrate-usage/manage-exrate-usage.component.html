@@ -1,0 +1,60 @@
+<div class="container-fluid view-area">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/exchange-rate-usage']">Exchange rates usage settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab">{{btnText}}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> {{errorMessage}}
+          </div>
+          <h5 class="card-title text-center">Manage exchange rate usage</h5>
+
+          <form class="form-signin" (ngSubmit)="exRateForm.form.valid && saveExRateUsage(exRateForm)" #exRateForm="ngForm">
+
+            <div class="form-group">
+              <label for="source">Exchange rate source</label>
+              <select name="source" [(ngModel)]="model.source" #source="ngModel" class="form-control" required>
+                <option *ngFor="let s of sources" value="{{s.id}}">{{s.text}}</option>
+              </select>
+              <div *ngIf="exRateForm.submitted" [hidden]="source.valid" class="alert alert-danger">
+                Source is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="usageSection">Usage section</label>
+              <select name="usageSection" [(ngModel)]="model.usageSection" class="form-control" #usageSection="ngModel" required>
+                <option *ngFor="let s of usageSections" value="{{s.id}}">{{s.text}}</option>
+              </select>
+              <div *ngIf="exRateForm.submitted" [hidden]="source.valid" class="alert alert-danger">
+                Usage section is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="order">Order of execution</label>
+              <select name="order" [(ngModel)]="model.order" class="form-control" #order="ngModel" required>
+                <option *ngFor="let o of orderNumbers" value="{{o}}">{{o}}</option>
+              </select>
+              <div *ngIf="exRateForm.submitted" [hidden]="order.valid" class="alert alert-danger">
+                Order is required
+              </div>
+            </div>
+
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
