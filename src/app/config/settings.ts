@@ -10,6 +10,7 @@ export const Settings = {
         }
     },
     rowsPerPage: 10,
+    yearLimit: 100,
     descriptionLowLimit: 500,
     descriptionMediumLimit: 800,
     descriptionLongLimit: 3000,

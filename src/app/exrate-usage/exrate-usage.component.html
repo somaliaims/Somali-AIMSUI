@@ -1,0 +1,49 @@
+<div class="container-fluid view-area">
+  
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active btn-info" data-toggle="tab" >Exchange rates usage settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/exchange-rate-settings']">Exchange rates</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="row text-center" *ngIf="isLoading">
+    <div class="col-md-12">
+      <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="!isLoading" class="row">
+    <div *ngIf="exRatesUsageList.length > 0" class="col margin-top-10">
+      <table class="table table-bordered table-stripped">
+        <tr>
+          <th>Source</th>
+          <th>Usage section</th>
+          <th>Order</th>
+          <th>Actions</th>
+        </tr>
+        <tr *ngFor="let e of exRatesUsageList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+          <td>{{e.source}}</td>
+          <td>{{e.usageSection}}</td>
+          <td>{{e.order}}</td>
+          <td>
+            <a title="Edit" (click)="edit(e.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
+            &nbsp;
+            <a title="Delete" (click)="delete(e.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+          </td>
+        </tr>
+      </table>
+      <pagination-controls (pageChange)="p=$event"></pagination-controls>
+    </div>
+    <div *ngIf="exRatesUsageList.length == 0" class="col-md-12 text-info">
+      <i>No exchange rate usage settings to show</i>
+    </div>
+  </div>
+  </div>
+  

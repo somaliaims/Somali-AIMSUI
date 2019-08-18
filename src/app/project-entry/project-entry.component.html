@@ -141,7 +141,7 @@
         <div class="col-md-12 col-sm-12">
           <div class="card card-signin my-5 margin-top-10">
             <div class="card-body">
-              <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject()" #projectForm="ngForm">
+              <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject(projectForm)" #projectForm="ngForm">
                 <div class="row">
                   <div class="col-md-12">
                     <span class="float-left">
@@ -162,25 +162,24 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="title">Start date</label>
+                  <label for="title">Start date/month</label>
                   <div class="input-group">
-                    <input type="text" [readonly]="true" class="form-control" placeholder="yyyy-mm-dd" name="startDate"
-                      [(ngModel)]="model.startDate" #c="ngModel" [maxDate]="calendarMaxDate" ngbDatepicker
-                      #s="ngbDatepicker" required>
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-warning calendar" (click)="s.toggle()" type="button"></button>
-                    </div>
+                    <input type="date" class="form-control" placeholder="yyyy-mm-dd" name="startDate"
+                      [(ngModel)]="model.startDate" #startDate="ngModel" required>
+                  </div>
+                  <div *ngIf="projectForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
+                    Start date is required
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="title">End date</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" name="endDate"
-                      [(ngModel)]="model.endDate" [maxDate]="calendarMaxDate" ngbDatepicker #e="ngbDatepicker" required>
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-warning calendar" (click)="e.toggle()" type="button"></button>
-                    </div>
+                    <input type="date" class="form-control" placeholder="yyyy-mm-dd" name="endDate"
+                      [(ngModel)]="model.endDate" #endDate="ngModel" required>
+                  </div>
+                  <div *ngIf="projectForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
+                    End date is required
                   </div>
                 </div>
 
@@ -1387,7 +1386,7 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label for="exrate-source">Ex. rate source</label>
                 <select class="form-control" [class.disable]="disbursementModel.currency == null" id="desource" (change)="selectExRateSource(exRateFor.DISBURSEMENT)"
                   [(ngModel)]="disbursementModel.exRateSource" name="desource" #desource="ngModel" required>
@@ -1396,9 +1395,9 @@
                 <div *ngIf="disbursementForm.submitted" [hidden]="desource.valid" class="alert alert-danger">
                   Exchange rate source is required
                 </div>
-              </div>
+              </div>-->
 
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label for="exchangeRate">Exchange rate of currency to 1 {{defaultCurrency}}</label>
                 <input type="text" pattern="^\d*(\.\d{0,6})?$" (input)="calculateAmountInDefault(exRateFor.DISBURSEMENT)" [readonly]="isDisbursementExRateReadonly" pattern="^\d*(\.\d{0,6})?$" class="form-control" id="dexchangeRate"
                   [(ngModel)]="disbursementModel.exchangeRate" name="dexchangeRate" maxlength="10"
@@ -1412,14 +1411,14 @@
                 <div [hidden]="defaultCurrency" class="alert alert-danger">
                   Default currency is not set. Please contact administrator
                 </div>
-              </div>
+              </div>-->
 
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label for="calculated">Funding amount in {{defaultCurrency}}</label>
                 <input type="number" [readonly]="true" class="form-control" id="calculatedAmount"
                   [(ngModel)]="disbursementModel.amountInDefaultCurrency" (input)="calculateAmountInDefault(exRateFor.DISBURSEMENT)" name="calculatedAmount" 
                   #calculatedAmount="ngModel" required />
-              </div>
+              </div>-->
 
               <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Add

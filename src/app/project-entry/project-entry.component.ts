@@ -158,6 +158,10 @@ export class ProjectEntryComponent implements OnInit {
   defaultSectorsList: any = [];
   filteredExRateSources: any = [];
   fieldTypes: any = Settings.customFieldTypes;
+  yearLowerLimit: number = 0;
+  yearUpperLimit: number = 0;
+  yearSpan = Settings.yearLimit;
+  calendarYearsList = [];
 
   monthsList: any = [
     { key: 'January', value: 1 },
@@ -337,20 +341,28 @@ export class ProjectEntryComponent implements OnInit {
       }
     }
 
-
     this.currencyService.getCurrenciesList().subscribe(
       data => {
         this.currencyList = data;
       }
-    )
+    );
 
     var currentDate = new Date();
     var currentYear = currentDate.getFullYear();
     var lowerLimit = currentYear - 20;
     var upperLimit = currentYear + 10;
+    this.yearLowerLimit = currentYear - this.yearSpan;
+    this.yearUpperLimit = currentYear + this.yearSpan;
 
     for (var y = currentYear; y >= lowerLimit; y--) {
       this.yearsList.push(y);
+    }
+
+    for(var yr = this.yearLowerLimit; yr <= this.yearUpperLimit; yr++) {
+      this.calendarYearsList.push({
+        id: yr,
+        value: yr
+      });
     }
 
     lowerLimit = currentYear - 5;
@@ -1395,10 +1407,8 @@ export class ProjectEntryComponent implements OnInit {
   /* Saving different section of project */
   saveProject(frm: any) {
     this.currentEntryForm = frm;
-    var startDate = new Date(this.model.startDate.year + '-' + this.model.startDate.month + '-' +
-      this.model.startDate.day);
-    var endDate = new Date(this.model.endDate.year + '-' + this.model.endDate.month + '-' +
-      this.model.endDate.day);
+    var startDate = new Date(this.model.startDate);
+    var endDate = new Date(this.model.endDate);
 
     if (startDate > endDate) {
       this.errorMessage = 'Start date cannot be greater than end date';

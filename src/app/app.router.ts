@@ -65,6 +65,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { BudgetReportSummaryComponent } from './report-components/budget-report-summary/budget-report-summary.component';
 import { DataImportComponent } from './data-import/data-import.component';
 import { ContactProjectComponent } from './contact-project/contact-project.component';
+import { ExrateUsageComponent } from './exrate-usage/exrate-usage.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -126,6 +127,7 @@ export const routes: Routes = [
   { path: 'merge-projects', component: MergeProjectsComponent },
   { path: 'merge-organizations', component: MergeOrganizationComponent},
   { path: 'exchange-rate-settings', component: ExrateSettingsComponent },
+  { path: 'exchange-rate-usage', component: ExrateUsageComponent },
   { path: 'envelope', component: EnvelopeComponent},
   { path: 'custom-fields', component: CustomFieldsComponent },
   { path: 'manage-custom-field', component: ManageCustomFieldsComponent },

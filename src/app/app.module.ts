@@ -86,6 +86,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { BudgetReportSummaryComponent } from './report-components/budget-report-summary/budget-report-summary.component';
 import { DataImportComponent } from './data-import/data-import.component';
 import { ContactProjectComponent } from './contact-project/contact-project.component';
+import { ExrateUsageComponent } from './exrate-usage/exrate-usage.component';
 
 @NgModule({
   declarations: [
@@ -163,6 +164,7 @@ import { ContactProjectComponent } from './contact-project/contact-project.compo
     BudgetReportSummaryComponent,
     DataImportComponent,
     ContactProjectComponent,
+    ExrateUsageComponent,
   ],
   imports: [
     BrowserModule,

@@ -147,6 +147,18 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.manualExRatesForCurrency + code);
     }
 
+    getExchangeRateUsageUrl() {
+        return (this.BASE_URL + urlsList.urls.exchangeRateUsageUrl);
+    }
+
+    getExchangeRateUsageByIdUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.exchangeRateUsageUrl + '/' + id);
+    }
+
+    getExchangeRateUsageDeleteUrl(source: string, usageSection: string) {
+        return (this.BASE_URL + urlsList.urls.exchangeRateUsageUrl + '/' + source + '/' + usageSection);
+    }
+
     saveAPIKeyOpenExchangeUrl() {
         return (this.BASE_URL + urlsList.urls.saveAPIKeyOpenExchange);
     }

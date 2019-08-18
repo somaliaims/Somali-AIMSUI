@@ -141,5 +141,6 @@ export const urls = {
 	projectDeletionRequestUrl: "ProjectDeletionRequest",
 	projectDeletionActiveRequestsUrl: "ProjectDeletionRequest/GetActiveRequests",
 	projectDeletionApprovalUrl: "ProjectDeletionRequest/ApproveRequest/",
-	projectDeletionCancelUrl: "ProjectDeletionRequest/CancelRequest/"
+	projectDeletionCancelUrl: "ProjectDeletionRequest/CancelRequest/",
+	exchangeRateUsageUrl: "ExchangeRateUsage"
 };
