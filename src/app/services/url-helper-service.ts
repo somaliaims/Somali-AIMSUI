@@ -155,8 +155,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.exchangeRateUsageUrl + '/' + id);
     }
 
-    getExchangeRateUsageDeleteUrl(source: string, usageSection: string) {
-        return (this.BASE_URL + urlsList.urls.exchangeRateUsageUrl + '/' + source + '/' + usageSection);
+    getExchangeRateUsageEditUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.exchangeRateUsageUrl + '/' + id);
     }
 
     saveAPIKeyOpenExchangeUrl() {

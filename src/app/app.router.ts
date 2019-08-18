@@ -130,6 +130,7 @@ export const routes: Routes = [
   { path: 'exchange-rate-settings', component: ExrateSettingsComponent },
   { path: 'exchange-rate-usage', component: ExrateUsageComponent },
   { path: 'manage-exchange-rate-usage', component: ManageExrateUsageComponent },
+  { path: 'manage-exchange-rate-usage/:{id}', component: ManageExrateUsageComponent, data: { isForEdit: true } },
   { path: 'envelope', component: EnvelopeComponent},
   { path: 'custom-fields', component: CustomFieldsComponent },
   { path: 'manage-custom-field', component: ManageCustomFieldsComponent },

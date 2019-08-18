@@ -62,6 +62,14 @@ export class ExrateUsageComponent implements OnInit {
   delete(id: string) {
     if (id) {
       this.blockUI.start('Wait deleting...');
+      this.exRateUsageService.deleteExchangeRateUsage(id).subscribe(
+        data => {
+          if (data) {
+            this.exRatesUsageList = this.exRatesUsageList.filter(e => e.id != id);
+          }
+          this.blockUI.stop();
+        }
+      );
     }
   }
 

@@ -33,10 +33,17 @@ export class ExRateUsageService {
                 catchError(this.storeService.handleError<any>('Exchange Rate Usage')));
     }
 
-    deleteExchangeRateUsage(source: string, usageSection: string) {
-        var url = this.urlHelper.getExchangeRateUsageDeleteUrl(source, usageSection);
+    editExchangeRateUsage(id: string, model: any) {
+        var url = this.urlHelper.getExchangeRateUsageEditUrl(id);
+        return this.httpClient.put(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Exchange Rate Usage')));
+    }
+
+    deleteExchangeRateUsage(id: string) {
+        var url = this.urlHelper.getExchangeRateUsageEditUrl(id);
         return this.httpClient.delete(url, httpOptions).pipe(
-            catchError(this.storeService.handleError<any>('Delete Manual Exchange Rate')));
+            catchError(this.storeService.handleError<any>('Delete Exchange Rate Usage')));
     }
 
 }
