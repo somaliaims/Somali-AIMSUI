@@ -31,9 +31,10 @@ export class ManageCustomFieldsComponent implements OnInit {
   calendarMaxDate: any = {};
   isNewValueFocus: boolean = false;
   originalOptionValues: any = [];
+  helpTextLength: number = Settings.helpTextLength;
   
   model: any = { fieldType: null, fieldTitle: null, optionValues: [],
-    optionValue1: null, optionValue2: null, newValue: null };
+    optionValue1: null, optionValue2: null, newValue: null, help: null };
 
   constructor(private customFieldService: CustomeFieldService, private route: ActivatedRoute,
     private router: Router, private storeService: StoreService,
@@ -58,6 +59,7 @@ export class ManageCustomFieldsComponent implements OnInit {
           data => {
             this.model.typeId = data.fieldType;
             this.model.fieldTitle = data.fieldTitle;
+            this.model.help = data.help;
             if (data.values) {
               this.model.optionValues = JSON.parse(data.values);
             }
@@ -71,10 +73,10 @@ export class ManageCustomFieldsComponent implements OnInit {
               this.model.optionValues.forEach(val => this.originalOptionValues.push(val.id));
             }
 
-            var activeFrom = new Date(data.activeFrom);
+            /*var activeFrom = new Date(data.activeFrom);
             var activeUpto = new Date(data.activeUpto);
             this.model.activeFrom = { year: activeFrom.getFullYear(), month: (activeFrom.getMonth() + 1), day: activeFrom.getDate() };
-            this.model.activeUpto = { year: activeUpto.getFullYear(), month: (activeUpto.getMonth() + 1), day: activeUpto.getDate() };
+            this.model.activeUpto = { year: activeUpto.getFullYear(), month: (activeUpto.getMonth() + 1), day: activeUpto.getDate() };*/
             this.setFieldTypeDisplay();
           },
           error => {
@@ -169,7 +171,8 @@ export class ManageCustomFieldsComponent implements OnInit {
     var newModel = {
       fieldTitle: this.model.fieldTitle,
       fieldType: this.model.typeId,
-      values: values
+      values: values,
+      help: this.model.help
     };
 
     if (this.isForEdit) {

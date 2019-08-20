@@ -27,12 +27,15 @@
             <th>Field Name</th>
             <th>Type</th>
             <th>Values</th>
+            <th>Help text</th>
             <th>Action</th>
           </tr>
           <tr *ngFor="let field of filteredCustomFields | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>{{field.fieldTitle}}</td>
             <td>{{getFieldType(field.fieldType)}}</td>
             <td>{{displayFieldValues(field.values)}}</td>
+            <td>{{field.help | truncate : 50}} <a href="#" title="View full text" id="help-{{field.id}}"
+              (click)="viewHelpText($event)" class="text-info"><b>View full text</b></a></td>
             <td>
                 <a title="Edit" (click)="editCustomField(field.id)" class="btn btn-info"><i
                   class="fa fa-edit color-white"></i></a>&nbsp;
@@ -51,3 +54,5 @@
 
   </block-ui>
 </div>
+
+<info-modal title="Email message" message="{{infoMessage}}"></info-modal>

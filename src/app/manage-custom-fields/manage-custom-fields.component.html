@@ -38,6 +38,15 @@
                 Field type is required
               </div>
             </div>
+
+            <div class="form-group">
+              <label for="help">Help text</label>
+              <textarea rows="3" class="form-control" id="help" [(ngModel)]="model.help" name="help"
+                #help="ngModel" maxlength="{{helpTextLength}}" required></textarea> <span class="text-info"><i>(Max length: {{helpTextLength}})</i></span>
+              <div *ngIf="customFieldForm.submitted" [hidden]="help.valid" class="alert alert-danger">
+                Help is required
+              </div>
+            </div>
             
             <div *ngIf="isTwoValuesDisplay" class="form-group">
               <label for="title">Option values</label>

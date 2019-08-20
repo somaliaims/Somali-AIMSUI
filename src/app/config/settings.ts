@@ -16,6 +16,7 @@ export const Settings = {
     descriptionLongLimit: 3000,
     mediumRowsPerPage: 20,
     displayMessageTime: 10000,
+    helpTextLength: 150,
     permissions: {
         standard: {
             canManage: false,

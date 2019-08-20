@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Settings } from '../config/settings';
 import { StoreService } from '../services/store-service';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
 
 @Component({
   selector: 'app-custom-fields',
@@ -25,11 +26,13 @@ export class CustomFieldsComponent implements OnInit {
   permissions: any = {};
   criteria: string = null;
   inputTextHolder: string = 'Enter field name to search';
+  infoMessage: string = null;
   pagingSize: number = Settings.rowsPerPage;
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private customFieldService: CustomeFieldService, private router: Router,
-    private securityService: SecurityHelperService, private storeService: StoreService) { }
+    private securityService: SecurityHelperService, private storeService: StoreService,
+    private infoModal: InfoModalComponent) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -78,6 +81,18 @@ export class CustomFieldsComponent implements OnInit {
 
   getFieldType(id: number) {
     return this.fieldType[id];
+  }
+
+  viewHelpText(e) {
+    var id = e.currentTarget.id.split('-')[1];
+    if (id) {
+      var customField = this.customFields.filter(f => f.id == id);
+      if (customField.length > 0) {
+        this.infoMessage = customField[0].help;
+        this.infoModal.openModal();
+      }
+    }
+    return false;
   }
 
 }
