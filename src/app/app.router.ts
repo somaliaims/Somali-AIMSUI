@@ -67,6 +67,7 @@ import { DataImportComponent } from './data-import/data-import.component';
 import { ContactProjectComponent } from './contact-project/contact-project.component';
 import { ExrateUsageComponent } from './exrate-usage/exrate-usage.component';
 import { ManageExrateUsageComponent } from './manage-exrate-usage/manage-exrate-usage.component';
+import { HomePageSettingsComponent } from './home-page-settings/home-page-settings.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -118,6 +119,7 @@ export const routes: Routes = [
   { path: 'budget-report', component: BudgetReportSummaryComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
+  { path: 'home-page-settings', component: HomePageSettingsComponent},
   { path: 'manage-account', component: ManageAccountComponent },
   { path: 'currencies', component: CurrenciesComponent },
   { path: 'manage-currency', component: ManageCurrencyComponent },

@@ -1,0 +1,62 @@
+<div class="container-fluid view-area">
+
+  <block-ui>
+
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Home page settings</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-md-9 col-lg-9 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <div *ngIf="isSuccess" class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Information!</strong> {{successMessage}}
+            </div>
+            <h5 class="card-title text-center">Home page settings</h5>
+
+            <form class="form-signin" (ngSubmit)="homePageForm.form.valid && saveHomePageSettings()" #homePageForm="ngForm">
+
+              <div class="form-group">
+                <label for="aimsTitle">AIMS title</label>
+                <input type="url" maxlength="30" class="form-control" id="aimsTitle" [(ngModel)]="model.aimsTitle" name="aimsTitle"
+                  #aimsTitle="ngModel" required>
+                <div *ngIf="homePageForm.submitted" [hidden]="aimsTitle.valid" class="alert alert-danger">
+                  AIMS title is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="introductionHeading">Introduction heading</label>
+                <input type="url" maxlength="30" class="form-control" id="introductionHeading" [(ngModel)]="model.introductionHeading" name="introductionHeading"
+                  #introductionHeading="ngModel" required>
+                <div *ngIf="homePageForm.submitted" [hidden]="introductionHeading.valid" class="alert alert-danger">
+                  Introduction heading is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="title">Introduction text <span class="text-info">(Max characters: {{introductionLimit}} Left: {{introductionLimitLeft}})</span></label>
+                <textarea class="form-control" id="description" (input)="getIntroductionLimitInfo()" [(ngModel)]="model.introductionText" name="introductionText"
+                  #introductionText="ngModel" rows="7" maxlength="{{introductionLimit}}">
+                    </textarea>
+              </div>
+
+              <button class="btn btn-lg btn-info btn-block text-uppercase"
+                type="submit">Save settings</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </block-ui>
+
+</div>
+
+<info-modal message="{{infoMessage}}"></info-modal>
+<error-modal message="{{errorMessage}}"></error-modal>

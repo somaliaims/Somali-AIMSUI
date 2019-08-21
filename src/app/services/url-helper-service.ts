@@ -664,4 +664,12 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.currentYearDisbursementsUrl);
     }
 
+    setHomePageSettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.setHomePageSettingsUrl);
+    }
+
+    getHomePageSettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.getHomePageSettingsUrl);
+    }
+
 }

@@ -146,5 +146,7 @@ export const urls = {
 	projectsCountUrl: "Project/GetActiveProjectsCount",
 	organizationsCountUrl: "Organization/GetOrganizationsCount",
 	usersCountUrl: "User/GetActiveUsersCount",
-	currentYearDisbursementsUrl: "Project/GetCurrentYearDisbursements"
+	currentYearDisbursementsUrl: "Project/GetCurrentYearDisbursements",
+	setHomePageSettingsUrl: "HomePage/SetSettings",
+	getHomePageSettingsUrl: "HomePage/GetSettings"
 };

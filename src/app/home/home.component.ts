@@ -6,6 +6,7 @@ import { UserService } from '../services/user-service';
 import { OrganizationService } from '../services/organization-service';
 import { ProjectService } from '../services/project.service';
 import { CurrencyService } from '../services/currency.service';
+import { HomePageService } from '../services/home-page.service';
 
 @Component({
   selector: 'app-home',
@@ -21,10 +22,12 @@ export class HomeComponent implements OnInit {
   currentYearDisbursements: number = 0;
   defaultCurrency: string = null;
   currentYear: number = 0;
+  model: any = { aimsTitle: null, introductionHeading: null, introductionText: null };
   
   constructor(private storeService: StoreService, private route: ActivatedRoute,
     private userService: UserService, private organizationService: OrganizationService,
-    private projectService: ProjectService, private currencyService: CurrencyService) { }
+    private projectService: ProjectService, private currencyService: CurrencyService,
+    private homePageService: HomePageService) { }
 
   ngOnInit() {
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
@@ -37,6 +40,7 @@ export class HomeComponent implements OnInit {
     }, Settings.displayMessageTime);
 
     this.currentYear = this.storeService.getCurrentYear();
+    this.getHomePageSettings();
     this.getUsersCount();
     this.getProjectsCount();
     this.getOrganizationsCount();
@@ -89,6 +93,16 @@ export class HomeComponent implements OnInit {
       data => {
         if (data) {
           this.currentYearDisbursements = data;
+        }
+      }
+    );
+  }
+
+  getHomePageSettings() {
+    this.homePageService.getHomePageSettings().subscribe(
+      data => {
+        if (data) {
+          this.model = data;
         }
       }
     );
