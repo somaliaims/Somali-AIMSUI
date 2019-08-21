@@ -30,6 +30,13 @@ export class UserService {
                 catchError(this.storeService.handleError<any>('Authentication')));
     }
 
+    getUsersCount() {
+        var url = this.urlHelper.getUsersCountUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Users Count'))
+        );
+    }
+
     checkEmailAvailability(email: string) {
         var url = this.urlHelper.emailAvailabilityUrl(email);
         return this.httpClient

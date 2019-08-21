@@ -1,7 +1,4 @@
 <div class="container-fluid view-area">
-  <div class="row">
-    <h3 class="text-info">Welcome to the Somali AIMS beta version.</h3>
-  </div>
 
   <div class="row text-center">
     <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
@@ -11,12 +8,19 @@
   </div>
 
 
-  <!--<div class="row">
+  <div class="row">
 
     <div class="col-lg-3 col-md-3 col-xs-6">
       <div class="card bg-light">
         <div class="card-header">
-          <h6>User accounts</h6>
+          <span class="float-left">
+            <h6>User accounts</h6>
+          </span>
+          <span class="float-right">
+            <a [routerLink]="['/user-registration']" class="btn btn-warning btn-sm">
+              <span class="pull-left">Register now</span>
+            </a>
+          </span>
         </div>
         <div class="card-body text-info">
           <div class="row">
@@ -24,16 +28,9 @@
               <fa name="user" size="5x"></fa>
             </div>
             <div class="col-xs-9 col-md-9 text-right">
-              <div class="font-dashboard-menu-item">126</div>
+              <div class="font-dashboard-menu-item">{{usersCount}}</div>
               <div>Registered users</div>
             </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="col text-center">
-            <a [routerLink]="['/user-registration']" class="btn btn-info">
-              <span class="pull-left">Register now</span>
-            </a>
           </div>
         </div>
       </div>
@@ -50,16 +47,9 @@
               <fa name="tasks" size="5x"></fa>
             </div>
             <div class="col-xs-9 col-md-9 text-right">
-              <div class="font-dashboard-menu-item">1000</div>
+              <div class="font-dashboard-menu-item">{{projectsCount}}</div>
               <div>Recorded projects</div>
             </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="col text-center">
-            <a [routerLink]="['/projects']" class="btn btn-danger">
-              <span class="pull-left">View projects</span>
-            </a>
           </div>
         </div>
       </div>
@@ -76,48 +66,75 @@
               <fa name="building" size="5x"></fa>
             </div>
             <div class="col-xs-9 col-md-9 text-right">
-              <div class="font-dashboard-menu-item">85</div>
-              <div>Organizations list</div>
+              <div class="font-dashboard-menu-item">{{organizationsCount}}</div>
+              <div>Registered organizations</div>
             </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="col text-center">
-            <a [routerLink]="['/organizations']" class="btn btn-success">
-              <span class="pull-left">View information</span>
-            </a>
           </div>
         </div>
       </div>
     </div>
 
     <div class="col-lg-3 col-md-3 col-xs-6">
-        <div class="card bg-light">
-          <div class="card-header">
-            <h6>Reports</h6>
-          </div>
-          <div class="card-body text-primary">
-            <div class="row">
-              <div class="col-xs-3 col-md-3">
-                <fa name="file" size="5x"></fa>
-              </div>
-              <div class="col-xs-9 col-md-9 text-right">
-                <div class="font-dashboard-menu-item">15</div>
-                <div>Data reports</div>
-              </div>
+      <div class="card bg-light">
+        <div class="card-header">
+          <h6>Disbursements for {{currentYear}}</h6>
+        </div>
+        <div class="card-body text-primary">
+          <div class="row">
+            <div class="col-xs-3 col-md-3">
+              <fa name="money" size="5x"></fa>
             </div>
-          </div>
-          <div class="card-footer">
-            <div class="col text-center">
-              <a [routerLink]="['/project-report']" class="btn btn-primary">
-                <span class="pull-left">View project report</span>
-              </a>
+            <div class="col-xs-9 col-md-9 text-right">
+              <div class="font-dashboard-menu-item">{{currentYearDisbursements}}</div>
+              <div>{{defaultCurrency}}</div>
             </div>
           </div>
         </div>
-      </div>-->
+      </div>
+    </div>
 
-</div>
+  </div>
 
-<div class="row margin-top-20">
-</div>
+  <div class="row margin-top-20">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="card bg-light">
+        <div class="card-header">
+          <span class="float-left">
+            <h6>Introduction</h6>
+          </span>
+        </div>
+        <div class="card-body text-default">
+          <p>
+            This is the introductory paragraph. We may put any information here, this sample text will
+            only give us idea about how it will look like.
+            This is the introductory paragraph. We may put any information here, this sample text will
+            only give us idea about how it will look like.
+            This is the introductory paragraph. We may put any information here, this sample text will
+            only give us idea about how it will look like.
+          </p>
+
+          <p>
+            This is the introductory paragraph. We may put any information here, this sample text will
+            only give us idea about how it will look like.
+            This is the introductory paragraph. We may put any information here, this sample text will
+            only give us idea about how it will look like.
+            This is the introductory paragraph. We may put any information here, this sample text will
+            only give us idea about how it will look like.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="card bg-light">
+        <div class="card-header">
+          <span class="float-left">
+            <h6>Recent projects</h6>
+          </span>
+        </div>
+        <div class="card-body text-info">
+        </div>
+      </div>
+    </div>
+
+  </div>

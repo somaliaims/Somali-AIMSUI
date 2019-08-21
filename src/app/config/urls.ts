@@ -142,5 +142,9 @@ export const urls = {
 	projectDeletionActiveRequestsUrl: "ProjectDeletionRequest/GetActiveRequests",
 	projectDeletionApprovalUrl: "ProjectDeletionRequest/ApproveRequest/",
 	projectDeletionCancelUrl: "ProjectDeletionRequest/CancelRequest/",
-	exchangeRateUsageUrl: "ExchangeRateUsage"
+	exchangeRateUsageUrl: "ExchangeRateUsage",
+	projectsCountUrl: "Project/GetActiveProjectsCount",
+	organizationsCountUrl: "Organization/GetOrganizationsCount",
+	usersCountUrl: "User/GetActiveUsersCount",
+	currentYearDisbursementsUrl: "Project/GetCurrentYearDisbursements"
 };

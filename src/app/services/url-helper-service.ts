@@ -648,4 +648,20 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectDeletionCancelUrl + id);
     }
 
+    getUsersCountUrl() {
+        return (this.BASE_URL + urlsList.urls.usersCountUrl);
+    }
+
+    getProjectsCountUrl() {
+        return (this.BASE_URL + urlsList.urls.projectsCountUrl);
+    }
+
+    getOrganizationsCountUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationsCountUrl);
+    }
+
+    getCurrentYearDisbursementsUrl() {
+        return (this.BASE_URL + urlsList.urls.currentYearDisbursementsUrl);
+    }
+
 }
