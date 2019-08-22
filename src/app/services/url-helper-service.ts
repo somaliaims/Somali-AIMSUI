@@ -696,4 +696,28 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectDocumentsHelpUrl);
     }
 
+    getSaveProjectHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectHelpUrl);
+    }
+
+    getSaveProjectFunderHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectFunderHelpUrl);
+    }
+
+    getSaveProjectImplementerHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectImpelementerHelpUrl);
+    }
+
+    getSaveProjectDisbursementHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectDisbursementHelpUrl);
+    }
+
+    getSaveProjectExpectedDisbursementHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectExpectedDisbursementHelpUrl);
+    }
+
+    getSaveProjectDocumentHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectDocumentHelpUrl);
+    }
+
 }

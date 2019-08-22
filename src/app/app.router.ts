@@ -68,6 +68,7 @@ import { ContactProjectComponent } from './contact-project/contact-project.compo
 import { ExrateUsageComponent } from './exrate-usage/exrate-usage.component';
 import { ManageExrateUsageComponent } from './manage-exrate-usage/manage-exrate-usage.component';
 import { HomePageSettingsComponent } from './home-page-settings/home-page-settings.component';
+import { ManageHelpComponent } from './manage-help/manage-help.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -149,7 +150,8 @@ export const routes: Routes = [
   { path: 'membership-requests', component: MembershipRequestsComponent },
   { path: 'data-import', component: DataImportComponent },
   { path: 'contact', component: ContactFormComponent },
-  { path: '**', component: NotFoundComponent }
+  { path: 'manage-help', component: ManageHelpComponent },
+  { path: '**', component: NotFoundComponent },
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

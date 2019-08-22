@@ -50,11 +50,46 @@ export class HelpService {
             catchError(this.storeService.handleError<any>('Project Documents Help')));
     }
 
-    saveManualExchangeRates(model: any) {
-        var url = this.urlHelper.getManualExchangeRatesUrl();
+    saveProjectHelp(model: any) {
+        var url = this.urlHelper.getSaveProjectHelpUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('Manual Exchange Rate')));
+                catchError(this.storeService.handleError<any>('Project Help')));
+    }
+
+    saveProjectFunderHelp(model: any) {
+        var url = this.urlHelper.getSaveProjectFunderHelpUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Project Help')));
+    }
+
+    saveProjectImplementerHelp(model: any) {
+        var url = this.urlHelper.getSaveProjectImplementerHelpUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Project Help')));
+    }
+
+    saveProjectDisbursementHelp(model: any) {
+        var url = this.urlHelper.getSaveProjectDisbursementHelpUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Project Help')));
+    }
+
+    saveProjectExpectedDisbursementHelp(model: any) {
+        var url = this.urlHelper.getSaveProjectExpectedDisbursementHelpUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Project Help')));
+    }
+
+    saveProjectDocumentHelp(model: any) {
+        var url = this.urlHelper.getSaveProjectDocumentHelpUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Project Help')));
     }
 
 }

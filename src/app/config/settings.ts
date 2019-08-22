@@ -38,6 +38,7 @@ export const Settings = {
             canEditFundingType: false,
             canEditEmailMessage: false,
             canEditNotifications: true,
+            canEditHelp: false,
         },
         manager: {
             canManage: true,
@@ -58,6 +59,7 @@ export const Settings = {
             canEditFundingType: true,
             canEditEmailMessage: true,
             canEditNotifications: true,
+            canEditHelp: true,
         },
         superAdmin: {
             canManage: true,
@@ -78,6 +80,7 @@ export const Settings = {
             canEditFundingType: true,
             canEditEmailMessage: true,
             canEditNotifications: true,
+            canEditHelp: true,
         },
         guest: {
             canManage: false,
@@ -97,7 +100,8 @@ export const Settings = {
             canEditCustomFields: false,
             canEditFundingType: false,
             canEditEmailMessage: false,
-            canEditNotifications: false
+            canEditNotifications: false,
+            canEditHelp: false,
         }
     },
     customFieldTypes: [
