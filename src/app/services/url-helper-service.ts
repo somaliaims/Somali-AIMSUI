@@ -672,4 +672,28 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getHomePageSettingsUrl);
     }
 
+    getProjectHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.projectHelpUrl);
+    }
+
+    getProjectFunderHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.projectFunderHelpUrl);
+    }
+
+    getProjectImplementerHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.projectImplementerHelpUrl);
+    }
+
+    getProjectDisbursementsHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.projectDisbursementsHelpUrl);
+    }
+
+    getProjectExpectedDisbursementsHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.projectExpectedDisbursementsHelpUrl);
+    }
+
+    getProjectDocumentsHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.projectDocumentsHelpUrl);
+    }
+
 }

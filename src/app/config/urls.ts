@@ -148,5 +148,17 @@ export const urls = {
 	usersCountUrl: "User/GetActiveUsersCount",
 	currentYearDisbursementsUrl: "Project/GetCurrentYearDisbursements",
 	setHomePageSettingsUrl: "HomePage/SetSettings",
-	getHomePageSettingsUrl: "HomePage/GetSettings"
+	getHomePageSettingsUrl: "HomePage/GetSettings",
+	projectHelpUrl: "Help/GetProjectFields",
+	projectFunderHelpUrl: "Help/GetProjectFunderFields",
+	projectImplementerHelpUrl: "Help/GetProjectImplementerFields",
+	projectDisbursementsHelpUrl: "Help/GetProjectDisbursementsFields",
+	projectExpectedDisbursementsHelpUrl: "Help/GetProjectExpectedDisbursementsFields",
+	projectDocumentsHelpUrl: "Help/GetProjectDocumentsHelpUrl",
+	addProjectHelpUrl: "Help/AddProjectHelp",
+	addProjectFunderHelpUrl: "Help/AddProjectFunderHelp",
+	addProjectImpelementerHelpUrl: "Help/AddProjectImplementerHelp",
+	addProjectDisbursementHelpUrl: "Help/AddProjectDisbursementHelp",
+	addProjectExpectedDisbursementHelpUrl: "Help/AddProjectExpectedDisbursementHelp",
+	addProjectDocumentHelpUrl: "Help/AddProjectDocumentHelp",
 };

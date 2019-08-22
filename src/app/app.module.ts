@@ -89,6 +89,7 @@ import { ContactProjectComponent } from './contact-project/contact-project.compo
 import { ExrateUsageComponent } from './exrate-usage/exrate-usage.component';
 import { ManageExrateUsageComponent } from './manage-exrate-usage/manage-exrate-usage.component';
 import { HomePageSettingsComponent } from './home-page-settings/home-page-settings.component';
+import { ManageHelpComponent } from './manage-help/manage-help.component';
 
 @NgModule({
   declarations: [
@@ -169,6 +170,7 @@ import { HomePageSettingsComponent } from './home-page-settings/home-page-settin
     ExrateUsageComponent,
     ManageExrateUsageComponent,
     HomePageSettingsComponent,
+    ManageHelpComponent,
   ],
   imports: [
     BrowserModule,

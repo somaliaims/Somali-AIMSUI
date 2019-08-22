@@ -63,6 +63,9 @@
           <li class="nav-item active"> 
               <a class="nav-link" [routerLink]="['/data-import']">Data import</a>
             </li>
+            <li class="nav-item active"> 
+              <a class="nav-link" [routerLink]="['/manage-help']">Manage help</a>
+            </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">
           <li *ngIf="isLoggedIn && notificationsCount > 0" class="nav-item active">
