@@ -6,25 +6,24 @@
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#"
-              class="nav-link text-info" (click)="showProject()" data-toggle="tab">Project help</a>
+              class="nav-link text-info" (click)="showProjectTab()" data-toggle="tab">Project help</a>
           </li>
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#"
-              class="nav-link text-info" (click)="showFunder()" data-toggle="tab">Funder</a>
+              class="nav-link text-info" (click)="showFunderTab()" data-toggle="tab">Funder help</a>
           </li>
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#"
-              class="nav-link text-info" (click)="showImplementer()" data-toggle="tab">Implementer
-              entry</a>
+              class="nav-link text-info" (click)="showImplementerTab()" data-toggle="tab">Implementer help</a>
           </li>
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'disbursement', 'text-info': currentTab != 'disbursement'}"
-              href="#" class="nav-link text-info" (click)="showDisbursement()" data-toggle="tab">Disbursements
+              href="#" class="nav-link text-info" (click)="showDisbursementTab()" data-toggle="tab">Disbursements help
             </a>
           </li>
           <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'document', 'text-info': currentTab != 'document'}" href="#"
-              class="nav-link text-info" (click)="showDocument()" data-toggle="tab">Documents
+              class="nav-link text-info" (click)="showDocumentTab()" data-toggle="tab">Documents help
             </a>
           </li>
         </ul>
@@ -32,8 +31,8 @@
     </div>
 
     <div class="row">
-      <div *ngIf="currentTab == 'project'" class="col-md-12 margin-top-10">
 
+      <div *ngIf="currentTab == 'project'" class="col-md-12 margin-top-10">
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <h5>Help for project fields</h5>
@@ -74,7 +73,51 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div *ngIf="currentTab == 'funder'" class="col-md-12 margin-top-10">
+      <div class="card card-signin my-5 margin-top-10">
+        <div class="card-body">
+          <h5>Help for funder fields</h5>
+          <form (ngSubmit)="funderForm.form.valid && saveProjectFunderHelp(funderForm)" #funderForm="ngForm">
+            <div class="form-group">
+              <label>Funder help</label>
+              <input type="text" class="form-control" [(ngModel)]="funderModel.funder" name="funder" #funder="ngModel"
+                maxlength="{{helpTextLimit}}" />
+            </div>
+            <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row text-center" *ngIf="isFunderLoading">
+        <div class="col-md-12">
+          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading project funder help fields...</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentTab == 'implementer'" class="col-md-12 margin-top-10">
+      <div class="card card-signin my-5 margin-top-10">
+        <div class="card-body">
+          <h5>Help for implementer fields</h5>
+          <form (ngSubmit)="implementerForm.form.valid && saveProjectImplementerHelp(implementerForm)"
+            #implementerForm="ngForm">
+            <div class="form-group">
+              <label>Implementer help</label>
+              <input type="text" class="form-control" [(ngModel)]="implementerModel.implementer" name="implementer"
+                #implementer="ngModel" maxlength="{{helpTextLimit}}" />
+            </div>
+            <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row text-center" *ngIf="isImplementerLoading">
+        <div class="col-md-12">
+          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading project implementer help fields...</span>
+        </div>
+      </div>
     </div>
 
   </block-ui>

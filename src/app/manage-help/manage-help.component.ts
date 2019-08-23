@@ -46,6 +46,8 @@ export class ManageHelpComponent implements OnInit {
       }
     });
     this.getHelpForProject();
+    this.getHelpForFunder();
+    this.getHelpForImplementer();
   }
 
   getHelpForProject() {
@@ -65,6 +67,7 @@ export class ManageHelpComponent implements OnInit {
         if (data) {
           this.funderModel = data;
         }
+        this.isFunderLoading = false;
       }
     );
   }
@@ -75,6 +78,7 @@ export class ManageHelpComponent implements OnInit {
         if (data) {
           this.implementerModel = data;
         }
+        this.isImplementerLoading = false;
       }
     );
   }
@@ -85,6 +89,45 @@ export class ManageHelpComponent implements OnInit {
       data => {
         if (data) {
           this.successMessage = 'Help saved successfully for project fields';
+          this.infoModal.openModal();
+        }
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  saveProjectFunderHelp(frm: any) {
+    this.blockUI.start('Saving help...');
+    this.helpService.saveProjectFunderHelp(this.funderModel).subscribe(
+      data => {
+        if (data) {
+          this.successMessage = 'Help saved successfully for project funder fields';
+          this.infoModal.openModal();
+        }
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  saveProjectImplementerHelp(frm: any) {
+    this.blockUI.start('Saving help...');
+    this.helpService.saveProjectImplementerHelp(this.implementerModel).subscribe(
+      data => {
+        if (data) {
+          this.successMessage = 'Help saved successfully for project implementer fields';
+          this.infoModal.openModal();
+        }
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  saveProjectDisbursementHelp(frm: any) {
+    this.blockUI.start('Saving help...');
+    this.helpService.saveProjectDisbursementHelp(this.funderModel).subscribe(
+      data => {
+        if (data) {
+          this.successMessage = 'Help saved successfully for project funder fields';
           this.infoModal.openModal();
         }
         this.blockUI.stop();
