@@ -153,12 +153,10 @@ export const urls = {
 	projectFunderHelpUrl: "Help/GetProjectFunderFields",
 	projectImplementerHelpUrl: "Help/GetProjectImplementerFields",
 	projectDisbursementsHelpUrl: "Help/GetProjectDisbursementsFields",
-	projectExpectedDisbursementsHelpUrl: "Help/GetProjectExpectedDisbursementsFields",
 	projectDocumentsHelpUrl: "Help/GetProjectDocumentsHelpUrl",
 	addProjectHelpUrl: "Help/AddProjectHelp",
 	addProjectFunderHelpUrl: "Help/AddProjectFunderHelp",
 	addProjectImpelementerHelpUrl: "Help/AddProjectImplementerHelp",
 	addProjectDisbursementHelpUrl: "Help/AddProjectDisbursementHelp",
-	addProjectExpectedDisbursementHelpUrl: "Help/AddProjectExpectedDisbursementHelp",
 	addProjectDocumentHelpUrl: "Help/AddProjectDocumentHelp",
 };

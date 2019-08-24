@@ -688,10 +688,6 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectDisbursementsHelpUrl);
     }
 
-    getProjectExpectedDisbursementsHelpUrl() {
-        return (this.BASE_URL + urlsList.urls.projectExpectedDisbursementsHelpUrl);
-    }
-
     getProjectDocumentsHelpUrl() {
         return (this.BASE_URL + urlsList.urls.projectDocumentsHelpUrl);
     }
@@ -710,10 +706,6 @@ export class UrlHelperService {
 
     getSaveProjectDisbursementHelpUrl() {
         return (this.BASE_URL + urlsList.urls.addProjectDisbursementHelpUrl);
-    }
-
-    getSaveProjectExpectedDisbursementHelpUrl() {
-        return (this.BASE_URL + urlsList.urls.addProjectExpectedDisbursementHelpUrl);
     }
 
     getSaveProjectDocumentHelpUrl() {

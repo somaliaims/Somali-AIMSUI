@@ -38,12 +38,6 @@ export class HelpService {
             catchError(this.storeService.handleError<any>('Project Disbursements Help')));
     }
 
-    getProjectExpectedDisbursementsHelpFields() {
-        var url = this.urlHelper.getProjectExpectedDisbursementsHelpUrl();
-        return this.httpClient.get(url, httpOptions).pipe(
-            catchError(this.storeService.handleError<any>('Project Expected Disbursements Help')));
-    }
-
     getProjectDocumentsHelpFields() {
         var url = this.urlHelper.getProjectDocumentsHelpUrl();
         return this.httpClient.get(url, httpOptions).pipe(
@@ -73,13 +67,6 @@ export class HelpService {
 
     saveProjectDisbursementHelp(model: any) {
         var url = this.urlHelper.getSaveProjectDisbursementHelpUrl();
-        return this.httpClient.post(url,
-            JSON.stringify(model), httpOptions).pipe(
-                catchError(this.storeService.handleError<any>('Project Help')));
-    }
-
-    saveProjectExpectedDisbursementHelp(model: any) {
-        var url = this.urlHelper.getSaveProjectExpectedDisbursementHelpUrl();
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Project Help')));

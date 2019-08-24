@@ -90,6 +90,14 @@ import { ExrateUsageComponent } from './exrate-usage/exrate-usage.component';
 import { ManageExrateUsageComponent } from './manage-exrate-usage/manage-exrate-usage.component';
 import { HomePageSettingsComponent } from './home-page-settings/home-page-settings.component';
 import { ManageHelpComponent } from './manage-help/manage-help.component';
+import { DataEntryComponent } from './data-entry/data-entry/data-entry.component';
+import { ProjectIatiComponent } from './data-entry/project-iati/project-iati.component';
+import { DocumentIatiComponent } from './data-entry/document-iati/document-iati.component';
+import { FunderIatiComponent } from './data-entry/funder-iati/funder-iati.component';
+import { ImplementerIatiComponent } from './data-entry/implementer-iati/implementer-iati.component';
+import { DisbursementIatiComponent } from './data-entry/disbursement-iati/disbursement-iati.component';
+import { SectorIatiComponent } from './data-entry/sector-iati/sector-iati.component';
+import { LocationIatiComponent } from './data-entry/location-iati/location-iati.component';
 
 @NgModule({
   declarations: [
@@ -171,6 +179,14 @@ import { ManageHelpComponent } from './manage-help/manage-help.component';
     ManageExrateUsageComponent,
     HomePageSettingsComponent,
     ManageHelpComponent,
+    DataEntryComponent,
+    ProjectIatiComponent,
+    DocumentIatiComponent,
+    FunderIatiComponent,
+    ImplementerIatiComponent,
+    DisbursementIatiComponent,
+    SectorIatiComponent,
+    LocationIatiComponent,
   ],
   imports: [
     BrowserModule,
