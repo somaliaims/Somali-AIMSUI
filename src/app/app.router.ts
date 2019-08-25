@@ -69,6 +69,7 @@ import { ExrateUsageComponent } from './exrate-usage/exrate-usage.component';
 import { ManageExrateUsageComponent } from './manage-exrate-usage/manage-exrate-usage.component';
 import { HomePageSettingsComponent } from './home-page-settings/home-page-settings.component';
 import { ManageHelpComponent } from './manage-help/manage-help.component';
+import { DataEntryComponent } from './data-entry/data-entry/data-entry.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -113,6 +114,7 @@ export const routes: Routes = [
   { path: 'project-disbursement/:{id}', component: ProjectDisbursementComponent },
   { path: 'project-document/:{id}', component: ProjectDocumentComponent },
   { path: 'project-entry', component: ProjectEntryComponent },
+  { path: 'data-entry', component: DataEntryComponent },
   { path: 'sectors-report', component: SectorReportComponent },
   { path: 'projects-report', component: ProjectReportComponent },
   { path: 'locations-report', component: LocationReportComponent },

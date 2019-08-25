@@ -1,0 +1,53 @@
+<div class="col-lg-12 col-md-12">
+  <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject(projectForm)" #projectForm="ngForm">
+    
+    <div class="row">
+      <div class="col-lg-4 col-md-4">
+        <div class="form-group">
+          <label>Name </label>
+          <input type="text" name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title">
+        </div>
+        <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
+          Title is required
+        </div>
+      </div>
+  
+      <div class="col-lg-4 col-md-4">
+        <div class="form-group">
+          <label>Starting year </label>
+          <select name="startingFinancialYear" [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" id ="startingFinancialYear" required>
+            <option *ngFor="let year of financialYears" value="year.id">{{year.financialYear}}</option>
+          </select>
+        </div>
+        <div *ngIf="projectForm.submitted" [hidden]="startingFinancialYear.valid" class="alert alert-danger">
+          Starting year is required
+        </div>
+      </div>
+  
+      <div class="col-lg-4 col-md-4">
+        <div class="form-group">
+          <label>Ending year </label>
+          <select name="endingFinancialYear" [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" id ="endingFinancialYear" required>
+            <option *ngFor="let year of financialYears" value="year.id">{{year.financialYear}}</option>
+          </select>
+        </div>
+        <div *ngIf="projectForm.submitted" [hidden]="endingFinancialYear.valid" class="alert alert-danger">
+          Ending year is required
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="col-lg-12 col-md-12">
+      <div class="form-group row">
+        <label for="title">Description <span class="text-info">(Max characters: {{descriptionLimit}} Left:
+            {{descriptionLimitLeft}})</span></label>
+        <textarea class="form-control" id="description" (input)="getDescriptionLimitInfo()" [(ngModel)]="projectData.description"
+          name="description" #description="ngModel" rows="7" maxlength="{{descriptionLimit}}">
+        </textarea>
+      </div>
+    </div>
+    
+    <button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save project</button>
+  </form>
+</div>

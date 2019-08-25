@@ -6,6 +6,7 @@ import { StoreService } from 'src/app/services/store-service';
 import { IATIService } from 'src/app/services/iati.service';
 import { SecurityHelperService } from 'src/app/services/security-helper.service';
 import { Router } from '@angular/router';
+import { FinancialYearService } from 'src/app/services/financial-year.service';
 
 @Component({
   selector: 'app-data-entry',
@@ -23,6 +24,7 @@ export class DataEntryComponent implements OnInit {
   fieldTypes: any = Settings.customFieldTypes;
 
   userProjectIds: any = [];
+  financialYears: any = [];
   currentProjectFundersList: any = [];
   currentProjectImplementersList: any = [];
   currentProjectSectorsList: any = [];
@@ -53,9 +55,9 @@ export class DataEntryComponent implements OnInit {
     4: 'Radio'
   };
 
-  model = { id: 0, title: null, fundingTypeId: 0, startFinancialYear: null, endingFinancialYear: null, 
+  projectData = { id: 0, title: null, fundingTypeId: 0, startingFinancialYear: null, endingFinancialYear: null, 
     description: null, projectValue: 0 };
-  sectorModel = { projectId: 0, sectorTypeId: null, sectorId: 0, mappingId: 0, sectorObj: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
+  /*sectorModel = { projectId: 0, sectorTypeId: null, sectorId: 0, mappingId: 0, sectorObj: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
   locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0 };
   documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
   funderModel = {
@@ -66,7 +68,7 @@ export class DataEntryComponent implements OnInit {
     id: 0, projectId: 0, financialYear: null, amount: 0.0, currency: null,
     exchangeRate: 0
   };
-  markerModel = { projectId: 0, markerId: 0, values: [], dropdownId: null, newText: null };
+  markerModel = { projectId: 0, markerId: 0, values: [], dropdownId: null, newText: null };*/
 
   displayTabs: any = [
     { visible: true, identity: 'basic' },
@@ -78,7 +80,7 @@ export class DataEntryComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private securityService: SecurityHelperService,
-    private router: Router) { }
+    private router: Router, private yearService: FinancialYearService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -93,7 +95,7 @@ export class DataEntryComponent implements OnInit {
       this.blockUI.start('Loading project data...');
       this.isForEdit = true;
       this.activeProjectId = parseInt(projectId);
-      this.model.id = this.activeProjectId;
+      this.projectData.id = this.activeProjectId;
       this.loadUserProjects(this.activeProjectId);
     }
   }
@@ -120,12 +122,12 @@ export class DataEntryComponent implements OnInit {
           var data = result.projectProfile;
           //Setting project data
           console.log(data);
-          this.model.title = data.title;
-          this.model.description = data.description;
+          this.projectData.title = data.title;
+          this.projectData.description = data.description;
           var sDate = new Date(data.startDate);
           var eDate = new Date(data.endDate);
-          //this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
-          //this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
+          //this.projectData.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
+          //this.projectData.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
 
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
@@ -173,6 +175,16 @@ export class DataEntryComponent implements OnInit {
   calculateLocationPercentage() {
     var percentageList = this.currentProjectLocationsList.map(s => parseInt(s.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
+  }
+
+  getFinancialYears() {
+    this.yearService.getYearsList().subscribe(
+      data => {
+        if (data) {
+          this.financialYears = data;
+        }
+      }
+    );
   }
 
 }

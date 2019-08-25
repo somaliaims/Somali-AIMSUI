@@ -610,7 +610,8 @@ export class NewProjectComponent implements OnInit {
       this.selectedProjects = this.selectedProjects.filter(p => p.identifier != id);
       var projects = JSON.stringify(this.selectedProjects);
       localStorage.setItem("selected-projects", projects);
-      this.router.navigateByUrl('project-entry');
+      //this.router.navigateByUrl('project-entry');
+      this.router.navigateByUrl('data-entry');
     }
   }
 
@@ -658,7 +659,8 @@ export class NewProjectComponent implements OnInit {
   proceedToDataEntry() {
     var projects = JSON.stringify(this.selectedProjects);
     localStorage.setItem("selected-projects", projects);
-    this.router.navigateByUrl('project-entry');
+    //this.router.navigateByUrl('project-entry');
+    this.router.navigateByUrl('data-entry');
   }
 
   closeConfirmationModal() {

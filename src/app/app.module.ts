@@ -98,6 +98,8 @@ import { ImplementerIatiComponent } from './data-entry/implementer-iati/implemen
 import { DisbursementIatiComponent } from './data-entry/disbursement-iati/disbursement-iati.component';
 import { SectorIatiComponent } from './data-entry/sector-iati/sector-iati.component';
 import { LocationIatiComponent } from './data-entry/location-iati/location-iati.component';
+import { BasicDataComponent } from './data-entry/basic-data/basic-data.component';
+import { FinancialsComponent } from './data-entry/financials/financials.component';
 
 @NgModule({
   declarations: [
@@ -187,6 +189,8 @@ import { LocationIatiComponent } from './data-entry/location-iati/location-iati.
     DisbursementIatiComponent,
     SectorIatiComponent,
     LocationIatiComponent,
+    BasicDataComponent,
+    FinancialsComponent,
   ],
   imports: [
     BrowserModule,
