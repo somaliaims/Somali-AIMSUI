@@ -1,53 +1,68 @@
-<div class="col-lg-12 col-md-12">
+
   <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject(projectForm)" #projectForm="ngForm">
+    <div class="row margin-top-10">
+        <div class="col-lg-4 col-md-4">
+            <div class="form-group form-inline">
+              <label class="col-sm-2 col-form-label float-left"  for="title">Name</label>
+              <input class="form-control col-sm-10" type="text" name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title" required>
+            </div>
+            <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
+              Project title is required
+            </div>
+          </div>
+      
+          <div class="col-lg-4 col-md-4">
+            <div class="form-group form-inline">
+              <label class="col-sm-4 col-form-label" for="startingFinancialYear">Starting year</label>
+              <select class="form-control col-sm-8" name="startingFinancialYear" [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" id ="startingFinancialYear" required>
+                <option *ngFor="let year of financialYears" value="year.id">{{year.financialYear}}</option>
+              </select>
+            </div>
+            <div *ngIf="projectForm.submitted" [hidden]="startingFinancialYear.valid" class="alert alert-danger">
+              Starting year is required
+            </div>
+          </div>
+      
+          <div class="col-lg-4 col-md-4">
+            <div class="form-group form-inline">
+              <label class="col-sm-4 col-form-label" for="endingFinancialYear">Ending year</label>
+              <select class="form-control col-sm-8" name="endingFinancialYear" [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" id ="endingFinancialYear" required>
+                <option *ngFor="let year of financialYears" value="year.id">{{year.financialYear}}</option>
+              </select>
+            </div>
+            <div *ngIf="projectForm.submitted" [hidden]="endingFinancialYear.valid" class="alert alert-danger">
+              Ending year is required
+            </div>
+          </div>
+    </div>  
     
     <div class="row">
-      <div class="col-lg-4 col-md-4">
+      <div class="col-lg-12 col-md-12">
         <div class="form-group">
-          <label>Name </label>
-          <input type="text" name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title">
-        </div>
-        <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
-          Title is required
-        </div>
-      </div>
-  
-      <div class="col-lg-4 col-md-4">
-        <div class="form-group">
-          <label>Starting year </label>
-          <select name="startingFinancialYear" [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" id ="startingFinancialYear" required>
-            <option *ngFor="let year of financialYears" value="year.id">{{year.financialYear}}</option>
-          </select>
-        </div>
-        <div *ngIf="projectForm.submitted" [hidden]="startingFinancialYear.valid" class="alert alert-danger">
-          Starting year is required
-        </div>
-      </div>
-  
-      <div class="col-lg-4 col-md-4">
-        <div class="form-group">
-          <label>Ending year </label>
-          <select name="endingFinancialYear" [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" id ="endingFinancialYear" required>
-            <option *ngFor="let year of financialYears" value="year.id">{{year.financialYear}}</option>
-          </select>
-        </div>
-        <div *ngIf="projectForm.submitted" [hidden]="endingFinancialYear.valid" class="alert alert-danger">
-          Ending year is required
+          <label for="title">Description <span class="text-info">(Max characters: {{descriptionLimit}} Left:
+              {{descriptionLimitLeft}})</span></label>
+          <textarea class="form-control" id="description" (input)="getDescriptionLimitInfo()"
+            [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="4"
+            maxlength="{{descriptionLimit}}">
+                  </textarea>
         </div>
       </div>
     </div>
     
-
-    <div class="col-lg-12 col-md-12">
-      <div class="form-group row">
-        <label for="title">Description <span class="text-info">(Max characters: {{descriptionLimit}} Left:
-            {{descriptionLimitLeft}})</span></label>
-        <textarea class="form-control" id="description" (input)="getDescriptionLimitInfo()" [(ngModel)]="projectData.description"
-          name="description" #description="ngModel" rows="7" maxlength="{{descriptionLimit}}">
-        </textarea>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 float-right">
+          <button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-sm text-uppercase" type="submit">Save project data</button>
       </div>
     </div>
     
-    <button [class.disable]="isProjectBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save project</button>
   </form>
-</div>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-6">
+        <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList"
+        [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+        (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+        (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
+      </ng-multiselect-dropdown>
+    </div>
+  </div>

@@ -7,6 +7,7 @@ import { IATIService } from 'src/app/services/iati.service';
 import { SecurityHelperService } from 'src/app/services/security-helper.service';
 import { Router } from '@angular/router';
 import { FinancialYearService } from 'src/app/services/financial-year.service';
+import { OrganizationService } from 'src/app/services/organization-service';
 
 @Component({
   selector: 'app-data-entry',
@@ -19,12 +20,17 @@ export class DataEntryComponent implements OnInit {
   isForEdit: boolean = false;
   sectorTotalPercentage: number = 0;
   locationTotalPercentage: number = 0;
-  
+  currentTab: string = null;
+
   permissions: any = {};
   fieldTypes: any = Settings.customFieldTypes;
 
   userProjectIds: any = [];
   financialYears: any = [];
+  organizationsList: any = [];
+  selectedFunders: any = [];
+  selectedImplementers: any = [];
+
   currentProjectFundersList: any = [];
   currentProjectImplementersList: any = [];
   currentProjectSectorsList: any = [];
@@ -77,10 +83,18 @@ export class DataEntryComponent implements OnInit {
     { visible: false, identity: 'finish' }
   ];
 
+  tabConstants: any = {
+    BASIC: 'basic',
+    FINANCIALS: 'financials',
+    SECTORS: 'sectors',
+    FINISH: 'finish'
+  };
+
   @BlockUI() blockUI: NgBlockUI;
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private securityService: SecurityHelperService,
-    private router: Router, private yearService: FinancialYearService) { }
+    private router: Router, private yearService: FinancialYearService,
+    private orgService: OrganizationService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -88,6 +102,7 @@ export class DataEntryComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
+    this.getFinancialYears();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
 
@@ -98,6 +113,7 @@ export class DataEntryComponent implements OnInit {
       this.projectData.id = this.activeProjectId;
       this.loadUserProjects(this.activeProjectId);
     }
+    this.currentTab = this.tabConstants.BASIC;
   }
 
   loadUserProjects(projectId: number) {
@@ -124,10 +140,9 @@ export class DataEntryComponent implements OnInit {
           console.log(data);
           this.projectData.title = data.title;
           this.projectData.description = data.description;
-          var sDate = new Date(data.startDate);
-          var eDate = new Date(data.endDate);
-          //this.projectData.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
-          //this.projectData.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
+          this.projectData.startingFinancialYear = data.startingFinancialYear;
+          this.projectData.endingFinancialYear = data.endingFinancialYear;
+          this.projectData.projectValue = data.projectValue;
 
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
@@ -185,6 +200,44 @@ export class DataEntryComponent implements OnInit {
         }
       }
     );
+  }
+
+  getOrganizationsList() {
+    this.orgService.getAllOrganizationsList().subscribe(
+      data => {
+        if (data) {
+          this.organizationsList = data;
+        }
+      }
+    );
+  }
+
+  showBasicInfo() {
+    this.manageTabsDisplay(this.tabConstants.BASIC);
+  }
+
+  showFinancials() {
+    this.manageTabsDisplay(this.tabConstants.FINANCIALS);
+  }
+
+  showSectors() {
+    this.manageTabsDisplay(this.tabConstants.SECTORS);
+  }
+
+  showFinish() {
+    this.manageTabsDisplay(this.tabConstants.FINISH);
+  }
+
+  manageTabsDisplay(tabIdentity) {
+    for (var i = 0; i < this.displayTabs.length; i++) {
+      var tab = this.displayTabs[i];
+      if (tab.identity == tabIdentity) {
+        tab.visible = true;
+        this.currentTab = tabIdentity;
+      } else {
+        tab.visible = false;
+      }
+    }
   }
 
 }

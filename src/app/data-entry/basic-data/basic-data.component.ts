@@ -7,6 +7,8 @@ import { Settings } from 'src/app/config/settings';
   styleUrls: ['./basic-data.component.css']
 })
 export class BasicDataComponent implements OnInit {
+  isProjectBtnDisabled: boolean = false;
+  fundersSettings: any = [];
 
   @Input()
   projectData: any = {};
@@ -25,6 +27,16 @@ export class BasicDataComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+    this.fundersSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'organizationName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
   }
 
   getDescriptionLimitInfo() {
@@ -33,5 +45,5 @@ export class BasicDataComponent implements OnInit {
       this.projectData.description = this.projectData.description.substring(0, (this.descriptionLimit - 1));
     }
   }
-
+  
 }
