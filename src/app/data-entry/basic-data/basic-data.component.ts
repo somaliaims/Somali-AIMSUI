@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Settings } from 'src/app/config/settings';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { Messages } from 'src/app/config/messages';
+import { ProjectService } from 'src/app/services/project.service';
+import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 
 @Component({
   selector: 'basic-data',
@@ -9,7 +13,16 @@ import { Settings } from 'src/app/config/settings';
 export class BasicDataComponent implements OnInit {
   isProjectBtnDisabled: boolean = false;
   fundersSettings: any = [];
+  implementersSettings: any = [];
+  entryForm: any = null;
+  errorMessage: string = null;
+  itemsToShowInDropdowns: number = 3;
 
+  funderModel: any = { selectedFunders: [] };
+  implementerModel: any = { selectedImplementers: [] };
+
+  @Input()
+  projectId: number = 0;
   @Input()
   projectData: any = {};
   @Input()
@@ -20,11 +33,16 @@ export class BasicDataComponent implements OnInit {
   projectImplementers: any = [];
   @Input()
   financialYears: any = [];
+  @Input()
+  organizationsList: any = [];
+  @Input()
+  fundingTypesList: any = [];
 
   descriptionLimit: number = Settings.descriptionLongLimit;
   descriptionLimitLeft: number = Settings.descriptionLongLimit;
 
-  constructor() { }
+  @BlockUI() blockUI: NgBlockUI;
+  constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
 
@@ -34,7 +52,17 @@ export class BasicDataComponent implements OnInit {
       textField: 'organizationName',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
-      itemsShowLimit: 5,
+      itemsShowLimit: this.itemsToShowInDropdowns,
+      allowSearchFilter: true
+    };
+
+    this.implementersSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'organizationName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: this.itemsToShowInDropdowns,
       allowSearchFilter: true
     };
   }
@@ -45,5 +73,42 @@ export class BasicDataComponent implements OnInit {
       this.projectData.description = this.projectData.description.substring(0, (this.descriptionLimit - 1));
     }
   }
-  
+
+  saveProject(frm: any) {
+    this.entryForm = frm;
+    var startingYear = parseInt(this.projectData.startingFinancialYear);
+    var endingYear = parseInt(this.projectData.endingFinancialYear);
+
+    if (startingYear > endingYear) {
+      this.errorMessage = 'Starting year cannot be greater than ending year';
+      this.errorModal.openModal();
+      return false;
+    }
+
+    this.isProjectBtnDisabled = true;
+    if (this.projectId != 0) {
+      this.blockUI.start('Saving project...');
+      this.projectService.updateProject(this.projectId, this.projectData).subscribe(
+        data => {
+          if (data) {
+          } 
+          this.blockUI.stop();
+        }
+      );
+    } else {
+      this.blockUI.start('Saving project...');
+      this.projectService.addProject(this.projectData).subscribe(
+        data => {
+          if (data) {
+            this.projectId = data;
+            var message = 'New project' + Messages.NEW_RECORD;
+            localStorage.setItem('active-project', data);
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+
 }

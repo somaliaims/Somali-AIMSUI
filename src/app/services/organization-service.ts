@@ -61,6 +61,12 @@ export class OrganizationService {
       catchError(this.storeService.handleError<any>('Organizations')));
   }
 
+  getUserOrganizations() {
+    var url = this.urlHelper.getUserOrganizationsUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('User Organizations')));
+  }
+
   filterOrganizations(criteria: string) {
     var url = this.urlHelper.organizationsFilterUrl(criteria);
     return this.httpClient.get(url, httpOptions).pipe(

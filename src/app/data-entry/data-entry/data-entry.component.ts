@@ -8,6 +8,7 @@ import { SecurityHelperService } from 'src/app/services/security-helper.service'
 import { Router } from '@angular/router';
 import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { OrganizationService } from 'src/app/services/organization-service';
+import { FundingTypeService } from 'src/app/services/funding-type.service';
 
 @Component({
   selector: 'app-data-entry',
@@ -28,6 +29,7 @@ export class DataEntryComponent implements OnInit {
   userProjectIds: any = [];
   financialYears: any = [];
   organizationsList: any = [];
+  fundingTypesList: any = [];
   selectedFunders: any = [];
   selectedImplementers: any = [];
 
@@ -63,18 +65,6 @@ export class DataEntryComponent implements OnInit {
 
   projectData = { id: 0, title: null, fundingTypeId: 0, startingFinancialYear: null, endingFinancialYear: null, 
     description: null, projectValue: 0 };
-  /*sectorModel = { projectId: 0, sectorTypeId: null, sectorId: 0, mappingId: 0, sectorObj: null, sectorName: '', parentId: 0, fundsPercentage: 0.0 };
-  locationModel = { projectId: 0, locationId: null, latitude: 0.0, longitude: 0.0, location: '', fundsPercentage: 0 };
-  documentModel = { id: 0, projectId: 0, documentTitle: null, documentUrl: null };
-  funderModel = {
-    id: 0, projectId: 0, funder: null, funderId: 0
-  };
-  implementerModel = { id: 0, projectId: 0, implementer: null, implementerId: 0 };
-  disbursementModel = {
-    id: 0, projectId: 0, financialYear: null, amount: 0.0, currency: null,
-    exchangeRate: 0
-  };
-  markerModel = { projectId: 0, markerId: 0, values: [], dropdownId: null, newText: null };*/
 
   displayTabs: any = [
     { visible: true, identity: 'basic' },
@@ -94,7 +84,8 @@ export class DataEntryComponent implements OnInit {
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private securityService: SecurityHelperService,
     private router: Router, private yearService: FinancialYearService,
-    private orgService: OrganizationService) { }
+    private orgService: OrganizationService,
+    private fundingTypeService: FundingTypeService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -103,6 +94,7 @@ export class DataEntryComponent implements OnInit {
     }
 
     this.getFinancialYears();
+    this.getOrganizationsList();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
 
@@ -203,13 +195,23 @@ export class DataEntryComponent implements OnInit {
   }
 
   getOrganizationsList() {
-    this.orgService.getAllOrganizationsList().subscribe(
+    this.orgService.getUserOrganizations().subscribe(
       data => {
         if (data) {
           this.organizationsList = data;
         }
       }
     );
+  }
+
+  loadFundingTypes() {
+    this.fundingTypeService.getFundingTypesList().subscribe(
+      data => {
+        if (data) {
+          this.fundingTypesList = data;
+        }
+      }
+    )
   }
 
   showBasicInfo() {
