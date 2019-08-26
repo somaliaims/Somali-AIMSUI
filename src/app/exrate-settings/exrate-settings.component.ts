@@ -8,6 +8,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Settings } from '../config/settings';
+import { FinancialYearService } from '../services/financial-year.service';
 
 @Component({
   selector: 'app-exrate-settings',
@@ -29,6 +30,8 @@ export class ExrateSettingsComponent implements OnInit {
   isAPIKeySet: boolean = false;
   defaultCurrency: string = null;
   nationalCurrency: string = null;
+  selectedCurrency: string = null;
+  
   currenciesList: any = [];
   exchangeRates: any = [];
   currentForm: any = null;
@@ -37,9 +40,11 @@ export class ExrateSettingsComponent implements OnInit {
   manualExchangeRates: any = [];
   filteredManualExchangeRates: any = [];
   filteredCurrencyRates: any = [];
+  financialYearsList: any = [];
+
   criteria: string = null;
   pagingSize: number = Settings.rowsPerPage;
-  model: any = { exchangeRate: null, dated: null, searchDate: null, exRateLabel: null};
+  model: any = { exchangeRate: null, searchYear: null, newYear: null, exRateLabel: null};
   currentTab: string = 'exrates';
   manualExRateLabel: string = 'Central Bank exchange rate';
 
@@ -52,7 +57,8 @@ export class ExrateSettingsComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   constructor(private currencyService: CurrencyService, private infoModal: InfoModalComponent,
     private errorModal: ErrorModalComponent, private storeService: StoreService,
-    private securityService: SecurityHelperService, private router: Router) { }
+    private securityService: SecurityHelperService, private router: Router,
+    private yearService: FinancialYearService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -69,9 +75,11 @@ export class ExrateSettingsComponent implements OnInit {
     });
 
     this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
+    this.getFinancialYears();
     this.getExRateSettings();
     this.getDefaultCurrency();
     this.getNationalCurrency();
+    this.getCurrenciesList();
     this.getLatestExchangeRates();
   }
 
@@ -150,54 +158,56 @@ export class ExrateSettingsComponent implements OnInit {
     )
   }
 
-  toggleAuto() {
-    if (this.model.isAutoRateSet) {
-      this.model.isAutoRateSet = false;
-    } else {
-      this.model.isAutoRateSet = true;
-    }
-  }
-
-  saveRateSettings() {
-    this.blockUI.start('Saving ex. rate settings...')
-    this.currencyService.saveExchangeRateAutoSettings(this.model.isAutoRateSet).subscribe(
+  getFinancialYears() {
+    this.yearService.getYearsList().subscribe(
       data => {
         if (data) {
+          this.financialYearsList = data;
         }
-        this.blockUI.stop();
       }
     );
   }
 
   saveRate(frm: any) {
-    var dateStr = this.model.dated.year + '-' + this.model.dated.month + '-' +
-    this.model.dated.day;
-    var dated = new Date(dateStr).toLocaleDateString();
     this.currentForm = frm;
+    if (!this.model.exchangeRate || this.model.currency == 'null') {
+      this.errorMessage = "Exchange rate is required";
+      this.errorModal.openModal();
+      return false;
+    } else if (!this.model.currency || this.model.currency == 'null') {
+      this.errorMessage = "Currency is required";
+      this.errorModal.openModal();
+      return false;
+    } else if (!this.model.newYear || this.model.newYear == 'null') {
+      this.errorMessage = "Year is required";
+      this.errorModal.openModal();
+      return false;
+    }
 
     var model = {
       exchangeRate: this.model.exchangeRate,
+      currency: this.model.currency,
       defaultCurrency: this.defaultCurrency,
-      nationalCurrency: this.nationalCurrency,
-      dated: dated
+      year: this.model.year
     }
 
     this.blockUI.start('Saving exchange rate...');
     this.currencyService.saveManualExchangeRates(model).subscribe(
       data => {
         if (data) {
-          model.dated = this.storeService.getLongDateString(model.dated);
-          var isRateExist = this.manualExchangeRates.filter(m => this.storeService.getLongDateString(m.dated) == model.dated);
+          var isRateExist = this.manualExchangeRates.filter(m => m.year == model.year && m.currency == model.currency);
           if (isRateExist.length > 0) {
             isRateExist[0].exchangeRate = model.exchangeRate;
           } else {
             this.manualExchangeRates.push(model);
             this.filteredManualExchangeRates = this.manualExchangeRates;
-            this.model.searchDate = null;
+            this.model.searchYear = null;
           }
           this.currentForm.resetForm();
-          this.model.dated = null;
+          this.model.searchYear = null;
           this.model.exchangeRate = null;
+          this.model.newYear = null;
+          this.model.currency = null;
         }
         this.blockUI.stop();
       }

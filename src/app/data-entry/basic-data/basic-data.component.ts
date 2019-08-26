@@ -37,6 +37,8 @@ export class BasicDataComponent implements OnInit {
   organizationsList: any = [];
   @Input()
   fundingTypesList: any = [];
+  @Input()
+  currenciesList: any = [];
 
   descriptionLimit: number = Settings.descriptionLongLimit;
   descriptionLimitLeft: number = Settings.descriptionLongLimit;

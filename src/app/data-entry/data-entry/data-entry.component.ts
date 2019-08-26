@@ -31,6 +31,7 @@ export class DataEntryComponent implements OnInit {
   organizationsList: any = [];
   fundingTypesList: any = [];
   selectedFunders: any = [];
+  currenciesList: any = [];
   selectedImplementers: any = [];
 
   currentProjectFundersList: any = [];
@@ -63,8 +64,8 @@ export class DataEntryComponent implements OnInit {
     4: 'Radio'
   };
 
-  projectData = { id: 0, title: null, fundingTypeId: 0, startingFinancialYear: null, endingFinancialYear: null, 
-    description: null, projectValue: 0 };
+  projectData = { id: 0, title: null, fundingTypeId: null, startingFinancialYear: null, endingFinancialYear: null, 
+    description: null, projectValue: null };
 
   displayTabs: any = [
     { visible: true, identity: 'basic' },

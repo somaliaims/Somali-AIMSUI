@@ -40,6 +40,32 @@
   </div>
 
   <div class="row">
+  
+    <div class="col-lg-4 col-md-4">
+      <div class="form-group form-inline">
+        <label class="col-sm-2 col-form-label float-left" for="title">Currency</label>
+        <select class="form-control col-sm-10" name="currency" [(ngModel)]="projectData.projectCurrency"
+          #projectCurrency="ngModel" id="projectCurrency" required>
+          <option *ngFor="let fType of fundingTypesList" value="fType.id">{{fType.typeName}}</option>
+        </select>
+      </div>
+      <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
+        Project currency is required
+      </div>
+    </div>
+  
+    <div class="col-lg-4 col-md-4">
+      <div class="form-group form-inline">
+        <label class="col-sm-4 col-form-label float-left" for="title">Project value</label>
+        <input class="form-control col-sm-8" type="number" maxlength="10" name="projectValue"
+          [(ngModel)]="projectData.projectValue" #projectValue="ngModel" id="projectValue" required>
+      </div>
+      <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
+        Project value is required
+      </div>
+    </div>
+  
+  
     <div class="col-lg-4 col-md-4">
       <div class="form-group form-inline">
         <label class="col-sm-4 col-form-label" for="fundingType">Funding type</label>
@@ -51,31 +77,11 @@
       <div *ngIf="projectForm.submitted" [hidden]="fundingTypeId.valid" class="alert alert-danger">
         Funding type is required
       </div>
+      
     </div>
 
-    <div class="col-lg-4 col-md-4">
-      <div class="form-group form-inline">
-        <label class="col-sm-4 col-form-label float-left" for="title">Project value</label>
-        <input class="form-control col-sm-8" type="number" maxlength="10" name="projectValue"
-          [(ngModel)]="projectData.projectValue" #projectValue="ngModel" id="projectValue" required>
-      </div>
-      <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
-        Project value is required
-      </div>
-    </div>
-
-    <div class="col-lg-4 col-md-4">
-        <div class="form-group form-inline">
-          <label class="col-sm-4 col-form-label float-left" for="title">Currency</label>
-          <select class="form-control col-sm-8" name="currency" [(ngModel)]="projectData.projectCurrency"
-          #projectCurrency="ngModel" id="projectCurrency" required>
-          <option *ngFor="let fType of fundingTypesList" value="fType.id">{{fType.typeName}}</option>
-        </select>
-        </div>
-        <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
-          Project currency is required
-        </div>
-      </div>
+    
+    
 
   </div>
 
