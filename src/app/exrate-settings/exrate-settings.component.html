@@ -27,15 +27,15 @@
     <div class="row">
       <div *ngIf="currentTab == 'exrates'" class="col-md-12 margin-top-10">
         <div class="input-group">
-          <select name="searchYear" id="searchYear" class="form-control" [(ngModel)]="model.searchYear" #searchYear="ngModel">
+          <select name="searchYear" id="searchYear" class="form-control" (change)="filterExchangeRates()" [(ngModel)]="model.searchYear" #searchYear="ngModel">
             <option value="null">--Financial year--</option>
             <option *ngFor="let year of financialYearsList" value={{year.financialYear}}>{{year.financialYear}}</option>
           </select>&nbsp;
           <span class="input-group-btn">
-            <button title="Search" class="btn btn-outline-info btn-lg" (click)="searchManualRates()" type="button">
+            <button title="Search" class="btn btn-outline-info" (click)="filterExchangeRates()" type="button">
               <i class="fa fa-search"></i>
             </button>&nbsp;
-            <button title="Show all" class="btn btn-outline-success btn-lg" (click)="showAllManualRates()"
+            <button title="Show all" class="btn btn-outline-success" (click)="showAllManualRates()"
               type="button">
               <i class="fa fa-list"></i>
             </button>
@@ -87,13 +87,13 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="3">
+                <td colspan="4">
                   <pagination-controls (pageChange)="p=$event"></pagination-controls>
                 </td>
               </tr>
             </table>
             <span *ngIf="filteredManualExchangeRates.length == 0 && !isLoading" class="float-left text-info">
-              <i>No exchange rates entered.</i>
+              <i>No exchange rates found.</i>
             </span>
           </div>
         </div>

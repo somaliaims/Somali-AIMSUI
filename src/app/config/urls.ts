@@ -100,6 +100,7 @@ export const urls = {
 	markNotificationsRead: "Notification/MarkNotificationsRead",
 	deleteNotifications: "Notification/DeleteNotifications",
 	getCurrency: "Currency",
+	currenciesForUserUrl: "Currency/GetForUser",
 	getCurrencyById: "Currency/GetById/",
 	getDefaultCurrency: "Currency/GetDefault",
 	getNationalCurrency: "Currency/GetNational",

@@ -20,6 +20,12 @@ export class CurrencyService {
             catchError(this.storeService.handleError<any>('Currencies')));
     }
 
+    getCurrenciesForUser() {
+        var url = this.urlHelper.getCurrenciesForUserUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Currencies for User')));
+    }
+
     getExchangeRatesList() {
         var url = this.urlHelper.getExchangeRatesUrl();
         return this.httpClient.get(url, httpOptions).pipe(

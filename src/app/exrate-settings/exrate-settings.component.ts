@@ -81,6 +81,7 @@ export class ExrateSettingsComponent implements OnInit {
     this.getNationalCurrency();
     this.getCurrenciesList();
     this.getLatestExchangeRates();
+    this.getManualExchangeRates();
   }
 
   getExRateSettings() {
@@ -128,7 +129,7 @@ export class ExrateSettingsComponent implements OnInit {
   }
 
   getManualExchangeRates() {
-    this.currencyService.getManaulExRatesForCurrency(this.nationalCurrency).subscribe(
+    this.currencyService.getManualExchangeRates().subscribe(
       data => {
         if (data) {
           this.manualExchangeRates = data;
@@ -188,7 +189,7 @@ export class ExrateSettingsComponent implements OnInit {
       exchangeRate: this.model.exchangeRate,
       currency: this.model.currency,
       defaultCurrency: this.defaultCurrency,
-      year: this.model.year
+      year: this.model.newYear
     }
 
     this.blockUI.start('Saving exchange rate...');
@@ -249,6 +250,17 @@ export class ExrateSettingsComponent implements OnInit {
         this.blockUI.stop();
       }
     )
+  }
+
+  filterExchangeRates() {
+    if (!this.model.searchYear || this.model.searchYear == 'null') {
+      this.filteredManualExchangeRates = this.manualExchangeRates;
+    } else {
+      if (this.manualExchangeRates.length > 0) {
+        var searchYear = this.model.searchYear;
+        this.filteredManualExchangeRates = this.manualExchangeRates.filter(m => m.year == searchYear);
+      }
+    }
   }
 
   filterCurrencies() {
@@ -313,7 +325,7 @@ export class ExrateSettingsComponent implements OnInit {
   }
 
   showAllManualRates() {
-    this.model.searchDate = null;
+    this.model.searchYear = null;
     this.filteredManualExchangeRates = this.manualExchangeRates;
   }
 

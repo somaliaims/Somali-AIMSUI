@@ -127,12 +127,16 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getNationalCurrency);
     }
 
+    getCurrenciesForUserUrl() {
+        return (this.BASE_URL + urlsList.urls.currenciesForUserUrl);
+    }
+
     getExRateSettingsUrl() {
         return (this.BASE_URL + urlsList.urls.getExchangeRateSettingsUrl);
     }
 
     getManualExRatesUrl() {
-        return (this.BASE_URL + urlsList.urls.getManualExchangeRates);
+        return (this.BASE_URL + urlsList.urls.manualExchangeRates);
     }
 
     getExRateAutoSettingsUrl() {

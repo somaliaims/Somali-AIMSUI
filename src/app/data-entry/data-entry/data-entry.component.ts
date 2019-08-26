@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { OrganizationService } from 'src/app/services/organization-service';
 import { FundingTypeService } from 'src/app/services/funding-type.service';
+import { CurrencyService } from 'src/app/services/currency.service';
 
 @Component({
   selector: 'app-data-entry',
@@ -86,7 +87,8 @@ export class DataEntryComponent implements OnInit {
     private projectService: ProjectService, private securityService: SecurityHelperService,
     private router: Router, private yearService: FinancialYearService,
     private orgService: OrganizationService,
-    private fundingTypeService: FundingTypeService) { }
+    private fundingTypeService: FundingTypeService,
+    private currencyService: CurrencyService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -96,6 +98,8 @@ export class DataEntryComponent implements OnInit {
 
     this.getFinancialYears();
     this.getOrganizationsList();
+    this.getCurrenciesList();
+    this.getFundingTypes();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
 
@@ -205,7 +209,7 @@ export class DataEntryComponent implements OnInit {
     );
   }
 
-  loadFundingTypes() {
+  getFundingTypes() {
     this.fundingTypeService.getFundingTypesList().subscribe(
       data => {
         if (data) {
@@ -213,6 +217,16 @@ export class DataEntryComponent implements OnInit {
         }
       }
     )
+  }
+
+  getCurrenciesList() {
+    this.currencyService.getCurrenciesForUser().subscribe(
+      data => {
+        if (data) {
+          this.currenciesList = data;
+        }
+      }
+    );
   }
 
   showBasicInfo() {
