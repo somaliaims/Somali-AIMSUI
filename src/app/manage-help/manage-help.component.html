@@ -32,35 +32,68 @@
 
     <div class="row">
 
-      <div *ngIf="currentTab == 'project'" class="col-md-12 margin-top-10">
+      <div *ngIf="currentTab == 'project' && !isProjectLoading" class="col-md-12 margin-top-10">
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <h5>Help for project fields</h5>
             <form (ngSubmit)="projectForm.form.valid && saveProjectHelp(projectForm)" #projectForm="ngForm">
               <div class="form-group">
-                <label>Title help</label>
-                <input type="text" class="form-control" [(ngModel)]="projectModel.title" name="title" #title="ngModel"
-                  maxlength="{{helpTextLimit}}" />
+                <label for="title">Title help</label>
+                <input type="text" class="form-control" [(ngModel)]="projectModel.title" id="title" name="title" #title="ngModel"
+                  maxlength="{{helpTextLimit}}" required />
+
+                <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
+                  Help for title is required
+                </div>
               </div>
               <div class="form-group">
-                <label>Start date help</label>
-                <input type="text" class="form-control" [(ngModel)]="projectModel.startDate" name="startDate"
-                  #startDate="ngModel" maxlength="{{helpTextLimit}}" />
+                <label>Starting financial year help</label>
+                <input type="text" class="form-control" [(ngModel)]="projectModel.startingFinancialYear"
+                  name="startingFinancialYear" #startingFinancialYear="ngModel" maxlength="{{helpTextLimit}}"
+                  required />
+                <div *ngIf="projectForm.submitted" [hidden]="startingFinancialYear.valid" class="alert alert-danger">
+                  Help for starting financial year is required
+                </div>
               </div>
               <div class="form-group">
-                <label>End date help</label>
-                <input type="text" class="form-control" [(ngModel)]="projectModel.endDate" name="endDate"
-                  #endDate="ngModel" maxlength="{{helpTextLimit}}" />
+                <label>Ending financial year help</label>
+                <input type="text" class="form-control" [(ngModel)]="projectModel.endingFinancialYear"
+                  name="endingFinancialYear" #endingFinancialYear="ngModel" maxlength="{{helpTextLimit}}" required />
+                <div *ngIf="projectForm.submitted" [hidden]="endingFinancialYear.valid" class="alert alert-danger">
+                  Help for ending financial year is required
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Funding type help</label>
+                <input type="text" class="form-control" [(ngModel)]="projectModel.fundingType" name="fundingType"
+                  #fundingType="ngModel" maxlength="{{helpTextLimit}}" required />
+                <div *ngIf="projectForm.submitted" [hidden]="fundingType.valid" class="alert alert-danger">
+                  Help for funding type is required
+                </div>
               </div>
               <div class="form-group">
                 <label>Project value help</label>
                 <input type="text" class="form-control" [(ngModel)]="projectModel.projectValue" name="projectValue"
-                  #projectValue="ngModel" maxlength="{{helpTextLimit}}" />
+                  #projectValue="ngModel" maxlength="{{helpTextLimit}}" required />
+                  <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
+                    Help for project value is required
+                  </div>
+              </div>
+              <div class="form-group">
+                <label>Project currency help</label>
+                <input type="text" class="form-control" [(ngModel)]="projectModel.projectCurrency" name="projectCurrency"
+                  #projectCurrency="ngModel" maxlength="{{helpTextLimit}}" required />
+                  <div *ngIf="projectForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
+                    Help for project currency is required
+                  </div>
               </div>
               <div class="form-group">
                 <label>Description help</label>
                 <input type="text" class="form-control" [(ngModel)]="projectModel.description" name="description"
-                  #description="ngModel" maxlength="{{helpTextLimit}}" />
+                  #description="ngModel" maxlength="{{helpTextLimit}}" required />
+                <div *ngIf="projectForm.submitted" [hidden]="description.valid" class="alert alert-danger">
+                  Help for description is required
+                </div>
               </div>
               <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
             </form>

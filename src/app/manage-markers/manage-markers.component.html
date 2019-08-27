@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/custom-fields']">Custom fields</a>
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/markers']">Markers</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active btn-info" data-toggle="tab">{{tabText}}</a>
@@ -14,16 +14,16 @@
     <div class="col-sm-9 col-md-6 col-lg-5">
       <div class="card card-signin my-5">
         <div class="card-body">
-          <h5 class="card-title text-center">Custom field</h5>
+          <h5 class="card-title text-center">Marker</h5>
 
-          <form class="form-signin" (ngSubmit)="customFieldForm.form.valid && saveCustomField()"
-            #customFieldForm="ngForm">
+          <form class="form-signin" (ngSubmit)="markerForm.form.valid && saveMarker()"
+            #markerForm="ngForm">
 
             <div class="form-group">
               <label for="fieldTitle">Field title</label>
               <input type="text" class="form-control" id="fieldTitle" [(ngModel)]="model.fieldTitle" name="fieldTitle"
                 #fieldTitle="ngModel" maxlength="50" required> <span class="text-info"><i>(Max length: 50)</i></span>
-              <div *ngIf="customFieldForm.submitted" [hidden]="fieldTitle.valid" class="alert alert-danger">
+              <div *ngIf="markerForm.submitted" [hidden]="fieldTitle.valid" class="alert alert-danger">
                 Field title is required
               </div>
             </div>
@@ -34,7 +34,7 @@
                 (change)="setFieldTypeDisplay()" required>
                 <option *ngFor="let type of fieldTypes" [value]="type.typeId">{{type.field}}</option>
               </select>
-              <div *ngIf="customFieldForm.submitted" [hidden]="typeId.valid" class="alert alert-danger">
+              <div *ngIf="markerForm.submitted" [hidden]="typeId.valid" class="alert alert-danger">
                 Field type is required
               </div>
             </div>
@@ -43,7 +43,7 @@
               <label for="help">Help text</label>
               <textarea rows="3" class="form-control" id="help" [(ngModel)]="model.help" name="help"
                 #help="ngModel" maxlength="{{helpTextLength}}" required></textarea> <span class="text-info"><i>(Max length: {{helpTextLength}})</i></span>
-              <div *ngIf="customFieldForm.submitted" [hidden]="help.valid" class="alert alert-danger">
+              <div *ngIf="markerForm.submitted" [hidden]="help.valid" class="alert alert-danger">
                 Help is required
               </div>
             </div>
@@ -81,7 +81,7 @@
     <div class="col-sm-9 col-md-6 col-lg-5">
       <div class="card card-signin my-5">
         <div class="card-body">
-          <h5 class="card-title text-center">Values list for selected field</h5>
+          <h5 class="card-title text-center">Values list for selected marker</h5>
 
           <div *ngIf="isManyValuesDisplay" class="form-group">
             <table class="table table-bordered" *ngIf="model.optionValues.length > 0">

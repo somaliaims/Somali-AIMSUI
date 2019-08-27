@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomeFieldService } from '../services/custom-field.service';
+import { MarkerService } from '../services/marker.service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StoreService } from '../services/store-service';
@@ -7,12 +7,12 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
-  selector: 'app-delete-field',
-  templateUrl: './delete-field.component.html',
-  styleUrls: ['./delete-field.component.css']
+  selector: 'app-delete-marker',
+  templateUrl: './delete-marker.component.html',
+  styleUrls: ['./delete-marker.component.css']
 })
 
-export class DeleteFieldComponent implements OnInit {
+export class DeleteMarkerComponent implements OnInit {
   projectsList: any = [];
   permissions: any = {};
   id: number = 0;
@@ -21,7 +21,7 @@ export class DeleteFieldComponent implements OnInit {
   isLoading: boolean = false;
   @BlockUI() blockUI: NgBlockUI;
   
-  constructor(private customFieldService: CustomeFieldService, private securityService: SecurityHelperService,
+  constructor(private markerService: MarkerService, private securityService: SecurityHelperService,
     private router: Router, private route: ActivatedRoute, private storeService: StoreService,
     private errorModal: ErrorModalComponent) { }
 
@@ -41,11 +41,11 @@ export class DeleteFieldComponent implements OnInit {
         this.errorModal.openModal();
       }
     });
-    this.getFieldProjects();
+    this.getMarkerProjects();
   }
 
-  getFieldProjects() {
-    this.customFieldService.getCustomFieldProjects(this.id.toString()).subscribe(
+  getMarkerProjects() {
+    this.markerService.getMarkerProjects(this.id.toString()).subscribe(
       data => {
         if (data) {
           this.projectsList = data;
@@ -54,12 +54,12 @@ export class DeleteFieldComponent implements OnInit {
     )  
   }
 
-  deleteCustomField() {
-    this.blockUI.start('Deleting location...');
-    this.customFieldService.deleteCustomField(this.id).subscribe(
+  deleteMarker() {
+    this.blockUI.start('Deleting marker...');
+    this.markerService.deleteMarker(this.id).subscribe(
       data => {
         if (data) {
-          this.router.navigateByUrl('custom-fields');
+          this.router.navigateByUrl('markers');
         }
         this.blockUI.stop();
       }

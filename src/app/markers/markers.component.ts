@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomeFieldService } from '../services/custom-field.service';
+import { MarkerService } from '../services/marker.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Router } from '@angular/router';
 import { SecurityHelperService } from '../services/security-helper.service';
@@ -8,11 +8,11 @@ import { StoreService } from '../services/store-service';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 
 @Component({
-  selector: 'app-custom-fields',
-  templateUrl: './custom-fields.component.html',
-  styleUrls: ['./custom-fields.component.css']
+  selector: 'app-markers',
+  templateUrl: './markers.component.html',
+  styleUrls: ['./markers.component.css']
 })
-export class CustomFieldsComponent implements OnInit {
+export class MarkersComponent implements OnInit {
   fieldType: any = {
     1: 'Dropdown',
     2: 'Checkbox',
@@ -20,8 +20,8 @@ export class CustomFieldsComponent implements OnInit {
     4: 'Radio'
   };
 
-  customFields: any = [];
-  filteredCustomFields: any = [];
+  markers: any = [];
+  filteredMarkers: any = [];
   isLoading: boolean = true;
   permissions: any = {};
   criteria: string = null;
@@ -30,7 +30,7 @@ export class CustomFieldsComponent implements OnInit {
   pagingSize: number = Settings.rowsPerPage;
 
   @BlockUI() blockUI: NgBlockUI;
-  constructor(private customFieldService: CustomeFieldService, private router: Router,
+  constructor(private markerService: MarkerService, private router: Router,
     private securityService: SecurityHelperService, private storeService: StoreService,
     private infoModal: InfoModalComponent) { }
 
@@ -40,15 +40,15 @@ export class CustomFieldsComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
-    this.getCustomFields();
+    this.getMarkers();
   }
 
-  getCustomFields() {
-    this.customFieldService.getCustomFields().subscribe(
+  getMarkers() {
+    this.markerService.getMarkers().subscribe(
       data => {
         if (data) {
-          this.customFields = data;
-          this.filteredCustomFields = data;
+          this.markers = data;
+          this.filteredMarkers = data;
         }
         this.isLoading = false;
       }
@@ -57,22 +57,22 @@ export class CustomFieldsComponent implements OnInit {
 
   searchFields() {
     if (!this.criteria) {
-      this.filteredCustomFields = this.customFields;
+      this.filteredMarkers = this.markers;
     } else {
-      this.filteredCustomFields = this.customFields.filter(c => c.fieldTitle.trim().toLowerCase().indexOf(this.criteria.toLowerCase()) != -1);
+      this.filteredMarkers = this.markers.filter(c => c.fieldTitle.trim().toLowerCase().indexOf(this.criteria.toLowerCase()) != -1);
     }
   }
 
-  addCustomField() {
-    this.router.navigateByUrl('manage-custom-field');
+  addMarker() {
+    this.router.navigateByUrl('manage-markers');
   }
 
-  editCustomField(id: string) {
-    this.router.navigateByUrl('manage-custom-field/' + id);
+  editMarker(id: string) {
+    this.router.navigateByUrl('manage-markers/' + id);
   }
 
-  deleteCustomField(id: string) {
-    this.router.navigateByUrl('delete-field/' + id);
+  deleteMarker(id: string) {
+    this.router.navigateByUrl('delete-marker/' + id);
   }
 
   displayFieldValues(json: any) {
@@ -86,9 +86,9 @@ export class CustomFieldsComponent implements OnInit {
   viewHelpText(e) {
     var id = e.currentTarget.id.split('-')[1];
     if (id) {
-      var customField = this.customFields.filter(f => f.id == id);
-      if (customField.length > 0) {
-        this.infoMessage = customField[0].help;
+      var marker = this.markers.filter(f => f.id == id);
+      if (marker.length > 0) {
+        this.infoMessage = marker[0].help;
         this.infoModal.openModal();
       }
     }

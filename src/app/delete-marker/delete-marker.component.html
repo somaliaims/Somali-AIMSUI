@@ -5,10 +5,10 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/custom-fields']">Custom fields list</a>
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/markers']">Markers list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Delete custom field</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Delete marker</a>
           </li>
         </ul>
       </div>
@@ -43,13 +43,13 @@
       <div class="col-md-6 col-sm-6">
         <div class="card card-signin my-5">
           <div class="card-body iati-box">
-            <form class="form-signin" (ngSubmit)="customFieldForm.form.valid && deleteCustomField()"
+            <form class="form-signin" (ngSubmit)="customFieldForm.form.valid && deleteMarker()"
               #customFieldForm="ngForm">
 
               <h5 class="card-title text-center">Delete confirmation</h5>
                 <div class="form-group">
                   <p class="text-info">
-                    Please see the list of effected projects in case of deletion of this custom field.
+                    Please see the list of effected projects in case of deletion of this marker.
                     Please review the list, as this action cannot be undone.
                   </p>
                 </div>

@@ -223,31 +223,31 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteLocation + id + '/' + newId);
     }
 
-    getCustomFieldUrl() {
-        return (this.BASE_URL + urlsList.urls.customFieldsUrl);
+    getMarkerUrl() {
+        return (this.BASE_URL + urlsList.urls.markersUrl);
     }
 
-    getCustomFieldByIdUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
+    getMarkerByIdUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.markersUrl + '/' + id);
     }
 
-    getActiveCustomFieldsUrl() {
-        return (this.BASE_URL + urlsList.urls.activeCustomFieldsUrl);
+    getActiveMarkersUrl() {
+        return (this.BASE_URL + urlsList.urls.activeMarkersUrl);
     }
 
-    getDeleteCustomFieldUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.customFieldsUrl + '/' + id);
+    getDeleteMarkerUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.markersUrl + '/' + id);
     }
 
-    getDeleteProjectFieldUrl(projectId: string, customFieldId: string) {
-        return (this.BASE_URL + urlsList.urls.deleteProjectField + projectId + '/' + customFieldId);
+    getDeleteProjectMarkerUrl(projectId: string, markerId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteProjectMarker + projectId + '/' + markerId);
     }
 
     getFieldProjectsUrl(id: string) {
-        return (this.BASE_URL + urlsList.urls.customFieldProjects + id);
+        return (this.BASE_URL + urlsList.urls.markerProjects + id);
     }
 
-    addProjectCustomFieldUrl() {
+    addProjectMarkerUrl() {
         return (this.BASE_URL + urlsList.urls.addProjectField);
     }
 

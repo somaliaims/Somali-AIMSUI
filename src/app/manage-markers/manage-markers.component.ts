@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { CustomeFieldService } from '../services/custom-field.service';
+import { MarkerService } from '../services/marker.service';
 import { Settings } from '../config/settings';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { StoreService } from '../services/store-service';
@@ -9,17 +9,17 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { Messages } from '../config/messages';
 
 @Component({
-  selector: 'app-manage-custom-fields',
-  templateUrl: './manage-custom-fields.component.html',
-  styleUrls: ['./manage-custom-fields.component.css']
+  selector: 'app-manage-markers',
+  templateUrl: './manage-markers.component.html',
+  styleUrls: ['./manage-markers.component.css']
 })
-export class ManageCustomFieldsComponent implements OnInit {
+export class ManageMarkersComponent implements OnInit {
   isBtnDisbaled: boolean = false;
   requestNo: number = 0;
   fieldTypes: any = [];
   dateModel: NgbDateStruct;
   isForEdit: boolean = false;
-  btnText: string = 'Save custom field';
+  btnText: string = 'Save marker';
   tabText: string = 'Create new';
   fieldId: number = 0;
   errorMessage: string = null;
@@ -36,7 +36,7 @@ export class ManageCustomFieldsComponent implements OnInit {
   model: any = { fieldType: null, fieldTitle: null, optionValues: [],
     optionValue1: null, optionValue2: null, newValue: null, help: null };
 
-  constructor(private customFieldService: CustomeFieldService, private route: ActivatedRoute,
+  constructor(private markerService: MarkerService, private route: ActivatedRoute,
     private router: Router, private storeService: StoreService,
     private securityService: SecurityHelperService, private errorModal: ErrorModalComponent) { }
 
@@ -47,15 +47,15 @@ export class ManageCustomFieldsComponent implements OnInit {
     }
 
     this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
-    this.fieldTypes = Settings.customFieldTypes;
+    this.fieldTypes = Settings.markerTypes;
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit custom field';
-        this.tabText = 'Edit field';
+        this.btnText = 'Edit marker';
+        this.tabText = 'Edit marker';
         this.isForEdit = true;
         this.fieldId = id;
-        this.customFieldService.getCustomFieldById(id).subscribe(
+        this.markerService.getMarkerById(id).subscribe(
           data => {
             this.model.typeId = data.fieldType;
             this.model.fieldTitle = data.fieldTitle;
@@ -141,7 +141,7 @@ export class ManageCustomFieldsComponent implements OnInit {
     this.model.optionValues = this.model.optionValues.filter(o => o.id != id);
   }
 
-  saveCustomField() {
+  saveMarker() {
     if (this.isManyValuesDisplay && this.model.optionValues.length == 0) {
       this.errorMessage = Messages.INVALID_OPTIONS_LIST;
       this.errorModal.openModal();
@@ -177,20 +177,20 @@ export class ManageCustomFieldsComponent implements OnInit {
 
     if (this.isForEdit) {
       this.btnText = 'Updating...';
-      this.customFieldService.updateCustomField(this.fieldId.toString(), newModel).subscribe(
+      this.markerService.updateMarker(this.fieldId.toString(), newModel).subscribe(
         data => {
           if (data) {
-            this.router.navigateByUrl('custom-fields');
+            this.router.navigateByUrl('markers');
           }
           this.isBtnDisbaled = false;
         }
       );
     } else {
       this.btnText = 'Saving...';
-      this.customFieldService.saveCustomField(newModel).subscribe(
+      this.markerService.saveMarker(newModel).subscribe(
         data => {
           if (data) {
-            this.router.navigateByUrl('custom-fields');
+            this.router.navigateByUrl('markers');
           }
           this.isBtnDisbaled = false;
         }

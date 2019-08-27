@@ -25,7 +25,7 @@ export class DataEntryComponent implements OnInit {
   currentTab: string = null;
 
   permissions: any = {};
-  fieldTypes: any = Settings.customFieldTypes;
+  fieldTypes: any = Settings.markerTypes;
 
   userProjectIds: any = [];
   financialYears: any = [];

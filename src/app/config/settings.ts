@@ -104,7 +104,7 @@ export const Settings = {
             canEditHelp: false,
         }
     },
-    customFieldTypes: [
+    markerTypes: [
         {
             'typeId': null,
             'field': '--Select One--'

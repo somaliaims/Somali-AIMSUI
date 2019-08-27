@@ -288,15 +288,15 @@ export class ProjectService {
 
 
   //Project custom fields functions
-  saveProjectCustomField(model: any) {
-    var url = this.urlHelper.addProjectCustomFieldUrl();
+  saveProjectMarker(model: any) {
+    var url = this.urlHelper.addProjectMarkerUrl();
     return this.httpClient.post(url,
       JSON.stringify(model), httpOptions).pipe(
         catchError(this.storeService.handleError<any>('Save Project Custom Field')));
   }
 
-  deleteProjectCustomField(projectId: string, customFieldId: string) {
-    var url = this.urlHelper.getDeleteProjectFieldUrl(projectId, customFieldId);
+  deleteProjectMarker(projectId: string, customFieldId: string) {
+    var url = this.urlHelper.getDeleteProjectMarkerUrl(projectId, customFieldId);
     return this.httpClient.delete(url, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('Delete Project Field')));
   }

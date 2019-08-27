@@ -49,8 +49,7 @@
                 types</a>
               <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial
                 years</a>
-              <a *ngIf="permissions.canEditCustomFields" class="dropdown-item" [routerLink]="['/custom-fields']">Custom
-                fields</a>
+              <a *ngIf="permissions.canEditCustomFields" class="dropdown-item" [routerLink]="['/markers']">Markers</a>
               <div class="dropdown-divider"></div>
               <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & organizations management</h5>
               <h5 *ngIf="!permissions.canManage" class="dropdown-header">User management</h5>

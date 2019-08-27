@@ -67,9 +67,9 @@ import { DeleteSectorComponent } from './delete-sector/delete-sector.component';
 import { SectorMappingsComponent } from './sector-mappings/sector-mappings.component';
 import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.component';
 import { EnvelopeComponent } from './envelope/envelope.component';
-import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
-import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
-import { DeleteFieldComponent } from './delete-field/delete-field.component';
+import { ManageMarkersComponent } from './manage-markers/manage-markers.component';
+import { MarkersComponent } from './markers/markers.component';
+import { DeleteMarkerComponent } from './delete-marker/delete-marker.component';
 import { FundingTypesComponent } from './funding-types/funding-types.component';
 import { ManageFundingTypeComponent } from './manage-funding-type/manage-funding-type.component';
 import { EmailMessagesComponent } from './email-messages/email-messages.component';
@@ -158,9 +158,9 @@ import { FinancialsComponent } from './data-entry/financials/financials.componen
     SectorTypesComponent,
     ExrateSettingsComponent,
     EnvelopeComponent,
-    ManageCustomFieldsComponent,
-    CustomFieldsComponent,
-    DeleteFieldComponent,
+    ManageMarkersComponent,
+    MarkersComponent,
+    DeleteMarkerComponent,
     FundingTypesComponent,
     ManageFundingTypeComponent,
     EmailMessagesComponent,

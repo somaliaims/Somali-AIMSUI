@@ -5,10 +5,10 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Custom fields</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Markers</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-custom-field']">Create New</a>
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-markers']">Create New</a>
           </li>
         </ul>
       </div>
@@ -21,34 +21,34 @@
     </div>
 
     <div *ngIf="!isLoading" class="row">
-      <div *ngIf="filteredCustomFields.length > 0" class="col margin-top-10">
+      <div *ngIf="filteredMarkers.length > 0" class="col margin-top-10">
         <table class="table table-bordered table-stripped">
           <tr>
-            <th>Field Name</th>
-            <th>Type</th>
+            <th>Marker</th>
+            <th>Field type</th>
             <th>Values</th>
             <th>Help text</th>
             <th>Action</th>
           </tr>
-          <tr *ngFor="let field of filteredCustomFields | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+          <tr *ngFor="let field of filteredMarkers | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>{{field.fieldTitle}}</td>
             <td>{{getFieldType(field.fieldType)}}</td>
             <td>{{displayFieldValues(field.values)}}</td>
             <td>{{field.help | truncate : 50}} <a href="#" title="View full text" id="help-{{field.id}}"
               (click)="viewHelpText($event)" class="text-info"><b>View full text</b></a></td>
             <td>
-                <a title="Edit" (click)="editCustomField(field.id)" class="btn btn-info"><i
+                <a title="Edit" (click)="editMarker(field.id)" class="btn btn-info"><i
                   class="fa fa-edit color-white"></i></a>&nbsp;
 
-              <a title="Delete" (click)="deleteCustomField(field.id)" class="btn btn-danger"><i
+              <a title="Delete" (click)="deleteMarker(field.id)" class="btn btn-danger"><i
                   class="fa fa-trash color-white"></i></a>
             </td>
           </tr>
         </table>
         <pagination-controls (pageChange)="p=$event"></pagination-controls>
       </div>
-      <div class="col-md-12 text-info" *ngIf="filteredCustomFields.length == 0">
-        <i>No custom Fields to show</i>
+      <div class="col-md-12 text-info" *ngIf="filteredMarkers.length == 0">
+        <i>No markers to show</i>
       </div>
     </div>
 

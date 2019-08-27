@@ -21,7 +21,7 @@ import { CurrencyService } from '../services/currency.service';
 import { Organization } from '../models/organization-model';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { CustomeFieldService } from '../services/custom-field.service';
+import { MarkerService } from '../services/marker.service';
 import { Settings } from '../config/settings';
 import { FundingTypeService } from '../services/funding-type.service';
 import { SectorTypeService } from '../services/sector-types.service';
@@ -130,7 +130,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorTypes: any = [];
   mappedSectorsList: any = [];
   organizationsList: any = [];
-  customFieldsList: any = [];
+  markersList: any = [];
   fundingTypesList: any = [];
   currentProjectSectorsList: any = [];
   currentProjectLocationsList: any = [];
@@ -157,7 +157,7 @@ export class ProjectEntryComponent implements OnInit {
   sectorMappings: any = [];
   defaultSectorsList: any = [];
   filteredExRateSources: any = [];
-  fieldTypes: any = Settings.customFieldTypes;
+  fieldTypes: any = Settings.markerTypes;
   yearLowerLimit: number = 0;
   yearUpperLimit: number = 0;
   yearSpan = Settings.yearLimit;
@@ -185,7 +185,7 @@ export class ProjectEntryComponent implements OnInit {
     4: 'Radio'
   };
 
-  conditionsForCustomFields: any = {
+  conditionsForMarkers: any = {
     GRANT_LAON: 'Loan',
     HEALTH_SECTOR: 'Health'
   }
@@ -241,7 +241,7 @@ export class ProjectEntryComponent implements OnInit {
     { visible: false, identity: 'funder' },
     { visible: false, identity: 'implementer' },
     { visible: false, identity: 'disbursement' },
-    { visible: false, identity: 'customFields' },
+    { visible: false, identity: 'markers' },
     { visible: false, identity: 'finish' }
   ];
 
@@ -259,7 +259,7 @@ export class ProjectEntryComponent implements OnInit {
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private errorModal: ErrorModalComponent,
     private currencyService: CurrencyService,
-    private customFieldService: CustomeFieldService,
+    private markerService: MarkerService,
     private fundingTypeService: FundingTypeService,
     private sectorTypeService: SectorTypeService
   ) { }
@@ -377,7 +377,7 @@ export class ProjectEntryComponent implements OnInit {
     this.loadDefaultCurrency();
     this.loadDefaultSectorType();
     this.loadNationalCurrency();
-    this.loadActiveCustomFields();
+    this.loadActiveMarkers();
     this.loadFundingTypes();
     this.getExRateSettings();
   }
@@ -567,8 +567,8 @@ export class ProjectEntryComponent implements OnInit {
     );
   }
 
-  loadActiveCustomFields() {
-    this.customFieldService.getActiveCustomFields().subscribe(
+  loadActiveMarkers() {
+    this.markerService.getActiveMarkers().subscribe(
       data => {
         if (data) {
           var fields = data;
@@ -576,7 +576,7 @@ export class ProjectEntryComponent implements OnInit {
             field.values = field.values ? JSON.parse(field.values) : [];
             field.values.forEach(v => v.isSelected = false);
           });
-          this.customFieldsList = fields;
+          this.markersList = fields;
         }
       }
     )
@@ -1166,8 +1166,8 @@ export class ProjectEntryComponent implements OnInit {
             this.currentProjectDisbursementsList = data.disbursements;
           }
 
-          if (data.customFields && data.customFields.length > 0) {
-            this.currentProjectFieldsList = data.customFields;
+          if (data.markers && data.markers.length > 0) {
+            this.currentProjectFieldsList = data.markers;
           }
         }
         setTimeout(() => {
@@ -1323,8 +1323,8 @@ export class ProjectEntryComponent implements OnInit {
     this.manageTabsDisplay('disbursement');
   }
 
-  showCustomFields() {
-    this.manageTabsDisplay('customFields');
+  showMarkers() {
+    this.manageTabsDisplay('markers');
   }
 
   showFinishProject() {
@@ -2386,7 +2386,7 @@ export class ProjectEntryComponent implements OnInit {
 
     var result = [];
     if (isTypeText) {
-      result = this.customFieldsList.filter(f => f.fieldType == fieldType && f.id == fieldId);
+      result = this.markersList.filter(f => f.fieldType == fieldType && f.id == fieldId);
       if (result.length > 0) {
         var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
         if (isExists.length > 0) {
@@ -2403,7 +2403,7 @@ export class ProjectEntryComponent implements OnInit {
         }
       }
     } else {
-      result = this.customFieldsList.filter(f => f.fieldType == fieldType && f.id == fieldId).map(f => f.values)[0].filter(v => parseInt(v.id) == id);
+      result = this.markersList.filter(f => f.fieldType == fieldType && f.id == fieldId).map(f => f.values)[0].filter(v => parseInt(v.id) == id);
       if (result.length > 0) {
         var values: any = [];
 
@@ -2463,16 +2463,16 @@ export class ProjectEntryComponent implements OnInit {
       var stringifiedJson = JSON.stringify(selectedField[0].values);
       var saveFieldModel = {
         projectId: this.activeProjectId,
-        customFieldId: id,
+        markerId: id,
         fieldType: selectedField[0].fieldType,
         values: stringifiedJson
       }
 
       this.blockUI.start('Saving...');
-      this.projectService.saveProjectCustomField(saveFieldModel).subscribe(
+      this.projectService.saveProjectMarker(saveFieldModel).subscribe(
         data => {
           if (data) {
-            var isFieldExists = this.currentProjectFieldsList.filter(f => f.customFieldId == id);
+            var isFieldExists = this.currentProjectFieldsList.filter(f => f.markerId == id);
             if (isFieldExists.length > 0) {
               var values = [];
               selectedField[0].values.forEach(function (v) {
@@ -2483,10 +2483,10 @@ export class ProjectEntryComponent implements OnInit {
               });
               isFieldExists[0].values = values;
             } else {
-              var customField = this.customFieldsList.filter(c => c.id == id);
+              var marker = this.markersList.filter(c => c.id == id);
               var fieldTitle = '';
-              if (customField.length > 0) {
-                fieldTitle = customField[0].fieldTitle;
+              if (marker.length > 0) {
+                fieldTitle = marker[0].fieldTitle;
               }
 
               var values = [];
@@ -2498,7 +2498,7 @@ export class ProjectEntryComponent implements OnInit {
               });
 
               this.currentProjectFieldsList.push({
-                customFieldId: id,
+                markerId: id,
                 fieldTitle: fieldTitle,
                 fieldType: selectedField[0].fieldType,
                 values: values,
@@ -2518,10 +2518,10 @@ export class ProjectEntryComponent implements OnInit {
     var fieldId = arr[2];
 
     this.blockUI.start('Removing Field...');
-    this.projectService.deleteProjectCustomField(projectId, fieldId).subscribe(
+    this.projectService.deleteProjectMarker(projectId, fieldId).subscribe(
       data => {
         if (data) {
-          this.currentProjectFieldsList = this.currentProjectFieldsList.filter(c => c.customFieldId != fieldId);
+          this.currentProjectFieldsList = this.currentProjectFieldsList.filter(c => c.markerId != fieldId);
         }
         this.blockUI.stop();
       },
@@ -2863,7 +2863,7 @@ export class ProjectEntryComponent implements OnInit {
     /*this.currentProjectFieldsList.forEach(function (field) {
       var id = field.id;
 
-      var values = this.storeService.parseJson(this.customFieldsList.filter(f => f.id == id).map(v => v.values));
+      var values = this.storeService.parseJson(this.markersList.filter(f => f.id == id).map(v => v.values));
     if (values.length > 0) {
       var optionValue = values[0].filter(v => v.id == valId);
       optionValue.length > 0 ? optionValue[0].isSelected = true : null;
@@ -2871,13 +2871,13 @@ export class ProjectEntryComponent implements OnInit {
     });*/
   }
 
-  isShowCustomFields() {
-    var isLoanExists = this.currentProjectFundersList.filter(f => f.fundingType == this.conditionsForCustomFields.GRANT_LAON);
+  isShowMarkers() {
+    var isLoanExists = this.currentProjectFundersList.filter(f => f.fundingType == this.conditionsForMarkers.GRANT_LAON);
     if (isLoanExists.length > 0) {
       return true;
     }
 
-    var isHealthExists = this.currentProjectSectorsList.filter(s => s.sector.toLowerCase().indexOf(this.conditionsForCustomFields.HEALTH_SECTOR));
+    var isHealthExists = this.currentProjectSectorsList.filter(s => s.sector.toLowerCase().indexOf(this.conditionsForMarkers.HEALTH_SECTOR));
     if (isHealthExists.length > 0) {
       return true;
     }
@@ -2982,10 +2982,10 @@ export class ProjectEntryComponent implements OnInit {
     this.currentEntryForm.resetForm();
   }
 
-  resetCustomFields() {
+  resetMarkers() {
     this.fieldModel.dropdownId = null;
     this.fieldModel.newText = null;
-    this.customFieldsList.forEach(c => c.values.forEach(v => v.isSelected = false));
+    this.markersList.forEach(c => c.values.forEach(v => v.isSelected = false));
   }
 
   finishProject() {

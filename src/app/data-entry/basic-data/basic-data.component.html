@@ -81,13 +81,29 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row margin-top-10">
+    <div class="col-lg-6 col-md-6">
+      <ng-multiselect-dropdown [placeholder]="'Select funders'" [data]="organizationsList"
+        [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
+        #selectedFunders="ngModel">
+      </ng-multiselect-dropdown>
+    </div>
+  
+    <div class="col-lg-6 col-md-6">
+      <ng-multiselect-dropdown [placeholder]="'Select implementers'" [data]="organizationsList"
+        [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings" name="selectedImplementers"
+        #selectedImplementers="ngModel">
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+
+  <div class="row margin-top-10">
     <div class="col-lg-12 col-md-12">
       <div class="form-group">
         <label for="title">Description <span class="text-info">(Max characters: {{descriptionLimit}} Left:
             {{descriptionLimitLeft}})</span></label>
         <textarea class="form-control" id="description" (input)="getDescriptionLimitInfo()"
-          [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="4"
+          [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="5"
           maxlength="{{descriptionLimit}}">
                   </textarea>
       </div>
@@ -102,18 +118,3 @@
   </div>
 </form>
 
-<div class="row margin-top-10">
-  <div class="col-lg-6 col-md-6">
-    <ng-multiselect-dropdown [placeholder]="'Select funders'" [data]="organizationsList"
-      [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
-      #selectedFunders="ngModel">
-    </ng-multiselect-dropdown>
-  </div>
-
-  <div class="col-lg-6 col-md-6">
-    <ng-multiselect-dropdown [placeholder]="'Select implementers'" [data]="organizationsList"
-      [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings" name="selectedImplementers"
-      #selectedImplementers="ngModel">
-    </ng-multiselect-dropdown>
-  </div>
-</div>

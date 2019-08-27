@@ -46,9 +46,9 @@ import { DeleteSectorComponent } from './delete-sector/delete-sector.component';
 import { SectorMappingsComponent } from './sector-mappings/sector-mappings.component';
 import { ExrateSettingsComponent } from './exrate-settings/exrate-settings.component';
 import { EnvelopeComponent } from './envelope/envelope.component';
-import { CustomFieldsComponent } from './custom-fields/custom-fields.component';
-import { ManageCustomFieldsComponent } from './manage-custom-fields/manage-custom-fields.component';
-import { DeleteFieldComponent } from './delete-field/delete-field.component';
+import { MarkersComponent } from './markers/markers.component';
+import { ManageMarkersComponent } from './manage-markers/manage-markers.component';
+import { DeleteMarkerComponent } from './delete-marker/delete-marker.component';
 import { FundingTypesComponent } from './funding-types/funding-types.component';
 import { ManageFundingTypeComponent } from './manage-funding-type/manage-funding-type.component';
 import { EmailMessagesComponent } from './email-messages/email-messages.component';
@@ -137,10 +137,10 @@ export const routes: Routes = [
   { path: 'manage-exchange-rate-usage', component: ManageExrateUsageComponent },
   { path: 'manage-exchange-rate-usage/:{id}', component: ManageExrateUsageComponent, data: { isForEdit: true } },
   { path: 'envelope', component: EnvelopeComponent},
-  { path: 'custom-fields', component: CustomFieldsComponent },
-  { path: 'manage-custom-field', component: ManageCustomFieldsComponent },
-  { path: 'manage-custom-field/:{id}', component: ManageCustomFieldsComponent, data: { isForEdit: true } },
-  { path: 'delete-field/:{id}', component: DeleteFieldComponent },
+  { path: 'markers', component: MarkersComponent },
+  { path: 'manage-markers', component: ManageMarkersComponent },
+  { path: 'manage-markers/:{id}', component: ManageMarkersComponent, data: { isForEdit: true } },
+  { path: 'delete-marker/:{id}', component: DeleteMarkerComponent },
   { path: 'funding-types', component: FundingTypesComponent },
   { path: 'manage-funding-type', component: ManageFundingTypeComponent },
   { path: 'manage-funding-type/:{id}', component: ManageFundingTypeComponent, data: { isForEdit: true } },
