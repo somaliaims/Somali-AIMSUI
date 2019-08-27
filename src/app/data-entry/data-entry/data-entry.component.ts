@@ -66,7 +66,7 @@ export class DataEntryComponent implements OnInit {
   };
 
   projectData = { id: 0, title: null, fundingTypeId: null, startingFinancialYear: null, endingFinancialYear: null, 
-    description: null, projectValue: null };
+    description: null, projectValue: null, projectCurrency: null };
 
   displayTabs: any = [
     { visible: true, identity: 'basic' },
@@ -140,6 +140,8 @@ export class DataEntryComponent implements OnInit {
           this.projectData.startingFinancialYear = data.startingFinancialYear;
           this.projectData.endingFinancialYear = data.endingFinancialYear;
           this.projectData.projectValue = data.projectValue;
+          this.projectData.projectCurrency = data.projectCurrency;
+          this.projectData.fundingTypeId = data.fundingTypeId;
 
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
