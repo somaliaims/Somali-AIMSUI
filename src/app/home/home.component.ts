@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '../services/store-service';
 import {Settings} from '../config/settings';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user-service';
 import { OrganizationService } from '../services/organization-service';
 import { ProjectService } from '../services/project.service';
@@ -23,11 +23,12 @@ export class HomeComponent implements OnInit {
   defaultCurrency: string = null;
   currentYear: number = 0;
   model: any = { aimsTitle: null, introductionHeading: null, introductionText: null };
+  latestProjects: any = [];
   
   constructor(private storeService: StoreService, private route: ActivatedRoute,
     private userService: UserService, private organizationService: OrganizationService,
     private projectService: ProjectService, private currencyService: CurrencyService,
-    private homePageService: HomePageService) { }
+    private homePageService: HomePageService, private router: Router) { }
 
   ngOnInit() {
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit {
     this.getOrganizationsCount();
     this.getCurrentYearDisbursements();
     this.getDefaultCurrency();
+    this.getLatestProjects();
   }
 
   getDefaultCurrency() {
@@ -106,6 +108,26 @@ export class HomeComponent implements OnInit {
         }
       }
     );
+  }
+
+  getLatestProjects() {
+    this.projectService.getLatestProjects().subscribe(
+      data => {
+        if (data) {
+          this.latestProjects = data;
+        }
+      }
+    );
+  }
+
+  viewProjectDetail(id) {
+    if (id) {
+      this.router.navigateByUrl('view-project/' + id);
+    }
+  }
+
+  formatNumberWithCommas(value: number) {
+    return this.storeService.getNumberWithCommas(value);
   }
 
 }

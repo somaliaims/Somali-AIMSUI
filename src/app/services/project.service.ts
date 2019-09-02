@@ -21,6 +21,12 @@ export class ProjectService {
       catchError(this.storeService.handleError<any>('Projects')));
   }
 
+  getLatestProjects() {
+    var url = this.urlHelper.getLatestProjectsUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Latest Projects')));
+  }
+
   getProjectsWithDetail() {
     var url = this.urlHelper.getProjectsWithDetail();
     return this.httpClient.get(url, httpOptions).pipe(
@@ -285,7 +291,6 @@ export class ProjectService {
     return this.httpClient.delete(url, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('Delete Project Document')));
   }
-
 
   //Project custom fields functions
   saveProjectMarker(model: any) {

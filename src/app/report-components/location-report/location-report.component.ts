@@ -420,7 +420,7 @@ export class LocationReportComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   getOrganizationsList() {

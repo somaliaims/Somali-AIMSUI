@@ -247,6 +247,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.markerProjects + id);
     }
 
+    getLatestProjectsUrl() {
+        return (this.BASE_URL + urlsList.urls.latestProjects);
+    }
+
     addProjectMarkerUrl() {
         return (this.BASE_URL + urlsList.urls.addProjectField);
     }

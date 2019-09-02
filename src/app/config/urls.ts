@@ -52,6 +52,7 @@ export const urls = {
 	projectsUrl: "Project",
 	projectsDetailUrl: "Project/GetAllWithDetail",
 	getProject: "Project/GetById/",
+	latestProjects: "Project/GetLatest",
 	organizationProjects: "Project/GetOrganizationProjects/",
 	locationProjects: "Project/GetLocationProjects/",
 	mergeProjects: "Project/MergeProjects",
