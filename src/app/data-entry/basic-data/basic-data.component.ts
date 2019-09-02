@@ -112,5 +112,31 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
+  saveProjectFunders() {
+    var funderIds = this.funderModel.selectedFunders.map(f => f.id);
+    var model = {
+      projectId: this.projectId,
+      funderIds: funderIds
+    };
+    this.projectService.addProjectFunder(model).subscribe(
+      data => {
+
+      }
+    );
+  }
+
+  saveProjectImplementers() {
+    var implementerIds = this.implementerModel.selectedImplementers.map(i => i.id);
+    var model = {
+      projectId: this.projectId,
+      implementerIds: implementerIds
+    };
+    this.projectService.addProjectImplementer(model).subscribe(
+      data => {
+        
+      }
+    );
+  }
+
 
 }

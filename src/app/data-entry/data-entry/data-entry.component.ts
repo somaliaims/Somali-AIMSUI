@@ -35,13 +35,13 @@ export class DataEntryComponent implements OnInit {
   currenciesList: any = [];
   selectedImplementers: any = [];
 
-  currentProjectFundersList: any = [];
-  currentProjectImplementersList: any = [];
-  currentProjectSectorsList: any = [];
-  currentProjectLocationsList: any = [];
-  currentProjectDisbursementsList: any = [];
-  currentProjectDocumentsList: any = [];
-  currentProjectMarkersList: any = [];
+  currentProjectFunders: any = [];
+  currentProjectImplementers: any = [];
+  currentProjectSectors: any = [];
+  currentProjectLocations: any = [];
+  currentProjectDisbursements: any = [];
+  currentProjectDocuments: any = [];
+  currentProjectMarkers: any = [];
   
   monthsList: any = [
     { key: 'January', value: 1 },
@@ -145,33 +145,33 @@ export class DataEntryComponent implements OnInit {
 
           //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
-            this.currentProjectSectorsList = data.sectors;
+            this.currentProjectSectors = data.sectors;
             this.sectorTotalPercentage = this.calculateSectorPercentage();
           }
 
           if (data.locations && data.locations.length > 0) {
-            this.currentProjectLocationsList = data.locations;
+            this.currentProjectLocations = data.locations;
             this.locationTotalPercentage = this.calculateLocationPercentage();
           }
 
           if (data.documents && data.documents.length > 0) {
-            this.currentProjectDocumentsList = data.documents;
+            this.currentProjectDocuments = data.documents;
           }
 
           if (data.funders && data.funders.length > 0) {
-            this.currentProjectFundersList = data.funders;
+            this.currentProjectFunders = data.funders;
           } 
 
           if (data.implementers && data.implementers.length > 0) {
-            this.currentProjectImplementersList = data.implementers;
+            this.currentProjectImplementers = data.implementers;
           }
 
           if (data.disbursements && data.disbursements.length > 0) {
-            this.currentProjectDisbursementsList = data.disbursements;
+            this.currentProjectDisbursements = data.disbursements;
           }
 
           if (data.customFields && data.customFields.length > 0) {
-            this.currentProjectMarkersList = data.markers;
+            this.currentProjectMarkers = data.markers;
           }
         }
         setTimeout(() => {
@@ -182,12 +182,12 @@ export class DataEntryComponent implements OnInit {
   }
 
   calculateSectorPercentage() {
-    var percentageList = this.currentProjectSectorsList.map(s => parseInt(s.fundsPercentage));
+    var percentageList = this.currentProjectSectors.map(s => parseInt(s.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
   }
 
   calculateLocationPercentage() {
-    var percentageList = this.currentProjectLocationsList.map(s => parseInt(s.fundsPercentage));
+    var percentageList = this.currentProjectLocations.map(s => parseInt(s.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
   }
 
