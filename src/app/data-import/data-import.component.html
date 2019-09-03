@@ -23,9 +23,10 @@
             <div>
               <h5 class="card-title text-center">Upload data file 2017</h5>
               <div class="row">
-                <input type="file" accept=".xlsx" #fileold placeholder="Choose file" (change)="uploadFileOld(fileold.files)"
-                  style="display:none;">
-                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase" (click)="fileold.click()">Click
+                <input type="file" accept=".xlsx" #fileold placeholder="Choose file"
+                  (change)="uploadFileOld(fileold.files)" style="display:none;">
+                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase"
+                  (click)="fileold.click()">Click
                   and select file</button>
               </div>
               <div class="row">
@@ -39,9 +40,10 @@
 
               <h5 class="card-title text-center margin-top-50">Upload data file 2018</h5>
               <div class="row">
-                <input type="file" accept=".xlsx" #filenew placeholder="Choose file" (change)="uploadFileNew(filenew.files)"
-                  style="display:none;">
-                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase" (click)="filenew.click()">Click
+                <input type="file" accept=".xlsx" #filenew placeholder="Choose file"
+                  (change)="uploadFileNew(filenew.files)" style="display:none;">
+                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase"
+                  (click)="filenew.click()">Click
                   and select file</button>
               </div>
               <div class="row">
@@ -52,6 +54,24 @@
                   {{messageNew}}
                 </span>
               </div>
+
+              <h5 class="card-title text-center margin-top-50">Upload latest data file</h5>
+              <div class="row">
+                <input type="file" accept=".xlsx" #filelatest placeholder="Choose file"
+                  (change)="uploadFileLatest(filelatest.files)" style="display:none;">
+                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase"
+                  (click)="filelatest.click()">Click
+                  and select file</button>
+              </div>
+              <div class="row">
+                <span class="upload" *ngIf="progressLatest > 0">
+                  Uploaded {{progressLatest}}%
+                </span>
+                <span class="upload" *ngIf="messageNew">
+                  {{messageLatest}}
+                </span>
+              </div>
+
             </div>
 
           </div>

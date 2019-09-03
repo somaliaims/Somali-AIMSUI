@@ -45,14 +45,20 @@
               </div>
               <table class="table table-stripped">
                 <tr>
-                  <td><b>Title: </b></td>
+                  <td width="15%"><b>Title: </b></td>
                   <td colspan="3">{{projectData.title}}</td>
                 </tr>
                 <tr>
-                  <td><b>Start Date: </b></td>
-                  <td>{{convertDateToLongString(projectData.startDate)}}</td>
-                  <td><b>End Date: </b></td>
-                  <td>{{convertDateToLongString(projectData.endDate)}}</td>
+                  <td><b>Starting year: </b></td>
+                  <td>{{projectData.startingFinancialYear}}</td>
+                  <td><b>Ending year: </b></td>
+                  <td>{{projectData.endingFinancialYear}}</td>
+                </tr>
+                <tr>
+                  <td><b>Project value: </b></td>
+                  <td>{{projectData.projectValue}}</td>
+                  <td><b>Currency: </b></td>
+                  <td>{{projectData.projectCurrency}}</td>
                 </tr>
                 <tr>
                   <td><b>Description: </b></td>
@@ -93,7 +99,7 @@
                 </tr>
                 <tr *ngFor="let location of projectLocations">
                   <td>{{location.location}}</td>
-                  <td>{{location.fundsPercentage}}</td>
+                  <td>{{location.fundsPercentage}}%</td>
                   <!-- <td>
                     <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
@@ -133,7 +139,7 @@
                 </tr>
                 <tr *ngFor="let sector of projectSectors">
                   <td>{{sector.sector}}</td>
-                  <td>{{sector.fundsPercentage}}</td>
+                  <td>{{sector.fundsPercentage}}%</td>
                   <!-- <td>
                     <a title="Remove Sector" (click)="deleteProjectSector(projectId, sector.sectorId)" class="btn btn-danger"><i
                         class="fa fa-trash color-white"></i></a>
@@ -169,20 +175,10 @@
 
               <table *ngIf="projectFunders.length > 0" class="table table-stripped">
                 <tr>
-                  <th>Funder</th>
-                  <th>Amount</th>
-                  <th>Currency</th>
-                  <th>Exchange rate</th>
+                  <th>Funder name</th>
                 </tr>
                 <tr *ngFor="let funder of projectFunders">
                   <td>{{funder.funder}}</td>
-                  <td>{{funder.amount | number:0}}</td>
-                  <td>{{funder.currency}}</td>
-                  <td>{{funder.exchangeRate}}</td>
-                  <!-- <td>
-                    <a title="Remove Funder" (click)="deleteProjectFunder(projectId, funder.funderId)" class="btn btn-danger"><i
-                        class="fa fa-trash color-white"></i></a>
-                  </td> -->
                 </tr>
               </table>
               <p *ngIf="projectFunders.length == 0 && !isFunderLoading">No project funders found.</p>
@@ -201,9 +197,6 @@
               <span class="float-left">
                 Project Implementers
               </span>
-              <!--<span *ngIf="permissions.canEditProject" class="float-right">
-                <button class="btn btn-success" (click)="addProjectImplementer()">Add Project Implementer</button>
-              </span>-->
             </div>
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isImplementerLoading">
@@ -218,10 +211,6 @@
                 </tr>
                 <tr *ngFor="let implementer of projectImplementers">
                   <td>{{implementer.implementer}}</td>
-                  <!-- <td>
-                    <a title="Remove Implementer" (click)="deleteProjectImplementer(projectId, implementer.implementerId)" class="btn btn-danger"><i
-                        class="fa fa-trash color-white"></i></a>
-                  </td> -->
                 </tr>
               </table>
               <p *ngIf="projectImplementers.length == 0 && !isImplementerLoading">No project implementers found.</p>
@@ -253,13 +242,13 @@
 
               <table *ngIf="projectDisbursements.length > 0" class="table table-stripped">
                 <tr>
-                  <th>Dated</th>
+                  <th>Financial year</th>
                   <th>Amount</th>
                   <th>Currency</th>
                   <th>Exchange rate</th>
                 </tr>
                 <tr *ngFor="let disbursement of projectDisbursements">
-                  <td>{{convertDateToLongString(disbursement.dated)}}</td>
+                  <td>{{disbursement.year}}</td>
                   <td>{{disbursement.amount | number:0}}</td>
                   <td>{{disbursement.currency}}</td>
                   <td>{{disbursement.exchangeRate}}</td>

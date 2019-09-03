@@ -632,6 +632,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.importNewExcelDataUrl);
     }
 
+    getLatestExcelImportUrl() {
+        return (this.BASE_URL + urlsList.urls.importLatestDataUrl);
+    }
+
     getContactUrl() {
         return (this.BASE_URL + urlsList.urls.contactUrl);
     }

@@ -12,6 +12,8 @@ export class DataImportComponent implements OnInit {
   messageOld: string = null;
   progressNew: number = 0;
   messageNew: string = null;
+  progressLatest: number = 0;
+  messageLatest: string = null;
   isError: boolean = false;
   isInfo: boolean = false;
   @Output() public onUploadFinished = new EventEmitter();
@@ -54,6 +56,25 @@ export class DataImportComponent implements OnInit {
         this.progressNew = Math.round(100 * event.loaded / event.total);
       else if (event.type === HttpEventType.Response) {
         this.messageNew = 'File uploaded successfully';
+        this.onUploadFinished.emit(event.body);
+      }
+    });
+  }
+
+  uploadFileLatest(files){
+    if (files.length === 0) {
+      return;
+    }
+
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+
+    this.fileUploadService.uploadLatestExcelFile(formData).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress)
+        this.progressLatest = Math.round(100 * event.loaded / event.total);
+      else if (event.type === HttpEventType.Response) {
+        this.messageLatest = 'File uploaded successfully';
         this.onUploadFinished.emit(event.body);
       }
     });
