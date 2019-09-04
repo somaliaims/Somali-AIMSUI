@@ -104,6 +104,10 @@ html {
   .padding-top-20 {
     padding-top: 20px;
   }
+  
+  justify-left {
+    justify-content: left !important;
+  }
 
   .padding-5 {
     padding: 5px !important;

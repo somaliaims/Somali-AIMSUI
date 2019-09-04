@@ -11,15 +11,18 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
   styleUrls: ['./basic-data.component.css']
 })
 export class BasicDataComponent implements OnInit {
+  resourceTempId: number = 0;
   isProjectBtnDisabled: boolean = false;
   fundersSettings: any = [];
   implementersSettings: any = [];
+  newDocuments: any = [];
   entryForm: any = null;
   errorMessage: string = null;
   itemsToShowInDropdowns: number = 3;
 
   funderModel: any = { selectedFunders: [] };
   implementerModel: any = { selectedImplementers: [] };
+  documentModel: any = { document: null, documentUrl: null };
 
   @Input()
   projectId: number = 0;
@@ -47,8 +50,24 @@ export class BasicDataComponent implements OnInit {
   constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
-    this.funderModel.selectedFunders = this.projectFunders;
-    this.implementerModel.selectedImplementers = this.projectImplementers;
+    if (this.projectFunders.length > 0) {
+      this.projectFunders.forEach(f => {
+        this.funderModel.selectedFunders.push({
+          id : f.funderId,
+          organizationName: f.funder
+        });
+      });
+    }
+
+    if (this.projectImplementers.length > 0) {
+      this.projectImplementers.forEach(i => {
+        this.implementerModel.selectedImplementers.push({
+          id: i.implementerId,
+          organizationName: i.implementer
+        });
+      });
+    }
+    
     this.fundersSettings = {
       singleSelection: false,
       idField: 'id',
@@ -140,11 +159,53 @@ export class BasicDataComponent implements OnInit {
     this.projectService.addProjectImplementer(model).subscribe(
       data => {
         if (data) {
-
+          this.saveProjectDocuments();
+        } else {
+          this.blockUI.stop();
         }
-        this.blockUI.stop();
       }
     );
+  }
+
+  saveProjectDocuments() {
+    var newDocuments = this.projectDocuments.filter(d => d.id <= 0);
+    if (newDocuments.length > 0) {
+      var model = {
+        projectId: this.projectId,
+        documents: newDocuments
+      };
+
+      this.projectService.addProjectDocument(model).subscribe(
+        data => {
+          if (data) {
+          }
+          this.blockUI.stop();
+        }
+      );
+    } else {
+      this.blockUI.stop();
+    }
+  }
+
+  addResource() {
+    if (!this.documentModel.document) {
+      this.errorMessage = 'Resource name is required';
+      this.errorModal.openModal();
+      return false;
+    } else if (!this.documentModel.documentUrl) {
+      this.errorMessage = 'Resource url is required';
+      this.errorModal.openModal();
+      return false;
+    }
+
+    this.projectDocuments.push({
+      id: (--this.resourceTempId),
+      documentTitle: this.documentModel.document,
+      documentUrl: this.documentModel.documentUrl
+    });
+
+    this.documentModel.document = null;
+    this.documentModel.documentUrl = null;
   }
 
 

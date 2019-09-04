@@ -2,7 +2,7 @@
   <div class="row margin-top-10">
     <div class="col-lg-4 col-md-4">
       <div class="form-group form-inline">
-        <label class="col-sm-2 col-form-label" for="title">Name</label>
+        <label class="col-sm-2 col-form-label" for="title"><span class="float-left">Name</span></label>
         <input class="form-control col-sm-10" type="text" name="title" [(ngModel)]="projectData.title" #title="ngModel"
           id="title" required>
       </div>
@@ -68,7 +68,7 @@
   
     <div class="col-lg-4 col-md-4">
       <div class="form-group form-inline">
-        <label class="col-sm-4 col-form-label" for="fundingType">Funding type</label>
+        <label class="col-sm-4 col-form-label float-left" for="fundingType">Funding type</label>
         <select class="form-control col-sm-8" name="fundingTypeId" [(ngModel)]="projectData.fundingTypeId"
           #fundingTypeId="ngModel" id="fundingTypeId" required>
           <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
@@ -83,17 +83,24 @@
 
   <div class="row margin-top-10">
     <div class="col-lg-6 col-md-6">
-      <ng-multiselect-dropdown [placeholder]="'Select funders'" [data]="organizationsList"
-        [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
-        #selectedFunders="ngModel">
-      </ng-multiselect-dropdown>
+      <div class="form-group form-inline">
+        <label class="col-sm-1 col-form-label justify-left" for="funders">Funders</label>
+        <ng-multiselect-dropdown class="col-sm-11" [placeholder]="'Select funders'" [data]="organizationsList"
+          [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
+          #selectedFunders="ngModel">
+        </ng-multiselect-dropdown>
+      </div>
+  
     </div>
   
     <div class="col-lg-6 col-md-6">
-      <ng-multiselect-dropdown [placeholder]="'Select implementers'" [data]="organizationsList"
-        [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings" name="selectedImplementers"
-        #selectedImplementers="ngModel">
-      </ng-multiselect-dropdown>
+      <div class="form-group form-inline">
+        <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
+        <ng-multiselect-dropdown class="col-sm-10" [placeholder]="'Select implementers'" [data]="organizationsList"
+          [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings"
+          name="selectedImplementers" #selectedImplementers="ngModel">
+        </ng-multiselect-dropdown>
+      </div>
     </div>
   </div>
 
@@ -111,10 +118,50 @@
   </div>
 
   <div class="row">
-    <div class="col-lg-12 col-md-12 float-right">
-      <button class="btn btn-lg btn-info btn-sm text-uppercase"
-        type="submit">Save project data</button>
-    </div>
+    <table width="100%">
+      <tr>
+        <td width="10%" class="text-center">Resource name</td>
+        <td width="30%">
+          <input type="text" class="form-control" maxlength="50" name="document" [(ngModel)]="documentModel.document" #document="ngModel" />
+        </td>
+        <td width="10%" class="text-center">Link</td>
+        <td width="30%">
+          <input type="text" class="form-control" maxlength="50" name="documentUrl" [(ngModel)]="documentModel.documentUrl" #documentUrl="ngModel" />
+        </td>
+        <td width="10%">
+          <button type="button" class="btn btn-warning" (click)="addResource()">Add to list</button>
+        </td>
+        <td width="10%">
+          <button class="btn btn-info text-uppercase" type="submit">Save data</button>
+        </td>
+      </tr>
+    </table>
   </div>
+
+  <div class="row">
+    <table *ngIf="projectDocuments.length > 0" class="table table-striped small margin-top-5">
+      <thead>
+        <tr>
+          <th>Resource name</th>
+          <th>Link</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let document of projectDocuments">
+        <td>{{document.documentTitle}}</td>
+        <td>{{document.documentUrl}}</td>
+        <td *ngIf="document.id <= 0">
+          <a class="btn btn-warning" (click)="removeDocument(document.id)"><i class="fa fa-remove"></i></a>
+        </td>
+        <td *ngIf="document.id > 0">
+          <a class="btn btn-danger" (click)="deleteDocument(document.id)"><i class="fa fa-trash text-white"></i></a>
+        </td>
+      </tr>
+    </table>
+    <span *ngIf="projectDocuments.length == 0" class="text-info margin-top-20"><i>No resource links to show</i></span>
+  </div>
+  
 </form>
+
+<error-modal message={{errorMessage}}></error-modal>
 

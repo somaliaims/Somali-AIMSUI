@@ -23,7 +23,7 @@ export class DataEntryComponent implements OnInit {
   sectorTotalPercentage: number = 0;
   locationTotalPercentage: number = 0;
   currentTab: string = null;
-
+  isProjectLoading: boolean = true;
   permissions: any = {};
   fieldTypes: any = Settings.markerTypes;
 
@@ -109,6 +109,8 @@ export class DataEntryComponent implements OnInit {
       this.activeProjectId = parseInt(projectId);
       this.projectData.id = this.activeProjectId;
       this.loadUserProjects(this.activeProjectId);
+    } else {
+      this.isProjectLoading = false;
     }
     this.currentTab = this.tabConstants.BASIC;
   }
@@ -133,7 +135,6 @@ export class DataEntryComponent implements OnInit {
       result => {
         if (result && result.projectProfile) {
           var data = result.projectProfile;
-          //Setting project data
           console.log(data);
           this.projectData.title = data.title;
           this.projectData.description = data.description;
@@ -143,7 +144,6 @@ export class DataEntryComponent implements OnInit {
           this.projectData.projectCurrency = data.projectCurrency;
           this.projectData.fundingTypeId = data.fundingTypeId;
 
-          //Setting sectors data
           if (data.sectors && data.sectors.length > 0) {
             this.currentProjectSectors = data.sectors;
             this.sectorTotalPercentage = this.calculateSectorPercentage();
@@ -175,6 +175,7 @@ export class DataEntryComponent implements OnInit {
           }
         }
         setTimeout(() => {
+          this.isProjectLoading = false;
           this.blockUI.stop();
         }, 1000);
       }
