@@ -47,7 +47,8 @@ export class BasicDataComponent implements OnInit {
   constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
-
+    this.funderModel.selectedFunders = this.projectFunders;
+    this.implementerModel.selectedImplementers = this.projectImplementers;
     this.fundersSettings = {
       singleSelection: false,
       idField: 'id',
@@ -103,10 +104,11 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.projectId = data;
-            var message = 'New project' + Messages.NEW_RECORD;
             localStorage.setItem('active-project', data);
+            this.saveProjectFunders();
+          } else {
+            this.blockUI.stop();
           }
-          this.blockUI.stop();
         }
       );
     }
@@ -120,7 +122,11 @@ export class BasicDataComponent implements OnInit {
     };
     this.projectService.addProjectFunder(model).subscribe(
       data => {
-
+        if (data) {
+          this.saveProjectImplementers();
+        } else {
+          this.blockUI.stop();
+        }
       }
     );
   }
@@ -133,7 +139,10 @@ export class BasicDataComponent implements OnInit {
     };
     this.projectService.addProjectImplementer(model).subscribe(
       data => {
-        
+        if (data) {
+
+        }
+        this.blockUI.stop();
       }
     );
   }
