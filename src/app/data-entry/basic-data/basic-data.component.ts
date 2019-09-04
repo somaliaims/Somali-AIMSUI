@@ -113,8 +113,10 @@ export class BasicDataComponent implements OnInit {
       this.projectService.updateProject(this.projectId, this.projectData).subscribe(
         data => {
           if (data) {
-          } 
-          this.blockUI.stop();
+            this.saveProjectFunders();
+          } else {
+            this.blockUI.stop();
+          }
         }
       );
     } else {
@@ -178,8 +180,10 @@ export class BasicDataComponent implements OnInit {
       this.projectService.addProjectDocument(model).subscribe(
         data => {
           if (data) {
+            this.getProjectDocuments();
+          } else {
+            this.blockUI.stop();
           }
-          this.blockUI.stop();
         }
       );
     } else {
@@ -198,15 +202,44 @@ export class BasicDataComponent implements OnInit {
       return false;
     }
 
-    this.projectDocuments.push({
+    this.projectDocuments.unshift({
       id: (--this.resourceTempId),
       documentTitle: this.documentModel.document,
       documentUrl: this.documentModel.documentUrl
     });
-
     this.documentModel.document = null;
     this.documentModel.documentUrl = null;
   }
 
+  removeResource(id) {
+    if (id) {
+      this.projectDocuments = this.projectDocuments.filter(d => d.id != id);
+    }
+  }
+
+  getProjectDocuments() {
+      this.projectService.getProjectDocuments(this.projectId.toString()).subscribe(
+        data => {
+          if (data) {
+            this.projectDocuments = data;
+          }
+          this.blockUI.stop();
+        }
+      );
+  }
+
+  deleteResource(id) {
+    if (id) {
+      this.blockUI.start('Deleting resource');
+      this.projectService.deleteProjectDocument(id).subscribe(
+        data => {
+          if (data) {
+            this.projectDocuments = this.projectDocuments.filter(d => d.id != id);
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
 
 }
