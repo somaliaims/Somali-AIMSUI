@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { StoreService } from 'src/app/services/store-service';
 
 @Component({
   selector: 'financials',
@@ -14,26 +15,19 @@ export class FinancialsComponent implements OnInit {
   @Input()
   projectValue: number = 0;
   @Input()
-  startingYear: number = 0;
-  @Input()
-  endingYear: number = 0;
+  projectDisbursements: any = [];
 
   currentYear: any = 0;
   yearList: any = [];
 
   disbursementModel: any = { currency: null, projectValue: 0 };
-  constructor() { }
+  constructor(private storeService: StoreService) { }
 
   ngOnInit() {
+    this.currentYear = this.storeService.getCurrentYear();
     this.disbursementModel.currency = this.projectCurrency;
     this.disbursementModel.projectValue = this.projectValue;
-    this.setYearsList();
   }
 
-  setYearsList() {
-    for(var i = this.startingYear; i < this.endingYear; i++) {
-      this.yearList.push(i);
-    }
-  }
 
 }

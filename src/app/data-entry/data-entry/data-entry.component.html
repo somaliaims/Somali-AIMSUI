@@ -36,8 +36,8 @@
 
     <div *ngIf="!isProjectLoading && currentTab == tabConstants.FINANCIALS" class="col-lg-12 col-md-12">
         <financials [projectCurrency]="projectData.projectCurrency" [projectValue]="projectData.projectValue" 
-          [currenciesList]="currenciesList" [startingYear]="projectData.startingFinancialYear"
-          [endingYear]="projectData.endingFinancialYear">
+          [currenciesList]="currenciesList" [projectDisbursements]="currentProjectDisbursements"
+          [startingYear]="projectData.startingFinancialYear" [endingYear]="projectData.endingFinancialYear">
         </financials>
       </div>
 
