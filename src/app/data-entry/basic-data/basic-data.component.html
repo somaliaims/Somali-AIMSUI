@@ -126,7 +126,7 @@
         </td>
         <td width="10%" class="text-center">Link</td>
         <td width="30%">
-          <input type="text" class="form-control" maxlength="50" name="documentUrl" [(ngModel)]="documentModel.documentUrl" #documentUrl="ngModel" />
+          <input type="url" class="form-control" maxlength="255" name="documentUrl" [(ngModel)]="documentModel.documentUrl" #documentUrl="ngModel" />
         </td>
         <td width="10%">
           <button type="button" class="btn btn-warning" (click)="addResource()">Add to list</button>
