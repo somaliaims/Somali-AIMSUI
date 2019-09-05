@@ -1,3 +1,31 @@
-<p>
-  financials works!
-</p>
+<div class="card padding-20 margin-top-5">
+  <div class="container">
+    <form class="form-signin" (ngSubmit)="financialsForm.form.valid && saveFinancials(financialsForm)"
+      #financialsForm="ngForm">
+
+      <div class="col-offset-2 col-lg-8 col-md-8">
+        <div class="form-group form-inline"> 
+          <label class="col-md-3">Currency</label>
+          <select class="form-control col-md-9" name="currency" [(ngModel)]="disbursementModel.currency"
+                #currency="ngModel" id="currency" required>
+                <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}
+                </option>
+              </select>
+        </div>
+        <div class="form-group form-inline"> 
+          <label class="col-md-3">Project value</label>
+            <input class="form-control col-md-9" type="text" [readonly]="true" name="projectValue" [(ngModel)]="disbursementModel.projectValue"
+            #projectValue="ngModel" id="projectValue" required />
+        </div>
+
+        <div class="form-group margin-top-30">
+        </div>
+        
+        <div class="form-group form-inline">
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

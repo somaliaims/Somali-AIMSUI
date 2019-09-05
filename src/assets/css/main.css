@@ -104,9 +104,17 @@ html {
   .padding-top-20 {
     padding-top: 20px;
   }
+
+  .padding-20 {
+    padding: 20px !important;
+  }
+
+  .margin-5 {
+    margin: 5px !important;
+  }
   
   justify-left {
-    justify-content: left !important;
+    justify-content: flex-end !important;
   }
 
   .padding-5 {
