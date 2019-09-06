@@ -67,7 +67,7 @@ export class FinancialsComponent implements OnInit {
           var newDisbursement = {
             year: yr,
             currency: this.projectCurrency,
-            exchangeRate: 0,
+            exchangeRate: 1,
             disbursementType: 1,
             amount: 0
           };
@@ -78,7 +78,7 @@ export class FinancialsComponent implements OnInit {
           var newDisbursement = {
             year: yr,
             currency: this.projectCurrency,
-            exchangeRate: 0,
+            exchangeRate: 1,
             disbursementType: 2,
             amount: 0
           };

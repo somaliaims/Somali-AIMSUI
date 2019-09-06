@@ -28,7 +28,7 @@
               <span *ngIf="disbursement.disbursementType == 1">Actual</span>
               <span *ngIf="disbursement.disbursementType == 2">Planned</span>
             </label>
-            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="13" [disabled]="disbursement.year < currentYear" name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"  class="form-control col-md-8" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
+            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" [disabled]="disbursement.year < currentYear" name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"  class="form-control col-md-8" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
           </div>
   
           <div class="form-group"> 
