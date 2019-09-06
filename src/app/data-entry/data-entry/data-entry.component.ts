@@ -10,6 +10,8 @@ import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { OrganizationService } from 'src/app/services/organization-service';
 import { FundingTypeService } from 'src/app/services/funding-type.service';
 import { CurrencyService } from 'src/app/services/currency.service';
+import { SectorTypeService } from 'src/app/services/sector-types.service';
+import { SectorService } from 'src/app/services/sector.service';
 
 @Component({
   selector: 'app-data-entry',
@@ -19,6 +21,7 @@ import { CurrencyService } from 'src/app/services/currency.service';
 export class DataEntryComponent implements OnInit {
   requestNo: number = 0;
   activeProjectId: number = 0;
+  defaultSectorTypeId: number = 0;
   isForEdit: boolean = false;
   sectorTotalPercentage: number = 0;
   locationTotalPercentage: number = 0;
@@ -31,8 +34,10 @@ export class DataEntryComponent implements OnInit {
   financialYears: any = [];
   organizationsList: any = [];
   fundingTypesList: any = [];
+  sectorTypesList: any = [];
   selectedFunders: any = [];
   currenciesList: any = [];
+  sectorsList: any = [];
   selectedImplementers: any = [];
 
   currentProjectFunders: any = [];
@@ -88,7 +93,9 @@ export class DataEntryComponent implements OnInit {
     private router: Router, private yearService: FinancialYearService,
     private orgService: OrganizationService,
     private fundingTypeService: FundingTypeService,
-    private currencyService: CurrencyService) { }
+    private currencyService: CurrencyService,
+    private sectorTypeService: SectorTypeService,
+    private sectorService: SectorService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -100,6 +107,8 @@ export class DataEntryComponent implements OnInit {
     this.getOrganizationsList();
     this.getCurrenciesList();
     this.getFundingTypes();
+    this.getSectorTypes();
+    this.getSectors();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
 
@@ -207,6 +216,30 @@ export class DataEntryComponent implements OnInit {
       data => {
         if (data) {
           this.organizationsList = data;
+        }
+      }
+    );
+  }
+
+  getSectorTypes() {
+    this.sectorTypeService.getSectorTypesList().subscribe(
+      data => {
+        if (data) {
+          this.sectorTypesList = data;
+          var defaultSectorType = this.sectorTypesList.filter(s => s.isPrimary == 1);
+          if (defaultSectorType.length > 0) {
+            this.defaultSectorTypeId = defaultSectorType[0].id;
+          }
+        }
+      }
+    );
+  }
+
+  getSectors() {
+    this.sectorService.getSectorsList().subscribe(
+      data => {
+        if (data) {
+          this.sectorsList = data;
         }
       }
     );
