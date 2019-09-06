@@ -140,7 +140,8 @@ export class FinancialsComponent implements OnInit {
           }
         );
       }
-
     }
   }
+
+  
 }
