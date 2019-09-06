@@ -16,6 +16,10 @@ export class FinancialsComponent implements OnInit {
   projectValue: number = 0;
   @Input()
   projectDisbursements: any = [];
+  @Input()
+  startingYear: number = 0;
+  @Input()
+  endingYear: number = 0;
 
   currentYear: any = 0;
   yearList: any = [];
@@ -27,7 +31,35 @@ export class FinancialsComponent implements OnInit {
     this.currentYear = this.storeService.getCurrentYear();
     this.disbursementModel.currency = this.projectCurrency;
     this.disbursementModel.projectValue = this.projectValue;
+    this.setDisbursementsData();
   }
 
+  setDisbursementsData() {
+    for (var yr = this.startingYear; yr <= this.endingYear; yr++) {
+      var data = this.projectDisbursements.filter(d => d.year == yr);
+      if (data.length == 0) {
 
+        if (yr <= this.currentYear) {
+          var newDisbursement = {
+            year: yr,
+            currency: this.projectCurrency,
+            exchangeRate: 0,
+            disbursementType: 1,
+            Amount: 0
+          };
+          this.projectDisbursements.push(newDisbursement);
+        }
+
+        if (yr >= this.currentYear)
+          var newDisbursement = {
+            year: yr,
+            currency: this.projectCurrency,
+            exchangeRate: 0,
+            disbursementType: 2,
+            Amount: 0
+          };
+        this.projectDisbursements.push(newDisbursement);
+      }
+    }
+  }
 }
