@@ -4,6 +4,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Messages } from 'src/app/config/messages';
 import { ProjectService } from 'src/app/services/project.service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
+import { StoreService } from 'src/app/services/store-service';
 
 @Component({
   selector: 'basic-data',
@@ -45,11 +46,21 @@ export class BasicDataComponent implements OnInit {
 
   descriptionLimit: number = Settings.descriptionLongLimit;
   descriptionLimitLeft: number = Settings.descriptionLongLimit;
+  requestNo: number = 0;
 
   @BlockUI() blockUI: NgBlockUI;
-  constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent) { }
+  constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent,
+    private storeService: StoreService) { }
 
   ngOnInit() {
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.errorModal.openModal();
+      }
+    });
+
     if (this.projectFunders.length > 0) {
       this.projectFunders.forEach(f => {
         this.funderModel.selectedFunders.push({

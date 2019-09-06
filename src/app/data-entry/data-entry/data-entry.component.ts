@@ -66,7 +66,7 @@ export class DataEntryComponent implements OnInit {
   };
 
   projectData = { id: 0, title: null, fundingTypeId: null, startingFinancialYear: null, endingFinancialYear: null, 
-    description: null, projectValue: null, projectCurrency: null };
+    description: null, projectValue: null, projectCurrency: null, exchangeRate: 0 };
 
   displayTabs: any = [
     { visible: true, identity: 'basic' },
