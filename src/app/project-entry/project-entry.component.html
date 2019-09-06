@@ -336,8 +336,7 @@
                 </div>
               </div>
 
-              <div
-                *ngIf="(selectedSectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId"
+              <div *ngIf="(selectedSectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId"
                 class="form-group">
                 <label for="sectorName">{{defaultSectorType}}</label>
                 <select class="form-control" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"

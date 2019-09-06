@@ -1,31 +1,71 @@
 <block-ui>
 
-  <div class="col-lg-3 col-md-3">
+  <div class="col-lg-12 col-md-12">
     <div class="card padding-20 margin-top-5">
       <form class="form-signin" (ngSubmit)="saveProjectSectors(sectorsForm)" #sectorsForm="ngForm">
 
-        <div class="form-group form-inline">
-          <label class="col-md-1">Sector type</label>
-          <select class="form-control col-md-2" name="sectorType" [(ngModel)]="sectorModel.sectorTypeId"
-            #sectorTypeId="ngModel" required>
-            <option *ngFor="let type of sectorTypesList" value="type.id">{{type.typeName}}</option>
-          </select>
+        <div class="row">
+
+            <div class="form-group form-inline col-md-3 col-lg-3">
+                <label class="col-md-3">Sector type</label>
+                <select class="form-control col-md-9" name="sectorType" (change)="getTypeSectorsList()"
+                  [(ngModel)]="sectorModel.sectorTypeId" #sectorTypeId="ngModel" required>
+                  <option *ngFor="let type of sectorTypesList" value="type.id">{{type.typeName}}</option>
+                </select>
+              </div>
+      
+              <div class="form-group form-inline col-md-3 col-lg-3">
+                <label class="col-md-3">Sector</label>
+                <select class="form-control col-md-9" name="sectorId" [(ngModel)]="sectorModel.sectorId" #sectorId="ngModel"
+                  required>
+                  <option *ngFor="let sector of typeSectorsList" value="sector.id">{{sector.sectorName}}</option>
+                </select>
+              </div>
+      
+              <div *ngIf="(selectedSectorId || sectorModel.sectorName) && sectorModel.sectorTypeId != primarySectorTypeId"
+                class="form-group form-inline col-md-3 col-lg-3">
+                <label class="col-md-3" for="sectorName">{{defaultSectorType}}</label>
+                <select class="form-control col-md-9" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
+                  #mappingId="ngModel" required>
+                  <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
+                </select>
+                <div class="margin-top-5" *ngIf="mappingsCount > 0">
+                  <span *ngIf="showMappingManual" class="float-left text-success">
+                    {{mappingsCount}} mapping/s found
+                  </span>
+                  <span *ngIf="showMappingAuto" class="float-left text-success">
+                    Map manually
+                  </span>
+                  &nbsp;
+                  <span *ngIf="showMappingManual" class="float-right">
+                    <button type="button" class="btn btn-info btn-sm" (click)="setManualMappings()">Map manual</button>
+                  </span>
+                  <span *ngIf="showMappingAuto" class="float-right">
+                    <button type="button" class="btn btn-warning btn-sm" (click)="setAutomaticMappings()">Map
+                      auto</button>
+                  </span>
+                </div>
+                <div *ngIf="mappingsCount == 0" class="text-warning"><i>No mappings found, map sector manually</i></div>
+                <div *ngIf="sectorsForm.submitted" [hidden]="mappingId.valid" class="alert alert-danger">
+                  Mapping for sector is required
+                </div>
+              </div>
+      
+              <div class="form-group form-inline col-md-3 col-lg-3">
+                <label class="col-md-6" for="fundsPercentage">Percentage</label>
+                <input type="number" class="form-control col-md-6" id="fundsPercentage"
+                  [(ngModel)]="sectorModel.fundsPercentage" name="fundsPercentage" #fundsPercentage="ngModel" min="1"
+                  max="100" required>
+                <div *ngIf="sectorsForm.submitted" [hidden]="fundsPercentage.value > 0" class="alert alert-danger">
+                  Valid values for funds percentage are 1 - 100
+                </div>
+              </div>
+      
+
         </div>
-
-        <div class="form-group form-inline">
-            <label class="col-md-1">Sector</label>
-            <select class="form-control col-md-2" name="sectorId" [(ngModel)]="sectorModel.sectorId"
-              #sectorId="ngModel" required>
-              <option *ngFor="let sector of typeSectorsList" value="sector.id">{{sector.sectorName}}</option>
-            </select>
-          </div>
-
+        
       </form>
     </div>
   </div>
-  <div class="col-lg-6 col-md-6">
-  
-  </div>
-  
-  
-  </block-ui>
+
+</block-ui>

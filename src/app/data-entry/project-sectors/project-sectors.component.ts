@@ -3,7 +3,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { SectorService } from 'src/app/services/sector.service';
 
 @Component({
-  selector: 'app-project-sectors',
+  selector: 'project-sectors',
   templateUrl: './project-sectors.component.html',
   styleUrls: ['./project-sectors.component.css']
 })
@@ -18,7 +18,7 @@ export class ProjectSectorsComponent implements OnInit {
   @Input()
   defaultSectorsList: any = [];
   @Input()
-  defaultSectorId: number = 0;
+  defaultSectorTypeId: number = 0;
 
   typeSectorsList: any = [];
   sectorMappings: any = [];
@@ -26,7 +26,7 @@ export class ProjectSectorsComponent implements OnInit {
   mappingsCount: number = 0;
   showMappingManual: boolean = false;
   showMappingAuto: boolean = false;
-  sectorModel: any = { sectorTypeId: null, sectorId: null, sectorName: null, percentage: 0 };
+  sectorModel: any = { sectorTypeId: null, sectorId: null, sectorName: null, mappingId: null, fundsPercentage: 0 };
 
   constructor(private projectService: ProjectService, private sectorService: SectorService) { }
 
@@ -71,5 +71,10 @@ export class ProjectSectorsComponent implements OnInit {
     this.showMappingAuto = true;
   }
 
+  setAutomaticMappings() {
+    this.sectorMappings = this.mappedSectorsList;
+    this.showMappingAuto = false;
+    this.showMappingManual = true;
+  }
 
 }

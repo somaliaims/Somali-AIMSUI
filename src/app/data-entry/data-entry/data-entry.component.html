@@ -42,5 +42,12 @@
         </financials>
       </div>
 
+      <div *ngIf="!isProjectLoading && currentTab == tabConstants.SECTORS" class="col-lg-12 col-md-12">
+          <project-sectors [sectorTypesList]="sectorTypesList" [sectorsList]="sectorsList" 
+            [defaultSectorsList]="defaultSectorsList" [defaultSectorTypeId]="defaultSectorTypeId" 
+            [projectId]="activeProjectId">
+          </project-sectors>
+        </div>
+
   </block-ui>
 </div>
