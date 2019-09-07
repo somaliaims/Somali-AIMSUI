@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
 import { SectorService } from 'src/app/services/sector.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { StoreService } from 'src/app/services/store-service';
+import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
+import { Messages } from 'src/app/config/messages';
 
 @Component({
   selector: 'project-sectors',
@@ -17,7 +20,7 @@ export class ProjectSectorsComponent implements OnInit {
   @Input()
   sectorsList: any = [];
   @Input()
-  projectSectorsList: any = [];
+  currentProjectSectors: any = [];
   @Input()
   defaultSectorsList: any = [];
   @Input()
@@ -28,21 +31,32 @@ export class ProjectSectorsComponent implements OnInit {
   @Input()
   locationsList: any = [];
   @Input()
-  projectLocationsList: any = [];
+  currentProjectLocations: any = [];
 
   typeSectorsList: any = [];
   sectorMappings: any = [];
   mappedSectorsList: any = [];
   newProjectSectors: any = [];
   mappingsCount: number = 0;
+  requestNo: number = 0;
+  errorMessage: string = null;
   showMappingManual: boolean = false;
   showMappingAuto: boolean = false;
-  sectorModel: any = { sectorTypeId: null, sectorId: null, sectorName: null, mappingId: null, fundsPercentage: null };
+  sectorModel: any = { sectorTypeId: null, sectorName: null, sectorId: null, mappingId: null, fundsPercentage: null, saved: false };
+  locationModel: any = { locationId: null, fundsPercentage: null };
+  
   @BlockUI() blockUI: NgBlockUI;
-
-  constructor(private projectService: ProjectService, private sectorService: SectorService) { }
+  constructor(private projectService: ProjectService, private sectorService: SectorService,
+    private storeService: StoreService, private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.errorModal.openModal();
+      }
+    });
   }
 
   getTypeSectorsList() {
@@ -76,7 +90,6 @@ export class ProjectSectorsComponent implements OnInit {
             this.mappingsCount = 0;
             this.sectorMappings = this.defaultSectorsList;
           }
-
           this.blockUI.stop();
         }
       );
@@ -109,6 +122,32 @@ export class ProjectSectorsComponent implements OnInit {
     }
   }
 
+  addSector(frm: any) {
+    var sectorPercentage = this.sectorModel.fundsPercentage + this.calculateSectorPercentage();
+    if (sectorPercentage > 100) {
+      this.errorMessage = Messages.INVALID_PERCENTAGE;
+      this.errorModal.openModal();
+      return false;
+    }
+    var mappedSector = null;
+    var findSectorId = (this.sectorModel.sectorTypeId == this.defaultSectorTypeId) ?
+      this.sectorModel.sectorId : this.sectorModel.mappingId;
+
+    mappedSector = this.sectorsList.filter(s => s.id == findSectorId);
+    if (mappedSector.length > 0) {
+      this.sectorModel.sectorName = mappedSector[0].sectorName;
+    }
+    this.currentProjectSectors.push(this.sectorModel);
+    this.sectorModel = { sectorTypeId: null, sectorId: null, mappingId: null, saved: false };
+    frm.resetForm();
+  }
+
+  addLocation(frm: any) {
+    this.currentProjectLocations.push(this.locationModel);
+    this.locationModel = { locationId: null, fundsPercentage: null, saved: false };
+    frm.resetForm();
+  }
+
   setManualMappings() {
     this.sectorMappings = this.defaultSectorsList;
     this.showMappingManual = false;
@@ -119,6 +158,33 @@ export class ProjectSectorsComponent implements OnInit {
     this.sectorMappings = this.mappedSectorsList;
     this.showMappingAuto = false;
     this.showMappingManual = true;
+  }
+
+  removeProjectSector(id) {
+    this.currentProjectSectors = this.currentProjectSectors.filter(s => s.sectorId != id);
+  }
+
+  deleteProjectSector(sectorId) {
+    if (sectorId && this.projectId) {
+      this.blockUI.start('Removing sector...');
+      this.projectService.deleteProjectSector(this.projectId.toString(), sectorId).subscribe(
+        data => {
+          if (data) {
+            this.currentProjectSectors = this.currentProjectSectors.filter(s => s.sectorId != sectorId);
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  areUnSavedSectors() {
+    return this.currentProjectSectors.filter(s => s.saved == false).length > 0 ? true : false;
+  }
+
+  calculateSectorPercentage() {
+    var percentageList = this.currentProjectSectors.map(s => parseInt(s.fundsPercentage));
+    return percentageList.reduce(this.storeService.sumValues, 0);
   }
 
 }

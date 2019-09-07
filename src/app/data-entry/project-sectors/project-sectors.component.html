@@ -1,101 +1,149 @@
 <block-ui>
 
-    <div class="box">
-      <form class="form-signin" (ngSubmit)="saveProjectSectors(sectorsForm)" #sectorsForm="ngForm">
-        
-        <div class="row"> 
+  <div class="box">
+    <div class="row">
+
+      <div class="col-md-6 col-lg-6">
+        <form class="form-signin" (ngSubmit)="sectorsForm.form.valid && addSector(sectorsForm)" #sectorsForm="ngForm">
+          <h6>Project sectors</h6>
+          <div class="row">
+            <div class="form-group form-inline col-md-6 col-lg-6">
+              <select class="form-control col-md-12" name="sectorType" (change)="getTypeSectorsList()"
+                [(ngModel)]="sectorModel.sectorTypeId" #sectorTypeId="ngModel" required>
+                <option value="null">--Sector type--</option>
+                <option *ngFor="let type of sectorTypesList" [value]="type.id">{{type.typeName}}</option>
+              </select>
+              <div *ngIf="sectorsForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
+                Sector type is required
+              </div>
+            </div>
+
+            <div class="form-group form-inline col-md-6 col-lg-6">
+              <select class="form-control col-md-12" name="sectorId" [(ngModel)]="sectorModel.sectorId"
+                #sectorId="ngModel" (change)="getSectorMappings()" required>
+                <option value="null">--Sector--</option>
+                <option *ngFor="let sector of typeSectorsList" [value]="sector.id">{{sector.sectorName}}</option>
+              </select>
+              <div *ngIf="sectorsForm.submitted" [hidden]="sectorId.valid" class="alert alert-danger">
+                Sector is required
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)"
+              class="form-group form-inline col-md-6 col-lg-6">
+              <select class="form-control col-md-12" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
+                #mappingId="ngModel" required>
+                <option value="null">--{{defaultSectorType}}--</option>
+                <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
+              </select>
+              <span *ngIf="mappingsCount > 0">
+                <span *ngIf="showMappingManual" class="float-left text-success small">
+                  {{mappingsCount}} mapping/s found
+                </span>
+                <span *ngIf="showMappingAuto" class="float-left text-success small">
+                  Map manually
+                </span>
+                &nbsp;
+                <span *ngIf="showMappingManual" class="float-right">
+                  <button type="button" class="btn btn-info btn-sm" (click)="setManualMappings()">Map manual</button>
+                </span>
+                <span *ngIf="showMappingAuto" class="float-right">
+                  <button type="button" class="btn btn-warning btn-sm" (click)="setAutomaticMappings()">Map
+                    auto</button>
+                </span>
+              </span>
+              <div *ngIf="mappingsCount == 0" class="text-warning small"><i>No mappings found</i></div>
+              <div *ngIf="sectorsForm.submitted" [hidden]="mappingId.valid" class="alert alert-danger">
+                Mapping is required
+              </div>
+            </div>
 
             <div class="col-md-6 col-lg-6">
-                <h6>Project sectors</h5>
-                <div class="row"> 
-                    <div class="form-group form-inline col-md-6 col-lg-6">
-                        <select class="form-control col-md-12" name="sectorType" (change)="getTypeSectorsList()"
-                          [(ngModel)]="sectorModel.sectorTypeId" #sectorTypeId="ngModel" required>
-                          <option value="null">--Sector type--</option>
-                          <option *ngFor="let type of sectorTypesList" [value]="type.id">{{type.typeName}}</option>
-                        </select>
-                      </div>
-              
-                      <div class="form-group form-inline col-md-6 col-lg-6">
-                        <select class="form-control col-md-12" name="sectorId" [(ngModel)]="sectorModel.sectorId" #sectorId="ngModel"
-                         (change)="getSectorMappings()"  required>
-                          <option value="null">--Sector--</option>
-                          <option *ngFor="let sector of typeSectorsList" [value]="sector.id">{{sector.sectorName}}</option>
-                        </select>
-                      </div>
-                </div>
-      
-                <div class="row"> 
-                    <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)"
-                    class="form-group form-inline col-md-6 col-lg-6">
-                    <select class="form-control col-md-12" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
-                      #mappingId="ngModel" required>
-                      <option value="null">--{{defaultSectorType}}--</option>
-                      <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
-                    </select>
-                    <span *ngIf="mappingsCount > 0">
-                      <span *ngIf="showMappingManual" class="float-left text-success small">
-                        {{mappingsCount}} mapping/s found
-                      </span>
-                      <span *ngIf="showMappingAuto" class="float-left text-success small">
-                        Map manually
-                      </span>
-                      &nbsp;
-                      <span *ngIf="showMappingManual" class="float-right">
-                        <button type="button" class="btn btn-info btn-sm" (click)="setManualMappings()">Map manual</button>
-                      </span>
-                      <span *ngIf="showMappingAuto" class="float-right">
-                        <button type="button" class="btn btn-warning btn-sm" (click)="setAutomaticMappings()">Map
-                          auto</button>
-                      </span>
-                    </span>
-                    <div *ngIf="mappingsCount == 0" class="text-warning small"><i>No mappings found</i></div>
-                    <div *ngIf="sectorsForm.submitted" [hidden]="mappingId.valid" class="alert alert-danger">
-                      Mapping is required
-                    </div>
-                  </div>
+              <div class="input-group">
+                <input  type="number" class="form-control col-md-10" id="fundsPercentage"
+                  [(ngModel)]="sectorModel.fundsPercentage" placeholder="Percentage" name="fundsPercentage"
+                  #fundsPercentage="ngModel" min="1" max="100" required>
+                <button [class.disable]="calculateSectorPercentage() >= 100" class="btn btn-sm btn-warning btn-outline" type="submit">
+                  Add sector
+                </button>
+              </div>
+              <div *ngIf="sectorsForm.submitted" [hidden]="fundsPercentage.value > 0" class="alert alert-danger">
+                Valid values for funds percentage are 1 - 100
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="col-lg-12 col-md-12"> 
+          <div class="row"> 
+            <span *ngIf="currentProjectSectors.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>: {{calculateSectorPercentage()}}%</span>
+            <span class="col-md-6 text-right"><button *ngIf="areUnSavedSectors()" class="btn btn-info btn-sm">Save sectors</button></span>
+          </div>
           
-                  <div class="col-md-6 col-lg-6">
-                    <div class="input-group">
-                      <input type="number" class="form-control col-md-10" id="fundsPercentage" [(ngModel)]="sectorModel.fundsPercentage"
-                        placeholder="Percentage" name="fundsPercentage" #fundsPercentage="ngModel" min="1" max="100" required>
-                      <button class="btn btn-sm btn-warning btn-outline" type="button">
-                        Add sector
-                      </button>
-                    </div>
-                    <div *ngIf="sectorsForm.submitted" [hidden]="fundsPercentage.value > 0" class="alert alert-danger">
-                      Valid values for funds percentage are 1 - 100
-                    </div>
-                  </div>
-                </div>
-              </div>
-      
-              <div class="col-md-6 col-lg-6"> 
-                  <h6>Project locations</h5>
-                  <div class="row"> 
-                      <div class="form-group form-inline col-md-6 col-lg-6">
-                          <select class="form-control col-md-12" name="sectorType" (change)="getTypeSectorsList()"
-                            [(ngModel)]="sectorModel.sectorTypeId" #sectorTypeId="ngModel" required>
-                            <option value="null">--Sector type--</option>
-                            <option *ngFor="let type of sectorTypesList" [value]="type.id">{{type.typeName}}</option>
-                          </select>
-                        </div>
-                
-                        <div class="form-group form-inline col-md-6 col-lg-6">
-                          <select class="form-control col-md-12" name="sectorId" [(ngModel)]="sectorModel.sectorId" #sectorId="ngModel"
-                           (change)="getSectorMappings()"  required>
-                            <option value="null">--Sector--</option>
-                            <option *ngFor="let sector of typeSectorsList" [value]="sector.id">{{sector.sectorName}}</option>
-                          </select>
-                        </div>
-                  </div>
-              </div>
-
+          <table *ngIf="currentProjectSectors.length > 0" class="table table-striped small margin-top-5">
+            <thead>
+              <tr>
+                <th>Sector</th>
+                <th class="text-center">Percentage</th>
+                <th class="text-center">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sector of currentProjectSectors">
+                <td>{{sector.sectorName}}</td>
+                <td class="text-center">{{sector.fundsPercentage}}</td>
+                <td class="text-center">
+                  <button *ngIf="sector.saved" title="Delete sector" (click)="deleteProjectSector(sector.sectorId)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                  <button *ngIf="!sector.saved" title="Remove sector" (click)="removeProjectSector(sector.sectorId)" class="btn btn-warning"><i class="fa fa-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        
-      </form>
+      <div class="col-md-6 col-lg-6">
+        <form class="form-signin" (ngSubmit)="locationsForm.form.valid && saveProjectLocation(locationsForm)"
+          #locationsForm="ngForm">
+          <h6>Project locations</h6>
+          <div class="row">
 
+            <div class="form-group form-inline col-md-6 col-lg-6">
+              <select class="form-control col-md-12" name="locationId" [(ngModel)]="locationModel.locationId"
+                #locationId="ngModel" required>
+                <option value="null">--Location--</option>
+                <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
+              </select>
+              <div *ngIf="locationsForm.submitted" [hidden]="locationId.valid" class="alert alert-danger">
+                Location is required
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6">
+              <div class="input-group">
+                <input type="number" class="form-control col-md-10" id="lfundsPercentage"
+                  [(ngModel)]="locationModel.fundsPercentage" placeholder="Percentage" name="lfundsPercentage"
+                  #lfundsPercentage="ngModel" min="1" max="100" required>
+                <button class="btn btn-sm btn-warning btn-outline" type="button">
+                  Add location
+                </button>
+              </div>
+              <div *ngIf="locationsForm.submitted" [hidden]="fundsPercentage.value > 0" class="alert alert-danger">
+                Valid values for funds percentage are 1 - 100
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
     </div>
 
+  </div>
+
 </block-ui>
+
+<error-modal message={{errorMessage}}></error-modal>
