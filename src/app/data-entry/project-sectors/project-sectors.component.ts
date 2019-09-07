@@ -19,14 +19,17 @@ export class ProjectSectorsComponent implements OnInit {
   defaultSectorsList: any = [];
   @Input()
   defaultSectorTypeId: number = 0;
+  @Input()
+  defaultSectorType: string = null;
 
   typeSectorsList: any = [];
   sectorMappings: any = [];
   mappedSectorsList: any = [];
+  newProjectSectors: any = [];
   mappingsCount: number = 0;
   showMappingManual: boolean = false;
   showMappingAuto: boolean = false;
-  sectorModel: any = { sectorTypeId: null, sectorId: null, sectorName: null, mappingId: null, fundsPercentage: 0 };
+  sectorModel: any = { sectorTypeId: null, sectorId: null, sectorName: null, mappingId: null, fundsPercentage: null };
 
   constructor(private projectService: ProjectService, private sectorService: SectorService) { }
 
@@ -34,6 +37,7 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   getTypeSectorsList() {
+    this.sectorModel.sectorId = null;
     if (!this.sectorModel.sectorTypeId) {
       this.typeSectorsList = [];
     } else {

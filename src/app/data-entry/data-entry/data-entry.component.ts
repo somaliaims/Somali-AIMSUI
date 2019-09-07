@@ -21,6 +21,7 @@ import { SectorService } from 'src/app/services/sector.service';
 export class DataEntryComponent implements OnInit {
   requestNo: number = 0;
   activeProjectId: number = 0;
+  defaultSectorType: string = null;
   defaultSectorTypeId: number = 0;
   isForEdit: boolean = false;
   sectorTotalPercentage: number = 0;
@@ -229,6 +230,7 @@ export class DataEntryComponent implements OnInit {
           var defaultSectorType = this.sectorTypesList.filter(s => s.isPrimary == 1);
           if (defaultSectorType.length > 0) {
             this.defaultSectorTypeId = defaultSectorType[0].id;
+            this.defaultSectorType = defaultSectorType[0].typeName;
           }
         }
       }

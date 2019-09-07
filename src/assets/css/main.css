@@ -112,6 +112,18 @@ html {
   .margin-5 {
     margin: 5px !important;
   }
+
+  .margin-left-5 {
+    margin-left: 5px !important;
+  }
+
+  .box {
+    width: 100%;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+  }
   
   justify-left {
     justify-content: flex-end !important;
