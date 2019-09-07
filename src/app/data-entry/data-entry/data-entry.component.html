@@ -45,7 +45,8 @@
       <div *ngIf="!isProjectLoading && currentTab == tabConstants.SECTORS" class="col-lg-12 col-md-12">
           <project-sectors [sectorTypesList]="sectorTypesList" [sectorsList]="sectorsList" 
             [defaultSectorsList]="defaultSectorsList" [defaultSectorTypeId]="defaultSectorTypeId" 
-            [projectId]="activeProjectId" [defaultSectorType]="defaultSectorType" >
+            [projectId]="activeProjectId" [defaultSectorType]="defaultSectorType" [locationsList]="locationsList"
+            [projectSectorsList]="currentProjectSectorsList" [projectLocationsList]="currentProjectLocationsList" >
           </project-sectors>
         </div>
 

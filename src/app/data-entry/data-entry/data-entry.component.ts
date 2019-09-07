@@ -12,6 +12,7 @@ import { FundingTypeService } from 'src/app/services/funding-type.service';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { SectorTypeService } from 'src/app/services/sector-types.service';
 import { SectorService } from 'src/app/services/sector.service';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'app-data-entry',
@@ -39,6 +40,8 @@ export class DataEntryComponent implements OnInit {
   selectedFunders: any = [];
   currenciesList: any = [];
   sectorsList: any = [];
+  defaultSectorsList: any = [];
+  locationsList: any = [];
   selectedImplementers: any = [];
 
   currentProjectFunders: any = [];
@@ -96,7 +99,8 @@ export class DataEntryComponent implements OnInit {
     private fundingTypeService: FundingTypeService,
     private currencyService: CurrencyService,
     private sectorTypeService: SectorTypeService,
-    private sectorService: SectorService) { }
+    private sectorService: SectorService,
+    private locationService: LocationService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -109,7 +113,7 @@ export class DataEntryComponent implements OnInit {
     this.getCurrenciesList();
     this.getFundingTypes();
     this.getSectorTypes();
-    this.getSectors();
+    this.getLocationsList();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
 
@@ -232,6 +236,7 @@ export class DataEntryComponent implements OnInit {
             this.defaultSectorTypeId = defaultSectorType[0].id;
             this.defaultSectorType = defaultSectorType[0].typeName;
           }
+          this.getSectors();
         }
       }
     );
@@ -242,6 +247,7 @@ export class DataEntryComponent implements OnInit {
       data => {
         if (data) {
           this.sectorsList = data;
+          this.defaultSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId)
         }
       }
     );
@@ -255,6 +261,14 @@ export class DataEntryComponent implements OnInit {
         }
       }
     )
+  }
+
+  getLocationsList() {
+    this.locationService.getLocationsList().subscribe(
+      data => {
+        this.locationsList = data;
+      }
+    );
   }
 
   getCurrenciesList() {
