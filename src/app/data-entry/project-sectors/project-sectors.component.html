@@ -18,9 +18,9 @@
               </div>
             </div>
 
-            <div class="form-group form-inline col-md-6 col-lg-6">
+            <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)" class="form-group form-inline col-md-6 col-lg-6">
               <select class="form-control col-md-12" name="sectorId" [(ngModel)]="sectorModel.sectorId"
-                #sectorId="ngModel" (change)="getSectorMappings()" required>
+                #sectorId="ngModel" (change)="getSectorMappings()">
                 <option value="null">--Sector--</option>
                 <option *ngFor="let sector of typeSectorsList" [value]="sector.id">{{sector.sectorName}}</option>
               </select>
@@ -31,8 +31,7 @@
           </div>
 
           <div class="row">
-            <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)"
-              class="form-group form-inline col-md-6 col-lg-6">
+            <div class="form-group form-inline col-md-6 col-lg-6">
               <select class="form-control col-md-12" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
                 #mappingId="ngModel" required>
                 <option value="null">--{{defaultSectorType}}--</option>
@@ -79,7 +78,7 @@
         <div class="col-lg-12 col-md-12"> 
           <div class="row"> 
             <span *ngIf="currentProjectSectors.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>: {{calculateSectorPercentage()}}%</span>
-            <span class="col-md-6 text-right"><button *ngIf="areUnSavedSectors()" class="btn btn-info btn-sm">Save sectors</button></span>
+            <span class="col-md-6 text-right"><button *ngIf="areUnSavedSectors()" (click)="saveProjectSectors()" class="btn btn-info btn-sm">Save sectors</button></span>
           </div>
           
           <table *ngIf="currentProjectSectors.length > 0" class="table table-striped small margin-top-5">
@@ -94,7 +93,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let sector of currentProjectSectors">
-                <td>{{sector.sectorName}}</td>
+                <td>{{sector.sector}}</td>
                 <td class="text-center">{{sector.fundsPercentage}}</td>
                 <td class="text-center">
                   <button *ngIf="sector.saved" title="Delete sector" (click)="deleteProjectSector(sector.sectorId)" class="btn btn-danger"><i class="fa fa-trash"></i></button>

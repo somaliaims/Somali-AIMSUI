@@ -42,7 +42,8 @@ export class ProjectSectorsComponent implements OnInit {
   errorMessage: string = null;
   showMappingManual: boolean = false;
   showMappingAuto: boolean = false;
-  sectorModel: any = { sectorTypeId: null, sectorName: null, sectorId: null, mappingId: null, fundsPercentage: null, saved: false };
+  sectorModel: any = { sectorTypeId: null, sector: null, sectorId: null, mappingId: null, fundsPercentage: null, saved: false };
+  newMappings: any = [];
   locationModel: any = { locationId: null, fundsPercentage: null };
   
   @BlockUI() blockUI: NgBlockUI;
@@ -65,6 +66,9 @@ export class ProjectSectorsComponent implements OnInit {
       this.typeSectorsList = [];
     } else {
       this.typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
+    }
+    if (this.sectorModel.sectorTypeId == this.defaultSectorTypeId) {
+      this.sectorMappings = this.defaultSectorsList;
     }
   }
 
@@ -129,15 +133,20 @@ export class ProjectSectorsComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
-    var mappedSector = null;
-    var findSectorId = (this.sectorModel.sectorTypeId == this.defaultSectorTypeId) ?
-      this.sectorModel.sectorId : this.sectorModel.mappingId;
 
-    mappedSector = this.sectorsList.filter(s => s.id == findSectorId);
-    if (mappedSector.length > 0) {
-      this.sectorModel.sectorName = mappedSector[0].sectorName;
+    if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
+      if (!this.sectorModel.sectorId) {
+        this.errorMessage = 'Sector is requred';
+        this.errorModal.openModal();
+        return false;
+      }
     }
-    this.currentProjectSectors.push(this.sectorModel);
+    var mappedSector = null;
+    mappedSector = this.sectorsList.filter(s => s.id == this.sectorModel.mappingId);
+    if (mappedSector.length > 0) {
+      this.sectorModel.sector = mappedSector[0].sectorName;
+    }
+    this.currentProjectSectors.unshift(this.sectorModel);
     this.sectorModel = { sectorTypeId: null, sectorId: null, mappingId: null, saved: false };
     frm.resetForm();
   }
@@ -185,6 +194,32 @@ export class ProjectSectorsComponent implements OnInit {
   calculateSectorPercentage() {
     var percentageList = this.currentProjectSectors.map(s => parseInt(s.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
+  }
+
+  saveProjectSectors() {
+    var unSavedSectors = this.currentProjectSectors.filter(s => !s.saved);
+    if (unSavedSectors.length > 0 && this.projectId) {
+      unSavedSectors.forEach(s => {
+        if (!s.sectorId) {
+          s.sectorId = 0;
+        }
+      });
+      var model = {
+        projectId: this.projectId,
+        projectSectors: unSavedSectors
+      };
+      this.blockUI.start('Saving sectors');
+      this.projectService.addProjectSector(model).subscribe(
+        data => {
+          if (data) {
+            unSavedSectors.forEach(s => {
+              s.saved = true;
+            });
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
   }
 
 }
