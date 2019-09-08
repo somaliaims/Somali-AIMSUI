@@ -168,7 +168,7 @@ export class DataEntryComponent implements OnInit {
 
           if (data.locations && data.locations.length > 0) {
             this.currentProjectLocations = data.locations;
-            this.currentProjectLocations.foreach(l => {
+            this.currentProjectLocations.forEach(l => {
               l.saved = true;
             });
             this.locationTotalPercentage = this.calculateLocationPercentage();

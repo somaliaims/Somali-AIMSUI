@@ -44,7 +44,7 @@ export class ProjectSectorsComponent implements OnInit {
   showMappingAuto: boolean = false;
   sectorModel: any = { sectorTypeId: null, sector: null, sectorId: null, mappingId: null, fundsPercentage: null, saved: false };
   newMappings: any = [];
-  locationModel: any = { locationId: null, fundsPercentage: null };
+  locationModel: any = { locationId: null, location: null, fundsPercentage: null, saved: false };
   
   @BlockUI() blockUI: NgBlockUI;
   constructor(private projectService: ProjectService, private sectorService: SectorService,
@@ -145,7 +145,14 @@ export class ProjectSectorsComponent implements OnInit {
     if (mappedSector.length > 0) {
       this.sectorModel.sector = mappedSector[0].sectorName;
     }
-    this.currentProjectSectors.unshift(this.sectorModel);
+
+    var isSectorExists = this.currentProjectSectors.filter(s => s.sectorId == this.sectorModel.mappingId && s.saved == false);
+    if (isSectorExists.length > 0) {
+      isSectorExists[0].fundsPercentage += this.sectorModel.fundsPercentage;
+    } else {
+      this.currentProjectSectors.unshift(this.sectorModel);
+    }
+    
     this.sectorModel = { sectorTypeId: null, sectorId: null, mappingId: null, saved: false };
     this.mappingsCount = 0;
     this.sectorMappings = [];
@@ -153,14 +160,25 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   addLocation(frm: any) {
-    this.currentProjectLocations.push(this.locationModel);
-    this.locationModel = { locationId: null, fundsPercentage: null, saved: false };
+    var locationPercentage = this.locationModel.fundsPercentage + this.calculateLocationPercentage();
+    if (locationPercentage > 100) {
+      this.errorMessage = Messages.INVALID_PERCENTAGE;
+      this.errorModal.openModal();
+      return false;
+    }
+
     var mappedLocation = this.locationsList.filter(l => l.id == this.locationModel.locationId);
     if (mappedLocation.length > 0) {
-      this.locationModel.locationName = mappedLocation[0].locationName;
+      this.locationModel.location = mappedLocation[0].location;
     }
-    this.currentProjectLocations.unshift(this.locationModel);
-    this.locationModel = { locationId: null, locationName: null, fundsPercentage: null, saved: false };
+
+    var islocationExists = this.currentProjectLocations.filter(l => l.locationId == this.locationModel.locationId && l.saved == false);
+    if (islocationExists.length > 0) {
+      islocationExists[0].fundsPercentage += this.locationModel.fundsPercentage;
+    } else {
+      this.currentProjectLocations.unshift(this.locationModel);
+    }
+    this.locationModel = { locationId: null, location: null, fundsPercentage: null, saved: false };
     frm.resetForm();
   }
 
@@ -177,7 +195,11 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   removeProjectSector(id) {
-    this.currentProjectSectors = this.currentProjectSectors.filter(s => s.sectorId != id);
+    this.currentProjectSectors = this.currentProjectSectors.filter(s => s.saved != false && s.sectorId != id);
+  }
+
+  removeProjectLocation(id) {
+    this.currentProjectLocations = this.currentProjectLocations.filter(l => (l.saved != false && l.locationId == id));
   }
 
   deleteProjectSector(sectorId) {
@@ -187,6 +209,20 @@ export class ProjectSectorsComponent implements OnInit {
         data => {
           if (data) {
             this.currentProjectSectors = this.currentProjectSectors.filter(s => s.sectorId != sectorId);
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  deleteProjectLocation(locationId) {
+    if (locationId && this.projectId) {
+      this.blockUI.start('Removing location...');
+      this.projectService.deleteProjectLocation(this.projectId.toString(), locationId).subscribe(
+        data => {
+          if (data) {
+            this.currentProjectLocations = this.currentProjectLocations.filter(l => l.id != locationId);
           }
           this.blockUI.stop();
         }
@@ -243,6 +279,24 @@ export class ProjectSectorsComponent implements OnInit {
     }
   }
 
+  saveProjectLocations() {
+    var unSavedLocations = this.currentProjectLocations.filter(s => !s.saved);
+    if (unSavedLocations.length > 0 && this.projectId) {
+      var model = {
+        projectId: this.projectId,
+        projectLocations: unSavedLocations,
+      };
+      this.blockUI.start('Saving locations');
+      this.projectService.addProjectLocation(model).subscribe(
+        data => {
+          if (data) {
+            this.getProjectLocations();            
+          }
+        }
+      );
+    }
+  }
+
   getProjectSectors() {
     this.projectService.getProjectSectors(this.projectId.toString()).subscribe(
       data => {
@@ -253,6 +307,22 @@ export class ProjectSectorsComponent implements OnInit {
             });
           }
           this.currentProjectSectors = data;
+        }
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  getProjectLocations() {
+    this.projectService.getProjectLocations(this.projectId.toString()).subscribe(
+      data => {
+        if (data) {
+          if (data.length > 0) {
+            data.forEach(d => {
+              d.saved = true;
+            });
+          }
+          this.currentProjectLocations = data;
         }
         this.blockUI.stop();
       }

@@ -70,8 +70,8 @@
                   Add sector
                 </button>
               </div>
-              <div *ngIf="sectorsForm.submitted" [hidden]="fundsPercentage.value > 0" class="alert alert-danger">
-                Valid values for funds percentage are 1 - 100
+              <div *ngIf="sectorsForm.submitted" [hidden]="(fundsPercentage.value > 0 && fundsPercentage.value < 101)" class="alert alert-danger">
+                Valid values are (1 to 100)
               </div>
             </div>
           </div>
@@ -82,7 +82,7 @@
             <span *ngIf="currentProjectSectors.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
               {{calculateSectorPercentage()}}%</span>
             <span class="col-md-6 text-right"><button *ngIf="areUnSavedSectors()" (click)="saveProjectSectors()"
-                class="btn btn-info btn-sm">Save sectors</button></span>
+                class="btn btn-info btn-sm text-uppercase">Save sectors</button></span>
           </div>
 
           <table *ngIf="currentProjectSectors.length > 0" class="table table-striped small margin-top-5">
@@ -112,7 +112,7 @@
       </div>
 
       <div class="col-md-6 col-lg-6">
-        <form class="form-signin" (ngSubmit)="locationsForm.form.valid && saveProjectLocation(locationsForm)"
+        <form class="form-signin" (ngSubmit)="locationsForm.form.valid && addLocation(locationsForm)"
           #locationsForm="ngForm">
           <h6>Project locations</h6>
 
@@ -130,25 +130,25 @@
 
             <div class="col-md-6 col-lg-6">
               <div class="input-group">
-                <input type="number" class="form-control col-md-10" id="lfundsPercentage"
+                <input type="number" class="form-control col-md-10"
                   [(ngModel)]="locationModel.fundsPercentage" placeholder="Percentage" name="lfundsPercentage"
                   #lfundsPercentage="ngModel" min="1" max="100" required>
-                <button class="btn btn-sm btn-warning btn-outline" type="button">
+                <button class="btn btn-sm btn-warning btn-outline" type="submit">
                   Add location
                 </button>
               </div>
-              <div *ngIf="locationsForm.submitted" [hidden]="fundsPercentage.value > 0" class="alert alert-danger">
-                Valid values for funds percentage are 1 - 100
+              <div *ngIf="locationsForm.submitted" [hidden]="(lfundsPercentage.value > 0 && lfundsPercentage.value < 101)" class="alert alert-danger">
+                Valid values are (1 to 100)
               </div>
             </div>
           </div>
-
+          </form>
           <div class="col-lg-12 col-md-12 sectors-list-box-small">
             <div class="row">
               <span *ngIf="currentProjectLocations.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
                 {{calculateLocationPercentage()}}%</span>
               <span class="col-md-6 text-right"><button *ngIf="areUnSavedLocations()" (click)="saveProjectLocations()"
-                  class="btn btn-info btn-sm">Save sectors</button></span>
+                  class="btn btn-info btn-sm text-uppercase">Save locations</button></span>
             </div>
 
             <table *ngIf="currentProjectLocations.length > 0" class="table table-striped small margin-top-5">
@@ -167,7 +167,7 @@
                   <td class="text-center">{{location.fundsPercentage}}</td>
                   <td class="text-center">
                     <button *ngIf="location.saved" title="Delete location"
-                      (click)="deleteProjectLocation(location.locationId)" class="btn btn-danger"><i
+                      (click)="deleteProjectLocation(location.id)" class="btn btn-danger"><i
                         class="fa fa-trash"></i></button>
                     <button *ngIf="!location.saved" title="Remove location"
                       (click)="removeProjectLocation(location.locationId)" class="btn btn-warning"><i
@@ -177,7 +177,6 @@
               </tbody>
             </table>
           </div>
-        </form>
       </div>
 
     </div>
