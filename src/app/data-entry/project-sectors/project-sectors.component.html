@@ -18,7 +18,8 @@
               </div>
             </div>
 
-            <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)" class="form-group form-inline col-md-6 col-lg-6">
+            <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)"
+              class="form-group form-inline col-md-6 col-lg-6">
               <select class="form-control col-md-12" name="sectorId" [(ngModel)]="sectorModel.sectorId"
                 #sectorId="ngModel" (change)="getSectorMappings()">
                 <option value="null">--Sector--</option>
@@ -38,7 +39,7 @@
                 <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
               </select>
               <div class="col-md-12 col-lg-12" *ngIf="mappingsCount > 0">
-                
+
                 <!--<span *ngIf="showMappingAuto" class="float-right text-success small">
                   Map manual
                 </span>-->
@@ -61,10 +62,11 @@
 
             <div class="col-md-6 col-lg-6">
               <div class="input-group">
-                <input  type="number" class="form-control col-md-10" id="fundsPercentage"
+                <input type="number" class="form-control col-md-10" id="fundsPercentage"
                   [(ngModel)]="sectorModel.fundsPercentage" placeholder="Percentage" name="fundsPercentage"
                   #fundsPercentage="ngModel" min="1" max="100" required>
-                <button [class.disable]="calculateSectorPercentage() >= 100" class="btn btn-sm btn-warning btn-outline" type="submit">
+                <button [class.disable]="calculateSectorPercentage() >= 100" class="btn btn-sm btn-warning btn-outline"
+                  type="submit">
                   Add sector
                 </button>
               </div>
@@ -75,12 +77,14 @@
           </div>
         </form>
 
-        <div class="col-lg-12 col-md-12 sectors-list-box-small"> 
-          <div class="row"> 
-            <span *ngIf="currentProjectSectors.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>: {{calculateSectorPercentage()}}%</span>
-            <span class="col-md-6 text-right"><button *ngIf="areUnSavedSectors()" (click)="saveProjectSectors()" class="btn btn-info btn-sm">Save sectors</button></span>
+        <div class="col-lg-12 col-md-12 sectors-list-box-small">
+          <div class="row">
+            <span *ngIf="currentProjectSectors.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
+              {{calculateSectorPercentage()}}%</span>
+            <span class="col-md-6 text-right"><button *ngIf="areUnSavedSectors()" (click)="saveProjectSectors()"
+                class="btn btn-info btn-sm">Save sectors</button></span>
           </div>
-          
+
           <table *ngIf="currentProjectSectors.length > 0" class="table table-striped small margin-top-5">
             <thead>
               <tr>
@@ -96,8 +100,10 @@
                 <td>{{sector.sector}}</td>
                 <td class="text-center">{{sector.fundsPercentage}}</td>
                 <td class="text-center">
-                  <button *ngIf="sector.saved" title="Delete sector" (click)="deleteProjectSector(sector.sectorId)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                  <button *ngIf="!sector.saved" title="Remove sector" (click)="removeProjectSector(sector.sectorId)" class="btn btn-warning"><i class="fa fa-remove"></i></button>
+                  <button *ngIf="sector.saved" title="Delete sector" (click)="deleteProjectSector(sector.sectorId)"
+                    class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                  <button *ngIf="!sector.saved" title="Remove sector" (click)="removeProjectSector(sector.sectorId)"
+                    class="btn btn-warning"><i class="fa fa-remove"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -109,8 +115,8 @@
         <form class="form-signin" (ngSubmit)="locationsForm.form.valid && saveProjectLocation(locationsForm)"
           #locationsForm="ngForm">
           <h6>Project locations</h6>
-          <div class="row">
 
+          <div class="row">
             <div class="form-group form-inline col-md-6 col-lg-6">
               <select class="form-control col-md-12" name="locationId" [(ngModel)]="locationModel.locationId"
                 #locationId="ngModel" required>
@@ -137,8 +143,43 @@
             </div>
           </div>
 
+          <div class="col-lg-12 col-md-12 sectors-list-box-small">
+            <div class="row">
+              <span *ngIf="currentProjectLocations.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
+                {{calculateLocationPercentage()}}%</span>
+              <span class="col-md-6 text-right"><button *ngIf="areUnSavedLocations()" (click)="saveProjectLocations()"
+                  class="btn btn-info btn-sm">Save sectors</button></span>
+            </div>
+
+            <table *ngIf="currentProjectLocations.length > 0" class="table table-striped small margin-top-5">
+              <thead>
+                <tr>
+                  <th>Location</th>
+                  <th class="text-center">Percentage</th>
+                  <th class="text-center">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let location of currentProjectLocations">
+                  <td>{{location.location}}</td>
+                  <td class="text-center">{{location.fundsPercentage}}</td>
+                  <td class="text-center">
+                    <button *ngIf="location.saved" title="Delete location"
+                      (click)="deleteProjectLocation(location.locationId)" class="btn btn-danger"><i
+                        class="fa fa-trash"></i></button>
+                    <button *ngIf="!location.saved" title="Remove location"
+                      (click)="removeProjectLocation(location.locationId)" class="btn btn-warning"><i
+                        class="fa fa-remove"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </form>
       </div>
+
     </div>
 
   </div>

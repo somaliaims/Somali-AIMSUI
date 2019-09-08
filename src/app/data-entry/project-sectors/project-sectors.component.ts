@@ -141,8 +141,7 @@ export class ProjectSectorsComponent implements OnInit {
         return false;
       }
     }
-    var mappedSector = null;
-    mappedSector = this.sectorsList.filter(s => s.id == this.sectorModel.mappingId);
+    var mappedSector = this.sectorsList.filter(s => s.id == this.sectorModel.mappingId);
     if (mappedSector.length > 0) {
       this.sectorModel.sector = mappedSector[0].sectorName;
     }
@@ -156,6 +155,12 @@ export class ProjectSectorsComponent implements OnInit {
   addLocation(frm: any) {
     this.currentProjectLocations.push(this.locationModel);
     this.locationModel = { locationId: null, fundsPercentage: null, saved: false };
+    var mappedLocation = this.locationsList.filter(l => l.id == this.locationModel.locationId);
+    if (mappedLocation.length > 0) {
+      this.locationModel.locationName = mappedLocation[0].locationName;
+    }
+    this.currentProjectLocations.unshift(this.locationModel);
+    this.locationModel = { locationId: null, locationName: null, fundsPercentage: null, saved: false };
     frm.resetForm();
   }
 
@@ -193,8 +198,17 @@ export class ProjectSectorsComponent implements OnInit {
     return this.currentProjectSectors.filter(s => s.saved == false).length > 0 ? true : false;
   }
 
+  areUnSavedLocations() {
+    return this.currentProjectLocations.filter(l => l.saved == false).length > 0 ? true : false;
+  }
+
   calculateSectorPercentage() {
     var percentageList = this.currentProjectSectors.map(s => parseInt(s.fundsPercentage));
+    return percentageList.reduce(this.storeService.sumValues, 0);
+  }
+
+  calculateLocationPercentage() {
+    var percentageList = this.currentProjectLocations.map(l => parseInt(l.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
   }
 
