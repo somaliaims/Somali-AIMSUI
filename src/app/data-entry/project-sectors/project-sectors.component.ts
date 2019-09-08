@@ -203,23 +203,44 @@ export class ProjectSectorsComponent implements OnInit {
         if (!s.sectorId) {
           s.sectorId = 0;
         }
+        if (s.sectorTypeId != this.defaultSectorTypeId) {
+          this.newMappings.push({
+            sectorTypeId: s.sectorTypeId,
+            sectorId: s.sectorId,
+            mappingId: s.mappingId
+          });
+        }
       });
       var model = {
         projectId: this.projectId,
-        projectSectors: unSavedSectors
+        projectSectors: unSavedSectors,
+        newMappings: this.newMappings
       };
       this.blockUI.start('Saving sectors');
       this.projectService.addProjectSector(model).subscribe(
         data => {
           if (data) {
-            unSavedSectors.forEach(s => {
-              s.saved = true;
-            });
+            this.getProjectSectors();            
           }
-          this.blockUI.stop();
         }
       );
     }
+  }
+
+  getProjectSectors() {
+    this.projectService.getProjectSectors(this.projectId.toString()).subscribe(
+      data => {
+        if (data) {
+          if (data.length > 0) {
+            data.forEach(d => {
+              d.saved = true;
+            });
+          }
+          this.currentProjectSectors = data;
+        }
+        this.blockUI.stop();
+      }
+    );
   }
 
 }
