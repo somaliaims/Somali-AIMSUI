@@ -148,6 +148,8 @@ export class ProjectSectorsComponent implements OnInit {
     }
     this.currentProjectSectors.unshift(this.sectorModel);
     this.sectorModel = { sectorTypeId: null, sectorId: null, mappingId: null, saved: false };
+    this.mappingsCount = 0;
+    this.sectorMappings = [];
     frm.resetForm();
   }
 

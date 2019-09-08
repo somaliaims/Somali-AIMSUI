@@ -37,22 +37,22 @@
                 <option value="null">--{{defaultSectorType}}--</option>
                 <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
               </select>
-              <span *ngIf="mappingsCount > 0">
-                <span *ngIf="showMappingManual" class="float-left text-success small">
-                  {{mappingsCount}} mapping/s found
-                </span>
-                <span *ngIf="showMappingAuto" class="float-left text-success small">
-                  Map manually
-                </span>
-                &nbsp;
-                <span *ngIf="showMappingManual" class="float-right">
+              <div class="col-md-12 col-lg-12" *ngIf="mappingsCount > 0">
+                
+                <!--<span *ngIf="showMappingAuto" class="float-right text-success small">
+                  Map manual
+                </span>-->
+                <span *ngIf="showMappingManual" class="float-left margin-top-2">
                   <button type="button" class="btn btn-info btn-sm" (click)="setManualMappings()">Map manual</button>
                 </span>
-                <span *ngIf="showMappingAuto" class="float-right">
+                <span *ngIf="showMappingAuto" class="float-left margin-top-2">
                   <button type="button" class="btn btn-warning btn-sm" (click)="setAutomaticMappings()">Map
                     auto</button>
                 </span>
-              </span>
+                <span *ngIf="showMappingManual" class="float-left text-success small margin-left-5">
+                  {{mappingsCount}} mapping/s found
+                </span>
+              </div>
               <div *ngIf="mappingsCount == 0" class="text-warning small"><i>No mappings found</i></div>
               <div *ngIf="sectorsForm.submitted" [hidden]="mappingId.valid" class="alert alert-danger">
                 Mapping is required
@@ -75,7 +75,7 @@
           </div>
         </form>
 
-        <div class="col-lg-12 col-md-12"> 
+        <div class="col-lg-12 col-md-12 sectors-list-box-small"> 
           <div class="row"> 
             <span *ngIf="currentProjectSectors.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>: {{calculateSectorPercentage()}}%</span>
             <span class="col-md-6 text-right"><button *ngIf="areUnSavedSectors()" (click)="saveProjectSectors()" class="btn btn-info btn-sm">Save sectors</button></span>
