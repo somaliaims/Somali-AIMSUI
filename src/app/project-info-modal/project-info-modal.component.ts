@@ -31,12 +31,12 @@ export class ProjectInfoModalComponent implements OnInit {
   @Input()
   documents: any = [];
   @Input()
-  customFields: any = [];
+  markers: any = [];
   @Input()
   isShowContact: boolean = false;
 
   disbursementTypeConstants: any = {
-    
+
   };
 
   constructor(private modalService: ModalService, private storeService: StoreService,

@@ -73,7 +73,7 @@
     
                   <tr>
                     <td>
-                      <button class="btn btn-danger btn-lg btn-block text-uppercase" (click)="makeDeleteRequest()"
+                      <button class="btn btn-danger btn-lg btn-block text-uppercase" (click)="makeDeleteRequest(activeProjectId)"
                         type="button">Make a delete Request</button>
                     </td>
                   </tr>
@@ -97,5 +97,5 @@
 
 <project-info-modal [project]="projectData" [locations]="currentProjectLocations" [sectors]="currentProjectSectors"
   [funders]="currentProjectFunders" [disbursements]="currentProjectDisbursements" [implementers]="currentProjectImplementers" 
-  [documents]="currentProjectDocuments" [customFields]="currentProjectMarkers" [isShowContact]="false" [projectId]="activeProjectId">
+  [documents]="currentProjectDocuments" [markers]="currentProjectMarkers" [isShowContact]="false" [projectId]="activeProjectId">
 </project-info-modal>
