@@ -15,12 +15,7 @@ import { Router } from '@angular/router';
 export class ProjectInfoModalComponent implements OnInit {
 
   @Input()
-  project: any = {
-    title: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-  };
+  project: any = {};
   @Input()
   projectId: number = 0;
   @Input()
@@ -39,6 +34,10 @@ export class ProjectInfoModalComponent implements OnInit {
   customFields: any = [];
   @Input()
   isShowContact: boolean = false;
+
+  disbursementTypeConstants: any = {
+    
+  };
 
   constructor(private modalService: ModalService, private storeService: StoreService,
     private router: Router) { }

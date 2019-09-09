@@ -3,8 +3,8 @@
         <div class="row">
           <div class="col-lg-4 col-md-4">
             <div class="form-group form-inline">
-              <label class="col-sm-2 col-form-label justify-left" for="title">Name</label>
-              <input class="form-control col-sm-10" type="text" name="title" [(ngModel)]="projectData.title" #title="ngModel"
+              <!--<label class="col-sm-2 col-form-label justify-left" for="title">Name</label>-->
+              <input placeholder="Project name/title" title="Project name/title" class="form-control col-sm-12" type="text" name="title" [(ngModel)]="projectData.title" #title="ngModel"
                 id="title" required>
             </div>
             <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
@@ -14,10 +14,11 @@
       
           <div class="col-lg-4 col-md-4">
             <div class="form-group form-inline">
-              <label class="col-sm-4 col-form-label" for="startingFinancialYear">Starting year</label>
-              <select class="form-control col-sm-8" name="startingFinancialYear"
+              <!--<label class="col-sm-4 col-form-label" for="startingFinancialYear">Starting year</label>-->
+              <select title="Starting financial year" class="form-control col-sm-12" name="startingFinancialYear"
                 [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" id="startingFinancialYear"
                 required>
+                <option>--Starting year--</option>
                 <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
               </select>
             </div>
@@ -28,8 +29,8 @@
       
           <div class="col-lg-4 col-md-4">
             <div class="form-group form-inline">
-              <label class="col-sm-4 col-form-label" for="endingFinancialYear">Ending year</label>
-              <select class="form-control col-sm-8" name="endingFinancialYear" [(ngModel)]="projectData.endingFinancialYear"
+              <!--<label class="col-sm-4 col-form-label" for="endingFinancialYear">Ending year</label>-->
+              <select title="Ending financial year" class="form-control col-sm-12" name="endingFinancialYear" [(ngModel)]="projectData.endingFinancialYear"
                 #endingFinancialYear="ngModel" id="endingFinancialYear" required>
                 <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
               </select>
@@ -44,9 +45,10 @@
         
           <div class="col-lg-4 col-md-4">
             <div class="form-group form-inline">
-              <label class="col-sm-2 col-form-label float-left" for="title">Currency</label>
-              <select class="form-control col-sm-10" name="currency" [(ngModel)]="projectData.projectCurrency"
+              <!--<label class="col-sm-2 col-form-label float-left" for="title">Currency</label>-->
+              <select title="Project currency" class="form-control col-sm-12" name="currency" [(ngModel)]="projectData.projectCurrency"
                 #projectCurrency="ngModel" id="projectCurrency" required>
+                <option>--Select currency--</option>
                 <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}</option>
               </select>
             </div>
@@ -57,8 +59,8 @@
         
           <div class="col-lg-4 col-md-4">
             <div class="form-group form-inline">
-              <label class="col-sm-4 col-form-label float-left" for="title">Project value</label>
-              <input class="form-control col-sm-8" type="number" maxlength="10" name="projectValue"
+              <!--<label class="col-sm-4 col-form-label float-left" for="title">Project value</label>-->
+              <input placeholder="Project value (0.00)" title="Project value" class="form-control col-sm-12" type="number" maxlength="10" name="projectValue"
                 [(ngModel)]="projectData.projectValue" #projectValue="ngModel" id="projectValue" required>
             </div>
             <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
@@ -69,9 +71,10 @@
         
           <div class="col-lg-4 col-md-4">
             <div class="form-group form-inline">
-              <label class="col-sm-4 col-form-label float-left" for="fundingType">Funding type</label>
-              <select class="form-control col-sm-8" name="fundingTypeId" [(ngModel)]="projectData.fundingTypeId"
+              <!--<label class="col-sm-4 col-form-label float-left" for="fundingType">Funding type</label>-->
+              <select title="Funding type" class="form-control col-sm-12" name="fundingTypeId" [(ngModel)]="projectData.fundingTypeId"
                 #fundingTypeId="ngModel" id="fundingTypeId" required>
+                <option>--Funding type--</option>
                 <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
               </select>
             </div>
@@ -108,7 +111,7 @@
         <div class="row margin-top-10">
           <div class="col-lg-12 col-md-12">
             <div class="form-group">
-              <label for="title">Description <span class="text-info">(Max characters: {{descriptionLimit}} Left:
+              <label for="title">Project description <span class="text-info">(Max characters: {{descriptionLimit}} Left:
                   {{descriptionLimitLeft}})</span></label>
               <textarea class="form-control" id="description" (input)="getDescriptionLimitInfo()"
                 [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="5"
@@ -121,16 +124,14 @@
         <div class="row">
           <table width="100%">
             <tr>
-              <td width="10%" class="text-center">Resource name</td>
-              <td width="30%">
-                <input type="text" class="form-control" maxlength="50" name="document" [(ngModel)]="documentModel.document" #document="ngModel" />
+              <td width="40%">
+                <input type="text" placeholder="Resource name" class="form-control" maxlength="50" name="document" [(ngModel)]="documentModel.document" #document="ngModel" />
               </td>
-              <td width="10%" class="text-center">Link</td>
-              <td width="30%">
-                <input type="url" class="form-control" maxlength="255" name="documentUrl" [(ngModel)]="documentModel.documentUrl" #documentUrl="ngModel" />
+              <td width="40%">
+                <input type="url" placeholder="Link to resource" class="form-control" maxlength="255" name="documentUrl" [(ngModel)]="documentModel.documentUrl" #documentUrl="ngModel" />
               </td>
               <td width="10%">
-                <button type="button" class="btn btn-warning" (click)="addResource()">Add to list</button>
+                <button type="button" class="btn btn-warning" (click)="addResource()">Add resource</button>
               </td>
               <td width="10%">
                 <button class="btn btn-info text-uppercase" type="submit">Save data</button>

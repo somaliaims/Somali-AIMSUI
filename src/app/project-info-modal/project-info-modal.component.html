@@ -23,10 +23,10 @@
                 <td colspan="3">{{project.title}}</td>
               </tr>
               <tr>
-                <td><b>Start date: </b></td>
-                <td>{{project.startDate}}</td>
-                <td><b>End date: </b></td>
-                <td>{{project.endDate}}</td>
+                <td><b>Starting year: </b></td>
+                <td>{{project.startingFinancialYear}}</td>
+                <td><b>Ending year: </b></td>
+                <td>{{project.endingFinancialYear}}</td>
               </tr>
               <tr>
                 <td><b>Description: </b></td>
@@ -69,15 +69,9 @@
             <table *ngIf="funders.length > 0" class="table table-striped">
               <tr>
                 <th>Funder</th>
-                <th class="text-center">Amount</th>
-                <th class="text-center">Currency</th>
-                <th class="text-center">Exchange rate</th>
               </tr>
               <tr *ngFor="let funder of funders">
                 <td>{{funder.funder}}</td>
-                <td class="text-center">{{funder.amount | number:0}}</td>
-                <td class="text-center">{{funder.currency}}</td>
-                <td class="text-center">{{funder.exchangeRate}}</td>
               </tr>
             </table>
             <span class="text-info" *ngIf="funders.length == 0">
@@ -87,20 +81,22 @@
             <h6 class="text-info margin-top-10"><b>Project disbursements</b></h6>
             <table *ngIf="disbursements.length > 0" class="table table-striped">
               <tr>
-                <th>Dated</th>
+                <th>Year</th>
+                <th>Type</th>
                 <th class="text-center">Amount</th>
                 <th class="text-center">Currency</th>
                 <th class="text-center">Exchange rate</th>
               </tr>
               <tr *ngFor="let disbursement of disbursements">
-                <td>{{getLongDateString(disbursement.dated)}}</td>
+                <td>{{disbursement.year}}</td>
+                <td>{{disbursement.disbursementType}}</td>
                 <td class="text-center">{{disbursement.amount | number:0}}</td>
                 <td class="text-center">{{disbursement.currency}}</td>
                 <td class="text-center">{{disbursement.exchangeRate}}</td>
               </tr>
             </table>
-            <span class="text-info" *ngIf="funders.length == 0">
-              <i>No funders found</i>
+            <span class="text-info" *ngIf="disbursements.length == 0">
+              <i>No disbursements found</i>
             </span>
 
             <h6 class="text-info margin-top-10"><b>Project implementers</b></h6>
@@ -132,10 +128,10 @@
               <i>No documents found</i>
             </span>
 
-            <h6 class="text-info margin-top-10"><b>Project custom fields</b></h6>
+            <h6 class="text-info margin-top-10"><b>Project markers</b></h6>
             <table *ngIf="customFields.length > 0" class="table table-striped">
               <tr>
-                <th>Field name</th>
+                <th>Marker name</th>
                 <th>Value/s</th>
               </tr>
               <tr *ngFor="let field of customFields">
@@ -144,7 +140,7 @@
               </tr>
             </table>
             <span class="text-info" *ngIf="customFields.length == 0">
-              <i>No custom fields found</i>
+              <i>No markers found</i>
             </span>
 
           </div>

@@ -13,6 +13,7 @@ import { CurrencyService } from 'src/app/services/currency.service';
 import { SectorTypeService } from 'src/app/services/sector-types.service';
 import { SectorService } from 'src/app/services/sector.service';
 import { LocationService } from 'src/app/services/location.service';
+import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-info-modal.component';
 
 @Component({
   selector: 'app-data-entry',
@@ -51,6 +52,15 @@ export class DataEntryComponent implements OnInit {
   currentProjectDisbursements: any = [];
   currentProjectDocuments: any = [];
   currentProjectMarkers: any = [];
+
+  viewProject = {};
+  viewProjectFunders: any = [];
+  viewProjectLocations: any = [];
+  viewProjectSectors: any = [];
+  viewProjectImplementers: any = [];
+  viewProjectDocuments: any = [];
+  viewProjectDisbursements: any = [];
+  viewProjectMarkers: any = [];
   
   monthsList: any = [
     { key: 'January', value: 1 },
@@ -100,7 +110,8 @@ export class DataEntryComponent implements OnInit {
     private currencyService: CurrencyService,
     private sectorTypeService: SectorTypeService,
     private sectorService: SectorService,
-    private locationService: LocationService) { }
+    private locationService: LocationService,
+    private projectInfoModal: ProjectInfoModalComponent) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -287,6 +298,67 @@ export class DataEntryComponent implements OnInit {
     );
   }
 
+  getProjectView() {
+    if (this.activeProjectId != 0) {
+      this.blockUI.start('Loading project...');
+      this.projectService.getProjectProfileReport(this.activeProjectId.toString()).subscribe(
+        result => {
+          if (result && result.projectProfile) {
+            var data = result.projectProfile;
+            this.projectData.title = data.title;
+            this.projectData.description = data.description;
+            this.projectData.startingFinancialYear = data.startingFinancialYear;
+            this.projectData.endingFinancialYear = data.endingFinancialYear;
+            this.projectData.projectValue = data.projectValue;
+            this.projectData.projectCurrency = data.projectCurrency;
+            this.projectData.fundingTypeId = data.fundingTypeId;
+  
+            if (data.sectors && data.sectors.length > 0) {
+              this.currentProjectSectors = data.sectors;
+              this.currentProjectSectors.forEach(s => {
+                s.saved = true;
+              });
+              this.sectorTotalPercentage = this.calculateSectorPercentage();
+            }
+  
+            if (data.locations && data.locations.length > 0) {
+              this.currentProjectLocations = data.locations;
+              this.currentProjectLocations.forEach(l => {
+                l.saved = true;
+              });
+              this.locationTotalPercentage = this.calculateLocationPercentage();
+            }
+  
+            if (data.documents && data.documents.length > 0) {
+              this.currentProjectDocuments = data.documents;
+            }
+  
+            if (data.funders && data.funders.length > 0) {
+              this.currentProjectFunders = data.funders;
+            } 
+  
+            if (data.implementers && data.implementers.length > 0) {
+              this.currentProjectImplementers = data.implementers;
+            }
+  
+            if (data.disbursements && data.disbursements.length > 0) {
+              this.currentProjectDisbursements = data.disbursements;
+            }
+  
+            if (data.customFields && data.customFields.length > 0) {
+              this.currentProjectMarkers = data.markers;
+            }
+          }
+          setTimeout(() => {
+            this.isProjectLoading = false;
+            this.blockUI.stop();
+            this.projectInfoModal.openModal();
+          }, 1000);
+        }
+      );
+    }
+  }
+
   showBasicInfo() {
     this.manageTabsDisplay(this.tabConstants.BASIC);
   }
@@ -313,6 +385,31 @@ export class DataEntryComponent implements OnInit {
         tab.visible = false;
       }
     }
+  }
+
+  finishProject() {
+    this.router.navigateByUrl('new-project');
+  }
+
+  makeDeleteRequest(id: number) {
+    if (id) {
+      var model = { projectId: id, userId: 0 };
+      this.blockUI.start('Making project delete request...');
+      this.projectService.makeProjectDeletionRequest(model).subscribe(
+        data => {
+          if (data) {
+            this.router.navigateByUrl('projects');
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  goToHome() {
+    localStorage.setItem('selected-projects', null);
+    localStorage.setItem('active-project', '0');
+    this.router.navigateByUrl('home');
   }
 
 }
