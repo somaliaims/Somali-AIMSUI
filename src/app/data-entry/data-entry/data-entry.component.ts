@@ -44,6 +44,7 @@ export class DataEntryComponent implements OnInit {
   defaultSectorsList: any = [];
   locationsList: any = [];
   selectedImplementers: any = [];
+  exchangeRates: any = [];
 
   currentProjectFunders: any = [];
   currentProjectImplementers: any = [];
@@ -119,6 +120,7 @@ export class DataEntryComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
+    this.getAverageExchangeRates();
     this.getFinancialYears();
     this.getOrganizationsList();
     this.getCurrenciesList();
@@ -357,6 +359,17 @@ export class DataEntryComponent implements OnInit {
         }
       );
     }
+  }
+
+  getAverageExchangeRates() {
+    var model = {
+      dated: this.storeService.getCurrentDateSQLFormat()
+    };
+    this.currencyService.getAverageCurrencyForDateUrl(model).subscribe(
+      data => {
+        this.exchangeRates = data;
+      }
+    );
   }
 
   showBasicInfo() {

@@ -18,7 +18,7 @@
               <select title="Starting financial year" class="form-control col-sm-12" name="startingFinancialYear"
                 [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" id="startingFinancialYear"
                 required>
-                <option>--Starting year--</option>
+                <option value="null">--Starting year--</option>
                 <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
               </select>
             </div>
@@ -32,6 +32,7 @@
               <!--<label class="col-sm-4 col-form-label" for="endingFinancialYear">Ending year</label>-->
               <select title="Ending financial year" class="form-control col-sm-12" name="endingFinancialYear" [(ngModel)]="projectData.endingFinancialYear"
                 #endingFinancialYear="ngModel" id="endingFinancialYear" required>
+                <option value="null">--Ending year--</option>
                 <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
               </select>
             </div>
@@ -47,8 +48,8 @@
             <div class="form-group form-inline">
               <!--<label class="col-sm-2 col-form-label float-left" for="title">Currency</label>-->
               <select title="Project currency" class="form-control col-sm-12" name="currency" [(ngModel)]="projectData.projectCurrency"
-                #projectCurrency="ngModel" id="projectCurrency" required>
-                <option>--Select currency--</option>
+                #projectCurrency="ngModel" id="projectCurrency" (change)="getExchangeRateForCurrency()" required>
+                <option value="null">--Project currency--</option>
                 <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}</option>
               </select>
             </div>
@@ -74,7 +75,7 @@
               <!--<label class="col-sm-4 col-form-label float-left" for="fundingType">Funding type</label>-->
               <select title="Funding type" class="form-control col-sm-12" name="fundingTypeId" [(ngModel)]="projectData.fundingTypeId"
                 #fundingTypeId="ngModel" id="fundingTypeId" required>
-                <option>--Funding type--</option>
+                <option value="null">--Funding type--</option>
                 <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
               </select>
             </div>

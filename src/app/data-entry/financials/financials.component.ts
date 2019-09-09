@@ -25,6 +25,8 @@ export class FinancialsComponent implements OnInit {
   @Input()
   projectDisbursements: any = [];
   @Input()
+  exchangeRates: any = [];
+  @Input()
   startingYear: number = 0;
   @Input()
   endingYear: number = 0;

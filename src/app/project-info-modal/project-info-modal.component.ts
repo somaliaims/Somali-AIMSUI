@@ -36,7 +36,8 @@ export class ProjectInfoModalComponent implements OnInit {
   isShowContact: boolean = false;
 
   disbursementTypeConstants: any = {
-
+    1: 'Actual',
+    2: 'Planned'
   };
 
   constructor(private modalService: ModalService, private storeService: StoreService,

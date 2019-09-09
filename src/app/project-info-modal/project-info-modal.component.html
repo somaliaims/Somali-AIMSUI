@@ -114,7 +114,7 @@
               </tr>
               <tr *ngFor="let disbursement of disbursements">
                 <td>{{disbursement.year}}</td>
-                <td>{{disbursement.disbursementType}}</td>
+                <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
                 <td class="text-center">{{disbursement.amount | number:0}}</td>
                 <td class="text-center">{{disbursement.currency}}</td>
                 <td class="text-center">{{disbursement.exchangeRate}}</td>

@@ -42,11 +42,14 @@ export class BasicDataComponent implements OnInit {
   @Input()
   fundingTypesList: any = [];
   @Input()
+  exchangeRates: any = [];
+  @Input()
   currenciesList: any = [];
 
   descriptionLimit: number = Settings.descriptionLongLimit;
   descriptionLimitLeft: number = Settings.descriptionLongLimit;
   requestNo: number = 0;
+  exchangeRate: number = 0;
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent,
@@ -104,6 +107,17 @@ export class BasicDataComponent implements OnInit {
     this.descriptionLimitLeft = (this.descriptionLimit - this.projectData.description.length);
     if (this.descriptionLimitLeft < 0) {
       this.projectData.description = this.projectData.description.substring(0, (this.descriptionLimit - 1));
+    }
+  }
+
+  getExchangeRateForCurrency() {
+    if (this.projectData.currency) {
+      var exRate = this.exchangeRates.filter(e => e.currency == this.projectData.currency);
+      if (exRate.length > 0) {
+        this.exchangeRate = exRate[0].rate;
+      }
+    } else {
+      this.exchangeRate = 0;
     }
   }
 

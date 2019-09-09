@@ -636,6 +636,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.importLatestDataUrl);
     }
 
+    averageCurrencyRateForDateUrl() {
+        return (this.BASE_URL + urlsList.urls.averageCurrencyRate);
+    }
+
     getContactUrl() {
         return (this.BASE_URL + urlsList.urls.contactUrl);
     }
