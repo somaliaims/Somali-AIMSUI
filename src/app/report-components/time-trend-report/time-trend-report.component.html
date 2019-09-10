@@ -206,8 +206,8 @@
                     <td colspan="6">
                       <b>
                         <i>
-                          {{yearProject.year}} - Project cost ({{formatNumber(yearProject.totalFunding)}}) &nbsp;&nbsp;
-                          Disbursements ({{formatNumber(yearProject.totalDisbursements)}})
+                          {{yearProject.year}} - Total disbursements ({{formatNumber(yearProject.totalFunding)}}) &nbsp;&nbsp;
+                          Actual Disbursements ({{formatNumber(yearProject.totalDisbursements)}})
                         </i>
                       </b>
                     </td>
@@ -216,7 +216,7 @@
                     <td width="25%">{{project.title}}</td>
                     <td width="15%">{{project.funders}}</td>
                     <td width="15%">{{project.implementers}}</td>
-                    <td class="text-center" width="15%">{{formatNumber(project.projectCost)}}</td>
+                    <td class="text-center" width="15%">{{formatNumber(project.projectValue)}}</td>
                     <td class="text-center" width="15%">
                       {{formatNumber(project.actualDisbursements)}}<br />
                     </td>
@@ -241,7 +241,7 @@
                   <th width="15%">&nbsp;</th>
                   <th class="text-center" width="15%">
                     <b>
-                      <i>Total: {{formatNumber(getGrandTotalFundingForYear())}}</i>
+                      <i>Total: {{formatNumber(getGrandTotalProjectValueForYear())}}</i>
                     </b>
                   </th>
                   <th class="text-center" width="15%">
@@ -251,7 +251,13 @@
                       </i>
                     </b>
                   </th>
-                  <th width="15%">&nbsp;</th>
+                  <th class="text-center" width="15%">
+                    <b>
+                      <i>
+                        Total: {{formatNumber(getGrandTotalPlannedDisbursementForYear())}}
+                      </i>
+                    </b>
+                  </th>
                 </tr>
               </thead>
             </table>

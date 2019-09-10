@@ -101,6 +101,10 @@ export class BasicDataComponent implements OnInit {
       itemsShowLimit: this.itemsToShowInDropdowns,
       allowSearchFilter: true
     };
+
+    setTimeout(() => {
+      this.getDescriptionLimitInfo();
+    }, 1000);
   }
 
   getDescriptionLimitInfo() {

@@ -38,6 +38,7 @@ export class TimeTrendReportComponent implements OnInit {
   currenciesList: any = [];
   locationsList: any = [];
   exchangeRatesList: any = [];
+  exchangeRates: any = [];
   manualExRate: any = 0;
   defaultCurrency: string = null;
   defaultCurrencyRate: number = 0;
@@ -256,19 +257,6 @@ export class TimeTrendReportComponent implements OnInit {
     }
   }
 
-  getManualExchangeRateForToday() {
-    var dated = this.storeService.getCurrentDateSQLFormat();
-    this.currencyService.getManualExRatesByDate(dated).subscribe(
-      data => {
-        if (data) {
-          if (data.exchangeRate) {
-            this.manualExRate = data.exchangeRate;
-            this.oldCurrencyRate = 1;
-          }
-        }
-      });
-  }
-
   getDefaultCurrency() {
     this.currencyService.getDefaultCurrency().subscribe(
       data => {
@@ -449,8 +437,27 @@ export class TimeTrendReportComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
   }
+
+  getManualExchangeRateForToday() {
+    var dated = this.storeService.getCurrentDateSQLFormat();
+    var model = {
+      dated: dated
+    };
+    this.currencyService.getAverageCurrencyForDate(model).subscribe(
+      data => {
+        if (data) {
+          this.exchangeRates = data;
+          var nationalCurrencyRate = this.exchangeRates.filter(c => c.currency == this.nationalCurrencyName);
+          if (nationalCurrencyRate.length > 0) {
+            this.manualExRate = nationalCurrencyRate[0].rate;
+            this.oldCurrencyRate = 1;
+          }
+        }
+      });
+  }
+
 
   getLocationsList() {
     this.locationService.getLocationsList().subscribe(
@@ -609,11 +616,31 @@ export class TimeTrendReportComponent implements OnInit {
     return totalFunding;
   }
 
+  getGrandTotalProjectValueForYear() {
+    var projectValue = 0;
+    if (this.reportDataList && this.reportDataList.yearlyProjectsList) {
+      this.reportDataList.yearlyProjectsList.forEach(function (p) {
+        projectValue += p.totalProjectValue;
+      });
+    }
+    return projectValue;
+  }
+
   getGrandTotalDisbursementForYear() {
     var totalDisbursement = 0;
     if (this.reportDataList && this.reportDataList.yearlyProjectsList) {
       this.reportDataList.yearlyProjectsList.forEach(function (p) {
         totalDisbursement += p.totalDisbursements;
+      });
+    }
+    return totalDisbursement;
+  }
+
+  getGrandTotalPlannedDisbursementForYear() {
+    var totalDisbursement = 0;
+    if (this.reportDataList && this.reportDataList.yearlyProjectsList) {
+      this.reportDataList.yearlyProjectsList.forEach(function (p) {
+        totalDisbursement += p.totalPlannedDisbursements;
       });
     }
     return totalDisbursement;
