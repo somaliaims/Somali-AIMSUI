@@ -7,7 +7,7 @@
         <div class="col-offset-2 col-lg-8 col-md-8">
           <div class="form-group form-inline"> 
             <label class="col-md-3">Currency</label>
-            <select class="form-control col-md-9" name="currency" [(ngModel)]="disbursementModel.currency"
+            <select [disabled]="true" class="form-control col-md-9" name="currency" [(ngModel)]="disbursementModel.currency"
                   #currency="ngModel" id="currency" required>
                   <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}
                   </option>

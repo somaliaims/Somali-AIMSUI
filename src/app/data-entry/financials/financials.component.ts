@@ -36,7 +36,7 @@ export class FinancialsComponent implements OnInit {
   currentYear: any = 0;
   yearList: any = [];
 
-  disbursementModel: any = { currency: null, projectValue: 0 };
+  disbursementModel: any = { currency: null, projectValue: 0, exchangeRate: 0 };
   @BlockUI() blockUI: NgBlockUI;
   constructor(private storeService: StoreService, private errorModal: ErrorModalComponent,
     private projectService: ProjectService) { }
@@ -54,10 +54,22 @@ export class FinancialsComponent implements OnInit {
     this.disbursementModel.currency = this.projectCurrency;
     this.disbursementModel.projectValue = this.projectValue;
     this.setDisbursementsData();
+    this.getExchangeRateForCurrency();
   }
 
   indexTracker(index: number) {
     return index;
+  }
+
+  getExchangeRateForCurrency() {
+    if (this.disbursementModel.currency) {
+      var exRate = this.exchangeRates.filter(e => e.currency == this.disbursementModel.currency);
+      if (exRate.length > 0) {
+        this.exchangeRate = exRate[0].rate;
+      }
+    } else {
+      this.exchangeRate = 1;
+    }
   }
 
   setDisbursementsData() {
@@ -144,6 +156,5 @@ export class FinancialsComponent implements OnInit {
       }
     }
   }
-
   
 }
