@@ -32,7 +32,7 @@ export class CurrencyService {
             catchError(this.storeService.handleError<any>('Exchange Rates')));
     }
 
-    getAverageCurrencyForDateUrl(model: any) {
+    getAverageCurrencyForDate(model: any) {
         var url = this.urlHelper.averageCurrencyRateForDateUrl();
         return this.httpClient.post(url, model, httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Average Exchange Rate'))

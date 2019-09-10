@@ -24,6 +24,7 @@ export class SectorReportComponent implements OnInit {
   selectedOrganizations: any = [];
   selectedLocations: any = [];
   selectedDataOptions: any = [];
+  exchangeRates: any = [];
   selectedChartType: number = 1;
   organizationsSettings: any = {};
   dataOptionSettings: any = {};
@@ -205,7 +206,7 @@ export class SectorReportComponent implements OnInit {
     this.loadFinancialYears();
     this.getDefaultCurrency();
     this.getNationalCurrency();
-    this.getManualExchangeRateForToday();
+    //this.getManualExchangeRateForToday();
     this.datedToday = this.storeService.getLongDateString(new Date());
 
     this.sectorsSettings = {
@@ -257,11 +258,16 @@ export class SectorReportComponent implements OnInit {
 
   getManualExchangeRateForToday() {
     var dated = this.storeService.getCurrentDateSQLFormat();
-    this.currencyService.getManualExRatesByDate(dated).subscribe(
+    var model = {
+      dated: dated
+    };
+    this.currencyService.getAverageCurrencyForDate(model).subscribe(
       data => {
         if (data) {
-          if (data.exchangeRate) {
-            this.manualExRate = data.exchangeRate;
+          this.exchangeRates = data;
+          var nationalCurrencyRate = this.exchangeRates.filter(c => c.currency == this.nationalCurrencyName);
+          if (nationalCurrencyRate.length > 0) {
+            this.manualExRate = nationalCurrencyRate[0].rate;
             this.oldCurrencyRate = 1;
           }
         }
@@ -277,6 +283,7 @@ export class SectorReportComponent implements OnInit {
           this.oldCurrency = this.model.selectedCurrency;
           this.selectedCurrencyName = data.currencyName;
           this.currenciesList.push(data);
+          this.getManualExchangeRateForToday();
         } else {
           this.isDefaultCurrencySet = false;
         }

@@ -365,7 +365,7 @@ export class DataEntryComponent implements OnInit {
     var model = {
       dated: this.storeService.getCurrentDateSQLFormat()
     };
-    this.currencyService.getAverageCurrencyForDateUrl(model).subscribe(
+    this.currencyService.getAverageCurrencyForDate(model).subscribe(
       data => {
         this.exchangeRates = data;
       }

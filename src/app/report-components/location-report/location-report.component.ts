@@ -21,6 +21,7 @@ export class LocationReportComponent implements OnInit {
   locationsSettings: any = [];
   selectedLocations: any = [];
   selectedOrganizations: any = [];
+  exchangeRates: any = [];
   organizationsSettings: any = {};
   dataOptionSettings: any = {};
   yearsList: any = [];
@@ -189,7 +190,6 @@ export class LocationReportComponent implements OnInit {
     this.loadFinancialYears();
     this.getDefaultCurrency();
     this.getNationalCurrency();
-    this.getManualExchangeRateForToday();
     this.datedToday = this.storeService.getLongDateString(new Date());
 
     this.locationsSettings = {
@@ -241,11 +241,16 @@ export class LocationReportComponent implements OnInit {
 
   getManualExchangeRateForToday() {
     var dated = this.storeService.getCurrentDateSQLFormat();
-    this.currencyService.getManualExRatesByDate(dated).subscribe(
+    var model = {
+      dated: dated
+    };
+    this.currencyService.getAverageCurrencyForDate(model).subscribe(
       data => {
         if (data) {
-          if (data.exchangeRate) {
-            this.manualExRate = data.exchangeRate;
+          this.exchangeRates = data;
+          var nationalCurrencyRate = this.exchangeRates.filter(c => c.currency == this.nationalCurrencyName);
+          if (nationalCurrencyRate.length > 0) {
+            this.manualExRate = nationalCurrencyRate[0].rate;
             this.oldCurrencyRate = 1;
           }
         }
@@ -273,6 +278,7 @@ export class LocationReportComponent implements OnInit {
           this.nationalCurrency = data;
           this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
+          this.getManualExchangeRateForToday();
         }
       }
     );
