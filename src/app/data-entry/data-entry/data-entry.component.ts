@@ -45,7 +45,10 @@ export class DataEntryComponent implements OnInit {
   locationsList: any = [];
   selectedImplementers: any = [];
   exchangeRates: any = [];
+  aimsProjects: any = [];
+  iatiProjects: any = [];
 
+  selectedProjects: any = [];
   currentProjectFunders: any = [];
   currentProjectImplementers: any = [];
   currentProjectSectors: any = [];
@@ -130,6 +133,35 @@ export class DataEntryComponent implements OnInit {
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
 
+    var projects = localStorage.getItem('selected-projects');
+    if (projects) {
+      var parsedProjects = JSON.parse(projects);
+      this.selectedProjects = parsedProjects;
+
+      if (this.selectedProjects.length > 0) {
+        var filteredIATI = this.selectedProjects.filter(function (project) {
+          return project.type == 'IATI';
+        });
+
+        var iatiIdsArr = [];
+        filteredIATI.forEach(function (project) {
+          var obj = { identifier: project.identifier };
+          iatiIdsArr.push(obj);
+        }.bind(this));
+        this.loadIATIProjectsForIds(iatiIdsArr);
+
+        var filteredAIMS = this.selectedProjects.filter(function (project) {
+          return project.type == 'AIMS';
+        });
+        var aimsIdsArr = [];
+        filteredAIMS.forEach(function (project) {
+          var id = project.identifier;
+          aimsIdsArr.push(id);
+        });
+        this.loadAIMSProjectsForIds(aimsIdsArr);
+      } 
+    }
+
     if (projectId && projectId != '0') {
       this.blockUI.start('Loading project data...');
       this.isForEdit = true;
@@ -140,6 +172,28 @@ export class DataEntryComponent implements OnInit {
       this.isProjectLoading = false;
     }
     this.currentTab = this.tabConstants.BASIC;
+  }
+
+  loadAIMSProjectsForIds(modelArr: any) {
+    this.projectService.extractProjectsByIds(modelArr).subscribe(
+      data => {
+        if (data) {
+          this.aimsProjects = data;
+        }
+      }
+    );
+  }
+
+  loadIATIProjectsForIds(modelArr: any) {
+    this.iatiService.extractProjectsByIds(modelArr).subscribe(
+      data => {
+        if (data) {
+          this.iatiProjects = data;
+          if (this.iatiProjects.length > 0) {
+          }
+        }
+      }
+    );
   }
 
   loadUserProjects(projectId: number) {
@@ -153,6 +207,10 @@ export class DataEntryComponent implements OnInit {
             this.loadProjectData(projectId);
           }
         }
+        setTimeout(() => {
+          this.isProjectLoading = false;
+          this.blockUI.stop();
+        }, 1000);
       }
     );
   }
@@ -207,10 +265,6 @@ export class DataEntryComponent implements OnInit {
             this.currentProjectMarkers = data.markers;
           }
         }
-        setTimeout(() => {
-          this.isProjectLoading = false;
-          this.blockUI.stop();
-        }, 1000);
       }
     );
   }

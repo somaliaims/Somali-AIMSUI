@@ -14,6 +14,7 @@ import { StoreService } from 'src/app/services/store-service';
 export class BasicDataComponent implements OnInit {
   resourceTempId: number = 0;
   isProjectBtnDisabled: boolean = false;
+  isSourceVisible: boolean = false;
   fundersSettings: any = [];
   implementersSettings: any = [];
   newDocuments: any = [];
@@ -45,7 +46,16 @@ export class BasicDataComponent implements OnInit {
   exchangeRates: any = [];
   @Input()
   currenciesList: any = [];
+  @Input()
+  aimsProjects: any = [];
+  @Input()
+  iatiProjects: any = [];
 
+
+  isShowSource: boolean = false;
+  isProjectSourceAvailable: boolean = false;
+  isFunderSourceAvailable: boolean = false;
+  isImplementerSourceAvailable: boolean = false;
   descriptionLimit: number = Settings.descriptionLongLimit;
   descriptionLimitLeft: number = Settings.descriptionLongLimit;
   requestNo: number = 0;
@@ -102,6 +112,9 @@ export class BasicDataComponent implements OnInit {
       allowSearchFilter: true
     };
 
+    if (this.aimsProjects.length > 0 || this.iatiProjects.length > 0) {
+      this.isProjectSourceAvailable = true;
+    }
     setTimeout(() => {
       this.getDescriptionLimitInfo();
     }, 1000);

@@ -1,3 +1,83 @@
-<p>
-  project-iati works!
-</p>
+<div class="row">
+
+  <div class="col-lg-6 col-md-6">
+    <div class="col-md-12 col-sm-12">
+      <div class="card card-signin my-5 margin-top-10">
+        <div class="card-body">
+          <h6 class="card-title text-center">Source projects</h6>
+  
+          <div class="iati-box">
+            <table class="table table-bordered">
+              <tr *ngIf="isAimsLoading">
+                <span class="text-info">Wait loading aims data...</span>
+              </tr>
+              <tr *ngFor="let project of aimsProjects">
+                <td>
+                  <span class="float-left">
+                    <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="aimst-{{project.id}}"
+                      class="btn btn-info btn-sm" (click)="enterProjectTitleAIMS($event)">Title
+                      >></button>&nbsp;<a href="#" title="View Project Details" id="aproject-{{project.id}}"
+                      (click)="viewAIMSProject($event)" class="text-info">View
+                      Details</a><br />
+  
+                    <div class="margin-top-5">
+                      <b>Start date: </b>{{project.startDate}}&nbsp;<button id="btnsdate-{{project.id}}"
+                        (click)="enterStartDate($event)" class="btn btn-sm btn-success">>></button><br />
+                    </div>
+                    <div class="margin-top-5">
+                      <b>End date: </b>{{project.endDate}}&nbsp;<button id="btnedate-{{project.id}}"
+                        (click)="enterEndDate($event)" class="btn btn-sm btn-success">>></button><br />
+                    </div>
+                    <span class="badge badge-warning">AIMS</span>
+                  </span>
+                  <span class="float-right">
+                    <button id="aimsd-{{project.id}}" class="btn btn-warning btn-sm"
+                      (click)="enterProjectDescAIMS($event)">Description
+                      >></button>
+                  </span>
+                </td>
+              </tr>
+  
+              <tr *ngIf="isIatiLoading">
+                <span class="text-info">Wait loading iati data...</span>
+              </tr>
+              <tr *ngFor="let project of iatiProjects">
+                <td>
+                  <span class="float-left">
+                    <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="iatit-{{project.id}}"
+                      class="btn btn-info btn-sm" (click)="enterProjectTitleIATI($event)">Title
+                      >></button>&nbsp;<a href="#" title="View Project Details" id="iproject-{{project.id}}"
+                      (click)="viewIATIProject($event)" class="text-info">View
+                      Details</a><br />
+                    <div class="margin-top-5">
+                      <b>Start date: </b>{{project.startDate}}&nbsp;<button *ngIf="project.startDate"
+                        id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)"
+                        class="btn btn-sm btn-success">>></button><br />
+                    </div>
+                    <div class="margin-top-5">
+                      <b>End date: </b>{{project.endDate}}&nbsp;<button *ngIf="project.endDate"
+                        id="btniedate-{{project.id}}" (click)="enterEndDateIATI($event)"
+                        class="btn btn-sm btn-success">>></button><br />
+                    </div>
+                    <span class="badge badge-warning">IATI</span>
+                  </span>
+                  <span class="float-right">
+  
+                    <button id="iatid-{{project.id}}" class="btn btn-warning btn-sm"
+                      (click)="enterProjectDescIATI($event)">Description
+                      >></button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 col-md-6"> 
+
+  </div>
+
+</div>
