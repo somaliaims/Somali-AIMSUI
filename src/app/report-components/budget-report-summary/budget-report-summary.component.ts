@@ -25,6 +25,7 @@ export class BudgetReportSummaryComponent implements OnInit {
   reportDataList: any = [];
   reportSettings: any = { title: null};
   currenciesList: any = [];
+  exchangeRates: any = [];
   model: any = { selectedCurrency: null };
   errorMessage: string = null;
   grandTotalFunding: number = 0;
@@ -75,13 +76,17 @@ export class BudgetReportSummaryComponent implements OnInit {
 
   getManualExchangeRateForToday() {
     var dated = this.storeService.getCurrentDateSQLFormat();
-    this.currencyService.getManualExRatesByDate(dated).subscribe(
+    var model = {
+      dated: dated
+    };
+    this.currencyService.getAverageCurrencyForDate(model).subscribe(
       data => {
         if (data) {
-          if (data.exchangeRate) {
-            this.manualExRate = data.exchangeRate;
+          this.exchangeRates = data;
+          var nationalCurrencyRate = this.exchangeRates.filter(c => c.currency == this.nationalCurrencyName);
+          if (nationalCurrencyRate.length > 0) {
+            this.manualExRate = nationalCurrencyRate[0].rate;
             this.oldCurrencyRate = 1;
-            this.oldExRateToDefault = 1;
           }
         }
       });
@@ -163,7 +168,7 @@ export class BudgetReportSummaryComponent implements OnInit {
 
     this.chartData.push({
       data: expectedDisbursements,
-      label: 'Expected disbursements',
+      label: 'Planned disbursements',
       stack: 'Stack 0'
     });
   }

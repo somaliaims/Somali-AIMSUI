@@ -106,7 +106,7 @@
                 </tr>
                 <tr class="child" *ngIf="project.isDisplay">
                     <td>&nbsp;</td>
-                    <td><i>Expected</i></td>
+                    <td><i>Planned</i></td>
                     <td class="text-center" width="12%" *ngFor="let d of project.disbursementsBreakup">
                         {{formatNumber(d.expectedDisbursements)}}
                       </td>
@@ -125,7 +125,7 @@
               </tr>
               <tr>
                 <td></td>
-                <td><b>Expected disbursements</b></td>
+                <td><b>Planned disbursements</b></td>
                 <td class="text-center" *ngFor="let d of reportDataList.totalYearlyDisbursements">
                   {{formatNumber(d.totalExpectedDisbursements)}}
                 </td>
@@ -165,7 +165,7 @@
               </td>
             </tr>
             <tr>
-              <td>Expected disbursements</td>
+              <td>Planned disbursements</td>
               <td class="text-center" *ngFor="let d of selectedYearlyDisbursements">
                 {{formatNumber(d.expectedDisbursements)}}
               </td>

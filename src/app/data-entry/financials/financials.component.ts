@@ -138,6 +138,21 @@ export class FinancialsComponent implements OnInit {
         }
       });
 
+      if (!isDataValid) {
+        return false;
+      }
+
+      var totalDisbursements = 0;
+      this.projectDisbursements.forEach(d => {
+        totalDisbursements = (d.disbursement * d.exchangeRate);
+      });
+
+      if (totalDisbursements > (this.projectValue * this.exchangeRate)) {
+        this.errorMessage = '';
+        this.errorModal.openModal();
+        return false;
+      }
+
       if (isDataValid) {
         this.blockUI.start('Saving disbursements');
         var model = {
