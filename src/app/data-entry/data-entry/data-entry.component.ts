@@ -31,6 +31,7 @@ export class DataEntryComponent implements OnInit {
   currentTab: string = null;
   isProjectLoading: boolean = true;
   permissions: any = {};
+  sourceProjects: number = 0;
   fieldTypes: any = Settings.markerTypes;
 
   userProjectIds: any = [];
@@ -123,13 +124,6 @@ export class DataEntryComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
-    this.getAverageExchangeRates();
-    this.getFinancialYears();
-    this.getOrganizationsList();
-    this.getCurrenciesList();
-    this.getFundingTypes();
-    this.getSectorTypes();
-    this.getLocationsList();
     this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
 
@@ -162,6 +156,14 @@ export class DataEntryComponent implements OnInit {
       } 
     }
 
+    this.getAverageExchangeRates();
+    this.getFinancialYears();
+    this.getOrganizationsList();
+    this.getCurrenciesList();
+    this.getFundingTypes();
+    this.getSectorTypes();
+    this.getLocationsList();
+    
     if (projectId && projectId != '0') {
       this.blockUI.start('Loading project data...');
       this.isForEdit = true;
@@ -207,10 +209,6 @@ export class DataEntryComponent implements OnInit {
             this.loadProjectData(projectId);
           }
         }
-        setTimeout(() => {
-          this.isProjectLoading = false;
-          this.blockUI.stop();
-        }, 1000);
       }
     );
   }
@@ -265,6 +263,7 @@ export class DataEntryComponent implements OnInit {
             this.currentProjectMarkers = data.markers;
           }
         }
+        this.isProjectLoading = false;
       }
     );
   }
@@ -339,7 +338,12 @@ export class DataEntryComponent implements OnInit {
   getLocationsList() {
     this.locationService.getLocationsList().subscribe(
       data => {
-        this.locationsList = data;
+        if (data) {
+          this.locationsList = data;
+        }
+        setTimeout(() => {
+          this.blockUI.stop();        
+        }, 1000);
       }
     );
   }
@@ -405,11 +409,7 @@ export class DataEntryComponent implements OnInit {
               this.currentProjectMarkers = data.markers;
             }
           }
-          setTimeout(() => {
-            this.isProjectLoading = false;
-            this.blockUI.stop();
-            this.projectInfoModal.openModal();
-          }, 1000);
+  
         }
       );
     }

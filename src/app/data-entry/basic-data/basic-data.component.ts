@@ -21,6 +21,7 @@ export class BasicDataComponent implements OnInit {
   entryForm: any = null;
   errorMessage: string = null;
   itemsToShowInDropdowns: number = 3;
+  currentTab: string = null;
 
   funderModel: any = { selectedFunders: [] };
   implementerModel: any = { selectedImplementers: [] };
@@ -51,6 +52,28 @@ export class BasicDataComponent implements OnInit {
   @Input()
   iatiProjects: any = [];
 
+  displayTabs: any = [
+    { visible: true, identity: 'project' },
+    { visible: false, identity: 'project-source' },
+    { visible: false, identity: 'funders-source' },
+    { visible: false, identity: 'implementers-source' },
+    { visible: false, identity: 'sectors' },
+    { visible: false, identity: 'sectors-source' },
+    { visible: false, identity: 'locations-source' },
+    { visible: false, identity: 'finish' }
+  ];
+
+  tabConstants: any = {
+    PROJECT: 'project',
+    PROJECT_SOURCE: 'project-source',
+    FUNDERS_SOURCE: 'funders-source',
+    IMPLEMENTERS_SOURCE: 'implementers-source',
+    SECTORS: 'sectors',
+    SECTORS_SOURCE: 'sectors-source',
+    FINANCIALS: 'financials',
+    FINANCIALS_SOURCE: 'financials-source',
+    FINISH: 'finish'
+  };
 
   isShowSource: boolean = false;
   isProjectSourceAvailable: boolean = false;
@@ -66,6 +89,7 @@ export class BasicDataComponent implements OnInit {
     private storeService: StoreService) { }
 
   ngOnInit() {
+    this.currentTab = this.tabConstants.PROJECT;
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -111,13 +135,20 @@ export class BasicDataComponent implements OnInit {
       itemsShowLimit: this.itemsToShowInDropdowns,
       allowSearchFilter: true
     };
+  }
 
+  ngOnChanges() {
     if (this.aimsProjects.length > 0 || this.iatiProjects.length > 0) {
       this.isProjectSourceAvailable = true;
     }
-    setTimeout(() => {
+    
+    if (this.projectData && this.projectData.description) {
       this.getDescriptionLimitInfo();
-    }, 1000);
+    }
+
+    if (this.iatiProjects.length > 0) {
+      console.log(this.iatiProjects);
+    }
   }
 
   getDescriptionLimitInfo() {
@@ -281,6 +312,26 @@ export class BasicDataComponent implements OnInit {
           this.blockUI.stop();
         }
       );
+    }
+  }
+
+  showProjectData() {
+    this.manageTabsDisplay(this.tabConstants.PROJECT);
+  }
+
+  showProjectSource() {
+    this.manageTabsDisplay(this.tabConstants.PROJECT_SOURCE);
+  }
+
+  manageTabsDisplay(tabIdentity) {
+    for (var i = 0; i < this.displayTabs.length; i++) {
+      var tab = this.displayTabs[i];
+      if (tab.identity == tabIdentity) {
+        tab.visible = true;
+        this.currentTab = tabIdentity;
+      } else {
+        tab.visible = false;
+      }
     }
   }
 

@@ -1,15 +1,17 @@
-<div *ngIf="!isSourceVisible" class="col-lg-12 col-md-12 card padding-20 margin-top-5">
+<div *ngIf="currentTab == tabConstants.PROJECT" class="col-lg-12 col-md-12 card padding-20 margin-top-5">
     <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject(projectForm)" #projectForm="ngForm">
         <div class="row">
           <div class="col-lg-4 col-md-4">
-            <div class="form-group form-inline input-group mb-3">
+            <div class="input-group input-group mb-3">
               <!--<label class="col-sm-2 col-form-label justify-left" for="title">Name</label>-->
-              <input placeholder="Project name/title" title="Project name/title" class="form-control col-sm-12" type="text" name="title" [(ngModel)]="projectData.title" #title="ngModel"
-                id="title" required>
+              <input placeholder="Project name/title" title="Project name/title" class="form-control col-sm-12" type="text"
+                name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title" required>
+              <div *ngIf="isProjectSourceAvailable" class="input-group-append">
+                <button class="btn btn-warning" title="Source data available" (click)="showProjectSource()" type="button"><i
+                    class="fa fa-database"></i></button>
+              </div>
             </div>
-            <div *ngIf="projectSourceAvailable" class="input-group-append">
-              <button class="btn btn-success" type="button"><i class="fas fa-databaes"></i></button>
-            </div>
+        
             <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
               Project title is required
             </div>
@@ -170,7 +172,7 @@
       </form>
 </div>
 
-<div *ngIf="isSourceVisible" class="row">
+<div *ngIf="currentTab == tabConstants.PROJECT_SOURCE" class="row">
 
   <div class="col-lg-6 col-md-6">
     <div class="col-md-12 col-sm-12">
