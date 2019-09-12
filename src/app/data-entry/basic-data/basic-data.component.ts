@@ -169,6 +169,41 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
+  saveBasicData() {
+    var startingYear = parseInt(this.projectData.startingFinancialYear);
+    var endingYear = parseInt(this.projectData.endingFinancialYear);
+
+    if (startingYear > endingYear) {
+      this.errorMessage = 'Starting year cannot be greater than ending year';
+      this.errorModal.openModal();
+      return false;
+    }
+
+    if (this.projectId != 0) {
+      this.blockUI.start('Saving project...');
+      this.projectService.updateProject(this.projectId, this.projectData).subscribe(
+        data => {
+          if (data) {
+            this.showProjectData();
+          } 
+          this.blockUI.stop();
+        }
+      );
+    } else {
+      this.blockUI.start('Saving project...');
+      this.projectService.addProject(this.projectData).subscribe(
+        data => {
+          if (data) {
+            this.projectId = data;
+            localStorage.setItem('active-project', data);
+            this.showProjectData();
+          } 
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
   saveProject(frm: any) {
     this.entryForm = frm;
     var startingYear = parseInt(this.projectData.startingFinancialYear);
@@ -333,6 +368,108 @@ export class BasicDataComponent implements OnInit {
         tab.visible = false;
       }
     }
+  }
+
+  /*Handling IATI Stuff*/
+  enterProjectTitleAIMS(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.projectData.title = selectedProject[0].title.trim();
+    }
+  }
+
+  enterProjectDescAIMS(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.projectData.description = selectedProject[0].description.trim();
+    }
+    this.getDescriptionLimitInfo();
+  }
+
+  enterStartDate(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.projectData.startingFinancialYear = selectedProject[0].startingFinancialYear;
+    }
+  }
+
+  enterEndDate(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.projectData.endingFinancialYear = selectedProject[0].endingFinancialYear;
+    }
+  }
+
+  enterStartDateIATI(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.iatiProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      var sDate = new Date(selectedProject[0].startDate);
+      this.projectData.startingFinancialYear = sDate.getFullYear();
+    }
+  }
+
+  enterEndDateIATI(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.iatiProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      var eDate = new Date(selectedProject[0].endDate);
+      this.projectData.endingFinancialYear = eDate.getFullYear();
+    }
+  }
+
+  enterProjectTitleIATI(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.iatiProjects.filter(p => p.id == id);
+    if (selectedProject) {
+      this.projectData.title = selectedProject[0].title.trim();
+    }
+  }
+
+  enterCurrencyIATI(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject.length > 0) {
+      this.projectData.projectCurrency = selectProject[0].defaultCurrency;
+      if (this.projectData.projectCurrency) {
+        this.getExchangeRateForCurrency();
+      }
+    }
+  }
+
+  enterIATIBudget(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var budgetId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var budgets = selectProject[0].budgets;
+      var selectedBudget = budgets.filter(b => b.id == budgetId);
+      if (selectedBudget && selectedBudget.length > 0) {
+        if (selectedBudget.length > 0) {
+          this.projectData.projectCurrency = selectedBudget[0].currency;
+          this.projectData.projectValue = selectedBudget[0].amount;
+          if (this.projectData.projectCurrency) {
+            this.getExchangeRateForCurrency();
+          }
+        }
+      }
+    }
+  }
+
+  enterProjectDescIATI(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.iatiProjects.filter(p => p.id == id);
+    if (selectedProject) {
+      this.projectData.description = selectedProject[0].description.trim();
+    }
+    this.getDescriptionLimitInfo();
   }
 
 }
