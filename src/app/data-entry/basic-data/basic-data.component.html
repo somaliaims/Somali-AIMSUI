@@ -289,15 +289,14 @@
     <div class="col-md-12 col-sm-12">
       <div class="card card-signin my-5 margin-top-10">
         <div class="card-body">
-          <form class="form-signin" (ngSubmit)="projectSourceForm.form.valid && saveBasicData(projectSourceForm)"
-            #projectSourceForm="ngForm">
+            <form class="form-signin" (ngSubmit)="projectSourceForm.form.valid && saveBasicData(projectSourceForm)" #projectSourceForm="ngForm">
 
             <div class="row">
               <span class="col-md-6">
                 <h6 class="card-title text-left">Project data</h6>
               </span>
               <span class="col-md-6 text-right">
-                <button type="submit" (click)="saveBasicData()"
+                <button type="submit"
                   class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
                 <button type="button" (click)="showProjectData()"
                   class="btn btn-danger btn-sm text-uppercase">Cancel</button>
@@ -306,11 +305,8 @@
 
             <div class="form-group">
               <label>Project name</label>
-              <input type="text" class="form-control" [readonly]="true" name="title" [(ngModel)]="projectData.title"
+              <input type="text" class="form-control"  name="title" [(ngModel)]="projectData.title"
                 #title="ngModel" required />
-              <div *ngIf="projectSourceForm.submitted" [hidden]="title.valid" class="alert alert-danger">
-                Project title is required
-              </div>
             </div>
             <div *ngIf="projectSourceForm.submitted" [hidden]="title.valid" class="alert alert-danger">
               Project title is required
@@ -318,8 +314,12 @@
             
             <div class="form-group">
               <label>Starting year</label>
-              <input type="text" class="form-control" [readonly]="true" name="startingFinancialYear"
-                [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" required />
+              <select title="Starting financial year" class="form-control col-sm-12" name="startingFinancialYear"
+                [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" id="startingFinancialYear"
+                required>
+                <option value="null">--Starting year--</option>
+                <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
+              </select>
             </div>
             <div *ngIf="projectSourceForm.submitted" [hidden]="startingFinancialYear.valid" class="alert alert-danger">
               Starting year is required
@@ -327,16 +327,28 @@
 
             <div class="form-group">
               <label>Ending year</label>
-              <input type="text" class="form-control" [readonly]="true" name="endingFinancialYear"
-                [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" required />
+              <select title="Ending financial year" class="form-control col-sm-12" name="endingFinancialYear"
+                [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" id="endingFinancialYear" required>
+                <option value="null">--Ending year--</option>
+                <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
+              </select>
             </div>
             <div *ngIf="projectSourceForm.submitted" [hidden]="endingFinancialYear.valid" class="alert alert-danger">
               Ending year is required
             </div>
 
             <div class="form-group">
+              <label>Project currency</label>
+              <input type="text" class="form-control"  name="currency"
+                [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" required />
+            </div>
+            <div *ngIf="projectSourceForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
+              Project currency is required
+            </div>
+
+            <div class="form-group">
               <label>Project value</label>
-              <input type="number" class="form-control" [readonly]="true" name="projectValue"
+              <input type="number" class="form-control" name="projectValue"
                 [(ngModel)]="projectData.projectValue" #projectValue="ngModel" required />
             </div>
             <div *ngIf="projectSourceForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
@@ -344,16 +356,20 @@
             </div>
 
             <div class="form-group">
-              <label>Project currency</label>
-              <input type="text" class="form-control" [readonly]="true" name="currency"
-                [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" required />
+              <label>Funding type</label>
+              <select title="Funding type" class="form-control col-sm-12" name="fundingTypeId"
+                [(ngModel)]="projectData.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
+                <option value="null">--Funding type--</option>
+                <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
+              </select>
             </div>
-            <div *ngIf="projectSourceForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
-              Project currency is required
-            </div>
+            <div *ngIf="projectSourceForm.submitted" [hidden]="fundingTypeId.valid" class="alert alert-danger">
+                Funding type is required
+              </div>
+            
             <div class="form-group">
               <label>Project description</label>
-              <textarea class="form-control" [readonly]="true" class="form-control" id="description"
+              <textarea class="form-control" class="form-control" id="description"
                 (input)="getDescriptionLimitInfo()" [(ngModel)]="projectData.description" name="description"
                 #description="ngModel" rows="5" maxlength="{{descriptionLimit}}">
                         </textarea>
@@ -361,7 +377,7 @@
 
             <div class="row">
               <div class="col-md-12 text-right">
-                <button type="submit" (click)="saveBasicData()"
+                <button type="submit"
                   class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
                 <button type="button" (click)="showProjectData()"
                   class="btn btn-danger btn-sm text-uppercase">Cancel</button>

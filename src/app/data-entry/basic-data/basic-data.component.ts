@@ -162,10 +162,10 @@ export class BasicDataComponent implements OnInit {
     if (this.projectData.currency) {
       var exRate = this.exchangeRates.filter(e => e.currency == this.projectData.currency);
       if (exRate.length > 0) {
-        this.exchangeRate = exRate[0].rate;
+        this.projectData.exchangeRate = exRate[0].rate;
       }
     } else {
-      this.exchangeRate = 0;
+      this.projectData.exchangeRate = 1;
     }
   }
 
