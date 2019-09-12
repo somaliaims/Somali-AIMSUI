@@ -15,9 +15,12 @@ export class BasicDataComponent implements OnInit {
   resourceTempId: number = 0;
   isProjectBtnDisabled: boolean = false;
   isSourceVisible: boolean = false;
+  isFunderDataAvailable: boolean = false;
+  isImplementerDataAvailable: boolean = false;
   fundersSettings: any = [];
   implementersSettings: any = [];
   newDocuments: any = [];
+  sourceFundersList: any = [];
   entryForm: any = null;
   errorMessage: string = null;
   itemsToShowInDropdowns: number = 3;
@@ -147,7 +150,47 @@ export class BasicDataComponent implements OnInit {
     }
 
     if (this.iatiProjects.length > 0) {
-      console.log(this.iatiProjects);
+      this.iatiProjects.forEach(p => {
+        if (p.funders.length > 0) {
+          this.isFunderDataAvailable = true;
+
+          p.funders.forEach(f => {
+            f.isSaved = true;
+          });
+        }
+      });
+
+      this.aimsProjects.forEach(p => {
+        if (p.implementers.length > 0) {
+          this.isImplementerDataAvailable = true;
+        }
+
+        p.implemneters.forEach(i => {
+          i.isSaved = true;
+        });
+      });
+    }
+
+    if (this.aimsProjects.length > 0) {
+      this.aimsProjects.forEach(p => {
+        if (p.funders.length > 0) {
+          this.isFunderDataAvailable = true;
+
+          p.funders.forEach(f => {
+            f.isSaved = true;
+          });
+        }
+      });
+
+      this.aimsProjects.forEach(p => {
+        if (p.implementers.length > 0) {
+          this.isImplementerDataAvailable = true;
+
+          p.implemneters.forEach(i => {
+            i.isSaved = true;
+          });
+        }
+      });
     }
   }
 
@@ -260,6 +303,10 @@ export class BasicDataComponent implements OnInit {
     );
   }
 
+  saveNewProjectFunders() {
+
+  }
+
   saveProjectImplementers() {
     var implementerIds = this.implementerModel.selectedImplementers.map(i => i.id);
     var model = {
@@ -350,12 +397,17 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
+  /* Showing tabs, tabs management*/
   showProjectData() {
     this.manageTabsDisplay(this.tabConstants.PROJECT);
   }
 
   showProjectSource() {
     this.manageTabsDisplay(this.tabConstants.PROJECT_SOURCE);
+  }
+
+  showFundersSource() {
+    this.manageTabsDisplay(this.tabConstants.FUNDERS_SOURCE);
   }
 
   manageTabsDisplay(tabIdentity) {
@@ -470,6 +522,42 @@ export class BasicDataComponent implements OnInit {
       this.projectData.description = selectedProject[0].description.trim();
     }
     this.getDescriptionLimitInfo();
+  }
+
+
+
+  checkIfFunderAdded(funder) {
+    if (this.projectFunders.length > 0) {
+      var isExists = this.projectFunders.filter(f =>
+        f.funder.trim().toLowerCase() == funder.trim().toLowerCase());
+      return isExists.length > 0 ? true : false;
+    }
+  }
+
+  checkIfImplementerAdded(implementer) {
+    if (this.projectImplementers.length > 0) {
+      var isExists = this.projectImplementers.filter(i =>
+        i.implementer.trim().toLowerCase() == implementer.trim().toLowerCase());
+      return isExists.length > 0 ? true : false;
+    }
+  }
+
+  addFunderToList(funder) {
+    if (this.sourceFundersList.includes(funder)) {
+      this.sourceFundersList = this.sourceFundersList.filter(f => f != funder);
+    } else {
+      this.sourceFundersList.push(funder);
+    }
+    
+  }
+
+  checkIfFunderInActionList(funder) {
+    var result = this.sourceFundersList.filter(f => f.toLowerCase() == funder.toLowerCase()).length > 0 ? true : false;
+    return result;
+  }
+
+  removeFunderFromList(funder) {
+    this.sourceFundersList = this.sourceFundersList.filter(f => f.toLowerCase() != funder.toLowerCase());
   }
 
 }
