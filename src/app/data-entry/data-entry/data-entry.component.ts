@@ -488,4 +488,12 @@ export class DataEntryComponent implements OnInit {
     this.currentProjectImplementers = $event;
   }
 
+  updateProjectSectors($event) {
+    this.currentProjectSectors = $event;
+  }
+
+  updateProjectLocations($event) {
+    this.currentProjectLocations = $event;
+  }
+
 }

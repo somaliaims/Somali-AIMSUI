@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
 import { SectorService } from 'src/app/services/sector.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -27,11 +27,15 @@ export class ProjectSectorsComponent implements OnInit {
   defaultSectorTypeId: number = 0;
   @Input()
   defaultSectorType: string = null;
-  
   @Input()
   locationsList: any = [];
   @Input()
   currentProjectLocations: any = [];
+
+  @Output()
+  projectSectorsChanged = new EventEmitter<any[]>();
+  @Output()
+  projectLocationsChanged = new EventEmitter<any[]>();
 
   typeSectorsList: any = [];
   sectorMappings: any = [];
@@ -209,6 +213,7 @@ export class ProjectSectorsComponent implements OnInit {
         data => {
           if (data) {
             this.currentProjectSectors = this.currentProjectSectors.filter(s => s.sectorId != sectorId);
+            this.updateSectorsToParent();
           }
           this.blockUI.stop();
         }
@@ -222,7 +227,8 @@ export class ProjectSectorsComponent implements OnInit {
       this.projectService.deleteProjectLocation(this.projectId.toString(), locationId).subscribe(
         data => {
           if (data) {
-            this.currentProjectLocations = this.currentProjectLocations.filter(l => l.id != locationId);
+            this.currentProjectLocations = this.currentProjectLocations.filter(l => l.locationId != locationId);
+            this.updateLocationsToParent();
           }
           this.blockUI.stop();
         }
@@ -272,7 +278,7 @@ export class ProjectSectorsComponent implements OnInit {
       this.projectService.addProjectSector(model).subscribe(
         data => {
           if (data) {
-            this.getProjectSectors();            
+            this.getProjectSectors();    
           }
         }
       );
@@ -290,7 +296,7 @@ export class ProjectSectorsComponent implements OnInit {
       this.projectService.addProjectLocation(model).subscribe(
         data => {
           if (data) {
-            this.getProjectLocations();            
+            this.getProjectLocations();  
           }
         }
       );
@@ -307,6 +313,7 @@ export class ProjectSectorsComponent implements OnInit {
             });
           }
           this.currentProjectSectors = data;
+          this.updateSectorsToParent();
         }
         this.blockUI.stop();
       }
@@ -323,10 +330,20 @@ export class ProjectSectorsComponent implements OnInit {
             });
           }
           this.currentProjectLocations = data;
+          this.updateLocationsToParent();
         }
         this.blockUI.stop();
       }
     );
+  }
+
+  /*Sending updated data to parent*/
+  updateSectorsToParent() {
+    this.projectSectorsChanged.emit(this.currentProjectSectors);
+  }
+
+  updateLocationsToParent() {
+    this.projectLocationsChanged.emit(this.currentProjectLocations);
   }
 
 }

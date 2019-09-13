@@ -167,7 +167,7 @@
                   <td class="text-center">{{location.fundsPercentage}}</td>
                   <td class="text-center">
                     <button *ngIf="location.saved" title="Delete location"
-                      (click)="deleteProjectLocation(location.id)" class="btn btn-danger"><i
+                      (click)="deleteProjectLocation(location.locationId)" class="btn btn-danger"><i
                         class="fa fa-trash"></i></button>
                     <button *ngIf="!location.saved" title="Remove location"
                       (click)="removeProjectLocation(location.locationId)" class="btn btn-warning"><i

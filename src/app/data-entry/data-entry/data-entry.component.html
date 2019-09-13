@@ -48,7 +48,8 @@
           <project-sectors [sectorTypesList]="sectorTypesList" [sectorsList]="sectorsList" 
             [defaultSectorsList]="defaultSectorsList" [defaultSectorTypeId]="defaultSectorTypeId" 
             [projectId]="activeProjectId" [defaultSectorType]="defaultSectorType" [locationsList]="locationsList"
-            [currentProjectSectors]="currentProjectSectors" [currentProjectLocations]="currentProjectLocations" >
+            [currentProjectSectors]="currentProjectSectors" [currentProjectLocations]="currentProjectLocations"
+            (projectSectorsChanged)="updateProjectSectors($event)" (projectLocationsChanged)="updateProjectLocations($event)" >
           </project-sectors>
         </div>
 
