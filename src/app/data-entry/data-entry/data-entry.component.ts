@@ -479,4 +479,13 @@ export class DataEntryComponent implements OnInit {
     this.router.navigateByUrl('home');
   }
 
+  /*Updating data from child*/
+  updateProjectFunders($event) {
+    this.currentProjectFunders = $event;
+  }
+
+  updateProjectImplementers($event) {
+    this.currentProjectImplementers = $event;
+  }
+
 }

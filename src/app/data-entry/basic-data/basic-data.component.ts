@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Settings } from 'src/app/config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Messages } from 'src/app/config/messages';
@@ -54,6 +54,11 @@ export class BasicDataComponent implements OnInit {
   aimsProjects: any = [];
   @Input()
   iatiProjects: any = [];
+
+  @Output() 
+  projectFundersChanged = new EventEmitter<any[]>();
+  @Output()
+  projectImplementersChanged = new EventEmitter<any[]>();
 
   displayTabs: any = [
     { visible: true, identity: 'project' },
@@ -302,6 +307,7 @@ export class BasicDataComponent implements OnInit {
               funder: f.organizationName
             });
           });
+          this.updateFundersToParent();
           this.saveProjectImplementers();
         } else {
           this.blockUI.stop();
@@ -340,6 +346,14 @@ export class BasicDataComponent implements OnInit {
     this.projectService.addProjectImplementer(model).subscribe(
       data => {
         if (data) {
+          this.projectImplementers = [];
+          this.implementerModel.selectedImplementers.forEach((i) => {
+            this.projectImplementers.push({
+              implementerId: i.id,
+              implementer: i.organizationName
+            });
+          });
+          this.updateImplementersToParent();
           this.saveProjectDocuments();
         } else {
           this.blockUI.stop();
@@ -468,6 +482,15 @@ export class BasicDataComponent implements OnInit {
         tab.visible = false;
       }
     }
+  }
+
+  /*Sending updated data to parent*/
+  updateFundersToParent() {
+    this.projectFundersChanged.emit(this.projectFunders);
+  }
+
+  updateImplementersToParent() {
+    this.projectImplementersChanged.emit(this.projectImplementers);
   }
 
   /*Handling IATI Stuff*/

@@ -27,11 +27,12 @@
     
 
     <div *ngIf="!isProjectLoading && currentTab == tabConstants.BASIC" class="col-lg-12 col-md-12">
-      <basic-data [projectData]="projectData" [projectDocuments]="currentProjectDocuments"
-        [projectFunders]="currentProjectFunders" [projectImplementers]="currentProjectImplementers"
+      <basic-data [(projectData)]="projectData" [(projectDocuments)]="currentProjectDocuments"
+        [(projectFunders)]="currentProjectFunders" [(projectImplementers)]="currentProjectImplementers"
         [financialYears]="financialYears" [exchangeRates]="exchangeRates" [organizationsList]="organizationsList" [fundingTypesList]="fundingTypesList"
         [currenciesList]="currenciesList" [projectId]="activeProjectId" [aimsProjects]="aimsProjects"
-        [iatiProjects]="iatiProjects">
+        [iatiProjects]="iatiProjects" (projectFundersChanged)="updateProjectFunders($event)"
+        (projectImplementersChanged)="updateProjectImplementers($event)">
       </basic-data>
     </div>
 

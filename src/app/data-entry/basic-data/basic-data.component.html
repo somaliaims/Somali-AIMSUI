@@ -473,4 +473,80 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="currentTab == tabConstants.IMPLEMENTERS_SOURCE" class="row">
+  <div class="col-lg-12 col-md-12 small">
+    <div class="box">
+      <div class="col-lg-12 col-md-12 text-right margin-top-5">
+        <button type="button" (click)="saveProjectImplementersFromSource()" class="btn btn-info btn-sm text-uppercase">Save data</button>&nbsp;
+        <button type="button" (click)="showProjectData()" class="btn btn-danger btn-sm text-uppercase">Cancel</button>
+      </div>
+      <table class="table table-bordered">
+        <tr *ngFor="let project of aimsProjects">
+          <td>
+            <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+              id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
+              Details</a><br />
+            <span class="badge badge-warning">AIMS</span>
+
+            <table *ngIf="project.implementers.length > 0" class="table table-striped">
+              <tr>
+                <th>Implementer name</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let implementer of project.implementers">
+                <td>
+                  {{implementer.implementer}}
+                </td>
+                <td [class.disable]="checkIfImplementerInActionList(implementer.implementer)">
+                  <button *ngIf="checkIfImplementerAdded(implementer.implementer)" id="aImplementer-{{project.id}}-{{funder.funderId}}"
+                    (click)="enterAIMSImplementer($event)" class="btn btn-success btn-sm">Enter >></button>
+                </td>
+              </tr>
+            </table>
+            <div class="text-info" *ngIf="project.implementers.length == 0"><i>No implementers from AIMS found.</i></div>
+          </td>
+        </tr>
+      </table>
+
+      <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+        <tr *ngFor="let project of iatiProjects">
+          <td>
+            <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+              id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
+              Details</a><br />
+
+            <div class="badge badge-warning float-right">IATI</div>
+            <div class="margin-top-10">
+              <table *ngIf="project.implementers.length > 0" class="table table-striped margin-top-5">
+                <tr>
+                  <th>Implementer name</th>
+                  <th>Action</th>
+                </tr>
+                <tr *ngFor="let implementer of project.implementers">
+                  <td>
+                    {{implementer.name}}
+                  </td>
+                  <td>
+                    <button *ngIf="!checkIfImplementerAdded(implementer.name)" id="dimplementer-{{project.id}}-{{funder.id}}"
+                      (click)="addImplementerToList(implementer.name)" class="btn btn-success btn-sm"><i
+                        [className]="checkIfImplementerInActionList(implementer.name) ? 'fa fa-check' : 'fa fa-square'"></i></button>
+                  </td>
+                </tr>
+              </table>
+              <div class="text-info" *ngIf="project.implementers.length == 0">
+                <i>No implementers to show.</i>
+              </div>
+            </div>
+
+          </td>
+        </tr>
+      </table>
+      <div class="col-lg-12 col-md-12 text-right">
+        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save funders</button>&nbsp;
+        <button type="button" (click)="showProjectData()" class="btn btn-danger btn-sm text-uppercase">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
 <error-modal message={{errorMessage}}></error-modal>
