@@ -295,6 +295,7 @@ export class BasicDataComponent implements OnInit {
     this.projectService.addProjectFunder(model).subscribe(
       data => {
         if (data) {
+          this.projectFunders = this.funderModel.selectedFunders;
           this.saveProjectImplementers();
         } else {
           this.blockUI.stop();
@@ -303,8 +304,25 @@ export class BasicDataComponent implements OnInit {
     );
   }
 
-  saveNewProjectFunders() {
+  saveProjectFundersFromSource() {
+    if (this.sourceFundersList.length > 0) {
+      var model = {
+        projectId: this.projectId,
+        funders: this.sourceFundersList
+      }
 
+      this.blockUI.start('Saving funders...');
+      this.projectService.addProjectFunderFromSource(model).subscribe(
+        data => {
+          if (data) {
+            this.sourceFundersList = [];
+            this.getProjectFunders(true);
+          }
+        }
+      );
+    } else {
+      this.showProjectData();
+    }
   }
 
   saveProjectImplementers() {
@@ -322,6 +340,30 @@ export class BasicDataComponent implements OnInit {
         }
       }
     );
+  }
+
+  getProjectFunders(isDBSync: any = false) {
+    if (this.projectId) {
+      this.projectService.getProjectFunders(this.projectId.toString()).subscribe(
+        data => {
+          if (data) {
+            this.projectFunders = data;
+            if (isDBSync) {
+              this.funderModel.selectedFunders = [];
+              
+              this.projectFunders.forEach((f) => {
+                this.funderModel.selectedFunders.push({
+                  id: f.funderId,
+                  organizationName: f.funder
+                });
+              });
+              this.blockUI.stop();
+              this.showProjectData();
+            }
+          }
+        }
+      );
+    }
   }
 
   saveProjectDocuments() {

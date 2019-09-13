@@ -220,6 +220,13 @@ export class ProjectService {
         catchError(this.storeService.handleError<any>('New Project Funder')));
   }
 
+  addProjectFunderFromSource(model: any) {
+    var url = this.urlHelper.addProjectFunderFromSourceUrl();
+    return this.httpClient.post(url,
+      JSON.stringify(model), httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('New Project Funder from Source')));
+  }
+
   getProjectFunders(id: string) {
     var url = this.urlHelper.getProjectFundersUrl(id);
     return this.httpClient.get(url, httpOptions).pipe(
