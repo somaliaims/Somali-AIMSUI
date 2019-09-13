@@ -295,7 +295,13 @@ export class BasicDataComponent implements OnInit {
     this.projectService.addProjectFunder(model).subscribe(
       data => {
         if (data) {
-          this.projectFunders = this.funderModel.selectedFunders;
+          this.projectFunders = [];
+          this.funderModel.selectedFunders.forEach((f) => {
+            this.projectFunders.push({
+              funderId: f.id,
+              funder: f.organizationName
+            });
+          });
           this.saveProjectImplementers();
         } else {
           this.blockUI.stop();
