@@ -103,7 +103,9 @@
                 <td class="text-center">
                   <button *ngIf="sector.saved" title="Delete sector" (click)="deleteProjectSector(sector.sectorId)"
                     class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                  <button *ngIf="!sector.saved" title="Remove sector" (click)="removeProjectSector(sector.sectorId)"
+                  <button *ngIf="!sector.saved && sector.sectorId" title="Remove sector" (click)="removeProjectSector(sector.sectorId, false)"
+                    class="btn btn-warning btn-sm"><i class="fa fa-remove"></i></button>
+                  <button *ngIf="!sector.saved && !sector.sectorId" title="Remove sector" (click)="removeProjectSector(sector.mappingId, true)"
                     class="btn btn-warning btn-sm"><i class="fa fa-remove"></i></button>
                 </td>
               </tr>
@@ -134,7 +136,7 @@
                 <input type="number" class="form-control col-md-10" [(ngModel)]="locationModel.fundsPercentage"
                   placeholder="Percentage" name="lfundsPercentage" #lfundsPercentage="ngModel" min="1" max="100"
                   required>
-                <button class="btn btn-sm btn-warning text-uppercase" type="submit">
+                <button [class.disable]="calculateLocationPercentage() >= 100" class="btn btn-sm btn-warning text-uppercase" type="submit">
                   Add location
                 </button>
               </div>

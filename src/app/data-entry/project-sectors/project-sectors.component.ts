@@ -5,7 +5,6 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from 'src/app/services/store-service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
-import { MarkerService } from 'src/app/services/marker.service';
 import { Settings } from 'src/app/config/settings';
 
 @Component({
@@ -168,7 +167,13 @@ export class ProjectSectorsComponent implements OnInit {
       this.sectorModel.sector = mappedSector[0].sectorName;
     }
 
-    var isSectorExists = this.currentProjectSectors.filter(s => s.sectorId == this.sectorModel.mappingId && s.saved == false);
+    var isSectorExists = []
+    if (this.defaultSectorTypeId == this.sectorModel.sectorTypeId) {
+      isSectorExists = this.currentProjectSectors.filter(s => s.mappingId == this.sectorModel.mappingId && s.saved == false);
+    } else {
+      isSectorExists = this.currentProjectSectors.filter(s => s.sectorId == this.sectorModel.mappingId && s.saved == false);
+    }
+    
     if (isSectorExists.length > 0) {
       isSectorExists[0].fundsPercentage += this.sectorModel.fundsPercentage;
     } else {
@@ -216,12 +221,16 @@ export class ProjectSectorsComponent implements OnInit {
     this.showMappingManual = true;
   }
 
-  removeProjectSector(id) {
-    this.currentProjectSectors = this.currentProjectSectors.filter(s => s.saved != false && s.sectorId != id);
+  removeProjectSector(id, isSomaliSector: boolean) {
+    if (isSomaliSector) {
+      this.currentProjectSectors = this.currentProjectSectors.filter(s => s.saved == false && s.mappingId != id);
+    } else {
+      this.currentProjectSectors = this.currentProjectSectors.filter(s => s.saved == false && s.sectorId != id);
+    }
   }
 
   removeProjectLocation(id) {
-    this.currentProjectLocations = this.currentProjectLocations.filter(l => (l.saved != false && l.locationId == id));
+    this.currentProjectLocations = this.currentProjectLocations.filter(l => (l.saved == false && l.locationId != id));
   }
 
   deleteProjectSector(sectorId) {

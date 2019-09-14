@@ -222,7 +222,6 @@ export class DataEntryComponent implements OnInit {
       result => {
         if (result && result.projectProfile) {
           var data = result.projectProfile;
-          console.log(data);
           this.projectData.title = data.title;
           this.projectData.description = data.description;
           this.projectData.startingFinancialYear = data.startingFinancialYear;
@@ -424,11 +423,13 @@ export class DataEntryComponent implements OnInit {
               this.currentProjectDisbursements = data.disbursements;
             }
   
-            if (data.customFields && data.customFields.length > 0) {
+            if (data.markers && data.markers.length > 0) {
               this.currentProjectMarkers = data.markers;
             }
+
+            this.projectInfoModal.openModal();
           }
-  
+          this.blockUI.stop();
         }
       );
     }
