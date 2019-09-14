@@ -65,7 +65,7 @@
                 <input type="number" class="form-control col-md-10" id="fundsPercentage"
                   [(ngModel)]="sectorModel.fundsPercentage" placeholder="Percentage" name="fundsPercentage"
                   #fundsPercentage="ngModel" min="1" max="100" required>
-                <button [class.disable]="calculateSectorPercentage() >= 100" class="btn btn-sm btn-warning btn-outline"
+                <button [class.disable]="calculateSectorPercentage() >= 100" class="btn btn-sm btn-warning text-uppercase"
                   type="submit">
                   Add sector
                 </button>
@@ -102,9 +102,9 @@
                 <td class="text-center">{{sector.fundsPercentage}}</td>
                 <td class="text-center">
                   <button *ngIf="sector.saved" title="Delete sector" (click)="deleteProjectSector(sector.sectorId)"
-                    class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                    class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                   <button *ngIf="!sector.saved" title="Remove sector" (click)="removeProjectSector(sector.sectorId)"
-                    class="btn btn-warning"><i class="fa fa-remove"></i></button>
+                    class="btn btn-warning btn-sm"><i class="fa fa-remove"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -134,7 +134,7 @@
                 <input type="number" class="form-control col-md-10" [(ngModel)]="locationModel.fundsPercentage"
                   placeholder="Percentage" name="lfundsPercentage" #lfundsPercentage="ngModel" min="1" max="100"
                   required>
-                <button class="btn btn-sm btn-warning btn-outline" type="submit">
+                <button class="btn btn-sm btn-warning text-uppercase" type="submit">
                   Add location
                 </button>
               </div>
@@ -169,10 +169,10 @@
                 <td class="text-center">{{location.fundsPercentage}}</td>
                 <td class="text-center">
                   <button *ngIf="location.saved" title="Delete location"
-                    (click)="deleteProjectLocation(location.locationId)" class="btn btn-danger"><i
+                    (click)="deleteProjectLocation(location.locationId)" class="btn btn-danger btn-sm"><i
                       class="fa fa-trash"></i></button>
                   <button *ngIf="!location.saved" title="Remove location"
-                    (click)="removeProjectLocation(location.locationId)" class="btn btn-warning"><i
+                    (click)="removeProjectLocation(location.locationId)" class="btn btn-warning btn-sm"><i
                       class="fa fa-remove"></i></button>
                 </td>
               </tr>
@@ -185,7 +185,7 @@
   </div>
 
   <div class="box margin-top-10">
-      <div class="row">
+      <div class="row small">
           <div class="col-md-6">
               <h6>Markers list and settings</h6>
             <div *ngFor="let field of markersList" class="sectors-list-box-small margin-top-10">

@@ -199,12 +199,12 @@
               <tr *ngFor="let project of aimsProjects">
                 <td width="100%">
                   <div class="float-left">
-                    <b>Project title: </b>{{project.title}} &nbsp;<button id="aimst-{{project.id}}"
+                    <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="aimst-{{project.id}}"
                       class="btn btn-info btn-sm" (click)="enterProjectTitleAIMS($event)">Title
                       >></button>&nbsp;
-                    <!--<a href="#" title="View Project Details" id="aproject-{{project.id}}"
+                    <a href="#" title="View Project Details" id="aproject-{{project.id}}"
                       (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a>--><br />
+                      Details</a><br />
                     <div class="margin-top-5">
                       <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button id="btnsdate-{{project.id}}"
                         (click)="enterStartDate($event)" class="btn btn-sm btn-success">>></button>
@@ -237,12 +237,12 @@
               <tr *ngFor="let project of iatiProjects">
                 <td>
                   <span class="float-left">
-                    <b>Project title: </b>{{project.title}} &nbsp;<button id="iatit-{{project.id}}"
+                    <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="iatit-{{project.id}}"
                       class="btn btn-info btn-sm" (click)="enterProjectTitleIATI($event)">Title
                       >></button>&nbsp;
-                    <!--<a href="#" title="View Project Details" id="iproject-{{project.id}}"
+                    <a href="#" title="View Project Details" id="iproject-{{project.id}}"
                       (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a>--><br />
+                      Details</a><br />
                     <div class="margin-top-5">
                       <b>Start date: </b>{{project.startDate}}&nbsp;<button *ngIf="project.startDate"
                         id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)"
@@ -577,3 +577,12 @@
   </div>
 </div>
 <error-modal message={{errorMessage}}></error-modal>
+
+<project-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
+  [funders]="viewProjectFunders" [disbursements]="viewProjectDisbursements" [implementers]="viewProjectImplementers" 
+  [documents]="viewProjectDocuments" [markers]="viewProjectMarkers" [isShowContact]="isShowContact" [projectId]="aimsProjectId">
+</project-info-modal>
+
+<projecti-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
+  [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments">
+</projecti-info-modal>

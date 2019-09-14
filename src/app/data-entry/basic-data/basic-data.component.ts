@@ -5,6 +5,8 @@ import { Messages } from 'src/app/config/messages';
 import { ProjectService } from 'src/app/services/project.service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { StoreService } from 'src/app/services/store-service';
+import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-info-modal.component';
+import { ProjectiInfoModalComponent } from 'src/app/projecti-info-modal/projecti-info-modal.component';
 
 @Component({
   selector: 'basic-data',
@@ -93,9 +95,21 @@ export class BasicDataComponent implements OnInit {
   requestNo: number = 0;
   exchangeRate: number = 0;
 
+  isShowContact: boolean = false;
+  aimsProjectId: number = 0;
+  viewProject: any = {};
+  viewProjectLocations: any = [];
+  viewProjectSectors: any = [];
+  viewProjectDocuments: any = [];
+  viewProjectFunders: any = [];
+  viewProjectImplementers: any = [];
+  viewProjectDisbursements: any = [];
+  viewProjectMarkers: any = [];
+
   @BlockUI() blockUI: NgBlockUI;
   constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent,
-    private storeService: StoreService) { }
+    private storeService: StoreService, private projectInfoModal: ProjectInfoModalComponent,
+    private projectIATIInfoModal: ProjectiInfoModalComponent) { }
 
   ngOnInit() {
     this.currentTab = this.tabConstants.PROJECT;
@@ -208,8 +222,8 @@ export class BasicDataComponent implements OnInit {
   }
 
   getExchangeRateForCurrency() {
-    if (this.projectData.currency) {
-      var exRate = this.exchangeRates.filter(e => e.currency == this.projectData.currency);
+    if (this.projectData.projectCurrency) {
+      var exRate = this.exchangeRates.filter(e => e.currency == this.projectData.projectCurrency);
       if (exRate.length > 0) {
         this.projectData.exchangeRate = exRate[0].rate;
       }
@@ -711,4 +725,53 @@ export class BasicDataComponent implements OnInit {
     this.sourceFundersList = this.sourceFundersList.filter(f => f.toLowerCase() != funder.toLowerCase());
   }
 
+  viewAIMSProject(e) {
+    var projectId = e.target.id.split('-')[1];
+    if (projectId && projectId != 0) {
+      this.aimsProjectId = projectId;
+      this.isShowContact = false;
+      var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+      if (selectProject && selectProject.length > 0) {
+        var projectData = selectProject[0];
+        var project = {
+          title: projectData.title,
+          description: projectData.description,
+          startDate: projectData.startDate,
+          endDate: projectData.endDate
+        }
+        this.viewProject = projectData;
+        this.viewProjectFunders = projectData.funders;
+        this.viewProjectLocations = projectData.locations;
+        this.viewProjectSectors = projectData.sectors;
+        this.viewProjectImplementers = projectData.implementers;
+        this.viewProjectDocuments = projectData.documents;
+        this.viewProjectMarkers = projectData.markers;
+        this.projectInfoModal.openModal();
+      }
+    }
+    return false;
+  }
+
+  viewIATIProject(e) {
+    var projectId = e.target.id.split('-')[1];
+    if (projectId && projectId != 0) {
+      var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+      if (selectProject && selectProject.length > 0) {
+        var projectData = selectProject[0];
+        var project = {
+          title: projectData.title,
+          description: projectData.description,
+          defaultCurrency: projectData.defaultCurrency,
+        }
+        this.viewProject = project;
+        this.viewProjectLocations = projectData.locations;
+        this.viewProjectSectors = projectData.sectors;
+        this.viewProjectFunders = projectData.funders;
+        this.viewProjectImplementers = projectData.implementers;
+        this.viewProjectDocuments = projectData.documents;
+        this.projectIATIInfoModal.openModal();
+      }
+    }
+    return false;
+  }
 }
