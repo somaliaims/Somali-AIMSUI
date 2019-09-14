@@ -111,17 +111,17 @@
       <div class="col-lg-6 col-md-6">
         <div class="form-group form-inline">
           <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
-          <ng-multiselect-dropdown class="col-sm-10" [placeholder]="'Select implementers'" [data]="organizationsList"
+          <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select implementers'" [data]="organizationsList"
             [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings"
             name="selectedImplementers" #selectedImplementers="ngModel">
           </ng-multiselect-dropdown>
-          <button type="button" *ngIf="isImplementerDataAvailable" (click)="showImplementersSource()"
-            title="Source data available for implementers" class="btn btn-warning btn-sm"><i
+          <button class="col-sm-1" type="button" *ngIf="isImplementerDataAvailable && projectId != 0" (click)="showImplementersSource()"
+            title="Source data available for implementers" class="btn btn-warning"><i
               class="fa fa-database"></i></button>
         </div>
       </div>
     </div>
-
+ 
     <div class="row margin-top-10">
       <div class="col-lg-12 col-md-12">
         <div class="form-group">
@@ -147,7 +147,7 @@
               [(ngModel)]="documentModel.documentUrl" #documentUrl="ngModel" />
           </td>
           <td width="10%">
-            <button type="button" class="btn btn-warning" (click)="addResource()">Add resource</button>
+            <button type="button" class="btn btn-warning text-uppercase" (click)="addResource()">Add resource</button>
           </td>
           <td width="10%">
             <button class="btn btn-info text-uppercase" type="submit">Save data</button>
@@ -191,7 +191,7 @@
           <h6 class="card-title text-center">Source projects</h6>
 
           <div class="iati-box">
-            <table class="table table-bordered">
+            <table class="table table-bordered small">
               <tr *ngIf="isAimsLoading">
                 <span class="text-info">Wait loading aims data...</span>
               </tr>
@@ -212,7 +212,11 @@
                       <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button id="btnedate-{{project.id}}"
                         (click)="enterEndDate($event)" class="btn btn-sm btn-success">>></button><br />
                     </div>
-                    <span class="badge badge-warning">AIMS</span>
+                    <span class="float-left">
+                      <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
+                        (click)="enterCurrencyAIMS($event)" class="btn btn-sm btn-success">>></button>
+                    </span>
+                    <span class="badge badge-warning float-right">AIMS</span>
                   </span>
                   <span class="float-right">
                     <button id="aimsd-{{project.id}}" class="btn btn-warning btn-sm"
@@ -346,8 +350,13 @@
 
             <div class="form-group">
               <label>Project currency</label>
-              <input type="text" class="form-control" name="currency" [(ngModel)]="projectData.projectCurrency"
-                #projectCurrency="ngModel" required />
+              <select title="Project currency" class="form-control col-sm-12" name="currency"
+                [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" id="projectCurrency"
+                (change)="getExchangeRateForCurrency()" required>
+                <option value="null">--Project currency--</option>
+                <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}
+                </option>
+              </select>
             </div>
             <div *ngIf="projectSourceForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
               Project currency is required
@@ -386,7 +395,7 @@
               <div class="col-md-12 text-right">
                 <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
                 <button type="button" (click)="showProjectData()"
-                  class="btn btn-danger btn-sm text-uppercase">Cancel</button>
+                  class="btn btn-warning btn-sm text-uppercase">Go back</button>
               </div>
             </div>
 
@@ -402,10 +411,10 @@
   <div class="col-lg-12 col-md-12 small">
     <div class="box">
       <div class="col-lg-12 col-md-12 text-right margin-top-5">
-        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save data</button>&nbsp;
-        <button type="button" (click)="showProjectData()" class="btn btn-danger btn-sm text-uppercase">Cancel</button>
+        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save funders</button>&nbsp;
+        <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
-      <table class="table table-bordered">
+      <table class="table table-bordered margin-top-5">
         <tr *ngFor="let project of aimsProjects">
           <td>
             <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
@@ -468,7 +477,7 @@
       </table>
       <div class="col-lg-12 col-md-12 text-right">
         <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save funders</button>&nbsp;
-        <button type="button" (click)="showProjectData()" class="btn btn-danger btn-sm text-uppercase">Cancel</button>
+        <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
     </div>
   </div>
@@ -478,10 +487,10 @@
   <div class="col-lg-12 col-md-12 small">
     <div class="box">
       <div class="col-lg-12 col-md-12 text-right margin-top-5">
-        <button type="button" (click)="saveProjectImplementersFromSource()" class="btn btn-info btn-sm text-uppercase">Save data</button>&nbsp;
-        <button type="button" (click)="showProjectData()" class="btn btn-danger btn-sm text-uppercase">Cancel</button>
+        <button type="button" (click)="saveProjectImplementersFromSource()" class="btn btn-info btn-sm text-uppercase">Save implementers</button>&nbsp;
+        <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
-      <table class="table table-bordered">
+      <table class="table table-bordered margin-top-5">
         <tr *ngFor="let project of aimsProjects">
           <td>
             <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
@@ -498,9 +507,10 @@
                 <td>
                   {{implementer.implementer}}
                 </td>
-                <td [class.disable]="checkIfImplementerInActionList(implementer.implementer)">
-                  <button *ngIf="checkIfImplementerAdded(implementer.implementer)" id="aImplementer-{{project.id}}-{{funder.funderId}}"
-                    (click)="enterAIMSImplementer($event)" class="btn btn-success btn-sm">Enter >></button>
+                <td>
+                  <button *ngIf="!checkIfImplementerAdded(implementer.name)" id="dimplementer-{{project.id}}-{{implementer.implementerId}}"
+                      (click)="addImplementerToList(implementer.name)" class="btn btn-success btn-sm"><i
+                        [className]="checkIfImplementerInActionList(implementer.name) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                 </td>
               </tr>
             </table>
@@ -528,7 +538,7 @@
                     {{implementer.name}}
                   </td>
                   <td>
-                    <button *ngIf="!checkIfImplementerAdded(implementer.name)" id="dimplementer-{{project.id}}-{{funder.id}}"
+                    <button *ngIf="!checkIfImplementerAdded(implementer.name)" id="dimplementer-{{project.id}}-{{implementer.implementerId}}"
                       (click)="addImplementerToList(implementer.name)" class="btn btn-success btn-sm"><i
                         [className]="checkIfImplementerInActionList(implementer.name) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                   </td>
@@ -543,8 +553,8 @@
         </tr>
       </table>
       <div class="col-lg-12 col-md-12 text-right">
-        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save funders</button>&nbsp;
-        <button type="button" (click)="showProjectData()" class="btn btn-danger btn-sm text-uppercase">Cancel</button>
+        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save implementers</button>&nbsp;
+        <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
     </div>
   </div>

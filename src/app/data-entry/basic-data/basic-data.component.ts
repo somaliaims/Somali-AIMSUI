@@ -21,6 +21,7 @@ export class BasicDataComponent implements OnInit {
   implementersSettings: any = [];
   newDocuments: any = [];
   sourceFundersList: any = [];
+  sourceImplementersList: any = [];
   entryForm: any = null;
   errorMessage: string = null;
   itemsToShowInDropdowns: number = 3;
@@ -165,12 +166,12 @@ export class BasicDataComponent implements OnInit {
         }
       });
 
-      this.aimsProjects.forEach(p => {
+      this.iatiProjects.forEach(p => {
         if (p.implementers.length > 0) {
           this.isImplementerDataAvailable = true;
         }
 
-        p.implemneters.forEach(i => {
+        p.implementers.forEach(i => {
           i.isSaved = true;
         });
       });
@@ -191,7 +192,7 @@ export class BasicDataComponent implements OnInit {
         if (p.implementers.length > 0) {
           this.isImplementerDataAvailable = true;
 
-          p.implemneters.forEach(i => {
+          p.implementers.forEach(i => {
             i.isSaved = true;
           });
         }
@@ -472,6 +473,10 @@ export class BasicDataComponent implements OnInit {
     this.manageTabsDisplay(this.tabConstants.FUNDERS_SOURCE);
   }
 
+  showImplementersSource() {
+    this.manageTabsDisplay(this.tabConstants.IMPLEMENTERS_SOURCE);
+  }
+
   manageTabsDisplay(tabIdentity) {
     for (var i = 0; i < this.displayTabs.length; i++) {
       var tab = this.displayTabs[i];
@@ -509,6 +514,18 @@ export class BasicDataComponent implements OnInit {
       this.projectData.description = selectedProject[0].description.trim();
     }
     this.getDescriptionLimitInfo();
+  }
+
+  enterCurrencyAIMS(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+    if (selectProject.length > 0) {
+      this.projectData.projectCurrency = selectProject[0].projectCurrency;
+      if (this.projectData.projectCurrency) {
+        this.getExchangeRateForCurrency();
+      }
+    }
   }
 
   enterStartDate(e) {
@@ -619,11 +636,23 @@ export class BasicDataComponent implements OnInit {
     } else {
       this.sourceFundersList.push(funder);
     }
-    
+  }
+
+  addImplementerToList(implementer) {
+    if (this.sourceImplementersList.includes(implementer)) {
+      this.sourceImplementersList = this.sourceImplementersList.filter(i => i != implementer);
+    } else {
+      this.sourceImplementersList.push(implementer);
+    }
   }
 
   checkIfFunderInActionList(funder) {
     var result = this.sourceFundersList.filter(f => f.toLowerCase() == funder.toLowerCase()).length > 0 ? true : false;
+    return result;
+  }
+
+  checkIfImplementerInActionList(implementer) {
+    var result = this.sourceImplementersList.filter(i => i.toLowerCase() == implementer.toLowerCase()).length > 0 ? true : false;
     return result;
   }
 
