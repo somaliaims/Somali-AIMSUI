@@ -103,8 +103,9 @@
             [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
             #selectedFunders="ngModel">
           </ng-multiselect-dropdown>
-          <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()" class="col-sm-1"
-            title="Source data available for funders" class="btn btn-warning"><i class="fa fa-database"></i></button>
+          <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()"
+            class="col-sm-1" title="Source data available for funders" class="btn btn-warning"><i
+              class="fa fa-database"></i></button>
         </div>
       </div>
 
@@ -115,13 +116,13 @@
             [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings"
             name="selectedImplementers" #selectedImplementers="ngModel">
           </ng-multiselect-dropdown>
-          <button class="col-sm-1" type="button" *ngIf="isImplementerDataAvailable && projectId != 0" (click)="showImplementersSource()"
-            title="Source data available for implementers" class="btn btn-warning"><i
+          <button class="col-sm-1" type="button" *ngIf="isImplementerDataAvailable && projectId != 0"
+            (click)="showImplementersSource()" title="Source data available for implementers" class="btn btn-warning"><i
               class="fa fa-database"></i></button>
         </div>
       </div>
     </div>
- 
+
     <div class="row margin-top-10">
       <div class="col-lg-12 col-md-12">
         <div class="form-group">
@@ -196,29 +197,33 @@
                 <span class="text-info">Wait loading aims data...</span>
               </tr>
               <tr *ngFor="let project of aimsProjects">
-                <td>
-                  <span class="float-left">
-                    <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="aimst-{{project.id}}"
+                <td width="100%">
+                  <div class="float-left">
+                    <b>Project title: </b>{{project.title}} &nbsp;<button id="aimst-{{project.id}}"
                       class="btn btn-info btn-sm" (click)="enterProjectTitleAIMS($event)">Title
-                      >></button>&nbsp;<a href="#" title="View Project Details" id="aproject-{{project.id}}"
+                      >></button>&nbsp;
+                    <!--<a href="#" title="View Project Details" id="aproject-{{project.id}}"
                       (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-
+                      Details</a>--><br />
                     <div class="margin-top-5">
                       <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button id="btnsdate-{{project.id}}"
-                        (click)="enterStartDate($event)" class="btn btn-sm btn-success">>></button><br />
+                        (click)="enterStartDate($event)" class="btn btn-sm btn-success">>></button>
                     </div>
                     <div class="margin-top-5">
                       <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button id="btnedate-{{project.id}}"
-                        (click)="enterEndDate($event)" class="btn btn-sm btn-success">>></button><br />
+                        (click)="enterEndDate($event)" class="btn btn-sm btn-success">>></button>
                     </div>
-                    <span class="float-left">
+                    <div class="margin-top-5">
+                      <b>Project value:</b> {{project.projectValue}} &nbsp; <button id="btnpvalue-{{project.id}}"
+                        (click)="enterProjectValueAIMS($event)" class="btn btn-sm btn-success">>></button>
+                    </div>
+                    <div class="margin-top-5">
                       <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
                         (click)="enterCurrencyAIMS($event)" class="btn btn-sm btn-success">>></button>
-                    </span>
+                    </div>
                     <span class="badge badge-warning float-right">AIMS</span>
-                  </span>
-                  <span class="float-right">
+                  </div>
+                  <span class="float-right margin-top-5">
                     <button id="aimsd-{{project.id}}" class="btn btn-warning btn-sm"
                       (click)="enterProjectDescAIMS($event)">Description
                       >></button>
@@ -232,11 +237,12 @@
               <tr *ngFor="let project of iatiProjects">
                 <td>
                   <span class="float-left">
-                    <b>Project title: </b>{{project.title | truncate}} &nbsp;<button id="iatit-{{project.id}}"
+                    <b>Project title: </b>{{project.title}} &nbsp;<button id="iatit-{{project.id}}"
                       class="btn btn-info btn-sm" (click)="enterProjectTitleIATI($event)">Title
-                      >></button>&nbsp;<a href="#" title="View Project Details" id="iproject-{{project.id}}"
+                      >></button>&nbsp;
+                    <!--<a href="#" title="View Project Details" id="iproject-{{project.id}}"
                       (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a><br />
+                      Details</a>--><br />
                     <div class="margin-top-5">
                       <b>Start date: </b>{{project.startDate}}&nbsp;<button *ngIf="project.startDate"
                         id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)"
@@ -306,8 +312,8 @@
               </span>
               <span class="col-md-6 text-right">
                 <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
-                <button type="button" (click)="showProjectData()"
-                  class="btn btn-danger btn-sm text-uppercase">Cancel</button>
+                <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go
+                  back</button>
               </span>
             </div>
 
@@ -394,8 +400,8 @@
             <div class="row">
               <div class="col-md-12 text-right">
                 <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
-                <button type="button" (click)="showProjectData()"
-                  class="btn btn-warning btn-sm text-uppercase">Go back</button>
+                <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go
+                  back</button>
               </div>
             </div>
 
@@ -411,15 +417,17 @@
   <div class="col-lg-12 col-md-12 small">
     <div class="box">
       <div class="col-lg-12 col-md-12 text-right margin-top-5">
-        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save funders</button>&nbsp;
+        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save
+          funders</button>&nbsp;
         <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
       <table class="table table-bordered margin-top-5">
         <tr *ngFor="let project of aimsProjects">
           <td>
-            <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+            <b>Project title: </b>{{project.title}}
+            <!--<a href="#" title="View Project Details"
               id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-              Details</a><br />
+              Details</a>--><br />
             <span class="badge badge-warning">AIMS</span>
 
             <table *ngIf="project.funders.length > 0" class="table table-striped">
@@ -445,9 +453,10 @@
       <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
         <tr *ngFor="let project of iatiProjects">
           <td>
-            <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+            <b>Project title: </b>{{project.title}}
+            <!--<a href="#" title="View Project Details"
               id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-              Details</a><br />
+              Details</a>--><br />
 
             <div class="badge badge-warning float-right">IATI</div>
             <div class="margin-top-10">
@@ -476,7 +485,8 @@
         </tr>
       </table>
       <div class="col-lg-12 col-md-12 text-right">
-        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save funders</button>&nbsp;
+        <button type="button" (click)="saveProjectFundersFromSource()" class="btn btn-info btn-sm text-uppercase">Save
+          funders</button>&nbsp;
         <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
     </div>
@@ -487,15 +497,17 @@
   <div class="col-lg-12 col-md-12 small">
     <div class="box">
       <div class="col-lg-12 col-md-12 text-right margin-top-5">
-        <button type="button" (click)="saveProjectImplementersFromSource()" class="btn btn-info btn-sm text-uppercase">Save implementers</button>&nbsp;
+        <button type="button" (click)="saveProjectImplementersFromSource()"
+          class="btn btn-info btn-sm text-uppercase">Save implementers</button>&nbsp;
         <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
       <table class="table table-bordered margin-top-5">
         <tr *ngFor="let project of aimsProjects">
           <td>
-            <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+            <b>Project title: </b>{{project.title}}
+            <!--<a href="#" title="View Project Details"
               id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-              Details</a><br />
+              Details</a>--><br />
             <span class="badge badge-warning">AIMS</span>
 
             <table *ngIf="project.implementers.length > 0" class="table table-striped">
@@ -508,13 +520,15 @@
                   {{implementer.implementer}}
                 </td>
                 <td>
-                  <button *ngIf="!checkIfImplementerAdded(implementer.name)" id="dimplementer-{{project.id}}-{{implementer.implementerId}}"
-                      (click)="addImplementerToList(implementer.name)" class="btn btn-success btn-sm"><i
-                        [className]="checkIfImplementerInActionList(implementer.name) ? 'fa fa-check' : 'fa fa-square'"></i></button>
+                  <button *ngIf="!checkIfImplementerAdded(implementer.name)"
+                    id="dimplementer-{{project.id}}-{{implementer.implementerId}}"
+                    (click)="addImplementerToList(implementer.name)" class="btn btn-success btn-sm"><i
+                      [className]="checkIfImplementerInActionList(implementer.name) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                 </td>
               </tr>
             </table>
-            <div class="text-info" *ngIf="project.implementers.length == 0"><i>No implementers from AIMS found.</i></div>
+            <div class="text-info" *ngIf="project.implementers.length == 0"><i>No implementers from AIMS found.</i>
+            </div>
           </td>
         </tr>
       </table>
@@ -522,9 +536,10 @@
       <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
         <tr *ngFor="let project of iatiProjects">
           <td>
-            <b>Project title: </b>{{project.title | truncate}} <a href="#" title="View Project Details"
+            <b>Project title: </b>{{project.title}}
+            <!--<a href="#" title="View Project Details"
               id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-              Details</a><br />
+              Details</a>--><br />
 
             <div class="badge badge-warning float-right">IATI</div>
             <div class="margin-top-10">
@@ -538,7 +553,8 @@
                     {{implementer.name}}
                   </td>
                   <td>
-                    <button *ngIf="!checkIfImplementerAdded(implementer.name)" id="dimplementer-{{project.id}}-{{implementer.implementerId}}"
+                    <button *ngIf="!checkIfImplementerAdded(implementer.name)"
+                      id="dimplementer-{{project.id}}-{{implementer.implementerId}}"
                       (click)="addImplementerToList(implementer.name)" class="btn btn-success btn-sm"><i
                         [className]="checkIfImplementerInActionList(implementer.name) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                   </td>
@@ -553,7 +569,8 @@
         </tr>
       </table>
       <div class="col-lg-12 col-md-12 text-right">
-        <button type="button" (click)="saveProjectImplementersFromSource()" class="btn btn-info btn-sm text-uppercase">Save implementers</button>&nbsp;
+        <button type="button" (click)="saveProjectImplementersFromSource()"
+          class="btn btn-info btn-sm text-uppercase">Save implementers</button>&nbsp;
         <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
     </div>

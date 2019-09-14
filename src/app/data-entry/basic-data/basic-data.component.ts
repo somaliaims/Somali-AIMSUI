@@ -589,6 +589,14 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
+  enterProjectValueAIMS(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.projectData.projectValue = selectedProject[0].projectValue;
+    }
+  }
+
   enterStartDateIATI(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
