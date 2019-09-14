@@ -65,6 +65,7 @@ export const urls = {
 	getProjectFundersUrl: "Project/GetFunders/",
 	addProjectFunder: "Project/AddProjectFunder",
 	addProjectFunderFromSource: "Project/AddProjectFunderFromSource",
+	addProjectImplementerFromSource: "Project/AddProjectImplementerFromSource",
 	addProjectField: "Project/AddProjectMarker",
 	getProjectImplementersUrl: "Project/GetImplementers/",
 	addProjectImplementer: "Project/AddProjectImplementer",

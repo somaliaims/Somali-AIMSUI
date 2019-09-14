@@ -455,6 +455,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.addProjectFunderFromSource);
     }
 
+    addProjectImplementerFromSourceUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectImplementerFromSource);
+    }
+
     getProjectProfileReport(id) {
         return (this.BASE_URL + urlsList.urls.getProjectProfileReport + id);
     }

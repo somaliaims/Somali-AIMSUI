@@ -338,6 +338,27 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
+  saveProjectImplementersFromSource() {
+    if (this.sourceImplementersList.length > 0) {
+      var model = {
+        projectId: this.projectId,
+        implementers: this.sourceImplementersList
+      }
+
+      this.blockUI.start('Saving implementers...');
+      this.projectService.addProjectImplementerFromSource(model).subscribe(
+        data => {
+          if (data) {
+            this.sourceImplementersList = [];
+            this.getProjectImplementers(true);
+          }
+        }
+      );
+    } else {
+      this.showProjectData();
+    }
+  }
+
   saveProjectImplementers() {
     var implementerIds = this.implementerModel.selectedImplementers.map(i => i.id);
     var model = {
@@ -376,6 +397,30 @@ export class BasicDataComponent implements OnInit {
                 this.funderModel.selectedFunders.push({
                   id: f.funderId,
                   organizationName: f.funder
+                });
+              });
+              this.blockUI.stop();
+              this.showProjectData();
+            }
+          }
+        }
+      );
+    }
+  }
+
+  getProjectImplementers(isDBSync: any = false) {
+    if (this.projectId) {
+      this.projectService.getProjectImplementers(this.projectId.toString()).subscribe(
+        data => {
+          if (data) {
+            this.projectImplementers = data;
+            if (isDBSync) {
+              this.implementerModel.selectedImplementers = [];
+              
+              this.projectImplementers.forEach((i) => {
+                this.implementerModel.selectedImplementers.push({
+                  id: i.implementerId,
+                  organizationName: i.implementer
                 });
               });
               this.blockUI.stop();
@@ -611,8 +656,6 @@ export class BasicDataComponent implements OnInit {
     }
     this.getDescriptionLimitInfo();
   }
-
-
 
   checkIfFunderAdded(funder) {
     if (this.projectFunders.length > 0) {
