@@ -70,7 +70,8 @@
                   Add sector
                 </button>
               </div>
-              <div *ngIf="sectorsForm.submitted" [hidden]="(fundsPercentage.value > 0 && fundsPercentage.value < 101)" class="alert alert-danger">
+              <div *ngIf="sectorsForm.submitted" [hidden]="(fundsPercentage.value > 0 && fundsPercentage.value < 101)"
+                class="alert alert-danger">
                 Valid values are (1 to 100)
               </div>
             </div>
@@ -130,57 +131,135 @@
 
             <div class="col-md-6 col-lg-6">
               <div class="input-group">
-                <input type="number" class="form-control col-md-10"
-                  [(ngModel)]="locationModel.fundsPercentage" placeholder="Percentage" name="lfundsPercentage"
-                  #lfundsPercentage="ngModel" min="1" max="100" required>
+                <input type="number" class="form-control col-md-10" [(ngModel)]="locationModel.fundsPercentage"
+                  placeholder="Percentage" name="lfundsPercentage" #lfundsPercentage="ngModel" min="1" max="100"
+                  required>
                 <button class="btn btn-sm btn-warning btn-outline" type="submit">
                   Add location
                 </button>
               </div>
-              <div *ngIf="locationsForm.submitted" [hidden]="(lfundsPercentage.value > 0 && lfundsPercentage.value < 101)" class="alert alert-danger">
+              <div *ngIf="locationsForm.submitted"
+                [hidden]="(lfundsPercentage.value > 0 && lfundsPercentage.value < 101)" class="alert alert-danger">
                 Valid values are (1 to 100)
               </div>
             </div>
           </div>
-          </form>
-          <div class="col-lg-12 col-md-12 sectors-list-box-small">
-            <div class="row">
-              <span *ngIf="currentProjectLocations.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
-                {{calculateLocationPercentage()}}%</span>
-              <span class="col-md-6 text-right"><button *ngIf="areUnSavedLocations()" (click)="saveProjectLocations()"
-                  class="btn btn-info btn-sm text-uppercase">Save locations</button></span>
-            </div>
-
-            <table *ngIf="currentProjectLocations.length > 0" class="table table-striped small margin-top-5">
-              <thead>
-                <tr>
-                  <th>Location</th>
-                  <th class="text-center">Percentage</th>
-                  <th class="text-center">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let location of currentProjectLocations">
-                  <td>{{location.location}}</td>
-                  <td class="text-center">{{location.fundsPercentage}}</td>
-                  <td class="text-center">
-                    <button *ngIf="location.saved" title="Delete location"
-                      (click)="deleteProjectLocation(location.locationId)" class="btn btn-danger"><i
-                        class="fa fa-trash"></i></button>
-                    <button *ngIf="!location.saved" title="Remove location"
-                      (click)="removeProjectLocation(location.locationId)" class="btn btn-warning"><i
-                        class="fa fa-remove"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        </form>
+        <div class="col-lg-12 col-md-12 sectors-list-box-small">
+          <div class="row">
+            <span *ngIf="currentProjectLocations.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
+              {{calculateLocationPercentage()}}%</span>
+            <span class="col-md-6 text-right"><button *ngIf="areUnSavedLocations()" (click)="saveProjectLocations()"
+                class="btn btn-info btn-sm text-uppercase">Save locations</button></span>
           </div>
-      </div>
 
+          <table *ngIf="currentProjectLocations.length > 0" class="table table-striped small margin-top-5">
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th class="text-center">Percentage</th>
+                <th class="text-center">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let location of currentProjectLocations">
+                <td>{{location.location}}</td>
+                <td class="text-center">{{location.fundsPercentage}}</td>
+                <td class="text-center">
+                  <button *ngIf="location.saved" title="Delete location"
+                    (click)="deleteProjectLocation(location.locationId)" class="btn btn-danger"><i
+                      class="fa fa-trash"></i></button>
+                  <button *ngIf="!location.saved" title="Remove location"
+                    (click)="removeProjectLocation(location.locationId)" class="btn btn-warning"><i
+                      class="fa fa-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
+  </div>
+
+  <div class="box margin-top-10">
+      <div class="row">
+          <div class="col-md-6">
+              <h6>Markers list and settings</h6>
+            <div *ngFor="let field of markersList" class="sectors-list-box-small margin-top-10">
+              <h6>{{field.fieldTitle}}</h6>
+              <div>
+                <select class="form-control" *ngIf="checkFieldType(field.fieldType) == 'Dropdown'"
+                  [(ngModel)]="fieldModel.dropdownId" (change)="selectFieldValue(field.fieldType, -1, field.id, $event)"
+                  name="drp-{{field.id}}">
+                  <option value="null">--Select One--</option>
+                  <option *ngFor="let val of field.values" value="{{val.id}}">{{val.value}}</option>
+                </select>
+    
+                <table *ngIf="checkFieldType(field.fieldType) == 'Radio'" class="table">
+                  <tr>
+                    <td *ngFor="let val of field.values">
+                      <input type="radio" name="rd-options-{{field.id}}" id="rd-{{val.id}}" [value]="val.isSelected"
+                        (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
+                    </td>
+                  </tr>
+                </table>
+    
+                <table *ngIf="checkFieldType(field.fieldType) == 'Checkbox'" class="table">
+                  <tr>
+                    <td *ngFor="let val of field.values">
+                      <input type="checkbox" name="chk-{{val.id}}" value="{{val.id}}" [(ngModel)]="val.isSelected"
+                        [checked]="checkIfSelected(field.id, val.id)"
+                        (click)="selectFieldValue(field.fieldType, val.id, field.id, $event)" />&nbsp;{{val.value}}
+                    </td>
+                  </tr>
+                </table>
+    
+                <div *ngIf="checkFieldType(field.fieldType) == 'Text'" class="form-group">
+                  <input class="form-control" type="text" maxlength="100" id="txt-{{fieldId}}"
+                    [(ngModel)]="fieldModel.newText"
+                    (blur)="selectFieldValue(field.fieldType, 1, field.id, $event, true)" />
+                </div>
+    
+                <span class="float-right margin-top-10">
+                  <button class="btn btn-info btn-sm btn-block text-uppercase" (click)="saveProjectMarkers(field.id)"
+                    type="button">Save Fields</button>
+                </span>
+              </div>
+            </div>
+            <div *ngIf="markersList.length == 0">
+              <span class="text-info"><i>No markers avaialble to show</i></span>
+            </div>
+          </div>
+    
+          <div class="col-md-6">
+            <div class="sectors-list-box-small">
+              <h6 class="card-title">Project markers</h6>
+              <table *ngIf="currentProjectMarkers.length > 0" class="table table-bordered margin-top-10">
+                <tr>
+                  <th>Marker</th>
+                  <th>Values</th>
+                  <th>Actions</th>
+                </tr>
+                <tr *ngFor="let field of currentProjectMarkers">
+                  <td>{{field.fieldTitle}}</td>
+                  <td>{{displayFieldValues(field.values)}}</td>
+                  <td>
+                    <button id="ffield-{{projectId}}-{{field.markerId}}" (click)="deleteProjectMarker($event)"
+                      class="btn btn-danger btn-sm">
+                      <i id="ifield-{{projectId}}-{{field.markerId}}" class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <span *ngIf="currentProjectMarkers.length == 0" class="text-info">
+                <i>No markers set for this project yet</i>
+              </span>
+            </div>
+          </div>
+        </div>
   </div>
 
 </block-ui>

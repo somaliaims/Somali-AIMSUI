@@ -14,6 +14,7 @@ import { SectorTypeService } from 'src/app/services/sector-types.service';
 import { SectorService } from 'src/app/services/sector.service';
 import { LocationService } from 'src/app/services/location.service';
 import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-info-modal.component';
+import { MarkerService } from 'src/app/services/marker.service';
 
 @Component({
   selector: 'app-data-entry',
@@ -48,6 +49,7 @@ export class DataEntryComponent implements OnInit {
   exchangeRates: any = [];
   aimsProjects: any = [];
   iatiProjects: any = [];
+  markersList: any = [];
 
   selectedProjects: any = [];
   currentProjectFunders: any = [];
@@ -116,6 +118,7 @@ export class DataEntryComponent implements OnInit {
     private sectorTypeService: SectorTypeService,
     private sectorService: SectorService,
     private locationService: LocationService,
+    private markerService: MarkerService,
     private projectInfoModal: ProjectInfoModalComponent) { }
 
   ngOnInit() {
@@ -163,6 +166,7 @@ export class DataEntryComponent implements OnInit {
     this.getFundingTypes();
     this.getSectorTypes();
     this.getLocationsList();
+    this.getActiveMarkers();
     
     if (projectId && projectId != '0') {
       this.blockUI.start('Loading project data...');
@@ -259,7 +263,7 @@ export class DataEntryComponent implements OnInit {
             this.currentProjectDisbursements = data.disbursements;
           }
 
-          if (data.customFields && data.customFields.length > 0) {
+          if (data.markers && data.markers.length > 0) {
             this.currentProjectMarkers = data.markers;
           }
         }
@@ -353,6 +357,21 @@ export class DataEntryComponent implements OnInit {
       data => {
         if (data) {
           this.currenciesList = data;
+        }
+      }
+    );
+  }
+
+  getActiveMarkers() {
+    this.markerService.getActiveMarkers().subscribe(
+      data => {
+        if (data) {
+          var fields = data;
+          fields.forEach(function (field) {
+            field.values = field.values ? JSON.parse(field.values) : [];
+            field.values.forEach(v => v.isSelected = false);
+          });
+          this.markersList = fields;
         }
       }
     );
@@ -494,6 +513,10 @@ export class DataEntryComponent implements OnInit {
 
   updateProjectLocations($event) {
     this.currentProjectLocations = $event;
+  }
+
+  updateProjectMarkers($event) {
+    this.currentProjectMarkers = $event;
   }
 
 }

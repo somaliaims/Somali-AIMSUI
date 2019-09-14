@@ -49,7 +49,9 @@
             [defaultSectorsList]="defaultSectorsList" [defaultSectorTypeId]="defaultSectorTypeId" 
             [projectId]="activeProjectId" [defaultSectorType]="defaultSectorType" [locationsList]="locationsList"
             [currentProjectSectors]="currentProjectSectors" [currentProjectLocations]="currentProjectLocations"
-            (projectSectorsChanged)="updateProjectSectors($event)" (projectLocationsChanged)="updateProjectLocations($event)" >
+            [currentProjectMarkers]="currentProjectMarkers" [markersList]="markersList"
+            (projectSectorsChanged)="updateProjectSectors($event)" (projectLocationsChanged)="updateProjectLocations($event)" 
+            (projectMarkersChanged)="updateProjectMarkers($event)" >
           </project-sectors>
         </div>
 
