@@ -5,24 +5,34 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'project', 'text-info': currentTab != 'project'}" href="#"
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.PROJECT, 'text-info': currentTab != tabConstants.PROJECT}" href="#"
               class="nav-link text-info" (click)="showProjectTab()" data-toggle="tab">Project help</a>
           </li>
           <li class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'funder', 'text-info': currentTab != 'funder'}" href="#"
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.FUNDER, 'text-info': currentTab != tabConstants.FUNDER}" href="#"
               class="nav-link text-info" (click)="showFunderTab()" data-toggle="tab">Funder help</a>
           </li>
           <li class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'implementer', 'text-info': currentTab != 'implementer'}" href="#"
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.IMPLEMENTER, 'text-info': currentTab != tabConstants.IMPLEMENTER}" href="#"
               class="nav-link text-info" (click)="showImplementerTab()" data-toggle="tab">Implementer help</a>
           </li>
           <li class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'disbursement', 'text-info': currentTab != 'disbursement'}"
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.DISBURSEMENT, 'text-info': currentTab != tabConstants.DISBURSEMENT}"
               href="#" class="nav-link text-info" (click)="showDisbursementTab()" data-toggle="tab">Disbursements help
             </a>
           </li>
           <li class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == 'document', 'text-info': currentTab != 'document'}" href="#"
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.SECTOR, 'text-info': currentTab != tabConstants.SECTOR}"
+              href="#" class="nav-link text-info" (click)="showSectorTab()" data-toggle="tab">Sector help
+            </a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.LOCATION, 'text-info': currentTab != tabConstants.LOCATION}"
+              href="#" class="nav-link text-info" (click)="showLocationTab()" data-toggle="tab">Location help
+            </a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.DOCUMENT, 'text-info': currentTab != tabConstants.DOCUMENT}" href="#"
               class="nav-link text-info" (click)="showDocumentTab()" data-toggle="tab">Documents help
             </a>
           </li>
@@ -248,9 +258,9 @@
             </div>
             <div class="form-group">
               <label>Disbursement year help</label>
-              <input type="url" class="form-control" [(ngModel)]="disbursementModel.disbursementYear" name="disbursementYear"
-                #disbursementYear="ngModel" maxlength="{{helpTextLimit}}" required />
-              <div *ngIf="disbursementForm.submitted" [hidden]="disbursementYear.valid" class="alert alert-danger">
+              <input type="url" class="form-control" [(ngModel)]="disbursementModel.year" name="year"
+                #year="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="disbursementForm.submitted" [hidden]="year.valid" class="alert alert-danger">
                 Help for disbursement year is required
               </div>
             </div>

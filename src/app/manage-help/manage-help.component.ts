@@ -20,7 +20,7 @@ export class ManageHelpComponent implements OnInit {
   sectorModel: any = { sector: null, percentage: null };
   locationModel: any = { location: null, percentage: null };
   documentModel: any = { document: null, documentUrl: null };
-  disbursementModel: any = { disbursementActual: null, disbursementPlanned: null, disbursementYear: null };
+  disbursementModel: any = { disbursementActual: null, disbursementPlanned: null, year: null };
 
   currentTab: string = 'project';
   isProjectLoading: boolean = true;
@@ -70,6 +70,10 @@ export class ManageHelpComponent implements OnInit {
     this.getHelpForProject();
     this.getHelpForFunder();
     this.getHelpForImplementer();
+    this.getHelpForSector();
+    this.getHelpForLocation();
+    this.getHelpForDocuments();
+    this.getHelpForDisbursements();
   }
 
   getHelpForProject() {
@@ -154,8 +158,6 @@ export class ManageHelpComponent implements OnInit {
     this.helpService.saveProjectHelp(this.projectModel).subscribe(
       data => {
         if (data) {
-          this.successMessage = 'Help saved successfully for project fields';
-          this.infoModal.openModal();
         }
         this.blockUI.stop();
       }
@@ -167,8 +169,6 @@ export class ManageHelpComponent implements OnInit {
     this.helpService.saveProjectFunderHelp(this.funderModel).subscribe(
       data => {
         if (data) {
-          this.successMessage = 'Help saved successfully for project funder fields';
-          this.infoModal.openModal();
         }
         this.blockUI.stop();
       }
@@ -210,7 +210,7 @@ export class ManageHelpComponent implements OnInit {
 
   saveProjectLocationHelp(frm: any) {
     this.blockUI.start('Saving help for location...');
-    this.helpService.saveProjectSectorHelp(this.locationModel).subscribe(
+    this.helpService.saveProjectLocationHelp(this.locationModel).subscribe(
       data => {
         if (data) {
         }
@@ -221,7 +221,7 @@ export class ManageHelpComponent implements OnInit {
 
   saveProjectDocumentHelp(frm: any) {
     this.blockUI.start('Saving help for document...');
-    this.helpService.saveProjectSectorHelp(this.documentModel).subscribe(
+    this.helpService.saveProjectDocumentHelp(this.documentModel).subscribe(
       data => {
         if (data) {
         }
