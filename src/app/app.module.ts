@@ -91,7 +91,6 @@ import { ManageExrateUsageComponent } from './manage-exrate-usage/manage-exrate-
 import { HomePageSettingsComponent } from './home-page-settings/home-page-settings.component';
 import { ManageHelpComponent } from './manage-help/manage-help.component';
 import { DataEntryComponent } from './data-entry/data-entry/data-entry.component';
-import { ProjectIatiComponent } from './data-entry/project-iati/project-iati.component';
 import { DocumentIatiComponent } from './data-entry/document-iati/document-iati.component';
 import { FunderIatiComponent } from './data-entry/funder-iati/funder-iati.component';
 import { ImplementerIatiComponent } from './data-entry/implementer-iati/implementer-iati.component';
@@ -184,7 +183,6 @@ import { ProjectFinishComponent } from './data-entry/project-finish/project-fini
     HomePageSettingsComponent,
     ManageHelpComponent,
     DataEntryComponent,
-    ProjectIatiComponent,
     DocumentIatiComponent,
     FunderIatiComponent,
     ImplementerIatiComponent,

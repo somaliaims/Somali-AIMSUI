@@ -436,4 +436,8 @@ export class DataEntryComponent implements OnInit {
     this.currentProjectMarkers = $event;
   }
 
+  updateProjectId($event) {
+    this.activeProjectId = $event;
+  }
+
 }

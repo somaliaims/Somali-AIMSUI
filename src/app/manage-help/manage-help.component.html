@@ -32,15 +32,15 @@
 
     <div class="row">
 
-      <div *ngIf="currentTab == 'project' && !isProjectLoading" class="col-md-12 margin-top-10">
+      <div *ngIf="currentTab == tabConstants.PROJECT && !isProjectLoading" class="col-md-12 margin-top-10">
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
             <h5>Help for project fields</h5>
             <form (ngSubmit)="projectForm.form.valid && saveProjectHelp(projectForm)" #projectForm="ngForm">
               <div class="form-group">
                 <label for="title">Title help</label>
-                <input type="text" class="form-control" [(ngModel)]="projectModel.title" id="title" name="title" #title="ngModel"
-                  maxlength="{{helpTextLimit}}" required />
+                <input type="text" class="form-control" [(ngModel)]="projectModel.title" id="title" name="title"
+                  #title="ngModel" maxlength="{{helpTextLimit}}" required />
 
                 <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
                   Help for title is required
@@ -75,17 +75,17 @@
                 <label>Project value help</label>
                 <input type="text" class="form-control" [(ngModel)]="projectModel.projectValue" name="projectValue"
                   #projectValue="ngModel" maxlength="{{helpTextLimit}}" required />
-                  <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
-                    Help for project value is required
-                  </div>
+                <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
+                  Help for project value is required
+                </div>
               </div>
               <div class="form-group">
                 <label>Project currency help</label>
-                <input type="text" class="form-control" [(ngModel)]="projectModel.projectCurrency" name="projectCurrency"
-                  #projectCurrency="ngModel" maxlength="{{helpTextLimit}}" required />
-                  <div *ngIf="projectForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
-                    Help for project currency is required
-                  </div>
+                <input type="text" class="form-control" [(ngModel)]="projectModel.projectCurrency"
+                  name="projectCurrency" #projectCurrency="ngModel" maxlength="{{helpTextLimit}}" required />
+                <div *ngIf="projectForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
+                  Help for project currency is required
+                </div>
               </div>
               <div class="form-group">
                 <label>Description help</label>
@@ -108,7 +108,7 @@
       </div>
     </div>
 
-    <div *ngIf="currentTab == 'funder'" class="col-md-12 margin-top-10">
+    <div *ngIf="currentTab == tabConstants.FUNDER" class="col-md-12 margin-top-10">
       <div class="card card-signin my-5 margin-top-10">
         <div class="card-body">
           <h5>Help for funder fields</h5>
@@ -116,7 +116,10 @@
             <div class="form-group">
               <label>Funder help</label>
               <input type="text" class="form-control" [(ngModel)]="funderModel.funder" name="funder" #funder="ngModel"
-                maxlength="{{helpTextLimit}}" />
+                maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="funderForm.submitted" [hidden]="funder.valid" class="alert alert-danger">
+                Help for project funder is required
+              </div>
             </div>
             <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
           </form>
@@ -130,7 +133,7 @@
       </div>
     </div>
 
-    <div *ngIf="currentTab == 'implementer'" class="col-md-12 margin-top-10">
+    <div *ngIf="currentTab == tabConstants.IMPLEMENTER" class="col-md-12 margin-top-10">
       <div class="card card-signin my-5 margin-top-10">
         <div class="card-body">
           <h5>Help for implementer fields</h5>
@@ -139,7 +142,10 @@
             <div class="form-group">
               <label>Implementer help</label>
               <input type="text" class="form-control" [(ngModel)]="implementerModel.implementer" name="implementer"
-                #implementer="ngModel" maxlength="{{helpTextLimit}}" />
+                #implementer="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="implementerForm.submitted" [hidden]="implementer.valid" class="alert alert-danger">
+                Help for project implementer is required
+              </div>
             </div>
             <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
           </form>
@@ -149,6 +155,146 @@
       <div class="row text-center" *ngIf="isImplementerLoading">
         <div class="col-md-12">
           <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading project implementer help fields...</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentTab == tabConstants.SECTOR" class="col-md-12 margin-top-10">
+      <div class="card card-signin my-5 margin-top-10">
+        <div class="card-body">
+          <h5>Help for sector fields</h5>
+          <form (ngSubmit)="sectorForm.form.valid && saveProjectSectorHelp(sectorForm)" #sectorForm="ngForm">
+            <div class="form-group">
+              <label>Sector help</label>
+              <input type="text" class="form-control" [(ngModel)]="sectorModel.sector" name="sector" #sector="ngModel"
+                maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="sectorForm.submitted" [hidden]="sector.valid" class="alert alert-danger">
+                Help for sector is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Sector percentage help</label>
+              <input type="text" class="form-control" [(ngModel)]="sectorModel.percentage" name="percentage"
+                #percentage="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="sectorForm.submitted" [hidden]="percentage.valid" class="alert alert-danger">
+                Help for sector percentage is required
+              </div>
+            </div>
+            <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row text-center" *ngIf="isSectorLoading">
+        <div class="col-md-12">
+          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading project sector help fields...</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentTab == tabConstants.LOCATION" class="col-md-12 margin-top-10">
+      <div class="card card-signin my-5 margin-top-10">
+        <div class="card-body">
+          <h5>Help for location fields</h5>
+          <form (ngSubmit)="locationForm.form.valid && saveProjectLocationHelp(locationForm)" #locationForm="ngForm">
+            <div class="form-group">
+              <label>Location help</label>
+              <input type="text" class="form-control" [(ngModel)]="locationModel.location" name="location"
+                #location="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="locationForm.submitted" [hidden]="location.valid" class="alert alert-danger">
+                Help for location is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Location percentage help</label>
+              <input type="text" class="form-control" [(ngModel)]="locationModel.percentage" name="percentage"
+                #percentage="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="locationForm.submitted" [hidden]="percentage.valid" class="alert alert-danger">
+                Help for location percentage is required
+              </div>
+            </div>
+            <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row text-center" *ngIf="isLocationLoading">
+        <div class="col-md-12">
+          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading project location help fields...</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentTab == tabConstants.DISBURSEMENT" class="col-md-12 margin-top-10">
+      <div class="card card-signin my-5 margin-top-10">
+        <div class="card-body">
+          <h5>Help for project disbursements fields</h5>
+          <form (ngSubmit)="disbursementForm.form.valid && saveProjectDisbursementHelp(disbursementForm)" #disbursementForm="ngForm">
+            <div class="form-group">
+              <label>Disbursement actual help</label>
+              <input type="text" class="form-control" [(ngModel)]="disbursementModel.disbursementActual" name="disbursementActual"
+                #disbursementActual="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="disbursementForm.submitted" [hidden]="disbursementActual.valid" class="alert alert-danger">
+                Help for project Actual disbursement is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Disbursement planned help</label>
+              <input type="text" class="form-control" [(ngModel)]="disbursementModel.disbursementPlanned" name="disbursementPlanned"
+                #disbursementPlanned="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="disbursementForm.submitted" [hidden]="disbursementPlanned.valid" class="alert alert-danger">
+                Help for project Planned disbursement is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Disbursement year help</label>
+              <input type="url" class="form-control" [(ngModel)]="disbursementModel.disbursementYear" name="disbursementYear"
+                #disbursementYear="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="disbursementForm.submitted" [hidden]="disbursementYear.valid" class="alert alert-danger">
+                Help for disbursement year is required
+              </div>
+            </div>
+            <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row text-center" *ngIf="isDocumentLoading">
+        <div class="col-md-12">
+          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading project document/resource help fields...</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentTab == tabConstants.DOCUMENT" class="col-md-12 margin-top-10">
+      <div class="card card-signin my-5 margin-top-10">
+        <div class="card-body">
+          <h5>Help for document/project resource fields</h5>
+          <form (ngSubmit)="documentForm.form.valid && saveProjectDocumentHelp(docuumentForm)" #documentForm="ngForm">
+            <div class="form-group">
+              <label>Document/Resource help</label>
+              <input type="text" class="form-control" [(ngModel)]="documentModel.document" name="document"
+                #document="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="documentForm.submitted" [hidden]="document.valid" class="alert alert-danger">
+                Help for document/resource is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Document/Resource URL help</label>
+              <input type="url" class="form-control" [(ngModel)]="documentModel.documentUrl" name="documentUrl"
+                #documentUrl="ngModel" maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="documentForm.submitted" [hidden]="documentUrl.valid" class="alert alert-danger">
+                Help for document/resource URL is required
+              </div>
+            </div>
+            <button type="submit" class="btn btn-info mb-2 text-uppercase">Save help</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row text-center" *ngIf="isDocumentLoading">
+        <div class="col-md-12">
+          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading project document/resource help fields...</span>
         </div>
       </div>
     </div>

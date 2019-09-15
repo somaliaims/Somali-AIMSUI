@@ -32,6 +32,18 @@ export class HelpService {
             catchError(this.storeService.handleError<any>('Project Implementer Help')));
     }
 
+    getProjectSectorHelpFields() {
+        var url = this.urlHelper.getProjectSectorHelpUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Project Sector Help')));
+    }
+
+    getProjectLocationHelpFields() {
+        var url = this.urlHelper.getProjectLocationHelpUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Project Location Help')));
+    }
+
     getProjectDisbursementsHelpFields() {
         var url = this.urlHelper.getProjectDisbursementsHelpUrl();
         return this.httpClient.get(url, httpOptions).pipe(
@@ -63,6 +75,20 @@ export class HelpService {
         return this.httpClient.post(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Project Help')));
+    }
+
+    saveProjectSectorHelp(model: any) {
+        var url = this.urlHelper.getSaveProjectSectorHelpUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Project Sector Help')));
+    }
+
+    saveProjectLocationHelp(model: any) {
+        var url = this.urlHelper.getSaveProjectLocationHelpUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Project Location Help')));
     }
 
     saveProjectDisbursementHelp(model: any) {

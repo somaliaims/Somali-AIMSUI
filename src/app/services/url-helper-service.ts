@@ -708,6 +708,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectFunderHelpUrl);
     }
 
+    getProjectSectorHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.projectSectorHelpUrl);
+    }
+
+    getProjectLocationHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.projectLocationHelpUrl);
+    }
+
     getProjectImplementerHelpUrl() {
         return (this.BASE_URL + urlsList.urls.projectImplementerHelpUrl);
     }
@@ -726,6 +734,14 @@ export class UrlHelperService {
 
     getSaveProjectFunderHelpUrl() {
         return (this.BASE_URL + urlsList.urls.addProjectFunderHelpUrl);
+    }
+
+    getSaveProjectSectorHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectSectorHelpUrl);
+    }
+
+    getSaveProjectLocationHelpUrl() {
+        return (this.BASE_URL + urlsList.urls.addProjectLocationHelpUrl);
     }
 
     getSaveProjectImplementerHelpUrl() {

@@ -58,6 +58,8 @@ export class BasicDataComponent implements OnInit {
   @Input()
   iatiProjects: any = [];
 
+  @Output()
+  projectCreated = new EventEmitter<number>();
   @Output() 
   projectFundersChanged = new EventEmitter<any[]>();
   @Output()
@@ -248,6 +250,7 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.showProjectData();
+
           } 
           this.blockUI.stop();
         }
@@ -258,6 +261,7 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.projectId = data;
+            this.updateProjectIdToParent();
             localStorage.setItem('active-project', data);
             this.showProjectData();
           } 
@@ -285,6 +289,7 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.saveProjectFunders();
+            this.updateProjectIdToParent();
           } else {
             this.blockUI.stop();
           }
@@ -555,6 +560,10 @@ export class BasicDataComponent implements OnInit {
 
   updateImplementersToParent() {
     this.projectImplementersChanged.emit(this.projectImplementers);
+  }
+
+  updateProjectIdToParent() {
+    this.projectCreated.emit(this.projectId);
   }
 
   /*Handling IATI Stuff*/

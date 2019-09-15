@@ -17,9 +17,16 @@ export class ManageHelpComponent implements OnInit {
     description: null };
   funderModel: any = { funder: null };
   implementerModel: any = { implementer: null };
+  sectorModel: any = { sector: null, percentage: null };
+  locationModel: any = { location: null, percentage: null };
+  documentModel: any = { document: null, documentUrl: null };
+  disbursementModel: any = { disbursementActual: null, disbursementPlanned: null, disbursementYear: null };
+
   currentTab: string = 'project';
   isProjectLoading: boolean = true;
   isFunderLoading: boolean = true;
+  isSectorLoading: boolean = true;
+  isLocationLoading: boolean = true;
   isImplementerLoading: boolean = true;
   isDisbursementLoading: boolean = true;
   isDocumentLoading: boolean = true;
@@ -30,8 +37,23 @@ export class ManageHelpComponent implements OnInit {
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'funder' },
-    { visible: false, identity: 'implementer' }
+    { visible: false, identity: 'implementer' },
+    { visible: false, identity: 'disbursement' },
+    { visible: false, identity: 'document' },
+    { visible: false, identity: 'sector' },
+    { visible: false, identity: 'location' }
   ];
+
+  tabConstants: any = {
+    PROJECT: 'project',
+    FUNDER: 'funder',
+    IMPLEMENTER: 'implementer',
+    DISBURSEMENT: 'disbursement',
+    DOCUMENT: 'document',
+    SECTOR: 'sector',
+    LOCATION: 'location'
+  };
+
   @BlockUI() blockUI: NgBlockUI;
   
   constructor(private helpService: HelpService, private infoModal: InfoModalComponent,
@@ -83,6 +105,50 @@ export class ManageHelpComponent implements OnInit {
     );
   }
 
+  getHelpForSector() {
+    this.helpService.getProjectSectorHelpFields().subscribe(
+      data => {
+        if (data) {
+          this.sectorModel = data;
+        }
+        this.isSectorLoading = false;
+      }
+    );
+  }
+
+  getHelpForLocation() {
+    this.helpService.getProjectLocationHelpFields().subscribe(
+      data => {
+        if (data) {
+          this.locationModel = data;
+        }
+        this.isLocationLoading = false;
+      }
+    );
+  }
+
+  getHelpForDisbursements() {
+    this.helpService.getProjectDisbursementsHelpFields().subscribe(
+      data => {
+        if (data) {
+          this.disbursementModel = data;
+        }
+        this.isDisbursementLoading = false;
+      }
+    );
+  }
+
+  getHelpForDocuments() {
+    this.helpService.getProjectDocumentsHelpFields().subscribe(
+      data => {
+        if (data) {
+          this.documentModel = data;
+        }
+        this.isDocumentLoading = false;
+      }
+    );
+  }
+
   saveProjectHelp(frm: any) {
     this.blockUI.start('Saving help...');
     this.helpService.saveProjectHelp(this.projectModel).subscribe(
@@ -110,12 +176,10 @@ export class ManageHelpComponent implements OnInit {
   }
 
   saveProjectImplementerHelp(frm: any) {
-    this.blockUI.start('Saving help...');
+    this.blockUI.start('Saving help for Implementer...');
     this.helpService.saveProjectImplementerHelp(this.implementerModel).subscribe(
       data => {
         if (data) {
-          this.successMessage = 'Help saved successfully for project implementer fields';
-          this.infoModal.openModal();
         }
         this.blockUI.stop();
       }
@@ -123,12 +187,43 @@ export class ManageHelpComponent implements OnInit {
   }
 
   saveProjectDisbursementHelp(frm: any) {
-    this.blockUI.start('Saving help...');
-    this.helpService.saveProjectDisbursementHelp(this.funderModel).subscribe(
+    this.blockUI.start('Saving help for disbursement...');
+    this.helpService.saveProjectDisbursementHelp(this.disbursementModel).subscribe(
       data => {
         if (data) {
-          this.successMessage = 'Help saved successfully for project funder fields';
-          this.infoModal.openModal();
+        }
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  saveProjectSectorHelp(frm: any) {
+    this.blockUI.start('Saving help for sector...');
+    this.helpService.saveProjectSectorHelp(this.sectorModel).subscribe(
+      data => {
+        if (data) {
+        }
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  saveProjectLocationHelp(frm: any) {
+    this.blockUI.start('Saving help for location...');
+    this.helpService.saveProjectSectorHelp(this.locationModel).subscribe(
+      data => {
+        if (data) {
+        }
+        this.blockUI.stop();
+      }
+    );
+  }
+
+  saveProjectDocumentHelp(frm: any) {
+    this.blockUI.start('Saving help for document...');
+    this.helpService.saveProjectSectorHelp(this.documentModel).subscribe(
+      data => {
+        if (data) {
         }
         this.blockUI.stop();
       }
@@ -136,23 +231,31 @@ export class ManageHelpComponent implements OnInit {
   }
 
   showProjectTab() {
-    this.manageTabsDisplay('project');
+    this.manageTabsDisplay(this.tabConstants.PROJECT);
   }
 
   showFunderTab() {
-    this.manageTabsDisplay('funder');
+    this.manageTabsDisplay(this.tabConstants.FUNDER);
   }
 
   showImplementerTab() {
-    this.manageTabsDisplay('implementer');
+    this.manageTabsDisplay(this.tabConstants.IMPLEMENTER);
   }
 
   showDisbursementTab() {
-    this.manageTabsDisplay('disbursement');
+    this.manageTabsDisplay(this.tabConstants.DISBURSEMENT);
   }
 
   showDocumentTab() {
-    this.manageTabsDisplay('document');
+    this.manageTabsDisplay(this.tabConstants.DOCUMENT);
+  }
+
+  showSectorTab() {
+    this.manageTabsDisplay(this.tabConstants.SECTOR);
+  }
+
+  showLocationTab() {
+    this.manageTabsDisplay(this.tabConstants.LOCATION);
   }
 
   manageTabsDisplay(tabIdentity) {
