@@ -1,0 +1,47 @@
+<block-ui>
+  <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="card card-signin my-5 margin-top-10">
+      <div class="card-body">
+        <h6 class="card-title text-center">Finish Project</h6>
+  
+        <table class="table">
+          <tr>
+            <td>
+              <button class="btn btn-info btn-lg btn-block text-uppercase" (click)="getProjectView()"
+                type="button">Review Project Detail</button>
+            </td>
+          </tr>
+  
+          <tr>
+            <td>
+              <button class="btn btn-success btn-lg btn-block text-uppercase" (click)="finishProject()"
+                type="button">Finish Add/Edit Another</button>
+            </td>
+          </tr>
+  
+          <tr>
+            <td>
+              <button class="btn btn-danger btn-lg btn-block text-uppercase" (click)="makeDeleteRequest(projectId)"
+                type="button">Make a delete Request</button>
+            </td>
+          </tr>
+  
+          <tr>
+            <td>
+              <button class="btn btn-warning btn-lg btn-block text-uppercase" (click)="goToHome()"
+                type="button">Finish
+                Project</button>
+            </td>
+          </tr>
+        </table>
+  
+      </div>
+    </div>
+  </div>
+</block-ui>
+
+
+<project-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
+  [funders]="viewProjectFunders" [disbursements]="viewProjectDisbursements" [implementers]="viewProjectImplementers" 
+  [documents]="viewProjectDocuments" [markers]="viewProjectMarkers" [isShowContact]="false" [projectId]="projectId">
+</project-info-modal>

@@ -24,83 +24,47 @@
         </ul>
       </div>
     </div>
-    
+
 
     <div *ngIf="!isProjectLoading && currentTab == tabConstants.BASIC" class="col-lg-12 col-md-12">
       <basic-data [(projectData)]="projectData" [(projectDocuments)]="currentProjectDocuments"
         [(projectFunders)]="currentProjectFunders" [(projectImplementers)]="currentProjectImplementers"
-        [financialYears]="financialYears" [exchangeRates]="exchangeRates" [organizationsList]="organizationsList" [fundingTypesList]="fundingTypesList"
-        [currenciesList]="currenciesList" [projectId]="activeProjectId" [aimsProjects]="aimsProjects"
-        [iatiProjects]="iatiProjects" (projectFundersChanged)="updateProjectFunders($event)"
+        [financialYears]="financialYears" [exchangeRates]="exchangeRates" [organizationsList]="organizationsList"
+        [fundingTypesList]="fundingTypesList" [currenciesList]="currenciesList" [projectId]="activeProjectId"
+        [aimsProjects]="aimsProjects" [iatiProjects]="iatiProjects"
+        (projectFundersChanged)="updateProjectFunders($event)"
         (projectImplementersChanged)="updateProjectImplementers($event)">
       </basic-data>
     </div>
 
     <div *ngIf="!isProjectLoading && currentTab == tabConstants.FINANCIALS" class="col-lg-12 col-md-12">
-        <financials [projectCurrency]="projectData.projectCurrency" [projectValue]="projectData.projectValue" 
-          [exchangeRate]="projectData.exchangeRate" [exchangeRates]="exchangeRates" [currenciesList]="currenciesList" [projectDisbursements]="currentProjectDisbursements"
-          [startingYear]="projectData.startingFinancialYear" [endingYear]="projectData.endingFinancialYear"
-          [projectId]="activeProjectId">
-        </financials>
-      </div>
+      <financials [projectCurrency]="projectData.projectCurrency" [projectValue]="projectData.projectValue"
+        [exchangeRate]="projectData.exchangeRate" [exchangeRates]="exchangeRates" [currenciesList]="currenciesList"
+        [projectDisbursements]="currentProjectDisbursements" [startingYear]="projectData.startingFinancialYear"
+        [endingYear]="projectData.endingFinancialYear" [projectId]="activeProjectId">
+      </financials>
+    </div>
 
-      <div *ngIf="!isProjectLoading && currentTab == tabConstants.SECTORS" class="col-lg-12 col-md-12">
-          <project-sectors [sectorTypesList]="sectorTypesList" [sectorsList]="sectorsList" 
-            [defaultSectorsList]="defaultSectorsList" [defaultSectorTypeId]="defaultSectorTypeId" 
-            [projectId]="activeProjectId" [defaultSectorType]="defaultSectorType" [locationsList]="locationsList"
-            [currentProjectSectors]="currentProjectSectors" [currentProjectLocations]="currentProjectLocations"
-            [currentProjectMarkers]="currentProjectMarkers" [markersList]="markersList"
-            (projectSectorsChanged)="updateProjectSectors($event)" (projectLocationsChanged)="updateProjectLocations($event)" 
-            (projectMarkersChanged)="updateProjectMarkers($event)" >
-          </project-sectors>
-        </div>
+    <div *ngIf="!isProjectLoading && currentTab == tabConstants.SECTORS" class="col-lg-12 col-md-12">
+      <project-sectors [sectorTypesList]="sectorTypesList" [sectorsList]="sectorsList"
+        [defaultSectorsList]="defaultSectorsList" [defaultSectorTypeId]="defaultSectorTypeId"
+        [projectId]="activeProjectId" [defaultSectorType]="defaultSectorType" [locationsList]="locationsList"
+        [currentProjectSectors]="currentProjectSectors" [currentProjectLocations]="currentProjectLocations"
+        [currentProjectMarkers]="currentProjectMarkers" [markersList]="markersList"
+        (projectSectorsChanged)="updateProjectSectors($event)"
+        (projectLocationsChanged)="updateProjectLocations($event)"
+        (projectMarkersChanged)="updateProjectMarkers($event)">
+      </project-sectors>
+    </div>
 
-        <div *ngIf="!isProjectLoading && currentTab == tabConstants.FINISH" class="col-lg-12 col-md-12">
-          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div class="card card-signin my-5 margin-top-10">
-              <div class="card-body">
-                <h6 class="card-title text-center">Finish Project</h6>
-    
-                <table class="table">
-                  <tr>
-                    <td>
-                      <button class="btn btn-info btn-lg btn-block text-uppercase" (click)="getProjectView()"
-                        type="button">Review Project Detail</button>
-                    </td>
-                  </tr>
-    
-                  <tr>
-                    <td>
-                      <button class="btn btn-success btn-lg btn-block text-uppercase" (click)="finishProject()"
-                        type="button">Finish Add/Edit Another</button>
-                    </td>
-                  </tr>
-    
-                  <tr>
-                    <td>
-                      <button class="btn btn-danger btn-lg btn-block text-uppercase" (click)="makeDeleteRequest(activeProjectId)"
-                        type="button">Make a delete Request</button>
-                    </td>
-                  </tr>
-    
-                  <tr>
-                    <td>
-                      <button class="btn btn-warning btn-lg btn-block text-uppercase" (click)="goToHome()"
-                        type="button">Finish
-                        Project</button>
-                    </td>
-                  </tr>
-                </table>
-    
-              </div>
-            </div>
-          </div>
-        </div>
+    <div *ngIf="!isProjectLoading && currentTab == tabConstants.FINISH" class="col-lg-12 col-md-12">
+      <project-finish [viewProject]="projectData" [viewProjectFunders]="currentProjectFunders"
+        [viewProjectImplementers]="currentProjectImplementers" [viewProjectDocuments]="currentProjectDocuments"
+        [viewProjectDisbursements]="currentProjectDisbursements" [viewProjectMarkers]="currentProjectMarkers"
+        [viewProjectSectors]="currentProjectSectors" [viewProjectLocations]="currentProjectLocations"
+        [projectId]="activeProjectId">
+      </project-finish>
+    </div>
 
   </block-ui>
 </div>
-
-<project-info-modal [project]="projectData" [locations]="currentProjectLocations" [sectors]="currentProjectSectors"
-  [funders]="currentProjectFunders" [disbursements]="currentProjectDisbursements" [implementers]="currentProjectImplementers" 
-  [documents]="currentProjectDocuments" [markers]="currentProjectMarkers" [isShowContact]="false" [projectId]="activeProjectId">
-</project-info-modal>

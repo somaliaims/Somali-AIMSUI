@@ -101,6 +101,7 @@ import { LocationIatiComponent } from './data-entry/location-iati/location-iati.
 import { BasicDataComponent } from './data-entry/basic-data/basic-data.component';
 import { FinancialsComponent } from './data-entry/financials/financials.component';
 import { ProjectSectorsComponent } from './data-entry/project-sectors/project-sectors.component';
+import { ProjectFinishComponent } from './data-entry/project-finish/project-finish.component';
 
 @NgModule({
   declarations: [
@@ -193,6 +194,7 @@ import { ProjectSectorsComponent } from './data-entry/project-sectors/project-se
     BasicDataComponent,
     FinancialsComponent,
     ProjectSectorsComponent,
+    ProjectFinishComponent,
   ],
   imports: [
     BrowserModule,
