@@ -101,6 +101,8 @@ import { BasicDataComponent } from './data-entry/basic-data/basic-data.component
 import { FinancialsComponent } from './data-entry/financials/financials.component';
 import { ProjectSectorsComponent } from './data-entry/project-sectors/project-sectors.component';
 import { ProjectFinishComponent } from './data-entry/project-finish/project-finish.component';
+import { EnvelopeTypesComponent } from './envelope-types/envelope-types.component';
+import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envelope-type.component';
 
 @NgModule({
   declarations: [
@@ -193,6 +195,8 @@ import { ProjectFinishComponent } from './data-entry/project-finish/project-fini
     FinancialsComponent,
     ProjectSectorsComponent,
     ProjectFinishComponent,
+    EnvelopeTypesComponent,
+    ManageEnvelopeTypeComponent,
   ],
   imports: [
     BrowserModule,

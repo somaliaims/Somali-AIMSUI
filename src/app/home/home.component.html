@@ -118,14 +118,14 @@
             <thead>
               <tr>
                 <th width="70%">Project</th>
-                <th width="20%" class="text-center">Project cost</th>
+                <th width="20%" class="text-center">Project value</th>
                 <th width="10%" class="text-center">Detail</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let project of latestProjects">
                 <td>{{project.title}}</td>
-                <td class="text-center">{{formatNumberWithCommas(project.projectCost)}}</td>
+                <td class="text-center">{{project.projectCurrency}} {{formatNumberWithCommas(project.projectCost)}}</td>
                 <td class="text-center">
                   <button class="btn btn-warning btn-sm" (click)="viewProjectDetail(project.id)">View detail</button>
                 </td>

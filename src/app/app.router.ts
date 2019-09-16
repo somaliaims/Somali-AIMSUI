@@ -70,6 +70,7 @@ import { ManageExrateUsageComponent } from './manage-exrate-usage/manage-exrate-
 import { HomePageSettingsComponent } from './home-page-settings/home-page-settings.component';
 import { ManageHelpComponent } from './manage-help/manage-help.component';
 import { DataEntryComponent } from './data-entry/data-entry/data-entry.component';
+import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envelope-type.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -137,6 +138,8 @@ export const routes: Routes = [
   { path: 'manage-exchange-rate-usage', component: ManageExrateUsageComponent },
   { path: 'manage-exchange-rate-usage/:{id}', component: ManageExrateUsageComponent, data: { isForEdit: true } },
   { path: 'envelope', component: EnvelopeComponent},
+  { path: 'manage-envelope-type', component: ManageEnvelopeTypeComponent},
+  { path: 'manage-envelope-type/:{id}', component: ManageEnvelopeTypeComponent, data: { isForEdit: true }},
   { path: 'markers', component: MarkersComponent },
   { path: 'manage-markers', component: ManageMarkersComponent },
   { path: 'manage-markers/:{id}', component: ManageMarkersComponent, data: { isForEdit: true } },

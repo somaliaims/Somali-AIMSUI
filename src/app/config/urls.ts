@@ -125,6 +125,7 @@ export const urls = {
 	manualExRatesForCurrency: "ManualExchangeRate/GetForNationalCurrency/",
 	averageCurrencyRate: "ExchangeRate/GetAverageCurrencyRateForDate",
 	getDefaultSectors: "Sector/GetDefaultSectors",
+	envelopeTypeUrl: "EnvelopeType",
 	envelopeUrl: "Envelope",
 	markersUrl: "Marker",
 	activeMarkersUrl: "Marker/GetActive",

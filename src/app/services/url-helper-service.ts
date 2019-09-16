@@ -604,6 +604,10 @@ export class UrlHelperService {
         return(this.BASE_URL + urlsList.urls.envelopeUrl);
     }
 
+    getEnvelopeTypeUrl() {
+        return (this.BASE_URL + urlsList.urls.envelopeTypeUrl);
+    }
+
     getEnvelopeUrl() {
         return (this.BASE_URL + urlsList.urls.envelopeUrl);
     }
