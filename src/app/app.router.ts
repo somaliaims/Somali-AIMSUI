@@ -72,6 +72,7 @@ import { ManageHelpComponent } from './manage-help/manage-help.component';
 import { DataEntryComponent } from './data-entry/data-entry/data-entry.component';
 import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envelope-type.component';
 import { EnvelopeTypesComponent } from './envelope-types/envelope-types.component';
+import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -142,6 +143,7 @@ export const routes: Routes = [
   { path: 'envelope', component: EnvelopeComponent},
   { path: 'manage-envelope-type', component: ManageEnvelopeTypeComponent},
   { path: 'manage-envelope-type/:{id}', component: ManageEnvelopeTypeComponent, data: { isForEdit: true }},
+  { path: 'delete-envelope-type/:{id}', component: DeleteEnvelopeTypeComponent },
   { path: 'markers', component: MarkersComponent },
   { path: 'manage-markers', component: ManageMarkersComponent },
   { path: 'manage-markers/:{id}', component: ManageMarkersComponent, data: { isForEdit: true } },

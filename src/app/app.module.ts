@@ -103,6 +103,7 @@ import { ProjectSectorsComponent } from './data-entry/project-sectors/project-se
 import { ProjectFinishComponent } from './data-entry/project-finish/project-finish.component';
 import { EnvelopeTypesComponent } from './envelope-types/envelope-types.component';
 import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envelope-type.component';
+import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
 
 @NgModule({
   declarations: [
@@ -197,6 +198,7 @@ import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envel
     ProjectFinishComponent,
     EnvelopeTypesComponent,
     ManageEnvelopeTypeComponent,
+    DeleteEnvelopeTypeComponent,
   ],
   imports: [
     BrowserModule,

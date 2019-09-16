@@ -40,8 +40,8 @@ export class EnvelopeTypeService {
                 );
         }
     
-        deleteEnvelope(funderId: number, year: number) {
-            var url = this.urlHelper.getEnvelopeTypeUrl() + '/' + funderId + '/' + year;
+        deleteEnvelopeType(id: number, mappingId: number) {
+            var url = this.urlHelper.getEnvelopeTypeUrl() + '/' + id + '/' + mappingId;
             return this.httpClient.delete(url, httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Delete Envelope Type')));
         }

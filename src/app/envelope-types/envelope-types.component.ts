@@ -65,7 +65,7 @@ export class EnvelopeTypesComponent implements OnInit {
 
   delete(id: number) {
     if (id) {
-      
+      this.router.navigateByUrl('delete-envelope-type/' + id);
     }
   }
 

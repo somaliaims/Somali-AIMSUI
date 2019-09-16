@@ -1,0 +1,55 @@
+<div class="container-fluid view-area">
+
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Delete/Re-assign envelope type</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/envelope-types']">Envelope types</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <!--Locations box from AIMS-->
+      <div *ngIf="!isLoading" class="col-md-12 col-lg-12 col-sm-12">
+        <div class="card card-signin my-5">
+          <div class="card-body iati-box">
+            <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && deleteAndMapType()"
+              #envelopeForm="ngForm">
+              <div class="form-group">
+                <label for="name">New mapping for envelope type</label>
+                <select class="form-control" id="envelopeTypeId" [(ngModel)]="model.envelopeTypeId"
+                  name="envelopeTypeId" #envelopeId="ngModel" required>
+                  <option *ngFor="let envelope of envelopeTypes" [value]="envelope.id">
+                    {{envelope.typeName}}</option>
+                </select>
+              </div>
+
+              <h5 class="card-title text-center">Delete confirmation</h5>
+                <div class="form-group">
+                  <p class="text-info">
+                    You can assign other envelope type to map the envelope records linked to the selected type
+                    for deletion. The selected envelope type will be deleted once confirmed and this
+                    action cannot be undone.
+                  </p>
+                </div>
+                <button [class.disable]="isLoading" class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
+              </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-lg-12" *ngIf="isLoading">
+        Loading data...
+      </div>
+    </div>
+
+  </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>
