@@ -19,15 +19,21 @@ export class EnvelopeTypeService {
                 catchError(this.storeService.handleError<any>('Envelope Types')));
         }
 
+        getEnvelopeTypeById(id: number) {
+            var url = this.urlHelper.getEnvelopeTypeUrl() + '/' + id;
+            return this.httpClient.get(url, httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Envelope Type')));
+        }
+
         addEnvelopeType(model: any) {
-            var url = this.urlHelper.getEnvelopeUrl();
+            var url = this.urlHelper.getEnvelopeTypeUrl();
             return this.httpClient.post(url,
                 JSON.stringify(model), httpOptions).pipe(
                     catchError(this.storeService.handleError<any>('New Envelope Type')));
         }
     
         editEnvelopeType(id: number, model: any) {
-            var url = this.urlHelper.getEnvelopeUrl() + '/' + id;
+            var url = this.urlHelper.getEnvelopeTypeUrl() + '/' + id;
             return this.httpClient.put(url,
                 JSON.stringify(model), httpOptions).pipe(
                     catchError(this.storeService.handleError<any>('Edit Envelope Type'))
@@ -35,7 +41,7 @@ export class EnvelopeTypeService {
         }
     
         deleteEnvelope(funderId: number, year: number) {
-            var url = this.urlHelper.getEnvelopeUrl() + '/' + funderId + '/' + year;
+            var url = this.urlHelper.getEnvelopeTypeUrl() + '/' + funderId + '/' + year;
             return this.httpClient.delete(url, httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Delete Envelope Type')));
         }

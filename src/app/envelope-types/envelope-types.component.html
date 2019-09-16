@@ -12,12 +12,15 @@
       </ul>
     </div>
     <div class="col-md-6">
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Enter envelope type name" [(ngModel)]="criteria" aria-label="Recipient's username"
-          aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-info" (click)="searchEnvelopeTypes()" type="button"><i class="fa fa-search"></i></button>
-        </div>
+      <div class="input-group">
+        <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria"
+          (input)="searchEnvelopeTypes()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
+          onkeypress="return event.keyCode != 13;" maxlength="15" required>
+        <span class="input-group-btn">
+          <button class="btn btn-outline-info btn-lg" type="button">
+            <i class="fa fa-search"></i>
+          </button>
+        </span>
       </div>
     </div>
   </div>
@@ -29,13 +32,13 @@
   </div>
   
   <div *ngIf="!isLoading" class="row">
-    <div *ngIf="envelopeTypes.length > 0" class="col margin-top-10">
+    <div *ngIf="filteredEnvelopeTypes.length > 0" class="col margin-top-10">
       <table class="table table-bordered table-stripped">
         <tr>
           <th>Type name</th>
           <th *ngIf="permissions.canEditEnvelopeType">Actions</th>
         </tr>
-        <tr *ngFor="let type of envelopeTypes | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+        <tr *ngFor="let type of filteredEnvelopeTypes | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{type.typeName}}</td>
           <td *ngIf="permissions.canEditEnvelopeType">
             <a title="Edit" (click)="edit(type.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>

@@ -160,6 +160,13 @@ html {
   }
   /*End of Dashboard*/
 
+  /*Adjustment for dropdown menu*/
+  .dropdown-menu {         
+    max-height: 600px;
+    overflow-y: auto;
+  }
+  /*End of adjustments for dropdown menu*/
+
   /*Management Page*/
   .font-management-menu-item {
     font-size: 20px;

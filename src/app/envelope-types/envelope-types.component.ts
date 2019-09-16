@@ -29,16 +29,30 @@ export class EnvelopeTypesComponent implements OnInit {
     if (!this.permissions.canEditEnvelopeType) {
       this.router.navigateByUrl('home');
     }
+
+    this.getEnvelopeTypes();
+  }
+
+  searchEnvelopeTypes() {
+    if (!this.criteria) {
+      this.filteredEnvelopeTypes = this.envelopeTypes;
+    } else {
+      if (this.envelopeTypes.length > 0) {
+          var criteria = this.criteria.toLowerCase();
+          this.filteredEnvelopeTypes = this.envelopeTypes.filter(e => 
+            (e.typeName.toLowerCase().indexOf(criteria) != -1 ));
+      }
+    }
   }
 
   getEnvelopeTypes() {
-    this.blockUI.start('Loading envelope types...');
     this.envelopeTypeService.getAllEnvelopeTypes().subscribe(
       data => {
         if (data) {
           this.envelopeTypes = data;
+          this.filteredEnvelopeTypes = data;
         }
-        this.blockUI.stop();
+        this.isLoading = false;
       }
     );
   }
@@ -46,6 +60,12 @@ export class EnvelopeTypesComponent implements OnInit {
   edit(id: number) {
     if (id) {
       this.router.navigateByUrl('manage-envelope-type/' + id);
+    }
+  }
+
+  delete(id: number) {
+    if (id) {
+      
     }
   }
 

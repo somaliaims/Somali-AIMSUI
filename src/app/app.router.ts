@@ -71,6 +71,7 @@ import { HomePageSettingsComponent } from './home-page-settings/home-page-settin
 import { ManageHelpComponent } from './manage-help/manage-help.component';
 import { DataEntryComponent } from './data-entry/data-entry/data-entry.component';
 import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envelope-type.component';
+import { EnvelopeTypesComponent } from './envelope-types/envelope-types.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -137,6 +138,7 @@ export const routes: Routes = [
   { path: 'exchange-rate-usage', component: ExrateUsageComponent },
   { path: 'manage-exchange-rate-usage', component: ManageExrateUsageComponent },
   { path: 'manage-exchange-rate-usage/:{id}', component: ManageExrateUsageComponent, data: { isForEdit: true } },
+  { path: 'envelope-types', component: EnvelopeTypesComponent },
   { path: 'envelope', component: EnvelopeComponent},
   { path: 'manage-envelope-type', component: ManageEnvelopeTypeComponent},
   { path: 'manage-envelope-type/:{id}', component: ManageEnvelopeTypeComponent, data: { isForEdit: true }},
