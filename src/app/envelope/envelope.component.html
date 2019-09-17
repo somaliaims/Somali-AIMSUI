@@ -41,6 +41,12 @@
                         <input type="number" name="{{envelope.envelopeTypeId}}-{{i}}" min="1" max="99999999999" (keyup)="preventInput($event)"  class="form-control" [(ngModel)]="yr.amount" required />
                       </td>
                     </tr>
+                    <tr>
+                      <td><b>Total</b></td>
+                      <td class="text-center"><b>{{calculateTotalForYear(previousYear)}}/-</b></td>
+                      <td class="text-center"><b>{{calculateTotalForYear(currentYear)}}/-</b></td>
+                      <td class="text-center"><b>{{calculateTotalForYear(nextYear)}}/-</b></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

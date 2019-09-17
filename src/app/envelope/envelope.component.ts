@@ -168,42 +168,17 @@ export class EnvelopeComponent implements OnInit {
     );
   }
 
-  
-  updateEnvelopeManualValue(e) {
-    var newValue = e.target.value;
-    if (newValue <= 0) {
-      this.errorMessage = Messages.CANNOT_BE_ZERO;
-      this.isError = true;
-      return false;
-    }
-
-    this.isError = false;
-    var arr = e.target.id.split('-');
-    var year = arr[1];
-    var sectorId = arr[2];
-
-    if (year) {
-      var envelopeArr = this.envelopeSectorsBreakups.filter(e => e.sectorId == sectorId);
-      if (envelopeArr.length > 0) {
-        var allocationArr = envelopeArr[0].yearlyAllocation.filter(a => a.year == year);
-        if (allocationArr.length > 0) {
-          allocationArr[0].manualAmount = newValue;
-
-          var actualAmount = allocationArr[0].amount;
-          var expectedAmount = allocationArr[0].expectedAmount;
-          var amountDifference = 0;
-          if (expectedAmount > actualAmount) {
-            amountDifference = expectedAmount - actualAmount;
-          }
-
-          if (newValue < amountDifference) {
-            this.errorMessage = Messages.INVALID_ENVELOPE_MANUAL_AMOUNT;
-            this.isError = true;
-            this.errorModal.openModal();
-          }
+  calculateTotalForYear(year: number) {
+    var totalAmountForYear = 0;
+    if (this.envelopeData.envelopeBreakupsByType) {
+      this.envelopeData.envelopeBreakupsByType.forEach((b) => {
+        var yearlyData = b.yearlyBreakup.filter(y => y.year == year);
+        if (yearlyData.length > 0) {
+          totalAmountForYear += parseFloat(yearlyData[0].amount);
         }
-      }
+      });
     }
+    return totalAmountForYear;
   }
 
   
