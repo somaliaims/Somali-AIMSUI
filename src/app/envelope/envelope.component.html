@@ -9,142 +9,41 @@
         </ul>
       </div>
 
-      <div class="col-md-3 margin-top-20">
-        <div class="card">
-          <div class="card-header bg-info text-white">Guide</div>
-          <div class="card-body">
-            This section will include help on evelope data feature. This section will include help on evelope data
-            feature.
-            This section will include help on evelope data feature. This section will include help on evelope data
-            feature.
-
-            <table class="table table-bordered margin-top-10">
-              <tr>
-                <th>Abbr</th>
-                <th>Explnation</th>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>Actual</td>
-              </tr>
-              <tr>
-                <td>E</td>
-                <td>Expected</td>
-              </tr>
-              <tr>
-                <td>M</td>
-                <td>Manually entered</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-9 col-lg-9">
+      
+      <div class="col-sm-12 col-md-12 col-lg-12">
         <div class="card card-signin my-5 margin-top-20">
           <div class="card-body margin-top-0">
             <h5 class="card-title text-center">Envelope data</h5>
 
             <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelopeData()"
               #envelopeForm="ngForm">
-              <div class="row">
-                <div class="col-md-9">
-                  <div class="form-inline">
-                    <label>&nbsp;</label>
-                    <select class="form-control" id="currency" [(ngModel)]="selectedCurrency" name="currency"
-                      #currency="ngModel" (change)="selectExRateSource()">
-                      <option value="null">--Currencies--</option>
-                      <option *ngFor="let currency of currenciesList" [value]="currency.currency">
-                        {{currency.currency}}</option>
-                    </select>
-                    <label for="exrate-source">&nbsp;</label>
-                    <select class="form-control" id="esource" (change)="selectExRateSource()" [(ngModel)]="exRateSource"
-                      name="esource" #esource="ngModel">
-                      <option value="null">--Ex Rate Source--</option>
-                      <option *ngFor="let source of exRateSources" [value]="source.id">{{source.value}}</option>
-                    </select>&nbsp;
-                    <label>&nbsp;<b>Ex. rate: {{exchangeRate}}</b>&nbsp;</label>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <span class="float-right">
-                    <b>Actual total:</b>&nbsp;{{totalFundingAmount}}
-                  </span>
-                </div>
+              <div class="form-group form-inline col-md-12 col-lg-12">
+                <label>Currency &nbsp;&nbsp;</label>
+                <select class="form-control" name="currency" [(ngModel)]="model.currency" (change)="getExchangeRateForCurrency()" #currency="ngModel">
+                  <option value="null">--Currency--</option>
+                  <option *ngFor="let currency of currenciesList" [value]="currency.currency">{{currency.currencyName}}</option>
+                </select>
               </div>
-
-              <div class="row text-center" *ngIf="isLoading">
-                <div class="col-md-12">
-                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
-                </div>
-              </div>
-              <div class="row margin-top-10">
-                <table *ngIf="envelopeBreakups.length > 0" class="table table-bordered">
-                  <tr>
-                    <th>Sectors</th>
-                    <th *ngFor="let year of yearsList">{{year}}</th>
-                  </tr>
-                  <tr>
-                    <td><b>Total <i>A/E/M</i></b></td>
-                    <td *ngFor="let e of envelopeBreakups">
-                      <table class="table table-bordered">
-                        <tr>
-                          <td>{{handleNullAmount(e.actualAmount)}}</td>
-                          <td>{{handleNullAmount(e.expectedAmount)}}</td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            {{handleNullAmount(e.manualAmount)}}
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <tr *ngIf="envelopeData.sectors.length == 0">
-                    <td colspan="6">
-                      <span class="text-info"><b><i>Funds are not distributed among the sectors yet</i></b></span>
-                    </td>
-                  </tr>
-                  <tr *ngFor="let s of envelopeData.sectors">
-                    <td>{{s.sector}}</td>
-                    <td *ngFor="let allocation of s.yearlyAllocation">
-                      <table class="table table-border">
-                        <tr>
-                          <td>{{handleNullAmount(allocation.amount)}}</td>
-                          <td>{{handleNullAmount(allocation.expectedAmount)}}</td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            <input type="text" id="sm-{{allocation.year}}-{{s.sectorId}}"
-                              (change)="updateEnvelopeManualValue($event)"
-                              value="{{handleNullAmount(allocation.manualAmount)}}" />
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><b>Sector totals</b></td>
-                    <td *ngFor="let year of yearsList">
-                      <table class="table table-bordered">
-                        <tr>
-                          <td><b>A</b></td>
-                          <td>{{getSectorActualTotalForYear(year)}}</td>
-                        </tr>
-                        <tr>
-                          <td><b>E</b></td>
-                          <td>{{getSectorExpectedTotalForYear(year)}}</td>
-                        </tr>
-                        <tr>
-                          <td><b>M</b></td>
-                          <td>{{getSectorManualTotalForYear(year)}}</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
+              <div class="col-md-12">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Envelope type</th>
+                      <th class="text-center">{{previousYear}}</th>
+                      <th class="text-center">{{currentYear}}</th>
+                      <th class="text-center">{{nextYear}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let envelope of envelopeData.envelopeBreakupsByType">
+                      <td>{{envelope.envelopeType}}</td>
+                      <td *ngFor="let yr of envelope.yearlyBreakup;let i = index">
+                        <input type="number" name="{{envelope.envelopeTypeId}}-{{i}}" min="1" max="99999999999" (keyup)="preventInput($event)"  class="form-control" [(ngModel)]="yr.amount" required />
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
-                <span *ngIf="envelopeBreakups.length == 0 && isLoading == false" class="text-info"><i></i></span>
               </div>
-
               <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
             </form>
           </div>

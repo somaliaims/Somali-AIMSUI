@@ -374,7 +374,6 @@ export class DataEntryComponent implements OnInit {
       }
     );
   }
-
   
   getAverageExchangeRates() {
     var model = {
