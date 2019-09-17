@@ -155,7 +155,7 @@ export class EnvelopeComponent implements OnInit {
     var model = {
       currency: this.model.currency,
       exchangeRate: this.model.exchangeRate,
-      envelopeBeakups: envelopeBreakups
+      envelopeBreakups: envelopeBreakups
     }
 
     this.blockUI.start('Saving envelope...');
