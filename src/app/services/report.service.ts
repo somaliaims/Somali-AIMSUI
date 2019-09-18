@@ -38,7 +38,6 @@ export class ReportService {
         catchError(this.storeService.handleError<any>('Budget Report')));
     }
 
-
     getReportNames() {
       var url = this.urlHelper.getReportNamesUrl();
       return this.httpClient.get(url, httpOptions).pipe(
@@ -50,6 +49,13 @@ export class ReportService {
       return this.httpClient.post(url,
         JSON.stringify(model), httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Projects Report by Sectors')));
+    }
+
+    getEnvelopeReport(model: any) {
+      var url = this.urlHelper.getEnvelopeReportUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Envelope Report')));
     }
 
     getLocationWiseProjectsReport(model: any) {

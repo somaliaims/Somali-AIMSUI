@@ -592,6 +592,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.budgetSummaryReport);
     }
 
+    getEnvelopeReportUrl() {
+        return (this.BASE_URL + urlsList.urls.envelopeReport);
+    }
+
     getReportNamesUrl() {
         return (this.BASE_URL + urlsList.urls.reportNamesUrl);
     }

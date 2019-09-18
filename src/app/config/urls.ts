@@ -94,6 +94,7 @@ export const urls = {
 	yearlyProjectsReport: "Report/GetYearWiseProjects",
 	budgetReport: "Report/GetProjectsBudgetReport",
 	budgetSummaryReport: "Report/GetProjectsBudgetSummaryReport",
+	envelopeReport: "Report/GetEnvelopeReport",
 	searchProjectsViewByCriteria: "Project/SearchProjectsViewByCriteria",
 	searchProjectsByCriteriaReport: "Report/GetSectorWiseProjects",
 	getFinancialYears: "FinancialYear",

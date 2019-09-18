@@ -73,6 +73,7 @@ import { DataEntryComponent } from './data-entry/data-entry/data-entry.component
 import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envelope-type.component';
 import { EnvelopeTypesComponent } from './envelope-types/envelope-types.component';
 import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
+import { EnvelopeReportComponent } from './report-components/envelope-report/envelope-report.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -123,6 +124,7 @@ export const routes: Routes = [
   { path: 'locations-report', component: LocationReportComponent },
   { path: 'time-trend-report', component: TimeTrendReportComponent },
   { path: 'budget-report', component: BudgetReportSummaryComponent },
+  { path: 'envelope-report', component: EnvelopeReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
   { path: 'home-page-settings', component: HomePageSettingsComponent},
