@@ -83,25 +83,18 @@ export class EnvelopeReportComponent implements OnInit {
   chartLegend: boolean = true;
   chartData: any = [];
   doughnutChartData: any = [];
-
   model: any = { funderTypeId: 0, funderId: 0, startingYear: 0, endingYear: 0, envelopeTypeId: 0};
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
-    { id: 2, type: 'pie', title: 'Pie chart' },
-    { id: 3, type: 'doughnut', title: 'Doughnut chart' },
-    { id: 4, type: 'line', title: 'Line chart' },
-    { id: 5, type: 'radar', title: 'Radar' },
-    { id: 6, type: 'polarArea', title: 'Polar area' }
+    { id: 2, type: 'line', title: 'Line chart' },
+    { id: 3, type: 'radar', title: 'Radar' },
   ];
 
   chartTypes: any = {
     BAR: 'bar',
-    PIE: 'pie',
-    DOUGHNUT: 'doughnut',
     LINE: 'line',
     RADAR: 'radar',
-    POLAR: 'polarArea'
   };
   @BlockUI() blockUI: NgBlockUI;
   
@@ -113,7 +106,7 @@ export class EnvelopeReportComponent implements OnInit {
     private storeService: StoreService) { }
 
   ngOnInit() {
-
+    this.chartType = this.chartTypes.BAR;
     this.getDefaultCurrency();
     this.getNationalCurrency();
     this.getEnvelopeTypes();
