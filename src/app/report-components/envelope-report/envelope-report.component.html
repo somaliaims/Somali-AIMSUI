@@ -173,18 +173,20 @@
           <thead>
             <th width="20%">Envelope type</th>
             <th width="{{cellPercent}}%" class="text-center" *ngFor="let yr of envelopeYearsList">{{yr}}</th>
+            <th class="text-right" width="{{cellPercent}}%">Total</th>
           </thead>
           <tbody></tbody>
         </table>
         <table class="table small margin-bottom-0" *ngFor="let yView of envelopeList">
           <tr class="row-highlight">
-            <td colspan="4"><b>{{yView.funder}}</b></td>
+            <td [attr.colspan]="cellCount"><b>{{yView.funder}}</b></td>
           </tr>
           <tr *ngFor="let breakup of yView.envelopeBreakupsByType">
             <td width="20%">{{breakup.envelopeType}}</td>
             <td width="{{cellPercent}}%" class="text-center" *ngFor="let yearly of breakup.yearlyBreakup">
               {{yearly.amount}}
             </td>
+            <td width="{{cellPercent}}%" class="text-right"><b>{{calculateEnvelopeTypeTotal(yView.funderId, breakup.envelopeTypeId)}}</b></td>
           </tr>
         </table>
       </div>

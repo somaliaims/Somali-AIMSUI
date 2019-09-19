@@ -31,6 +31,7 @@ export class EnvelopeReportComponent implements OnInit {
   chartType: string = null;
   oldCurrency: any = null;
   manualExRate: number = 0;
+  cellCount: number = 0;
   oldCurrencyRate: number = 0;
   cellPercent: number = 0;
 
@@ -128,7 +129,8 @@ export class EnvelopeReportComponent implements OnInit {
           this.reportSettings = data.reportSettings;
           this.envelopeList = data.envelope;
           this.envelopeYearsList = data.envelopeYears;
-          this.cellPercent = (80 / this.envelopeYearsList.length);
+          this.cellCount = (this.envelopeYearsList.length + 2);
+          this.cellPercent = (80 / this.cellCount);
         }
         this.blockUI.stop();
       }
@@ -230,6 +232,24 @@ export class EnvelopeReportComponent implements OnInit {
 
   manageDataToDisplay() {
 
+  }
+
+  calculateEnvelopeTypeTotal(funderId: number, envelopeTypeId: number) {
+    var totalAmount = 0;
+    var envelope = this.envelopeList.filter(e => e.funderId == funderId);
+    if (envelope.length > 0) {
+      var envelopeBreakup = envelope[0].envelopeBreakupsByType.filter(e => e.envelopeTypeId == envelopeTypeId);
+      if (envelopeBreakup.length > 0) {
+        envelopeBreakup[0].yearlyBreakup.forEach((y) => {
+          totalAmount += parseFloat(y.amount);
+        });
+      }
+    }
+    return totalAmount;
+  }
+
+  calculateTotals() {
+    
   }
 
 }
