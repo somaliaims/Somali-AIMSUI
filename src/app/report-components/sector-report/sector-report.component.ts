@@ -176,7 +176,6 @@ export class SectorReportComponent implements OnInit {
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
-
   constructor(private reportService: ReportService, private storeService: StoreService,
     private sectorService: SectorService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private locationService: LocationService,

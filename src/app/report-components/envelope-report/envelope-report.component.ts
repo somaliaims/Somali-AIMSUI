@@ -34,6 +34,7 @@ export class EnvelopeReportComponent implements OnInit {
   cellCount: number = 0;
   oldCurrencyRate: number = 0;
   cellPercent: number = 0;
+  isShowChart: boolean = false;
 
   barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -131,6 +132,8 @@ export class EnvelopeReportComponent implements OnInit {
           this.envelopeYearsList = data.envelopeYears;
           this.cellCount = (this.envelopeYearsList.length + 2);
           this.cellPercent = (80 / this.cellCount);
+          this.chartLables = this.envelopeYearsList;
+          this.manageDataToDisplay();
         }
         this.blockUI.stop();
       }
@@ -231,7 +234,40 @@ export class EnvelopeReportComponent implements OnInit {
   }
 
   manageDataToDisplay() {
+    this.chartData = [];
+    var funderIds = this.envelopeList.map(e => e.funderId);
+    var fundersChartData: any = [];
 
+    funderIds.forEach((f) => {
+      var envelope = this.envelopeList.filter(e => e.funderId = f);
+      var yearlySummary: any = [];
+      var funderName: string = null;
+
+      if (envelope.length > 0) {
+        funderName = envelope[0].funder;
+      }
+
+      this.envelopeYearsList.forEach((year) => {
+        var totalAmount: number = 0;
+        envelope.forEach((e) => {
+          e.envelopeBreakupsByType.forEach((b) => {
+            var yearlyBreakup = b.yearlyBreakup.filter(y => y.year == year);
+            if (yearlyBreakup.length > 0) {
+              totalAmount += parseFloat(yearlyBreakup[0].amount);
+            }
+          });
+        });
+        yearlySummary.push(totalAmount);
+      });
+
+      fundersChartData.push({
+        data: yearlySummary,
+        label: funderName 
+      });
+    });
+
+    this.chartData = fundersChartData;
+    this.isShowChart = true;
   }
 
   calculateEnvelopeTypeTotal(funderId: number, envelopeTypeId: number) {
@@ -248,8 +284,18 @@ export class EnvelopeReportComponent implements OnInit {
     return totalAmount;
   }
 
-  calculateTotals() {
-    
+  calculateTotalsForYear(year: number, funderId: number) {
+    var totalAmount = 0;
+    var envelope = this.envelopeList.filter(e => e.funderId = funderId);
+    envelope.forEach((e) => {
+      e.envelopeBreakupsByType.forEach((b) => {
+        var yearlyBreakup = b.yearlyBreakup.filter(y => y.year == year);
+        if (yearlyBreakup.length > 0) {
+          totalAmount += parseFloat(yearlyBreakup[0].amount);
+        }
+      });
+    });
+    return totalAmount;
   }
 
 }
