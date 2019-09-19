@@ -23,7 +23,11 @@ export class EnvelopeReportComponent implements OnInit {
   envelopeList: any = [];
   envelopeYearsList: any = [];
   currenciesList: any = [];
+  selectedEnvelopeTypes: any = [];
+  selectedOrganizations: any = [];
   reportSettings: any = {};
+  envelopeTypeSettings: any = {};
+  organizationSettings: any = {};
   defaultCurrency: string = null;
   nationalCurrency: string = null;
   nationalCurrencyName: string = null;
@@ -83,7 +87,8 @@ export class EnvelopeReportComponent implements OnInit {
   chartLegend: boolean = true;
   chartData: any = [];
   doughnutChartData: any = [];
-  model: any = { funderTypeId: 0, funderId: 0, startingYear: 0, endingYear: 0, envelopeTypeId: 0};
+  model: any = { funderTypeId: 0, funderIds: [], startingYear: 0, endingYear: 0, envelopeTypes: [],
+  envelopeTypeIds: []};
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -106,6 +111,26 @@ export class EnvelopeReportComponent implements OnInit {
     private storeService: StoreService) { }
 
   ngOnInit() {
+    this.envelopeTypeSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'typeName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.organizationSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'organizationName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
     this.chartType = this.chartTypes.BAR;
     this.getDefaultCurrency();
     this.getNationalCurrency();
@@ -116,6 +141,11 @@ export class EnvelopeReportComponent implements OnInit {
   }
 
   getEnvelopeReport() {
+    this.isShowChart = false;
+    this.chartData = [];
+    this.chartType = this.chartTypes.BAR;
+    this.model.envelopeTypeIds = this.selectedEnvelopeTypes.map(t => t.id);
+    this.model.funderIds = this.selectedOrganizations.map(o => o.id);
     this.blockUI.start('Loading report...');
     this.reportService.getEnvelopeReport(this.model).subscribe(
       data => {
@@ -144,7 +174,7 @@ export class EnvelopeReportComponent implements OnInit {
   }
 
   getOrganizations() {
-    this.organizationService.getOrganizationsList().subscribe(
+    this.organizationService.getUserOrganizations().subscribe(
       data => {
         if (data) {
           this.organizations = data;
@@ -232,7 +262,7 @@ export class EnvelopeReportComponent implements OnInit {
     var fundersChartData: any = [];
 
     funderIds.forEach((f) => {
-      var envelope = this.envelopeList.filter(e => e.funderId = f);
+      var envelope = this.envelopeList.filter(e => e.funderId == f);
       var yearlySummary: any = [];
       var funderName: string = null;
 
@@ -279,7 +309,7 @@ export class EnvelopeReportComponent implements OnInit {
 
   calculateTotalsForYear(year: number, funderId: number) {
     var totalAmount = 0;
-    var envelope = this.envelopeList.filter(e => e.funderId = funderId);
+    var envelope = this.envelopeList.filter(e => e.funderId == funderId);
     envelope.forEach((e) => {
       e.envelopeBreakupsByType.forEach((b) => {
         var yearlyBreakup = b.yearlyBreakup.filter(y => y.year == year);

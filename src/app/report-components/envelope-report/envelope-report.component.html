@@ -34,12 +34,11 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <select class="form-control" id="envelopeType" [(ngModel)]="model.envelopeTypeId" name="envelopeType" #envelopeType="ngModel"
-                    required>
-                    <option value="0">--Envelope type--</option>
-                    <option *ngFor="let type of envelopeTypes" [value]="type.id">{{type.typeName}}
-                    </option>
-                  </select>
+                    <ng-multiselect-dropdown [placeholder]="'-- All Envelope type/s --'" [data]="envelopeTypes"
+                    [(ngModel)]="selectedEnvelopeTypes" [settings]="envelopeTypeSettings"
+                    name="selectedEnvelopeTypes"
+                    #selectedEnvelopeTypesList="ngModel">
+                  </ng-multiselect-dropdown>
                 </div>
               </div>
 
@@ -47,20 +46,25 @@
                 <div class="col-md-6">
                   <select class="form-control" id="funderType" [(ngModel)]="model.funderTypeId" name="funderType"
                     #funderType="ngModel" (change)="getOrganizationsForType()">
-                    <option value="0">-- Organization type --</option>
+                    <option value="0">-- All organization types --</option>
                     <option *ngFor="let type of organizationTypes" value="{{type.id}}">
                       {{type.typeName}}
                     </option>
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <select class="form-control" id="funder" [(ngModel)]="model.funderId" name="funder"
+                    <ng-multiselect-dropdown [placeholder]="'-- All organizations --'" [data]="filteredOrganizations"
+                    [(ngModel)]="selectedOrganizations" [settings]="organizationSettings"
+                    name="selectedEnvelopeTypes"
+                    #selectedOrganizationsList="ngModel">
+                  </ng-multiselect-dropdown>
+                  <!--<select class="form-control" id="funder" [(ngModel)]="model.funderId" name="funder"
                     #funder="ngModel">
-                    <option value="0">-- Organization --</option>
+                    <option value="0">--All organizations --</option>
                     <option *ngFor="let org of filteredOrganizations" value="{{org.id}}">
                       {{org.organizationName}}
                     </option>
-                  </select>
+                  </select>-->
                 </div>
               </div>
 

@@ -40,6 +40,11 @@ export class EnvelopeComponent implements OnInit {
   currentYear: number = 0;
   nextYear: number = 0;
   numberLength: number = 11;
+  yearlyTotals: any = {
+    previousYear: 0,
+    currentYear: 0,
+    nextYear: 0
+  };
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
@@ -102,6 +107,7 @@ export class EnvelopeComponent implements OnInit {
           if (this.envelopeData.currency) {
             this.model.currency = this.envelopeData.currency;
           }
+          this.calculateYearlyTotal();
         }
         this.blockUI.stop();
       }
@@ -131,6 +137,12 @@ export class EnvelopeComponent implements OnInit {
       event.preventDefault();
       event.currentTarget.value = parseInt(value.toString().substring(0, 10));
     }
+
+    setTimeout(() => {
+      if (value > 0) {
+        this.calculateYearlyTotal();
+      }
+    }, 500);
   }
 
   saveEnvelopeData() {
@@ -168,17 +180,25 @@ export class EnvelopeComponent implements OnInit {
     );
   }
 
-  calculateTotalForYear(year: number) {
-    var totalAmountForYear = 0;
-    if (this.envelopeData.envelopeBreakupsByType) {
-      this.envelopeData.envelopeBreakupsByType.forEach((b) => {
-        var yearlyData = b.yearlyBreakup.filter(y => y.year == year);
-        if (yearlyData.length > 0) {
-          totalAmountForYear += parseFloat(yearlyData[0].amount);
-        }
-      });
+  calculateYearlyTotal() {
+    for (var year = this.previousYear; year <= this.nextYear; year++) {
+      var totalAmountForYear = 0;
+      if (this.envelopeData.envelopeBreakupsByType) {
+        this.envelopeData.envelopeBreakupsByType.forEach((b) => {
+          var yearlyData = b.yearlyBreakup.filter(y => y.year == year);
+          if (yearlyData.length > 0) {
+            var amountToAdd = 0;
+            if (isNaN(yearlyData[0].amount)) {
+              amountToAdd = 0;
+            } else {
+              amountToAdd = yearlyData[0].amount;
+            }
+            totalAmountForYear += amountToAdd;
+          }
+        });
+      }
+      this.yearlyTotals[year] = totalAmountForYear;
     }
-    return totalAmountForYear;
   }
 
   
