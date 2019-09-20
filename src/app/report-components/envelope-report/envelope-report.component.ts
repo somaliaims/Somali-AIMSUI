@@ -32,6 +32,7 @@ export class EnvelopeReportComponent implements OnInit {
   nationalCurrency: string = null;
   nationalCurrencyName: string = null;
   selectedCurrencyName: string = null;
+  excelFile: string = null;
   chartType: string = null;
   oldCurrency: any = null;
   manualExRate: number = 0;
@@ -151,6 +152,9 @@ export class EnvelopeReportComponent implements OnInit {
       data => {
         if (data) {
           this.reportSettings = data.reportSettings;
+          if (this.reportSettings && this.reportSettings.excelReportName) {
+            this.excelFile = this.reportSettings.excelReportName;
+          }
           this.envelopeList = data.envelope;
           this.envelopeYearsList = data.envelopeYears;
           this.cellCount = (this.envelopeYearsList.length + 2);
@@ -161,6 +165,10 @@ export class EnvelopeReportComponent implements OnInit {
         this.blockUI.stop();
       }
     );
+  }
+
+  printReport() {
+    this.storeService.printReport('rpt-envelope', 'Envelope report');
   }
 
   getOrganizationTypes() {

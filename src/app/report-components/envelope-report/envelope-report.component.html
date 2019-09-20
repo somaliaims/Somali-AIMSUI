@@ -58,13 +58,6 @@
                     name="selectedEnvelopeTypes"
                     #selectedOrganizationsList="ngModel">
                   </ng-multiselect-dropdown>
-                  <!--<select class="form-control" id="funder" [(ngModel)]="model.funderId" name="funder"
-                    #funder="ngModel">
-                    <option value="0">--All organizations --</option>
-                    <option *ngFor="let org of filteredOrganizations" value="{{org.id}}">
-                      {{org.organizationName}}
-                    </option>
-                  </select>-->
                 </div>
               </div>
 
@@ -108,7 +101,7 @@
                     <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
                     <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get Excel</a>&nbsp;
-                    <button *ngIf="reportDataList && reportDataList.locationProjectsList" type="button"
+                    <button *ngIf="envelopeList && envelopeList.length > 0" type="button"
                       class="btn btn-warning" (click)="printReport()">Print Report</button>
                   </span>
                 </div>
