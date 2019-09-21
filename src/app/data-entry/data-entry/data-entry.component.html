@@ -15,7 +15,7 @@
           </li>
           <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'sectors', 'text-info': currentTab != 'sectors'}" href="#"
-              class="nav-link text-info" (click)="showSectors()" data-toggle="tab">Sectors</a>
+              class="nav-link text-info" (click)="showSectors()" data-toggle="tab">Sectors, Locations & Markers</a>
           </li>
           <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'finish', 'text-info': currentTab != 'finish'}" href="#"
@@ -34,7 +34,8 @@
         [aimsProjects]="aimsProjects" [iatiProjects]="iatiProjects"
         (projectFundersChanged)="updateProjectFunders($event)"
         (projectImplementersChanged)="updateProjectImplementers($event)"
-        (projectCreated)="updateProjectId($event)">
+        (projectCreated)="updateProjectId($event)"
+        (projectDocumentsChanged)="updateProjectDocuments($event)">
       </basic-data>
     </div>
 

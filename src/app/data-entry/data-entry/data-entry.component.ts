@@ -427,6 +427,10 @@ export class DataEntryComponent implements OnInit {
     this.currentProjectSectors = $event;
   }
 
+  updateProjectDocuments($event) {
+    this.currentProjectDocuments = $event;
+  }
+
   updateProjectLocations($event) {
     this.currentProjectLocations = $event;
   }

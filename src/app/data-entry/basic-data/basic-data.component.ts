@@ -7,6 +7,7 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { StoreService } from 'src/app/services/store-service';
 import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-info-modal.component';
 import { ProjectiInfoModalComponent } from 'src/app/projecti-info-modal/projecti-info-modal.component';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'basic-data',
@@ -22,8 +23,11 @@ export class BasicDataComponent implements OnInit {
   fundersSettings: any = [];
   implementersSettings: any = [];
   newDocuments: any = [];
+
   sourceFundersList: any = [];
   sourceImplementersList: any = [];
+  sourceDocumentsList: any = [];
+
   entryForm: any = null;
   errorMessage: string = null;
   itemsToShowInDropdowns: number = 3;
@@ -64,11 +68,14 @@ export class BasicDataComponent implements OnInit {
   projectFundersChanged = new EventEmitter<any[]>();
   @Output()
   projectImplementersChanged = new EventEmitter<any[]>();
+  @Output()
+  projectDocumentsChanged = new EventEmitter<any []>();
 
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'project-source' },
     { visible: false, identity: 'funders-source' },
+    { visible: false, identity: 'documents-source' },
     { visible: false, identity: 'implementers-source' },
     { visible: false, identity: 'sectors' },
     { visible: false, identity: 'sectors-source' },
@@ -81,6 +88,7 @@ export class BasicDataComponent implements OnInit {
     PROJECT_SOURCE: 'project-source',
     FUNDERS_SOURCE: 'funders-source',
     IMPLEMENTERS_SOURCE: 'implementers-source',
+    DOCUMENTS_SOURCE: 'documents-source',
     SECTORS: 'sectors',
     SECTORS_SOURCE: 'sectors-source',
     FINANCIALS: 'financials',
@@ -91,6 +99,7 @@ export class BasicDataComponent implements OnInit {
   isShowSource: boolean = false;
   isProjectSourceAvailable: boolean = false;
   isFunderSourceAvailable: boolean = false;
+  isDocumentSourceAvailable: boolean = false;
   isImplementerSourceAvailable: boolean = false;
   descriptionLimit: number = Settings.descriptionLongLimit;
   descriptionLimitLeft: number = Settings.descriptionLongLimit;
@@ -180,11 +189,19 @@ export class BasicDataComponent implements OnInit {
             f.isSaved = true;
           });
         }
+
+        if (p.documents.length > 0) {
+          this.isDocumentSourceAvailable = true;
+        }
       });
 
       this.iatiProjects.forEach(p => {
         if (p.implementers.length > 0) {
           this.isImplementerDataAvailable = true;
+        }
+
+        if (p.documents.length > 0) {
+          this.isDocumentSourceAvailable = true;
         }
 
         p.implementers.forEach(i => {
@@ -202,6 +219,10 @@ export class BasicDataComponent implements OnInit {
             f.isSaved = true;
           });
         }
+
+        if (p.documents.length > 0) {
+          this.isDocumentSourceAvailable = true;
+        }
       });
 
       this.aimsProjects.forEach(p => {
@@ -211,6 +232,10 @@ export class BasicDataComponent implements OnInit {
           p.implementers.forEach(i => {
             i.isSaved = true;
           });
+        }
+
+        if (p.documents.length > 0) {
+          this.isDocumentSourceAvailable = true;
         }
       });
     }
@@ -473,6 +498,28 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
+  saveProjectDocumentsFromSource() {
+    if (this.sourceDocumentsList.length > 0) {
+      var model = {
+        projectId: this.projectId,
+        documents: this.sourceDocumentsList
+      }
+
+      this.blockUI.start('Saving documents...');
+      this.projectService.addProjectDocument(model).subscribe(
+        data => {
+          if (data) {
+            this.sourceDocumentsList = [];
+            this.getProjectDocuments();
+            this.showProjectData();
+          }
+        }
+      );
+    } else {
+      this.showProjectData();
+    }
+  }
+
   addResource() {
     if (!this.documentModel.document) {
       this.errorMessage = 'Resource name is required';
@@ -504,6 +551,7 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.projectDocuments = data;
+            this.updateDocumentsToParent();
           }
           this.blockUI.stop();
         }
@@ -517,6 +565,7 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.projectDocuments = this.projectDocuments.filter(d => d.id != id);
+            this.updateDocumentsToParent();
           }
           this.blockUI.stop();
         }
@@ -541,6 +590,10 @@ export class BasicDataComponent implements OnInit {
     this.manageTabsDisplay(this.tabConstants.IMPLEMENTERS_SOURCE);
   }
 
+  showDocumentsSource() {
+    this.manageTabsDisplay(this.tabConstants.DOCUMENTS_SOURCE);
+  }
+
   manageTabsDisplay(tabIdentity) {
     for (var i = 0; i < this.displayTabs.length; i++) {
       var tab = this.displayTabs[i];
@@ -562,10 +615,12 @@ export class BasicDataComponent implements OnInit {
     this.projectImplementersChanged.emit(this.projectImplementers);
   }
 
+  updateDocumentsToParent() {
+    this.projectDocumentsChanged.emit(this.projectDocuments);
+  }
+
   updateProjectIdToParent() {
-    setTimeout(() => {
-      this.projectCreated.emit(this.projectId);
-    }, 500);
+    this.projectCreated.emit(this.projectId);
   }
 
   /*Handling IATI Stuff*/
@@ -735,6 +790,42 @@ export class BasicDataComponent implements OnInit {
   removeFunderFromList(funder) {
     this.sourceFundersList = this.sourceFundersList.filter(f => f.toLowerCase() != funder.toLowerCase());
   }
+
+  checkIfDocumentAdded(documentTitle, documentUrl) {
+    if (this.projectDocuments.length > 0) {
+      var isExists = this.projectDocuments.filter(d =>
+        d.documentTitle.trim().toLowerCase() == documentTitle.trim().toLowerCase() ||
+        d.documentUrl.trim().toLowerCase() == documentUrl.trim().toLowerCase());
+      return isExists.length > 0 ? true : false;
+    }
+  }
+
+  addDocumentToList(documentTitle, documentUrl) {
+    var isDocumentAdded = [];
+
+    if (this.sourceDocumentsList.length > 0) {
+      isDocumentAdded = this.sourceDocumentsList.filter(d => d.documentTitle.toLowerCase() == documentTitle.toLowerCase() ||
+      d.documentUrl.toLowerCase() == documentUrl.toLowerCase()); 
+    }
+    
+    if (isDocumentAdded.length == 0) {
+      this.sourceDocumentsList.push({
+        documentTitle: documentTitle,
+        documentUrl: documentUrl
+      });
+    }
+  }
+
+  checkIfDocumentInActionList(documentTitle, documentUrl) {
+    var result = false;
+    if (this.sourceDocumentsList.length > 0) {
+      result = this.sourceDocumentsList.filter(d => 
+        d.documentTitle.toLowerCase() == documentTitle.toLowerCase() ||
+        d.documentUrl.toLowerCase() == documentUrl.toLowerCase()).length > 0 ? true : false;
+    }
+    return result;
+  }
+
 
   viewAIMSProject(e) {
     var projectId = e.target.id.split('-')[1];

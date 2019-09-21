@@ -136,14 +136,19 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="col-md-12">
       <table width="100%">
         <tr>
-          <td width="40%">
+          <td width="35%">
             <input type="text" placeholder="Resource name" class="form-control" maxlength="50" name="document"
               [(ngModel)]="documentModel.document" #document="ngModel" />
           </td>
-          <td width="40%">
+          <td width="10%" *ngIf="isDocumentSourceAvailable && projectId != 0">
+            <button type="button"
+              (click)="showDocumentsSource()" title="Source data available for resources/documents" class="btn btn-warning"><i
+                class="fa fa-database"></i></button>
+          </td>
+          <td width="35%">
             <input type="url" placeholder="Link to resource" class="form-control" maxlength="255" name="documentUrl"
               [(ngModel)]="documentModel.documentUrl" #documentUrl="ngModel" />
           </td>
@@ -157,8 +162,8 @@
       </table>
     </div>
 
-    <div class="row">
-      <table *ngIf="projectDocuments.length > 0" class="table table-striped margin-top-5">
+    <div class="col-md-12">
+      <table *ngIf="projectDocuments.length > 0" class="table table-striped small margin-top-5">
         <thead>
           <tr>
             <th>Resource name</th>
@@ -425,9 +430,7 @@
         <tr *ngFor="let project of aimsProjects">
           <td>
             <b>Project title: </b>{{project.title}}
-            <!--<a href="#" title="View Project Details"
-              id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-              Details</a>--><br />
+            <br />
             <span class="badge badge-warning">AIMS</span>
 
             <table *ngIf="project.funders.length > 0" class="table table-striped">
@@ -454,9 +457,7 @@
         <tr *ngFor="let project of iatiProjects">
           <td>
             <b>Project title: </b>{{project.title}}
-            <!--<a href="#" title="View Project Details"
-              id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-              Details</a>--><br />
+            <br />
 
             <div class="badge badge-warning float-right">IATI</div>
             <div class="margin-top-10">
@@ -505,9 +506,7 @@
         <tr *ngFor="let project of aimsProjects">
           <td>
             <b>Project title: </b>{{project.title}}
-            <!--<a href="#" title="View Project Details"
-              id="aproject-{{project.id}}" (click)="viewAIMSProject($event)" class="text-info">View
-              Details</a>--><br />
+            <br />
             <span class="badge badge-warning">AIMS</span>
 
             <table *ngIf="project.implementers.length > 0" class="table table-striped">
@@ -537,9 +536,7 @@
         <tr *ngFor="let project of iatiProjects">
           <td>
             <b>Project title: </b>{{project.title}}
-            <!--<a href="#" title="View Project Details"
-              id="iproject-{{project.id}}" (click)="viewIATIProject($event)" class="text-info">View
-              Details</a>--><br />
+            <br />
 
             <div class="badge badge-warning float-right">IATI</div>
             <div class="margin-top-10">
@@ -571,6 +568,94 @@
       <div class="col-lg-12 col-md-12 text-right">
         <button type="button" (click)="saveProjectImplementersFromSource()"
           class="btn btn-info btn-sm text-uppercase">Save implementers</button>&nbsp;
+        <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="currentTab == tabConstants.DOCUMENTS_SOURCE" class="row">
+  <div class="col-lg-12 col-md-12 small">
+    <div class="box">
+      <div class="col-lg-12 col-md-12 text-right margin-top-5">
+        <button type="button" (click)="saveProjectDocumentsFromSource()"
+          class="btn btn-info btn-sm text-uppercase">Save documents</button>&nbsp;
+        <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
+      </div>
+      <table class="table table-bordered margin-top-5">
+        <tr *ngFor="let project of aimsProjects">
+          <td>
+            <b>Project title: </b>{{project.title}}
+            <br />
+            <span class="badge badge-warning">AIMS</span>
+
+            <table *ngIf="project.documents.length > 0" class="table table-striped">
+              <tr>
+                <th>Resrouce</th>
+                <th>Resource link</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let document of project.documents">
+                <td>
+                  {{document.documentTitle}}
+                </td>
+                <td>
+                  {{document.documentUrl}}
+                </td>
+                <td>
+                  <button *ngIf="!checkIfDocumentAdded(document.documentTitle, document.documentUrl)"
+                    id="ddocument-{{project.id}}-{{document.documentId}}"
+                    (click)="addDocumentToList(document.documentTitle, document.documentUrl)" class="btn btn-success btn-sm"><i
+                      [className]="checkIfDocumentInActionList(document.documentTitle, document.documentUrl) ? 'fa fa-check' : 'fa fa-square'"></i></button>
+                </td>
+              </tr>
+            </table>
+            <div class="text-info" *ngIf="project.documents.length == 0"><i>No resources from AIMS found.</i>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+        <tr *ngFor="let project of iatiProjects">
+          <td>
+            <b>Project title: </b>{{project.title}}
+            <br />
+
+            <div class="badge badge-warning float-right">IATI</div>
+            <div class="margin-top-10">
+              <table *ngIf="project.documents.length > 0" class="table table-striped margin-top-5">
+                <tr>
+                  <th>Resource name</th>
+                  <th>Resource link</th>
+                  <th>Action</th>
+                </tr>
+                <tr *ngFor="let document of project.documents; let counter = index;">
+                  <td>
+                    {{document.documentTitle}}
+                  </td>
+                  <td>
+                    {{document.documentUrl}}
+                  </td>
+                  <td>
+                    <button *ngIf="!checkIfDocumentAdded(document.documentTitle, document.documentUrl)"
+                      id="didocument-{{project.id}}-{{counter}}"
+                      (click)="addDocumentToList(document.documentTitle, document.documentUrl)" class="btn btn-success btn-sm"><i
+                        [className]="checkIfDocumentInActionList(document.documentTitle, document.documentUrl) ? 'fa fa-check' : 'fa fa-square'"></i></button>
+                  </td>
+                </tr>
+              </table>
+              <div class="text-info" *ngIf="project.documents.length == 0">
+                <i>No resources to show.</i>
+              </div>
+            </div>
+
+          </td>
+        </tr>
+      </table>
+      <div class="col-lg-12 col-md-12 text-right">
+        <button type="button" (click)="saveProjectDocumentsFromSource()"
+          class="btn btn-info btn-sm text-uppercase">Save documents</button>&nbsp;
         <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
       </div>
     </div>
