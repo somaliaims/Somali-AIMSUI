@@ -250,7 +250,6 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.showProjectData();
-
           } 
           this.blockUI.stop();
         }
@@ -302,6 +301,7 @@ export class BasicDataComponent implements OnInit {
           if (data) {
             this.projectId = data;
             localStorage.setItem('active-project', data);
+            this.updateProjectIdToParent();
             this.saveProjectFunders();
           } else {
             this.blockUI.stop();
@@ -563,7 +563,9 @@ export class BasicDataComponent implements OnInit {
   }
 
   updateProjectIdToParent() {
-    this.projectCreated.emit(this.projectId);
+    setTimeout(() => {
+      this.projectCreated.emit(this.projectId);
+    }, 500);
   }
 
   /*Handling IATI Stuff*/
