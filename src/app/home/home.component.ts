@@ -16,6 +16,8 @@ import { HomePageService } from '../services/home-page.service';
 export class HomeComponent implements OnInit {
   infoMessage: string = null;
   showMessage: boolean = false;
+  isProjectsLoading: boolean = true;
+  isIntroLoading: boolean = true;
   usersCount: number = 0;
   projectsCount: number = 0;
   organizationsCount: number = 0;
@@ -106,6 +108,7 @@ export class HomeComponent implements OnInit {
         if (data) {
           this.model = data;
         }
+        this.isIntroLoading = false;
       }
     );
   }
@@ -116,6 +119,7 @@ export class HomeComponent implements OnInit {
         if (data) {
           this.latestProjects = data;
         }
+        this.isProjectsLoading = false;
       }
     );
   }

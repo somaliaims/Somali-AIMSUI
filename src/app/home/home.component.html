@@ -99,7 +99,12 @@
           </span>
         </div>
         <div class="card-body text-default">
-          <p>
+            <div class="row text-center" *ngIf="isIntroLoading">
+                <div class="col-md-12">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading introduction...</span>
+                </div>
+              </div>
+          <p *ngIf="!isIntroLoading">
             {{model.introductionText}}
           </p>
         </div>
@@ -114,7 +119,12 @@
           </span>
         </div>
         <div class="card-body bg-white padding-5">
-          <table class="table table-striped table-condensed small">
+          <div class="row text-center" *ngIf="isProjectsLoading">
+            <div class="col-md-12">
+              <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading projects...</span>
+            </div>
+          </div>
+          <table *ngIf="!isProjectsLoading" class="table table-striped table-condensed small">
             <thead>
               <tr>
                 <th width="70%">Project</th>
