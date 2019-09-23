@@ -29,6 +29,9 @@ export class EnvelopeComponent implements OnInit {
   errorMessage: string = '';
   selectedCurrency: string = null;
   exchangeRate: number = 0;
+  oldExchangeRate: number = 0;
+  defaultExchangeRate: number = 0;
+  currentExchangeRate: number = 0;
   defaultCurrency: string = null;
   nationalCurrency: string = null;
   exRateSource: string = null;
@@ -76,6 +79,22 @@ export class EnvelopeComponent implements OnInit {
     );
   }
 
+  getDefaultCurrency() {
+    this.currencyService.getDefaultCurrency().subscribe(
+      data => {
+        if (data) {
+          this.defaultCurrency = data.currency;
+          if (this.defaultCurrency) {
+            var exRate = this.exchangeRates.filter(e => e.currency == this.model.currency);
+            if (exRate.length > 0) {
+              this.defaultExchangeRate = exRate[0].rate;
+            }
+          }
+        }
+      }
+    );
+  }
+
   getAverageExchangeRates() {
     var model = {
       dated: this.storeService.getCurrentDateSQLFormat()
@@ -83,6 +102,7 @@ export class EnvelopeComponent implements OnInit {
     this.currencyService.getAverageCurrencyForDate(model).subscribe(
       data => {
         this.exchangeRates = data;
+        this.getDefaultCurrency();
       }
     );
   }
@@ -90,12 +110,24 @@ export class EnvelopeComponent implements OnInit {
   getExchangeRateForCurrency() {
     if (this.model.currency) {
       var exRate = this.exchangeRates.filter(e => e.currency == this.model.currency);
-      if (exRate.length > 0) {
+      if (this.model.exchangeRate > 0) {
+        if (exRate.length > 0) {
+          if (this.model.exchangeRate > 0) {
+            this.envelopeData.envelopeBreakupsByType.forEach((b) => {
+              b.yearlyBreakup.forEach((y) => {
+                y.amount = parseFloat((y.amount * (exRate[0].rate / this.model.exchangeRate)).toString()).toFixed(2);
+              });
+            });
+          }
+          this.model.exchangeRate = exRate[0].rate;
+        }
+      } else {
         this.model.exchangeRate = exRate[0].rate;
       }
     } else {
       this.model.exchangeRate = 1;
     }
+    this.calculateYearlyTotal();
   }
 
   getEnvelopeData() {
@@ -193,11 +225,11 @@ export class EnvelopeComponent implements OnInit {
             } else {
               amountToAdd = yearlyData[0].amount;
             }
-            totalAmountForYear += amountToAdd;
+            totalAmountForYear += Math.round(parseFloat((amountToAdd).toString()));
           }
         });
       }
-      this.yearlyTotals[year] = totalAmountForYear;
+      this.yearlyTotals[year] = totalAmountForYear.toFixed(2);
     }
   }
 
