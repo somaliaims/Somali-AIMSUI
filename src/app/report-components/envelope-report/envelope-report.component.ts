@@ -24,6 +24,7 @@ export class EnvelopeReportComponent implements OnInit {
   envelopeList: any = [];
   envelopeYearsList: any = [];
   currenciesList: any = [];
+  selectedOrganizationTypes: any = [];
   selectedEnvelopeTypes: any = [];
   selectedOrganizations: any = [];
   paramFunders: any = [];
@@ -31,6 +32,7 @@ export class EnvelopeReportComponent implements OnInit {
 
   reportSettings: any = {};
   envelopeTypeSettings: any = {};
+  organizationTypeSettings: any = {};
   organizationSettings: any = {};
   defaultCurrency: string = null;
   nationalCurrency: string = null;
@@ -121,6 +123,16 @@ export class EnvelopeReportComponent implements OnInit {
 
   ngOnInit() {
     this.envelopeTypeSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'typeName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.organizationTypeSettings = {
       singleSelection: false,
       idField: 'id',
       textField: 'typeName',
@@ -239,9 +251,11 @@ export class EnvelopeReportComponent implements OnInit {
   }
 
   getOrganizationsForType() {
-    if (this.model.funderTypeId) {
-      this.filteredOrganizations = this.organizations.filter(o => o.organizationTypeId == this.model.funderTypeId);
+    if (this.selectedOrganizationTypes) {
+      var ids = this.selectedOrganizationTypes.map(o => o.id);
+      this.filteredOrganizations = this.organizations.filter(o => ids.includes(o.organizationTypeId));
     } else {
+      this.selectedOrganizations = [];
       this.filteredOrganizations = [];
     }
   }

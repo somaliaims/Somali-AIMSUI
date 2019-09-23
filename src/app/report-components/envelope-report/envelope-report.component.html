@@ -44,13 +44,20 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <select class="form-control" id="funderType" [(ngModel)]="model.funderTypeId" name="funderType"
+                    <ng-multiselect-dropdown [placeholder]="'-- All organization types --'" [data]="organizationTypes"
+                    [(ngModel)]="selectedOrganizationTypes" [settings]="organizationTypeSettings"
+                    name="selectedOrganizationTypes" (onSelect)="getOrganizationsForType()" 
+                    (onDeSelect)="getOrganizationsForType()" (onSelectAll)="getOrganizationsForType()"
+                    (onDeSelectAll)="getOrganizationsForType()"
+                    #selectedOrganizationTypesList="ngModel">
+                  </ng-multiselect-dropdown>
+                  <!--<select class="form-control" id="funderType" [(ngModel)]="model.funderTypeId" name="funderType"
                     #funderType="ngModel" (change)="getOrganizationsForType()">
                     <option value="0">-- All organization types --</option>
                     <option *ngFor="let type of organizationTypes" value="{{type.id}}">
                       {{type.typeName}}
                     </option>
-                  </select>
+                  </select>-->
                 </div>
                 <div class="col-md-6">
                     <ng-multiselect-dropdown [placeholder]="'-- All organizations --'" [data]="filteredOrganizations"
