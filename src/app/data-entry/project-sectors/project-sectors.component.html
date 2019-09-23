@@ -221,7 +221,7 @@
     
                 <div *ngIf="checkFieldType(field.fieldType) == 'Text'" class="form-group">
                   <input class="form-control" type="text" maxlength="100" id="txt-{{fieldId}}"
-                    [(ngModel)]="fieldModel.newText"
+                    [(ngModel)]="field.values"
                     (blur)="selectFieldValue(field.fieldType, 1, field.id, $event, true)" />
                 </div>
     

@@ -379,13 +379,13 @@ export class ProjectSectorsComponent implements OnInit {
       if (result.length > 0) {
         var isExists = this.currentSelectedFieldValues.filter(f => f.fieldId == fieldId);
         if (isExists.length > 0) {
-          isExists[0].values[0].value = this.fieldModel.newText;
+          this.fieldModel.newText = isExists[0].values[0].value;
         } else {
           var newTextField = {
             fieldId: fieldId,
             fieldType: fieldType,
             values: [
-              { id: 1, value: this.fieldModel.newText }
+              { id: 1, value: result[0].values }
             ]
           };
           this.currentSelectedFieldValues.push(newTextField);

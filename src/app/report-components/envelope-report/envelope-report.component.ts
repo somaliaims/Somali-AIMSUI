@@ -6,6 +6,7 @@ import { ReportService } from 'src/app/services/report.service';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { StoreService } from 'src/app/services/store-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-envelope-report',
@@ -25,6 +26,9 @@ export class EnvelopeReportComponent implements OnInit {
   currenciesList: any = [];
   selectedEnvelopeTypes: any = [];
   selectedOrganizations: any = [];
+  paramFunders: any = [];
+  paramEnvelopeTypes: any = [];
+
   reportSettings: any = {};
   envelopeTypeSettings: any = {};
   organizationSettings: any = {};
@@ -40,6 +44,9 @@ export class EnvelopeReportComponent implements OnInit {
   oldCurrencyRate: number = 0;
   cellPercent: number = 0;
   isShowChart: boolean = false;
+  isLoading: boolean = true;
+  loadReport: boolean = false;
+  errorMessage: string = null;
 
   barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -109,7 +116,8 @@ export class EnvelopeReportComponent implements OnInit {
     private envelopeTypeService: EnvelopeTypeService, 
     private reportService: ReportService,
     private currencyService: CurrencyService,
-    private storeService: StoreService) { }
+    private storeService: StoreService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.envelopeTypeSettings = {
@@ -132,12 +140,27 @@ export class EnvelopeReportComponent implements OnInit {
       allowSearchFilter: true
     };
 
+    if (this.route.snapshot.queryParams.load) {
+      this.route.queryParams.subscribe(params => {
+        if (params) {
+          this.model.funderTypeId = (params.funderType) ? params.funderType : null;
+          this.model.startingYear = (params.syear) ? params.syear : 0;
+          this.model.endingYear = (params.eyear) ? params.eyear : 0;
+          this.paramFunders = (params.funders) ? params.funders.split(',') : [];
+          this.paramEnvelopeTypes = (params.envelopeTypes) ? params.envelopeTypes.split(',') : [];
+          this.loadReport = true;
+        } 
+      });
+    } else {
+      this.isLoading = false;
+    }
+
     this.chartType = this.chartTypes.BAR;
-    this.getDefaultCurrency();
-    this.getNationalCurrency();
     this.getEnvelopeTypes();
     this.getOrganizationTypes();
     this.getOrganizations();
+    this.getDefaultCurrency();
+    this.getNationalCurrency();
     this.getFinancialYears();
   }
 
@@ -154,6 +177,7 @@ export class EnvelopeReportComponent implements OnInit {
           this.reportSettings = data.reportSettings;
           if (this.reportSettings && this.reportSettings.excelReportName) {
             this.excelFile = this.reportSettings.excelReportName;
+            this.setExcelFile();
           }
           this.envelopeList = data.envelope;
           this.envelopeYearsList = data.envelopeYears;
@@ -162,9 +186,18 @@ export class EnvelopeReportComponent implements OnInit {
           this.chartLables = this.envelopeYearsList;
           this.manageDataToDisplay();
         }
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
         this.blockUI.stop();
       }
     );
+  }
+
+  setExcelFile() {
+    if (this.excelFile) {
+      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+    }
   }
 
   printReport() {
@@ -186,6 +219,20 @@ export class EnvelopeReportComponent implements OnInit {
       data => {
         if (data) {
           this.organizations = data;
+          if (this.loadReport) {
+            if (this.paramFunders.length > 0) {
+              var org = this.organizations.filter(o => o.id == this.paramFunders[0]);
+              if (org.length > 0) {
+                this.model.funderTypeId = org[0].organizationTypeId;
+              }
+              this.paramFunders.forEach((f) => {
+                var funder = this.organizations.filter(o => o.id == f);
+                if (funder.length > 0) {
+                  this.selectedOrganizations.push(funder[0]);
+                }
+              });
+            }
+          }
         }
       }
     );
@@ -205,6 +252,12 @@ export class EnvelopeReportComponent implements OnInit {
         if (data) {
           this.financialYears = data;
         }
+
+        if (this.loadReport) {
+          setTimeout(() => {
+            this.getEnvelopeReport();
+          }, 2000);
+        }
       }
     );
   }
@@ -214,6 +267,16 @@ export class EnvelopeReportComponent implements OnInit {
       data => {
         if (data) {
           this.envelopeTypes = data;
+          if (this.loadReport) {
+            if (this.paramEnvelopeTypes.length > 0) {
+              this.paramEnvelopeTypes.forEach((t) => {
+                var envelopeType = this.envelopeTypes.filter(e => e.id == t);
+                if (envelopeType.length > 0) {
+                  this.selectedEnvelopeTypes.push(envelopeType[0]);
+                }
+              });
+            }
+          }
         }
       }
     );

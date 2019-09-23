@@ -17,6 +17,7 @@ export class EnvelopeTypesComponent implements OnInit {
   permissions: any = {};
   filteredEnvelopeTypes: any = [];
   criteria: string = null;
+  inputTextHolder: string = 'Enter envelpe type name to search';
   isLoading: boolean = true;
   pagingSize: number = Settings.rowsPerPage;
   @BlockUI() blockUI: NgBlockUI;
