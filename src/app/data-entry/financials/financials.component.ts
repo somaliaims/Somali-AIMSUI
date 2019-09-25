@@ -33,6 +33,7 @@ export class FinancialsComponent implements OnInit {
 
   errorMessage: string = null;
   requestNo: number = 0;
+  disbursementsTotal: number = 0;
   currentYear: any = 0;
   yearList: any = [];
 
@@ -73,6 +74,7 @@ export class FinancialsComponent implements OnInit {
   }
 
   setDisbursementsData() {
+    this.projectDisbursements = this.projectDisbursements.filter(d => (d.year >= this.startingYear && d.year <= this.endingYear));
     for (var yr = this.startingYear; yr <= this.endingYear; yr++) {
       var data = this.projectDisbursements.filter(d => d.year == yr);
       if (data.length == 0) {
@@ -103,7 +105,18 @@ export class FinancialsComponent implements OnInit {
 
     if (this.projectDisbursements.length > 0) {
       this.projectDisbursements.sort((a, b) => parseFloat(a.year) - parseFloat(b.year));
+      this.calculateDisbursementsTotal();
     }
+  }
+
+  calculateDisbursementsTotal() {
+    var totalAmount = 0;
+    if (this.projectDisbursements.length > 0) {
+      this.projectDisbursements.forEach((d) => {
+        totalAmount += parseFloat(d.amount);
+      });
+    }
+    this.disbursementsTotal = totalAmount;
   }
 
   handleNullAmount(amount: number) {

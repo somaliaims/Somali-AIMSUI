@@ -19,18 +19,28 @@
               #projectValue="ngModel" id="projectValue" required />
           </div>
   
-          <div class="form-group margin-top-30">
+          <div class="form-group">
+            <label class="col-md-4">&nbsp;</label>
+            <div *ngIf="(disbursementsTotal < disbursementModel.projectValue || disbursementsTotal > disbursementModel.projectValue)" [hidden]="currency.valid" class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              Disbursements total cannot be less/greater than project total value.
+            </div>
           </div>
-          
+
           <div *ngFor="let disbursement of projectDisbursements; trackBy:indexTracker" class="form-group form-inline">
             <label class="col-md-4">
               {{disbursement.year}}&nbsp;
               <span *ngIf="disbursement.disbursementType == 1">Actual</span>
               <span *ngIf="disbursement.disbursementType == 2">Planned</span>
             </label>
-            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" [disabled]="disbursement.year < currentYear" name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"  class="form-control col-md-8" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
+            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (change)="calculateDisbursementsTotal()" name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"  class="form-control col-md-8" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
           </div>
   
+          <div class="form-group form-inline"> 
+            <label class="col-md-4">Total: </label>
+            <input type="text" [readonly]="true" name="disbursementTotal" [(ngModel)]="disbursementsTotal"  class="form-control col-md-8" />
+          </div>
+
           <div class="form-group"> 
             <label class="col-md-4">&nbsp;</label>
             <button type="submit" class="btn btn-info text-uppercase">Save disbursements</button>
