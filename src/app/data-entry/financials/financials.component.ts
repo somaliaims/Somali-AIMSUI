@@ -4,6 +4,7 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ProjectService } from 'src/app/services/project.service';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'financials',
@@ -30,6 +31,8 @@ export class FinancialsComponent implements OnInit {
   startingYear: number = 0;
   @Input()
   endingYear: number = 0;
+
+  disbursementsChanged: any = new EventEmitter();
 
   errorMessage: string = null;
   requestNo: number = 0;
@@ -187,6 +190,10 @@ export class FinancialsComponent implements OnInit {
         );
       }
     }
+  }
+
+  updateDisbursementsToParent() {
+    this.disbursementsChanged.emit(this.projectDisbursements);
   }
   
 }

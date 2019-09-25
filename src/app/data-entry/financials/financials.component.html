@@ -43,7 +43,7 @@
 
           <div class="form-group"> 
             <label class="col-md-4">&nbsp;</label>
-            <button type="submit" class="btn btn-info text-uppercase">Save disbursements</button>
+            <button [class.disable]="(disbursementsTotal < disbursementModel.projectValue || disbursementsTotal > disbursementModel.projectValue)" type="submit" class="btn btn-info text-uppercase">Save disbursements</button>
           </div>
           
         </div>

@@ -31,11 +31,13 @@
     <div *ngIf="filteredOrganizationsList.length > 0" class="margin-top-10">
       <table  class="table table-bordered table-stripped">
         <tr>
-          <th>Organization Name</th>
+          <th>Organization name</th>
+          <th>Type</th>
           <th>Actions</th>
         </tr>
         <tr *ngFor="let org of filteredOrganizationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{org.organizationName}}</td>
+          <td>{{org.organizationType}}</td>
           <td>
             <a title="Edit" (click)="edit(org.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
             &nbsp;
