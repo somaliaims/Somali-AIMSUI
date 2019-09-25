@@ -100,6 +100,10 @@ export class FinancialsComponent implements OnInit {
         }
       }
     }
+
+    if (this.projectDisbursements.length > 0) {
+      this.projectDisbursements.sort((a, b) => parseFloat(a.year) - parseFloat(b.year));
+    }
   }
 
   handleNullAmount(amount: number) {
