@@ -258,6 +258,12 @@ html {
     overflow-x: hidden; 
   }
 
+  .iati-box-small {
+    max-height: 350PX;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   .stay-on-top {
     z-index: 1000;
   }

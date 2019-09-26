@@ -23,133 +23,221 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row margin-bottom-0">
 
       <!--Selected projects box-->
       <div class="col-md-6 col-sm-12">
-        <div class="card card-signin my-5 margin-top-10">
-          <div class="card-body iati-box">
-            <h5 class="card-title text-center">Selected AIMS projects</h5>
+        <div class="box margin-top-10">
+          <h6 class="card-title text-center">Selected AIMS projects</h6>
+          <div class="iati-box-small">
             <table *ngFor="let project of selectedProjects" class="small margin-top-20">
-                <tr>
-                  <td colspan="2" width="100%">
-                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button id="aimst-{{project.id}}"
-                      class="btn btn-outline-info btn-sm" (click)="enterTitle($event)">Title
-                      >></button>&nbsp;
-                    <a href="#" title="View Project Details" id="aproject-{{project.id}}"
-                      (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button id="btnsdate-{{project.id}}"
-                      (click)="enterStartingYear($event)" class="btn btn-sm btn-outline-success">>></button>
-                  </td>
-                  <td>
-                    <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button id="btnedate-{{project.id}}"
-                      (click)="enterEndingYear($event)" class="btn btn-sm btn-outline-success">>></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Project value:</b> {{project.projectValue}} &nbsp; <button id="btnpvalue-{{project.id}}"
-                      (click)="enterProjectValue($event)" class="btn btn-sm btn-outline-success">>></button>
-                  </td>
-                  <td>
-                    <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
-                      (click)="enterProjectCurrency($event)" class="btn btn-sm btn-outline-success">>></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <b>Description: </b>{{project.description | truncate}} &nbsp;
-                    <button id="aimsd-{{project.id}}" class="btn btn-outline-warning btn-sm"
-                      (click)="enterProjectDescription($event)">Description
-                      >></button>
-                    &nbsp;
-                    <span class="badge badge-warning">AIMS</span>
-                  </td>
-                </tr>
-              </table>
+              <tr>
+                <td colspan="2" width="100%">
+                  <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button
+                    id="aimst-{{project.id}}" class="btn btn-outline-info btn-sm" (click)="enterTitle($event)">Title
+                    >></button>&nbsp;
+                  <a href="#" title="View Project Details" id="aproject-{{project.id}}"
+                    (click)="viewAIMSProject($event)" class="text-info">View
+                    Details</a><br />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button id="btnsdate-{{project.id}}"
+                    (click)="enterStartingYear($event)" class="btn btn-sm btn-outline-success">>></button>
+                </td>
+                <td>
+                  <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button id="btnedate-{{project.id}}"
+                    (click)="enterEndingYear($event)" class="btn btn-sm btn-outline-success">>></button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Project value:</b> {{project.projectValue}} &nbsp; <button id="btnpvalue-{{project.id}}"
+                    (click)="enterProjectValue($event)" class="btn btn-sm btn-outline-success">>></button>
+                </td>
+                <td>
+                  <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
+                    (click)="enterProjectCurrency($event)" class="btn btn-sm btn-outline-success">>></button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <b>Description: </b>{{project.description | truncate}} &nbsp;
+                  <button id="aimsd-{{project.id}}" class="btn btn-outline-warning btn-sm"
+                    (click)="enterProjectDescription($event)">Description
+                    >></button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <hr />
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
 
       <div class="col-md-6 col-sm-12">
-        <div class="card card-signin my-5 margin-top-10">
-          <div class="card-body iati-box small">
-            <h6 class="card-title text-center">Detail for new project after merge</h6>
+        <div class="box margin-top-10">
+          <h6 class="card-title text-center">Detail for new project after merge</h6>
 
-            <form class="form-signin" (ngSubmit)="projectForm.form.valid && mergeAndSaveProject()"
-              #projectForm="ngForm">
+          <form class="form-signin" (ngSubmit)="projectForm.form.valid && mergeAndSaveProject()" #projectForm="ngForm">
 
-              <div class="form-group">
-                <input type="text" placeholder="Project title" title="Project title" class="form-control" id="title" maxlength="1000" [(ngModel)]="model.title"
-                  name="title" #title="ngModel" required>
-                <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
-                  Project title is required
-                </div>
+            <div class="form-group">
+              <input type="text" placeholder="Project title" title="Project title" class="form-control" id="title"
+                maxlength="1000" [(ngModel)]="model.title" name="title" #title="ngModel" required>
+              <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
+                Project title is required
               </div>
+            </div>
 
-              <div class="row">
-                <div class="col-md-6 col-lg-6">
-                  <div class="form-group">
-                    <select class="form-control" title="Starting financial year" name="startingFinancialYear" [(ngModel)]="model.startingFinancialYear"
-                      #startingFinancialYear="ngModel" required>
-                      <option value="0">--Starting year--</option>
-                      <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
-                    </select>
-                    <div *ngIf="projectForm.submitted" [hidden]="startingFinancialYear.valid" class="alert alert-danger">
-                      Starting year is required
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-6 col-lg-6">
-                  <div class="form-group">
-                    <select class="form-control" title="Ending financial year" name="endingFinancialYear" [(ngModel)]="model.endingFinancialYear"
-                      #endingFinancialYear="ngModel" required>
-                      <option value="0">--Ending year--</option>
-                      <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
-                    </select>
-                    <div *ngIf="projectForm.submitted" [hidden]="endingFinancialYear.valid" class="alert alert-danger">
-                      Ending year is required
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <input type="number" title="Project value (0.00)" placeholder="Project value (0.00)" class="form-control" name="projectValue" [(ngModel)]="model.projectValue"
-                    #projectValue="ngModel" required />
-                    <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
-                        Project value is required
-                      </div>
-                </div>
-
-                <div class="col-lg-6 col-md-6">
-                    <select title="Project currency" class="form-control" name="currency" [(ngModel)]="model.projectCurrency"
-                    #currency="ngModel" required>
-                    <option value="null">--Currency--</option>
-                    <option *ngFor="let currency of currencies" value="{{currency.currency}}">{{currency.currency}}</option>
+            <div class="row">
+              <div class="col-md-6 col-lg-6">
+                <div class="form-group">
+                  <select class="form-control" title="Starting financial year" name="startingFinancialYear"
+                    [(ngModel)]="model.startingFinancialYear" #startingFinancialYear="ngModel" required>
+                    <option value="0">--Starting year--</option>
+                    <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}
+                    </option>
                   </select>
+                  <div *ngIf="projectForm.submitted" [hidden]="startingFinancialYear.valid" class="alert alert-danger">
+                    Starting year is required
+                  </div>
                 </div>
               </div>
 
-              <div class="form-group margin-top-10">
-                <textarea title="Project description" placeholder="Project description" class="form-control" id="description" [(ngModel)]="model.description" name="description"
-                  #description="ngModel" rows="5" maxlength="3000">
-                    </textarea>
+              <div class="col-md-6 col-lg-6">
+                <div class="form-group">
+                  <select class="form-control" title="Ending financial year" name="endingFinancialYear"
+                    [(ngModel)]="model.endingFinancialYear" #endingFinancialYear="ngModel" required>
+                    <option value="0">--Ending year--</option>
+                    <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}
+                    </option>
+                  </select>
+                  <div *ngIf="projectForm.submitted" [hidden]="endingFinancialYear.valid" class="alert alert-danger">
+                    Ending year is required
+                  </div>
+                </div>
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <input type="number" title="Project value (0.00)" placeholder="Project value (0.00)"
+                  class="form-control" name="projectValue" [(ngModel)]="model.projectValue" #projectValue="ngModel"
+                  required />
+                <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
+                  Project value is required
+                </div>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <select title="Project currency" class="form-control" name="currency"
+                  [(ngModel)]="model.projectCurrency" #currency="ngModel" required>
+                  <option value="null">--Currency--</option>
+                  <option *ngFor="let currency of currencies" value="{{currency.currency}}">{{currency.currency}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group margin-top-10">
+              <textarea title="Project description" placeholder="Project description" class="form-control"
+                id="description" [(ngModel)]="model.description" name="description" #description="ngModel" rows="5"
+                maxlength="3000">
+                    </textarea>
+            </div>
+          </form>
         </div>
       </div>
 
     </div>
     <!--End of Boxes row-->
+
+    <div class="row margin-top-10">
+
+      <div class="col-lg-6 col-md-6">
+        <div class="box">
+          <h6 class="card-title text-center">Funders from source projects</h6>
+          <div class="iati-box-small">
+            <div *ngFor="let project of selectedProjects">
+              <div><b>{{project.title}}</b></div>
+              <div *ngIf="project.funders.length > 0">
+                <table>
+                  <tr *ngFor="let funder of project.funders">
+                    <td width="80%">{{funder.funder}}</td>
+                    <td width="20%">
+                      <button class="btn btn-danger" (click)="removeFunder(project.id, funder.funderId)"><i
+                          class="fa fa-trash"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div *ngIf="project.funders.length == 0">
+                <span class="text-info"><i>No funders available</i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6">
+        <div class="box">
+          <h6 class="card-title text-center">Implementers from source projects</h6>
+          <div class="iati-box-small">
+            <div *ngFor="let project of selectedProjects">
+              <div><b>{{project.title}}</b></div>
+              <div *ngIf="project.implementers.length > 0">
+                <table>
+                  <tr *ngFor="let implementer of project.implementers">
+                    <td width="80%">{{implementer.implementer}}</td>
+                    <td width="20%">
+                      <button class="btn btn-danger" (click)="removeImplementer(project.id, funder.implementerId)"><i
+                          class="fa fa-trash"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div *ngIf="project.implementers.length == 0">
+                <span class="text-info"><i>No implementers available</i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row margin-top-10">
+      <div class="col-lg-6 col-md-6 box">
+        <h6 class="card-title text-center">Sectors from source projects</h6>
+
+        <div class="iati-box-small">
+          <div *ngFor="let project of selectedProjects">
+            <div><b>{{project.title}}</b></div>
+            <div *ngIf="project.sectors.length > 0">
+              <table>
+                <tr *ngFor="let sector of project.sectors; let i = index;">
+                  <td width="50%">{{sector.sector}}</td>
+                  <td width="30%">
+                    <input type="number" class="form-control" name="psector-{{project.id}}-{{sector.sectorId}}" [(ngModel)]="sector.fundsPercentage" />
+                  </td>
+                  <td width="20%">
+                    <button class="btn btn-danger" (click)="removeSector(project.id, sector.sectorId)"><i
+                        class="fa fa-trash"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div *ngIf="project.sectors.length == 0">
+              <span class="text-info"><i>No sectors available</i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </block-ui>
 </div>
