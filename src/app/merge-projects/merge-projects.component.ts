@@ -12,6 +12,8 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ModalService } from '../services/modal.service';
+import { FinancialYearService } from '../services/financial-year.service';
+import { CurrencyService } from '../services/currency.service';
 
 @Component({
   selector: 'app-merge-projects',
@@ -27,11 +29,13 @@ export class MergeProjectsComponent implements OnInit {
   infoMessage: string = '';
   permissions: any = [];
   iatiProjects: any = [];
+  financialYears: any = [];
   filteredIatiProjects: any = [];
   filteredAIMSProjects: any = [];
   selectedProjects: any = [];
   sourceProjects: any = [];
   aimsProjects: any = [];
+  currencies: any = [];
 
   viewProject: any = {};
   viewProjectLocations: any = [];
@@ -45,7 +49,8 @@ export class MergeProjectsComponent implements OnInit {
   isIatiLoading: boolean = true;
   isAimsLoading: boolean = true;
   requestNo: number = 0;
-  model: any = { id: 0, title: '', startDate: null, endDate: null, description: null };
+  model: any = { id: 0, title: '', startingFinancialYear: 0, endingFinancialYear: 0, 
+  projectValue: null, projectCurrency: null, description: null };
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -55,7 +60,9 @@ export class MergeProjectsComponent implements OnInit {
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private errorModal: ErrorModalComponent, private router: Router,
     private modalService: ModalService,
-    private securityService: SecurityHelperService) { }
+    private securityService: SecurityHelperService,
+    private yearService: FinancialYearService,
+    private currencyService: CurrencyService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -63,7 +70,9 @@ export class MergeProjectsComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
-    this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
+    this.getFinancialYears();
+    this.getCurrenciesList();
+    //this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     var projects = localStorage.getItem('merge-projects');
     if (projects) {
       this.requestNo = this.storeService.getNewRequestNumber();
@@ -119,6 +128,26 @@ export class MergeProjectsComponent implements OnInit {
     )
   }
 
+  getFinancialYears() {
+    this.yearService.getYearsList().subscribe(
+      data => {
+        if (data) {
+          this.financialYears = data;
+        }
+      }
+    );
+  }
+
+  getCurrenciesList() {
+    this.currencyService.getCurrenciesList().subscribe(
+      data => {
+        if (data) {
+          this.currencies = data;
+        }
+      }
+    );
+  }
+
   selectForMerge(e) {
     var id = e.target.id.split('-')[1];
     var project = this.aimsProjects.filter(p => p.id == id);
@@ -159,18 +188,44 @@ export class MergeProjectsComponent implements OnInit {
     }
   }
 
-  enterStartDate(e) {
+  enterStartingYear(e) {
     var id = e.target.id.split('-')[1];
     var project = this.selectedProjects.filter(p => p.id == id);
-    var sDate = new Date(project[0].startDate);
-    this.model.startDate = { year: sDate.getFullYear(), month: (sDate.getMonth() + 1), day: sDate.getDate() };
+    if (project.length > 0) {
+      this.model.startingFinancialYear = project[0].startingFinancialYear;
+    }
   }
 
-  enterEndDate(e) {
+  enterEndingYear(e) {
     var id = e.target.id.split('-')[1];
     var project = this.selectedProjects.filter(p => p.id == id);
-    var eDate = new Date(project[0].endDate);
-    this.model.endDate = { year: eDate.getFullYear(), month: (eDate.getMonth() + 1), day: eDate.getDate() };
+    if (project.length > 0) {
+      this.model.endingFinancialYear = project[0].endingFinancialYear;
+    }
+  }
+
+  enterProjectValue (e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.selectedProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      this.model.projectValue = project[0].projectValue;
+    }
+  }
+
+  enterProjectCurrency (e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.selectedProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      this.model.projectCurrency = project[0].projectCurrency;
+    }
+  }
+
+  enterProjectDescription (e) {
+    var id = e.target.id.split('-')[1];
+    var project = this.selectedProjects.filter(p => p.id == id);
+    if (project.length > 0) {
+      this.model.description = project[0].description;
+    }
   }
 
   loadAIMSProjectsForIds(modelArr: any) {
