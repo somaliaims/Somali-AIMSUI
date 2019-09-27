@@ -14,6 +14,7 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ModalService } from '../services/modal.service';
 import { FinancialYearService } from '../services/financial-year.service';
 import { CurrencyService } from '../services/currency.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-merge-projects',
@@ -44,11 +45,17 @@ export class MergeProjectsComponent implements OnInit {
   viewProjectFunders: any = [];
   viewProjectImplementers: any = [];
   viewProjectDisbursements: any = [];
+  projectDisbursements: any = [];
 
   calendarMaxDate: any = {};
   isIatiLoading: boolean = true;
   isAimsLoading: boolean = true;
+  locationPercentage: number = 0;
+  sectorPercentage: number = 0;
+  totalDisbursements: number = 0;
+  descriptionLimit: number = Settings.descriptionLongLimit;
   requestNo: number = 0;
+  currentYear: number = 0;
   model: any = { id: 0, title: '', startingFinancialYear: 0, endingFinancialYear: 0, 
   projectValue: null, projectCurrency: null, description: null };
 
@@ -70,6 +77,7 @@ export class MergeProjectsComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
+    this.currentYear = this.storeService.getCurrentYear();
     this.getFinancialYears();
     this.getCurrenciesList();
     //this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
@@ -125,7 +133,7 @@ export class MergeProjectsComponent implements OnInit {
         this.isIatiLoading = false;
         this.isProjectBtnDisabled = false;
       }
-    )
+    );
   }
 
   getFinancialYears() {
@@ -193,6 +201,7 @@ export class MergeProjectsComponent implements OnInit {
     var project = this.selectedProjects.filter(p => p.id == id);
     if (project.length > 0) {
       this.model.startingFinancialYear = project[0].startingFinancialYear;
+      this.setDisbursementsData();
     }
   }
 
@@ -201,6 +210,7 @@ export class MergeProjectsComponent implements OnInit {
     var project = this.selectedProjects.filter(p => p.id == id);
     if (project.length > 0) {
       this.model.endingFinancialYear = project[0].endingFinancialYear;
+      this.setDisbursementsData();
     }
   }
 
@@ -209,6 +219,12 @@ export class MergeProjectsComponent implements OnInit {
     var project = this.selectedProjects.filter(p => p.id == id);
     if (project.length > 0) {
       this.model.projectValue = project[0].projectValue;
+    }
+  }
+
+  enterDisbursement(projectId, year) {
+    var project = this.selectedProjects.filter(p => p.id == projectId);
+    if (project.length > 0) {
     }
   }
 
@@ -226,6 +242,47 @@ export class MergeProjectsComponent implements OnInit {
     if (project.length > 0) {
       this.model.description = project[0].description;
     }
+  }
+
+  setDisbursementsData() {
+    if (this.model.startingFinancialYear != 0 && this.model.endingFinancialYear != 0) {
+      for (var yr = this.model.startingFinancialYear; yr <= this.model.endingFinancialYear; yr++) {
+        var data = this.projectDisbursements.filter(d => d.year == yr);
+        if (data.length == 0) {
+  
+          if (yr <= this.currentYear) {
+            var newDisbursement = {
+              year: yr,
+              currency: this.model.projectCurrency,
+              exchangeRate: 1,
+              disbursementType: 1,
+              amount: 0
+            };
+            this.projectDisbursements.push(newDisbursement);
+          }
+  
+          if (yr >= this.currentYear) {
+            var newDisbursement = {
+              year: yr,
+              currency: this.model.projectCurrency,
+              exchangeRate: 1,
+              disbursementType: 2,
+              amount: 0
+            };
+            this.projectDisbursements.push(newDisbursement);
+          }
+        }
+      }
+  
+      if (this.projectDisbursements.length > 0) {
+        this.projectDisbursements.sort((a, b) => parseFloat(a.year) - parseFloat(b.year));
+        this.calculateDisbursementsTotal();
+      }
+    }
+  }
+
+  calculateDisbursementsTotal() {
+
   }
 
   loadAIMSProjectsForIds(modelArr: any) {
@@ -364,6 +421,38 @@ export class MergeProjectsComponent implements OnInit {
         project[0].locations = locations.filter(l => l.locationId != locationId);
       }
     }
+  }
+
+  removeDocument(projectId: number, documentId: number) {
+    var project = this.selectedProjects.filter(p => p.id == projectId);
+    if (project.length > 0) {
+      var documents = project[0].documents;
+      if (documents.length > 0) {
+        project[0].documents = documents.filter(m => m.documentId != documentId);
+      }
+    }
+  }
+
+  removeMarker(projectId: number, markerId: number) {
+    var project = this.selectedProjects.filter(p => p.id == projectId);
+    if (project.length > 0) {
+      var markers = project[0].markers;
+      if (markers.length > 0) {
+        project[0].markers = markers.filter(m => m.markerId != markerId);
+      }
+    }
+  }
+
+  calculateDisbursements() {
+
+  }
+
+  calculateSectorPercent() {
+
+  }
+
+  calculateLocationPercent() {
+
   }
 
   proceedToDataEntry() {
