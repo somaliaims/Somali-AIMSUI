@@ -342,6 +342,26 @@ export class MergeProjectsComponent implements OnInit {
     )
   }
 
+  removeSector(projectId: number, sectorId: number) {
+    var project = this.selectedProjects.filter(p => p.id == projectId);
+    if (project.length > 0) {
+      var sectors = project[0].sectors;
+      if (sectors.length > 0) {
+        project[0].sectors = sectors.filter(s => s.sectorId != sectorId);
+      }
+    }
+  }
+
+  removeLocation(projectId: number, locationId: number) {
+    var project = this.selectedProjects.filter(p => p.id == projectId);
+    if (project.length > 0) {
+      var locations = project[0].locations;
+      if (locations.length > 0) {
+        project[0].locations = locations.filter(l => l.locationId != locationId);
+      }
+    }
+  }
+
   proceedToDataEntry() {
     this.modalService.close('confirmation-modal');
     this.router.navigateByUrl('project-entry');

@@ -211,32 +211,67 @@
     </div>
 
     <div class="row margin-top-10">
-      <div class="col-lg-6 col-md-6 box">
-        <h6 class="card-title text-center">Sectors from source projects</h6>
+      <div class="col-lg-6 col-md-6">
+        <div class="box">
+          <h6 class="card-title text-center">Sectors from source projects</h6>
 
-        <div class="iati-box-small">
-          <div *ngFor="let project of selectedProjects">
-            <div><b>{{project.title}}</b></div>
-            <div *ngIf="project.sectors.length > 0">
-              <table>
-                <tr *ngFor="let sector of project.sectors; let i = index;">
-                  <td width="50%">{{sector.sector}}</td>
-                  <td width="30%">
-                    <input type="number" class="form-control" name="psector-{{project.id}}-{{sector.sectorId}}" [(ngModel)]="sector.fundsPercentage" />
-                  </td>
-                  <td width="20%">
-                    <button class="btn btn-danger" (click)="removeSector(project.id, sector.sectorId)"><i
-                        class="fa fa-trash"></i></button>
-                  </td>
-                </tr>
-              </table>
+          <div class="iati-box-small">
+            <div *ngFor="let project of selectedProjects">
+              <div><b>{{project.title}}</b></div>
+              <div *ngIf="project.sectors.length > 0">
+                <table>
+                  <tr *ngFor="let sector of project.sectors; let i = index;">
+                    <td width="50%">{{sector.sector}}</td>
+                    <td width="30%">
+                      <input type="number" class="form-control" name="psector-{{project.id}}-{{sector.sectorId}}"
+                        [(ngModel)]="sector.fundsPercentage" />
+                    </td>
+                    <td width="20%">
+                      <button class="btn btn-danger" (click)="removeSector(project.id, sector.sectorId)"><i
+                          class="fa fa-trash"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div *ngIf="project.sectors.length == 0">
+                <span class="text-info"><i>No sectors available</i></span>
+              </div>
             </div>
-            <div *ngIf="project.sectors.length == 0">
-              <span class="text-info"><i>No sectors available</i></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-lg-6 col-md-6">
+        <div class="box">
+          <h6 class="card-title text-center">Locations from source projects</h6>
+
+          <div class="iati-box-small">
+            <div *ngFor="let project of selectedProjects">
+              <div><b>{{project.title}}</b></div>
+              <div *ngIf="project.locations.length > 0">
+                <table>
+                  <tr *ngFor="let location of project.locations; let i = index;">
+                    <td width="50%">{{location.location}}</td>
+                    <td width="30%">
+                      <input type="number" class="form-control" name="plocation-{{project.id}}-{{location.locationId}}"
+                        [(ngModel)]="location.fundsPercentage" />
+                    </td>
+                    <td width="20%">
+                      <button class="btn btn-danger" (click)="removeLocation(project.id, location.locationId)"><i
+                          class="fa fa-trash"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div *ngIf="project.locations.length == 0">
+                <span class="text-info"><i>No locations available</i></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
 
   </block-ui>
