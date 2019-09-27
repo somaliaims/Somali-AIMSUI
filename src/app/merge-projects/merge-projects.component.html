@@ -126,7 +126,7 @@
             <div class="row">
               <div class="col-lg-6 col-md-6">
                 <input type="number" title="Project value (0.00)" placeholder="Project value (0.00)"
-                  class="form-control" name="projectValue" [(ngModel)]="model.projectValue" #projectValue="ngModel"
+                  class="form-control" name="projectValue" (change)="calculateDisbursementsTotal()" [(ngModel)]="model.projectValue" #projectValue="ngModel"
                   required />
                 <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
                   Project value is required
@@ -167,15 +167,17 @@
                   <table class="table">
                     <tr>
                       <th>Year</th>
-                      <th>Disbursements</th>
+                      <th>Amount</th>
+                      <th>Type</th>
                       <th>Action</th>
                     </tr>
 
                     <tr *ngFor="let disbursement of project.disbursements">
                       <td>{{disbursement.year}}</td>
                       <td>{{disbursement.amount}}</td>
+                      <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
                       <td>
-                        <button title="Enter disbursement" (click)="enterDisbursement(project.id, project.year)" class="btn btn-success btn-sm">>></button>
+                        <button title="Enter disbursement" (click)="enterDisbursement(project.id, disbursement.year, disbursement.disbursementType)" class="btn btn-success btn-sm">>></button>
                       </td>
                     </tr>
                   </table>
@@ -193,7 +195,10 @@
           <div class="box small">
             <h6 class="card-title text-center">Project disbursements</h6>
             <div class="iati-box-small">
-              <div *ngFor="let disbursement of projectDisbursements;" class="form-group form-inline">
+              <div *ngIf="totalDisbursements > model.projectValue" class="alert alert-danger">
+                Project disbursements cannot be greater than project value
+              </div>
+              <div *ngFor="let disbursement of projectDisbursements" class="form-group form-inline">
                 <label class="col-md-4">
                   {{disbursement.year}}&nbsp;
                   <span *ngIf="disbursement.disbursementType == 1">Actual</span>

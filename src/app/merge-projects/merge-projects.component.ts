@@ -59,6 +59,11 @@ export class MergeProjectsComponent implements OnInit {
   model: any = { id: 0, title: '', startingFinancialYear: 0, endingFinancialYear: 0, 
   projectValue: null, projectCurrency: null, description: null };
 
+  disbursementTypeConstants: any = {
+    1: 'Actual',
+    2: 'Planned'
+  }
+
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 
@@ -222,9 +227,16 @@ export class MergeProjectsComponent implements OnInit {
     }
   }
 
-  enterDisbursement(projectId, year) {
+  enterDisbursement(projectId, year, disbursementType) {
     var project = this.selectedProjects.filter(p => p.id == projectId);
     if (project.length > 0) {
+      var disbursement = project[0].disbursements.filter(d => d.year == year && d.disbursementType == disbursementType);
+      if (disbursement.length > 0) {
+        var disbursementToUpdate = this.projectDisbursements.filter(d => d.year == year && d.disbursementType == disbursementType);
+        if (disbursementToUpdate.length > 0) {
+          disbursementToUpdate[0].amount = disbursement[0].amount;
+        }
+      }
     }
   }
 
@@ -282,7 +294,13 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   calculateDisbursementsTotal() {
-
+    var totalDisbursements = 0;
+    if (this.projectDisbursements.length > 0) {
+      this.projectDisbursements.forEach((d) => {
+        totalDisbursements += parseFloat(d.amount);
+      });
+    }
+    this.totalDisbursements = totalDisbursements;
   }
 
   loadAIMSProjectsForIds(modelArr: any) {
