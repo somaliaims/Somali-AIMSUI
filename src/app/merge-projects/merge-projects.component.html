@@ -159,13 +159,17 @@
     <div class="row margin-top-10">
 
       <div class="col-lg-6 col-md-6">
-        <div class="box">
+        <div class="box small">
           <h6 class="card-title text-center">Funders from source projects</h6>
           <div class="iati-box-small">
             <div *ngFor="let project of selectedProjects">
               <div><b>{{project.title}}</b></div>
               <div *ngIf="project.funders.length > 0">
                 <table>
+                  <tr>
+                    <th>Funder name</th>
+                    <th>Action</th>
+                  </tr>
                   <tr *ngFor="let funder of project.funders">
                     <td width="80%">{{funder.funder}}</td>
                     <td width="20%">
@@ -184,13 +188,17 @@
       </div>
 
       <div class="col-lg-6 col-md-6">
-        <div class="box">
+        <div class="box small">
           <h6 class="card-title text-center">Implementers from source projects</h6>
           <div class="iati-box-small">
             <div *ngFor="let project of selectedProjects">
               <div><b>{{project.title}}</b></div>
               <div *ngIf="project.implementers.length > 0">
                 <table>
+                  <tr>
+                    <th>Implementer name</th>
+                    <th>Action</th>
+                  </tr>
                   <tr *ngFor="let implementer of project.implementers">
                     <td width="80%">{{implementer.implementer}}</td>
                     <td width="20%">
@@ -212,7 +220,7 @@
 
     <div class="row margin-top-10">
       <div class="col-lg-6 col-md-6">
-        <div class="box">
+        <div class="box small">
           <h6 class="card-title text-center">Sectors from source projects</h6>
 
           <div class="iati-box-small">
@@ -220,6 +228,11 @@
               <div><b>{{project.title}}</b></div>
               <div *ngIf="project.sectors.length > 0">
                 <table>
+                  <tr>
+                    <th>Sector</th>
+                    <th>Percentage</th>
+                    <th>Action</th>
+                  </tr>
                   <tr *ngFor="let sector of project.sectors; let i = index;">
                     <td width="50%">{{sector.sector}}</td>
                     <td width="30%">
@@ -243,7 +256,7 @@
       </div>
 
       <div class="col-lg-6 col-md-6">
-        <div class="box">
+        <div class="box small">
           <h6 class="card-title text-center">Locations from source projects</h6>
 
           <div class="iati-box-small">
@@ -251,6 +264,11 @@
               <div><b>{{project.title}}</b></div>
               <div *ngIf="project.locations.length > 0">
                 <table>
+                  <tr>
+                    <th>Location</th>
+                    <th>Percentage</th>
+                    <th>Action</th>
+                  </tr>
                   <tr *ngFor="let location of project.locations; let i = index;">
                     <td width="50%">{{location.location}}</td>
                     <td width="30%">
@@ -272,6 +290,75 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="row margin-top-10 small">
+    
+      <div class="col-md-6 col-lg-6">
+        <div class="box">
+          <h6 class="card-title text-center">Documents/Resources from source projects</h6>
+          <div class="iati-box-small">
+            <div *ngFor="let project of selectedProjects">
+              <b>{{project.title}}</b>
+              <div *ngIf="project.documents.length > 0">
+                <table>
+                  <tr>
+                    <th>Resource name/Document</th>
+                    <th>Link</th>
+                    <th>Action</th>
+                  </tr>
+                  <tr *ngFor="let document of project.documents">
+                    <td>{{document.documentTitle}}</td>
+                    <td>{{document.documentUrl}}</td>
+                    <td>
+                      <button class="btn btn-danger btn-sm" (click)="removeDocument(project.id, marker.markerId)"><i
+                          class="fa fa-trash"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div *ngIf="project.documents.length == 0">
+                <span class="text-info"><i>No documents/resources found</i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-md-6 col-lg-6">
+        <div class="box">
+          <h6 class="card-title text-center">Markers from source projects</h6>
+    
+          <div class="iati-box-small">
+            <div *ngFor="let project of selectedProjects">
+              <b>{{project.title}}</b>
+              <div *ngIf="project.markers.length > 0">
+                <table>
+                  <tr>
+                    <th>Marker</th>
+                    <th>Values</th>
+                    <th>Action</th>
+                  </tr>
+                  <tr *ngFor="let marker of project.markers">
+                    <td>{{marker.marker}}</td>
+                    <td>{{displayFieldValues(marker.values)}}</td>
+                    <td>
+                      <button class="btn btn-danger" (click)="removeMarker(project.id, marker.markerId)"><i
+                          class="fa fa-trash"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div *ngIf="project.markers.length == 0">
+                <span class="text-info"><i>No markers found</i></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      
     </div>
 
   </block-ui>

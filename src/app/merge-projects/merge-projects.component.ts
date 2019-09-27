@@ -339,7 +339,11 @@ export class MergeProjectsComponent implements OnInit {
           this.modalService.open('confirmation-modal');
         }
       }
-    )
+    );
+  }
+
+  displayFieldValues(json: any) {
+    return this.storeService.parseAndDisplayJsonAsString(json);
   }
 
   removeSector(projectId: number, sectorId: number) {
