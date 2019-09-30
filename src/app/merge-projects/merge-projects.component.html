@@ -14,77 +14,77 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <span class="float-right margin-top-10">
-          <button class="btn btn-info" [class.disable]="isProjectBtnDisabled" class="btn btn-info btn-lg text-uppercase"
-            type="button" (click)="mergeAndSaveProject()">Merge projects</button>
-        </span>
-      </div>
-    </div>
-
-    <div class="row margin-bottom-0">
-
-      <!--Selected projects box-->
-      <div class="col-md-6 col-sm-12">
-        <div class="box margin-top-10">
-          <h6 class="card-title text-center">Selected AIMS projects</h6>
-          <div class="iati-box-small">
-            <table *ngFor="let project of selectedProjects" class="small margin-top-20">
-              <tr>
-                <td colspan="2" width="100%">
-                  <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button
-                    id="aimst-{{project.id}}" class="btn btn-outline-info btn-sm" (click)="enterTitle($event)">Title
-                    >></button>&nbsp;
-                  <a href="#" title="View Project Details" id="aproject-{{project.id}}"
-                    (click)="viewAIMSProject($event)" class="text-info">View
-                    Details</a><br />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button id="btnsdate-{{project.id}}"
-                    (click)="enterStartingYear($event)" class="btn btn-sm btn-outline-success">>></button>
-                </td>
-                <td>
-                  <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button id="btnedate-{{project.id}}"
-                    (click)="enterEndingYear($event)" class="btn btn-sm btn-outline-success">>></button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Project value:</b> {{project.projectValue}} &nbsp; <button id="btnpvalue-{{project.id}}"
-                    (click)="enterProjectValue($event)" class="btn btn-sm btn-outline-success">>></button>
-                </td>
-                <td>
-                  <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
-                    (click)="enterProjectCurrency($event)" class="btn btn-sm btn-outline-success">>></button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <b>Description: </b>{{project.description | truncate}} &nbsp;
-                  <button id="aimsd-{{project.id}}" class="btn btn-outline-warning btn-sm"
-                    (click)="enterProjectDescription($event)">Description
-                    >></button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <hr />
-                </td>
-              </tr>
-            </table>
-          </div>
+    <form class="form-signin" (ngSubmit)="projectForm.form.valid && mergeAndSaveProject()" #projectForm="ngForm">
+      <div class="row">
+        <div class="col-md-12">
+          <span class="float-right margin-top-10">
+            <button class="btn btn-info"
+              [class.disable]="(sectorPercentage != 100 || locationPercentage != 100 || totalDisbursements != projectValue || !projectForm.form.valid)"
+              class="btn btn-info btn-lg text-uppercase" type="submit" (click)="mergeAndSaveProject()">Merge
+              projects</button>
+          </span>
         </div>
       </div>
 
-      <div class="col-md-6 col-sm-12">
-        <div class="box margin-top-10">
-          <h6 class="card-title text-center">Detail for new project after merge</h6>
+      <div class="row margin-bottom-0">
 
-          <form class="form-signin" (ngSubmit)="projectForm.form.valid && mergeAndSaveProject()" #projectForm="ngForm">
+        <!--Selected projects box-->
+        <div class="col-md-6 col-sm-12">
+          <div class="box margin-top-10">
+            <h6 class="card-title text-center">Selected AIMS projects</h6>
+            <div class="iati-box-small">
+              <table *ngFor="let project of selectedProjects" class="small margin-top-20">
+                <tr>
+                  <td colspan="2" width="100%">
+                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button
+                      id="aimst-{{project.id}}" class="btn btn-outline-info btn-sm" (click)="enterTitle($event)">Title
+                      >></button>&nbsp;
+                    <a href="#" title="View Project Details" id="aproject-{{project.id}}"
+                      (click)="viewAIMSProject($event)" class="text-info">View
+                      Details</a><br />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button id="btnsdate-{{project.id}}"
+                      (click)="enterStartingYear($event)" class="btn btn-sm btn-outline-success">>></button>
+                  </td>
+                  <td>
+                    <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button id="btnedate-{{project.id}}"
+                      (click)="enterEndingYear($event)" class="btn btn-sm btn-outline-success">>></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Project value:</b> {{project.projectValue}} &nbsp; <button id="btnpvalue-{{project.id}}"
+                      (click)="enterProjectValue($event)" class="btn btn-sm btn-outline-success">>></button>
+                  </td>
+                  <td>
+                    <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
+                      (click)="enterProjectCurrency($event)" class="btn btn-sm btn-outline-success">>></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <b>Description: </b>{{project.description | truncate}} &nbsp;
+                    <button id="aimsd-{{project.id}}" class="btn btn-outline-warning btn-sm"
+                      (click)="enterProjectDescription($event)">Description
+                      >></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <hr />
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
 
+        <div class="col-md-6 col-sm-12">
+          <div class="box margin-top-10">
+            <h6 class="card-title text-center">Detail for new project after merge</h6>
             <div class="form-group">
               <input type="text" placeholder="Project title" title="Project title" class="form-control" id="title"
                 maxlength="1000" [(ngModel)]="model.title" name="title" #title="ngModel" required>
@@ -99,7 +99,7 @@
                   <select class="form-control" title="Starting financial year" name="startingFinancialYear"
                     [(ngModel)]="model.startingFinancialYear" (change)="setDisbursementsData()"
                     #startingFinancialYear="ngModel" required>
-                    <option value="0">--Starting year--</option>
+                    <option value="null">--Starting year--</option>
                     <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}
                     </option>
                   </select>
@@ -114,7 +114,7 @@
                   <select class="form-control" title="Ending financial year" name="endingFinancialYear"
                     [(ngModel)]="model.endingFinancialYear" (change)="setDisbursementsData()"
                     #endingFinancialYear="ngModel" required>
-                    <option value="0">--Ending year--</option>
+                    <option value="null">--Ending year--</option>
                     <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}
                     </option>
                   </select>
@@ -145,18 +145,18 @@
                 </select>
               </div>
             </div>
-
             <div class="form-group margin-top-10">
               <textarea title="Project description" placeholder="Project description" class="form-control"
                 id="description" [(ngModel)]="model.description" name="description" #description="ngModel" rows="7"
                 maxlength="{{descriptionLimit}}">
                     </textarea>
             </div>
-          </form>
-        </div>
-      </div>
 
-    </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
 
     <div class="row margin-top-10">
 
@@ -200,8 +200,7 @@
           <div class="box small">
             <h6 class="card-title text-center">Project disbursements</h6>
             <div class="iati-box-small">
-              <div *ngIf="(totalDisbursements > model.projectValue || totalDisbursements < model.projectValue)"
-                class="alert alert-danger">
+              <div *ngIf="projectValue != totalDisbursements" class="alert alert-danger">
                 Project disbursements cannot be less/greater than project value
               </div>
               <div *ngFor="let disbursement of projectDisbursements" class="form-group form-inline">

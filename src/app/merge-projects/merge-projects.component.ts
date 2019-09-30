@@ -53,11 +53,12 @@ export class MergeProjectsComponent implements OnInit {
   isAimsLoading: boolean = true;
   locationPercentage: number = 0;
   sectorPercentage: number = 0;
+  projectValue: number = 0;
   totalDisbursements: number = 0;
   descriptionLimit: number = Settings.descriptionLongLimit;
   requestNo: number = 0;
   currentYear: number = 0;
-  model: any = { id: 0, title: '', startingFinancialYear: 0, endingFinancialYear: 0, 
+  model: any = { id: 0, title: null, startingFinancialYear: null, endingFinancialYear: null, 
   projectValue: null, projectCurrency: null, description: null };
 
   disbursementTypeConstants: any = {
@@ -83,6 +84,7 @@ export class MergeProjectsComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
+    this.blockUI.start('Loading projects data...');
     this.currentYear = this.storeService.getCurrentYear();
     this.getExchangeRates();
     this.getFinancialYears();
@@ -109,8 +111,7 @@ export class MergeProjectsComponent implements OnInit {
         var obj = { identifier: project.identifier };
         iatiIdsArr.push(obj);
       }.bind(this));
-      this.loadIATIProjectsForIds(iatiIdsArr);
-
+      //this.loadIATIProjectsForIds(iatiIdsArr);
       //Load aims projects
       var filteredAIMS = parsedProjects.filter(function (project) {
         return project.type == 'AIMS';
@@ -121,7 +122,7 @@ export class MergeProjectsComponent implements OnInit {
         aimsIdsArr.push(id);
       });
 
-      this.loadIATIProjectsForIds(iatiIdsArr);
+      //this.loadIATIProjectsForIds(iatiIdsArr);
       this.loadAIMSProjectsForIds(aimsIdsArr);
     } else {
       this.router.navigateByUrl('new-entry');
@@ -296,6 +297,8 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   calculateDisbursementsTotal() {
+    this.projectValue = !this.model.projectValue ? 0 : parseFloat(this.model.projectValue);
+  
     var totalDisbursements = 0;
     var toCurrencyExRate: number = 0;
     this.getExchangeRateForCurrency();
@@ -319,9 +322,12 @@ export class MergeProjectsComponent implements OnInit {
         this.selectedProjects = data;
         if (this.model.projectCurrency) {
         }
+
+        this.calculateDisbursementsTotal();
         this.calculateSectorPercentage();
         this.calculateLocationPercentage();
         this.isAimsLoading = false;
+        this.blockUI.stop();
       }
     )
   }
