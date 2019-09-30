@@ -37,6 +37,7 @@ export class MergeProjectsComponent implements OnInit {
   sourceProjects: any = [];
   aimsProjects: any = [];
   currencies: any = [];
+  exchangeRates: any = [];
 
   viewProject: any = {};
   viewProjectLocations: any = [];
@@ -83,6 +84,7 @@ export class MergeProjectsComponent implements OnInit {
     }
 
     this.currentYear = this.storeService.getCurrentYear();
+    this.getExchangeRates();
     this.getFinancialYears();
     this.getCurrenciesList();
     //this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
@@ -295,10 +297,17 @@ export class MergeProjectsComponent implements OnInit {
 
   calculateDisbursementsTotal() {
     var totalDisbursements = 0;
-    if (this.projectDisbursements.length > 0) {
-      this.projectDisbursements.forEach((d) => {
-        totalDisbursements += parseFloat(d.amount);
-      });
+    var toCurrencyExRate: number = 0;
+    this.getExchangeRateForCurrency();
+    toCurrencyExRate = this.model.exchangeRate;
+
+    if (this.model.projectCurrency) {
+      if (this.projectDisbursements.length > 0) {
+        this.projectDisbursements.forEach((d) => {
+          var exRate = d.exchangeRate;
+          totalDisbursements += (toCurrencyExRate / exRate) * parseFloat(d.amount);
+        });
+      }
     }
     this.totalDisbursements = totalDisbursements;
   }
@@ -308,9 +317,10 @@ export class MergeProjectsComponent implements OnInit {
     this.projectService.extractProjectsByIds(modelArr).subscribe(
       data => {
         this.selectedProjects = data;
-        this.isAimsLoading = false;
-      },
-      error => {
+        if (this.model.projectCurrency) {
+        }
+        this.calculateSectorPercentage();
+        this.calculateLocationPercentage();
         this.isAimsLoading = false;
       }
     )
@@ -417,6 +427,27 @@ export class MergeProjectsComponent implements OnInit {
     );
   }
 
+  getExchangeRates() {
+    this.currencyService.getExchangeRatesList().subscribe(
+      data => {
+        if (data && data.rates) {
+          this.exchangeRates = data.rates;
+        }
+      }
+    );
+  }
+
+  getExchangeRateForCurrency() {
+    if (this.model.projectCurrency) {
+      var exRate = this.exchangeRates.filter(e => e.currency == this.model.projectCurrency);
+      if (exRate.length > 0) {
+        this.model.exchangeRate = exRate[0].rate;
+      }
+    } else {
+      this.model.exchangeRate = 1;
+    }
+  }
+
   displayFieldValues(json: any) {
     return this.storeService.parseAndDisplayJsonAsString(json);
   }
@@ -462,15 +493,46 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   calculateDisbursements() {
-
   }
 
-  calculateSectorPercent() {
+  calculateSectorPercentage() {
+    if (this.selectedProjects.length > 0) {
+      var sectorPercentage = 0;
+      var sectorsExist = false;
+      this.selectedProjects.forEach(p => {
+        if (p.sectors.length > 0) {
+          sectorsExist = true;
+          p.sectors.forEach(s => {
+            sectorPercentage += s.fundsPercentage;
+          });
+        }
+      });
 
+      if (!sectorsExist) {
+        sectorPercentage = 100;
+      }
+      this.sectorPercentage = sectorPercentage;
+    }
   }
 
-  calculateLocationPercent() {
+  calculateLocationPercentage() {
+    if (this.selectedProjects.length > 0) {
+      var locationPercentage = 0;
+      var locationsExist = false;
+      this.selectedProjects.forEach(p => {
+        if (p.locations.length > 0) {
+          locationsExist = true;
+          p.locations.forEach(l => {
+            locationPercentage += l.fundsPercentage;
+          });
+        }
+      });
 
+      if (!locationsExist) {
+        locationPercentage = 100;
+      }
+      this.locationPercentage = locationPercentage;
+    }
   }
 
   proceedToDataEntry() {
