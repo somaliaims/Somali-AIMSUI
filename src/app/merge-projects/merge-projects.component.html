@@ -37,7 +37,7 @@
                 <tr>
                   <td colspan="2" width="100%">
                     <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button
-                      id="aimst-{{project.id}}" class="btn btn-outline-info btn-sm" (click)="enterTitle($event)">Title
+                      type="button" id="aimst-{{project.id}}" class="btn btn-outline-info btn-sm" (click)="enterTitle($event)">Title
                       >></button>&nbsp;
                     <a href="#" title="View Project Details" id="aproject-{{project.id}}"
                       (click)="viewAIMSProject($event)" class="text-info">View
@@ -46,28 +46,28 @@
                 </tr>
                 <tr>
                   <td>
-                    <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button id="btnsdate-{{project.id}}"
+                    <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button type="button" id="btnsdate-{{project.id}}"
                       (click)="enterStartingYear($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
-                    <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button id="btnedate-{{project.id}}"
+                    <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button type="button" id="btnedate-{{project.id}}"
                       (click)="enterEndingYear($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <b>Project value:</b> {{project.projectValue}} &nbsp; <button id="btnpvalue-{{project.id}}"
+                    <b>Project value:</b> {{project.projectValue}} &nbsp; <button type="button" id="btnpvalue-{{project.id}}"
                       (click)="enterProjectValue($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
-                    <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
+                    <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button type="button" id="btnacurrency-{{project.id}}"
                       (click)="enterProjectCurrency($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="2">
                     <b>Description: </b>{{project.description | truncate}} &nbsp;
-                    <button id="aimsd-{{project.id}}" class="btn btn-outline-warning btn-sm"
+                    <button type="button" id="aimsd-{{project.id}}" class="btn btn-outline-warning btn-sm"
                       (click)="enterProjectDescription($event)">Description
                       >></button>
                   </td>
@@ -200,8 +200,8 @@
           <div class="box small">
             <h6 class="card-title text-center">Project disbursements</h6>
             <div class="iati-box-small">
-              <div *ngIf="projectValue != totalDisbursements" class="alert alert-danger">
-                Project disbursements cannot be less/greater than project value
+              <div *ngIf="!financialsOk" class="alert alert-danger">
+                Project disbursements must be equal to project value
               </div>
               <div *ngFor="let disbursement of projectDisbursements" class="form-group form-inline">
                 <label class="col-md-4">

@@ -33,6 +33,7 @@ export class MergeProjectsComponent implements OnInit {
   financialYears: any = [];
   filteredIatiProjects: any = [];
   filteredAIMSProjects: any = [];
+  projectIds: any = [];
   selectedProjects: any = [];
   sourceProjects: any = [];
   aimsProjects: any = [];
@@ -51,10 +52,9 @@ export class MergeProjectsComponent implements OnInit {
   calendarMaxDate: any = {};
   isIatiLoading: boolean = true;
   isAimsLoading: boolean = true;
+  financialsOk: boolean = true;
   locationPercentage: number = 0;
   sectorPercentage: number = 0;
-  projectValue: number = 0;
-  totalDisbursements: number = 0;
   descriptionLimit: number = Settings.descriptionLongLimit;
   requestNo: number = 0;
   currentYear: number = 0;
@@ -121,6 +121,7 @@ export class MergeProjectsComponent implements OnInit {
         var id = project.identifier;
         aimsIdsArr.push(id);
       });
+      this.projectIds = aimsIdsArr;
 
       //this.loadIATIProjectsForIds(iatiIdsArr);
       this.loadAIMSProjectsForIds(aimsIdsArr);
@@ -211,6 +212,7 @@ export class MergeProjectsComponent implements OnInit {
       this.model.startingFinancialYear = project[0].startingFinancialYear;
       this.setDisbursementsData();
     }
+    this.calculateDisbursementsTotal();
   }
 
   enterEndingYear(e) {
@@ -220,6 +222,7 @@ export class MergeProjectsComponent implements OnInit {
       this.model.endingFinancialYear = project[0].endingFinancialYear;
       this.setDisbursementsData();
     }
+    this.calculateDisbursementsTotal();
   }
 
   enterProjectValue (e) {
@@ -228,6 +231,7 @@ export class MergeProjectsComponent implements OnInit {
     if (project.length > 0) {
       this.model.projectValue = project[0].projectValue;
     }
+    this.calculateDisbursementsTotal();
   }
 
   enterDisbursement(projectId, year, disbursementType) {
@@ -249,6 +253,7 @@ export class MergeProjectsComponent implements OnInit {
     if (project.length > 0) {
       this.model.projectCurrency = project[0].projectCurrency;
     }
+    this.calculateDisbursementsTotal();
   }
 
   enterProjectDescription (e) {
@@ -297,22 +302,14 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   calculateDisbursementsTotal() {
-    this.projectValue = !this.model.projectValue ? 0 : parseFloat(this.model.projectValue);
-  
+    var projectValue = !this.model.projectValue ? parseFloat('0') : parseFloat(this.model.projectValue);
     var totalDisbursements = 0;
-    var toCurrencyExRate: number = 0;
-    this.getExchangeRateForCurrency();
-    toCurrencyExRate = this.model.exchangeRate;
-
-    if (this.model.projectCurrency) {
-      if (this.projectDisbursements.length > 0) {
-        this.projectDisbursements.forEach((d) => {
-          var exRate = d.exchangeRate;
-          totalDisbursements += (toCurrencyExRate / exRate) * parseFloat(d.amount);
-        });
-      }
+    if (this.projectDisbursements.length > 0) {
+      this.projectDisbursements.forEach((d) => {
+        totalDisbursements += parseFloat(d.amount);
+      });
     }
-    this.totalDisbursements = totalDisbursements;
+    this.financialsOk = (projectValue == totalDisbursements) ? true : false;
   }
 
   loadAIMSProjectsForIds(modelArr: any) {
@@ -386,49 +383,87 @@ export class MergeProjectsComponent implements OnInit {
       return false;
     }
 
-    var startDate = this.model.startDate.year + '-' + this.model.startDate.month + '-' +
-      this.model.startDate.day;
-    var endDate = this.model.endDate.year + '-' + this.model.endDate.month + '-' +
-      this.model.endDate.day;
-
-    if (startDate > endDate) {
+    if (this.model.startingFinancialYear > this.model.endingFinancialYear) {
       this.errorMessage = Messages.INVALID_STARTEND_DATE;
       this.errorModal.openModal();
       return false;
     }
 
     this.blockUI.start('Merging projects...');
-    var Ids = this.selectedProjects.map(p => p.id);
+    var funderIds: any = [];
+    var implementerIds: any = [];
+    var sectors: any = [];
+    var locations: any = [];
+    var documents: any = [];
+    var markers: any = [];
+    var disbursements: any = [];
+    
+    this.selectedProjects.forEach((p) => {
+      if (p.funders.length > 0) {
+        var ids = p.funders.map(f => f.funderId);
+        funderIds = funderIds.concat(ids);
+      }
+
+      if (p.implementers.length > 0) {
+        var ids = p.implementers.map(i => i.implementerId);
+        implementerIds = implementerIds.concat(ids);
+      }
+
+      if (p.sectors.length > 0) {
+        p.sectors.forEach((s) => {
+          sectors.push(s);
+        });
+      }
+
+      if (p.locations.length > 0) {
+        p.locations.forEach((l) => {
+          locations.push(l);
+        });
+      }
+
+      if (p.documents.length > 0) {
+        p.documents.forEach((d) => {
+          markers.push(d);
+        });
+      }
+
+      if (p.disbursements.length > 0) {
+        p.disbursements.forEach(d => {
+          disbursements.push(d);
+        });
+      }
+
+      if (p.markers.length > 0) {
+        p.markers.forEach(m => {
+          markers.push(m);
+        });
+      }
+    });
+
+
+    this.selectedProjects.map(p => p.id);
+    
     var model = {
       title: this.model.title,
+      projectValue: this.model.projectValue,
+      projectCurrency: this.model.projectCurrency,
+      startingFinancialYear: this.model.startingFinancialYear,
+      endingFinancialYear: this.model.endingFinancialYear,
       description: this.model.description,
-      startDate: startDate,
-      endDate: endDate,
-      projectsIds: Ids
+      funderIds: funderIds,
+      implementerIds: implementerIds,
+      sectors: sectors,
+      locations: locations,
+      disbursements: disbursements,
+      documents: documents
     };
 
     this.projectService.mergeProjects(model).subscribe(
       data => {
         if (data) {
-          var projectsList: any = [];
-          this.sourceProjects.forEach(function(p) {
-            var project = { identifier: p.identifier, type: 'IATI' };
-            projectsList.push(project);
-          });
-
-          this.aimsProjects.forEach(function (p) {
-            projectsList.push({
-              identifier: p.identifier,
-              type: 'AIMS'
-            })
-          });
-
-          var projects = JSON.stringify(projectsList);
-          localStorage.setItem('active-project', data);
-          localStorage.setItem('selected-projects', projects);
-          this.blockUI.stop();
-          this.modalService.open('confirmation-modal');
+          this.router.navigateByUrl('new-project');
         }
+        this.blockUI.stop();
       }
     );
   }
