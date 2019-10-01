@@ -126,7 +126,7 @@
             </div>
 
             <div class="row">
-              <div class="col-lg-6 col-md-6">
+              <div class="col-lg-4 col-md-4">
                 <input type="number" title="Project value (0.00)" placeholder="Project value (0.00)"
                   class="form-control" name="projectValue" (change)="calculateDisbursementsTotal()"
                   [(ngModel)]="model.projectValue" #projectValue="ngModel" required />
@@ -135,7 +135,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-6 col-md-6">
+              <div class="col-lg-4 col-md-4">
                 <select title="Project currency" class="form-control" name="currency"
                   [(ngModel)]="model.projectCurrency" #currency="ngModel" (change)="getExchangeRateForCurrency()"
                   required>
@@ -144,6 +144,16 @@
                   </option>
                 </select>
               </div>
+
+              <div class="col-lg-4 col-md-4">
+                <select title="Funding type" class="form-control" name="fundingType"
+                  [(ngModel)]="model.fundingTypeId" #fundingType="ngModel" required>
+                  <option value="null">--Funding type--</option>
+                  <option *ngFor="let fType of fundingTypes" value="{{fType.id}}">{{fType.fundingType}}
+                  </option>
+                </select>
+              </div>
+
             </div>
             <div class="form-group margin-top-10">
               <textarea title="Project description" placeholder="Project description" class="form-control"

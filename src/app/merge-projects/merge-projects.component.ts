@@ -15,6 +15,7 @@ import { ModalService } from '../services/modal.service';
 import { FinancialYearService } from '../services/financial-year.service';
 import { CurrencyService } from '../services/currency.service';
 import { Settings } from '../config/settings';
+import { FundingTypeService } from '../services/funding-type.service';
 
 @Component({
   selector: 'app-merge-projects',
@@ -31,6 +32,7 @@ export class MergeProjectsComponent implements OnInit {
   permissions: any = [];
   iatiProjects: any = [];
   financialYears: any = [];
+  fundingTypes: any = [];
   filteredIatiProjects: any = [];
   filteredAIMSProjects: any = [];
   projectIds: any = [];
@@ -61,7 +63,7 @@ export class MergeProjectsComponent implements OnInit {
   requestNo: number = 0;
   currentYear: number = 0;
   model: any = { id: 0, title: null, startingFinancialYear: null, endingFinancialYear: null, 
-  projectValue: null, projectCurrency: null, description: null };
+  projectValue: null, projectCurrency: null, description: null, fundingTypeId: null };
 
   disbursementTypeConstants: any = {
     1: 'Actual',
@@ -78,6 +80,7 @@ export class MergeProjectsComponent implements OnInit {
     private modalService: ModalService,
     private securityService: SecurityHelperService,
     private yearService: FinancialYearService,
+    private fundingTypeService: FundingTypeService,
     private currencyService: CurrencyService) { }
 
   ngOnInit() {
@@ -91,6 +94,7 @@ export class MergeProjectsComponent implements OnInit {
     this.getExchangeRates();
     this.getFinancialYears();
     this.getCurrenciesList();
+    this.getFundingTypes();
     //this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     var projects = localStorage.getItem('merge-projects');
     if (projects) {
@@ -162,6 +166,16 @@ export class MergeProjectsComponent implements OnInit {
       data => {
         if (data) {
           this.currencies = data;
+        }
+      }
+    );
+  }
+
+  getFundingTypes() {
+    this.fundingTypeService.getFundingTypesList().subscribe(
+      data => {
+        if (data) {
+          this.fundingTypes = data;
         }
       }
     );
@@ -425,7 +439,7 @@ export class MergeProjectsComponent implements OnInit {
 
       if (p.documents.length > 0) {
         p.documents.forEach((d) => {
-          markers.push(d);
+          documents.push(d);
         });
       }
 
@@ -452,12 +466,15 @@ export class MergeProjectsComponent implements OnInit {
       startingFinancialYear: this.model.startingFinancialYear,
       endingFinancialYear: this.model.endingFinancialYear,
       description: this.model.description,
+      fundingTypeId: this.model.fundingTypeId,
+      projectIds: this.projectIds,
       funderIds: funderIds,
       implementerIds: implementerIds,
       sectors: sectors,
       locations: locations,
       disbursements: disbursements,
-      documents: documents
+      documents: documents,
+      markers: markers
     };
 
     this.projectService.mergeProjects(model).subscribe(
