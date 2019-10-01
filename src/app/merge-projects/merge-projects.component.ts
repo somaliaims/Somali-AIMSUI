@@ -53,6 +53,8 @@ export class MergeProjectsComponent implements OnInit {
   isIatiLoading: boolean = true;
   isAimsLoading: boolean = true;
   financialsOk: boolean = true;
+  sectorPercentageOk: boolean = true;
+  locationPercentageOk: boolean = true;
   locationPercentage: number = 0;
   sectorPercentage: number = 0;
   descriptionLimit: number = Settings.descriptionLongLimit;
@@ -501,6 +503,7 @@ export class MergeProjectsComponent implements OnInit {
         project[0].sectors = sectors.filter(s => s.sectorId != sectorId);
       }
     }
+    this.calculateSectorPercentage();
   }
 
   removeLocation(projectId: number, locationId: number) {
@@ -511,6 +514,7 @@ export class MergeProjectsComponent implements OnInit {
         project[0].locations = locations.filter(l => l.locationId != locationId);
       }
     }
+    this.calculateLocationPercentage();
   }
 
   removeDocument(projectId: number, documentId: number) {
@@ -537,8 +541,8 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   calculateSectorPercentage() {
+    var sectorPercentage = 0;
     if (this.selectedProjects.length > 0) {
-      var sectorPercentage = 0;
       var sectorsExist = false;
       this.selectedProjects.forEach(p => {
         if (p.sectors.length > 0) {
@@ -552,13 +556,13 @@ export class MergeProjectsComponent implements OnInit {
       if (!sectorsExist) {
         sectorPercentage = 100;
       }
-      this.sectorPercentage = sectorPercentage;
     }
+    this.sectorPercentageOk = (sectorPercentage == 100) ? true : false; 
   }
 
   calculateLocationPercentage() {
+    var locationPercentage = 0;
     if (this.selectedProjects.length > 0) {
-      var locationPercentage = 0;
       var locationsExist = false;
       this.selectedProjects.forEach(p => {
         if (p.locations.length > 0) {
@@ -572,8 +576,8 @@ export class MergeProjectsComponent implements OnInit {
       if (!locationsExist) {
         locationPercentage = 100;
       }
-      this.locationPercentage = locationPercentage;
     }
+    this.locationPercentageOk = (locationPercentage == 100) ? true : false;
   }
 
   proceedToDataEntry() {

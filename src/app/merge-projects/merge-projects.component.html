@@ -19,7 +19,7 @@
         <div class="col-md-12">
           <span class="float-right margin-top-10">
             <button class="btn btn-info"
-              [class.disable]="(sectorPercentage != 100 || locationPercentage != 100 || totalDisbursements != projectValue || !projectForm.form.valid)"
+              [class.disable]="(!sectorPercentageOk || !locationPercentageOk || !financialsOk || !projectForm.form.valid)"
               class="btn btn-info btn-lg text-uppercase" type="submit" (click)="mergeAndSaveProject()">Merge
               projects</button>
           </span>
@@ -288,7 +288,7 @@
       <div class="col-lg-6 col-md-6">
         <div class="box small">
           <h6 class="card-title text-center">Sectors from source projects</h6>
-          <div *ngIf="sectorPercentage != 100" class="alert alert-danger">
+          <div *ngIf="!sectorPercentageOk" class="alert alert-danger">
             Sector percentage must be equal to 100.
           </div>
 
@@ -328,7 +328,7 @@
       <div class="col-lg-6 col-md-6">
         <div class="box small">
           <h6 class="card-title text-center">Locations from source projects</h6>
-          <div *ngIf="locationPercentage != 100" class="alert alert-danger">
+          <div *ngIf="!locationPercentageOk" class="alert alert-danger">
             Location percentage must be equal to 100.
           </div>
 
