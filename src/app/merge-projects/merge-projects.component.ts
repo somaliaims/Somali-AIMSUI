@@ -399,8 +399,20 @@ export class MergeProjectsComponent implements OnInit {
       return false;
     }
 
+    if (!this.model.startingFinancialYear || this.model.startingFinancialYear == 'null') {
+      this.errorMessage = Messages.INVALID_YEAR;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    if (!this.model.endingFinancialYear || this.model.endingFinancialYear == 'null') {
+      this.errorMessage = Messages.INVALID_YEAR;
+      this.errorModal.openModal();
+      return false;
+    }
+
     if (this.model.startingFinancialYear > this.model.endingFinancialYear) {
-      this.errorMessage = Messages.INVALID_STARTEND_DATE;
+      this.errorMessage = Messages.INVALID_START_END_YEAR;
       this.errorModal.openModal();
       return false;
     }
@@ -537,7 +549,7 @@ export class MergeProjectsComponent implements OnInit {
     if (project.length > 0) {
       var documents = project[0].documents;
       if (documents.length > 0) {
-        project[0].documents = documents.filter(m => m.documentId != documentId);
+        project[0].documents = documents.filter(d => d.id != documentId);
       }
     }
   }
