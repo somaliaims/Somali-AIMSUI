@@ -1,10 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { StoreService } from 'src/app/services/store-service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ProjectService } from 'src/app/services/project.service';
-import { EventEmitter } from 'events';
 
 @Component({
   selector: 'financials',
@@ -32,7 +31,8 @@ export class FinancialsComponent implements OnInit {
   @Input()
   endingYear: number = 0;
 
-  disbursementsChanged: any = new EventEmitter();
+  @Output()
+  disbursementsChanged = new EventEmitter<any[]>();
 
   errorMessage: string = null;
   requestNo: number = 0;
@@ -184,6 +184,7 @@ export class FinancialsComponent implements OnInit {
         this.projectService.addProjectDisbursement(model).subscribe(
           data => {
             if (data) {
+              this.updateDisbursementsToParent();
             }
             this.blockUI.stop();
           }
