@@ -443,12 +443,6 @@ export class MergeProjectsComponent implements OnInit {
         });
       }
 
-      if (p.disbursements.length > 0) {
-        p.disbursements.forEach(d => {
-          disbursements.push(d);
-        });
-      }
-
       if (p.markers.length > 0) {
         p.markers.forEach(m => {
           markers.push(m);
@@ -457,12 +451,16 @@ export class MergeProjectsComponent implements OnInit {
     });
 
 
+    if (this.projectDisbursements.length > 0) {
+      disbursements = this.projectDisbursements;
+    }
     this.selectedProjects.map(p => p.id);
     
     var model = {
       title: this.model.title,
       projectValue: this.model.projectValue,
       projectCurrency: this.model.projectCurrency,
+      exchangeRate: this.model.exchangeRate,
       startingFinancialYear: this.model.startingFinancialYear,
       endingFinancialYear: this.model.endingFinancialYear,
       description: this.model.description,

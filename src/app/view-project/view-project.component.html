@@ -1,4 +1,4 @@
-<div class="container-fluid view-area">
+<div class="container-fluid view-area small">
   <block-ui>
     
     <div class="row">
@@ -242,12 +242,14 @@
 
               <table *ngIf="projectDisbursements.length > 0" class="table table-stripped">
                 <tr>
+                  <th>Type</th>
                   <th>Financial year</th>
                   <th>Amount</th>
                   <th>Currency</th>
                   <th>Exchange rate</th>
                 </tr>
                 <tr *ngFor="let disbursement of projectDisbursements">
+                  <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
                   <td>{{disbursement.year}}</td>
                   <td>{{disbursement.amount | number:0}}</td>
                   <td>{{disbursement.currency}}</td>

@@ -185,6 +185,7 @@ export class StoreService {
   }
 
   formatDateInUkStyle(year: number, month: number, day: number) {
+    month = (month - 1);
     var date = new Date(year, month, day);
     return date.toLocaleDateString("en-GB", { 
       year: "numeric",
