@@ -259,6 +259,7 @@ export class MergeProjectsComponent implements OnInit {
         if (disbursementToUpdate.length > 0) {
           disbursementToUpdate[0].amount = disbursement[0].amount;
         }
+        this.calculateDisbursementsTotal();
       }
     }
   }

@@ -1,6 +1,6 @@
 <div class="container-fluid view-area small">
   <block-ui>
-    
+
     <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs">
@@ -27,13 +27,13 @@
               </span>
               <span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowContactToUser(projectData.id)">
                 <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
-                    Request for change
+                  Suggest a change
                 </button>
                 &nbsp;
               </span>
               <span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowDeleteProject(projectData.id)">
                 <button class="btn btn-danger btn-sm" (click)="makeDeleteRequest(projectData.id)">
-                    Make delete request
+                  Request deletion
                 </button>
               </span>
             </div>
@@ -277,13 +277,15 @@
                 Project Documents
               </span>
               <span class="float-right" *ngIf="isLoggedIn && isShowContactToUser(projectData.id)">
-                  <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
-                      Request for change
-                  </button>
-                </span>
-              <!--<span *ngIf="permissions.canEditProject" class="float-right">
-                <button class="btn btn-success" (click)="addProjectDocument()">Add Project Document</button>
-              </span>-->
+                <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
+                  Suggest a change
+                </button>
+              </span>
+              <span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowDeleteProject(projectData.id)">
+                <button class="btn btn-danger btn-sm" (click)="makeDeleteRequest(projectData.id)">
+                  Request deletion
+                </button>
+              </span>
             </div>
             <div class="card-body">
               <div class="row text-center margin-top-10" *ngIf="isDocumentLoading">

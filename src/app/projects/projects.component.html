@@ -113,12 +113,12 @@
               <a title="View Details" class="text-info" [routerLink]="['/view-project', project.id]">
                 {{project.title}}
               </a>
-              <span class="margin-left-10" *ngIf="isLoggedIn && isShowContactToUser(project.id)">
+              <!--<span class="margin-left-10" *ngIf="isLoggedIn && isShowContactToUser(project.id)">
                 <button class="btn btn-sm btn-outline-warning" (click)="contactProject(project.id)">Request a change</button>
               </span>
               <span class="margin-left-10" *ngIf="isLoggedIn && isShowDeleteProject(project.id)">
                 <button class="btn btn-sm btn-outline-danger" (click)="makeDeleteRequest(project.id)">Make delete request</button>
-              </span>
+              </span>-->
             </td>
             <td>{{project.startingFinancialYear}}</td>
             <td>{{project.endingFinancialYear}}</td>
