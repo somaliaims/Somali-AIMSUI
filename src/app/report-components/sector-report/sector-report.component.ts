@@ -33,6 +33,7 @@ export class SectorReportComponent implements OnInit {
   oldCurrency: string = null;
   currencyRate: number = 0;
   yearsList: any = [];
+  allSectorsList: any = [];
   sectorsList: any = [];
   subSectorsList: any = [];
   organizationsList: any = [];
@@ -168,7 +169,7 @@ export class SectorReportComponent implements OnInit {
   chartData: any = [];
   doughnutChartData: any = [];
   model: any = {
-    title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
+    title: '', organizationIds: [], startingYear: 0, endingYear: 0, parentSectorId: 0, chartType: 'bar',
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
@@ -312,6 +313,7 @@ export class SectorReportComponent implements OnInit {
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
+      parentSectorId: this.model.parentSectorId,
       sectorIds: this.model.selectedSectors.map(s => s.id),
     };
 
@@ -373,9 +375,6 @@ export class SectorReportComponent implements OnInit {
     this.fyService.getYearsList().subscribe(
       data => {
         this.yearsList = data;
-      },
-      error => {
-        console.log(error);
       }
     );
   }
@@ -506,8 +505,8 @@ export class SectorReportComponent implements OnInit {
   getSectorsList() {
     this.sectorService.getDefaultSectors().subscribe(
       data => {
-        var sectorsList = data;
-        this.sectorsList = sectorsList.filter(s => s.parentSectorId == null);
+        this.allSectorsList = data;
+        this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
         this.subSectorsList = [];
         if (this.loadReport) {
           if (this.paramSectorIds.length > 0) {
@@ -519,11 +518,14 @@ export class SectorReportComponent implements OnInit {
             }.bind(this));
           }
         }
-      },
-      error => {
-        console.log(error);
       }
-    )
+    );
+  }
+
+  showSubSectors() {
+    if (this.model.parentSectorId) {
+      this.subSectorsList = this.allSectorsList.filter(s => s.parentSectorId == this.model.parentSectorId);
+    }
   }
 
   getLocationsList() {

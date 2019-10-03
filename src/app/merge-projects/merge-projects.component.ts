@@ -162,7 +162,7 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   getCurrenciesList() {
-    this.currencyService.getCurrenciesList().subscribe(
+    this.currencyService.getCurrenciesForUser().subscribe(
       data => {
         if (data) {
           this.currencies = data;
