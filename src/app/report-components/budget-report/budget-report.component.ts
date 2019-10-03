@@ -20,6 +20,7 @@ export class BudgetReportComponent implements OnInit {
   oldCurrency: string = null;
   selectedCurrencyName: string = null;
   nationalCurrency: string = null;
+  excelFile: string = null;
   nationalCurrencyName: string = null;
   reportDataList: any = [];
   reportSettings: any = { title: null};

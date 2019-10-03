@@ -51,13 +51,6 @@
                     (onDeSelectAll)="getOrganizationsForType()"
                     #selectedOrganizationTypesList="ngModel">
                   </ng-multiselect-dropdown>
-                  <!--<select class="form-control" id="funderType" [(ngModel)]="model.funderTypeId" name="funderType"
-                    #funderType="ngModel" (change)="getOrganizationsForType()">
-                    <option value="0">-- All organization types --</option>
-                    <option *ngFor="let type of organizationTypes" value="{{type.id}}">
-                      {{type.typeName}}
-                    </option>
-                  </select>-->
                 </div>
                 <div class="col-md-6">
                     <ng-multiselect-dropdown [placeholder]="'-- All organizations --'" [data]="filteredOrganizations"
@@ -105,11 +98,11 @@
                 </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
-                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get Excel</a>&nbsp;
+                    <button type="submit" class="btn btn-info">View report</button>&nbsp;
+                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Download PDF</button>&nbsp;-->
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
                     <button *ngIf="envelopeList && envelopeList.length > 0" type="button"
-                      class="btn btn-warning" (click)="printReport()">Print Report</button>
+                      class="btn btn-warning" (click)="printReport()">Print report</button>
                   </span>
                 </div>
 

@@ -38,10 +38,11 @@
                 </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">Get Report</button>&nbsp;
-                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;-->
+                    <button type="submit" class="btn btn-info">View report</button>&nbsp;
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
+                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Download PDF</button>&nbsp;-->
                     <button *ngIf="reportDataList && reportDataList.projects" type="button" class="btn btn-warning"
-                      (click)="printReport()">Print Report</button>
+                      (click)="printReport()">Print report</button>
                   </span>
                 </div>
                 <div *ngIf="!defaultCurrency" class="col-md-12">

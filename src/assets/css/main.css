@@ -272,9 +272,9 @@ html {
     background: white !important;
   }
 
-  .row-highlight {
+  /*.row-highlight {
     background: lightgoldenrodyellow !important;
-  }
+  }*/
 
   table.row-highlight tr:first-child:hover {
     background: lightgoldenrodyellow !important;
