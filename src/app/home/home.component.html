@@ -124,7 +124,7 @@
               <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading projects...</span>
             </div>
           </div>
-          <table *ngIf="!isProjectsLoading" class="table table-striped table-condensed small">
+          <table *ngIf="latestProjects.length > 0" class="table table-striped table-condensed small">
             <thead>
               <tr>
                 <th width="70%">Project</th>
@@ -142,6 +142,9 @@
               </tr>
             </tbody>
           </table>
+          <div *ngIf="latestProjects.length == 0">
+            <span class="text-info"><i>No projects to show</i></span>
+          </div>
         </div>
       </div>
     </div>

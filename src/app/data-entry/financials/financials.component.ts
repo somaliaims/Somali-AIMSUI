@@ -30,6 +30,11 @@ export class FinancialsComponent implements OnInit {
   startingYear: number = 0;
   @Input()
   endingYear: number = 0;
+  @Input()
+  aimsProjects: any = [];
+  @Input()
+  iatiProjects: any = [];
+
 
   @Output()
   disbursementsChanged = new EventEmitter<any[]>();
@@ -39,8 +44,14 @@ export class FinancialsComponent implements OnInit {
   disbursementsTotal: number = 0;
   currentYear: any = 0;
   yearList: any = [];
-
   disbursementModel: any = { currency: null, projectValue: 0, exchangeRate: 0 };
+  tabConstants: any = {
+    FINANCIALS: 'financials',
+    FINANCIALS_SOURCE: 'financials_source'
+  };
+  currentTab: string = this.tabConstants.FINANCIALS;
+  isSourceAvailable: boolean = false;
+
   @BlockUI() blockUI: NgBlockUI;
   constructor(private storeService: StoreService, private errorModal: ErrorModalComponent,
     private projectService: ProjectService) { }
@@ -59,6 +70,13 @@ export class FinancialsComponent implements OnInit {
     this.disbursementModel.projectValue = this.projectValue;
     this.setDisbursementsData();
     this.getExchangeRateForCurrency();
+    
+  }
+
+  ngOnChanges() {
+    if (this.aimsProjects.length > 0 || this.iatiProjects.length > 0) {
+      this.isSourceAvailable = true;
+    }
   }
 
   indexTracker(index: number) {
@@ -195,6 +213,18 @@ export class FinancialsComponent implements OnInit {
 
   updateDisbursementsToParent() {
     this.disbursementsChanged.emit(this.projectDisbursements);
+  }
+
+  showSource() {
+    this.currentTab = this.tabConstants.FINANCIALS_SOURCE;
+  }
+
+  showFinancials() {
+    this.currentTab = this.tabConstants.FINANCIALS;
+  }
+
+  displayNull(val: string) {
+    return val ? val : 'N/a';
   }
   
 }
