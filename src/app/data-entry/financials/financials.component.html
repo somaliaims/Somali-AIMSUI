@@ -2,7 +2,6 @@
   <div *ngIf="currentTab == tabConstants.FINANCIALS" class="card padding-20 margin-top-5">
     <div class="container">
       <form class="form-signin" (ngSubmit)="saveDisbursements(financialsForm)" #financialsForm="ngForm">
-
         <div class="col-offset-2 col-lg-8 col-md-8">
           <div class="form-group form-inline">
             <label class="col-md-3">Currency</label>
@@ -32,7 +31,6 @@
                 (click)="showSource()" type="button"><i class="fa fa-database"></i></button>
             </div>
           </div>
-
 
           <div *ngFor="let disbursement of projectDisbursements; trackBy:indexTracker" class="form-group form-inline">
             <label class="col-md-4">
@@ -65,77 +63,117 @@
   </div>
 
   <div *ngIf="currentTab == tabConstants.FINANCIALS_SOURCE" class="row margin-top-10">
-      <div class="col-lg-8 col-md-8">
-          <table class="table table-bordered">
-              <tr *ngFor="let project of aimsProjects">
+    <div class="col-lg-8 col-md-8 iati-box-medium small">
+      <table class="table table-bordered">
+        <tr *ngFor="let project of aimsProjects">
+          <td>
+            <b>Project Title: </b>{{project.title}}<br />
+            <span class="badge badge-warning">AIMS</span>
+            <table *ngIf="project.disbursements.length > 0" class="table table-bordered">
+              <tr>
+                <th>Year</th>
+                <th>Amount</th>
+                <th>Disbursement type</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let disbursement of project.disbursements">
                 <td>
-                  <b>Project Title: </b>{{project.title}}<br />
-                  <span class="badge badge-warning">AIMS</span>
-                  <table *ngIf="project.disbursements.length > 0" class="table table-bordered">
-                    <tr>
-                      <th>Year</th>
-                      <th>Amount</th>
-                      <th>Action</th>
-                    </tr>
-                    <tr *ngFor="let disbursement of project.disbursements">
-                      <td>
-                        {{disbursement.year}}
-                      </td>
-                      <td>
-                        {{disbursement.amount | number:0}}
-                      </td>
-                      <td>
-                        <button id="adisbursement-{{project.id}}-{{disbursement.year}}-{{disbursement.month}}"
-                          (click)="enterAIMSDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
-                      </td>
-                    </tr>
-                  </table>
-                  <div class="text-info" *ngIf="project.disbursements.length == 0"><i>No disbursements available</i>
-                  </div>
+                  {{disbursement.year}}
+                </td>
+                <td>
+                  {{disbursement.amount | number:0}}
+                </td>
+                <td>
+                  {{disbursementTypeConstants[disbursement.disbursementType]}}
+                </td>
+                <td>
+                  <button id="adisbursement-{{project.id}}-{{disbursement.year}}-{{disbursement.disbursementType}}"
+                    (click)="enterAIMSDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
                 </td>
               </tr>
             </table>
+            <div class="text-info" *ngIf="project.disbursements.length == 0"><i>No disbursements available</i>
+            </div>
+          </td>
+        </tr>
+      </table>
 
-            <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
-                <tr *ngFor="let project of iatiProjects">
-                  <td>
-                    <b>Project Title: </b>{{project.title}} <br />
-                    <span class="badge badge-warning">IATI</span>
-                    <table *ngIf="project.disbursementTransactions.length != 0" class="table table-bordered">
-                      <tr>
-                        <th>Type</th>
-                        <th>Currency</th>
-                        <th>Amount</th>
-                        <th>Dated</th>
-                        <th>Action</th>
-                      </tr>
-                      <tr *ngFor="let disbursement of project.disbursementTransactions">
-                        <td [ngClass]="{'bg-warning': !disbursement.transactionType}">
-                          {{disbursement.transactionType}}
-                        </td>
-                        <td [ngClass]="{'bg-warning': !disbursement.currency}">
-                          {{displayNull(disbursement.currency)}}
-                        </td>
-                        <td [ngClass]="{'bg-warning': !disbursement.amount}">
-                          {{disbursement.amount | number:0}}
-                        </td>
-                        <td [ngClass]="{'bg-warning': !disbursement.dated}">
-                          {{displayNull(disbursement.dated)}}
-                        </td>
-                        <td>
-                          <button id="idisbursement-{{project.id}}-{{disbursement.id}}" (click)="enterIATIDisbursement($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
-                        </td>
-                      </tr>
-                    </table>
-                    <div class="text-info" *ngIf="project.transactions.length == 0"><i>No disbursements available</i>
-                    </div>
-              </table>
+      <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+        <tr *ngFor="let project of iatiProjects">
+          <td>
+            <b>Project Title: </b>{{project.title}} <br />
+            <span class="badge badge-warning">IATI</span>
+            <table *ngIf="project.disbursementTransactions.length > 0" class="table table-bordered">
+              <tr>
+                <th>Type</th>
+                <th>Currency</th>
+                <th>Amount</th>
+                <th>Dated</th>
+                <th>Action</th>
+              </tr>
+              <tr *ngFor="let disbursement of project.disbursementTransactions">
+                <td [ngClass]="{'bg-warning': !disbursement.transactionType}">
+                  {{disbursement.transactionType}}
+                </td>
+                <td [ngClass]="{'bg-warning': !disbursement.currency}">
+                  {{displayNull(disbursement.currency)}}
+                </td>
+                <td [ngClass]="{'bg-warning': !disbursement.amount}">
+                  {{disbursement.amount | number:0}}
+                </td>
+                <td [ngClass]="{'bg-warning': !disbursement.dated}">
+                  {{displayNull(disbursement.dated)}}
+                </td>
+                <td>
+                  <button id="idisbursement-{{project.id}}-{{disbursement.id}}" (click)="enterIATIDisbursement($event)"
+                    class="btn btn-success btn-sm">Enter >></button>
+                </td>
+              </tr>
+            </table>
+            <div class="text-info" *ngIf="project.disbursementTransactions.length == 0"><i>No disbursements to show</i>
+            </div>
+      </table>
+    </div>
+
+    <form class="form-signin" (ngSubmit)="saveDisbursements(financialsForm)" #financialsForm="ngForm"></form>
+    <div class="col-lg-4 col-md-4">
+
+      <div class="box">
+        <div class="text-right">
+          <button type="button" (click)="showFinancials()" class="btn btn-warning btn-sm text-uppercase">Go back</button>
+        </div>
+        <div class="text-center">
+          <h6>Project disbursements</h6>
+        </div>
+
+        <div class="margin-top-10">
+          <div *ngFor="let disbursement of projectDisbursements;" class="form-group form-inline">
+            <label class="col-md-4">
+              {{disbursement.year}}&nbsp;
+              <span *ngIf="disbursement.disbursementType == 1">Actual</span>
+              <span *ngIf="disbursement.disbursementType == 2">Planned</span>
+            </label>
+            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (change)="calculateDisbursementsTotal()"
+              name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"
+              class="form-control col-md-8" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
+          </div>
+
+          <div class="form-group form-inline">
+            <label class="col-md-4">Total: </label>
+            <input type="text" [readonly]="true" name="disbursementTotal" [(ngModel)]="disbursementsTotal"
+              class="form-control col-md-8" />
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4">&nbsp;</label>
+            <button
+              [class.disable]="(disbursementsTotal < disbursementModel.projectValue || disbursementsTotal > disbursementModel.projectValue)"
+              type="submit" class="btn btn-info text-uppercase">Save disbursements</button>
+          </div>
+        </div>
       </div>
 
-      <div class="col-lg-4 col-md-4">
-
-      </div>
+    </div>
 
   </div>
 </block-ui>

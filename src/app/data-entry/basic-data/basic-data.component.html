@@ -52,7 +52,6 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <!--<label class="col-sm-2 col-form-label float-left" for="title">Currency</label>-->
           <select title="Project currency" class="form-control col-sm-12" name="currency"
             [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" id="projectCurrency"
             (change)="getExchangeRateForCurrency()" required>
@@ -68,7 +67,6 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <!--<label class="col-sm-4 col-form-label float-left" for="title">Project value</label>-->
           <input placeholder="Project value (0.00)" title="Project value" class="form-control col-sm-12" type="number"
             maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue" #projectValue="ngModel"
             id="projectValue" required>
@@ -81,7 +79,6 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <!--<label class="col-sm-4 col-form-label float-left" for="fundingType">Funding type</label>-->
           <select title="Funding type" class="form-control col-sm-12" name="fundingTypeId"
             [(ngModel)]="projectData.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
             <option value="null">--Funding type--</option>

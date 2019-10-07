@@ -49,6 +49,11 @@ export class FinancialsComponent implements OnInit {
     FINANCIALS: 'financials',
     FINANCIALS_SOURCE: 'financials_source'
   };
+  disbursementTypeConstants: any = {
+    1: 'Actual',
+    2: 'Planned'
+  };
+
   currentTab: string = this.tabConstants.FINANCIALS;
   isSourceAvailable: boolean = false;
 
@@ -162,6 +167,55 @@ export class FinancialsComponent implements OnInit {
     var disbursement = this.projectDisbursements.filter(d => d.year == year && d.disbursementType == disbursementType);
     if (disbursement.length > 0) {
       disbursement.amount = newValue;
+    }
+  }
+
+  enterIATIDisbursement(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var disbursementId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var transactions = selectProject[0].disbursementTransactions;
+      var selectTransaction = transactions.filter(i => i.id == disbursementId);
+      if (selectTransaction && selectTransaction.length > 0) {
+        var amount = selectTransaction[0].amount;
+        var dated = selectTransaction[0].dated;
+        
+        if (dated && dated.length > 0) {
+          var dateArr = dated.split('-');
+          var year = parseInt(dateArr[0]);
+
+          var disbursement = this.projectDisbursements.filter(d => d.year == year);
+          if (disbursement.length > 0) {
+            disbursement[0].amount = amount;
+          }
+        }
+      }
+    }
+  }
+
+  enterAIMSDisbursement(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var year = arr[2];
+    var type = arr[3];
+
+    var selectProject = this.aimsProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var disbursements = selectProject[0].disbursements;
+      var selectTransaction = disbursements.filter(i => i.year == year && i.disbursementType == type);
+      if (selectTransaction && selectTransaction.length > 0) {
+        var amount = selectTransaction[0].amount;
+
+        if (year && year > 0) {
+          var disbursement = this.projectDisbursements.filter(d => d.year == year && d.disbursementType == type);
+          if (disbursement.length > 0) {
+            disbursement[0].amount = amount;
+          }
+        }
+      }
     }
   }
 
