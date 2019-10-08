@@ -3,7 +3,6 @@
     <div class="row">
       <div class="col-lg-4 col-md-4">
         <div class="input-group input-group mb-3">
-          <!--<label class="col-sm-2 col-form-label justify-left" for="title">Name</label>-->
           <input placeholder="Project name/title" title="Project name/title" class="form-control col-sm-12" type="text"
             name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title" required>
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">
@@ -19,7 +18,6 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <!--<label class="col-sm-4 col-form-label" for="startingFinancialYear">Starting year</label>-->
           <select title="Starting financial year" class="form-control col-sm-12" name="startingFinancialYear"
             [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" id="startingFinancialYear"
             required>
@@ -34,7 +32,6 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <!--<label class="col-sm-4 col-form-label" for="endingFinancialYear">Ending year</label>-->
           <select title="Ending financial year" class="form-control col-sm-12" name="endingFinancialYear"
             [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" id="endingFinancialYear"
             required>

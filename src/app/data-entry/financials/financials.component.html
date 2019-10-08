@@ -19,7 +19,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-11">
+            <div class="col-md-12">
               <div
                 *ngIf="(disbursementsTotal < disbursementModel.projectValue || disbursementsTotal > disbursementModel.projectValue)"
                 class="alert alert-danger alert-dismissible">
@@ -27,14 +27,10 @@
                 Disbursements must be equal to project total value.
               </div>
             </div>
-            <div class="col-md-1">
-              <button *ngIf="isSourceAvailable" class="btn btn-warning btn-lg" title="Source data available"
-                (click)="showSource()" type="button"><i class="fa fa-database"></i></button>
-            </div>
           </div>
 
 
-          <div *ngFor="let disbursement of projectDisbursements; trackBy:indexTracker" class="form-group form-inline">
+          <div *ngFor="let disbursement of projectDisbursements; let i = index;" class="form-group form-inline">
             <label class="col-md-4">
               {{disbursement.year}}&nbsp;
               <span *ngIf="disbursement.disbursementType == 1">Actual</span>
@@ -42,13 +38,19 @@
             </label>
             <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (change)="calculateDisbursementsTotal()"
               name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"
-              class="form-control col-md-8" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
+              class="form-control col-md-7" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
+            
+              <span class="col-md-1">
+                  <button *ngIf="isSourceAvailable && i == 0" class="btn btn-warning" title="Source data available"
+                  (click)="showSource()" type="button"><i class="fa fa-database"></i></button>
+              </span>
+              
           </div>
 
           <div class="form-group form-inline">
             <label class="col-md-4">Total: </label>
             <input type="text" [readonly]="true" name="disbursementTotal" [(ngModel)]="disbursementsTotal"
-              class="form-control col-md-8" />
+              class="form-control col-md-7" />
           </div>
 
           <div class="form-group">
@@ -65,7 +67,7 @@
   </div>
 
   <div *ngIf="currentTab == tabConstants.FINANCIALS_SOURCE" class="row margin-top-10">
-    <div class="col-lg-8 col-md-8 iati-box-medium small">
+    <div class="col-lg-6 col-md-6 iati-box-medium small">
       <table class="table table-bordered">
         <tr *ngFor="let project of aimsProjects">
           <td>
@@ -137,10 +139,9 @@
       </table>
     </div>
 
-    <form class="form-signin" (ngSubmit)="saveDisbursements(financialsForm)" #financialsForm="ngForm"></form>
-    <div class="col-lg-4 col-md-4">
+    <div class="col-lg-6 col-md-6">
 
-      <div class="box">
+      <div class="box small">
         <div class="row">
           <div class="col-md-6">
             <span class="text-left">
@@ -189,7 +190,7 @@
             <label class="col-md-4">&nbsp;</label>
             <button
               [class.disable]="(disbursementsTotal < disbursementModel.projectValue || disbursementsTotal > disbursementModel.projectValue)"
-              type="submit" class="btn btn-info text-uppercase">Save disbursements</button>
+              type="button" class="btn btn-info text-uppercase" (click)="saveDisbursements(null)">Save disbursements</button>
           </div>
         </div>
       </div>

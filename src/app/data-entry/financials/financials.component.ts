@@ -257,6 +257,7 @@ export class FinancialsComponent implements OnInit {
           data => {
             if (data) {
               this.updateDisbursementsToParent();
+              this.currentTab = this.tabConstants.FINANCIALS;
             }
             this.blockUI.stop();
           }
