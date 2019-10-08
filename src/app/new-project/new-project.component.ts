@@ -602,6 +602,14 @@ export class NewProjectComponent implements OnInit {
     return aimsProjects.length;
   }
 
+  countIATIProjects() {
+    if (this.selectedProjects.length == 0)
+      return 0;
+
+    var iatiProjects = this.selectedProjects.filter(p => p.type == 'IATI');
+    return iatiProjects.length;
+  }
+
   editProject() {
     var aimsProject = this.selectedProjects.filter(p => p.type == 'AIMS');
     if (aimsProject.length > 0) {

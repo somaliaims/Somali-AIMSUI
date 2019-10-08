@@ -142,7 +142,7 @@
           <table>
             <tr>
               <td>
-                <button *ngIf='countAIMSProjects() > 1' [class.disable]='isSearchingProjects || !checkIfCanMerge()'
+                <button *ngIf='countAIMSProjects() > 1 && countIATIProjects() == 0' [class.disable]='isSearchingProjects || !checkIfCanMerge()'
                   class="btn btn-warning btn-lg pull-right float-right text-uppercase" (click)="mergeProjects()">Merge
                   Projects</button>
               </td>

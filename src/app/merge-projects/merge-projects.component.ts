@@ -269,6 +269,7 @@ export class MergeProjectsComponent implements OnInit {
     var project = this.selectedProjects.filter(p => p.id == id);
     if (project.length > 0) {
       this.model.projectCurrency = project[0].projectCurrency;
+      this.getExchangeRateForCurrency();
     }
     this.calculateDisbursementsTotal();
   }
