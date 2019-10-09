@@ -52,6 +52,7 @@ export class ProjectSectorsComponent implements OnInit {
   currentSelectedFieldValues: any = [];
   mappingsCount: number = 0;
   requestNo: number = 0;
+  currentTab: string = null;
   errorMessage: string = null;
   showMappingManual: boolean = false;
   showMappingAuto: boolean = false;
@@ -66,6 +67,18 @@ export class ProjectSectorsComponent implements OnInit {
     'Text': 3,
     'Radio': 4
   }
+
+  displayTabs: any = [
+    { visible: true, identity: 'sectors-locations' },
+    { visible: false, identity: 'sectors-source' },
+    { visible: false, identity: 'locations-source' },
+  ];
+
+  tabConstants: any = {
+    SECTORS_LOCATIONS: 'sectors-locations',
+    SECTORS_SOURCE: 'sectors-source',
+    LOCATIONS_SOURCE: 'locations-source'
+  };
   
   @BlockUI() blockUI: NgBlockUI;
   constructor(private projectService: ProjectService, private sectorService: SectorService,
@@ -79,6 +92,8 @@ export class ProjectSectorsComponent implements OnInit {
         this.errorModal.openModal();
       }
     });
+
+    this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
   }
 
   getTypeSectorsList() {

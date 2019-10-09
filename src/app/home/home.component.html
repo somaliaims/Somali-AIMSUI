@@ -142,7 +142,7 @@
               </tr>
             </tbody>
           </table>
-          <div *ngIf="latestProjects.length == 0">
+          <div *ngIf="latestProjects.length == 0 && !isProjectsLoading">
             <span class="text-info"><i>No projects to show</i></span>
           </div>
         </div>

@@ -1,6 +1,6 @@
 <block-ui>
 
-  <div class="box">
+  <div *ngIf="currentTab == tabConstants.SECTORS_LOCATIONS" class="box">
     <div class="row">
 
       <div class="col-md-6 col-lg-6">
@@ -186,7 +186,7 @@
 
   </div>
 
-  <div class="box margin-top-10">
+  <div *ngIf="currentTab == tabConstants.SECTORS_LOCATIONS" class="box margin-top-10">
       <div class="row small">
           <div class="col-md-6">
               <h6>Markers list and settings</h6>
@@ -262,6 +262,16 @@
             </div>
           </div>
         </div>
+  </div>
+
+  <div *ngIf="currentTab == tabConstants.SECTORS_SOURCE" class="row">
+    <div class="col-lg-8 col-md-8">
+
+    </div>
+
+    <div class="col-lg-4 col-md-4">
+
+    </div>
   </div>
 
 </block-ui>
