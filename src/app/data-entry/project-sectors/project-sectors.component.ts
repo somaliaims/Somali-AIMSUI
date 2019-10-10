@@ -50,9 +50,11 @@ export class ProjectSectorsComponent implements OnInit {
 
   fieldTypes: any = Settings.markerTypes;
   typeSectorsList: any = [];
+  ndpSectorsList: any = [];
   sectorMappings: any = [];
   mappedSectorsList: any = [];
   newProjectSectors: any = [];
+  sourceSectorsList: any = [];
   currentSelectedFieldValues: any = [];
   mappingsCount: number = 0;
   requestNo: number = 0;
@@ -72,6 +74,11 @@ export class ProjectSectorsComponent implements OnInit {
     'Checkbox': 2,
     'Text': 3,
     'Radio': 4
+  }
+
+  sourceTypes: any = {
+    IATI: 'IATI',
+    AIMS: 'AIMS'
   }
 
   displayTabs: any = [
@@ -98,10 +105,17 @@ export class ProjectSectorsComponent implements OnInit {
         this.errorModal.openModal();
       }
     });
+    this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
+    this.getNDPSectors();
+  }
 
+  ngOnChanges() {
     this.iatiProjects.forEach(p => {
       if (p.sectors.length > 0) {
         this.isSectorsSourceAvailable = true;
+        p.sectors.forEach((s) => {
+          s.mappingId = 0;
+        });
       }
 
       if (p.locations.length > 0) {
@@ -118,11 +132,6 @@ export class ProjectSectorsComponent implements OnInit {
         this.isLocationsDataAvailable = true;
       }
     });
-
-    this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
-  }
-
-  ngOnChanges() {
   }
 
   getTypeSectorsList() {
@@ -134,6 +143,12 @@ export class ProjectSectorsComponent implements OnInit {
     }
     if (this.sectorModel.sectorTypeId == this.defaultSectorTypeId) {
       this.sectorMappings = this.defaultSectorsList;
+    }
+  }
+
+  getNDPSectors() {
+    if (this.defaultSectorTypeId) {
+      this.ndpSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId);
     }
   }
 
@@ -579,6 +594,71 @@ export class ProjectSectorsComponent implements OnInit {
     )
   }
 
+  showSectorsSource() {
+    this.currentTab = this.tabConstants.SECTORS_SOURCE;
+  }
+
+  showSectorsLocations() {
+    this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
+  }
+
+  showLocationsSource() {
+    this.currentTab = this.tabConstants.LOCATIONS_SOURCE;
+  }
+
+  checkIfSectorAdded(sectorName: string) {
+    if (sectorName && this.currentProjectSectors.length > 0) {
+      return this.currentProjectSectors.filter(s => s.sectorName.toLowerCase() == sectorName.toLowerCase()).length > 0 ? true : false;
+    }
+    return false;
+  }
+
+  addSourceSectorToList(projectId: number, sectorId: number, type: string) {
+    if (type == this.sourceTypes.IATI) {
+      var project = this.aimsProjects.filter(p => p.id == projectId);
+      if (project.length > 0) {
+        var sectors = project[0].sectors;
+        if (sectors && sectors.length > 0) {
+          var sector = sectors.filter(s => s.sectorId == sectorId);
+          if (sector.length > 0) {
+            var fundsPercentage = sector[0].fundsPercentage;
+            var mappingId = sector[0].mappingId;
+            var sectorName = sector[0].sectorName;
+            
+            this.sourceSectorsList.push({
+              mappingId: mappingId,
+              sectorName: sectorName,
+              fundsPercentage: fundsPercentage
+            });
+          }
+        }
+      }
+    } else if (type == this.sourceTypes.AIMS) {
+      var project = this.aimsProjects.filter(p => p.id == projectId);
+      if (project.length > 0) {
+        var sectors = project[0].sectors;
+        if (sectors && sectors.length > 0) {
+          var sector = sectors.filter(s => s.sectorId == sectorId);
+          if (sector.length > 0) {
+            var fundsPercentage = sector[0].fundsPercentage;
+            var mappingId = sector[0].sectorId;
+            var sectorName = sector[0].sectorName;
+            
+            this.sourceSectorsList.push({
+              mappingId: mappingId,
+              sectorName: sectorName,
+              fundsPercentage: fundsPercentage
+            });
+          }
+        }
+      }
+    }
+  }
+
+  checkIfSectorInActionList(sectorId: number) {
+    return this.sourceSectorsList.filter(s => s.mappingId == sectorId).length > 0 ? true : false;
+  }
+
   /*Sending updated data to parent*/
   updateSectorsToParent() {
     this.projectSectorsChanged.emit(this.currentProjectSectors);
@@ -590,18 +670,6 @@ export class ProjectSectorsComponent implements OnInit {
 
   updateMarkersToParent() {
     this.projectMarkersChanged.emit(this.currentProjectMarkers);
-  }
-
-  showSectorsSource() {
-    this.currentTab = this.tabConstants.SECTORS_SOURCE;
-  }
-
-  showSectorsLocations() {
-    this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
-  }
-
-  showLocationsSource() {
-    this.currentTab = this.tabConstants.LOCATIONS_SOURCE;
   }
 
 }

@@ -301,11 +301,12 @@
                       {{sector.sector}}
                     </td>
                     <td>
-                      {{sector.fundsPercentage}}
+                      <input type="number" name="afpercent-{{project.id}}-{{sector.sectorId}}-" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
                     </td>
                     <td [class.disable]="checkIfSectorAdded(sector.sector)">
-                      <button id="asector-{{project.id}}-{{sector.sectorId}}" (click)="enterAIMSSector($event)"
-                        class="btn btn-success btn-sm">Enter >></button>
+                        <button *ngIf="!checkIfSectorAdded(sector.sectorName)" id="psector-{{project.id}}-{{sector.sectorId}}"
+                        (click)="addSourceSectorToList(project.id, sector.sectorId, sourceTypes.AIMS)" class="btn btn-success btn-sm"><i
+                          [className]="checkIfSectorInActionList(sector.sectorId) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                     </td>
                   </tr>
                 </table>
@@ -322,6 +323,7 @@
                 <table *ngIf="project.sectors.length > 0" class="table table-bordered">
                   <tr>
                     <th>Sector</th>
+                    <th>NDP Sector</th>
                     <th>Funds %</th>
                     <th>Action</th>
                   </tr>
@@ -330,11 +332,19 @@
                       {{sector.sectorName}}
                     </td>
                     <td>
-                      {{sector.fundsPercentage}}
+                      <select name="ndp" [(ngModel)]="sector.mappingId">
+                        <option *ngFor="let s of ndpSectors" value="s.id">
+                          {{s.sectorName}}
+                        </option>
+                      </select>
                     </td>
-                    <td [class.disable]="checkIfSectorAdded(sector.sectorName)">
-                      <button id="isector-{{project.id}}-{{sector.code}}" (click)="enterIATISector($event)"
-                        class="btn btn-success btn-sm">Enter >></button>
+                    <td>
+                        <input type="number" name="{{sector.sectorId}}-{{i}}" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
+                    </td>
+                    <td>
+                      <button *ngIf="!checkIfSectorAdded(sector.sectorName)" id="psector-{{project.id}}-{{sector.sectorId}}"
+                        (click)="addSourceSectorToList(project.id, sector.mappingId, sourceTypes.IATI)" class="btn btn-success btn-sm"><i
+                          [className]="checkIfSectorInActionList(sector.mappingId) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                     </td>
                   </tr>
                 </table>
