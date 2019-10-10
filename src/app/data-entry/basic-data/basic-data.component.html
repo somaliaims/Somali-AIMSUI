@@ -2,7 +2,7 @@
   <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject(projectForm)" #projectForm="ngForm">
     <div class="row">
       <div class="col-lg-4 col-md-4">
-        <div class="input-group input-group mb-3">
+        <div class="input-group mb-3">
           <input placeholder="Project name/title" title="Project name/title" class="form-control col-sm-12" type="text"
             name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title" required>
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">

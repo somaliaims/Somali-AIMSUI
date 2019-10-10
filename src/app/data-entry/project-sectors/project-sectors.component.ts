@@ -36,6 +36,10 @@ export class ProjectSectorsComponent implements OnInit {
   markersList: any = [];
   @Input()
   currentProjectMarkers: any = [];
+  @Input()
+  aimsProjects: any = [];
+  @Input()
+  iatiProjects: any = [];
 
   @Output()
   projectSectorsChanged = new EventEmitter<any[]>();
@@ -56,6 +60,8 @@ export class ProjectSectorsComponent implements OnInit {
   errorMessage: string = null;
   showMappingManual: boolean = false;
   showMappingAuto: boolean = false;
+  isSectorsSourceAvailable: boolean = false;
+  isLocationsDataAvailable: boolean = false;
   sectorModel: any = { sectorTypeId: null, sector: null, sectorId: null, mappingId: null, fundsPercentage: null, saved: false };
   newMappings: any = [];
   locationModel: any = { locationId: null, location: null, fundsPercentage: null, saved: false };
@@ -93,7 +99,30 @@ export class ProjectSectorsComponent implements OnInit {
       }
     });
 
+    this.iatiProjects.forEach(p => {
+      if (p.sectors.length > 0) {
+        this.isSectorsSourceAvailable = true;
+      }
+
+      if (p.locations.length > 0) {
+        this.isLocationsDataAvailable = true;
+      }
+    });
+
+    this.aimsProjects.forEach(p => {
+      if (p.sectors.length > 0) {
+        this.isSectorsSourceAvailable = true;
+      }
+
+      if (p.locations.length > 0) {
+        this.isLocationsDataAvailable = true;
+      }
+    });
+
     this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
+  }
+
+  ngOnChanges() {
   }
 
   getTypeSectorsList() {
@@ -561,6 +590,18 @@ export class ProjectSectorsComponent implements OnInit {
 
   updateMarkersToParent() {
     this.projectMarkersChanged.emit(this.currentProjectMarkers);
+  }
+
+  showSectorsSource() {
+    this.currentTab = this.tabConstants.SECTORS_SOURCE;
+  }
+
+  showSectorsLocations() {
+    this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
+  }
+
+  showLocationsSource() {
+    this.currentTab = this.tabConstants.LOCATIONS_SOURCE;
   }
 
 }
