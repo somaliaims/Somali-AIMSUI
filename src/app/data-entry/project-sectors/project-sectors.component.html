@@ -332,8 +332,8 @@
                       {{sector.sectorName}}
                     </td>
                     <td>
-                      <select name="ndp" [(ngModel)]="sector.mappingId">
-                        <option *ngFor="let s of ndpSectors" value="s.id">
+                      <select class="form-control" name="ndp" [(ngModel)]="sector.mappingId">
+                        <option *ngFor="let s of ndpSectorsList" [value]="s.id">
                           {{s.sectorName}}
                         </option>
                       </select>
@@ -343,7 +343,7 @@
                     </td>
                     <td>
                       <button *ngIf="!checkIfSectorAdded(sector.sectorName)" id="psector-{{project.id}}-{{sector.sectorId}}"
-                        (click)="addSourceSectorToList(project.id, sector.mappingId, sourceTypes.IATI)" class="btn btn-success btn-sm"><i
+                        (click)="addSourceSectorToList(project.id, sector.mappingId, sourceTypes.IATI, sector.code, sector.sectorName)" class="btn btn-success btn-sm"><i
                           [className]="checkIfSectorInActionList(sector.mappingId) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                     </td>
                   </tr>
@@ -396,7 +396,7 @@
             </tr>
           </tbody>
         </table>
-        <span class="text-info"><i>No saved sectors found</i></span>
+        <span *ngIf="currentProjectSectors.length == 0" class="text-info"><i>No saved sectors found</i></span>
 
         <h6>Sectors from source</h6>
         <table *ngIf="sourceSectorsList.length > 0" class="table">
@@ -408,7 +408,7 @@
               </tr>
             </thead>
           <tr *ngFor="let sector of sourceSectorsList">
-            <td>{{sector.sectorName}}</td>
+            <td>{{sector.sector}}</td>
             <td>{{sector.fundsPercentage}}</td>
             <td>
               <button title="Remove sector"
@@ -419,7 +419,7 @@
           <tr>
             <td colspan="3">
               <span class="text-right">
-                <button [class.disable]="sourceSectorPercentage != 100" type="button" (click)="saveSourceSectors()" class="btn btn-info text-uppercase">
+                <button [class.disable]="sourceSectorPercentage < 1 || sourceSectorPercentage > 100" type="button" (click)="saveSourceSectors()" class="btn btn-info text-uppercase">
                   Save sectors
                 </button>
               </span>

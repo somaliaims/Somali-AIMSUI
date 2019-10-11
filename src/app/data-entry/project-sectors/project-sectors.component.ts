@@ -107,7 +107,6 @@ export class ProjectSectorsComponent implements OnInit {
       }
     });
     this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
-    this.getNDPSectors();
   }
 
   ngOnChanges() {
@@ -133,6 +132,7 @@ export class ProjectSectorsComponent implements OnInit {
         this.isLocationsDataAvailable = true;
       }
     });
+    this.getNDPSectors();
   }
 
   getTypeSectorsList() {
@@ -366,6 +366,30 @@ export class ProjectSectorsComponent implements OnInit {
         data => {
           if (data) {
             this.getProjectSectors();    
+          }
+        }
+      );
+    }
+  }
+
+  saveSourceSectors() {
+    if (this.sourceSectorsList.length > 0) {
+      var model = {
+        projectId: this.projectId,
+        projectSectors: this.sourceSectorsList,
+        newMappings: []
+      }
+
+      this.blockUI.start('Saving sectors');
+      this.projectService.addProjectSector(model).subscribe(
+        data => {
+          if (data) {
+            this.getProjectSectors();  
+            this.sourceSectorsList = [];
+            setTimeout(() => {
+              this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
+            }, 1000);  
+            
           }
         }
       );
@@ -609,31 +633,36 @@ export class ProjectSectorsComponent implements OnInit {
 
   checkIfSectorAdded(sectorName: string) {
     if (sectorName && this.currentProjectSectors.length > 0) {
-      return this.currentProjectSectors.filter(s => s.sectorName.toLowerCase() == sectorName.toLowerCase()).length > 0 ? true : false;
+      return this.currentProjectSectors.filter(s => s.sector.toLowerCase() == sectorName.toLowerCase()).length > 0 ? true : false;
     }
     return false;
   }
 
-  addSourceSectorToList(projectId: number, sectorId: number, type: string) {
+  addSourceSectorToList(projectId: number, sectorId: number, type: string, sectorCode: number = 0, iatiSector: string = null) {
     var isSectorAdded = this.sourceSectorsList.filter(s => s.mappingId == sectorId);
     if (isSectorAdded.length > 0) {
       this.sourceSectorsList = this.sourceSectorsList.filter(s => s.mappingId != sectorId);
     } else {
-
       if (type == this.sourceTypes.IATI) {
-        var project = this.aimsProjects.filter(p => p.id == projectId);
+        var project = this.iatiProjects.filter(p => p.id == projectId);
         if (project.length > 0) {
           var sectors = project[0].sectors;
           if (sectors && sectors.length > 0) {
-            var sector = sectors.filter(s => s.sectorId == sectorId);
+            var sector = sectors.filter(s => s.code == sectorCode);
             if (sector.length > 0) {
               var fundsPercentage = sector[0].fundsPercentage;
               var mappingId = sector[0].mappingId;
               var sectorName = sector[0].sector;
               
+              if (!fundsPercentage) {
+                this.errorMessage = 'Sector percentage' + Messages.PERCENTAGE_RANGE;
+                this.errorModal.openModal();
+                return false;
+              }
               this.sourceSectorsList.push({
                 mappingId: mappingId,
                 sectorName: sectorName,
+                sector: iatiSector,
                 fundsPercentage: fundsPercentage
               });
             }
@@ -649,10 +678,15 @@ export class ProjectSectorsComponent implements OnInit {
               var fundsPercentage = sector[0].fundsPercentage;
               var mappingId = sector[0].sectorId;
               var sectorName = sector[0].sector;
-              
+              if (!fundsPercentage) {
+                this.errorMessage = 'Sector percentage ' + Messages.PERCENTAGE_RANGE;
+                this.errorModal.openModal();
+                return false;
+              }
+
               this.sourceSectorsList.push({
                 mappingId: mappingId,
-                sectorName: sectorName,
+                sector: sectorName,
                 fundsPercentage: fundsPercentage
               });
             }
