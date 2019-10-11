@@ -57,6 +57,7 @@ export class ProjectSectorsComponent implements OnInit {
   sourceSectorsList: any = [];
   currentSelectedFieldValues: any = [];
   mappingsCount: number = 0;
+  sourceSectorPercentage: number = 0;
   requestNo: number = 0;
   currentTab: string = null;
   errorMessage: string = null;
@@ -658,10 +659,24 @@ export class ProjectSectorsComponent implements OnInit {
           }
         }
       }
-
     }
-    
-    
+    this.calculateSectorPercentageForSource();
+  }
+
+  removeSourceSector(sectorId: number) {
+    this.sourceSectorsList = this.sourceSectorsList.filter(s => s.mappingId != sectorId); 
+  }
+
+  calculateSectorPercentageForSource() {
+    var fundsPercentage = 0;
+    this.sourceSectorsList.forEach((s) => {
+      fundsPercentage += s.fundsPercentage;
+    });
+
+    this.currentProjectSectors.forEach((s) => {
+      fundsPercentage += s.fundsPercentage;
+    });
+    this.sourceSectorPercentage = fundsPercentage;
   }
 
   checkIfSectorInActionList(sectorId: number) {

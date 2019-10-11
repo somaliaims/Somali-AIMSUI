@@ -301,7 +301,7 @@
                       {{sector.sector}}
                     </td>
                     <td>
-                      <input type="number" name="afpercent-{{project.id}}-{{sector.sectorId}}-" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
+                      <input [class.disable]="checkIfSectorInActionList(sector.sectorId)" type="number" name="afpercent-{{project.id}}-{{sector.sectorId}}-" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
                     </td>
                     <td [class.disable]="checkIfSectorAdded(sector.sector)">
                         <button *ngIf="!checkIfSectorAdded(sector.sectorName)" id="psector-{{project.id}}-{{sector.sectorId}}"
@@ -339,7 +339,7 @@
                       </select>
                     </td>
                     <td>
-                        <input type="number" name="{{sector.sectorId}}-{{i}}" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
+                        <input [class.disable]="checkIfSectorInActionList(sector.sectorId)" type="number" name="{{sector.sectorId}}-{{i}}" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
                     </td>
                     <td>
                       <button *ngIf="!checkIfSectorAdded(sector.sectorName)" id="psector-{{project.id}}-{{sector.sectorId}}"
@@ -396,7 +396,37 @@
             </tr>
           </tbody>
         </table>
-        <span class="text-info"><i>No sectors to show</i></span>
+        <span class="text-info"><i>No saved sectors found</i></span>
+
+        <h6>Sectors from source</h6>
+        <table *ngIf="sourceSectorsList.length > 0" class="table">
+            <thead>
+              <tr>
+                <th>Sector</th>
+                <th>Percentage</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          <tr *ngFor="let sector of sourceSectorsList">
+            <td>{{sector.sectorName}}</td>
+            <td>{{sector.fundsPercentage}}</td>
+            <td>
+              <button title="Remove sector"
+                  (click)="removeSourceSector(sector.mappingId)" class="btn btn-warning btn-sm"><i
+                    class="fa fa-remove"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <span class="text-right">
+                <button [class.disable]="sourceSectorPercentage != 100" type="button" (click)="saveSourceSectors()" class="btn btn-info text-uppercase">
+                  Save sectors
+                </button>
+              </span>
+            </td>
+          </tr>
+        </table>
+        <span *ngIf="sourceSectorsList.length == 0" class="text-info"><i>No sectors added from sources yet</i></span>
       </div>
     </div>
 
