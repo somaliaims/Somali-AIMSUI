@@ -614,45 +614,54 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   addSourceSectorToList(projectId: number, sectorId: number, type: string) {
-    if (type == this.sourceTypes.IATI) {
-      var project = this.aimsProjects.filter(p => p.id == projectId);
-      if (project.length > 0) {
-        var sectors = project[0].sectors;
-        if (sectors && sectors.length > 0) {
-          var sector = sectors.filter(s => s.sectorId == sectorId);
-          if (sector.length > 0) {
-            var fundsPercentage = sector[0].fundsPercentage;
-            var mappingId = sector[0].mappingId;
-            var sectorName = sector[0].sectorName;
-            
-            this.sourceSectorsList.push({
-              mappingId: mappingId,
-              sectorName: sectorName,
-              fundsPercentage: fundsPercentage
-            });
+    var isSectorAdded = this.sourceSectorsList.filter(s => s.mappingId == sectorId);
+    if (isSectorAdded.length > 0) {
+      this.sourceSectorsList = this.sourceSectorsList.filter(s => s.mappingId != sectorId);
+    } else {
+
+      if (type == this.sourceTypes.IATI) {
+        var project = this.aimsProjects.filter(p => p.id == projectId);
+        if (project.length > 0) {
+          var sectors = project[0].sectors;
+          if (sectors && sectors.length > 0) {
+            var sector = sectors.filter(s => s.sectorId == sectorId);
+            if (sector.length > 0) {
+              var fundsPercentage = sector[0].fundsPercentage;
+              var mappingId = sector[0].mappingId;
+              var sectorName = sector[0].sector;
+              
+              this.sourceSectorsList.push({
+                mappingId: mappingId,
+                sectorName: sectorName,
+                fundsPercentage: fundsPercentage
+              });
+            }
+          }
+        }
+      } else if (type == this.sourceTypes.AIMS) {
+        var project = this.aimsProjects.filter(p => p.id == projectId);
+        if (project.length > 0) {
+          var sectors = project[0].sectors;
+          if (sectors && sectors.length > 0) {
+            var sector = sectors.filter(s => s.sectorId == sectorId);
+            if (sector.length > 0) {
+              var fundsPercentage = sector[0].fundsPercentage;
+              var mappingId = sector[0].sectorId;
+              var sectorName = sector[0].sector;
+              
+              this.sourceSectorsList.push({
+                mappingId: mappingId,
+                sectorName: sectorName,
+                fundsPercentage: fundsPercentage
+              });
+            }
           }
         }
       }
-    } else if (type == this.sourceTypes.AIMS) {
-      var project = this.aimsProjects.filter(p => p.id == projectId);
-      if (project.length > 0) {
-        var sectors = project[0].sectors;
-        if (sectors && sectors.length > 0) {
-          var sector = sectors.filter(s => s.sectorId == sectorId);
-          if (sector.length > 0) {
-            var fundsPercentage = sector[0].fundsPercentage;
-            var mappingId = sector[0].sectorId;
-            var sectorName = sector[0].sectorName;
-            
-            this.sourceSectorsList.push({
-              mappingId: mappingId,
-              sectorName: sectorName,
-              fundsPercentage: fundsPercentage
-            });
-          }
-        }
-      }
+
     }
+    
+    
   }
 
   checkIfSectorInActionList(sectorId: number) {

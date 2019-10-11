@@ -806,6 +806,11 @@ export class BasicDataComponent implements OnInit {
     if (this.sourceDocumentsList.length > 0) {
       isDocumentAdded = this.sourceDocumentsList.filter(d => d.documentTitle.toLowerCase() == documentTitle.toLowerCase() ||
       d.documentUrl.toLowerCase() == documentUrl.toLowerCase()); 
+
+      if (isDocumentAdded.length > 0) {
+        this.sourceDocumentsList = this.sourceDocumentsList.filter(d => d.documentTitle.toLowerCase() != documentTitle.toLowerCase() &&
+        d.documentUrl.toLowerCase() != documentUrl.toLowerCase()); 
+      }
     }
     
     if (isDocumentAdded.length == 0) {
