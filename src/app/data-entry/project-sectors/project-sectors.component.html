@@ -332,7 +332,8 @@
                       {{sector.sectorName}}
                     </td>
                     <td>
-                      <select class="form-control" name="ndp" [(ngModel)]="sector.mappingId">
+                      <span class="text-info" *ngIf="isNdpSectorsLoading">Loading NDP sectors...</span>
+                      <select *ngIf="!isNdpSectorsLoading" class="form-control" name="ndp" [(ngModel)]="sector.mappingId">
                         <option *ngFor="let s of ndpSectorsList" [value]="s.id">
                           {{s.sectorName}}
                         </option>
@@ -341,7 +342,7 @@
                     <td>
                         <input [class.disable]="checkIfSectorInActionList(sector.sectorId)" type="number" name="{{sector.sectorId}}-{{i}}" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
                     </td>
-                    <td>
+                    <td [class.disable]="isNdpSectorsLoading || !sector.mappingId || !sector.fundsPercentage">
                       <button *ngIf="!checkIfSectorAdded(sector.sectorName)" id="psector-{{project.id}}-{{sector.sectorId}}"
                         (click)="addSourceSectorToList(project.id, sector.mappingId, sourceTypes.IATI, sector.code, sector.sectorName)" class="btn btn-success btn-sm"><i
                           [className]="checkIfSectorInActionList(sector.mappingId) ? 'fa fa-check' : 'fa fa-square'"></i></button>
@@ -399,7 +400,7 @@
         <span *ngIf="currentProjectSectors.length == 0" class="text-info"><i>No saved sectors found</i></span>
 
         <h6>Sectors from source</h6>
-        <table *ngIf="sourceSectorsList.length > 0" class="table">
+        <table *ngIf="sourceSectorsList.length > 0" class="table small">
             <thead>
               <tr>
                 <th>Sector</th>

@@ -65,6 +65,7 @@ export class ProjectSectorsComponent implements OnInit {
   showMappingAuto: boolean = false;
   isSectorsSourceAvailable: boolean = false;
   isLocationsDataAvailable: boolean = false;
+  isNdpSectorsLoading: boolean = true;
   sectorModel: any = { sectorTypeId: null, sector: null, sectorId: null, mappingId: null, fundsPercentage: null, saved: false };
   newMappings: any = [];
   locationModel: any = { locationId: null, location: null, fundsPercentage: null, saved: false };
@@ -133,6 +134,9 @@ export class ProjectSectorsComponent implements OnInit {
       }
     });
     this.getNDPSectors();
+    if (this.currentTab == this.tabConstants.SECTORS_SOURCE) {
+      this.isNdpSectorsLoading = false;
+    }
   }
 
   getTypeSectorsList() {
@@ -653,6 +657,15 @@ export class ProjectSectorsComponent implements OnInit {
               var fundsPercentage = sector[0].fundsPercentage;
               var mappingId = sector[0].mappingId;
               var sectorName = sector[0].sector;
+              var sectorTypeCode = sector[0].sectorTypeCode;
+              var sectorId = 0;
+              var sourceSector = [];
+              if (sectorName) {
+                sourceSector = this.sectorsList.filter(s => s.sectorName.toLowerCase() == sectorName.toLowerCase());
+                if (sourceSector.length > 0) {
+                  sectorId = sourceSector[0].id;
+                }
+              }
               
               if (!fundsPercentage) {
                 this.errorMessage = 'Sector percentage' + Messages.PERCENTAGE_RANGE;
@@ -660,6 +673,8 @@ export class ProjectSectorsComponent implements OnInit {
                 return false;
               }
               this.sourceSectorsList.push({
+                sectorTypeId: sectorTypeCode,
+                sectorId: sectorId,
                 mappingId: mappingId,
                 sectorName: sectorName,
                 sector: iatiSector,
@@ -685,6 +700,8 @@ export class ProjectSectorsComponent implements OnInit {
               }
 
               this.sourceSectorsList.push({
+                sectorTypeId: this.defaultSectorTypeId,
+                sectorId: mappingId,
                 mappingId: mappingId,
                 sector: sectorName,
                 fundsPercentage: fundsPercentage
