@@ -6,6 +6,7 @@ import { StoreService } from 'src/app/services/store-service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { Settings } from 'src/app/config/settings';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'project-sectors',
@@ -647,6 +648,7 @@ export class ProjectSectorsComponent implements OnInit {
     if (isSectorAdded.length > 0) {
       this.sourceSectorsList = this.sourceSectorsList.filter(s => s.mappingId != sectorId);
     } else {
+      this.calculateSectorPercentageForSource();
       if (type == this.sourceTypes.IATI) {
         var project = this.iatiProjects.filter(p => p.id == projectId);
         if (project.length > 0) {
@@ -660,18 +662,27 @@ export class ProjectSectorsComponent implements OnInit {
               var sectorTypeCode = sector[0].sectorTypeCode;
               var sectorId = 0;
               var sourceSector = [];
+              
+              if (!fundsPercentage || fundsPercentage < 1 || fundsPercentage > 100) {
+                this.errorMessage = 'Sector percentage' + Messages.PERCENTAGE_RANGE;
+                this.errorModal.openModal();
+                return false;
+              }
+
+              var totalPercentage = this.sourceSectorPercentage + fundsPercentage;
+              if (totalPercentage > 100) {
+                this.errorMessage = Messages.INVALID_PERCENTAGE;
+                this.errorModal.openModal();
+                return false;
+              }
+
               if (sectorName) {
                 sourceSector = this.sectorsList.filter(s => s.sectorName.toLowerCase() == sectorName.toLowerCase());
                 if (sourceSector.length > 0) {
                   sectorId = sourceSector[0].id;
                 }
               }
-              
-              if (!fundsPercentage) {
-                this.errorMessage = 'Sector percentage' + Messages.PERCENTAGE_RANGE;
-                this.errorModal.openModal();
-                return false;
-              }
+
               this.sourceSectorsList.push({
                 sectorTypeId: sectorTypeCode,
                 sectorId: sectorId,

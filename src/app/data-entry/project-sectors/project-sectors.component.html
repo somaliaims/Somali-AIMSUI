@@ -15,15 +15,13 @@
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <div class="input-group form-inline mb-3">
-                <select class="form-control col-md-11" name="sectorType" (change)="getTypeSectorsList()"
+                <select [ngClass]="{'col-sm-12': isSectorsSourceAvailable == false, 'col-sm-10': isSectorsSourceAvailable == true}" class="form-control" name="sectorType" (change)="getTypeSectorsList()"
                   [(ngModel)]="sectorModel.sectorTypeId" #sectorTypeId="ngModel" required>
                   <option value="null">--Sector type--</option>
                   <option *ngFor="let type of sectorTypesList" [value]="type.id">{{type.typeName}}</option>
                 </select>
-                <span *ngIf="isSectorsSourceAvailable" class="text-right col-md-1">
-                  <button class="btn btn-warning" title="Source data available" (click)="showSectorsSource()"
+                  <button *ngIf="isSectorsSourceAvailable" class="btn btn-warning col-sm-2" title="Source data available" (click)="showSectorsSource()"
                     type="button"><i class="fa fa-database"></i></button>
-                </span>
               </div>
               <div *ngIf="sectorsForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
                 Sector type is required
