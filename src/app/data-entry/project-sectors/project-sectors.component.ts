@@ -134,9 +134,15 @@ export class ProjectSectorsComponent implements OnInit {
         this.isLocationsDataAvailable = true;
       }
     });
-    this.getNDPSectors();
+
+    this.ndpSectorsList = this.defaultSectorsList;
+    if (this.ndpSectorsList.length > 0) {
+      this.isNdpSectorsLoading = false;
+    } 
+    
     if (this.currentTab == this.tabConstants.SECTORS_SOURCE) {
       this.isNdpSectorsLoading = false;
+      this.ndpSectorsList = this.defaultSectorsList;
     }
   }
 

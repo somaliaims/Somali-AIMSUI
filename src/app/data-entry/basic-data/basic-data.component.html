@@ -168,10 +168,10 @@
           <td>{{document.documentTitle}}</td>
           <td>{{document.documentUrl}}</td>
           <td *ngIf="document.id <= 0">
-            <a class="btn btn-warning" (click)="removeResource(document.id)"><i class="fa fa-remove"></i></a>
+            <a class="btn btn-warning btn-sm" (click)="removeResource(document.id)"><i class="fa fa-remove"></i></a>
           </td>
           <td *ngIf="document.id > 0">
-            <a class="btn btn-danger" (click)="deleteResource(document.id)"><i class="fa fa-trash text-white"></i></a>
+            <a class="btn btn-danger btn-sm" (click)="deleteResource(document.id)"><i class="fa fa-trash text-white"></i></a>
           </td>
         </tr>
       </table>
