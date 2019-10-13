@@ -15,13 +15,15 @@
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <div class="input-group form-inline mb-3">
-                <select [ngClass]="{'col-sm-12': isSectorsSourceAvailable == false, 'col-sm-10': isSectorsSourceAvailable == true}" class="form-control" name="sectorType" (change)="getTypeSectorsList()"
+                <select
+                  [ngClass]="{'col-sm-12': isSectorsSourceAvailable == false, 'col-sm-10': isSectorsSourceAvailable == true}"
+                  class="form-control" name="sectorType" (change)="getTypeSectorsList()"
                   [(ngModel)]="sectorModel.sectorTypeId" #sectorTypeId="ngModel" required>
                   <option value="null">--Sector type--</option>
                   <option *ngFor="let type of sectorTypesList" [value]="type.id">{{type.typeName}}</option>
                 </select>
-                  <button *ngIf="isSectorsSourceAvailable" class="btn btn-warning col-sm-2" title="Source data available" (click)="showSectorsSource()"
-                    type="button"><i class="fa fa-database"></i></button>
+                <button *ngIf="isSectorsSourceAvailable" class="btn btn-warning col-sm-2" title="Source data available"
+                  (click)="showSectorsSource()" type="button"><i class="fa fa-database"></i></button>
               </div>
               <div *ngIf="sectorsForm.submitted" [hidden]="sectorTypeId.valid" class="alert alert-danger">
                 Sector type is required
@@ -132,12 +134,19 @@
           <h6>Project locations</h6>
 
           <div class="row">
-            <div class="form-group form-inline col-md-6 col-lg-6">
-              <select class="form-control col-md-12" name="locationId" [(ngModel)]="locationModel.locationId"
-                #locationId="ngModel" required>
-                <option value="null">--Location--</option>
-                <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
-              </select>
+            <div class="col-md-6 col-lg-6">
+              <div class="input-group form-inline mb-3">
+                <select
+                  [ngClass]="{'col-sm-12': isSectorsSourceAvailable == false, 'col-sm-10': isSectorsSourceAvailable == true}"
+                  class="form-control col-md-12" name="locationId" [(ngModel)]="locationModel.locationId"
+                  #locationId="ngModel" required>
+                  <option value="null">--Location--</option>
+                  <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
+                </select>
+                <button *ngIf="isLocationsSourceAvailable" class="btn btn-warning col-sm-2"
+                  title="Source data available" (click)="showLocationsSource()" type="button"><i
+                    class="fa fa-database"></i></button>
+              </div>
               <div *ngIf="locationsForm.submitted" [hidden]="locationId.valid" class="alert alert-danger">
                 Location is required
               </div>
@@ -299,11 +308,15 @@
                       {{sector.sector}}
                     </td>
                     <td>
-                      <input [class.disable]="checkIfSectorInActionList(sector.sectorId)" type="number" name="afpercent-{{project.id}}-{{sector.sectorId}}-" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
+                      <input [class.disable]="checkIfSectorInActionList(sector.sectorId)" type="number"
+                        name="afpercent-{{project.id}}-{{sector.sectorId}}-" class="form-control"
+                        [(ngModel)]="sector.fundsPercentage" required />
                     </td>
                     <td [class.disable]="checkIfSectorAdded(sector.sector)">
-                        <button *ngIf="!checkIfSectorAdded(sector.sectorName)" id="psector-{{project.id}}-{{sector.sectorId}}"
-                        (click)="addSourceSectorToList(project.id, sector.sectorId, sourceTypes.AIMS)" class="btn btn-success btn-sm"><i
+                      <button *ngIf="!checkIfSectorAdded(sector.sectorName)"
+                        id="psector-{{project.id}}-{{sector.sectorId}}"
+                        (click)="addSourceSectorToList(project.id, sector.sectorId, sourceTypes.AIMS)"
+                        class="btn btn-success btn-sm"><i
                           [className]="checkIfSectorInActionList(sector.sectorId) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                     </td>
                   </tr>
@@ -331,18 +344,23 @@
                     </td>
                     <td>
                       <span class="text-info" *ngIf="isNdpSectorsLoading">Loading NDP sectors...</span>
-                      <select *ngIf="!isNdpSectorsLoading" class="form-control" name="ndp" [(ngModel)]="sector.mappingId">
+                      <select *ngIf="!isNdpSectorsLoading" class="form-control" name="ndp"
+                        [(ngModel)]="sector.mappingId">
                         <option *ngFor="let s of ndpSectorsList" [value]="s.id">
                           {{s.sectorName}}
                         </option>
                       </select>
                     </td>
                     <td>
-                        <input [class.disable]="checkIfSectorInActionList(sector.sectorId)" type="number" name="{{sector.sectorId}}-{{i}}" class="form-control" [(ngModel)]="sector.fundsPercentage" required />
+                      <input [class.disable]="checkIfSectorInActionList(sector.sectorId)" type="number"
+                        name="{{sector.sectorId}}-{{i}}" class="form-control" [(ngModel)]="sector.fundsPercentage"
+                        required />
                     </td>
                     <td [class.disable]="isNdpSectorsLoading || !sector.mappingId || !sector.fundsPercentage">
-                      <button *ngIf="!checkIfSectorAdded(sector.sectorName)" id="psector-{{project.id}}-{{sector.sectorId}}"
-                        (click)="addSourceSectorToList(project.id, sector.mappingId, sourceTypes.IATI, sector.code, sector.sectorName)" class="btn btn-success btn-sm"><i
+                      <button *ngIf="!checkIfSectorAdded(sector.sectorName)"
+                        id="psector-{{project.id}}-{{sector.sectorId}}"
+                        (click)="addSourceSectorToList(project.id, sector.mappingId, sourceTypes.IATI, sector.code, sector.sectorName)"
+                        class="btn btn-success btn-sm"><i
                           [className]="checkIfSectorInActionList(sector.mappingId) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                     </td>
                   </tr>
@@ -359,18 +377,18 @@
     <div class="col-lg-4 col-md-4">
       <div class="box">
         <div class="row">
-            <div class="col-md-6">
-              <h6>Project sectors</h6>
+          <div class="col-md-6">
+            <h6>Project sectors</h6>
+          </div>
+          <div class="col-md-6">
+            <div class="text-right">
+              <button class="btn btn-warning btn-sm text-uppercase" (click)="showSectorsLocations()">
+                Go back
+              </button>
             </div>
-            <div class="col-md-6">
-              <div class="text-right">
-                  <button class="btn btn-warning btn-sm text-uppercase" (click)="showSectorsLocations()">
-                      Go back
-                    </button>
-              </div>
-            </div>
+          </div>
         </div>
-        
+
         <div class="row">
           <span *ngIf="currentProjectSectors.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
             {{calculateSectorPercentage()}}%
@@ -411,12 +429,12 @@
 
         <h6>Sectors from source</h6>
         <table *ngIf="sourceSectorsList.length > 0" class="table small">
-            <thead>
-              <tr>
-                <th>Sector</th>
-                <th>Percentage</th>
-              </tr>
-            </thead>
+          <thead>
+            <tr>
+              <th>Sector</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
           <tr *ngFor="let sector of sourceSectorsList">
             <td>{{sector.sector}}</td>
             <td>{{sector.fundsPercentage}}</td>
@@ -429,7 +447,8 @@
           <tr>
             <td colspan="3">
               <span class="text-right">
-                <button [class.disable]="sourceSectorPercentage < 1 || sourceSectorPercentage > 100" type="button" (click)="saveSourceSectors()" class="btn btn-info text-uppercase">
+                <button [class.disable]="sourceSectorPercentage < 1 || sourceSectorPercentage > 100" type="button"
+                  (click)="saveSourceSectors()" class="btn btn-info text-uppercase">
                   Save sectors
                 </button>
               </span>
@@ -437,6 +456,79 @@
           </tr>
         </table>
         <span *ngIf="sourceSectorsList.length == 0" class="text-info"><i>No sectors added from sources yet</i></span>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="currentTab == tabConstants.LOCATIONS_SOURCE" class="row">
+
+    <div class="col-lg-12 col-md-12">
+
+      <div class="box">
+        <div class="row">
+          <div class="col-md-6">
+            <h6>Project locations</h6>
+          </div>
+          <div class="col-md-6">
+            <div class="text-right">
+              <button class="btn btn-warning btn-sm text-uppercase" (click)="showSectorsLocations()">
+                Go back
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="iati-box small">
+            <table class="table table-bordered">
+                <tr *ngFor="let project of aimsProjects">
+                  <td>
+                    <b>Project title: </b>{{project.title}}<br />
+                    <span class="badge badge-warning">AIMS</span>
+                    <table *ngIf="project.locations.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Location</th>
+                        <th>Funds %</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr *ngFor="let location of project.locations">
+                        <td>
+                          {{location.location}}
+                        </td>
+                        <td>
+                          {{location.fundsPercentage}}
+                        </td>
+                        <td [class.disable]="checkIfLocationAdded(location.location)">
+                          <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)"
+                            class="btn btn-success btn-sm">Enter >></button>
+                        </td>
+                      </tr>
+                    </table>
+                    <div class="text-info" *ngIf="project.locations.length == 0"><i>No locations available</i></div>
+                  </td>
+                </tr>
+              </table>
+
+              <table *ngIf="iatiProjects.length > 0" class="table table-bordered">
+                <tr *ngFor="let project of iatiProjects">
+                  <td>
+                    <b>Project title: </b>{{project.title}}<br />
+                    <span class="badge badge-warning">IATI</span>
+                    <table *ngIf="project.locations.length > 0" class="table table-bordered">
+                      <tr>
+                        <th>Location</th>
+                      </tr>
+                      <tr *ngFor="let location of project.locations">
+                        <td>
+                          {{location.name}}
+                        </td>
+                      </tr>
+                    </table>
+                    <div class="text-info" *ngIf="project.locations.length == 0"><i>No locations available</i></div>
+                  </td>
+                </tr>
+              </table>
+        </div>
       </div>
     </div>
 

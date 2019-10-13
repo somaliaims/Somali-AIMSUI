@@ -65,7 +65,7 @@ export class ProjectSectorsComponent implements OnInit {
   showMappingManual: boolean = false;
   showMappingAuto: boolean = false;
   isSectorsSourceAvailable: boolean = false;
-  isLocationsDataAvailable: boolean = false;
+  isLocationsSourceAvailable: boolean = false;
   isNdpSectorsLoading: boolean = true;
   sectorModel: any = { sectorTypeId: null, sector: null, sectorId: null, mappingId: null, fundsPercentage: null, saved: false };
   newMappings: any = [];
@@ -121,7 +121,7 @@ export class ProjectSectorsComponent implements OnInit {
       }
 
       if (p.locations.length > 0) {
-        this.isLocationsDataAvailable = true;
+        this.isLocationsSourceAvailable = true;
       }
     });
 
@@ -131,7 +131,7 @@ export class ProjectSectorsComponent implements OnInit {
       }
 
       if (p.locations.length > 0) {
-        this.isLocationsDataAvailable = true;
+        this.isLocationsSourceAvailable = true;
       }
     });
 
