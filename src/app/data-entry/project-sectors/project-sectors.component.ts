@@ -357,9 +357,9 @@ export class ProjectSectorsComponent implements OnInit {
     if (unSavedSectors.length > 0 && this.projectId) {
       unSavedSectors.forEach(s => {
         if (!s.sectorId) {
-          s.sectorId = 0;
+          s.sectorId = s.mappingId;
         }
-        if (s.sectorTypeId != this.defaultSectorTypeId) {
+        if (s.sectorTypeId != this.defaultSectorTypeId && s.sectorId != s.mappingId) {
           this.newMappings.push({
             sectorTypeId: s.sectorTypeId,
             sectorId: s.sectorId,

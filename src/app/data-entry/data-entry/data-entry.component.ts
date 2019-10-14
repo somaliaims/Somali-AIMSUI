@@ -134,7 +134,7 @@ export class DataEntryComponent implements OnInit {
       var parsedProjects = JSON.parse(projects);
       this.selectedProjects = parsedProjects;
 
-      if (this.selectedProjects.length > 0) {
+      if (this.selectedProjects && this.selectedProjects.length > 0) {
         var filteredIATI = this.selectedProjects.filter(function (project) {
           return project.type == 'IATI';
         });

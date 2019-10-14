@@ -489,7 +489,6 @@
                       <tr>
                         <th>Location</th>
                         <th>Funds %</th>
-                        <th>Action</th>
                       </tr>
                       <tr *ngFor="let location of project.locations">
                         <td>
@@ -497,10 +496,6 @@
                         </td>
                         <td>
                           {{location.fundsPercentage}}
-                        </td>
-                        <td [class.disable]="checkIfLocationAdded(location.location)">
-                          <button id="alocation-{{project.id}}-{{location.id}}" (click)="enterAIMSLocation($event)"
-                            class="btn btn-success btn-sm">Enter >></button>
                         </td>
                       </tr>
                     </table>
