@@ -85,9 +85,9 @@ export class TimeTrendReportComponent implements OnInit {
   };
 
   dataOptions: any = [
-    { id: 1, type: 'projects', value: 'Number of Projects' },
-    { id: 2, type: 'funding', value: 'Funding' },
-    { id: 3, type: 'disbursements', value: 'Disbursements' }
+    { id: 1, type: 'actual-disbursements', value: 'Actual disbursements' },
+    { id: 2, type: 'planned-disbursements', value: 'Planned disbursements' },
+    { id: 3, type: 'total-disbursements', value: 'Total disbursements' }
   ];
 
   dataOptionsIndexForDoughnut: any = {
@@ -97,15 +97,15 @@ export class TimeTrendReportComponent implements OnInit {
   };
 
   dataOptionsCodes: any = {
-    'PROJECTS': 1,
-    'FUNDING': 2,
+    'ACTUAL_DISBURSEMENTS': 1,
+    'PLANNED_DISBURSEMENTS': 2,
     'DISBURSEMENTS': 3
   };
 
   dataOptionLabels: any = {
-    PROJECTS: 'Projects',
-    FUNDING: 'Funding',
-    DISBURSEMENTS: 'Disbursements'
+    ACTUAL_DISBURSEMENTS: 'Actual disbursements',
+    PLANNED_DISBURSEMENTS: 'Planned disbursements',
+    DISBURSEMENTS: 'Total disbursements'
   };
 
   exRateSourceCodes: any = {
@@ -587,12 +587,12 @@ export class TimeTrendReportComponent implements OnInit {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
-        case this.dataOptionsCodes.PROJECTS:
-          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.projects.length);
+        case this.dataOptionsCodes.ACTUAL_DISBURSEMENTS:
+          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.totalActualDisbursements);
           break;
   
-        case this.dataOptionsCodes.FUNDING:
-          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.totalFunding);
+        case this.dataOptionsCodes.PLANNED_DISBURSEMENTS:
+          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.totalPlannedDisbursements);
           break;
   
         case this.dataOptionsCodes.DISBURSEMENTS:
@@ -600,7 +600,7 @@ export class TimeTrendReportComponent implements OnInit {
           break;
   
         default:
-          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.projects.length);
+          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.totalActualDisbursements);
           break;
       }
     }
@@ -660,32 +660,32 @@ export class TimeTrendReportComponent implements OnInit {
       this.doughnutChartData = [];
       this.showChart = false;
 
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
-        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.ACTUAL_DISBURSEMENTS) != -1) {
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.ACTUAL_DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorProjects = this.reportDataList.yearlyProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
+          var sectorProjects = this.reportDataList.yearlyProjectsList.map(p => p.totalActualDisbursements);
+          var chartData = { data: sectorProjects, label: this.dataOptionLabels.ACTUAL_DISBURSEMENTS };
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorProjects);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.ACTUAL_DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
-        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
-        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS], 1);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.ACTUAL_DISBURSEMENTS);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.ACTUAL_DISBURSEMENTS], 1);
       }
 
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
-        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PLANNED_DISBURSEMENTS) != -1) {
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PLANNED_DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorFunding = this.reportDataList.yearlyProjectsList.map(p => p.totalFunding);
-          var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
+          var totalPlannedDisbursements = this.reportDataList.yearlyProjectsList.map(p => p.totalPlannedDisbursements);
+          var chartData = { data: totalPlannedDisbursements, label: this.dataOptionLabels.PLANNED_DISBURSEMENTS };
           this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorFunding);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
+          this.doughnutChartData.push(totalPlannedDisbursements);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PLANNED_DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
-        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
-        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING], 1);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PLANNED_DISBURSEMENTS);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PLANNED_DISBURSEMENTS], 1);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
@@ -761,6 +761,8 @@ export class TimeTrendReportComponent implements OnInit {
       this.reportDataList.yearlyProjectsList.forEach(function (year) {
         year.totalFunding = Math.round(parseFloat(((year.totalFunding * calculatedRate).toFixed(2))));
         year.totalDisbursements = Math.round(parseFloat(((year.totalDisbursements * calculatedRate).toFixed(2))));
+        year.totalActualDisbursements = Math.round(parseFloat(((year.totalActualDisbursements * calculatedRate).toFixed(2))));
+        year.totalPlannedDisbursements = Math.round(parseFloat(((year.totalPlannedDisbursements * calculatedRate).toFixed(2))));
 
         if (year.projects && year.projects.length > 0) {
           year.projects.forEach(function (project) {

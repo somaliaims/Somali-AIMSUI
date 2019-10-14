@@ -829,6 +829,8 @@ export class SectorReportComponent implements OnInit {
       this.reportDataList.sectorProjectsList.forEach(function (sector) {
         sector.totalFunding = Math.round(parseFloat(((sector.totalFunding * calculatedRate).toFixed(2))));
         sector.totalDisbursements = Math.round(parseFloat(((sector.totalDisbursements * calculatedRate).toFixed(2))));
+        sector.actualDisbursements = Math.round(parseFloat(((sector.actualDisbursements * calculatedRate).toFixed(2))));
+        sector.plannedDisbursements = Math.round(parseFloat(((sector.plannedDisbursements * calculatedRate).toFixed(2))));
 
         if (sector.projects && sector.projects.length > 0) {
           sector.projects.forEach(function (project) {
