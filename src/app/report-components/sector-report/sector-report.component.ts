@@ -86,9 +86,9 @@ export class SectorReportComponent implements OnInit {
   };
 
   dataOptions: any = [
-    { id: 1, type: 'projects', value: 'Number of Projects' },
-    { id: 2, type: 'funding', value: 'Funding' },
-    { id: 3, type: 'disbursements', value: 'Disbursements' }
+    { id: 1, type: 'actual-disbursements', value: 'Actual disbursements' },
+    { id: 2, type: 'planned-disbursements', value: 'Planned disbursements' },
+    { id: 3, type: 'total-disbursements', value: 'Total disbursements' }
   ];
 
   dataOptionsIndexForDoughnut: any = {
@@ -98,15 +98,15 @@ export class SectorReportComponent implements OnInit {
   };
 
   dataOptionsCodes: any = {
-    'PROJECTS': 1,
-    'FUNDING': 2,
+    'ACTUAL_DISBURSEMENTS': 1,
+    'PLANNED_DISBURSEMENTS': 2,
     'DISBURSEMENTS': 3
   };
 
   dataOptionLabels: any = {
-    PROJECTS: 'Projects',
-    FUNDING: 'Funding',
-    DISBURSEMENTS: 'Disbursements'
+    ACTUAL_DISBURSEMENTS: 'Actual disbursements',
+    PLANNED_DISBURSEMENTS: 'Planned disbursements',
+    DISBURSEMENTS: 'Total disbursements'
   };
 
   exRateSourceCodes: any = {
@@ -252,7 +252,7 @@ export class SectorReportComponent implements OnInit {
     var dataOption = this.dataOptions.filter(o => o.id == 1);
     if (dataOption.length > 0) {
       this.model.selectedDataOptions.push(dataOption[0]);
-      this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
+      this.selectedDataOptions.push(this.dataOptionsCodes.ACTUAL_DISBURSEMENTS);
     }
   }
 
@@ -333,10 +333,6 @@ export class SectorReportComponent implements OnInit {
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
         }
-        this.blockUI.stop();
-      },
-      error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -676,12 +672,12 @@ export class SectorReportComponent implements OnInit {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
-        case this.dataOptionsCodes.PROJECTS:
-          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+        case this.dataOptionsCodes.ACTUAL_DISBURSEMENTS:
+          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.actualDisbursements);
           break;
   
-        case this.dataOptionsCodes.FUNDING:
-          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+        case this.dataOptionsCodes.PLANNED_DISBURSEMENTS:
+          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.plannedDisbursements);
           break;
   
         case this.dataOptionsCodes.DISBURSEMENTS:
@@ -689,7 +685,7 @@ export class SectorReportComponent implements OnInit {
           break;
   
         default:
-          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
+          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.actualDisbursements);
           break;
       }
     }
@@ -729,32 +725,32 @@ export class SectorReportComponent implements OnInit {
       this.doughnutChartData = [];
       this.showChart = false;
 
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PROJECTS) != -1) {
-        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PROJECTS);
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.ACTUAL_DISBURSEMENTS) != -1) {
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.ACTUAL_DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.projects.length);
-          var chartData = { data: sectorProjects, label: this.dataOptionLabels.PROJECTS };
+          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.actualDisbursements);
+          var chartData = { data: sectorProjects, label: this.dataOptionLabels.ACTUAL_DISBURSEMENTS };
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorProjects);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS] = (this.doughnutChartData.length - 1);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.ACTUAL_DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
-        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PROJECTS);
-        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PROJECTS], 1);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.ACTUAL_DISBURSEMENTS);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.ACTUAL_DISBURSEMENTS], 1);
       }
 
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
-        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.FUNDING);
+      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PLANNED_DISBURSEMENTS) != -1) {
+        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PLANNED_DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
-          var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
+          var plannedDisbursements = this.reportDataList.sectorProjectsList.map(p => p.plannedDisbursements);
+          var chartData = { data: plannedDisbursements, label: this.dataOptionLabels.PLANNED_DISBURSEMENTS };
           this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorFunding);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
+          this.doughnutChartData.push(plannedDisbursements);
+          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PLANNED_DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
-        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.FUNDING);
-        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING], 1);
+        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PLANNED_DISBURSEMENTS);
+        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PLANNED_DISBURSEMENTS], 1);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
