@@ -98,7 +98,7 @@
                 </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">View report</button>&nbsp;
+                    <button type="submit" class="btn btn-info">Update report</button>&nbsp;
                     <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Download PDF</button>&nbsp;-->
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
                     <button *ngIf="envelopeList && envelopeList.length > 0" type="button"

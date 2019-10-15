@@ -194,6 +194,7 @@ export class FinancialsComponent implements OnInit {
         }
       }
     }
+    this.calculateDisbursementsTotal();
   }
 
   enterAIMSDisbursement(e) {
@@ -217,6 +218,7 @@ export class FinancialsComponent implements OnInit {
         }
       }
     }
+    this.calculateDisbursementsTotal();
   }
 
   saveDisbursements(frm: any) {
