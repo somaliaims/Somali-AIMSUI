@@ -12,6 +12,7 @@ import { CurrencyService } from 'src/app/services/currency.service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
+import { Settings } from 'src/app/config/settings';
 
 @Component({
   selector: 'sector-report',
@@ -57,6 +58,7 @@ export class SectorReportComponent implements OnInit {
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDefaultCurrencySet: boolean = true;
+  pageHeight: number = Settings.pdfPrintPageHeight;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -375,95 +377,30 @@ export class SectorReportComponent implements OnInit {
     );
   }
 
-  /*generatePDF() {
-    html2canvas(document.getElementById('rpt-sector-project')).then(function (canvas) {
-      var img = canvas.toDataURL("image/png");
-      var doc = new jsPDF();
-      var width = doc.internal.pageSize.getWidth();
-      var height = doc.internal.pageSize.getHeight();
-      doc.addImage(img, 'JPEG', 0, 0, width, height);
-      doc.save('testCanvas.pdf');
-    });
-    /*const div = document.getElementById("rpt-sector-project");
-    const options = {background: "white", height: div.clientHeight, width: div.clientWidth};
-    //let chartCanvas = document.getElementById('chart') as HTMLCanvasElement;
-
-    html2canvas(div, options).then((canvas) => {
-        //Initialize JSPDF
-        let doc = new jsPDF("p", "mm", "a4");
-        //Converting canvas to Image
-        let imgData = canvas.toDataURL("image/PNG");
-        //let chartData = chartCanvas.toDataURL("image/PNG");
-        //Add image Canvas to PDF
-        doc.addImage(imgData, 'PNG', 20, 20, div.clientWidth, div.clientHeight, '', 1.0);
-        //doc.addImage(chartData, 'PNG');
-        let pdfOutput = doc.output();
-        // using ArrayBuffer will allow you to put image inside PDF
-        let buffer = new ArrayBuffer(pdfOutput.length);
-        let array = new Uint8Array(buffer);
-        for (let i = 0; i < pdfOutput.length; i++) {
-            array[i] = pdfOutput.charCodeAt(i);
-        }
-        //Name of pdf
-        const fileName = "example.pdf";
-        // Make file
-        doc.save(fileName);
-    });
-}*/
-
-  /*generatePDF() {
-    var dv = document.getElementById('rpt-sector-project');
-    var HTML_Width = dv.clientWidth;
-    var HTML_Height = dv.clientHeight;
-    var top_left_margin = 15;
-    var PDF_Width = HTML_Width + (top_left_margin * 2);
-    var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
-    var canvas_image_width = HTML_Width;
-    var canvas_image_height = HTML_Height;
-
-    var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
-
-
-    html2canvas(dv, { allowTaint: true }).then(function (canvas) {
-      canvas.getContext('2d');
-      console.log(canvas.height + "  " + canvas.width);
-      var imgData = canvas.toDataURL("image/jpeg", 1.0);
-      var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
-      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
-
-
-      for (var i = 1; i <= totalPDFPages; i++) {
-        pdf.addPage([PDF_Width, PDF_Height]);
-        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
-      }
-
-      pdf.save("HTML-Document.pdf");
-    });
-  };*/
-
   generatePDF() {
-    var quotes = document.getElementById('rpt-sector-project');
+    this.blockUI.start('Generating PDF...');
+    var quotes = document.getElementById('rpt-sector-pdf-view');
     html2canvas(quotes)
       .then((canvas) => {
         //! MAKE YOUR PDF
         var pdf = new jsPDF('p', 'pt', 'letter');
         var container = document.querySelector(".row");
         var docWidth = container.getBoundingClientRect().width;
-        for (var i = 0; i <= quotes.clientHeight / 980; i++) {
+        for (var i = 0; i <= quotes.clientHeight / this.pageHeight; i++) {
           //! This is all just html2canvas stuff
           var srcImg = canvas;
           var sX = 0;
-          var sY = 980 * i; // start 980 pixels down for every new page
+          var sY = this.pageHeight * i; // start this.pageHeight pixels down for every new page
           var sWidth = docWidth;
-          var sHeight = 980;
+          var sHeight = this.pageHeight;
           var dX = 0;
           var dY = 0;
           var dWidth = docWidth;
-          var dHeight = 980;
+          var dHeight = this.pageHeight;
 
           var onePageCanvas = document.createElement("canvas");
           onePageCanvas.setAttribute('width', docWidth.toString());
-          onePageCanvas.setAttribute('height', '980');
+          onePageCanvas.setAttribute('height', this.pageHeight.toString());
           var ctx = onePageCanvas.getContext('2d');
           // details on this usage of this function: 
           // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
@@ -485,6 +422,7 @@ export class SectorReportComponent implements OnInit {
         }
         //! after the for loop is finished running, we save the pdf.
         pdf.save('Test.pdf');
+        this.blockUI.stop();
       });
   }
 
