@@ -9,7 +9,7 @@ export const Settings = {
             canDo: true
         }
     },
-    pdfPrintPageHeight: 1580,
+    pdfPrintPageHeight: 1550,
     rowsPerPage: 10,
     yearLimit: 100,
     descriptionLowLimit: 500,
