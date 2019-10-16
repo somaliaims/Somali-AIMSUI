@@ -48,6 +48,7 @@ export class LocationReportComponent implements OnInit {
   paramOrgIds: any = [];
   loadReport: boolean = false;
   isLoading: boolean = true;
+  isDataLoading: boolean = true;
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -278,6 +279,10 @@ export class LocationReportComponent implements OnInit {
           this.currenciesList.push(data);
           this.getManualExchangeRateForToday();
         }
+
+        setTimeout(() => {
+          this.isDataLoading = false;
+        }, 2000);
       }
     );
   }

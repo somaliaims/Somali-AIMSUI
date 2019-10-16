@@ -83,7 +83,7 @@
                     <b><i>Exchange rate: 1 {{defaultCurrency}} = {{manualExRate}} {{nationalCurrencyName}} on
                         {{datedToday}}</i></b>
                   </span>
-                  <span *ngIf="manualExRate == 0" class="text-danger">
+                  <span *ngIf="manualExRate == 0 && !isDataLoading" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
@@ -91,7 +91,7 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <span *ngIf="!defaultCurrency" class="text-danger">
+                  <span *ngIf="!defaultCurrency && !isDataLoading" class="text-danger">
                     Default currency is not set and it may produce errors on reports.
                     Please contact administrator.
                   </span>
@@ -99,7 +99,8 @@
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
                     <button type="submit" class="btn btn-info">Update report</button>&nbsp;
-                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Download PDF</button>&nbsp;-->
+                    <button *ngIf="envelopeList && envelopeList.length > 0" type="button" class="btn btn-danger"
+                      (click)="generatePDF()">Download PDF</button>&nbsp;
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
                     <button *ngIf="envelopeList && envelopeList.length > 0" type="button"
                       class="btn btn-warning" (click)="printReport()">Print report</button>
@@ -118,83 +119,90 @@
       </div>
     </div>
 
-    <div *ngIf="envelopeList && envelopeList.length > 0 && chartData.length > 0"
-      class="col-md-12 margin-top-10">
-      <div *ngIf="chartType == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-8">
-        <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-          [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
+    <div class="row" id="rpt-envelope-pdf-view">
+
+      <div *ngIf="envelopeList && envelopeList.length > 0 && chartData.length > 0"
+        class="col-md-12 margin-top-10">
+        <div *ngIf="chartType == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-8">
+          <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
+            [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+        </div>
+  
+        <div *ngIf="chartType == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-8">
+          <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
+            [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+        </div>
+  
+        <div *ngIf="chartType == chartTypes.RADAR" style="display: block;"
+          class="canvas-container mx-auto col-md-8">
+          <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="radarChartOptions"
+            [chartType]="chartType"></canvas>
+        </div>
+  
+        <div *ngIf="chartType == chartTypes.DOUGHNUT" style="display: block;"
+          class="canvas-container mx-auto col-md-8">
+          <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="chartLables" [options]="pieChartOptions"
+            [chartType]="chartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+        </div>
+  
+        <div *ngIf="chartType == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-8">
+          <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [options]="pieChartOptions"
+            [chartType]="chartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+        </div>
+  
+        <div *ngIf="chartType == chartTypes.POLAR" style="display: block;"
+          class="canvas-container mx-auto col-md-10">
+          <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
+            [chartType]="chartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+        </div>
+  
       </div>
 
-      <div *ngIf="chartType == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-8">
-        <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-          [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
+      <div *ngIf="reportSettings && envelopeList && envelopeList.length > 0" class="margin-top-20 col-md-12" id="rpt-envelope">
+        <div class="text-center">
+          <h5>{{reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
+        </div>
+  
+        <div *ngIf="envelopeList && envelopeList.length > 0">
+          <table class="table table-striped margin-bottom-0 small">
+            <thead>
+              <th width="20%">Envelope type</th>
+              <th width="{{cellPercent}}%" class="text-center" *ngFor="let yr of envelopeYearsList">{{yr}}</th>
+              <th class="text-right" width="{{cellPercent}}%">Total</th>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <table class="table table-striped small margin-bottom-0" *ngFor="let yView of envelopeList">
+            <tr class="row-highlight">
+              <td [attr.colspan]="cellCount"><b>{{yView.funder}}</b></td>
+            </tr>
+            <tr *ngFor="let breakup of yView.envelopeBreakupsByType">
+              <td width="20%">{{breakup.envelopeType}}</td>
+              <td width="{{cellPercent}}%" class="text-center" *ngFor="let yearly of breakup.yearlyBreakup">
+                {{yearly.amount}}
+              </td>
+              <td width="{{cellPercent}}%" class="text-right"><b>{{calculateEnvelopeTypeTotal(yView.funderId, breakup.envelopeTypeId)}}</b></td>
+            </tr>
+            <tr>
+                <th width="20%">Yearly total</th>
+                <th class="text-center" width="{{cellPercent}}%" class="text-center" *ngFor="let yr of envelopeYearsList">
+                  {{calculateTotalsForYear(yr, yView.funderId)}}
+                </th>
+                <th width="{{cellPercent}}%" class="text-center">&nbsp;</th>
+            </tr>
+          </table>
+        </div>
       </div>
-
-      <div *ngIf="chartType == chartTypes.RADAR" style="display: block;"
-        class="canvas-container mx-auto col-md-8">
-        <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="radarChartOptions"
-          [chartType]="chartType"></canvas>
-      </div>
-
-      <div *ngIf="chartType == chartTypes.DOUGHNUT" style="display: block;"
-        class="canvas-container mx-auto col-md-8">
-        <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="chartLables" [options]="pieChartOptions"
-          [chartType]="chartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
-      </div>
-
-      <div *ngIf="chartType == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-8">
-        <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [options]="pieChartOptions"
-          [chartType]="chartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
-      </div>
-
-      <div *ngIf="chartType == chartTypes.POLAR" style="display: block;"
-        class="canvas-container mx-auto col-md-10">
-        <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
-          [chartType]="chartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
-      </div>
-
+      
     </div>
+    
 
-    <div *ngIf="reportSettings && envelopeList && envelopeList.length > 0" class="row margin-top-20" id="rpt-envelope">
-      <div class="col-md-12 text-center">
-        <h5>{{reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
-      </div>
-
-      <div *ngIf="envelopeList && envelopeList.length > 0" class="col-md-12">
-        <table class="table table-striped margin-bottom-0 small">
-          <thead>
-            <th width="20%">Envelope type</th>
-            <th width="{{cellPercent}}%" class="text-center" *ngFor="let yr of envelopeYearsList">{{yr}}</th>
-            <th class="text-right" width="{{cellPercent}}%">Total</th>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <table class="table table-striped small margin-bottom-0" *ngFor="let yView of envelopeList">
-          <tr class="row-highlight">
-            <td [attr.colspan]="cellCount"><b>{{yView.funder}}</b></td>
-          </tr>
-          <tr *ngFor="let breakup of yView.envelopeBreakupsByType">
-            <td width="20%">{{breakup.envelopeType}}</td>
-            <td width="{{cellPercent}}%" class="text-center" *ngFor="let yearly of breakup.yearlyBreakup">
-              {{yearly.amount}}
-            </td>
-            <td width="{{cellPercent}}%" class="text-right"><b>{{calculateEnvelopeTypeTotal(yView.funderId, breakup.envelopeTypeId)}}</b></td>
-          </tr>
-          <tr>
-              <th width="20%">Yearly total</th>
-              <th class="text-center" width="{{cellPercent}}%" class="text-center" *ngFor="let yr of envelopeYearsList">
-                {{calculateTotalsForYear(yr, yView.funderId)}}
-              </th>
-              <th width="{{cellPercent}}%" class="text-center">&nbsp;</th>
-          </tr>
-        </table>
-      </div>
-    </div>
+    
 
   </block-ui>
 </div>

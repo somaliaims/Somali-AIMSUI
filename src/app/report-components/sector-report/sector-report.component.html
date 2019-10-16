@@ -95,7 +95,7 @@
                     <b><i>Exchange rate: 1 {{defaultCurrency}} = {{manualExRate}} {{nationalCurrencyName}} on
                         {{datedToday}}</i></b>
                   </span>
-                  <span *ngIf="manualExRate == 0" class="text-danger">
+                  <span *ngIf="manualExRate == 0 && !isDataLoading" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
@@ -103,7 +103,7 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <span *ngIf="!defaultCurrency" class="text-danger">
+                  <span *ngIf="!defaultCurrency && !isDataLoading" class="text-danger">
                     Default currency is not set and it may produce errors on reports.
                     Please contact administrator.
                   </span>

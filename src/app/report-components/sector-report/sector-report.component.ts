@@ -55,6 +55,7 @@ export class SectorReportComponent implements OnInit {
   paramOrgIds: any = [];
   loadReport: boolean = false;
   isLoading: boolean = true;
+  isDataLoading: boolean = true;
   isDefaultCurrencySet: boolean = true;
   pageHeight: number = Settings.pdfPrintPageHeight;
 
@@ -299,6 +300,9 @@ export class SectorReportComponent implements OnInit {
           this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
         }
+        setTimeout(() => {
+          this.isDataLoading = false;
+        }, 2000);
       }
     );
   }

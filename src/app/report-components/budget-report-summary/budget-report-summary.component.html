@@ -31,7 +31,7 @@
                         {{datedToday}}</i></b>
                   </span>
 
-                  <span *ngIf="manualExRate == 0" class="text-danger">
+                  <span *ngIf="manualExRate == 0 && !isDataLoading" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
@@ -45,7 +45,7 @@
                       (click)="printReport()">Print report</button>
                   </span>
                 </div>
-                <div *ngIf="!defaultCurrency" class="col-md-12">
+                <div *ngIf="!defaultCurrency && !isDataLoading" class="col-md-12">
                   <span class="text-danger">
                     Default currency is not set and it may produce errors on reports.
                     Please contact administrator.

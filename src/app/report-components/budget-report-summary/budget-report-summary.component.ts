@@ -34,6 +34,7 @@ export class BudgetReportSummaryComponent implements OnInit {
   selectedYearlyDisbursements: any = [];
   selectedProject: string = null;
   excelFile: string = null;
+  isDataLoading: boolean = true;
 
   chartLabels: any = [];
   chartData: any = [];
@@ -114,6 +115,10 @@ export class BudgetReportSummaryComponent implements OnInit {
           this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
         }
+
+        setTimeout(() => {
+          this.isDataLoading = false;
+        }, 2000);
       }
     );
   }

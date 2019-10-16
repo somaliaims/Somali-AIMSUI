@@ -47,6 +47,7 @@ export class EnvelopeReportComponent implements OnInit {
   cellPercent: number = 0;
   isShowChart: boolean = false;
   isLoading: boolean = true;
+  isDataLoading: boolean = true;
   loadReport: boolean = false;
   errorMessage: string = null;
 
@@ -337,6 +338,9 @@ export class EnvelopeReportComponent implements OnInit {
           this.currenciesList.push(data);
           this.getManualExchangeRateForToday();
         }
+        setTimeout(() => {
+          this.isDataLoading = false;
+        }, 2000);
       }
     );
   }
@@ -404,6 +408,14 @@ export class EnvelopeReportComponent implements OnInit {
       });
     });
     return totalAmount;
+  }
+
+  generatePDF() {
+    this.blockUI.start('Generating PDF...');
+    var result = Promise.resolve(this.reportService.generatePDF('rpt-envelope-pdf-view'));
+    result.then(() => {
+      this.blockUI.stop();
+    });
   }
 
 }
