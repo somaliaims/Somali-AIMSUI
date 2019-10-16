@@ -5,8 +5,6 @@ import { StoreService } from 'src/app/services/store-service';
 import { LocationService } from 'src/app/services/location.service';
 import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { OrganizationService } from 'src/app/services/organization-service';
-import * as jsPDF from 'jspdf';
-import * as html2canvas from 'html2canvas';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { Messages } from 'src/app/config/messages';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
@@ -356,42 +354,11 @@ export class LocationReportComponent implements OnInit {
   }
 
   generatePDF() {
-    var quotes = document.getElementById('rpt-location-project');
-    html2canvas(quotes)
-      .then((canvas) => {
-        var pdf = new jsPDF('p', 'pt', 'letter');
-        var container = document.querySelector(".row");
-        var docWidth = container.getBoundingClientRect().width;
-        for (var i = 0; i <= quotes.clientHeight / 980; i++) {
-          var srcImg = canvas;
-          var sX = 0;
-          var sY = 980 * i; // start 980 pixels down for every new page
-          var sWidth = docWidth;
-          var sHeight = 980;
-          var dX = 0;
-          var dY = 0;
-          var dWidth = docWidth;
-          var dHeight = 980;
-
-          var onePageCanvas = document.createElement("canvas");
-          onePageCanvas.setAttribute('width', docWidth.toString());
-          onePageCanvas.setAttribute('height', '980');
-          var ctx = onePageCanvas.getContext('2d');
-          ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
-
-          var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
-
-          var width = onePageCanvas.width;
-          var height = onePageCanvas.clientHeight;
-
-          if (i > 0) {
-            pdf.addPage([612, 791]); //8.5" x 11" in pts (in*72)
-          }
-          pdf.setPage(i + 1);
-          pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .44), (height * .62));
-        }
-        pdf.save('Test.pdf');
-      });
+    this.blockUI.start('Generating PDF...');
+    var result = Promise.resolve(this.reportService.generatePDF('rpt-location-pdf-view'));
+    result.then(() => {
+      this.blockUI.stop();
+    });
   }
 
   printReport() {

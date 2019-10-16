@@ -6,8 +6,6 @@ import { SectorService } from 'src/app/services/sector.service';
 import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { OrganizationService } from 'src/app/services/organization-service';
 import { LocationService } from 'src/app/services/location.service';
-//import * as jsPDF from 'jspdf';
-//import * as html2canvas from 'html2canvas';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';

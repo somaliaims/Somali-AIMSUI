@@ -1,7 +1,7 @@
 <div class="container-fluid view-area">
   <block-ui>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-lg-12 col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a class="nav-link active btn-info" data-toggle="tab">Location projects report</a>
@@ -11,7 +11,7 @@
     </div>
 
     <div class="row">
-      <div *ngIf="!isLoading" class="col-md-12">
+      <div *ngIf="!isLoading" class="col-lg-12 col-md-12">
         <div class="card">
           <div class="card-body">
             <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
@@ -103,7 +103,8 @@
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
                     <button type="submit" class="btn btn-info">Update report</button>&nbsp;
-                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Download PDF</button>&nbsp;-->
+                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger"
+                      (click)="generatePDF()">Download PDF</button>&nbsp;
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
                     <button *ngIf="reportDataList && reportDataList.locationProjectsList" type="button"
                       class="btn btn-warning" (click)="printReport()">Print report</button>
@@ -117,7 +118,7 @@
         </div>
       </div>
 
-      <div *ngIf="isLoading" class="col-md-12 text-center">
+      <div *ngIf="isLoading" class="col-lg-12 col-md-12 text-center">
         <img src="assets/images/loader-md.gif" /><span>&nbsp;Setting up report...</span>
       </div>
     </div>
@@ -137,8 +138,8 @@
       </div>
     </div>
 
-    <div *ngIf="reportDataList && reportDataList.locationProjectsList && chartData.length > 0 && showChart"
-      class="col-md-12 margin-top-10">
+    <div id="rpt-location-pdf-view" *ngIf="reportDataList && reportDataList.locationProjectsList && chartData.length > 0 && showChart"
+      class="col-lg-12 col-md-12 margin-top-10">
       <div *ngIf="model.chartType == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-8">
         <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
           [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
@@ -177,7 +178,6 @@
           (chartClick)="chartClicked($event)"></canvas>
       </div>
 
-    </div>
 
     <div *ngIf="reportDataList.reportSettings" class="row margin-top-20" id="rpt-location-project">
       <div class="col-md-12 text-center">
@@ -257,6 +257,7 @@
         </table>
       </div>
     </div>
+  </div>
 
   </block-ui>
 </div>
