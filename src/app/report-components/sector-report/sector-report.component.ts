@@ -170,11 +170,11 @@ export class SectorReportComponent implements OnInit {
   chartData: any = [];
   doughnutChartData: any = [];
   model: any = {
-    title: '', organizationIds: [], startingYear: 0, endingYear: 0, parentSectorId: 0, chartType: 'bar',
+    title: '', organizationIds: [], startingYear: 0, endingYear: 0, parentSectorId: 0, chartType: 1,
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1
+    selectedDataOption: 1, chartTypeName: 'bar'
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -201,6 +201,7 @@ export class SectorReportComponent implements OnInit {
       this.isLoading = false;
     }
 
+    this.model.chartType = this.chartTypes.BAR;
     this.getSectorsList();
     this.getLocationsList();
     this.getOrganizationsList();
@@ -344,7 +345,6 @@ export class SectorReportComponent implements OnInit {
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);
-    
   }
 
   resetSearchResults() {
@@ -567,7 +567,11 @@ export class SectorReportComponent implements OnInit {
       this.selectedDataOptions.push(selectedDataOption);
     }
     selectedDataOption = parseInt(this.model.selectedDataOption);
-    if (this.model.chartType != this.chartTypes.PIE && this.model.chartType != this.chartTypes.POLAR) {
+    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    if (chartType.length > 0) {
+      this.model.chartTypeName = chartType[0].type;
+    }
+    if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
