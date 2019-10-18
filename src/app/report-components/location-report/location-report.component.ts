@@ -68,6 +68,15 @@ export class LocationReportComponent implements OnInit {
     POLAR: 'polarArea'
   };
 
+  chartTypeCodes: any = {
+    BAR: 1,
+    PIE: 2,
+    DOUGHNUT: 3,
+    LINE: 4,
+    RADAR: 5,
+    POLAR: 6
+  };
+
   dataOptions: any = [
     { id: 1, type: 'actual-disbursements', value: 'Actual disbursements' },
     { id: 2, type: 'planned-disbursements', value: 'Planned disbursements' },
@@ -721,7 +730,7 @@ export class LocationReportComponent implements OnInit {
       this.model.chartTypeName = chartType[0].type;
     }
     
-    if (this.model.chartType != this.chartTypes.PIE && this.model.chartType != this.chartTypes.POLAR) {
+    if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
