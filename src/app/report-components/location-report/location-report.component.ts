@@ -156,7 +156,7 @@ export class LocationReportComponent implements OnInit {
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1
+    selectedDataOption: 1, chartTypeName: 'bar'
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -716,6 +716,11 @@ export class LocationReportComponent implements OnInit {
       this.selectedDataOptions.push(selectedDataOption);
     }
     selectedDataOption = parseInt(this.model.selectedDataOption);
+    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    if (chartType.length > 0) {
+      this.model.chartTypeName = chartType[0].type;
+    }
+    
     if (this.model.chartType != this.chartTypes.PIE && this.model.chartType != this.chartTypes.POLAR) {
       this.manageDataOptions();
     } else {

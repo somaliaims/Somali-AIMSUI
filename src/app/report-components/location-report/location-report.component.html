@@ -67,15 +67,6 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                    #chartType="ngModel" (change)="manageDataToDisplay()" required>
-                    <option value="null">-- Chart type --</option>
-                    <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
-                      {{chart.title}}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
                     id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
                     #selectedCurrency="ngModel">
@@ -91,28 +82,19 @@
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
-              </div>
 
-              <div class="row margin-top-10">
-                <div class="col-md-6">
-                  <span *ngIf="!defaultCurrency && !isDataLoading" class="text-danger">
-                    Default currency is not set and it may produce errors on reports.
-                    Please contact administrator.
-                  </span>
-                </div>
-                <div class="col-md-6">
-                  <span [class.disable]="!defaultCurrency" class="float-right">
+                <div [class.disable]="!defaultCurrency" class="col-md-6">
+                  <div class="float-right">
                     <button type="submit" class="btn btn-info">Update report</button>&nbsp;
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger"
                       (click)="generatePDF()">Download PDF</button>&nbsp;
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
-                    <button *ngIf="reportDataList && reportDataList.locationProjectsList" type="button"
+                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
                       class="btn btn-warning" (click)="printReport()">Print report</button>
-                  </span>
+                  </div>
                 </div>
-
               </div>
-
+              
             </form>
           </div>
         </div>
@@ -124,57 +106,73 @@
     </div>
 
     <div *ngIf="!isLoading" class="row margin-top-10">
-      <div class="col-md-12" *ngIf="reportDataList && reportDataList.reportSettings">
-        <div class="float-right form-inline">
-          <label><b><i>Data display options for chart:&nbsp;</i></b></label>
-          <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
-            #dataOption="ngModel" (change)="manageDataToDisplay()" required>
-            <option value="null">-- Chart data option --</option>
-            <option *ngFor="let option of dataOptions" value="{{option.id}}">
-              {{option.value}}
-            </option>
-          </select>
+      <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
+        <div class="row">
+          <div class="col-md-6">
+
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <form class="form-inline">
+                  <label>Chart type to display:&nbsp;</label>
+                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
+                    #chartType="ngModel" (change)="manageDataToDisplay()" required>
+                    <option *ngFor="let chart of chartOptions" value="{{chart.id}}">
+                      {{chart.title}}
+                    </option>
+                  </select>
+                  <label>&nbsp;Data on chart:&nbsp;</label>
+                  <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
+                    #dataOption="ngModel" (change)="manageDataToDisplay()" required>
+                    <option value="null">-- Chart data option --</option>
+                    <option *ngFor="let option of dataOptions" value="{{option.id}}">
+                      {{option.value}}
+                    </option>
+                  </select>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div id="rpt-location-pdf-view" *ngIf="reportDataList && reportDataList.locationProjectsList && chartData.length > 0 && showChart"
       class="col-lg-12 col-md-12 margin-top-10">
-      <div *ngIf="model.chartType == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-8">
+      <div *ngIf="model.chartTypeName == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-8">
         <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-          [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+          [legend]="chartLegend" [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"></canvas>
       </div>
 
-      <div *ngIf="model.chartType == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-8">
+      <div *ngIf="model.chartTypeName == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-8">
         <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-          [legend]="chartLegend" [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+          [legend]="chartLegend" [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"></canvas>
       </div>
 
-      <div *ngIf="model.chartType == chartTypes.RADAR" style="display: block;"
+      <div *ngIf="model.chartTypeName == chartTypes.RADAR" style="display: block;"
         class="canvas-container mx-auto col-md-8">
         <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="radarChartOptions"
-          [chartType]="model.chartType"></canvas>
+          [chartType]="model.chartTypeName"></canvas>
       </div>
 
-      <div *ngIf="model.chartType == chartTypes.DOUGHNUT" style="display: block;"
+      <div *ngIf="model.chartTypeName == chartTypes.DOUGHNUT" style="display: block;"
         class="canvas-container mx-auto col-md-8">
         <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="chartLables" [options]="pieChartOptions"
-          [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+          [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"></canvas>
       </div>
 
-      <div *ngIf="model.chartType == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-8">
+      <div *ngIf="model.chartTypeName == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-8">
         <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [options]="pieChartOptions"
-          [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+          [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"></canvas>
       </div>
 
-      <div *ngIf="model.chartType == chartTypes.POLAR" style="display: block;"
+      <div *ngIf="model.chartTypeName == chartTypes.POLAR" style="display: block;"
         class="canvas-container mx-auto col-md-10">
         <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
-          [chartType]="model.chartType" (chartHover)="chartHovered($event)"
+          [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"></canvas>
       </div>
 
