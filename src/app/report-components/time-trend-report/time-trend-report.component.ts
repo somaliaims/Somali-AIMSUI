@@ -56,6 +56,8 @@ export class TimeTrendReportComponent implements OnInit {
   paramLocationIds: any = [];
   loadReport: boolean = false;
   isLoading: boolean = true;
+  isDataLoading: boolean = true;
+  chartTypeName: string = 'bar';
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -168,11 +170,11 @@ export class TimeTrendReportComponent implements OnInit {
   chartData: any = [];
   doughnutChartData: any = [];
   model: any = {
-    title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
+    title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 1,
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1
+    selectedDataOption: 1, chartTypeName: 'bar'
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -279,6 +281,10 @@ export class TimeTrendReportComponent implements OnInit {
           this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
         }
+
+        setTimeout(() => {
+          this.isDataLoading = false;
+        }, 2000);
       }
     );
   }
@@ -312,10 +318,6 @@ export class TimeTrendReportComponent implements OnInit {
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
         }
-        this.blockUI.stop();
-      },
-      error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )
@@ -361,50 +363,11 @@ export class TimeTrendReportComponent implements OnInit {
   }
 
   generatePDF() {
-    var quotes = document.getElementById('rpt-time-trend-report');
-    html2canvas(quotes)
-      .then((canvas) => {
-        //! MAKE YOUR PDF
-        var pdf = new jsPDF('p', 'pt', 'letter');
-        var container = document.querySelector(".row");
-        var docWidth = container.getBoundingClientRect().width;
-        for (var i = 0; i <= quotes.clientHeight / 980; i++) {
-          //! This is all just html2canvas stuff
-          var srcImg = canvas;
-          var sX = 0;
-          var sY = 980 * i; // start 980 pixels down for every new page
-          var sWidth = docWidth;
-          var sHeight = 980;
-          var dX = 0;
-          var dY = 0;
-          var dWidth = docWidth;
-          var dHeight = 980;
-
-          var onePageCanvas = document.createElement("canvas");
-          onePageCanvas.setAttribute('width', docWidth.toString());
-          onePageCanvas.setAttribute('height', '980');
-          var ctx = onePageCanvas.getContext('2d');
-          // details on this usage of this function: 
-          // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
-          ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
-
-          // document.body.appendChild(canvas);
-          var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
-          var width = onePageCanvas.width;
-          var height = onePageCanvas.clientHeight;
-          //! If we're on anything other than the first page,
-          // add another page
-          if (i > 0) {
-            pdf.addPage([612, 791]); //8.5" x 11" in pts (in*72)
-          }
-          //! now we declare that we're working on that page
-          pdf.setPage(i + 1);
-          //! now we add content to that page!
-          pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .44), (height * .62));
-        }
-        //! after the for loop is finished running, we save the pdf.
-        pdf.save('Test.pdf');
-      });
+    this.blockUI.start('Generating PDF...');
+    var result = Promise.resolve(this.reportService.generatePDF('rpt-timetrend-pdf-view'));
+    result.then(() => {
+      this.blockUI.stop();
+    });
   }
 
   printReport() {
@@ -583,7 +546,11 @@ export class TimeTrendReportComponent implements OnInit {
       this.selectedDataOptions.push(selectedDataOption);
     }
     selectedDataOption = parseInt(this.model.selectedDataOption);
-    if (this.model.chartType != this.chartTypes.PIE && this.model.chartType != this.chartTypes.POLAR) {
+    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    if (chartType.length > 0) {
+      this.model.chartTypeName = chartType[0].type;
+    }
+    if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
