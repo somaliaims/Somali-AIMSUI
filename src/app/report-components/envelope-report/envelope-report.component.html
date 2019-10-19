@@ -63,15 +63,6 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <select class="form-control" id="chartTypecmd" [(ngModel)]="chartType" name="chartTypecmd"
-                    #chartTypeCmd="ngModel" (change)="manageDataToDisplay()" required>
-                    <option value="null">-- Chart type --</option>
-                    <option *ngFor="let chart of chartOptions" value="{{chart.type}}">
-                      {{chart.title}}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
                     id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
                     #selectedCurrency="ngModel">
@@ -87,15 +78,6 @@
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
-              </div>
-
-              <div class="row margin-top-10">
-                <div class="col-md-6">
-                  <span *ngIf="!defaultCurrency && !isDataLoading" class="text-danger">
-                    Default currency is not set and it may produce errors on reports.
-                    Please contact administrator.
-                  </span>
-                </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
                     <button type="submit" class="btn btn-info">Update report</button>&nbsp;
@@ -106,7 +88,15 @@
                       class="btn btn-warning" (click)="printReport()">Print report</button>
                   </span>
                 </div>
+              </div>
 
+              <div class="row margin-top-10">
+                <div class="col-md-12">
+                  <span *ngIf="!defaultCurrency && !isDataLoading" class="text-danger">
+                    Default currency is not set and it may produce errors on reports.
+                    Please contact administrator.
+                  </span>
+                </div>
               </div>
 
             </form>
@@ -119,45 +109,67 @@
       </div>
     </div>
 
+    <div *ngIf="!isLoading" class="row margin-top-10">
+      <div *ngIf="envelopeList && envelopeList.length > 0" class="col-md-12">
+        <div class="row">
+          <div class="col-md-9">
+          </div>
+          <div class="col-md-3">
+            <div class="row">
+              <form class="form-inline text-right">
+                  <label>Chart type to display:&nbsp;</label>
+                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
+                    #chartType="ngModel" (change)="manageDataToDisplay()" required>
+                    <option *ngFor="let chart of chartOptions" value="{{chart.id}}">
+                      {{chart.title}}
+                    </option>
+                  </select>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row" id="rpt-envelope-pdf-view">
 
       <div *ngIf="envelopeList && envelopeList.length > 0 && chartData.length > 0"
         class="col-md-12 margin-top-10">
-        <div *ngIf="chartType == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-8">
+        <div *ngIf="model.chartTypeName == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-8">
           <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-            [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+            [legend]="chartLegend" [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)"></canvas>
         </div>
   
-        <div *ngIf="chartType == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-8">
+        <div *ngIf="model.chartTypeName == chartTypes.LINE" style="display: block;" class="canvas-container mx-auto col-md-8">
           <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-            [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+            [legend]="chartLegend" [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)"></canvas>
         </div>
   
-        <div *ngIf="chartType == chartTypes.RADAR" style="display: block;"
+        <div *ngIf="model.chartTypeName == chartTypes.RADAR" style="display: block;"
           class="canvas-container mx-auto col-md-8">
           <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="radarChartOptions"
-            [chartType]="chartType"></canvas>
+            [chartType]="model.chartTypeName"></canvas>
         </div>
   
-        <div *ngIf="chartType == chartTypes.DOUGHNUT" style="display: block;"
+        <div *ngIf="model.chartTypeName == chartTypes.DOUGHNUT" style="display: block;"
           class="canvas-container mx-auto col-md-8">
           <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="chartLables" [options]="pieChartOptions"
-            [chartType]="chartType" (chartHover)="chartHovered($event)"
+            [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)"></canvas>
         </div>
   
-        <div *ngIf="chartType == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-8">
+        <div *ngIf="model.chartTypeName == chartTypes.PIE" style="display: block;" class="canvas-container mx-auto col-md-8">
           <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [options]="pieChartOptions"
-            [chartType]="chartType" (chartHover)="chartHovered($event)"
+            [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)"></canvas>
         </div>
   
-        <div *ngIf="chartType == chartTypes.POLAR" style="display: block;"
+        <div *ngIf="model.chartTypeName == chartTypes.POLAR" style="display: block;"
           class="canvas-container mx-auto col-md-10">
           <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
-            [chartType]="chartType" (chartHover)="chartHovered($event)"
+            [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)"></canvas>
         </div>
   

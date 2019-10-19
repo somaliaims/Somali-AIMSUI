@@ -50,6 +50,7 @@ export class EnvelopeReportComponent implements OnInit {
   isDataLoading: boolean = true;
   loadReport: boolean = false;
   errorMessage: string = null;
+  chartTypeName: string = 'bar';
 
   barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -99,7 +100,7 @@ export class EnvelopeReportComponent implements OnInit {
   chartData: any = [];
   doughnutChartData: any = [];
   model: any = { funderTypeId: 0, funderIds: [], startingYear: 0, endingYear: 0, envelopeTypes: [],
-  envelopeTypeIds: []};
+  envelopeTypeIds: [], chartType: 1, chartTypeName: 'bar' };
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -349,6 +350,10 @@ export class EnvelopeReportComponent implements OnInit {
     this.chartData = [];
     var funderIds = this.envelopeList.map(e => e.funderId);
     var fundersChartData: any = [];
+    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    if (chartType.length > 0) {
+      this.model.chartTypeName = chartType[0].type;
+    }
 
     funderIds.forEach((f) => {
       var envelope = this.envelopeList.filter(e => e.funderId == f);
