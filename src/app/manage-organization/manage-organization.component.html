@@ -21,7 +21,18 @@
 
           <form class="form-signin" (ngSubmit)="organizationForm.form.valid && saveOrganization()" #organizationForm="ngForm">
             <div class="form-group">
-              <label for="text">Organization Name</label>
+              <label for="text">Organization type</label>
+              <select class="form-control" name="organizationType" [(ngModel)]="model.organizationTypeId" #organizationType="ngModel" required>
+                <option *ngFor="let orgType of organizationTypes" [value]="orgType.id">
+                  {{orgType.typeName}}
+                </option>
+              </select>
+              <div *ngIf="organizationForm.submitted" [hidden]="organizationName.valid" class="alert alert-danger">
+                Organization Name is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="text">Organization name</label>
               <input type="text" class="form-control" id="organizationName" [(ngModel)]="model.organizationName" name="organizationName"
                 #organizationName="ngModel" required>
               <div *ngIf="organizationForm.submitted" [hidden]="organizationName.valid" class="alert alert-danger">

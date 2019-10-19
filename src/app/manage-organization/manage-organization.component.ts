@@ -17,15 +17,15 @@ export class ManageOrganizationComponent implements OnInit {
   orgId: number = 0;
   btnText: string = 'Add Organization';
   errorMessage: string = '';
-  organizationTypes: any = null;
+  organizationTypes: any = [];
   requestNo: number = 0;
   isError: boolean = false;
   iatiOrganizations: any = [];
   filteredIATIOrganizations: any = [];
-  model = { id: 0, organizationName: '' };
+  model = { id: 0, organizationTypeId: null, organizationName: '' };
 
   constructor(private organizationService: OrganizationService, private route: ActivatedRoute,
-    private router: Router, 
+    private router: Router,
     private storeService: StoreService) {
   }
 
@@ -36,15 +36,7 @@ export class ManageOrganizationComponent implements OnInit {
         this.btnText = 'Edit Organization';
         this.isForEdit = true;
         this.orgId = id;
-        this.organizationService.getOrganization(id).subscribe(
-          data => {
-            this.model.id = data.id;
-            this.model.organizationName = data.organizationName;
-          },
-          error => {
-            console.log("Request Failed: ", error);
-          }
-        );
+        this.getOrganizationTypes();
       }
     }
 
@@ -56,19 +48,31 @@ export class ManageOrganizationComponent implements OnInit {
     });
   }
 
-  fillOrganizationTypes() {
-    /*this.organizationService.getOrganizationTypes().subscribe(
+  getOrganizationData() {
+    if (this.orgId) {
+      this.organizationService.getOrganization(this.orgId.toString()).subscribe(
+        data => {
+          this.model.id = data.id;
+          this.model.organizationName = data.organizationName;
+          this.model.organizationTypeId = data.organizationTypeId;
+        }
+      );
+    }
+  }
+  getOrganizationTypes() {
+    this.organizationService.getOrganizationTypes().subscribe(
       data => {
-        this.organizationTypes = data;
-      },
-      error => {
-        console.log("Request Failed: ", error);
+        if (data) {
+          this.organizationTypes = data;
+          this.getOrganizationData();
+        }
       }
-    );*/
+    );
   }
 
   saveOrganization() {
     var model = {
+      organizationTypeId: this.model.organizationTypeId,
       Name: this.model.organizationName,
     };
 
