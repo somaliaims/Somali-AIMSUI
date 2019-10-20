@@ -52,13 +52,14 @@ export class NewProjectComponent implements OnInit {
   startDateModel: NgbDateStruct;
   projectIdCounter: number = 0;
   timerCounter: number = 0;
-  timeoutForSearch: number = 2000;
+  timeoutForSearch: number = 1000;
   currentProjectId: number = 0;
   isAIMSSearchInProgress: boolean = false;
   isProjectPermitted: boolean = true;
   timer: any = null;
   pagingSize: number = Settings.rowsPerPage;
   isShowContact: boolean = false;
+  userOrganizationId: number = 0;
 
   sectorsSettings: any = {};
   locationsSettings: any = {};
@@ -111,6 +112,7 @@ export class NewProjectComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
+    this.userOrganizationId = (this.securityService.getUserOrganizationId()) ? parseInt(this.securityService.getUserOrganizationId()) : 0;
     this.requestNo = this.storeService.getCurrentRequestId();
     this.getFinancialYearsList();
     this.getSectorsList();
@@ -218,12 +220,19 @@ export class NewProjectComponent implements OnInit {
         this.isTextReadOnly = false;
         this.inputTextHolder = projectTitle;
         this.isIATILoading = false;
-      },
-      error => {
-        this.isProjectLoaded = true;
-        this.isTextReadOnly = false;
-        this.inputTextHolder = projectTitle;
-        this.isIATILoading = false;
+
+        if (!this.isAIMSLoading) {
+          if (this.organizationsList && this.organizationsList.length > 0) {
+            var org = this.organizationsList.filter(o => o.id == this.userOrganizationId);
+            this.model.selectedOrganizations.push(org[0]);
+            if (org.length > 0) {
+              setTimeout(() => {
+                this.filterProjectMatches();
+              }, 1000);
+              
+            }
+          }
+        }
       }
     );
   }
@@ -508,9 +517,6 @@ export class NewProjectComponent implements OnInit {
               this.isSearchingProjects = false;
             }, this.displayTime);
           }
-        },
-        error => {
-          this.isSearchingProjects = false;
         }
       );
     }
@@ -524,6 +530,18 @@ export class NewProjectComponent implements OnInit {
           this.aimsProjects = data;
           this.filteredAIMSProjects = data;
           this.isAIMSLoading = false;
+
+          if (!this.isIATILoading) {
+            if (this.organizationsList && this.organizationsList.length > 0) {
+              var org = this.organizationsList.filter(o => o.id == this.userOrganizationId);
+              if (org.length > 0) {
+                this.model.selectedOrganizations.push(org[0]);
+                setTimeout(() => {
+                  this.filterProjectMatches();
+                }, 1000);
+              }
+            }
+          }
         }
       }
     );

@@ -71,11 +71,7 @@ export class LoginComponent implements OnInit {
           location.reload();
         } 
       }
-    },
-      error => {
-        console.log("Request Failed: ", error);
-        this.resetDefaultStatus();
-      });
+    });
   }
 
   getExchangeRates() {
@@ -85,7 +81,7 @@ export class LoginComponent implements OnInit {
           this.storeService.storeExchangeRates(data.rates);
         }
       }
-    )
+    );
   }
 
   resetDefaultStatus() {
