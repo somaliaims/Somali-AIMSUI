@@ -125,10 +125,21 @@ export class SectorReportComponent implements OnInit {
   barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return parseInt(tooltipValue).toLocaleString();
+        }
+      }
+    },
     scales: {
       yAxes: [{
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value.toLocaleString("en-US");
+          }
         }
       }],
       xAxes: [{
@@ -151,10 +162,40 @@ export class SectorReportComponent implements OnInit {
     legend: {
       position: 'top',
     },
+    tooltips: {
+      callbacks: {
+        // this callback is used to create the tooltip label
+        label: function(tooltipItem, data) {
+          // get the data label and data value to display
+          // convert the data value to local string so it uses a comma seperated number
+          var dataLabel = data.labels[tooltipItem.index];
+          var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
+          // make this isn't a multi-line label (e.g. [["label 1 - line 1, "line 2, ], [etc...]])
+            dataLabel += value;
+          // return the text to display on the tooltip
+          return dataLabel;
+        }
+      }
+    }
   }
 
   radarChartOptions: any = {
-    responsive: true
+    responsive: true,
+    tooltips: {
+      callbacks: {
+        // this callback is used to create the tooltip label
+        label: function(tooltipItem, data) {
+          // get the data label and data value to display
+          // convert the data value to local string so it uses a comma seperated number
+          var dataLabel = data.labels[tooltipItem.index];
+          var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
+          // make this isn't a multi-line label (e.g. [["label 1 - line 1, "line 2, ], [etc...]])
+            dataLabel += value;
+          // return the text to display on the tooltip
+          return dataLabel;
+        }
+      }
+    }
   }
   chartColors: any = [
     {
@@ -195,7 +236,7 @@ export class SectorReportComponent implements OnInit {
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.loadReport = true;
-        } 
+        }
       });
     } else {
       this.isLoading = false;
@@ -578,15 +619,15 @@ export class SectorReportComponent implements OnInit {
         case this.dataOptionsCodes.ACTUAL_DISBURSEMENTS:
           this.chartData = this.reportDataList.sectorProjectsList.map(p => p.actualDisbursements);
           break;
-  
+
         case this.dataOptionsCodes.PLANNED_DISBURSEMENTS:
           this.chartData = this.reportDataList.sectorProjectsList.map(p => p.plannedDisbursements);
           break;
-  
+
         case this.dataOptionsCodes.DISBURSEMENTS:
           this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
           break;
-  
+
         default:
           this.chartData = this.reportDataList.sectorProjectsList.map(p => p.actualDisbursements);
           break;
@@ -748,21 +789,21 @@ export class SectorReportComponent implements OnInit {
 
       this.showChart = false;
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
-          this.chartData = [];
-          var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
-          var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
-          this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorFunding);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
+        this.chartData = [];
+        var sectorFunding = this.reportDataList.sectorProjectsList.map(p => p.totalFunding);
+        var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
+        this.chartData.push(chartData);
+        this.doughnutChartData.push(sectorFunding);
+        this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
       }
 
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
-          this.chartData = [];
-          var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
-          var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
-          this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorDisbursements);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
+        this.chartData = [];
+        var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+        var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
+        this.chartData.push(chartData);
+        this.doughnutChartData.push(sectorDisbursements);
+        this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
       }
 
       setTimeout(() => {

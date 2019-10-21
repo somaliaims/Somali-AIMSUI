@@ -12,7 +12,7 @@
           <form (ngSubmit)="usersForm.form.valid && registerUser()" class="example-form" #usersForm='ngForm'>
             <div class="form-group">
               <label>Organization type: </label>
-              <select class="form-control" name="organizationTypeId" [(ngModel)]="model.organizationTypeId" id="organizationTypeId"
+              <select [class.disable]="isLoading" class="form-control" name="organizationTypeId" [(ngModel)]="model.organizationTypeId" id="organizationTypeId"
               #organizationTypeId="ngModel" (change)="filterOrganizationsList()" required>
                 <option *ngFor="let type of organizationTypes" [value]="type.id">{{type.typeName}}</option>
               </select>

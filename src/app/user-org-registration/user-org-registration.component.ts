@@ -118,7 +118,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   loadOrganizations() {
-    this.organizationService.getOrganizationsWithType().subscribe(
+    this.organizationService.getUserOrganizations().subscribe(
       data => {
         if (data) {
           this.organizations = data;
