@@ -17,7 +17,7 @@
             <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
               <div class="row">
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Search for a specific project" [(ngModel)]="model.title"
+                  <input type="text" title="Type keywords to search for a specific project" class="form-control" placeholder="Search for a specific project" [(ngModel)]="model.title"
                     name="title" #title="ngModel" aria-describedby="basic-addon2">
                 </div>
                 <div class="col-md-6">
@@ -27,7 +27,7 @@
                         Period from:&nbsp;
                       </td>
                       <td>
-                        <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
+                        <select class="form-control" id="startingYear" title="Starting financial year" [(ngModel)]="model.startingYear"
                           name="startingYear" #startingYear="ngModel" required>
                           <option value="0">--Start--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
@@ -36,7 +36,7 @@
                       </td>
                       <td>&nbsp;&nbsp;</td>
                       <td>
-                        <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
+                        <select class="form-control" id="endingYear" title="Ending financial year" [(ngModel)]="model.endingYear" name="endingYear"
                           #endingYear="ngModel" required>
                           <option value="0">--End--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
@@ -49,14 +49,14 @@
               </div>
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="Sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
                     (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
                     (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" [data]="organizationsList"
+                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s" [data]="organizationsList"
                     [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
                     (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
                     (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
@@ -67,7 +67,7 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
+                  <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting" (change)="selectCurrency()"
                     id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
                     #selectedCurrency="ngModel">
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">

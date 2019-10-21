@@ -19,7 +19,7 @@
               <div class="row margin-top-10">
                 <div class="col-md-6 form-inline">
                   <label>Currency: </label>&nbsp;&nbsp;
-                  <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
+                  <select [class.disable]="manualExRate == 0" title="Currency for reporting" class="form-control" (change)="selectCurrency()"
                     id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
                     #selectedCurrency="ngModel">
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">

@@ -151,6 +151,11 @@ html {
     font-weight: bold;
   }
 
+  .font-dashboard-menu-item-small {
+    font-size: 26px;
+    font-weight: bold;
+  }
+
   .margin-top-20 {
     margin-top: 20px !important;
   }

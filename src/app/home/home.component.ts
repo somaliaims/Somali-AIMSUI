@@ -43,11 +43,11 @@ export class HomeComponent implements OnInit {
     }, Settings.displayMessageTime);
 
     this.currentYear = this.storeService.getCurrentYear();
+    this.getCurrentYearDisbursements();
     this.getHomePageSettings();
     this.getUsersCount();
     this.getProjectsCount();
     this.getOrganizationsCount();
-    this.getCurrentYearDisbursements();
     this.getDefaultCurrency();
     this.getLatestProjects();
   }
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
     this.projectService.getCurrentYearsDisbursements().subscribe(
       data => {
         if (data) {
-          this.currentYearDisbursements = data;
+          this.currentYearDisbursements = Math.round(data);
         }
       }
     );
