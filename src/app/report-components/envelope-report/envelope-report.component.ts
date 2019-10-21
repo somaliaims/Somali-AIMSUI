@@ -252,8 +252,13 @@ export class EnvelopeReportComponent implements OnInit {
     );
   }
 
-  getOrganizationsForType() {
-    if (this.selectedOrganizationTypes) {
+  getOrganizationsForType(selectionType: number = 2) {
+    if (selectionType == 1) {
+      this.filteredOrganizations = this.organizations;
+    } else if (selectionType == 0) {
+      this.selectedOrganizations = [];
+      this.filteredOrganizations = [];
+    } else if (this.selectedOrganizationTypes && this.selectedOrganizationTypes.length > 0) {
       var ids = this.selectedOrganizationTypes.map(o => o.id);
       this.filteredOrganizations = this.organizations.filter(o => ids.includes(o.organizationTypeId));
     } else {
