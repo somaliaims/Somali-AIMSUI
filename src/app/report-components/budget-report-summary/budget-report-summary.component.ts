@@ -44,11 +44,22 @@ export class BudgetReportSummaryComponent implements OnInit {
 
   chartOptions: any = {
     responsive: true,
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return parseInt(tooltipValue).toLocaleString();
+        }
+      }
+    },
     scales: {
       yAxes: [{
         stacked: true,
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value.toLocaleString("en-US");
+          }
         }
       }],
       xAxes: [{

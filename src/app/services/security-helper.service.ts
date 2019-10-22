@@ -33,6 +33,7 @@ export class SecurityHelperService {
       localStorage.setItem('token', token);
       localStorage.setItem('displayName', userObj.displayName);
       localStorage.setItem('organizationId', userObj.organizationId);
+      localStorage.setItem('organizationName', userObj.organizationName);
       localStorage.setItem('userType', userObj.userType);
       localStorage.setItem('isLoggedIn', true.toString());
     }
@@ -44,6 +45,10 @@ export class SecurityHelperService {
   
   getUserOrganizationId() {
     return localStorage.getItem('organizationId');
+  }
+
+  getUserOrganization() {
+    return localStorage.getItem("organizationName");
   }
 
   getUserToken() {

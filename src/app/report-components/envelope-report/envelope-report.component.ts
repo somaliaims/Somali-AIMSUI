@@ -55,10 +55,21 @@ export class EnvelopeReportComponent implements OnInit {
   barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return parseInt(tooltipValue).toLocaleString();
+        }
+      }
+    },
     scales: {
       yAxes: [{
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value.toLocaleString("en-US");
+          }
         }
       }],
       xAxes: [{
@@ -81,11 +92,32 @@ export class EnvelopeReportComponent implements OnInit {
     legend: {
       position: 'top',
     },
+    tooltips: {
+      callbacks: {
+        label: function(tooltipItem, data) {
+          var dataLabel = data.labels[tooltipItem.index];
+          var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
+          dataLabel += value;
+          return dataLabel;
+        }
+      }
+    }
   }
 
   radarChartOptions: any = {
-    responsive: true
+    responsive: true,
+    tooltips: {
+      callbacks: {
+        label: function(tooltipItem, data) {
+          var dataLabel = data.labels[tooltipItem.index];
+          var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
+          dataLabel += value;
+          return dataLabel;
+        }
+      }
+    }
   }
+
   chartColors: any = [
     {
       backgroundColor: [

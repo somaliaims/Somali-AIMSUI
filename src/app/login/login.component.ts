@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.requestNo = this.storeService.getNewRequestNumber();
     this.model = new LoginModel('', '');
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {

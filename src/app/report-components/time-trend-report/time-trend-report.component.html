@@ -184,7 +184,7 @@
         <div *ngIf="model.chartTypeName == chartTypes.POLAR" style="display: block;"
           class="canvas-container mx-auto col-md-8">
           <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
-            [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
+            [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)" [options]="pieChartOptions"
             (chartClick)="chartClicked($event)"></canvas>
         </div>
 

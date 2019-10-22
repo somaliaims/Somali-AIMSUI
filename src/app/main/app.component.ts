@@ -14,7 +14,8 @@ export class AppComponent {
   isLoggedIn: boolean = false;
   permissions: any = {};
   notificationsCount: number = 0;
-
+  loggedInAs: string = null;
+  loggedInAsFullName: string = null;
 
   constructor(private securityService: SecurityHelperService, private router: Router,
     private notificationService: NotificationService, private homePageService: HomePageService) {
@@ -22,6 +23,10 @@ export class AppComponent {
 
     if (this.isLoggedIn) {
       this.getNotificationsCount();
+      this.loggedInAsFullName = this.securityService.getUserOrganization();
+      if (this.loggedInAsFullName && this.loggedInAsFullName != undefined) {
+        this.loggedInAs = this.truncate(this.loggedInAsFullName, 25, null);
+      }
     }
   }
 
@@ -57,6 +62,11 @@ export class AppComponent {
       }
     );
   }
+
+ truncate(string, length, delimiter) {
+    delimiter = delimiter || "&hellip;";
+    return string.length > length ? string.substr(0, length) + delimiter : string;
+ };
 
   
 }

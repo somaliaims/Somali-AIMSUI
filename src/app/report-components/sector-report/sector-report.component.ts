@@ -171,7 +171,7 @@ export class SectorReportComponent implements OnInit {
           var dataLabel = data.labels[tooltipItem.index];
           var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
           // make this isn't a multi-line label (e.g. [["label 1 - line 1, "line 2, ], [etc...]])
-            dataLabel += value;
+          dataLabel += value;
           // return the text to display on the tooltip
           return dataLabel;
         }
@@ -183,20 +183,16 @@ export class SectorReportComponent implements OnInit {
     responsive: true,
     tooltips: {
       callbacks: {
-        // this callback is used to create the tooltip label
         label: function(tooltipItem, data) {
-          // get the data label and data value to display
-          // convert the data value to local string so it uses a comma seperated number
           var dataLabel = data.labels[tooltipItem.index];
           var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
-          // make this isn't a multi-line label (e.g. [["label 1 - line 1, "line 2, ], [etc...]])
-            dataLabel += value;
-          // return the text to display on the tooltip
+          dataLabel += value;
           return dataLabel;
         }
       }
     }
   }
+  
   chartColors: any = [
     {
       backgroundColor: [
