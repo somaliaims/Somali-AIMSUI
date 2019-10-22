@@ -11,6 +11,8 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/config/settings';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'sector-report',
@@ -31,14 +33,6 @@ export class SectorReportComponent implements OnInit {
   oldCurrencyRate: number = 0;
   oldCurrency: string = null;
   currencyRate: number = 0;
-  yearsList: any = [];
-  allSectorsList: any = [];
-  sectorsList: any = [];
-  subSectorsList: any = [];
-  organizationsList: any = [];
-  currenciesList: any = [];
-  locationsList: any = [];
-  exchangeRatesList: any = [];
   manualExRate: any = 0;
   defaultCurrency: string = null;
   defaultCurrencyRate: number = 0;
@@ -58,6 +52,20 @@ export class SectorReportComponent implements OnInit {
   isDataLoading: boolean = true;
   isDefaultCurrencySet: boolean = true;
   pageHeight: number = Settings.pdfPrintPageHeight;
+
+  titleForm: FormGroup;
+  titleInput = new FormControl();
+
+  yearsList: any = [];
+  allSectorsList: any = [];
+  sectorsList: any = [];
+  subSectorsList: any = [];
+  organizationsList: any = [];
+  currenciesList: any = [];
+  locationsList: any = [];
+  exchangeRatesList: any = [];
+  projects: any = [];
+  filteredProjects: any = [];
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -219,7 +227,7 @@ export class SectorReportComponent implements OnInit {
     private sectorService: SectorService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private locationService: LocationService,
     private currencyService: CurrencyService, private errorModal: ErrorModalComponent,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, private fb: FormBuilder, private projectService: ProjectService
   ) { }
 
   ngOnInit() {
@@ -288,11 +296,30 @@ export class SectorReportComponent implements OnInit {
       allowSearchFilter: true
     };
 
+    this.titleForm = this.fb.group({
+      titleInput: null,
+    });
+
     var dataOption = this.dataOptions.filter(o => o.id == 1);
     if (dataOption.length > 0) {
       this.model.selectedDataOptions.push(dataOption[0]);
       this.selectedDataOptions.push(this.dataOptionsCodes.ACTUAL_DISBURSEMENTS);
     }
+  }
+
+  displayTitle(organization?: any): string | undefined {
+    return organization ? organization : undefined;
+  }
+
+  getProjectTitles() {
+    this.projectService.getProjectTitles().subscribe(
+      data => {
+        if (data) {
+          this.projects = data;
+          this.filteredProjects = data;
+        }
+      }
+    );
   }
 
   getManualExchangeRateForToday() {

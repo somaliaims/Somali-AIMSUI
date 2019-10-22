@@ -17,8 +17,19 @@
             <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
               <div class="row">
                 <div class="col-md-6">
-                  <input type="text" title="Type keywords to search for a specific project" class="form-control" placeholder="Search for specific project" [(ngModel)]="model.title"
-                    name="title" #title="ngModel" aria-describedby="basic-addon2">
+                  <!--<input type="text" title="Type keywords to search for a specific project" class="form-control" placeholder="Search for specific project" [(ngModel)]="model.title"
+                    name="title" #title="ngModel" aria-describedby="basic-addon2">-->
+                    <form class="example-form" [formGroup]='titleForm'>
+                      <mat-form-field class="example-full-width margin-left-5">
+                        <input matInput placeholder="Enter/Select a specific project" aria-label="Project title"
+                          [matAutocomplete]="auto" [formControl]="titleInput">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayTitle.bind(this)">
+                          <mat-option *ngFor="let project of filteredProjects | async" [value]="org">
+                            <span>{{project.title}}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </form>
                 </div>
                 <div class="col-md-6">
                   <table>

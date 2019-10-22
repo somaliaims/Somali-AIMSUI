@@ -399,6 +399,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectTypesUrl + '/' + criteria);
     }
 
+    getProjectTitlesUrl() {
+        return (this.BASE_URL + urlsList.urls.projectTitlesUrl);
+    }
+
     getProjectTypesUrl() {
         return (this.BASE_URL + urlsList.urls.projectTypesUrl);
     }

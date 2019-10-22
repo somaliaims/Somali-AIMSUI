@@ -139,6 +139,7 @@ export const urls = {
 	userApprovedRequests: "ProjectMembership/GetUserApprovedRequests",
 	userProjects: "Project/GetUserProjects",
 	projectMembershipUrl: "ProjectMembership",
+	projectTitlesUrl: "Project/GetProjectTitles",
 	approveProjectMembership: "ProjectMembership/ApproveRequest",
 	unApproveProjectMembership: "ProjectMembership/UnApproveRequest",
 	importNewExcelDataUrl: "ImportData/UploadDataImportFileEighteen",

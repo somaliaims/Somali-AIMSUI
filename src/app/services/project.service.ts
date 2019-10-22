@@ -177,6 +177,13 @@ export class ProjectService {
     );
   }
 
+  getProjectTitles() {
+    var url = this.urlHelper.getProjectTitlesUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Project titles'))
+    );
+  }
+
   makeProjectDeletionRequest(model: any) {
     var url = this.urlHelper.getProjectDeletionRequestUrl();
     return this.httpClient.post(url, model, httpOptions).pipe(
