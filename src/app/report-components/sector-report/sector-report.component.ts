@@ -11,8 +11,8 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/config/settings';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ProjectService } from 'src/app/services/project.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'sector-report',
@@ -28,6 +28,7 @@ export class SectorReportComponent implements OnInit {
   exchangeRates: any = [];
   selectedChartType: number = 1;
   organizationsSettings: any = {};
+  projectsSettings: any = {};
   dataOptionSettings: any = {};
   locationsSettings: any = {};
   oldCurrencyRate: number = 0;
@@ -53,8 +54,6 @@ export class SectorReportComponent implements OnInit {
   isDefaultCurrencySet: boolean = true;
   pageHeight: number = Settings.pdfPrintPageHeight;
 
-  titleForm: FormGroup;
-  titleInput = new FormControl();
 
   yearsList: any = [];
   allSectorsList: any = [];
@@ -65,7 +64,7 @@ export class SectorReportComponent implements OnInit {
   locationsList: any = [];
   exchangeRatesList: any = [];
   projects: any = [];
-  filteredProjects: any = [];
+  selectedProjects: any = [];
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -227,7 +226,7 @@ export class SectorReportComponent implements OnInit {
     private sectorService: SectorService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private locationService: LocationService,
     private currencyService: CurrencyService, private errorModal: ErrorModalComponent,
-    private route: ActivatedRoute, private fb: FormBuilder, private projectService: ProjectService
+    private route: ActivatedRoute, private projectService: ProjectService
   ) { }
 
   ngOnInit() {
@@ -266,6 +265,16 @@ export class SectorReportComponent implements OnInit {
       allowSearchFilter: true
     };
 
+    this.projectsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'title',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
     this.organizationsSettings = {
       singleSelection: false,
       idField: 'id',
@@ -296,10 +305,6 @@ export class SectorReportComponent implements OnInit {
       allowSearchFilter: true
     };
 
-    this.titleForm = this.fb.group({
-      titleInput: null,
-    });
-
     var dataOption = this.dataOptions.filter(o => o.id == 1);
     if (dataOption.length > 0) {
       this.model.selectedDataOptions.push(dataOption[0]);
@@ -307,19 +312,16 @@ export class SectorReportComponent implements OnInit {
     }
   }
 
-  displayTitle(organization?: any): string | undefined {
-    return organization ? organization : undefined;
+  displayTitle(project?: any): string | undefined {
+    return (project) ? project.title : undefined;
   }
 
-  getProjectTitles() {
-    this.projectService.getProjectTitles().subscribe(
-      data => {
-        if (data) {
-          this.projects = data;
-          this.filteredProjects = data;
-        }
-      }
-    );
+  private filterTitles(value: string): any[] {
+    if (typeof value != "string") {
+    } else {
+      const filterValue = value.toLowerCase();
+      return this.projects.filter(project => project.title.toLowerCase().indexOf(filterValue) !== -1);
+    }
   }
 
   getManualExchangeRateForToday() {
@@ -377,6 +379,7 @@ export class SectorReportComponent implements OnInit {
 
     this.chartLables = [];
     this.chartData = [];
+    
     var searchModel = {
       title: this.model.title,
       startingYear: this.model.startingYear,
