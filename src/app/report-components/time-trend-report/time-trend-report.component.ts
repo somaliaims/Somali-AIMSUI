@@ -12,6 +12,7 @@ import { CurrencyService } from 'src/app/services/currency.service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'time-trend-report',
@@ -24,10 +25,13 @@ export class TimeTrendReportComponent implements OnInit {
   selectedOrganizations: any = [];
   selectedLocations: any = [];
   selectedDataOptions: any = [];
+  projects: any = [];
+
   selectedChartType: number = 1;
   organizationsSettings: any = {};
   dataOptionSettings: any = {};
   locationsSettings: any = {};
+  projectsSettings: any = {};
   oldCurrencyRate: number = 0;
   oldCurrency: string = null;
   currencyRate: number = 0;
@@ -206,16 +210,16 @@ export class TimeTrendReportComponent implements OnInit {
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar'
+    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: []
   };
+
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
-
   constructor(private reportService: ReportService, private storeService: StoreService,
     private sectorService: SectorService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private locationService: LocationService,
     private currencyService: CurrencyService, private errorModal: ErrorModalComponent,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, private projectService: ProjectService
   ) { }
 
   ngOnInit() {
@@ -235,6 +239,7 @@ export class TimeTrendReportComponent implements OnInit {
       this.isLoading = false;
     }
 
+    this.getProjectTitles();
     this.getSectorsList();
     this.getLocationsList();
     this.getOrganizationsList();
@@ -248,6 +253,16 @@ export class TimeTrendReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'sectorName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.projectsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'title',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -291,6 +306,16 @@ export class TimeTrendReportComponent implements OnInit {
     }
   }
 
+  getProjectTitles() {
+    this.projectService.getProjectTitles().subscribe(
+      data => {
+        if (data) {
+          this.projects = data;
+        }
+      }
+    );
+  }
+
   getDefaultCurrency() {
     this.currencyService.getDefaultCurrency().subscribe(
       data => {
@@ -326,8 +351,13 @@ export class TimeTrendReportComponent implements OnInit {
 
     this.chartLables = [];
     this.chartData = [];
+    var projectIds = [];
+    if (this.model.selectedProjects.length > 0) {
+      projectIds = this.model.selectedProjects.map(p => p.id);
+    }
+
     var searchModel = {
-      title: this.model.title,
+      projectIds: projectIds,
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),

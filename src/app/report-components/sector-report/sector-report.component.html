@@ -17,12 +17,9 @@
             <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
               <div class="row">
                 <div class="col-md-6">
-                  <!--<input type="text" title="Type keywords to search for a specific project" class="form-control" placeholder="Search for specific project" [(ngModel)]="model.title"
-                    name="title" #title="ngModel" aria-describedby="basic-addon2">-->
-                    <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projects"
-                    [(ngModel)]="model.selectedProjects" [settings]="sectorsSettings" name="selectedProjects"
-                    (onSelect)="onProjectSelect($event)" (onDeSelect)="onProjectDeSelect($event)"
-                    (onSelectAll)="onProjectSelectAll($event)" #selectedProjects="ngModel">
+                  <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projects"
+                    [(ngModel)]="model.selectedProjects" [settings]="projectsSettings" name="selectedProjects"
+                    #selectedProjects="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
@@ -32,8 +29,8 @@
                         Period from:&nbsp;
                       </td>
                       <td>
-                        <select class="form-control" id="startingYear" title="Starting financial year" [(ngModel)]="model.startingYear"
-                          name="startingYear" #startingYear="ngModel" required>
+                        <select class="form-control" id="startingYear" title="Starting financial year"
+                          [(ngModel)]="model.startingYear" name="startingYear" #startingYear="ngModel" required>
                           <option value="0">--Start--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
@@ -41,8 +38,8 @@
                       </td>
                       <td>&nbsp;&nbsp;</td>
                       <td>
-                        <select class="form-control" id="endingYear" title="Ending financial year" [(ngModel)]="model.endingYear" name="endingYear"
-                          #endingYear="ngModel" required>
+                        <select class="form-control" id="endingYear" title="Ending financial year"
+                          [(ngModel)]="model.endingYear" name="endingYear" #endingYear="ngModel" required>
                           <option value="0">--End--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
@@ -55,34 +52,35 @@
               <div class="row margin-top-10">
                 <div class="col-md-3">
                   <select class="form-control" id="parentSectorId" (change)="showSubSectors()"
-                    [(ngModel)]="model.parentSectorId" name="parentSectorId" title="Sector/s" #parentSectorId="ngModel" required>
+                    [(ngModel)]="model.parentSectorId" name="parentSectorId" title="Sector/s" #parentSectorId="ngModel"
+                    required>
                     <option value="0">--All sectors--</option>
                     <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}
                     </option>
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <ng-multiselect-dropdown [placeholder]="'-- All sub sector/s --'" title="Sub-sector/s" [data]="subSectorsList"
-                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
-                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                  <ng-multiselect-dropdown [placeholder]="'-- All sub sector/s --'" title="Sub-sector/s"
+                    [data]="subSectorsList" [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings"
+                    name="selectedSectors" (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
                     (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s" [data]="organizationsList"
-                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
-                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
-                    (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
-                    #selectedOrganizations="ngModel">
+                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
+                    [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
+                    [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)"
+                    (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)"
+                    name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
               </div>
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting" (change)="selectCurrency()"
-                    id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
-                    #selectedCurrency="ngModel">
+                  <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
+                    (change)="selectCurrency()" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
+                    name="selectedCurrency" #selectedCurrency="ngModel">
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
                       {{currency.currencyName}}
                     </option>
@@ -134,21 +132,21 @@
           <div class="col-md-6">
             <div class="row">
               <form class="form-inline">
-                  <label>Chart type to display:&nbsp;</label>
-                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                    #chartType="ngModel" (change)="manageDataToDisplay()" required>
-                    <option *ngFor="let chart of chartOptions" value="{{chart.id}}">
-                      {{chart.title}}
-                    </option>
-                  </select>
-                  <label>&nbsp;Data on chart:&nbsp;</label>
-                  <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
-                    #dataOption="ngModel" (change)="manageDataToDisplay()" required>
-                    <option value="null">-- Chart data option --</option>
-                    <option *ngFor="let option of dataOptions" value="{{option.id}}">
-                      {{option.value}}
-                    </option>
-                  </select>
+                <label>Chart type to display:&nbsp;</label>
+                <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
+                  #chartType="ngModel" (change)="manageDataToDisplay()" required>
+                  <option *ngFor="let chart of chartOptions" value="{{chart.id}}">
+                    {{chart.title}}
+                  </option>
+                </select>
+                <label>&nbsp;Data on chart:&nbsp;</label>
+                <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
+                  #dataOption="ngModel" (change)="manageDataToDisplay()" required>
+                  <option value="null">-- Chart data option --</option>
+                  <option *ngFor="let option of dataOptions" value="{{option.id}}">
+                    {{option.value}}
+                  </option>
+                </select>
               </form>
             </div>
           </div>
@@ -280,6 +278,6 @@
       </div>
     </div>
 
-</block-ui>
+  </block-ui>
 </div>
 <error-modal message={{errorMessage}}></error-modal>

@@ -9,6 +9,7 @@ import { CurrencyService } from 'src/app/services/currency.service';
 import { Messages } from 'src/app/config/messages';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { ActivatedRoute } from '@angular/router';
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'location-report',
@@ -22,14 +23,18 @@ export class LocationReportComponent implements OnInit {
   exchangeRates: any = [];
   organizationsSettings: any = {};
   dataOptionSettings: any = {};
+  projectsSettings: any = {};
   yearsList: any = [];
   locationsList: any = [];
   subLocationsList: any = [];
   organizationsList: any = [];
   currenciesList: any = [];
+  
   exchangeRatesList: any = [];
   manualExchangeRatesList: any = [];
   selectedDataOptions: any = [];
+  projects: any = [];
+
   defaultCurrency: string = null;
   nationalCurrency: string = null;
   nationalCurrencyName: string = null;
@@ -197,7 +202,7 @@ export class LocationReportComponent implements OnInit {
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar'
+    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: []
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -205,7 +210,8 @@ export class LocationReportComponent implements OnInit {
   constructor(private reportService: ReportService, private storeService: StoreService,
     private locationService: LocationService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private currencyService: CurrencyService,
-    private errorModal: ErrorModalComponent, private route: ActivatedRoute
+    private errorModal: ErrorModalComponent, private route: ActivatedRoute, 
+    private projectService: ProjectService
   ) { }
 
   ngOnInit() {
@@ -225,6 +231,7 @@ export class LocationReportComponent implements OnInit {
       this.isLoading = false;
     }
 
+    this.getProjectTitles();
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
@@ -236,6 +243,16 @@ export class LocationReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'locationName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.projectsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'title',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -297,6 +314,16 @@ export class LocationReportComponent implements OnInit {
       });
   }
 
+  getProjectTitles() {
+    this.projectService.getProjectTitles().subscribe(
+      data => {
+        if (data) {
+          this.projects = data;
+        }
+      }
+    );
+  }
+
   getDefaultCurrency() {
     this.currencyService.getDefaultCurrency().subscribe(
       data => {
@@ -331,8 +358,13 @@ export class LocationReportComponent implements OnInit {
   searchProjectsByCriteriaReport() {
     this.chartLables = [];
     this.chartData = [];
+    var projectIds = [];
+    if (this.model.selectedProjects.length > 0) {
+      projectIds = this.model.selectedProjects.map(p => p.id);
+    }
+
     var searchModel = {
-      title: this.model.title,
+      projectIds: projectIds,
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),

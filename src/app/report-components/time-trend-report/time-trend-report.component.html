@@ -17,8 +17,10 @@
             <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
               <div class="row">
                 <div class="col-md-6">
-                  <input type="text" title="Type keywords to search for a specific project" class="form-control" placeholder="Search for a specific project" [(ngModel)]="model.title"
-                    name="title" #title="ngModel" aria-describedby="basic-addon2">
+                  <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projects"
+                    [(ngModel)]="model.selectedProjects" [settings]="projectsSettings" name="selectedProjects"
+                    #selectedProjects="ngModel">
+                  </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
                   <table>

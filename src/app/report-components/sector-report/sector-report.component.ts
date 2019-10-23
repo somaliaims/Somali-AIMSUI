@@ -216,7 +216,7 @@ export class SectorReportComponent implements OnInit {
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, parentSectorId: 0, chartType: 1,
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
-    selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
+    selectedLocations: [], selectedProjects: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar'
   };
@@ -246,6 +246,7 @@ export class SectorReportComponent implements OnInit {
     }
 
     this.model.chartType = this.chartTypes.BAR;
+    this.getProjectTitles();
     this.getSectorsList();
     this.getLocationsList();
     this.getOrganizationsList();
@@ -316,12 +317,14 @@ export class SectorReportComponent implements OnInit {
     return (project) ? project.title : undefined;
   }
 
-  private filterTitles(value: string): any[] {
-    if (typeof value != "string") {
-    } else {
-      const filterValue = value.toLowerCase();
-      return this.projects.filter(project => project.title.toLowerCase().indexOf(filterValue) !== -1);
-    }
+  getProjectTitles() {
+    this.projectService.getProjectTitles().subscribe(
+      data => {
+        if (data) {
+          this.projects = data;
+        }
+      }
+    );
   }
 
   getManualExchangeRateForToday() {
@@ -379,9 +382,12 @@ export class SectorReportComponent implements OnInit {
 
     this.chartLables = [];
     this.chartData = [];
-    
+    var projectIds = [];
+    if (this.model.selectedProjects.length > 0) {
+      projectIds = this.model.selectedProjects.map(p => p.id);
+    }
     var searchModel = {
-      title: this.model.title,
+      projectIds: projectIds,
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
