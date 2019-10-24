@@ -48,6 +48,7 @@ export class SectorReportComponent implements OnInit {
   datedToday: string = null;
   paramSectorIds: any = [];
   paramOrgIds: any = [];
+  paramProjectIds: any = [];
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
@@ -236,6 +237,7 @@ export class SectorReportComponent implements OnInit {
           this.model.title = (params.title) ? params.title : null;
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
+          this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.loadReport = true;
@@ -322,6 +324,16 @@ export class SectorReportComponent implements OnInit {
       data => {
         if (data) {
           this.projects = data;
+          if (this.loadReport) {
+            if (this.paramProjectIds.length > 0) {
+              this.paramProjectIds.forEach(function (id) {
+                var project = this.projects.filter(p => p.id == id);
+                if (project.length > 0) {
+                  this.model.selectedProjects.push(project[0]);
+                }
+              }.bind(this));
+            }
+          }
         }
       }
     );

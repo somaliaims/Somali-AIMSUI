@@ -194,7 +194,7 @@ export class NewProjectComponent implements OnInit {
     if (this.userProjectIds.length == 0) {
       return false;
     }
-    
+
     var selectedIds = this.selectedAIMSProjects.map(p => p.id);
     selectedIds.forEach((id) => {
       if (this.userProjectIds.map(p => p.id).indexOf(id) == -1) {
@@ -224,12 +224,14 @@ export class NewProjectComponent implements OnInit {
         if (!this.isAIMSLoading) {
           if (this.organizationsList && this.organizationsList.length > 0) {
             var org = this.organizationsList.filter(o => o.id == this.userOrganizationId);
-            this.model.selectedOrganizations.push(org[0]);
             if (org.length > 0) {
-              setTimeout(() => {
-                this.filterProjectMatches();
-              }, 1000);
-              
+              this.model.selectedOrganizations.push(org[0]);
+              if (org.length > 0) {
+                setTimeout(() => {
+                  this.filterProjectMatches();
+                }, 1000);
+
+              }
             }
           }
         }
@@ -268,7 +270,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   onItemSelect() {
-      this.filterProjectMatches();
+    this.filterProjectMatches();
   }
 
   onItemDeSelect() {
@@ -779,7 +781,7 @@ export class NewProjectComponent implements OnInit {
             }
           }
           this.isShowContact = this.isShowContactToUser(projectId);
-          
+
           setTimeout(() => {
             this.projectInfoModal.openModal();
             this.blockUI.stop();

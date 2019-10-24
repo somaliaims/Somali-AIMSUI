@@ -64,7 +64,7 @@ export class AppComponent {
   }
 
  truncate(string, length, delimiter) {
-    delimiter = delimiter || "&hellip;";
+    delimiter = delimiter || "...";
     return string.length > length ? string.substr(0, length) + delimiter : string;
  };
 

@@ -6,8 +6,6 @@ import { SectorService } from 'src/app/services/sector.service';
 import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { OrganizationService } from 'src/app/services/organization-service';
 import { LocationService } from 'src/app/services/location.service';
-import * as jsPDF from 'jspdf';
-import * as html2canvas from 'html2canvas';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
@@ -58,6 +56,7 @@ export class TimeTrendReportComponent implements OnInit {
   paramSectorIds: any = [];
   paramOrgIds: any = [];
   paramLocationIds: any = [];
+  paramProjectIds: any = [];
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
@@ -229,6 +228,7 @@ export class TimeTrendReportComponent implements OnInit {
           this.model.title = (params.title) ? params.title : null;
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
+          this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
@@ -311,6 +311,16 @@ export class TimeTrendReportComponent implements OnInit {
       data => {
         if (data) {
           this.projects = data;
+          if (this.loadReport) {
+            if (this.paramProjectIds.length > 0) {
+              this.paramProjectIds.forEach(function (id) {
+                var project = this.projects.filter(p => p.id == id);
+                if (project.length > 0) {
+                  this.model.selectedProjects.push(project[0]);
+                }
+              }.bind(this));
+            }
+          }
         }
       }
     );
