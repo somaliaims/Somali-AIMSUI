@@ -115,82 +115,17 @@
       </div>
     </div>
 
-    <div *ngIf="!isLoading" class="row margin-top-10">
-      <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
-        <div class="row">
-          <div class="col-md-6">
-
-          </div>
-          <div class="col-md-6">
-            <div class="row">
-              <form class="form-inline">
-                <label>Chart type to display:&nbsp;</label>
-                <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                  #chartType="ngModel" (change)="manageDataToDisplay()" required>
-                  <option *ngFor="let chart of chartOptions" value="{{chart.id}}">
-                    {{chart.title}}
-                  </option>
-                </select>
-                <label>&nbsp;Data on chart:&nbsp;</label>
-                <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
-                  #dataOption="ngModel" (change)="manageDataToDisplay()" required>
-                  <option value="null">-- Chart data option --</option>
-                  <option *ngFor="let option of dataOptions" value="{{option.id}}">
-                    {{option.value}}
-                  </option>
-                </select>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div *ngIf="reportDataList && reportDataList.yearlyProjectsList" id="rpt-timetrend-pdf-view" class="col-md-12">
       <div *ngIf="reportDataList.yearlyProjectsList && chartData.length > 0 && showChart"
         class="col-md-12 margin-top-50">
 
-        <div *ngIf="model.chartTypeName == chartTypes.BAR" style="display: block;"
-          class="canvas-container mx-auto col-md-8">
-          <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-            [legend]="chartLegend" [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
-        </div>
-
-        <div *ngIf="model.chartTypeName == chartTypes.LINE" style="display: block;"
-          class="canvas-container mx-auto col-md-8">
-          <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
-            [legend]="chartLegend" [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
-        </div>
-
-        <div *ngIf="model.chartTypeName == chartTypes.RADAR" style="display: block;"
-          class="canvas-container mx-auto col-md-8">
-          <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="radarChartOptions"
-            [chartType]="model.chartTypeName"></canvas>
-        </div>
-
-        <div *ngIf="model.chartTypeName == chartTypes.DOUGHNUT" style="display: block;"
-          class="canvas-container mx-auto col-md-8">
-          <canvas id="chart" baseChart [data]="doughnutChartData" [labels]="chartLables" [options]="pieChartOptions"
-            [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
-        </div>
-
-        <div *ngIf="model.chartTypeName == chartTypes.PIE" style="display: block;"
-          class="canvas-container mx-auto col-md-8">
-          <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [options]="pieChartOptions"
-            [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
-        </div>
-
-        <div *ngIf="model.chartTypeName == chartTypes.POLAR" style="display: block;"
-          class="canvas-container mx-auto col-md-8">
-          <canvas id="chart" baseChart [data]="chartData" [labels]="chartLables" [legend]="chartLegend"
-            [chartType]="model.chartTypeName" (chartHover)="chartHovered($event)" [options]="pieChartOptions"
-            (chartClick)="chartClicked($event)"></canvas>
-        </div>
-
+        <div *ngIf="reportDataList && reportDataList.reportSettings && chartData.length > 0" class="col-md-12 margin-top-10">
+            <div class="offset-2 col-md-8">
+              <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+          </div>
       </div>
 
       <div *ngIf="reportDataList.reportSettings" class="row margin-top-20" id="rpt-time-trend-report">
@@ -219,13 +154,11 @@
                     <td width="100%">
                       <span *ngIf="!yearProject.isDisplay"><i class="fa fa-plus-square"></i></span>
                       <span *ngIf="yearProject.isDisplay"><i class="fa fa-minus-square"></i></span>
-                      <b>&nbsp;{{yearProject.year}} - Project value</b> ({{formatNumber(yearProject.totalProjectValue)}})
+                      &nbsp;{{yearProject.year}} - <b>Project value</b>&nbsp;<i>({{formatNumber(yearProject.totalProjectValue)}})</i>
                       &nbsp;&nbsp;
-                      <b>Total disbursements</b> ({{formatNumber(yearProject.totalFunding)}})
+                      <b>Actual disbursements</b>&nbsp;<i>({{formatNumber(yearProject.totalActualDisbursements)}})</i>
                       &nbsp;&nbsp;
-                      <b>Actual disbursements</b> ({{formatNumber(yearProject.totalActualDisbursements)}})
-                      &nbsp;&nbsp;
-                      <b>Planned disbursements</b> ({{formatNumber(yearProject.totalPlannedDisbursements)}})
+                      <b>Planned disbursements</b>&nbsp;<i>({{formatNumber(yearProject.totalPlannedDisbursements)}})</i>
                     </td>
                   </tr>
                 </tbody>

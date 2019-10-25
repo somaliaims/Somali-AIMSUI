@@ -60,18 +60,48 @@ export class TimeTrendReportComponent implements OnInit {
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
-  chartTypeName: string = 'bar';
+  //chartTypeName: string = 'bar';
+  chartType: string = 'bar';
 
-  chartOptions: any = [
+  chartOptions: any = {
+    responsive: true,
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return parseInt(tooltipValue).toLocaleString();
+        }
+      }
+    },
+    scales: {
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value.toLocaleString("en-US");
+          }
+        }
+      }],
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  };
+
+  /*chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
     { id: 3, type: 'doughnut', title: 'Doughnut chart' },
     { id: 4, type: 'line', title: 'Line chart' },
     { id: 5, type: 'radar', title: 'Radar' },
     { id: 6, type: 'polarArea', title: 'Polar area' }
-  ];
+  ];*/
 
-  chartTypes: any = {
+  /*chartTypes: any = {
     BAR: 'bar',
     PIE: 'pie',
     DOUGHNUT: 'doughnut',
@@ -121,10 +151,40 @@ export class TimeTrendReportComponent implements OnInit {
   exRateSources: any = [
     { id: 1, value: 'Open exchange api' },
     { id: 2, value: 'African bank' }
-  ];
+  ];*/
 
   reportDataList: any = [];
   dropdownSettings: any = {};
+
+  /*chartOptions: any = {
+    responsive: true,
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return parseInt(tooltipValue).toLocaleString();
+        }
+      }
+    },
+    scales: {
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value.toLocaleString("en-US");
+          }
+        }
+      }],
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  };*/
+
   barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -198,7 +258,7 @@ export class TimeTrendReportComponent implements OnInit {
       ]
     }
   ];
-  chartLables: any = [];
+  chartLabels: any = [];
   doughnutChartLabels: any = [];
   barChartType: string = 'bar';
   chartLegend: boolean = true;
@@ -299,11 +359,11 @@ export class TimeTrendReportComponent implements OnInit {
       allowSearchFilter: true
     };
 
-    var dataOption = this.dataOptions.filter(o => o.id == 1);
+    /*var dataOption = this.dataOptions.filter(o => o.id == 1);
     if (dataOption.length > 0) {
       this.model.selectedDataOptions.push(dataOption[0]);
       this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-    }
+    }*/
   }
 
   getProjectTitles() {
@@ -359,7 +419,7 @@ export class TimeTrendReportComponent implements OnInit {
   searchProjectsByCriteriaReport() {
     this.blockUI.start('Searching Projects...');
 
-    this.chartLables = [];
+    this.chartLabels = [];
     this.chartData = [];
     var projectIds = [];
     if (this.model.selectedProjects.length > 0) {
@@ -383,15 +443,16 @@ export class TimeTrendReportComponent implements OnInit {
             y.isDisplay = false;
           });
           var years = this.reportDataList.yearlyProjectsList.map(y => y.year);
-          this.chartLables = years;
+          this.chartLabels = years;
           if (this.reportDataList.reportSettings) {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();
           }
 
-          this.manageDataToDisplay();
+          //this.manageDataToDisplay();
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
+          this.setupChartData();
         }
         this.blockUI.stop();
       }
@@ -403,9 +464,29 @@ export class TimeTrendReportComponent implements OnInit {
     
   }
 
+  setupChartData() {
+    this.chartData = [];
+    var yearlyProjects = this.reportDataList.yearlyProjectsList;
+    this.chartLabels = yearlyProjects.map(y => y.year);
+    var actualDisbursements = yearlyProjects.map(y => y.totalActualDisbursements);
+    var plannedDisbursements = yearlyProjects.map(y => y.totalPlannedDisbursements);
+
+    this.chartData.push({
+      data: actualDisbursements,
+      label: 'Actual disbursements',
+      stack: 'Stack 0'
+    });
+
+    this.chartData.push({
+      data: plannedDisbursements,
+      label: 'Planned disbursements',
+      stack: 'Stack 0'
+    });
+  }
+
   resetSearchResults() {
     this.chartData = [];
-    this.chartLables = [];
+    this.chartLabels = [];
     this.reportDataList = [];
   }
 
@@ -595,7 +676,7 @@ export class TimeTrendReportComponent implements OnInit {
     var id = item.id;
     if (this.selectedDataOptions.indexOf(id) == -1) {
       this.selectedDataOptions.push(id);
-      this.manageDataOptions();
+      //this.manageDataOptions();
     }
   }
 
@@ -603,7 +684,7 @@ export class TimeTrendReportComponent implements OnInit {
     var id = item.id;
     var index = this.selectedDataOptions.indexOf(id);
     this.selectedDataOptions.splice(index, 1);
-    this.manageDataOptions();
+    //this.manageDataOptions();
   }
 
   onDataOptionSelectAll(items: any) {
@@ -613,15 +694,15 @@ export class TimeTrendReportComponent implements OnInit {
         this.selectedDataOptions.push(id);
       }
     }.bind(this));
-    this.manageDataOptions();
+    //this.manageDataOptions();
   }
 
   onDataOptionDeSelectAll(items: any) {
     this.selectedDataOptions = [];
-    this.manageDataOptions();
+    //this.manageDataOptions();
   }
 
-  manageDataToDisplay() {
+  /*manageDataToDisplay() {
     this.chartData = [];
     var selectedDataOption = 1;
     if (this.model.selectedDataOption) {
@@ -655,7 +736,7 @@ export class TimeTrendReportComponent implements OnInit {
           break;
       }
     }
-  }
+  }*/
 
   getGrandTotalFundingForYear() {
     var totalFunding = 0;
@@ -705,7 +786,7 @@ export class TimeTrendReportComponent implements OnInit {
     }
   }
 
-  manageDataOptions() {
+  /*manageDataOptions() {
     if (this.selectedDataOptions.length > 0 && this.reportDataList.yearlyProjectsList) {
       this.chartData = [];
       this.doughnutChartData = [];
@@ -767,7 +848,7 @@ export class TimeTrendReportComponent implements OnInit {
         this.showChart = true;
       }, 1000);
     }
-  }
+  }*/
 
   selectCurrency() {
     if (this.model.selectedCurrency == null || this.model.selectedCurrency == 'null') {
@@ -828,7 +909,7 @@ export class TimeTrendReportComponent implements OnInit {
       this.getGrandTotalDisbursementForYear();
       
       this.showChart = false;
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
+      /*if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
           this.chartData = [];
           var sectorFunding = this.reportDataList.yearlyProjectsList.map(p => p.totalFunding);
           var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
@@ -844,7 +925,7 @@ export class TimeTrendReportComponent implements OnInit {
           this.chartData.push(chartData);
           this.doughnutChartData.push(sectorDisbursements);
           this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
-      }
+      }*/
 
       setTimeout(() => {
         this.showChart = true;
