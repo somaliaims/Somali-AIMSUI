@@ -379,6 +379,9 @@ export class TimeTrendReportComponent implements OnInit {
       data => {
         this.reportDataList = data;
         if (this.reportDataList && this.reportDataList.yearlyProjectsList) {
+          this.reportDataList.yearlyProjectsList.forEach((y) => {
+            y.isDisplay = false;
+          });
           var years = this.reportDataList.yearlyProjectsList.map(y => y.year);
           this.chartLables = years;
           if (this.reportDataList.reportSettings) {
@@ -450,6 +453,15 @@ export class TimeTrendReportComponent implements OnInit {
   }
 
   public chartHovered(e: any): void {
+  }
+
+  displayHideRow(year) {
+    if (this.reportDataList.yearlyProjectsList) {
+      var yearList = this.reportDataList.yearlyProjectsList.filter(p => p.year == year);
+      if (yearList.length > 0) {
+        yearList[0].isDisplay = !yearList[0].isDisplay;
+      }
+    }
   }
 
   getSectorsList() {

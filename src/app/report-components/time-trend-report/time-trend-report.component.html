@@ -29,8 +29,8 @@
                         Period from:&nbsp;
                       </td>
                       <td>
-                        <select class="form-control" id="startingYear" title="Starting financial year" [(ngModel)]="model.startingYear"
-                          name="startingYear" #startingYear="ngModel" required>
+                        <select class="form-control" id="startingYear" title="Starting financial year"
+                          [(ngModel)]="model.startingYear" name="startingYear" #startingYear="ngModel" required>
                           <option value="0">--Start--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
@@ -38,8 +38,8 @@
                       </td>
                       <td>&nbsp;&nbsp;</td>
                       <td>
-                        <select class="form-control" id="endingYear" title="Ending financial year" [(ngModel)]="model.endingYear" name="endingYear"
-                          #endingYear="ngModel" required>
+                        <select class="form-control" id="endingYear" title="Ending financial year"
+                          [(ngModel)]="model.endingYear" name="endingYear" #endingYear="ngModel" required>
                           <option value="0">--End--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
@@ -58,20 +58,20 @@
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s" [data]="organizationsList"
-                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
-                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
-                    (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
-                    #selectedOrganizations="ngModel">
+                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
+                    [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
+                    [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)"
+                    (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)"
+                    name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
               </div>
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                  <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting" (change)="selectCurrency()"
-                    id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
-                    #selectedCurrency="ngModel">
+                  <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
+                    (change)="selectCurrency()" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
+                    name="selectedCurrency" #selectedCurrency="ngModel">
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
                       {{currency.currencyName}}
                     </option>
@@ -147,7 +147,8 @@
     </div>
 
     <div *ngIf="reportDataList && reportDataList.yearlyProjectsList" id="rpt-timetrend-pdf-view" class="col-md-12">
-      <div *ngIf="reportDataList.yearlyProjectsList && chartData.length > 0 && showChart" class="col-md-12 margin-top-50">
+      <div *ngIf="reportDataList.yearlyProjectsList && chartData.length > 0 && showChart"
+        class="col-md-12 margin-top-50">
 
         <div *ngIf="model.chartTypeName == chartTypes.BAR" style="display: block;"
           class="canvas-container mx-auto col-md-8">
@@ -211,7 +212,57 @@
             </thead>
           </table>
           <div *ngFor="let yearProject of reportDataList.yearlyProjectsList; let i = index;">
-            <table class="table table-striped table-condensed small" style="margin-bottom: 0rem !important">
+            <div class="row">
+              <table class="table small margin-bottom-none row-highlight">
+                <tbody>
+                  <tr title="Click here to view detail" (click)="displayHideRow(yearProject.year)">
+                    <td width="100%">
+                      <span *ngIf="!yearProject.isDisplay"><i class="fa fa-plus-square"></i></span>
+                      <span *ngIf="yearProject.isDisplay"><i class="fa fa-minus-square"></i></span>
+                      <b>&nbsp;{{yearProject.year}} - Project value</b> ({{formatNumber(yearProject.totalProjectValue)}})
+                      &nbsp;&nbsp;
+                      <b>Total disbursements</b> ({{formatNumber(yearProject.totalFunding)}})
+                      &nbsp;&nbsp;
+                      <b>Actual disbursements</b> ({{formatNumber(yearProject.totalActualDisbursements)}})
+                      &nbsp;&nbsp;
+                      <b>Planned disbursements</b> ({{formatNumber(yearProject.totalPlannedDisbursements)}})
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="child table table-striped small" *ngIf="yearProject.isDisplay">
+                  <thead>
+                      <tr>
+                        <th width="25%">Project</th>
+                        <th width="15%">Funders</th>
+                        <th width="15%">Implementers</th>
+                        <th class="text-center" width="15%">Project value</th>
+                        <th class="text-center" width="15%">Disbursements actual</th>
+                        <th class="text-center" width="15%">Disbursements planned</th>
+                      </tr>
+                    </thead>
+                <tbody>
+                  <tr *ngFor="let project of yearProject.projects">
+                    <td width="25%">{{project.title}}</td>
+                    <td width="15%">{{project.funders}}</td>
+                    <td width="15%">{{project.implementers}}</td>
+                    <td class="text-center" width="15%">{{formatNumber(project.projectValue)}}</td>
+                    <td class="text-center" width="15%">
+                      {{formatNumber(project.actualDisbursements)}}<br />
+                    </td>
+                    <td class="text-center" width="15%">
+                      {{formatNumber(project.plannedDisbursements)}}
+                    </td>
+                  </tr>
+                  <tr *ngIf="yearProject.projects.length == 0">
+                    <td width="100%" colspan="6">
+                      <span class="text-info"><i>No projects found</i></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--<table class="table table-striped table-condensed small" style="margin-bottom: 0rem !important">
               <tbody>
                 <tr>
                   <td colspan="6">
@@ -243,7 +294,8 @@
                 </tr>
               </tbody>
 
-            </table>
+            </table>-->
+            </div>
           </div>
           <table class="table table-stiped small">
             <thead>
