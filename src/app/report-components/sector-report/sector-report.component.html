@@ -51,17 +51,17 @@
               </div>
               <div class="row margin-top-10">
                 <div class="col-md-3">
-                  <select class="form-control" id="parentSectorId" (change)="showSubSectors()"
-                    [(ngModel)]="model.parentSectorId" name="parentSectorId" title="Sector/s" #parentSectorId="ngModel"
-                    required>
-                    <option value="0">--All sectors--</option>
-                    <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}
+                  <select class="form-control" id="sectorLevel"
+                    [(ngModel)]="model.sectorLevel" name="sectorLevel" title="Sector level" #sectorLevel="ngModel"
+                    required (change)="manageSectorLevel()">
+                    <option value="0">--Sector Levels--</option>
+                    <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
                     </option>
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <ng-multiselect-dropdown [placeholder]="'-- All sub sector/s --'" title="Sub-sector/s"
-                    [data]="subSectorsList" [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings"
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s"
+                    [data]="sectorsList" [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings"
                     name="selectedSectors" (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
                     (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>

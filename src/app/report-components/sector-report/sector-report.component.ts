@@ -12,7 +12,6 @@ import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/config/settings';
 import { ProjectService } from 'src/app/services/project.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'sector-report',
@@ -59,7 +58,9 @@ export class SectorReportComponent implements OnInit {
   yearsList: any = [];
   allSectorsList: any = [];
   sectorsList: any = [];
-  subSectorsList: any = [];
+  sectorIds: any = [];
+  subSectorIds: any = [];
+  subSubSectorIds: any = [];
   organizationsList: any = [];
   currenciesList: any = [];
   locationsList: any = [];
@@ -105,6 +106,18 @@ export class SectorReportComponent implements OnInit {
     2: 1,
     3: 2
   };
+
+  sectorLevels: any = [
+    { "id": 1, "level": "Parent sectors"},
+    { "id": 2, "level": "Sub sectors"},
+    { "id": 3, "level": "Sub sub sectors"},
+  ];
+
+  sectorLevelCodes: any = {
+    SECTORS: 1,
+    SUB_SECTORS: 2,
+    SUB_SUB_SECTORS: 3
+  }
 
   dataOptionsCodes: any = {
     'ACTUAL_DISBURSEMENTS': 1,
@@ -219,7 +232,7 @@ export class SectorReportComponent implements OnInit {
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], selectedProjects: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar'
+    selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -337,6 +350,28 @@ export class SectorReportComponent implements OnInit {
         }
       }
     );
+  }
+
+  manageSectorLevel() {
+    if (this.model.sectorLevel) {
+      switch(this.model.sectorLevel) {
+        case this.sectorLevelCodes.SECTORS:
+            this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          break;
+        
+        case this.sectorLevelCodes.SUB_SECTORS:
+            this.sectorsList = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.id) != -1);
+          break;
+
+        case this.sectorLevelCodes.SUB_SUB_SECTORS:
+            this.sectorsList = this.allSectorsList.filter(s => this.subSubSectorIds.indexOf(s.id) != -1);
+          break;
+
+        default:
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          break;
+      }
+    }
   }
 
   getManualExchangeRateForToday() {
@@ -487,9 +522,24 @@ export class SectorReportComponent implements OnInit {
       data => {
         this.allSectorsList = data;
         this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
-        this.subSectorsList = [];
+        this.sectorIds = this.sectorsList.map(s => s.id);
+        var subSectorsList = this.allSectorsList.filter(s => this.sectorIds.indexOf(s.sectorParentId) != -1);
+        this.subSectorIds = subSectorsList.map(s => s.id);
+        var subSubSectors = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.parentSectorId) != 0);
+        this.subSubSectorIds = subSubSectors.map(s => s.id);
+        
         if (this.loadReport) {
           if (this.paramSectorIds.length > 0) {
+            var sectorId = this.paramSectorIds[0];
+            if (this.sectorIds.indexOf(sectorId) != -1) {
+              this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
+            } else if (this.subSubSectorIds.indexOf(sectorId) != -1) {
+              this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
+            } else if (this.subSubSectorIds.indexOf(sectorId) != -1) {
+              this.model.sectorLevel = this.sectorLevelCodes.SUB_SUB_SECTORS;
+            }
+
+            this.manageSectorLevel();
             this.paramSectorIds.forEach(function (id) {
               var sector = this.sectorsList.filter(s => s.id == id);
               if (sector.length > 0) {
@@ -500,12 +550,6 @@ export class SectorReportComponent implements OnInit {
         }
       }
     );
-  }
-
-  showSubSectors() {
-    if (this.model.parentSectorId) {
-      this.subSectorsList = this.allSectorsList.filter(s => s.parentSectorId == this.model.parentSectorId);
-    }
   }
 
   getLocationsList() {
@@ -567,50 +611,26 @@ export class SectorReportComponent implements OnInit {
   }
 
   onOrganizationSelect(item: any) {
-    var id = item.id;
-    /*if (this.selectedOrganizations.indexOf(id) == -1) {
-      this.selectedOrganizations.push(id);
-    }*/
   }
 
   onOrganizationDeSelect(item: any) {
     var id = item.id;
-    /*var index = this.selectedOrganizations.indexOf(id);
-    this.selectedOrganizations.splice(index, 1);*/
-
     this.searchProjectsByCriteriaReport();
   }
 
   onOrganizationSelectAll(items: any) {
-    /*items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedOrganizations.indexOf(id) == -1) {
-        this.selectedOrganizations.push(id);
-      }
-    }.bind(this));*/
   }
 
   onLocationSelect(item: any) {
     var id = item.id;
-    /*if (this.selectedLocations.indexOf(id) == -1) {
-      this.selectedLocations.push(id);
-    }*/
   }
 
   onLocationDeSelect(item: any) {
     var id = item.id;
-    /*var index = this.selectedLocations.indexOf(id);
-    this.selectedLocations.splice(index, 1);*/
     this.searchProjectsByCriteriaReport();
   }
 
   onLocationSelectAll(items: any) {
-    /*items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedLocations.indexOf(id) == -1) {
-        this.selectedLocations.push(id);
-      }
-    }.bind(this));*/
   }
 
   onDataOptionSelect(item: any) {
