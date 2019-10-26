@@ -354,7 +354,8 @@ export class SectorReportComponent implements OnInit {
 
   manageSectorLevel() {
     if (this.model.sectorLevel) {
-      switch(this.model.sectorLevel) {
+      var level = parseInt(this.model.sectorLevel);
+      switch(level) {
         case this.sectorLevelCodes.SECTORS:
             this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
           break;
