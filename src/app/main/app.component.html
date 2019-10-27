@@ -12,13 +12,12 @@
             <a class="nav-link" [routerLink]="['/projects']" routerLinkActive="active-link">View projects</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"
+            <a class="nav-link dropdown-toggle" [ngClass]="{'active-link': isReportActive == true}"
               data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">View
               reports</a>
             <div class="dropdown-menu">
               <h5 class="dropdown-header">Projects</h5>
-              <!--<a class="dropdown-item" [routerLink]="['/projects-report']">Project report</a>-->
-              <a class="dropdown-item" [routerLink]="['/sectors-report']">Sectors report</a>
+              <a class="dropdown-item" [routerLink]="['sectors-report']" >Sectors report</a>
               <a class="dropdown-item" [routerLink]="['/locations-report']">Locations report</a>
               <a class="dropdown-item" [routerLink]="['/time-trend-report']">Time trend report</a>
               <a class="dropdown-item" [routerLink]="['/budget-report']">Budget report</a>
@@ -71,14 +70,14 @@
                 messages</a>
             </div>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" [routerLink]="['/contact']">Contact us</a>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="active-link">Contact us</a>
           </li>
           <!--<li class="nav-item active"> 
               <a class="nav-link" [routerLink]="['/data-import']">Data import</a>
           </li>-->
-          <li *ngIf="permissions.canEditHelp" class="nav-item active">
-            <a class="nav-link" [routerLink]="['/manage-help']">Manage help</a>
+          <li class="nav-item" *ngIf="permissions.canEditHelp">
+            <a class="nav-link" [routerLink]="['/manage-help']" routerLinkActive="active-link">Manage help</a>
           </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">

@@ -9,6 +9,11 @@ export const Settings = {
             canDo: true
         }
     },
+    dropDownMenus: {
+        entry: 1,
+        reports: 2,
+        management: 3
+    },
     pdfPrintPageHeight: 1550,
     rowsPerPage: 10,
     yearLimit: 100,

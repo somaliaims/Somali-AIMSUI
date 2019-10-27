@@ -3,6 +3,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
 import { HomePageService } from '../services/home-page.service';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +17,12 @@ export class AppComponent {
   notificationsCount: number = 0;
   loggedInAs: string = null;
   loggedInAsFullName: string = null;
+  currentUrl: string = null;
+  isReportActive: boolean = false;
 
   constructor(private securityService: SecurityHelperService, private router: Router,
-    private notificationService: NotificationService, private homePageService: HomePageService) {
+    private notificationService: NotificationService, private homePageService: HomePageService,
+    private storeService: StoreService) {
     this.isLoggedIn = (localStorage.getItem('isLoggedIn') == 'true');
 
     if (this.isLoggedIn) {
@@ -28,6 +32,25 @@ export class AppComponent {
         this.loggedInAs = this.truncate(this.loggedInAsFullName, 25, null);
       }
     }
+
+    this.storeService.currentReportItem.subscribe(menu => {
+      switch(menu) {
+        case 1:
+          
+          break;
+
+        case 2:
+          setTimeout(() => {
+            this.isReportActive = true;
+          }, 1000);
+          
+          break;
+
+        case 3:
+          break;
+      }
+    });
+    this.currentUrl = this.router.url;
   }
 
   ngOnInit() {

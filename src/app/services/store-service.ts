@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RegistrationModel } from '../models/registration';
 import { RequestModel } from '../models/request-model';
-import { Settings } from '../config/settings';
 import * as urlsList from "../config/urls";
+import { ActiveMenuModel } from '../models/active-menu-model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,9 @@ export class StoreService {
   private dataProjects = new BehaviorSubject<any>(null);
   currentDataProjects = this.dataProjects.asObservable();
 
+  private reportMenu = new BehaviorSubject<number>(0);
+  currentReportItem = this.reportMenu.asObservable();
+
   constructor() { }
 
   newRequestTrack(track: RequestModel) {
@@ -44,6 +47,10 @@ export class StoreService {
 
   newRequestNumber(requestNo: number) {
     this.requestNumber = requestNo;
+  }
+
+  newReportItem(menuCode: number) {
+    this.reportMenu.next(menuCode);
   }
 
   newDataProjects(dataProjects: any) {

@@ -244,6 +244,7 @@ export class SectorReportComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.reports);
     if (this.route.snapshot.queryParams.load) {
       this.route.queryParams.subscribe(params => {
         if (params) {
