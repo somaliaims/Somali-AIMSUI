@@ -3,6 +3,7 @@ import { FundingTypeService } from '../services/funding-type.service';
 import { Router } from '@angular/router';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Settings } from '../config/settings';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-funding-types',
@@ -18,7 +19,7 @@ export class FundingTypesComponent implements OnInit {
   pagingSize: number = Settings.rowsPerPage;
   
   constructor(private fundingTypeService: FundingTypeService, private router: Router,
-    private securityService: SecurityHelperService) { }
+    private securityService: SecurityHelperService, private storeService: StoreService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -26,6 +27,7 @@ export class FundingTypesComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getFundingTypes();
   }
 

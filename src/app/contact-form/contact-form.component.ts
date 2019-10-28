@@ -6,6 +6,7 @@ import { Messages } from '../config/messages';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ProjectService } from '../services/project.service';
 import { Settings } from '../config/settings';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-contact-form',
@@ -42,13 +43,13 @@ export class ContactFormComponent implements OnInit {
   
   constructor(private securityService: SecurityHelperService, 
     private contactService: ContactService, private errorModal: ErrorModalComponent,
-    private projectService: ProjectService) {
+    private projectService: ProjectService, private storeService: StoreService) {
 
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
   }
 
   ngOnInit() {
-    
+    this.storeService.newReportItem(Settings.dropDownMenus.contact);
   }
 
   sendEmailRequest(frm: any) {

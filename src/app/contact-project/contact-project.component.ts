@@ -44,7 +44,7 @@ export class ContactProjectComponent implements OnInit {
     } else {
       this.router.navigateByUrl('home');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.projects);
     this.requestNo = this.storeService.getNewRequestNumber();
 
     this.storeService.currentRequestTrack.subscribe(model => {

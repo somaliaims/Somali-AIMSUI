@@ -24,6 +24,9 @@ export class AppComponent {
   isReportActive: boolean = false;
   isManagementActive: boolean = false;
   isEntryActive: boolean = false;
+  isHelpActive: boolean = false;
+  isContactActive: boolean = false;
+  isNotificationsActive: boolean = false;
   menuConstants: any = Settings.dropDownMenusConstants;
 
   constructor(private securityService: SecurityHelperService, private router: Router,
@@ -40,7 +43,18 @@ export class AppComponent {
     }
 
     this.storeService.currentReportItem.subscribe(menu => {
-      switch(menu) {
+      setTimeout(() => {
+        this.isHomeActive = false;
+        this.isManagementActive = false;
+        this.isProjectsActive = false;
+        this.isEntryActive = false;
+        this.isReportActive = false;
+        this.isNotificationsActive = false;
+        this.isContactActive = false;
+        this.isHelpActive = false;
+      }, 500);
+
+      switch (menu) {
         case this.menuConstants.HOME:
           setTimeout(() => {
             this.isHomeActive = true;
@@ -50,7 +64,7 @@ export class AppComponent {
         case this.menuConstants.PROJECTS:
           setTimeout(() => {
             this.isProjectsActive = true;
-          });
+          }, 1000);
           break;
 
         case this.menuConstants.DATA_ENTRY:
@@ -68,6 +82,18 @@ export class AppComponent {
         case this.menuConstants.MANAGEMENT:
           setTimeout(() => {
             this.isManagementActive = true;
+          }, 1000);
+          break;
+
+        case this.menuConstants.CONTACT:
+          setTimeout(() => {
+            this.isContactActive = true;
+          }, 1000);
+          break;
+
+        case this.menuConstants.HELP:
+          setTimeout(() => {
+            this.isHelpActive = true;
           }, 1000);
           break;
       }
@@ -108,10 +134,10 @@ export class AppComponent {
     );
   }
 
- truncate(string, length, delimiter) {
+  truncate(string, length, delimiter) {
     delimiter = delimiter || "...";
     return string.length > length ? string.substr(0, length) + delimiter : string;
- };
+  };
 
-  
+
 }

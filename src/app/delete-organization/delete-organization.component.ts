@@ -5,6 +5,7 @@ import { StoreService } from '../services/store-service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ProjectInfoModalComponent } from '../project-info-modal/project-info-modal.component';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-delete-organization',
@@ -40,6 +41,8 @@ export class DeleteOrganizationComponent implements OnInit {
     if (this.route.snapshot.data) {
       this.id = this.route.snapshot.params["{id}"];
     }
+
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {

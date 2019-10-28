@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-delete-marker',
@@ -31,6 +32,7 @@ export class DeleteMarkerComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     if (this.route.snapshot.data) {
       this.id = this.route.snapshot.params["{id}"];
     }

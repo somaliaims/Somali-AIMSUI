@@ -28,6 +28,7 @@ export class FinancialYearsComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.permissions = this.securityService.getUserPermissions();
     this.getFinancialYearsList();
   }

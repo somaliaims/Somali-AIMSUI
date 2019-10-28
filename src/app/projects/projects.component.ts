@@ -76,6 +76,7 @@ export class ProjectsComponent implements OnInit {
       this.getProjectsList();
     }
 
+    this.storeService.newReportItem(Settings.dropDownMenus.projects);
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {

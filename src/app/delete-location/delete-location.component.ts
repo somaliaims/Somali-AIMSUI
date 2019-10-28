@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-delete-location',
@@ -33,6 +34,7 @@ export class DeleteLocationComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     if (this.route.snapshot.data) {
       this.id = this.route.snapshot.params["{id}"];
     }

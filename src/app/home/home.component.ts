@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
     private homePageService: HomePageService, private router: Router) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.home);
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;

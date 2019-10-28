@@ -48,6 +48,7 @@ export class CurrenciesComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
     
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {

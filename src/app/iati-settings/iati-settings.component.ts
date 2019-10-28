@@ -6,6 +6,8 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { Messages } from '../config/messages';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
+import { StoreService } from '../services/store-service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-iati-settings',
@@ -27,13 +29,15 @@ export class IatiSettingsComponent implements OnInit {
   constructor(private iatiService: IATIService, private infoModal: InfoModalComponent,
     private errorModal: ErrorModalComponent,
     private securityService: SecurityHelperService,
-    private router: Router) { }
+    private router: Router, private storeService: StoreService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
     if (!this.permissions.canDoSMTPSettings) {
       this.router.navigateByUrl('home');
     }
+
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getIATISettings();
   }
 

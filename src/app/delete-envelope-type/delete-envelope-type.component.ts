@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-delete-envelope-type',
@@ -32,6 +33,7 @@ export class DeleteEnvelopeTypeComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     if (this.route.snapshot.data) {
       this.envelopeTypeId = this.route.snapshot.params["{id}"];
     }

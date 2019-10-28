@@ -7,6 +7,7 @@ import { Settings } from '../config/settings';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { UserService } from '../services/user-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-email-message',
@@ -43,7 +44,7 @@ export class EmailMessagesComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   constructor(private emailMessageService: EmailMessageService, private securityService: SecurityHelperService,
     private router: Router, private modalService: ModalService, private infoModal: InfoModalComponent,
-    private userService: UserService) { }
+    private userService: UserService, private storeService: StoreService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -51,6 +52,7 @@ export class EmailMessagesComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.usersSettings = {
       singleSelection: false,
       idField: 'id',

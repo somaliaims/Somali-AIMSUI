@@ -6,10 +6,10 @@
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/home']" [ngClass]="{'active-link': isHomeActive == true}" routerLinkActive="active-link">Home</a>
+            <a class="nav-link" [routerLink]="['/home']" [ngClass]="{'active-link': isHomeActive == true}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/projects']" [ngClass]="{'active-link': isProjectsActive == true}" routerLinkActive="active-link">View projects</a>
+            <a class="nav-link" [routerLink]="['/projects']" [ngClass]="{'active-link': isProjectsActive == true}">View projects</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" [ngClass]="{'active-link': isReportActive == true}"
@@ -71,13 +71,13 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="active-link">Contact us</a>
+            <a class="nav-link" [routerLink]="['/contact']" [ngClass]="{'active-link': isContactActive == true}">Contact us</a>
           </li>
           <!--<li class="nav-item active"> 
               <a class="nav-link" [routerLink]="['/data-import']">Data import</a>
           </li>-->
           <li class="nav-item" *ngIf="permissions.canEditHelp">
-            <a class="nav-link" [routerLink]="['/manage-help']" routerLinkActive="active-link">Manage help</a>
+            <a class="nav-link" [routerLink]="['/manage-help']" [ngClass]="{'active-link': isHelpActive == true}">Manage help</a>
           </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">

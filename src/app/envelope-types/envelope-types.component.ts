@@ -5,6 +5,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { endTimeRange } from '@angular/core/src/profile/wtf_impl';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'app-envelope-types',
@@ -23,14 +24,14 @@ export class EnvelopeTypesComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   constructor(private envelopeTypeService: EnvelopeTypeService, private securityService: SecurityHelperService,
-    private router: Router) { }
+    private router: Router, private storeService: StoreService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
     if (!this.permissions.canEditEnvelopeType) {
       this.router.navigateByUrl('home');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getEnvelopeTypes();
   }
 

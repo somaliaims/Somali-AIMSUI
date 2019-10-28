@@ -14,14 +14,20 @@ export const Settings = {
         entry: 2,
         projects: 3,
         management: 4,
-        reports: 5
+        reports: 5,
+        contact: 6,
+        help: 7,
+        notifications: 8
     },
     dropDownMenusConstants: {
         HOME: 1,
         DATA_ENTRY: 2,
         PROJECTS: 3,
         MANAGEMENT: 4,
-        REPORTS: 5
+        REPORTS: 5,
+        CONTACT: 6,
+        HELP: 7,
+        NOTIFICATIONS: 8
     },
     pdfPrintPageHeight: 1550,
     rowsPerPage: 10,

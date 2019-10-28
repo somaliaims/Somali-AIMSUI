@@ -4,6 +4,7 @@ import { SectorService } from '../services/sector.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-delete-sector',
@@ -26,6 +27,7 @@ export class DeleteSectorComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     if (this.route.snapshot.data) {
       this.id = this.route.snapshot.params["{id}"];
     }
