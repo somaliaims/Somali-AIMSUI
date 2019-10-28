@@ -3,6 +3,7 @@ import { StoreService } from '../services/store-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmailMessageService } from '../services/email-message.service';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-manage-email-message',
@@ -31,6 +32,7 @@ export class ManageEmailMessageComponent implements OnInit {
     if (!this.permissions.canEditEmailMessage) {
       this.router.navigateByUrl('home');
     }
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
 
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];

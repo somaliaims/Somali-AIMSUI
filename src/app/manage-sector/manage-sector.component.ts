@@ -7,6 +7,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { SectorTypeService } from '../services/sector-types.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-manage-sector',
@@ -44,7 +45,7 @@ export class ManageSectorComponent implements OnInit {
     if (!this.permissions.canEditSector) {
       this.router.navigateByUrl('sectors');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {

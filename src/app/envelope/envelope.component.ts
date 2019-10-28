@@ -8,6 +8,7 @@ import { Messages } from '../config/messages';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { StoreService } from '../services/store-service';
 import { EnvelopeTypeService } from '../services/envelope-type.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-envelope',
@@ -56,6 +57,7 @@ export class EnvelopeComponent implements OnInit {
     private envelopeTypeService: EnvelopeTypeService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.entry);
     this.permissions = this.securityService.getUserPermissions();
     if (!this.permissions.canEditEnvelope) {
       this.router.navigateByUrl('home');

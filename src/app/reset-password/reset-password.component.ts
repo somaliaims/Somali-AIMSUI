@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Messages } from '../config/messages';
 import { StoreService } from '../services/store-service';
 import { ModalService } from '../services/modal.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-reset-password',
@@ -24,6 +25,7 @@ export class ResetPasswordComponent implements OnInit {
     private modalService: ModalService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     var params = this.route.snapshot.queryParams; 
     var token = null;
 

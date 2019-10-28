@@ -6,6 +6,7 @@ import { Messages } from '../config/messages';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-manage-currency',
@@ -35,7 +36,7 @@ export class ManageCurrencyComponent implements OnInit {
     if (!this.permissions.canEditCurrency) {
       this.router.navigateByUrl('home');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {

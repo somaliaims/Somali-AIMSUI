@@ -4,6 +4,7 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { Messages } from '../config/messages';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from '../services/store-service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-sector-mappings',
@@ -34,6 +35,7 @@ export class SectorMappingsComponent implements OnInit {
     private storeService: StoreService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getDefaultSectors();
     this.getOtherSectorTypes();
 

@@ -27,7 +27,7 @@ export class OrganizationsComponent implements OnInit {
     if (!this.permissions.canEditOrganization) {
       this.router.navigateByUrl('home');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getOrganizationsList();
   }
 

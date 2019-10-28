@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Messages } from '../config/messages';
 import { StoreService } from '../services/store-service';
 import { IATIService } from '../services/iati.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'manage-organization',
@@ -39,6 +40,7 @@ export class ManageOrganizationComponent implements OnInit {
         this.getOrganizationTypes();
       }
     }
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
 
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {

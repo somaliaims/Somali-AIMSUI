@@ -4,6 +4,7 @@ import { FundingTypeService } from '../services/funding-type.service';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-manage-funding-type',
@@ -29,7 +30,7 @@ export class ManageFundingTypeComponent implements OnInit {
     if (!this.permissions.canEditFundingType) {
       this.router.navigateByUrl('home');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {

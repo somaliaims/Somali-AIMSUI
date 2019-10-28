@@ -10,9 +10,18 @@ export const Settings = {
         }
     },
     dropDownMenus: {
-        entry: 1,
-        reports: 2,
-        management: 3
+        home: 1,
+        entry: 2,
+        projects: 3,
+        management: 4,
+        reports: 5
+    },
+    dropDownMenusConstants: {
+        HOME: 1,
+        DATA_ENTRY: 2,
+        PROJECTS: 3,
+        MANAGEMENT: 4,
+        REPORTS: 5
     },
     pdfPrintPageHeight: 1550,
     rowsPerPage: 10,

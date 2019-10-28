@@ -111,7 +111,7 @@ export class NewProjectComponent implements OnInit {
     if (!this.permissions.canEditProject) {
       this.router.navigateByUrl('projects');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.entry);
     this.userOrganizationId = (this.securityService.getUserOrganizationId()) ? parseInt(this.securityService.getUserOrganizationId()) : 0;
     this.requestNo = this.storeService.getCurrentRequestId();
     this.getFinancialYearsList();

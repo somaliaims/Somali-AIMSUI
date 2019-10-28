@@ -45,7 +45,7 @@ export class ManageMarkersComponent implements OnInit {
     if (!this.permissions.canEditCustomFields) {
       this.router.navigateByUrl('home');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.calendarMaxDate = this.storeService.getCalendarUpperLimit();
     this.fieldTypes = Settings.markerTypes;
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {

@@ -121,6 +121,7 @@ export class DataEntryComponent implements OnInit {
     private markerService: MarkerService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.entry);
     this.permissions = this.securityService.getUserPermissions();
     if (!this.permissions.canEditProject) {
       this.router.navigateByUrl('projects');

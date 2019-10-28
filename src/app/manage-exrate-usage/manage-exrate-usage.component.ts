@@ -4,6 +4,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-manage-exrate-usage',
@@ -51,7 +52,8 @@ export class ManageExrateUsageComponent implements OnInit {
     if (!this.permissions.canEditCurrency) {
       this.router.navigateByUrl('home');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
+    
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {

@@ -6,6 +6,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Messages } from '../config/messages';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-view-project',
@@ -58,6 +59,7 @@ export class ViewProjectComponent implements OnInit {
     private infoModal: InfoModalComponent) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.projects);
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
     this.permissions = this.securityService.getUserPermissions();
     if (this.route.snapshot.data) {

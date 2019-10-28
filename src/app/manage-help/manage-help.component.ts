@@ -67,6 +67,7 @@ export class ManageHelpComponent implements OnInit {
         this.errorModal.openModal();
       }
     });
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getHelpForProject();
     this.getHelpForFunder();
     this.getHelpForImplementer();

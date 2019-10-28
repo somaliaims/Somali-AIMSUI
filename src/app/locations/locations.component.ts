@@ -32,6 +32,7 @@ export class LocationsComponent implements OnInit {
     private modalService: ModalService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.permissions = this.securityService.getUserPermissions();
     if (!this.permissions.canEditLocation) {
       this.router.navigateByUrl('home');

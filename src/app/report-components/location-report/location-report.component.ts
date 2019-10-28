@@ -10,6 +10,7 @@ import { Messages } from 'src/app/config/messages';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
+import { Settings } from 'src/app/config/settings';
 
 @Component({
   selector: 'location-report',
@@ -216,7 +217,7 @@ export class LocationReportComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.storeService.newReportItem(Settings.dropDownMenus.reports);
     if (this.route.snapshot.queryParams.load) {
       this.route.queryParams.subscribe(params => {
         if (params) {

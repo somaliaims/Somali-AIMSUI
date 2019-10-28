@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FinancialYearService } from '../services/financial-year.service';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-manage-year',
@@ -31,6 +32,7 @@ export class ManageYearComponent implements OnInit {
         this.isError = true;
       }
     });
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
   }
 
   saveFinancialYear() {

@@ -32,6 +32,7 @@ export class SectorsComponent implements OnInit {
     private sectorTypeService: SectorTypeService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.permissions = this.securityService.getUserPermissions();
     if (!this.permissions.canEditSector) {
       this.router.navigateByUrl('home');

@@ -22,6 +22,7 @@ export class SectorTypesComponent implements OnInit {
     private storeService: StoreService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {
       this.showMessage = true;

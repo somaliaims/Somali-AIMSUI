@@ -4,6 +4,8 @@ import { Messages } from '../config/messages';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Router } from '@angular/router';
+import { StoreService } from '../services/store-service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-merge-organization',
@@ -23,10 +25,11 @@ export class MergeOrganizationComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private organizationService: OrganizationService, 
-    private errorModal: ErrorModalComponent, private router: Router) { 
+    private errorModal: ErrorModalComponent, private router: Router, private storeService: StoreService) { 
   }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.loadOrganizations();
   }
 

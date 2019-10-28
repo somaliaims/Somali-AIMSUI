@@ -88,7 +88,7 @@ export class MergeProjectsComponent implements OnInit {
     if (!this.permissions.canEditProject) {
       this.router.navigateByUrl('projects');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.entry);
     this.blockUI.start('Loading projects data...');
     this.currentYear = this.storeService.getCurrentYear();
     this.getExchangeRates();

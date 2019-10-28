@@ -7,6 +7,7 @@ import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { IATIService } from '../services/iati.service';
 import { ModalService } from '../services/modal.service';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-manage-project',
@@ -55,6 +56,7 @@ export class ManageProjectComponent implements OnInit {
         this.loadProjectData();
       } 
     }
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     
     //this.loadIATIActivities();
     this.storeService.currentRequestTrack.subscribe(model => {

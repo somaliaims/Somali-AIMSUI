@@ -7,6 +7,7 @@ import { CurrencyService } from 'src/app/services/currency.service';
 import { StoreService } from 'src/app/services/store-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActivatedRoute } from '@angular/router';
+import { Settings } from 'src/app/config/settings';
 
 @Component({
   selector: 'app-envelope-report',
@@ -156,6 +157,7 @@ export class EnvelopeReportComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.reports);
     this.envelopeTypeSettings = {
       singleSelection: false,
       idField: 'id',

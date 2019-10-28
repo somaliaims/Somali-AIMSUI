@@ -5,6 +5,7 @@ import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
 import { ModalService } from '../services/modal.service';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'manage-account',
@@ -31,6 +32,7 @@ export class ManageAccountComponent implements OnInit {
     if (!this.securityService.checkIsLoggedIn()) {
       this.router.navigateByUrl('home');
     }
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
   }
 
   showPasswordTab() {

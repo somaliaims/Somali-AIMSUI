@@ -39,7 +39,7 @@ export class MarkersComponent implements OnInit {
     if (!this.permissions.canEditCustomFields) {
       this.router.navigateByUrl('home');
     }
-
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getMarkers();
   }
 

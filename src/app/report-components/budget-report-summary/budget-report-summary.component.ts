@@ -78,6 +78,7 @@ export class BudgetReportSummaryComponent implements OnInit {
     private modalService: ModalService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.reports);
     this.blockUI.start('Loading report...');
     this.getDefaultCurrency();
     this.getNationalCurrency();

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
 import { HomePageService } from '../services/home-page.service';
 import { StoreService } from '../services/store-service';
+import { Settings } from '../config/settings';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,12 @@ export class AppComponent {
   loggedInAs: string = null;
   loggedInAsFullName: string = null;
   currentUrl: string = null;
+  isHomeActive: boolean = false;
+  isProjectsActive: boolean = false;
   isReportActive: boolean = false;
+  isManagementActive: boolean = false;
+  isEntryActive: boolean = false;
+  menuConstants: any = Settings.dropDownMenusConstants;
 
   constructor(private securityService: SecurityHelperService, private router: Router,
     private notificationService: NotificationService, private homePageService: HomePageService,
@@ -35,18 +41,34 @@ export class AppComponent {
 
     this.storeService.currentReportItem.subscribe(menu => {
       switch(menu) {
-        case 1:
-          
+        case this.menuConstants.HOME:
+          setTimeout(() => {
+            this.isHomeActive = true;
+          }, 1000);
           break;
 
-        case 2:
+        case this.menuConstants.PROJECTS:
+          setTimeout(() => {
+            this.isProjectsActive = true;
+          });
+          break;
+
+        case this.menuConstants.DATA_ENTRY:
+          setTimeout(() => {
+            this.isEntryActive = true;
+          }, 1000);
+          break;
+
+        case this.menuConstants.REPORTS:
           setTimeout(() => {
             this.isReportActive = true;
           }, 1000);
-          
           break;
 
-        case 3:
+        case this.menuConstants.MANAGEMENT:
+          setTimeout(() => {
+            this.isManagementActive = true;
+          }, 1000);
           break;
       }
     });
