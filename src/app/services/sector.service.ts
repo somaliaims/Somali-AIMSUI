@@ -15,7 +15,6 @@ export class SectorService {
   constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService,
     private storeService: StoreService) { }
 
-
   getSectorsList() {
     var url = this.urlHelper.getSectorUrl();
     return this.httpClient.get(url, httpOptions).pipe(

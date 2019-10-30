@@ -30,6 +30,7 @@ export const Settings = {
         NOTIFICATIONS: 8
     },
     pdfPrintPageHeight: 1550,
+    pdfPrintPageHeightLarge: 1550,
     rowsPerPage: 10,
     yearLimit: 100,
     descriptionLowLimit: 500,

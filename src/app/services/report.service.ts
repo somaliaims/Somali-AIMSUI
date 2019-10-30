@@ -14,6 +14,16 @@ import { Settings } from '../config/settings';
 
 export class ReportService {
   pageHeight: number = Settings.pdfPrintPageHeight;
+  pageHeightLarge: number = Settings.pdfPrintPageHeightLarge;
+  screenConstants: any = {
+    TWENTY_FIVE_SIXTY: 2560,
+    NINETEEN_TWENTY: 1920,
+    SIXTEEN_EIGHTY: 1680,
+    SIXTEEN_HUNDRED: 1600,
+    FOURTEEN_FOURTY: 1440,
+    THIRTEEN_SIXTY_SIX: 1366,
+    TWELVE_EIGHTY: 1280
+  };
   constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService, 
     private storeService: StoreService) { }
 
@@ -79,47 +89,79 @@ export class ReportService {
       var quotes = document.getElementById(reportElement);
       var result  = html2canvas(quotes)
         .then((canvas) => {
-          //! MAKE YOUR PDF
-          var pdf = new jsPDF('p', 'pt', 'letter');
           var container = document.querySelector(".row");
-          var docWidth = container.getBoundingClientRect().width;
-          for (var i = 0; i <= quotes.clientHeight / this.pageHeight; i++) {
+          //var docWidth = container.getBoundingClientRect().width;
+          var docWidth = container.clientWidth;
+          var pageHeight = this.pageHeight;
+          //! MAKE YOUR PDF
+          var pdf = null;
+          if (docWidth > 1920) {
+            pdf = new jsPDF('l', 'pt', 'letter');
+          } else {
+            pdf = new jsPDF('p', 'pt', 'letter');
+          }
+          for (var i = 0; i <= quotes.clientHeight / pageHeight; i++) {
             //! This is all just html2canvas stuff
             var srcImg = canvas;
             var sX = 0;
-            var sY = this.pageHeight * i; // start this.pageHeight pixels down for every new page
+            var sY = pageHeight * i; // start this.pageHeight pixels down for every new page
             var sWidth = docWidth;
-            var sHeight = this.pageHeight;
+            var sHeight = pageHeight;
             var dX = 0;
             var dY = 0;
             var dWidth = docWidth;
-            var dHeight = this.pageHeight;
-  
+            var dHeight = pageHeight;
+              
             var onePageCanvas = document.createElement("canvas");
             onePageCanvas.setAttribute('width', docWidth.toString());
             onePageCanvas.setAttribute('height', this.pageHeight.toString());
             var ctx = onePageCanvas.getContext('2d');
             // details on this usage of this function: 
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
+            //ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
             ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
   
             // document.body.appendChild(canvas);
             var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
             var width = onePageCanvas.width;
-            var height = onePageCanvas.clientHeight;
+            var height = onePageCanvas.height;
+            //var height = onePageCanvas.clientHeight;
             //! If we're on anything other than the first page,
             // add another page
             if (i > 0) {
-              pdf.addPage([612, 791]); //8.5" x 11" in pts (in*72)
+              //var widthInPoints = parseInt((dWidth * .72).toString());
+              //var heightInPoints = parseInt((dHeight * .72).toString());
+              //pdf.addPage([widthInPoints, heightInPoints]);
+              if (width > this.screenConstants.NINETEEN_TWENTY) {
+                pdf.addPage([792, 612]);
+              } else {
+                pdf.addPage([612, 792]); //8.5" x 11" in pts (in*72)
+              }
             }
             //! now we declare that we're working on that page
             pdf.setPage(i + 1);
-            //! now we add content to that page!
-            pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .44), (height * .62));
+
+            if (width > this.screenConstants.NINETEEN_TWENTY) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .30), (height * .35));
+            } else if (width <= this.screenConstants.SIXTEEN_EIGHTY && width > this.screenConstants.SIXTEEN_HUNDRED) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .36), (height * .45));
+            } else if (width <= this.screenConstants.SIXTEEN_HUNDRED && width > this.screenConstants.FOURTEEN_FOURTY) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .38), (height * .45));
+            } else if (width <= this.screenConstants.FOURTEEN_FOURTY && width > this.screenConstants.THIRTEEN_SIXTY_SIX) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .42), (height * .45));
+            } else if(width <= this.screenConstants.THIRTEEN_SIXTY_SIX && width > this.screenConstants.TWELVE_EIGHTY) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .44), (height * .45));
+            } else {
+              //! now we add content to that page!
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .46), (height * .45));
+            }
+            
+            //pdf.addImage(canvasDataURL, 'PNG', 20, 40, width, height);
           }
           //! after the for loop is finished running, we save the pdf.
           pdf.save('Report.pdf');
         });
         return result;
     }
+
 }
