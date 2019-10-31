@@ -57,6 +57,7 @@ export class ProjectSectorsComponent implements OnInit {
   newProjectSectors: any = [];
   sourceSectorsList: any = [];
   currentSelectedFieldValues: any = [];
+  sectorsSettings: any = {};
   mappingsCount: number = 0;
   sourceSectorPercentage: number = 0;
   requestNo: number = 0;
@@ -67,7 +68,7 @@ export class ProjectSectorsComponent implements OnInit {
   isSectorsSourceAvailable: boolean = false;
   isLocationsSourceAvailable: boolean = false;
   isNdpSectorsLoading: boolean = true;
-  sectorModel: any = { sectorTypeId: null, sector: null, sectorId: null, mappingId: null, fundsPercentage: null, saved: false };
+  sectorModel: any = { sectorTypeId: null, sector: null, selectedSector: null, sectorId: null, selectedMapping: null, mappingId: null, fundsPercentage: null, saved: false };
   newMappings: any = [];
   locationModel: any = { locationId: null, location: null, fundsPercentage: null, saved: false };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
@@ -109,6 +110,16 @@ export class ProjectSectorsComponent implements OnInit {
       }
     });
     this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
+
+    this.sectorsSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'sectorName',
+      selectAllText: '',
+      unSelectAllText: '',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
   }
 
   ngOnChanges() {
@@ -227,27 +238,39 @@ export class ProjectSectorsComponent implements OnInit {
     }
 
     if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
-      if (!this.sectorModel.sectorId) {
+      if (!this.sectorModel.selectedSector) {
         this.errorMessage = 'Sector is requred';
         this.errorModal.openModal();
         return false;
       }
     }
-    var mappedSector = this.sectorsList.filter(s => s.id == this.sectorModel.mappingId);
+
+    var mappingId = 0;
+    if (this.sectorModel.selectedMapping && this.sectorModel.selectedMapping.length > 0) {
+      mappingId = this.sectorModel.selectedMapping[0].id;
+    }
+
+    var mappedSector = this.sectorsList.filter(s => s.id == mappingId);
     if (mappedSector.length > 0) {
       this.sectorModel.sector = mappedSector[0].sectorName;
     }
 
-    var isSectorExists = []
+    var isSectorExists = [];
     if (this.defaultSectorTypeId == this.sectorModel.sectorTypeId) {
-      isSectorExists = this.currentProjectSectors.filter(s => s.mappingId == this.sectorModel.mappingId && s.saved == false);
+      isSectorExists = this.currentProjectSectors.filter(s => s.mappingId == mappingId && s.saved == false);
     } else {
-      isSectorExists = this.currentProjectSectors.filter(s => s.sectorId == this.sectorModel.mappingId && s.saved == false);
+      isSectorExists = this.currentProjectSectors.filter(s => s.sectorId == mappingId && s.saved == false);
     }
     
     if (isSectorExists.length > 0) {
       isSectorExists[0].fundsPercentage += this.sectorModel.fundsPercentage;
     } else {
+      if (this.sectorModel.selectedSector && this.sectorModel.selectedSector.length > 0) {
+        this.sectorModel.sectorId = this.sectorModel.selectedSector[0].id;
+      }
+      if (this.sectorModel.selectedMapping && this.sectorModel.selectedMapping.length > 0) {
+        this.sectorModel.mappingId = this.sectorModel.selectedMapping[0].id;
+      }
       this.currentProjectSectors.unshift(this.sectorModel);
     }
     

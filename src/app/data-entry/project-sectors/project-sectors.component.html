@@ -32,12 +32,18 @@
 
             <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)"
               class="form-group form-inline col-md-6 col-lg-6">
-              <select class="form-control col-md-12" name="sectorId" [(ngModel)]="sectorModel.sectorId"
+              <!--<select class="form-control col-md-12" name="sectorId" [(ngModel)]="sectorModel.sectorId"
                 #sectorId="ngModel" (change)="getSectorMappings()">
                 <option value="null">--Sector--</option>
                 <option *ngFor="let sector of typeSectorsList" [value]="sector.id">{{sector.sectorName}}</option>
-              </select>
-              <div *ngIf="sectorsForm.submitted" [hidden]="sectorId.valid" class="alert alert-danger">
+              </select>-->
+              <span class="form-control col-lg-12 col-md-12 col-sm-12">
+                  <ng-multiselect-dropdown [placeholder]="'-- Sector --'" title="Sector"
+                  [data]="typeSectorsList" [(ngModel)]="sectorModel.selectedSector" [settings]="sectorsSettings" name="selectedSector"
+                  #selectedSector="ngModel">
+                </ng-multiselect-dropdown>
+              </span>
+              <div *ngIf="sectorsForm.submitted" [hidden]="selectedSector != null" class="alert alert-danger">
                 Sector is required
               </div>
             </div>
@@ -45,13 +51,19 @@
 
           <div class="row">
             <div class="form-group form-inline col-md-6 col-lg-6">
-              <select class="form-control col-md-12" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
+              <!--<select class="form-control col-md-12" id="mappingId" [(ngModel)]="sectorModel.mappingId" name="mappingId"
                 #mappingId="ngModel" required>
                 <option value="null">--{{defaultSectorType}}--</option>
                 <option *ngFor="let sector of sectorMappings" [value]="sector.id">{{sector.sectorName}}</option>
-              </select>
+              </select>-->
+              <span class="form-control col-lg-12 col-md-12 col-sm-12">
+                  <ng-multiselect-dropdown [placeholder]="'-- NDP sector/s --'" title="NDP sector/s"
+                  [data]="ndpSectorsList" [(ngModel)]="sectorModel.selectedMapping" [settings]="sectorsSettings" name="selectedMappingSector"
+                  #selectedMappingSector="ngModel">
+                </ng-multiselect-dropdown>
+              </span>
+              
               <div class="col-md-12 col-lg-12" *ngIf="mappingsCount > 0">
-
                 <!--<span *ngIf="showMappingAuto" class="float-right text-success small">
                   Map manual
                 </span>-->
@@ -66,8 +78,8 @@
                   {{mappingsCount}} mapping/s found
                 </span>
               </div>
-              <div *ngIf="mappingsCount == 0" class="text-warning small"><i>No mappings found</i></div>
-              <div *ngIf="sectorsForm.submitted" [hidden]="mappingId.valid" class="alert alert-danger">
+              <div *ngIf="mappingsCount == 0 && sectorModel.sectorTypeId != defaultSectorTypeId" class="text-warning small"><i>No mappings found</i></div>
+              <div *ngIf="sectorsForm.submitted" [hidden]="selectedMappingSector != null" class="alert alert-danger">
                 Mapping is required
               </div>
             </div>
