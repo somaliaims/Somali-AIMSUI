@@ -96,12 +96,12 @@
 
                 <div [class.disable]="!defaultCurrency" class="col-md-6">
                   <div class="float-right">
-                    <button type="submit" class="btn btn-info btn-sm">Update report</button>&nbsp;
-                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger btn-sm"
+                    <button type="submit" class="btn btn-info btn-sm margin-top-2">Update report</button>&nbsp;
+                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger btn-sm margin-top-2"
                       (click)="generatePDF()">Download PDF</button>&nbsp;
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success btn-sm">Download spreadsheet</a>&nbsp;
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success btn-sm margin-top-2">Download spreadsheet</a>&nbsp;
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
-                      class="btn btn-warning btn-sm" (click)="printReport()">Print report</button>
+                      class="btn btn-warning btn-sm margin-top-2" (click)="printReport()">Print report</button>
                   </div>
                 </div>
               </div>

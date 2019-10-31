@@ -22,7 +22,8 @@ export class ReportService {
     SIXTEEN_HUNDRED: 1600,
     FOURTEEN_FOURTY: 1440,
     THIRTEEN_SIXTY_SIX: 1366,
-    TWELVE_EIGHTY: 1280
+    TWELVE_EIGHTY: 1280,
+    TEN_TWENTY_FOUR: 1024
   };
   constructor(private httpClient: HttpClient, private urlHelper: UrlHelperService, 
     private storeService: StoreService) { }
@@ -151,14 +152,12 @@ export class ReportService {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .42), (height * .45));
             } else if(width <= this.screenConstants.THIRTEEN_SIXTY_SIX && width > this.screenConstants.TWELVE_EIGHTY) {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .44), (height * .45));
+            } else if (width <= this.screenConstants.TWELVE_EIGHTY && width > this.screenConstants.TEN_TWENTY_FOUR) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .50), (height * .45));
             } else {
-              //! now we add content to that page!
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .46), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .56), (height * .45));
             }
-            
-            //pdf.addImage(canvasDataURL, 'PNG', 20, 40, width, height);
           }
-          //! after the for loop is finished running, we save the pdf.
           pdf.save('Report.pdf');
         });
         return result;
