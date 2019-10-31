@@ -51,18 +51,17 @@
               </div>
               <div class="row margin-top-10">
                 <div class="col-lg-3 col-md-3">
-                  <select class="form-control" id="sectorLevel"
-                    [(ngModel)]="model.sectorLevel" name="sectorLevel" title="Sector level" #sectorLevel="ngModel"
-                    required (change)="manageSectorLevel()">
+                  <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
+                    title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel()">
                     <option value="0">--Sector Levels--</option>
                     <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
                     </option>
                   </select>
                 </div>
                 <div class="col-lg-3 col-md-3">
-                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s"
-                    [data]="sectorsList" [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings"
-                    name="selectedSectors" (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
+                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
                     (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
@@ -97,9 +96,10 @@
                 <div [class.disable]="!defaultCurrency" class="col-md-6">
                   <div class="float-right">
                     <button type="submit" class="btn btn-info btn-sm margin-top-2">Update report</button>&nbsp;
-                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger btn-sm margin-top-2"
-                      (click)="generatePDF()">Download PDF</button>&nbsp;
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success btn-sm margin-top-2">Download spreadsheet</a>&nbsp;
+                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
+                      class="btn btn-danger btn-sm margin-top-2" (click)="generatePDF()">Download PDF</button>&nbsp;
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success btn-sm margin-top-2">Download
+                      spreadsheet</a>&nbsp;
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
                       class="btn btn-warning btn-sm margin-top-2" (click)="printReport()">Print report</button>
                   </div>
@@ -126,36 +126,32 @@
     <div *ngIf="!isLoading" class="row margin-top-10">
       <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
         <div class="row">
-          <div class="col-lg-6 col-md-6">
-
-          </div>
-          <div class="col-lg-6 col-md-6">
-            <div class="row small">
-              <form class="form-inline">
-                <label>Chart type to display:&nbsp;</label>
-                <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
-                  #chartType="ngModel" (change)="manageDataToDisplay()" required>
-                  <option *ngFor="let chart of chartOptions" value="{{chart.id}}">
-                    {{chart.title}}
-                  </option>
-                </select>
-                <label>&nbsp;Data on chart:&nbsp;</label>
-                <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
-                  #dataOption="ngModel" (change)="manageDataToDisplay()" required>
-                  <option value="null">-- Chart data option --</option>
-                  <option *ngFor="let option of dataOptions" value="{{option.id}}">
-                    {{option.value}}
-                  </option>
-                </select>
-              </form>
-            </div>
+            <div class="col float-right">
+                <form class="form-inline">
+                  <label>Chart type to display:&nbsp;</label>
+                  <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
+                    #chartType="ngModel" (change)="manageDataToDisplay()" required>
+                    <option *ngFor="let chart of chartOptions" value="{{chart.id}}">
+                      {{chart.title}}
+                    </option>
+                  </select>
+                  <label>&nbsp;Data on chart:&nbsp;</label>
+                  <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
+                    #dataOption="ngModel" (change)="manageDataToDisplay()" required>
+                    <option value="null">-- Chart data option --</option>
+                    <option *ngFor="let option of dataOptions" value="{{option.id}}">
+                      {{option.value}}
+                    </option>
+                  </select>
+                </form>
+              </div>
           </div>
         </div>
-      </div>
     </div>
 
     <div *ngIf="reportDataList && reportDataList.reportSettings" id="rpt-sector-pdf-view" class="col-md-12">
-      <div *ngIf="reportDataList.reportSettings && chartData.length > 0 && showChart" class="col-lg-12 col-md-12 margin-top-50">
+      <div *ngIf="reportDataList.reportSettings && chartData.length > 0 && showChart"
+        class="col-lg-12 col-md-12 margin-top-50">
         <div *ngIf="model.chartTypeName == chartTypes.BAR" style="display: block;"
           class="canvas-container mx-auto col-md-8">
           <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLables" [options]="barChartOptions"
