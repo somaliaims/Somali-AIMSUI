@@ -656,6 +656,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.importLatestDataUrl);
     }
 
+    getEnvelopeDataImportUrl() {
+        return (this.BASE_URL + urlsList.urls.importEnvelopeDataUrl);
+    }
+
     averageCurrencyRateForDateUrl() {
         return (this.BASE_URL + urlsList.urls.averageCurrencyRate);
     }

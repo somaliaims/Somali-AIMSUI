@@ -72,6 +72,23 @@
                 </span>
               </div>
 
+              <h5 class="card-title text-center margin-top-50">Upload envelope data file</h5>
+              <div class="row">
+                <input type="file" accept=".xlsx" #fileenvelope placeholder="Choose file"
+                  (change)="uploadFileEnvelope(fileenvelope.files)" style="display:none;">
+                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase"
+                  (click)="fileenvelope.click()">Click
+                  and select file</button>
+              </div>
+              <div class="row">
+                <span class="upload" *ngIf="progressLatest > 0">
+                  Uploaded {{progressLatest}}%
+                </span>
+                <span class="upload" *ngIf="messageNew">
+                  {{messageLatest}}
+                </span>
+              </div>
+
             </div>
 
           </div>

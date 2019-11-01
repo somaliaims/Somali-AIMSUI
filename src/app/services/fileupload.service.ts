@@ -33,4 +33,11 @@ export class FileUploadService {
         );
     }
 
+    uploadEnvelopeDataFile(formData: any) {
+        var url = this.urlHelper.getEnvelopeDataImportUrl();
+        return this.httpClient.post(url, 
+            formData, {reportProgress: true, observe: 'events'}
+        );
+    }
+
 }
