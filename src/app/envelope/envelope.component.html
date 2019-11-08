@@ -13,7 +13,6 @@
       <div class="col-sm-12 col-md-12 col-lg-12">
         <div class="card card-signin my-5 margin-top-20">
           <div class="card-body margin-top-0">
-            <h5 class="card-title text-center">Envelope data</h5>
 
             <form class="form-signin" (ngSubmit)="envelopeForm.form.valid && saveEnvelopeData()"
               #envelopeForm="ngForm">
@@ -43,9 +42,9 @@
                     </tr>
                     <tr>
                       <td><b>Total</b></td>
-                      <td class="text-center"><b>{{yearlyTotals[previousYear]}}/-</b></td>
-                      <td class="text-center"><b>{{yearlyTotals[currentYear]}}/-</b></td>
-                      <td class="text-center"><b>{{yearlyTotals[nextYear]}}/-</b></td>
+                      <td class="text-center"><b>{{formatNumber(yearlyTotals[previousYear])}}/-</b></td>
+                      <td class="text-center"><b>{{formatNumber(yearlyTotals[currentYear])}}/-</b></td>
+                      <td class="text-center"><b>{{formatNumber(yearlyTotals[nextYear])}}/-</b></td>
                     </tr>
                   </tbody>
                 </table>

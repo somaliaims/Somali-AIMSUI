@@ -235,6 +235,9 @@ export class EnvelopeComponent implements OnInit {
     }
   }
 
-  
+  formatNumber(value: number) {
+    value = Math.trunc(value);
+    return this.storeService.getNumberWithCommas(value);
+  }
 
 }
