@@ -137,12 +137,12 @@
           <table class="table table-striped small" style="margin-bottom: 0rem !important">
             <thead>
               <tr>
-                <th width="25%">Project</th>
+                <th width="25%">Project/s for year</th>
                 <th width="15%">Funders</th>
                 <th width="15%">Implementers</th>
                 <th class="text-center" width="15%">Project value</th>
-                <th class="text-center" width="15%">Disbursements actual</th>
-                <th class="text-center" width="15%">Disbursements planned</th>
+                <th class="text-right" width="15%">Disbursements actual</th>
+                <th class="text-right" width="15%">Disbursements planned</th>
               </tr>
             </thead>
           </table>
@@ -151,40 +151,32 @@
               <table class="table small margin-bottom-none row-highlight">
                 <tbody>
                   <tr title="Click here to view detail" (click)="displayHideRow(yearProject.year)">
-                    <td width="100%">
+                    <td width="70%">
                       <span *ngIf="!yearProject.isDisplay"><i class="fa fa-plus-square"></i></span>
                       <span *ngIf="yearProject.isDisplay"><i class="fa fa-minus-square"></i></span>
-                      &nbsp;{{yearProject.year}} - <b>Project value</b>&nbsp;<i>({{formatNumber(yearProject.totalProjectValue)}})</i>
-                      &nbsp;&nbsp;
-                      <b>Actual disbursements</b>&nbsp;<i>({{formatNumber(yearProject.totalActualDisbursements)}})</i>
-                      &nbsp;&nbsp;
-                      <b>Planned disbursements</b>&nbsp;<i>({{formatNumber(yearProject.totalPlannedDisbursements)}})</i>
+                      &nbsp;&nbsp;<b>{{yearProject.year}}</b>
+                    </td>
+                    <td class="text-right" width="15%">
+                      {{formatNumber(yearProject.totalActualDisbursements)}}
+                    </td>
+                    <td class="text-right" width="15%">
+                      {{formatNumber(yearProject.totalPlannedDisbursements)}}
                     </td>
                   </tr>
                 </tbody>
               </table>
 
               <table class="child table table-striped small" *ngIf="yearProject.isDisplay">
-                  <thead>
-                      <tr>
-                        <th width="25%">Project</th>
-                        <th width="15%">Funders</th>
-                        <th width="15%">Implementers</th>
-                        <th class="text-center" width="15%">Project value</th>
-                        <th class="text-center" width="15%">Disbursements actual</th>
-                        <th class="text-center" width="15%">Disbursements planned</th>
-                      </tr>
-                    </thead>
                 <tbody>
                   <tr *ngFor="let project of yearProject.projects">
                     <td width="25%">{{project.title}}</td>
                     <td width="15%">{{project.funders}}</td>
                     <td width="15%">{{project.implementers}}</td>
                     <td class="text-center" width="15%">{{formatNumber(project.projectValue)}}</td>
-                    <td class="text-center" width="15%">
+                    <td class="text-right" width="15%">
                       {{formatNumber(project.actualDisbursements)}}<br />
                     </td>
-                    <td class="text-center" width="15%">
+                    <td class="text-right" width="15%">
                       {{formatNumber(project.plannedDisbursements)}}
                     </td>
                   </tr>
