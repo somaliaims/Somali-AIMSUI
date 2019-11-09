@@ -121,6 +121,16 @@
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-4">
+                  <ng-multiselect-dropdown [placeholder]="'-- All IATI organization/s --'" [data]="iatiOrganizationsList"
+                    [(ngModel)]="model.selectedIATIOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" 
+                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()"
+                    [settings]="organizationsSettings" name="selectedIATIOrganizations" #selectedIATIOrganizations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+
+              <div class="row margin-top-10">
+                <div class="col-md-4">
                   <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" [data]="locationsList"
                     [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
                     (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
@@ -129,6 +139,7 @@
                   </ng-multiselect-dropdown>
                 </div>
               </div>
+
               <div *ngIf="isAIMSLoading || isIATILoading">
                 <span class="text-info">Setting up data...</span>
               </div>

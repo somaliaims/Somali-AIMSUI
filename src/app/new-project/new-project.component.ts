@@ -68,7 +68,9 @@ export class NewProjectComponent implements OnInit {
   sectorsList: any = [];
   selectedSectors: any = [];
   organizationsList: any = [];
+  iatiOrganizationsList: any = [];
   selectedOrganizations: any = [];
+  selectedIATIOrganizations: any = [];
   locationsList: any = [];
   selectedLocations: any = [];
   permissions: any = {};
@@ -89,11 +91,17 @@ export class NewProjectComponent implements OnInit {
   viewProjectDisbursements: any = [];
   viewProjectFields: any = [];
 
+  organizationSourceTypes: any = {
+    IATI: 'IATI',
+    USER: 'User'
+  }
+
   @BlockUI() blockUI: NgBlockUI;
 
   model = {
     id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0,
-    endingYear: 0, selectedOrganizations: [], selectedSectors: [], selectedLocations: []
+    endingYear: 0, selectedOrganizations: [], selectedSectors: [], selectedLocations: [],
+    selectedIATIOrganizations: []
   };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
@@ -260,10 +268,11 @@ export class NewProjectComponent implements OnInit {
   }
 
   getOrganizationsList() {
-    this.organizationService.getOrganizationsList().subscribe(
+    this.organizationService.getAllOrganizationsList().subscribe(
       data => {
         if (data) {
-          this.organizationsList = data;
+          this.organizationsList = data.filter(o => o.sourceType == this.organizationSourceTypes.USER);
+          this.iatiOrganizationsList = data.filter(o => o.sourceType == this.organizationSourceTypes.IATI)
         }
       }
     );
@@ -301,9 +310,39 @@ export class NewProjectComponent implements OnInit {
       this.filteredAIMSProjects = this.aimsProjects;
     }
 
+    if (this.model.selectedIATIOrganizations.length > 0) {
+      var orgs = this.model.selectedIATIOrganizations.map(o => o.organizationName);
+      this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
+        var isMatched = false;
+        var projectOrgs = project.organizations.map(o => o.name);
+        for (var i = 0; i < projectOrgs.length; i++) {
+          if (orgs.includes(projectOrgs[i])) {
+            isMatched = true;
+            break;
+          }
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+
+      this.filteredAIMSProjects = this.aimsProjects.filter(function (project) {
+        var isMatched = false;
+        var projectOrgs = project.organizations.map(o => o.name);
+        for (var i = 0; i < projectOrgs.length; i++) {
+          if (orgs.includes(projectOrgs[i])) {
+            isMatched = true;
+            break;
+          }
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+    }
+
     if (this.model.selectedOrganizations.length > 0) {
       var orgs = this.model.selectedOrganizations.map(o => o.organizationName);
-      //IATI
       this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
         var isMatched = false;
         var projectOrgs = project.organizations.map(o => o.name);
@@ -454,7 +493,6 @@ export class NewProjectComponent implements OnInit {
   }
 
   selectIATIProject(e) {
-    //this.isProjectPermitted = true;
     var id = e.target.id;
     var selectedProject = this.filteredIatiProjects.filter(
       iati => iati.id == id
@@ -473,7 +511,6 @@ export class NewProjectComponent implements OnInit {
   }
 
   selectAIMSProject(e) {
-    //this.isProjectPermitted = true;
     var id = e.target.id.split('-')[1];
     var selectedProject = this.filteredAIMSProjects.filter(
       aims => aims.id == id
@@ -638,7 +675,6 @@ export class NewProjectComponent implements OnInit {
       this.selectedProjects = this.selectedProjects.filter(p => p.identifier != id);
       var projects = JSON.stringify(this.selectedProjects);
       localStorage.setItem("selected-projects", projects);
-      //this.router.navigateByUrl('project-entry');
       this.router.navigateByUrl('data-entry');
     }
   }
