@@ -172,7 +172,7 @@
                     <td width="25%">{{project.title}}</td>
                     <td width="15%">{{project.funders}}</td>
                     <td width="15%">{{project.implementers}}</td>
-                    <td class="text-center" width="15%">{{formatNumber(project.projectValue)}}</td>
+                    <td class="text-right" width="15%">{{formatNumber(project.projectValue)}}</td>
                     <td class="text-right" width="15%">
                       {{formatNumber(project.actualDisbursements)}}<br />
                     </td>
@@ -228,19 +228,19 @@
                 <th width="25%">&nbsp;</th>
                 <th width="15%">&nbsp;</th>
                 <th width="15%">&nbsp;</th>
-                <th class="text-center" width="15%">
+                <th class="text-right" width="15%">
                   <b>
                     <i>Total: {{formatNumber(getGrandTotalProjectValueForYear())}}</i>
                   </b>
                 </th>
-                <th class="text-center" width="15%">
+                <th class="text-right" width="15%">
                   <b>
                     <i>
                       Total: {{formatNumber(getGrandTotalDisbursementForYear())}}
                     </i>
                   </b>
                 </th>
-                <th class="text-center" width="15%">
+                <th class="text-right" width="15%">
                   <b>
                     <i>
                       Total: {{formatNumber(getGrandTotalPlannedDisbursementForYear())}}
