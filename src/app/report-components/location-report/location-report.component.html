@@ -195,9 +195,9 @@
               <th width="25%">Project</th>
               <th width="15%">Funders</th>
               <th width="15%">Implementers</th>
-              <th class="text-center" width="15%">Project value</th>
-              <th class="text-center" width="15%">Disbursements actual</th>
-              <th class="text-center" width="15%">Disbursements planned</th>
+              <th class="text-right" width="15%">Project value</th>
+              <th class="text-right" width="15%">Disbursements actual</th>
+              <th class="text-right" width="15%">Disbursements planned</th>
             </tr>
           </thead>
         </table>
@@ -220,11 +220,11 @@
                 <td width="25%">{{project.title}}</td>
                 <td width="15%">{{project.funders}}</td>
                 <td width="15%">{{project.implementers}}</td>
-                <td class="text-center" width="15%">{{formatNumber(project.projectPercentValue)}}</td>
-                <td class="text-center" width="15%">
+                <td class="text-right" width="15%">{{formatNumber(project.projectPercentValue)}}</td>
+                <td class="text-right" width="15%">
                   {{formatNumber(project.actualDisbursements)}}<br />
                 </td>
-                <td class="text-center" width="15%">
+                <td class="text-right" width="15%">
                   {{formatNumber(project.plannedDisbursements)}}
                 </td>
               </tr>
@@ -243,12 +243,12 @@
               <th width="25%">&nbsp;</th>
               <th width="15%">&nbsp;</th>
               <th width="15%">&nbsp;</th>
-              <th class="text-center" width="15%">
+              <th class="text-right" width="15%">
                 <b>
                   <i>Total: {{formatNumber(getGrandTotalFundingForLocation())}}</i>
                 </b>
               </th>
-              <th class="text-center" width="15%">
+              <th class="text-right" width="15%">
                 <b>
                   <i>
                     Total: {{formatNumber(getGrandTotalDisbursementForLocation())}}

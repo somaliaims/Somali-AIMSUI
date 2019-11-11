@@ -80,7 +80,7 @@
               <thead>
                 <th width="25%">&nbsp;</th>
                 <th width="15%">&nbsp;</th>
-                <th class="text-center" width="12%" *ngFor="let label of chartLabels">
+                <th class="text-right" width="12%" *ngFor="let label of chartLabels">
                   {{label}}
                 </th>
               </thead>
@@ -96,21 +96,21 @@
                       {{project.title}}
                     </td>
                     <td width="15%">Disbursements</td>
-                    <td class="text-center" width="12%" *ngFor="let d of project.yearlyDisbursements">
+                    <td class="text-right" width="12%" *ngFor="let d of project.yearlyDisbursements">
                       {{formatNumber(d.disbursements)}}
                     </td>
                   </tr>
                   <tr class="child" *ngIf="project.isDisplay">
                     <td>&nbsp;</td>
                     <td><i>Actual</i></td>
-                    <td class="text-center" width="12%" *ngFor="let d of project.disbursementsBreakup">
+                    <td class="text-right" width="12%" *ngFor="let d of project.disbursementsBreakup">
                         {{formatNumber(d.actualDisbursements)}}
                       </td>
                   </tr>
                   <tr class="child" *ngIf="project.isDisplay">
                       <td>&nbsp;</td>
                       <td><i>Planned</i></td>
-                      <td class="text-center" width="12%" *ngFor="let d of project.disbursementsBreakup">
+                      <td class="text-right" width="12%" *ngFor="let d of project.disbursementsBreakup">
                           {{formatNumber(d.expectedDisbursements)}}
                         </td>
                     </tr>
@@ -122,14 +122,14 @@
                 <tr>
                   <td width="25%"><b>Total</b></td>
                   <td width="15%"><b>Actual disbursements</b></td>
-                  <td class="text-center" width="12%" *ngFor="let d of reportDataList.totalYearlyDisbursements">
+                  <td class="text-right" width="12%" *ngFor="let d of reportDataList.totalYearlyDisbursements">
                     {{formatNumber(d.totalDisbursements)}}
                   </td>
                 </tr>
                 <tr>
                   <td></td>
                   <td><b>Planned disbursements</b></td>
-                  <td class="text-center" *ngFor="let d of reportDataList.totalYearlyDisbursements">
+                  <td class="text-right" *ngFor="let d of reportDataList.totalYearlyDisbursements">
                     {{formatNumber(d.totalExpectedDisbursements)}}
                   </td>
                 </tr>

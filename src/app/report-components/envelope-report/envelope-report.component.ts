@@ -462,4 +462,8 @@ export class EnvelopeReportComponent implements OnInit {
     });
   }
 
+  formatNumber(value: number) {
+    return this.storeService.getNumberWithCommas(value);
+  }
+
 }
