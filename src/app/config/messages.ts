@@ -44,5 +44,6 @@ export const Messages = {
     DELETION_REQUEST_INFO: 'Request for deletion of project is successfuly forwarded for approval',
     ONLY_ONE_ORGANIZATION_RENAME: 'You must select only one organization for merge',
     PROJECT_FOR_INFORMATION_REQUIRED: 'Select a project before your proceed with the information request',
-    MEMBERSHIP_REQUEST_MESSAGE: 'Your request is submitted successfully, you will get a notification about the status of this request through email'
+    MEMBERSHIP_REQUEST_MESSAGE: 'Your request is submitted successfully, you will get a notification about the status of this request through email',
+    DATA_BACKUP_MESSAGE: 'Data backup is performed successfully for the current state of the database.'
 }

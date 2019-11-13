@@ -1,8 +1,8 @@
 export const urls = {
-	baseUrl: "http://104.140.103.36/api/",
-	excelFilesUrl: "http://104.140.103.36/ExcelFiles/",
-	//baseUrl: "http://localhost:60815/api/",
-	//excelFilesUrl: "http://localhost:60815/ExcelFiles/",
+	//baseUrl: "http://104.140.103.36/api/",
+	//excelFilesUrl: "http://104.140.103.36/ExcelFiles/",
+	baseUrl: "http://localhost:60815/api/",
+	excelFilesUrl: "http://localhost:60815/ExcelFiles/",
 	getToken: "User/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
@@ -146,6 +146,7 @@ export const urls = {
 	importOldExcelDataUrl: "ImportData/UploadDataImportFileSeventeen",
 	importLatestDataUrl: "ImportData/ImportLatestData",
 	importEnvelopeDataUrl: "ImportData/ImportEnvelopeData",
+	importOrganizationTypesUrl: "ImportData/ImportOrganizationTypes",
 	contactUrl: "Contact",
 	projectEmailUrl: "Contact/SendSuggestionEmailForProject",
 	deleteProjectIdsUrl: "ProjectDeletionRequest/GetProjectIds",
@@ -174,4 +175,5 @@ export const urls = {
 	addProjectDocumentHelpUrl: "Help/AddProjectDocumentHelp",
 	addProjectSectorHelpUrl: "Help/AddProjectSectorHelp",
 	addProjectLocationHelpUrl: "Help/AddProjectLocationHelp",
+	backupDataUrl: "DataBackup/PerformBackup",
 };

@@ -1,0 +1,36 @@
+<div class="container-fluid view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Backup AIMS Database</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-md-9 col-lg-9 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <div *ngIf="currentTab == tabConstants.BACKUP" class="container">
+              <p class="lead">
+                Data backup allows you to take the complete backup of data as of its current state
+                on this date {{currentDate}}. It
+                must be noted that while taking the backup, AIMS will remain offline untill backup is
+                completed.
+              </p>
+              <span>
+                <button type="button" (click)="takeDataBackup()" class="btn btn-info btn-block text-uppercase">
+                  Take a backup
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </block-ui>
+</div>
+
+<info-modal message={{infoMessage}}></info-modal>
+<error-modal message={{errorMessage}}></error-modal>

@@ -74,6 +74,7 @@ import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envel
 import { EnvelopeTypesComponent } from './envelope-types/envelope-types.component';
 import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
 import { EnvelopeReportComponent } from './report-components/envelope-report/envelope-report.component';
+import { DataBackupComponent } from './data-backup/data-backup.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -162,6 +163,7 @@ export const routes: Routes = [
   { path: 'data-import', component: DataImportComponent },
   { path: 'contact', component: ContactFormComponent },
   { path: 'manage-help', component: ManageHelpComponent },
+  { path: 'data-backup', component: DataBackupComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

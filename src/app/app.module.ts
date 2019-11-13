@@ -105,6 +105,7 @@ import { EnvelopeTypesComponent } from './envelope-types/envelope-types.componen
 import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envelope-type.component';
 import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
 import { EnvelopeReportComponent } from './report-components/envelope-report/envelope-report.component';
+import { DataBackupComponent } from './data-backup/data-backup.component';
 
 @NgModule({
   declarations: [
@@ -201,6 +202,7 @@ import { EnvelopeReportComponent } from './report-components/envelope-report/env
     ManageEnvelopeTypeComponent,
     DeleteEnvelopeTypeComponent,
     EnvelopeReportComponent,
+    DataBackupComponent,
   ],
   imports: [
     BrowserModule,

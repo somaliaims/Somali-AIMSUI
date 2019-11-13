@@ -40,4 +40,11 @@ export class FileUploadService {
         );
     }
 
+    uploadOrganizationTypesFile(formData: any) {
+        var url = this.urlHelper.getOrganizationTypesImportUrl();
+        return this.httpClient.post(url, 
+            formData, {reportProgress: true, observe: 'events'}
+        );
+    }
+
 }

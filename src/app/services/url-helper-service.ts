@@ -660,6 +660,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.importEnvelopeDataUrl);
     }
 
+    getOrganizationTypesImportUrl() {
+        return (this.BASE_URL + urlsList.urls.importOrganizationTypesUrl);
+    }
+
+    getDataBackupUrl() {
+        return (this.BASE_URL + urlsList.urls.backupDataUrl);
+    }
+
     averageCurrencyRateForDateUrl() {
         return (this.BASE_URL + urlsList.urls.averageCurrencyRate);
     }
