@@ -4,13 +4,19 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Backup AIMS Database</a>
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.BACKUP, 'text-info': currentTab != tabConstants.BACKUP}" href="#"
+              class="nav-link text-info" (click)="showBackupTab()" data-toggle="tab">Data backup</a>
+          </li>
+          <li *ngIf="activeProjectId != 0" class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.RESTORE, 'text-info': currentTab != 'financials'}" href="#"
+              class="nav-link text-info" (click)="showRestoreTab()" data-toggle="tab">Data restore</a>
           </li>
         </ul>
       </div>
       <div class="col-sm-9 col-md-9 col-lg-9 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body">
+
             <div *ngIf="currentTab == tabConstants.BACKUP" class="container">
               <p class="lead">
                 Data backup allows you to take the complete backup of data as of its current state
@@ -23,6 +29,24 @@
                   Take a backup
                 </button>
               </span>
+            </div>
+
+            <div *ngIf="currentTab == tabConstants.RESTORE" class="container">
+              <h5>Data backups list</h5>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Data backup</th>
+                    <th>Dated</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let file of backupFiles">
+
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

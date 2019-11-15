@@ -16,6 +16,7 @@ export class DataBackupComponent implements OnInit {
   infoMessage: string = null;
   errorMessage: string = null;
   currentDate: string = null;
+  backupFiles: any = [];
 
   displayTabs: any = [
     { visible: true, identity: 'backup' },
@@ -36,6 +37,14 @@ export class DataBackupComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  showBackupTab() {
+    this.manageTabsDisplay(this.tabConstants.BACKUP)
+  }
+
+  showRestoreTab() {
+    this.manageTabsDisplay(this.tabConstants.RESTORE);
   }
 
   manageTabsDisplay(tabIdentity) {
@@ -59,6 +68,14 @@ export class DataBackupComponent implements OnInit {
           this.infoModal.openModal();
         }
         this.blockUI.stop();
+      }
+    );
+  }
+
+  getBackupFilesList() {
+    this.backupService.getBackupFiles().subscribe(
+      data => {
+        this.backupFiles = data;
       }
     );
   }

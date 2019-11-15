@@ -668,6 +668,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.backupDataUrl);
     }
 
+    getBackupFilesUrl() {
+        return (this.BASE_URL + urlsList.urls.backupFilesUrl);
+    }
+
     averageCurrencyRateForDateUrl() {
         return (this.BASE_URL + urlsList.urls.averageCurrencyRate);
     }

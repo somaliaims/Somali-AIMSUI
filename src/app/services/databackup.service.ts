@@ -20,4 +20,10 @@ export class DatabackupService {
         return this.httpClient.get(url, httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Data backup')));
     }
+
+    getBackupFiles() {
+        var url = this.urlHelper.getBackupFilesUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Backup files')));
+    }
 }

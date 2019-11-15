@@ -176,4 +176,5 @@ export const urls = {
 	addProjectSectorHelpUrl: "Help/AddProjectSectorHelp",
 	addProjectLocationHelpUrl: "Help/AddProjectLocationHelp",
 	backupDataUrl: "DataBackup/PerformBackup",
+	backupFilesUrl: "DataBackup/GeBackupFiles"
 };
