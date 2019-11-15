@@ -16,6 +16,7 @@ export class DataBackupComponent implements OnInit {
   infoMessage: string = null;
   errorMessage: string = null;
   currentDate: string = null;
+  areFilesLoading: boolean = false;
   backupFiles: any = [];
 
   displayTabs: any = [
@@ -45,6 +46,7 @@ export class DataBackupComponent implements OnInit {
 
   showRestoreTab() {
     this.manageTabsDisplay(this.tabConstants.RESTORE);
+    this.getBackupFilesList();
   }
 
   manageTabsDisplay(tabIdentity) {
@@ -73,11 +75,24 @@ export class DataBackupComponent implements OnInit {
   }
 
   getBackupFilesList() {
+    this.areFilesLoading = true;
     this.backupService.getBackupFiles().subscribe(
       data => {
-        this.backupFiles = data;
+        if (data) {
+          this.backupFiles = data;
+        }
+        this.areFilesLoading = false;
       }
     );
+  }
+
+  formatDate(dated) {
+    var date = new Date(dated);
+    return date.toLocaleString('en-US');
+  }
+
+  restoreBackup() {
+
   }
 
   setCurrentDate() {

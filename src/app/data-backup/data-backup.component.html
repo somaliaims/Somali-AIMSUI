@@ -8,16 +8,16 @@
               class="nav-link text-info" (click)="showBackupTab()" data-toggle="tab">Data backup</a>
           </li>
           <li *ngIf="activeProjectId != 0" class="nav-item">
-            <a [ngClass]="{'btn-info': currentTab == tabConstants.RESTORE, 'text-info': currentTab != 'financials'}" href="#"
+            <a [ngClass]="{'btn-info': currentTab == tabConstants.RESTORE, 'text-info': currentTab != tabConstants.RESTORE}" href="#"
               class="nav-link text-info" (click)="showRestoreTab()" data-toggle="tab">Data restore</a>
           </li>
         </ul>
       </div>
-      <div class="col-sm-9 col-md-9 col-lg-9 mx-auto">
+      <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body">
 
-            <div *ngIf="currentTab == tabConstants.BACKUP" class="container">
+            <div *ngIf="currentTab == tabConstants.BACKUP" class="col-lg-12 col-md-12 col-sm-12">
               <p class="lead">
                 Data backup allows you to take the complete backup of data as of its current state
                 on this date {{currentDate}}. It
@@ -31,22 +31,34 @@
               </span>
             </div>
 
-            <div *ngIf="currentTab == tabConstants.RESTORE" class="container">
+            <div *ngIf="currentTab == tabConstants.RESTORE" class="col-lg-12 col-md-12 col-sm-12">
               <h5>Data backups list</h5>
-              <table class="table table-striped">
+              <div class="row text-center" *ngIf="areFilesLoading">
+                <div class="col-md-12">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+                </div>
+              </div>
+              <table *ngIf="backupFiles.length > 0 && !areFilesLoading" class="table table-striped">
                 <thead>
                   <tr>
                     <th>Data backup</th>
-                    <th>Dated</th>
-                    <th>Action</th>
+                    <th class="text-center">Date & TIME</th>
+                    <th class="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let file of backupFiles">
-
+                    <td>{{file.backupFileName}}</td>
+                    <td class="text-center">{{formatDate(file.takenOn)}}</td>
+                    <td class="text-center">
+                      <button type="button" (click)="restoreBackup(file.backupFileName)" class="btn btn-warning btn-sm">Restore</button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
+              <span *ngIf="backupFiles.length == 0 && !areFilesLoading" class="text-info">
+                <i>No backup files found to show.</i>
+              </span>
             </div>
           </div>
         </div>
