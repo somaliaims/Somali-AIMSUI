@@ -205,7 +205,7 @@ export class BudgetReportSummaryComponent implements OnInit {
   }
 
   printReport() {
-    this.storeService.printReport('rpt-budget-report', 'Budget report');
+    this.storeService.printReport('rpt-budget-report', 'Budget report', this.selectedCurrencyName);
   }
 
   selectCurrency() {
@@ -293,6 +293,10 @@ export class BudgetReportSummaryComponent implements OnInit {
     result.then(() => {
       this.blockUI.stop();
     });
+  }
+
+  getTodaysDate() {
+    return this.storeService.getLongDateAndTime();
   }
 
 }

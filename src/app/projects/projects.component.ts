@@ -26,6 +26,7 @@ export class ProjectsComponent implements OnInit {
 
   isSearchVisible = false;
   projectsList: any = [];
+  filteredProjectsList: any = [];
   errorMessage: string = null;
   successMessage: string = null;
   criteria: string = null;
@@ -126,7 +127,7 @@ export class ProjectsComponent implements OnInit {
       allowSearchFilter: true
     };
 
-    this.searchField = new FormControl();
+    /*this.searchField = new FormControl();
     this.searchField.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
@@ -140,8 +141,15 @@ export class ProjectsComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    )*/
+  }
 
+  filterProjects() {
+    if (this.model.title) {
+      this.filteredProjectsList = this.projectsList.filter(p => p.title.indexOf(this.model.title) != -1);
+    } else {
+      this.filteredProjectsList = this.projectsList;
+    }
   }
 
   getProjectsList() {
@@ -149,6 +157,7 @@ export class ProjectsComponent implements OnInit {
       data => {
         if (data && data.length) {
           this.projectsList = data;
+          this.filteredProjectsList = data;
         }
         this.blockUI.stop();
       }
@@ -226,6 +235,7 @@ export class ProjectsComponent implements OnInit {
       data => {
         if (data) {
           this.projectsList = data;  
+          this.filteredProjectsList = data;
         }
         this.blockUI.stop();
       },

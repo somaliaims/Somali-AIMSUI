@@ -510,7 +510,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   printReport() {
-    this.storeService.printReport('rpt-sector-project', 'Sector wise projects list');
+    this.storeService.printReport('rpt-sector-project', 'Sectors report', this.selectedCurrencyName);
   }
 
   public chartClicked(e: any): void {
@@ -887,6 +887,10 @@ export class SectorReportComponent implements OnInit {
 
   formatNumber(value: number) {
     return this.storeService.getNumberWithCommas(value);
+  }
+
+  getTodaysDate() {
+    return this.storeService.getLongDateAndTime();
   }
 
 }

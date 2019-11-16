@@ -249,7 +249,7 @@ export class EnvelopeReportComponent implements OnInit {
   }
 
   printReport() {
-    this.storeService.printReport('rpt-envelope', 'Envelope report');
+    this.storeService.printReport('rpt-envelope', 'Envelope report', this.selectedCurrencyName);
   }
 
   getOrganizationTypes() {

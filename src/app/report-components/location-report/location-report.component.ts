@@ -453,7 +453,7 @@ export class LocationReportComponent implements OnInit {
   }
 
   printReport() {
-    this.storeService.printReport('rpt-location-project', 'Location wise projects list');
+    this.storeService.printReport('rpt-location-project', 'Locations report', this.selectedCurrencyName);
   }
 
   public chartClicked(e: any): void {
@@ -829,6 +829,10 @@ export class LocationReportComponent implements OnInit {
 
   formatNumber(value: number) {
     return this.storeService.getNumberWithCommas(value);
+  }
+
+  getTodaysDate() {
+    return this.storeService.getLongDateAndTime();
   }
 
 }

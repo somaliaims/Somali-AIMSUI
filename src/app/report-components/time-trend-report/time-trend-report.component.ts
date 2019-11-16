@@ -529,7 +529,7 @@ export class TimeTrendReportComponent implements OnInit {
   }
 
   printReport() {
-    this.storeService.printReport('rpt-time-trend-report', 'Time trend report');
+    this.storeService.printReport('rpt-time-trend-report', 'Time trend report', this.selectedCurrencyName);
   }
 
   public chartClicked(e: any): void {
@@ -704,41 +704,6 @@ export class TimeTrendReportComponent implements OnInit {
     //this.manageDataOptions();
   }
 
-  /*manageDataToDisplay() {
-    this.chartData = [];
-    var selectedDataOption = 1;
-    if (this.model.selectedDataOption) {
-      this.selectedDataOptions = [];
-      selectedDataOption = parseInt(this.model.selectedDataOption);
-      this.selectedDataOptions.push(selectedDataOption);
-    }
-    selectedDataOption = parseInt(this.model.selectedDataOption);
-    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
-    if (chartType.length > 0) {
-      this.model.chartTypeName = chartType[0].type;
-    }
-    if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
-      this.manageDataOptions();
-    } else {
-      switch (selectedDataOption) {
-        case this.dataOptionsCodes.ACTUAL_DISBURSEMENTS:
-          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.totalActualDisbursements);
-          break;
-  
-        case this.dataOptionsCodes.PLANNED_DISBURSEMENTS:
-          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.totalPlannedDisbursements);
-          break;
-  
-        case this.dataOptionsCodes.DISBURSEMENTS:
-          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.totalDisbursements);
-          break;
-  
-        default:
-          this.chartData = this.reportDataList.yearlyProjectsList.map(p => p.totalActualDisbursements);
-          break;
-      }
-    }
-  }*/
 
   getGrandTotalFundingForYear() {
     var totalFunding = 0;
@@ -787,70 +752,6 @@ export class TimeTrendReportComponent implements OnInit {
       });
     }
   }
-
-  /*manageDataOptions() {
-    if (this.selectedDataOptions.length > 0 && this.reportDataList.yearlyProjectsList) {
-      this.chartData = [];
-      this.doughnutChartData = [];
-      this.showChart = false;
-
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.ACTUAL_DISBURSEMENTS) != -1) {
-        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.ACTUAL_DISBURSEMENTS);
-        if (isDataExists.length == 0) {
-          var sectorProjects = this.reportDataList.yearlyProjectsList.map(p => p.totalActualDisbursements);
-          var chartData = { data: sectorProjects, label: this.dataOptionLabels.ACTUAL_DISBURSEMENTS };
-          this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorProjects);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.ACTUAL_DISBURSEMENTS] = (this.doughnutChartData.length - 1);
-        }
-      } else {
-        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.ACTUAL_DISBURSEMENTS);
-        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.ACTUAL_DISBURSEMENTS], 1);
-      }
-
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PLANNED_DISBURSEMENTS) != -1) {
-        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PLANNED_DISBURSEMENTS);
-        if (isDataExists.length == 0) {
-          var totalPlannedDisbursements = this.reportDataList.yearlyProjectsList.map(p => p.totalPlannedDisbursements);
-          var chartData = { data: totalPlannedDisbursements, label: this.dataOptionLabels.PLANNED_DISBURSEMENTS };
-          this.chartData.push(chartData);
-          this.doughnutChartData.push(totalPlannedDisbursements);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PLANNED_DISBURSEMENTS] = (this.doughnutChartData.length - 1);
-        }
-      } else {
-        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.PLANNED_DISBURSEMENTS);
-        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.PLANNED_DISBURSEMENTS], 1);
-      }
-
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
-        var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
-        if (isDataExists.length == 0) {
-          var sectorDisbursements = this.reportDataList.yearlyProjectsList.map(p => p.totalDisbursements);
-          var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
-          this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorDisbursements);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
-        }
-      } else {
-        this.chartData = this.chartData.filter(d => d.label != this.dataOptionLabels.DISBURSEMENTS);
-        this.doughnutChartData.splice(this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS], 1);
-      }
-
-      if (this.selectedDataOptions.length > 0) {
-        setTimeout(() => {
-          this.showChart = true;
-        }, 1000);
-      }
-    }
-
-    if (this.selectedDataOptions.length == 0 && this.chartData.length > 0) {
-      this.chartData = [];
-      this.doughnutChartData = [];
-      setTimeout(() => {
-        this.showChart = true;
-      }, 1000);
-    }
-  }*/
 
   selectCurrency() {
     if (this.model.selectedCurrency == null || this.model.selectedCurrency == 'null') {
@@ -911,24 +812,6 @@ export class TimeTrendReportComponent implements OnInit {
       this.getGrandTotalDisbursementForYear();
       
       this.showChart = false;
-      /*if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
-          this.chartData = [];
-          var sectorFunding = this.reportDataList.yearlyProjectsList.map(p => p.totalFunding);
-          var chartData = { data: sectorFunding, label: this.dataOptionLabels.FUNDING };
-          this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorFunding);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.FUNDING] = (this.doughnutChartData.length - 1);
-      }
-
-      if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
-          this.chartData = [];
-          var sectorDisbursements = this.reportDataList.yearlyProjectsList.map(p => p.totalDisbursements);
-          var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
-          this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorDisbursements);
-          this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
-      }*/
-
       setTimeout(() => {
         this.showChart = true;
       }, 1000);
@@ -943,6 +826,10 @@ export class TimeTrendReportComponent implements OnInit {
 
   formatNumber(value: number) {
     return this.storeService.getNumberWithCommas(value);
+  }
+
+  getTodaysDate() {
+    return this.storeService.getLongDateAndTime();
   }
 
 }

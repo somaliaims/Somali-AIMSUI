@@ -133,6 +133,10 @@
 
     <div class="row" id="rpt-envelope-pdf-view">
 
+        <div *ngIf="envelopeList && envelopeList.length > 0 && chartData.length > 0" class="col-md-12 text-center margin-top-10">
+            <h5>Envelope report <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
+          </div>
+
       <div *ngIf="envelopeList && envelopeList.length > 0 && chartData.length > 0"
         class="col-md-12 margin-top-10">
         <div *ngIf="model.chartTypeName == chartTypes.BAR" style="display: block;" class="canvas-container mx-auto col-md-8">
@@ -176,10 +180,7 @@
       </div>
 
       <div *ngIf="reportSettings && envelopeList && envelopeList.length > 0" class="margin-top-20 col-md-12" id="rpt-envelope">
-        <div class="text-center">
-          <h5>{{reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
-        </div>
-  
+      
         <div *ngIf="envelopeList && envelopeList.length > 0">
           <table class="table table-striped margin-bottom-0 small">
             <thead>
@@ -211,6 +212,10 @@
           </table>
         </div>
       </div>
+
+      <div class="col-md-12">
+          <span><i><small>Generated on: {{getTodaysDate()}}</small></i></span>
+        </div>
       
     </div>
     

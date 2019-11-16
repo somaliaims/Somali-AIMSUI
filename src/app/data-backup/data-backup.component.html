@@ -7,7 +7,7 @@
             <a [ngClass]="{'btn-info': currentTab == tabConstants.BACKUP, 'text-info': currentTab != tabConstants.BACKUP}" href="#"
               class="nav-link text-info" (click)="showBackupTab()" data-toggle="tab">Data backup</a>
           </li>
-          <li *ngIf="activeProjectId != 0" class="nav-item">
+          <li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == tabConstants.RESTORE, 'text-info': currentTab != tabConstants.RESTORE}" href="#"
               class="nav-link text-info" (click)="showRestoreTab()" data-toggle="tab">Data restore</a>
           </li>

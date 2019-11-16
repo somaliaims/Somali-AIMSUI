@@ -56,7 +56,7 @@
                 </tr>
                 <tr>
                   <td><b>Project value: </b></td>
-                  <td>{{projectData.projectValue}}</td>
+                  <td>{{formatNumber(projectData.projectValue)}}</td>
                   <td><b>Currency: </b></td>
                   <td>{{projectData.projectCurrency}}</td>
                 </tr>
@@ -251,7 +251,7 @@
                 <tr *ngFor="let disbursement of projectDisbursements">
                   <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
                   <td>{{disbursement.year}}</td>
-                  <td>{{disbursement.amount | number:0}}</td>
+                  <td>{{formatNumber(disbursement.amount)}}</td>
                   <td>{{disbursement.currency}}</td>
                   <td>{{disbursement.exchangeRate}}</td>
                   <!-- <td>

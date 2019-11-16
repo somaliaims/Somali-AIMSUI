@@ -389,4 +389,15 @@ export class ViewProjectComponent implements OnInit {
     this.isDocumentLoading = false;
   }
 
+  formatNumber(value: number) {
+    if (!value) {
+      return value;
+    }
+    if (!isNaN(value) && value > 0) {
+      return this.storeService.getNumberWithCommas(value);
+    }
+    return value;
+  }
+
+
 }

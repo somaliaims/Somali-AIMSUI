@@ -87,13 +87,14 @@ export class StoreService {
     };
   }
 
-  printReport(divId, title) {
+  printReport(divId, title, currency) {
     var content = document.getElementById(divId).innerHTML;
     let canvas = document.getElementById('chart') as HTMLCanvasElement;
     var mywindow = window.open('', 'Print', 'height=600,width=800');
     mywindow.document.write('<html><head><title></title>');
     mywindow.document.write("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" type=\"text/css\" />");
     mywindow.document.write('<style>@page { size: auto;  margin: 10mm; }</style></head><body onload="window.print();window.close()">');
+    mywindow.document.write('<div class="col-md-12 text-center" style="margin-top: 10px"><h5>' + title + '<small>' + currency + '</small></h5></div>');
     mywindow.document.write("<img style='display: block;margin-left: auto;margin-right: auto;' src='" + canvas.toDataURL() + "'/>");
     mywindow.document.write(content);
     mywindow.document.write('</body></html>');
@@ -199,6 +200,10 @@ export class StoreService {
       month: "2-digit",
       day: "2-digit",
     });
+  }
+
+  getLongDateAndTime() {
+    return new Date().toLocaleString();
   }
 
   dateOrdinal(d) {
