@@ -53,7 +53,7 @@ export class SectorReportComponent implements OnInit {
   isDataLoading: boolean = true;
   isDefaultCurrencySet: boolean = true;
   pageHeight: number = Settings.pdfPrintPageHeight;
-
+  btnReportText: string = 'View report';
 
   yearsList: any = [];
   allSectorsList: any = [];
@@ -448,6 +448,7 @@ export class SectorReportComponent implements OnInit {
     this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(
       data => {
         this.reportDataList = data;
+        this.btnReportText = 'Update report';
         if (this.reportDataList && this.reportDataList.sectorProjectsList) {
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
           this.chartLables = sectorNames;

@@ -35,6 +35,7 @@ export class BudgetReportSummaryComponent implements OnInit {
   selectedProject: string = null;
   excelFile: string = null;
   isDataLoading: boolean = true;
+  btnReportText: string = 'View report';
 
   chartLabels: any = [];
   chartData: any = [];
@@ -141,6 +142,7 @@ export class BudgetReportSummaryComponent implements OnInit {
       data => {
         if (data) {
           this.reportDataList = data;
+          this.btnReportText = 'Update report';
           if (this.reportDataList.reportSettings) {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();

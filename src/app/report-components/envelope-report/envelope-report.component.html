@@ -80,7 +80,7 @@
                 </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">Update report</button>&nbsp;
+                    <button type="submit" class="btn btn-info">{{btnReportText}}</button>&nbsp;
                     <button *ngIf="envelopeList && envelopeList.length > 0" type="button" class="btn btn-danger"
                       (click)="generatePDF()">Download PDF</button>&nbsp;
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
@@ -211,17 +211,13 @@
             </tr>
           </table>
         </div>
-      </div>
 
-      <div class="col-md-12">
-          <span><i><small>Generated on: {{getTodaysDate()}}</small></i></span>
-        </div>
+        <div class="col-md-12">
+            <span><i><small>Generated on: {{getTodaysDate()}}</small></i></span>
+          </div>
+      </div>
       
     </div>
-    
-
-    
-
   </block-ui>
 </div>
 

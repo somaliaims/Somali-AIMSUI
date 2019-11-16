@@ -56,6 +56,7 @@ export class LocationReportComponent implements OnInit {
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
+  btnReportText: string = 'View report';
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -389,6 +390,7 @@ export class LocationReportComponent implements OnInit {
     this.reportService.getLocationWiseProjectsReport(searchModel).subscribe(
       data => {
         this.reportDataList = data;
+        this.btnReportText = 'Update report';
         if (this.reportDataList && this.reportDataList.locationProjectsList) {
           var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
           this.chartLables = locationNames;

@@ -86,7 +86,7 @@
                 </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">Update report</button>&nbsp;
+                    <button type="submit" class="btn btn-info">{{btnReportText}}</button>&nbsp;
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger"
                       (click)="generatePDF()">Download PDF</button>&nbsp;
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
@@ -116,30 +116,29 @@
     </div>
 
     <div *ngIf="reportDataList && reportDataList.yearlyProjectsList" id="rpt-timetrend-pdf-view" class="col-md-12">
-      <div *ngIf="reportDataList.yearlyProjectsList && chartData.length > 0 && showChart"
-        class="col-md-12 margin-top-50">
-
-        <div *ngIf="reportDataList && reportDataList.reportSettings && chartData.length > 0" class="col-md-12 margin-top-10">
+        <div class="col-md-12 text-center margin-top-10">
+          <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
+        </div>
+        <div *ngIf="reportDataList.yearlyProjectsList && chartData.length > 0 && showChart" class="col-md-12">
+        
+          <div *ngIf="reportDataList && reportDataList.reportSettings && chartData.length > 0" class="col-md-12 margin-top-10">
             <div class="offset-2 col-md-8">
               <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
                 [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
           </div>
-      </div>
-
-      <div *ngIf="reportDataList.reportSettings" class="row margin-top-20" id="rpt-time-trend-report">
-        <div class="col-md-12 text-center">
-          <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
         </div>
 
+      <div *ngIf="reportDataList.reportSettings" class="row margin-top-10" id="rpt-time-trend-report">
+      
         <div *ngIf="reportDataList && reportDataList.yearlyProjectsList" class="col-md-12">
-          <table class="table table-striped small" style="margin-bottom: 0rem !important">
+          <table class="table table-striped table-condensed table-fixed small" style="margin-bottom: 0rem !important">
             <thead>
               <tr>
-                <th width="25%">Project/s for year</th>
-                <th width="15%">Funders</th>
-                <th width="15%">Implementers</th>
+                <th width="20%">Project/s for year</th>
+                <th class="text-center" width="15%">Funders</th>
+                <th class="text-center" width="15%">Implementers</th>
                 <th class="text-right" width="15%">Project value</th>
                 <th class="text-right" width="15%">Disbursements actual</th>
                 <th class="text-right" width="15%">Disbursements planned</th>
@@ -148,7 +147,7 @@
           </table>
           <div *ngFor="let yearProject of reportDataList.yearlyProjectsList; let i = index;">
             <div class="row">
-              <table class="table small margin-bottom-none row-highlight">
+              <table class="table table-condensed table-fixed small margin-bottom-none row-highlight">
                 <tbody>
                   <tr title="Click here to view detail" (click)="displayHideRow(yearProject.year)">
                     <td width="70%">
@@ -166,7 +165,7 @@
                 </tbody>
               </table>
 
-              <table class="child table table-striped small" *ngIf="yearProject.isDisplay">
+              <table class="child table table-striped table-condensed table-fixed small" *ngIf="yearProject.isDisplay">
                 <tbody>
                   <tr *ngFor="let project of yearProject.projects">
                     <td width="25%">{{project.title}}</td>
@@ -189,7 +188,7 @@
               </table>
             </div>
           </div>
-          <table class="table table-stiped small">
+          <table class="table table-stiped table-condensed table-fixed small">
             <thead>
               <tr>
                 <th width="25%">&nbsp;</th>

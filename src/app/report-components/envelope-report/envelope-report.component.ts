@@ -52,6 +52,7 @@ export class EnvelopeReportComponent implements OnInit {
   loadReport: boolean = false;
   errorMessage: string = null;
   chartTypeName: string = 'bar';
+  btnReportText: string = 'View report';
 
   barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -222,6 +223,7 @@ export class EnvelopeReportComponent implements OnInit {
     this.reportService.getEnvelopeReport(this.model).subscribe(
       data => {
         if (data) {
+          this.btnReportText = 'Update report';
           this.reportSettings = data.reportSettings;
           if (this.reportSettings && this.reportSettings.excelReportName) {
             this.excelFile = this.reportSettings.excelReportName;
@@ -464,6 +466,10 @@ export class EnvelopeReportComponent implements OnInit {
 
   formatNumber(value: number) {
     return this.storeService.getNumberWithCommas(value);
+  }
+
+  getTodaysDate() {
+    return this.storeService.getLongDateAndTime();
   }
 
 }

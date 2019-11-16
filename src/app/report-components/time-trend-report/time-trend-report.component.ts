@@ -63,6 +63,7 @@ export class TimeTrendReportComponent implements OnInit {
   isDataLoading: boolean = true;
   //chartTypeName: string = 'bar';
   chartType: string = 'bar';
+  btnReportText: string = 'View report';
 
   chartOptions: any = {
     responsive: true,
@@ -440,6 +441,7 @@ export class TimeTrendReportComponent implements OnInit {
     this.reportService.getYearlyProjectsReport(searchModel).subscribe(
       data => {
         this.reportDataList = data;
+        this.btnReportText = 'Update report';
         if (this.reportDataList && this.reportDataList.yearlyProjectsList) {
           this.reportDataList.yearlyProjectsList.forEach((y) => {
             y.isDisplay = false;
