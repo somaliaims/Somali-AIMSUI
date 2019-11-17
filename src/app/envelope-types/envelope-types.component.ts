@@ -4,7 +4,6 @@ import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
-import { endTimeRange } from '@angular/core/src/profile/wtf_impl';
 import { StoreService } from '../services/store-service';
 
 @Component({

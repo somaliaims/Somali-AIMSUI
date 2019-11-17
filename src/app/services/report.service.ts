@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { StoreService } from './store-service';
 import { httpOptions } from '../config/httpoptions';
 import * as jsPDF from 'jspdf';
-import * as html2canvas from 'html2canvas';
+import html2canvas from 'html2canvas';
 import { Settings } from '../config/settings';
 
 @Injectable({

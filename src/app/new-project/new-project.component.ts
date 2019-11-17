@@ -26,7 +26,7 @@ import { OrganizationService } from '../services/organization-service';
 })
 export class NewProjectComponent implements OnInit {
 
-  @ViewChild('title') title: ElementRef;
+  @ViewChild('title', {static: true}) title: ElementRef;
   @Input()
   displayTime: number = Settings.displayMessageTime;
   isProjectLoaded: boolean = false;
@@ -325,39 +325,10 @@ export class NewProjectComponent implements OnInit {
           return project;
         }
       }.bind(this));
-
-      this.filteredAIMSProjects = this.aimsProjects.filter(function (project) {
-        var isMatched = false;
-        var projectOrgs = project.organizations.map(o => o.name);
-        for (var i = 0; i < projectOrgs.length; i++) {
-          if (orgs.includes(projectOrgs[i])) {
-            isMatched = true;
-            break;
-          }
-        }
-        if (isMatched) {
-          return project;
-        }
-      }.bind(this));
     }
 
     if (this.model.selectedOrganizations.length > 0) {
       var orgs = this.model.selectedOrganizations.map(o => o.organizationName);
-      this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
-        var isMatched = false;
-        var projectOrgs = project.organizations.map(o => o.name);
-        for (var i = 0; i < projectOrgs.length; i++) {
-          if (orgs.includes(projectOrgs[i])) {
-            isMatched = true;
-            break;
-          }
-        }
-        if (isMatched) {
-          return project;
-        }
-      }.bind(this));
-
-      //AIMS
       this.filteredAIMSProjects = this.aimsProjects.filter(function (project) {
         var isMatched = false;
         var projectOrgs = project.organizations.map(o => o.name);

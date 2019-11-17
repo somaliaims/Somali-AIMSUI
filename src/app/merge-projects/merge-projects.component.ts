@@ -8,7 +8,7 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { StoreService } from '../services/store-service';
 import { Router } from '@angular/router';
-import { forEach } from '@angular/router/src/utils/collection';
+//import { forEach } from '@angular/router/src/utils/collection';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ModalService } from '../services/modal.service';

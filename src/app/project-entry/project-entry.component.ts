@@ -247,8 +247,8 @@ export class ProjectEntryComponent implements OnInit {
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
-  @ViewChild("funderExchangeRate") funderExRate: ElementRef;
-  @ViewChild("disbursementExchangeRate") disbursementExRate: ElementRef;
+  @ViewChild("funderExchangeRate", {static: false}) funderExRate: ElementRef;
+  @ViewChild("disbursementExchangeRate", {static: false}) disbursementExRate: ElementRef;
 
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private sectorService: SectorService,
