@@ -1,0 +1,47 @@
+<jw-modal id="create-org-modal">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">Create new organization</div>
+                <div class="card-body text-info">
+                    <div *ngIf="isDataLoading" class="text-info">
+                        Wait setting up...
+                    </div>
+                    <div *ngIf="!isDataLoading" class="form-group">
+                        <form class="form-signin" (ngSubmit)="organizationForm.form.valid && saveOrganization()"
+                            #organizationForm="ngForm">
+                            <div class="form-group">
+                                <label for="text">Organization type</label>
+                                <select class="form-control" name="organizationType"
+                                    [(ngModel)]="model.organizationTypeId" #organizationType="ngModel" required>
+                                    <option *ngFor="let orgType of organizationTypes" [value]="orgType.id">
+                                        {{orgType.typeName}}
+                                    </option>
+                                </select>
+                                <div *ngIf="organizationForm.submitted" [hidden]="organizationName.valid"
+                                    class="alert alert-danger">
+                                    Organization Name is required
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Organization name</label>
+                                <input type="text" class="form-control" id="organizationName"
+                                    [(ngModel)]="model.organizationName" name="organizationName"
+                                    #organizationName="ngModel" required>
+                                <div *ngIf="organizationForm.submitted" [hidden]="organizationName.valid"
+                                    class="alert alert-danger">
+                                    Organization Name is required
+                                </div>
+                            </div>
+
+                            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                                type="submit">{{btnText}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div><br />
+            <button type="submit" *ngIf="!isDataLoading" class="btn btn-info">Save organization</button>
+            <button class="btn btn-danger" (click)="closeModal();">Close</button>
+        </div>
+    </div>
+</jw-modal>

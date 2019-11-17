@@ -70,7 +70,6 @@ export class BudgetReportComponent implements OnInit {
     this.getNationalCurrency();
     this.getManualExchangeRateForToday();
     this.getBudgetReport();
-    this.datedToday = this.storeService.getLongDateString(new Date());
   }
 
   getManualExchangeRateForToday() {
@@ -118,6 +117,7 @@ export class BudgetReportComponent implements OnInit {
       data => {
         if (data) {
           this.reportDataList = data;
+          this.datedToday = this.storeService.getLongDateString(new Date());
           if (this.reportDataList.projects) {
             this.reportDataList.projects.forEach((p) => {
               if (p.yearlyDisbursements) {

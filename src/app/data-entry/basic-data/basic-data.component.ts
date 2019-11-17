@@ -7,7 +7,7 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { StoreService } from 'src/app/services/store-service';
 import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-info-modal.component';
 import { ProjectiInfoModalComponent } from 'src/app/projecti-info-modal/projecti-info-modal.component';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+//import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'basic-data',
@@ -882,5 +882,9 @@ export class BasicDataComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  updateFundersImplementers(orgModel) {
+    this.organizationsList.push(orgModel);
   }
 }

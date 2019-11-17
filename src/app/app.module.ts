@@ -111,6 +111,7 @@ import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envel
 import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
 import { EnvelopeReportComponent } from './report-components/envelope-report/envelope-report.component';
 import { DataBackupComponent } from './data-backup/data-backup.component';
+import { CreateOrgModalComponent } from './create-org-modal/create-org-modal.component';
 
 @NgModule({
   declarations: [
@@ -208,6 +209,7 @@ import { DataBackupComponent } from './data-backup/data-backup.component';
     DeleteEnvelopeTypeComponent,
     EnvelopeReportComponent,
     DataBackupComponent,
+    CreateOrgModalComponent,
   ],
   imports: [
     BrowserModule,

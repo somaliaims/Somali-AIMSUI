@@ -61,6 +61,7 @@ export class ManageOrganizationComponent implements OnInit {
       );
     }
   }
+  
   getOrganizationTypes() {
     this.organizationService.getOrganizationTypes().subscribe(
       data => {

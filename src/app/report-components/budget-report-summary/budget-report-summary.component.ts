@@ -85,7 +85,6 @@ export class BudgetReportSummaryComponent implements OnInit {
     this.getNationalCurrency();
     this.getManualExchangeRateForToday();
     this.getBudgetReport();
-    this.datedToday = this.storeService.getLongDateString(new Date());
   }
 
   getManualExchangeRateForToday() {
@@ -137,11 +136,11 @@ export class BudgetReportSummaryComponent implements OnInit {
   }
 
   getBudgetReport() {
-    this.blockUI.start('Wait loading report');
     this.reportService.getBudgetSummaryReport().subscribe(
       data => {
         if (data) {
           this.reportDataList = data;
+          this.datedToday = this.storeService.getLongDateString(new Date());
           this.btnReportText = 'Update report';
           if (this.reportDataList.reportSettings) {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;

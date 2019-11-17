@@ -672,3 +672,7 @@
 <projecti-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
   [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments">
 </projecti-info-modal>
+
+<create-org-modal (organizationCreated)="updateFundersImplementers($event)">
+
+</create-org-modal>
