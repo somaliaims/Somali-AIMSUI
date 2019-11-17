@@ -1,27 +1,44 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Injectable } from '@angular/core';
 import { OrganizationService } from '../services/organization-service';
 import { ModalService } from '../services/modal.service';
+import { StoreService } from '../services/store-service';
 
 @Component({
   selector: 'create-org-modal',
   templateUrl: './create-org-modal.component.html',
   styleUrls: ['./create-org-modal.component.css']
 })
+
+@Injectable({
+  providedIn: 'root'
+})
 export class CreateOrgModalComponent implements OnInit {
   organization: string = null;
   isError: boolean = false;
+  errorMessage: string = null;
+  isSuccess: boolean = false;
+  successMessage: string = null;
   organizationTypes: any = [];
-  model: any = { id: null, organizationTypeId: null, organizationName: null };
+  model: any = { organizationTypeId: null, name: null };
   isBtnDisabled: boolean = false;
   btnText: string = 'Save organization';
   isDataLoading: boolean = true;
+  requestNo: number = 0;
 
   @Output() 
   organizationCreated = new EventEmitter<any>();
   
-  constructor(private organizationService: OrganizationService, private modalService: ModalService) { }
+  constructor(private organizationService: OrganizationService, private modalService: ModalService,
+    private storeService: StoreService) { }
 
   ngOnInit() {
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.isError = true;
+      }
+    });
     this.getOrganizationTypes();
   }
 
@@ -34,7 +51,7 @@ export class CreateOrgModalComponent implements OnInit {
           this.model.id = data;
           this.updateFundersImplementers();
           setTimeout(() => {
-            this.modalService.close('org-modal');
+            this.modalService.close('create-org-modal');
           }, 1000);
         }
         this.isBtnDisabled = false;
@@ -63,7 +80,14 @@ export class CreateOrgModalComponent implements OnInit {
   }
 
   updateFundersImplementers() {
-    this.organizationCreated.emit(this.model);
+    var model = {
+      id: this.model.id,
+      organizationName: this.model.name,
+      sourceType: 'User',
+      organizationTypeId: this.model.organizationTypeId
+    }
+    this.model.sourceType = 'User';
+    this.organizationCreated.emit(model);
   }
 
 }

@@ -62,7 +62,6 @@ export class ManageCurrencyComponent implements OnInit {
     }
 
     this.requestNo = this.storeService.getNewRequestNumber();
-
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;

@@ -7,6 +7,17 @@
                     <div *ngIf="isDataLoading" class="text-info">
                         Wait setting up...
                     </div>
+
+                    <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Error!</strong> {{errorMessage}}
+                    </div>
+
+                    <div *ngIf="isSuccess" class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Information!</strong> {{successMessage}}
+                    </div>
+
                     <div *ngIf="!isDataLoading" class="form-group">
                         <form class="form-signin" (ngSubmit)="organizationForm.form.valid && saveOrganization()"
                             #organizationForm="ngForm">
@@ -25,22 +36,20 @@
                             </div>
                             <div class="form-group">
                                 <label for="text">Organization name</label>
-                                <input type="text" class="form-control" id="organizationName"
-                                    [(ngModel)]="model.organizationName" name="organizationName"
-                                    #organizationName="ngModel" required>
+                                <input type="text" class="form-control" id="organizationName" [(ngModel)]="model.name"
+                                    name="organizationName" #organizationName="ngModel" required>
                                 <div *ngIf="organizationForm.submitted" [hidden]="organizationName.valid"
                                     class="alert alert-danger">
                                     Organization Name is required
                                 </div>
                             </div>
 
-                            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                            <button *ngIf="!isDataLoading" [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
                                 type="submit">{{btnText}}</button>
                         </form>
                     </div>
                 </div>
             </div><br />
-            <button type="submit" *ngIf="!isDataLoading" class="btn btn-info">Save organization</button>
             <button class="btn btn-danger" (click)="closeModal();">Close</button>
         </div>
     </div>
