@@ -71,6 +71,8 @@ export class BasicDataComponent implements OnInit {
   @Output()
   projectDocumentsChanged = new EventEmitter<any []>();
 
+  basicModel: any = { startDate: null, endDate: null };
+
   displayTabs: any = [
     { visible: true, identity: 'project' },
     { visible: false, identity: 'project-source' },

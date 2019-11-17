@@ -10,6 +10,7 @@ import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import { BlockUIModule } from 'ng-block-ui';
 import { ChartsModule } from 'ng2-charts';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { EmbedVideo } from 'ngx-embed-video';
 
 import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
@@ -221,7 +222,8 @@ import { DataBackupComponent } from './data-backup/data-backup.component';
     NgbDatepickerModule,
     BlockUIModule.forRoot(),
     ChartsModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    EmbedVideo.forRoot()
   ],
   providers: [
     /*{ 
