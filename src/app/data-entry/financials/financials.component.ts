@@ -283,5 +283,26 @@ export class FinancialsComponent implements OnInit {
   displayNull(val: string) {
     return val ? val : 'N/a';
   }
+
+  checkIfCurrentActual(year, type) {
+    if (this.currentYear == year && type == 1) {
+      return true;
+    }
+    return false;
+  }
+
+  checkIfCurrentPlanned(year, type) {
+    if (this.currentYear == year && type == 2) {
+      return true;
+    }
+    return false;
+  }
+
+  checkIfFuturePlanned(year, type) {
+    if ((this.currentYear + 1) == year && type == 2) {
+      return true;
+    }
+    return false;
+  }
   
 }
