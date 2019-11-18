@@ -299,8 +299,10 @@ export class BasicDataComponent implements OnInit {
 
   saveProject(frm: any) {
     this.entryForm = frm;
-    var startingYear = parseInt(this.projectData.startingFinancialYear);
-    var endingYear = parseInt(this.projectData.endingFinancialYear);
+    var startingYear = new Date(this.basicModel.startDate).getFullYear();
+    var endingYear = new Date(this.basicModel.endDate).getFullYear();
+    this.projectData.startingFinancialYear = startingYear;
+    this.projectData.endingFinancialYear = endingYear;
 
     if (startingYear > endingYear) {
       this.errorMessage = 'Starting year cannot be greater than ending year';
@@ -655,7 +657,7 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
-  enterStartDate(e) {
+  enterStartYear(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
@@ -663,11 +665,27 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
-  enterEndDate(e) {
+  enterEndYear(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
       this.projectData.endingFinancialYear = selectedProject[0].endingFinancialYear;
+    }
+  }
+
+  enterStartDate(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.projectData.startDate = selectedProject[0].startDate;
+    }
+  }
+
+  enterEndDate(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.aimsProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.projectData.endDate = selectedProject[0].endDate;
     }
   }
 

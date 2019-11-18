@@ -91,7 +91,7 @@ export class DataEntryComponent implements OnInit {
     4: 'Radio'
   };
 
-  projectData = { id: 0, title: null, fundingTypeId: null, startingFinancialYear: null, endingFinancialYear: null, 
+  projectData = { id: 0, title: null, fundingTypeId: null, startDate: null, endDate: null, startingFinancialYear: null, endingFinancialYear: null, 
     description: null, projectValue: null, projectCurrency: null, exchangeRate: 1 };
 
   displayTabs: any = [
@@ -224,6 +224,8 @@ export class DataEntryComponent implements OnInit {
           var data = result.projectProfile;
           this.projectData.title = data.title;
           this.projectData.description = data.description;
+          this.projectData.startDate = data.startDate;
+          this.projectData.endDate = data.endDate;
           this.projectData.startingFinancialYear = data.startingFinancialYear;
           this.projectData.endingFinancialYear = data.endingFinancialYear;
           this.projectData.projectValue = data.projectValue;
