@@ -37,6 +37,8 @@ export class CreateOrgModalComponent implements OnInit {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
         this.isError = true;
+        this.isBtnDisabled = false;
+        this.btnText = 'Save organization';
       }
     });
     this.getOrganizationTypes();
@@ -54,8 +56,6 @@ export class CreateOrgModalComponent implements OnInit {
             this.modalService.close('create-org-modal');
           }, 1000);
         }
-        this.isBtnDisabled = false;
-        this.btnText = 'Save organization';
       }
     );
   }

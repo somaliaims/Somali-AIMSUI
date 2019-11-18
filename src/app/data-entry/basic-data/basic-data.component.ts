@@ -888,7 +888,13 @@ export class BasicDataComponent implements OnInit {
     this.orgModal.openModal();
   }
 
-  updateFundersImplementers(orgModel) {
-    this.organizationsList.push(orgModel);
+  updateFundersImplementers(model) {
+    this.organizationsList = this.organizationsList.concat({
+        id: model.id,
+        organizationTypeId: model.organizationTypeId,
+        organizationName: model.organizationName,
+        sourceType: model.sourceType
+      }
+    );
   }
 }
