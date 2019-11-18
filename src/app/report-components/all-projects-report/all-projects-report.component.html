@@ -1,1 +1,61 @@
-<p>all-projects-report works!</p>
+<div class="container-fluid view-area">
+    <block-ui>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active btn-info" data-toggle="tab">Projects report (Excel spreadsheet)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-lg-12 col-md-12">
+                            <p class="lead text-center">
+                                Export projects list in Excel sheet to get all the data about projects in Excel spreadsheet format.
+                            </p>
+                        </div>
+                        <form class="form-signin" (ngSubmit)="getAllProjectsReport()" #searchForm="ngForm">
+
+                            <div class="row margin-top-10">
+                                <div class="col-md-6 form-inline">
+                                    <label>Starting year (Optional): </label>&nbsp;&nbsp;
+                                    <select [class.disable]="isLoading" title="Starting year" class="form-control col-sm-12" name="startingYear"
+                                        [(ngModel)]="model.startingYear" #startingYear="ngModel" id="startingYear"
+                                        >
+                                        <option value="null">--Starting year--</option>
+                                        <option *ngFor="let year of financialYears" value="{{year.financialYear}}">
+                                            {{year.financialYear}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Ending year (Optional): </label>&nbsp;&nbsp;
+                                    <select [class.disable]="isLoading" title="Ending year" class="form-control col-sm-12"
+                                        name="endingYear" [(ngModel)]="model.endingYear"
+                                        #endingYear="ngModel" id="endingYear">
+                                        <option value="null">--Ending year--</option>
+                                        <option *ngFor="let year of financialYears" value="{{year.financialYear}}">
+                                            {{year.financialYear}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 text-right margin-top-10">
+                                <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
+                                <button [class.disable]="isProcessing" type="submit" class="btn btn-info">
+                                    {{btnReportText}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>

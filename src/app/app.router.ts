@@ -75,6 +75,7 @@ import { EnvelopeTypesComponent } from './envelope-types/envelope-types.componen
 import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
 import { EnvelopeReportComponent } from './report-components/envelope-report/envelope-report.component';
 import { DataBackupComponent } from './data-backup/data-backup.component';
+import { AllProjectsReportComponent } from './report-components/all-projects-report/all-projects-report.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -121,7 +122,7 @@ export const routes: Routes = [
   { path: 'project-entry', component: ProjectEntryComponent },
   { path: 'data-entry', component: DataEntryComponent },
   { path: 'sectors-report', component: SectorReportComponent },
-  { path: 'projects-report', component: ProjectReportComponent },
+  { path: 'projects-report', component: AllProjectsReportComponent },
   { path: 'locations-report', component: LocationReportComponent },
   { path: 'time-trend-report', component: TimeTrendReportComponent },
   { path: 'budget-report', component: BudgetReportSummaryComponent },

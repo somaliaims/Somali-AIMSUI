@@ -467,6 +467,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getProjectProfileReport + id);
     }
 
+    getAllProjectsReportUrl() {
+        return (this.BASE_URL + urlsList.urls.allProjectsReport);
+    }
+
     deleteProjectFunderUrl(projectId: string, funderId: string) {
         return (this.BASE_URL + urlsList.urls.deleteProjectFunder + projectId + '/' + funderId);
     }

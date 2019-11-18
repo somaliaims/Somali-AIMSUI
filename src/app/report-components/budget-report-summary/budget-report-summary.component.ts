@@ -73,7 +73,6 @@ export class BudgetReportSummaryComponent implements OnInit {
   };
 
   @BlockUI() blockUI: NgBlockUI;
-  
   constructor(private reportService: ReportService, private errorModal: ErrorModalComponent,
     private storeService: StoreService, private currencyService: CurrencyService,
     private modalService: ModalService) { }

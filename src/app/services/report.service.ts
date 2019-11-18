@@ -53,6 +53,13 @@ export class ReportService {
         catchError(this.storeService.handleError<any>('Budget Report')));
     }
 
+    getAllProjectsReport(model: any) {
+      var url = this.urlHelper.getAllProjectsReportUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('All Projects Report')));
+    }
+
     getReportNames() {
       var url = this.urlHelper.getReportNamesUrl();
       return this.httpClient.get(url, httpOptions).pipe(
