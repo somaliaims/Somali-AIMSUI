@@ -44,10 +44,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.yt_video1_frame = this.embedService.embed(this.videoOneUrl, {
-      attr: {width: '100%', height: '350px'}
+      attr: {width: '100%', height: '250px'}
     });
     this.yt_video2_frame = this.embedService.embed(this.videoTwoUrl, {
-      attr: {width: '100%', height: '350px'}
+      attr: {width: '100%', height: '250px'}
     });
     this.storeService.newReportItem(Settings.dropDownMenus.home);
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);

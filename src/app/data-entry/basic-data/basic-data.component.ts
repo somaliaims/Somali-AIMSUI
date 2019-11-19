@@ -902,7 +902,8 @@ export class BasicDataComponent implements OnInit {
     return false;
   }
 
-  openCreateOrg() {
+  openCreateOrg(e) {
+    e.preventDefault();
     this.orgModal.openModal();
   }
 

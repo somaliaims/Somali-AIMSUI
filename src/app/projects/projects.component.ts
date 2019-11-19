@@ -126,27 +126,12 @@ export class ProjectsComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
-
-    /*this.searchField = new FormControl();
-    this.searchField.valueChanges.pipe(
-      debounceTime(1000),
-      distinctUntilChanged(),
-      tap(_ => (this.isLoading = true)),
-      switchMap(term => this.projectService.filterProjects(term)),
-      tap(_ => (this.isLoading = false))
-    ).subscribe(
-      data => {
-        this.projectsList = data;
-      },
-      error => {
-        console.log(error);
-      }
-    )*/
   }
 
   filterProjects() {
     if (this.model.title) {
-      this.filteredProjectsList = this.projectsList.filter(p => p.title.indexOf(this.model.title) != -1);
+      var title = this.model.title.toLowerCase();
+      this.filteredProjectsList = this.projectsList.filter(p => p.title.toLowerCase().indexOf(title) != -1);
     } else {
       this.filteredProjectsList = this.projectsList;
     }

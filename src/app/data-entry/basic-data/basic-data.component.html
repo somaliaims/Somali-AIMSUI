@@ -24,8 +24,9 @@
             <option value="null">--Starting year--</option>
             <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
           </select>-->
-          <input type="text" title="Start date of the project" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12" name="startingDate" placeholder="Project start date"
-          [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
+          <input type="text" title="Start date of the project" onfocus="(this.type='date')" onblur="(this.type='text')"
+            class="form-control col-sm-12" name="startingDate" placeholder="Project start date"
+            [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
           Start date is required
@@ -40,8 +41,9 @@
             <option value="null">--Ending year--</option>
             <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
           </select>-->
-          <input type="text" title="End date of the project" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
-          [(ngModel)]="projectData.endDate" #endDate="ngModel" required />
+          <input type="text" title="End date of the project" onfocus="(this.type='date')" onblur="(this.type='text')"
+            class="form-control col-sm-12" name="endDate" placeholder="Project end date"
+            [(ngModel)]="projectData.endDate" #endDate="ngModel" required />
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
           End date is required
@@ -97,22 +99,33 @@
       <div class="col-lg-6 col-md-6">
         <div class="form-group form-inline">
           <label class="col-sm-1 col-form-label justify-left" for="funders">Funders</label>
-          <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select funders'" [data]="organizationsList"
+          <ng-multiselect-dropdown class="col-sm-10" [placeholder]="'Select funders'" [data]="organizationsList"
             [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
             #selectedFunders="ngModel">
           </ng-multiselect-dropdown>
 
-          <span class="col-sm-1">
+          <!--<span class="col-sm-1">
             <button type="button" (click)="openCreateOrg()" title="Create your organization if not listed as funder/implementer"
               class="btn btn-info"><i class="fa fa-plus"></i></button>
-          </span>
-          
+          </span>-->
+
           <span class="col-sm-1">
-            <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()" class="col-sm-1"
-              title="Source data available for funders" class="btn btn-warning"><i class="fa fa-database"></i></button>
+            <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()"
+              class="col-sm-1" title="Source data available for funders" class="btn btn-warning"><i
+                class="fa fa-database"></i></button>
           </span>
-          
+          <div class="container margin-top-5">
+            <span class="col-sm-1">
+              &nbsp;
+            </span>
+            <span class="col-sm-11 text-center">
+              <a href="#" class="text-info" (click)="openCreateOrg($event)">
+                Add an organisation which is not listed
+              </a>
+            </span>
+          </div>
         </div>
+
       </div>
 
       <div class="col-lg-6 col-md-6">
@@ -124,16 +137,17 @@
           </ng-multiselect-dropdown>
 
           <span class="col-sm-1">
-            <button type="button" (click)="openCreateOrg()" title="Create your organization if not listed as funder/implementer"
-              class="btn btn-info"><i class="fa fa-plus"></i></button>
+            <button type="button" (click)="openCreateOrg()"
+              title="Create your organization if not listed as funder/implementer" class="btn btn-info"><i
+                class="fa fa-plus"></i></button>
           </span>
 
           <span class="col-sm-1">
             <button type="button" *ngIf="isImplementerDataAvailable && projectId != 0"
-            (click)="showImplementersSource()" title="Source data available for implementers" class="btn btn-warning"><i
-              class="fa fa-database"></i></button>
+              (click)="showImplementersSource()" title="Source data available for implementers"
+              class="btn btn-warning"><i class="fa fa-database"></i></button>
           </span>
-          
+
         </div>
       </div>
     </div>
@@ -192,7 +206,8 @@
             <a class="btn btn-warning btn-sm" (click)="removeResource(document.id)"><i class="fa fa-remove"></i></a>
           </td>
           <td *ngIf="document.id > 0">
-            <a class="btn btn-danger btn-sm" (click)="deleteResource(document.id)"><i class="fa fa-trash text-white"></i></a>
+            <a class="btn btn-danger btn-sm" (click)="deleteResource(document.id)"><i
+                class="fa fa-trash text-white"></i></a>
           </td>
         </tr>
       </table>
@@ -217,8 +232,9 @@
               <table *ngFor="let project of aimsProjects" class="small">
                 <tr>
                   <td colspan="2" width="100%">
-                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button id="aimst-{{project.id}}"
-                      class="btn btn-outline-info btn-sm" (click)="enterProjectTitleAIMS($event)">Title
+                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button
+                      id="aimst-{{project.id}}" class="btn btn-outline-info btn-sm"
+                      (click)="enterProjectTitleAIMS($event)">Title
                       >></button>&nbsp;
                     <a href="#" title="View Project Details" id="aproject-{{project.id}}"
                       (click)="viewAIMSProject($event)" class="text-info">View
@@ -227,11 +243,13 @@
                 </tr>
                 <tr>
                   <td>
-                    <b>Start date: </b>{{formatToLongDate(project.startDate)}}&nbsp;<button [class.disable]="!project.startDate" id="btnsdate-{{project.id}}" (click)="enterStartDate($event)"
+                    <b>Start date: </b>{{formatToLongDate(project.startDate)}}&nbsp;<button
+                      [class.disable]="!project.startDate" id="btnsdate-{{project.id}}" (click)="enterStartDate($event)"
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
-                    <b>End date: </b>{{formatToLongDate(project.endDate)}}&nbsp;<button [class.disable]="!project.endDate" id="btnedate-{{project.id}}" (click)="enterEndDate($event)"
+                    <b>End date: </b>{{formatToLongDate(project.endDate)}}&nbsp;<button
+                      [class.disable]="!project.endDate" id="btnedate-{{project.id}}" (click)="enterEndDate($event)"
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
@@ -277,12 +295,13 @@
               <table *ngFor="let project of iatiProjects" class="margin-top-10">
                 <tr>
                   <td colspan="2">
-                      <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button id="iatit-{{project.id}}"
-                        class="btn btn-outline-info btn-sm" (click)="enterProjectTitleIATI($event)">Title
-                        >></button>&nbsp;
-                      <a href="#" title="View Project Details" id="iproject-{{project.id}}"
-                        (click)="viewIATIProject($event)" class="text-info">View
-                        Details</a>
+                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button
+                      id="iatit-{{project.id}}" class="btn btn-outline-info btn-sm"
+                      (click)="enterProjectTitleIATI($event)">Title
+                      >></button>&nbsp;
+                    <a href="#" title="View Project Details" id="iproject-{{project.id}}"
+                      (click)="viewIATIProject($event)" class="text-info">View
+                      Details</a>
                   </td>
                 </tr>
                 <tr>
@@ -319,127 +338,129 @@
               </table>
             </div>
 
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="col-lg-6 col-md-6">
-  <div class="col-md-12 col-sm-12">
-    <div class="card card-signin my-5 margin-top-10">
-      <div class="card-body">
-        <form class="form-signin" (ngSubmit)="projectSourceForm.form.valid && saveBasicData(projectSourceForm)"
-          #projectSourceForm="ngForm">
+  <div class="col-lg-6 col-md-6">
+    <div class="col-md-12 col-sm-12">
+      <div class="card card-signin my-5 margin-top-10">
+        <div class="card-body">
+          <form class="form-signin" (ngSubmit)="projectSourceForm.form.valid && saveBasicData(projectSourceForm)"
+            #projectSourceForm="ngForm">
 
-          <div class="row">
-            <span class="col-md-6">
-              <h6 class="card-title text-left">Project data</h6>
-            </span>
-            <span class="col-md-6 text-right">
-              <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
-              <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go
-                back</button>
-            </span>
-          </div>
+            <div class="row">
+              <span class="col-md-6">
+                <h6 class="card-title text-left">Project data</h6>
+              </span>
+              <span class="col-md-6 text-right">
+                <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
+                <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go
+                  back</button>
+              </span>
+            </div>
 
-          <div class="form-group">
-            <label>Project name</label>
-            <input type="text" class="form-control" name="title" [(ngModel)]="projectData.title" #title="ngModel"
-              required />
-          </div>
-          <div *ngIf="projectSourceForm.submitted" [hidden]="title.valid" class="alert alert-danger">
-            Project title is required
-          </div>
+            <div class="form-group">
+              <label>Project name</label>
+              <input type="text" class="form-control" name="title" [(ngModel)]="projectData.title" #title="ngModel"
+                required />
+            </div>
+            <div *ngIf="projectSourceForm.submitted" [hidden]="title.valid" class="alert alert-danger">
+              Project title is required
+            </div>
 
-          <div class="form-group">
-            <label>start date</label>
-            <!--<select title="Starting financial year" class="form-control col-sm-12" name="startingFinancialYear"
+            <div class="form-group">
+              <label>start date</label>
+              <!--<select title="Starting financial year" class="form-control col-sm-12" name="startingFinancialYear"
               [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel"
               id="startingFinancialYear" required>
               <option value="null">--Starting year--</option>
               <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}
               </option>
             </select>-->
-            <input type="text" title="Start date of the project" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12" name="startDate" placeholder="Project start date"
-          [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
-          </div>
-          <div *ngIf="projectSourceForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
-            Start date is required
-          </div>
+              <input type="text" title="Start date of the project" onfocus="(this.type='date')"
+                onblur="(this.type='text')" class="form-control col-sm-12" name="startDate"
+                placeholder="Project start date" [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
+            </div>
+            <div *ngIf="projectSourceForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
+              Start date is required
+            </div>
 
-          <div class="form-group">
-            <label>End date</label>
-            <!--<select title="Ending financial year" class="form-control col-sm-12" name="endingFinancialYear"
+            <div class="form-group">
+              <label>End date</label>
+              <!--<select title="Ending financial year" class="form-control col-sm-12" name="endingFinancialYear"
               [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" id="endingFinancialYear"
               required>
               <option value="null">--Ending year--</option>
               <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}
               </option>
             </select>-->
-            <input type="text" title="End date of the project" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
-          [(ngModel)]="projectData.endDate" #startDate="ngModel" required />
-          </div>
-          <div *ngIf="projectSourceForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
-            End date is required
-          </div>
-
-          <div class="form-group">
-            <label>Project currency</label>
-            <select title="Project currency" class="form-control col-sm-12" name="currency"
-              [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" id="projectCurrency"
-              (change)="getExchangeRateForCurrency()" required>
-              <option value="null">--Project currency--</option>
-              <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}
-              </option>
-            </select>
-          </div>
-          <div *ngIf="projectSourceForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
-            Project currency is required
-          </div>
-
-          <div class="form-group">
-            <label>Project value</label>
-            <input type="number" class="form-control" name="projectValue" [(ngModel)]="projectData.projectValue"
-              #projectValue="ngModel" required />
-          </div>
-          <div *ngIf="projectSourceForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
-            Project value is required
-          </div>
-
-          <div class="form-group">
-            <label>Funding type</label>
-            <select title="Funding type" class="form-control col-sm-12" name="fundingTypeId"
-              [(ngModel)]="projectData.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
-              <option value="null">--Funding type--</option>
-              <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
-            </select>
-          </div>
-          <div *ngIf="projectSourceForm.submitted" [hidden]="fundingTypeId.valid" class="alert alert-danger">
-            Funding type is required
-          </div>
-
-          <div class="form-group">
-            <label>Project description</label>
-            <textarea class="form-control" class="form-control" id="description" (input)="getDescriptionLimitInfo()"
-              [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="5"
-              maxlength="{{descriptionLimit}}">
-                        </textarea>
-          </div>
-
-          <div class="row">
-            <div class="col-md-12 text-right">
-              <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
-              <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go
-                back</button>
+              <input type="text" title="End date of the project" onfocus="(this.type='date')"
+                onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
+                [(ngModel)]="projectData.endDate" #startDate="ngModel" required />
             </div>
-          </div>
+            <div *ngIf="projectSourceForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
+              End date is required
+            </div>
 
-        </form>
+            <div class="form-group">
+              <label>Project currency</label>
+              <select title="Project currency" class="form-control col-sm-12" name="currency"
+                [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" id="projectCurrency"
+                (change)="getExchangeRateForCurrency()" required>
+                <option value="null">--Project currency--</option>
+                <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="projectSourceForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
+              Project currency is required
+            </div>
+
+            <div class="form-group">
+              <label>Project value</label>
+              <input type="number" class="form-control" name="projectValue" [(ngModel)]="projectData.projectValue"
+                #projectValue="ngModel" required />
+            </div>
+            <div *ngIf="projectSourceForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
+              Project value is required
+            </div>
+
+            <div class="form-group">
+              <label>Funding type</label>
+              <select title="Funding type" class="form-control col-sm-12" name="fundingTypeId"
+                [(ngModel)]="projectData.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
+                <option value="null">--Funding type--</option>
+                <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
+              </select>
+            </div>
+            <div *ngIf="projectSourceForm.submitted" [hidden]="fundingTypeId.valid" class="alert alert-danger">
+              Funding type is required
+            </div>
+
+            <div class="form-group">
+              <label>Project description</label>
+              <textarea class="form-control" class="form-control" id="description" (input)="getDescriptionLimitInfo()"
+                [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="5"
+                maxlength="{{descriptionLimit}}">
+                        </textarea>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
+                <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go
+                  back</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 </div>
 
