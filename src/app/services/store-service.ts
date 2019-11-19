@@ -242,5 +242,12 @@ export class StoreService {
   getNumberWithCommas(value: number) {
     return value.toLocaleString();
   }
+
+  convertDateToYMDBySlash(date: string) {
+    if (date) {
+      return new Date(date).toISOString().split('T')[0];
+    }
+    return date;
+  }
   
 }

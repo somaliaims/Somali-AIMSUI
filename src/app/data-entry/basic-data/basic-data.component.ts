@@ -299,8 +299,8 @@ export class BasicDataComponent implements OnInit {
 
   saveProject(frm: any) {
     this.entryForm = frm;
-    var startingYear = new Date(this.basicModel.startDate).getFullYear();
-    var endingYear = new Date(this.basicModel.endDate).getFullYear();
+    var startingYear = new Date(this.projectData.startDate).getFullYear();
+    var endingYear = new Date(this.projectData.endDate).getFullYear();
     this.projectData.startingFinancialYear = startingYear;
     this.projectData.endingFinancialYear = endingYear;
 
@@ -677,7 +677,7 @@ export class BasicDataComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
-      this.projectData.startDate = selectedProject[0].startDate;
+      this.projectData.startDate = this.formatDateToYMD(selectedProject[0].startDate);
     }
   }
 
@@ -685,7 +685,7 @@ export class BasicDataComponent implements OnInit {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
-      this.projectData.endDate = selectedProject[0].endDate;
+      this.projectData.endDate = this.formatDateToYMD(selectedProject[0].endDate);
     }
   }
 
@@ -914,5 +914,13 @@ export class BasicDataComponent implements OnInit {
         sourceType: model.sourceType
       }
     );
+  }
+
+  formatToLongDate(dated: string) {
+    return this.storeService.getLongDateString(dated);
+  }
+
+  formatDateToYMD(dated: string) {
+    return this.storeService.convertDateToYMDBySlash(dated);
   }
 }

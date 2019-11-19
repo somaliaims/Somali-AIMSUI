@@ -79,6 +79,10 @@ html {
     margin-top: 5px !important;
   }
 
+  .margin-right-2 {
+    margin-right: 2px !important;
+  }
+
   .disable {
     pointer-events: none !important;
     opacity: 0.5 !important;

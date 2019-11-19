@@ -25,7 +25,7 @@
             <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
           </select>-->
           <input type="text" title="Start date of the project" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12" name="startingDate" placeholder="Project start date"
-          [(ngModel)]="basicModel.startDate" #startDate="ngModel" required />
+          [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
           Start date is required
@@ -41,7 +41,7 @@
             <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
           </select>-->
           <input type="text" title="End date of the project" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
-          [(ngModel)]="basicModel.endDate" #endDate="ngModel" required />
+          [(ngModel)]="projectData.endDate" #endDate="ngModel" required />
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
           End date is required
@@ -101,26 +101,39 @@
             [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
             #selectedFunders="ngModel">
           </ng-multiselect-dropdown>
-          <button type="button" (click)="openCreateOrg()"
-            class="col-sm-1" title="Create your organization if not listed as funder/implementer" class="btn btn-info"><i
-              class="fa fa-plus"></i></button>
 
-          <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()"
-            class="col-sm-1" title="Source data available for funders" class="btn btn-warning"><i
-              class="fa fa-database"></i></button>
+          <span class="col-sm-1">
+            <button type="button" (click)="openCreateOrg()" title="Create your organization if not listed as funder/implementer"
+              class="btn btn-info"><i class="fa fa-plus"></i></button>
+          </span>
+          
+          <span class="col-sm-1">
+            <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()" class="col-sm-1"
+              title="Source data available for funders" class="btn btn-warning"><i class="fa fa-database"></i></button>
+          </span>
+          
         </div>
       </div>
 
       <div class="col-lg-6 col-md-6">
         <div class="form-group form-inline">
           <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
-          <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select implementers'" [data]="organizationsList"
+          <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Select implementers'" [data]="organizationsList"
             [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings"
             name="selectedImplementers" #selectedImplementers="ngModel">
           </ng-multiselect-dropdown>
-          <button class="col-sm-1" type="button" *ngIf="isImplementerDataAvailable && projectId != 0"
+
+          <span class="col-sm-1">
+            <button type="button" (click)="openCreateOrg()" title="Create your organization if not listed as funder/implementer"
+              class="btn btn-info"><i class="fa fa-plus"></i></button>
+          </span>
+
+          <span class="col-sm-1">
+            <button type="button" *ngIf="isImplementerDataAvailable && projectId != 0"
             (click)="showImplementersSource()" title="Source data available for implementers" class="btn btn-warning"><i
               class="fa fa-database"></i></button>
+          </span>
+          
         </div>
       </div>
     </div>
@@ -214,11 +227,11 @@
                 </tr>
                 <tr>
                   <td>
-                    <b>Start date: </b>{{project.startDate}}&nbsp;<button [class.disable]="!project.startDate" id="btnsdate-{{project.id}}" (click)="enterStartDate($event)"
+                    <b>Start date: </b>{{formatToLongDate(project.startDate)}}&nbsp;<button [class.disable]="!project.startDate" id="btnsdate-{{project.id}}" (click)="enterStartDate($event)"
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
-                    <b>End date: </b>{{project.endDate}}&nbsp;<button [class.disable]="!project.endDate" id="btnedate-{{project.id}}" (click)="enterEndDate($event)"
+                    <b>End date: </b>{{formatToLongDate(project.endDate)}}&nbsp;<button [class.disable]="!project.endDate" id="btnedate-{{project.id}}" (click)="enterEndDate($event)"
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
@@ -349,7 +362,7 @@
               </option>
             </select>-->
             <input type="text" title="Start date of the project" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12" name="startDate" placeholder="Project start date"
-          [(ngModel)]="basicModel.startDate" #startDate="ngModel" required />
+          [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
           </div>
           <div *ngIf="projectSourceForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
             Start date is required
@@ -365,7 +378,7 @@
               </option>
             </select>-->
             <input type="text" title="End date of the project" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
-          [(ngModel)]="basicModel.endDate" #startDate="ngModel" required />
+          [(ngModel)]="projectData.endDate" #startDate="ngModel" required />
           </div>
           <div *ngIf="projectSourceForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
             End date is required

@@ -224,8 +224,8 @@ export class DataEntryComponent implements OnInit {
           var data = result.projectProfile;
           this.projectData.title = data.title;
           this.projectData.description = data.description;
-          this.projectData.startDate = data.startDate;
-          this.projectData.endDate = data.endDate;
+          this.projectData.startDate =  this.formatDateToYMD(data.startDate);
+          this.projectData.endDate = this.formatDateToYMD(data.endDate);
           this.projectData.startingFinancialYear = data.startingFinancialYear;
           this.projectData.endingFinancialYear = data.endingFinancialYear;
           this.projectData.projectValue = data.projectValue;
@@ -415,6 +415,10 @@ export class DataEntryComponent implements OnInit {
         tab.visible = false;
       }
     }
+  }
+
+  formatDateToYMD(dated: string) {
+    return this.storeService.convertDateToYMDBySlash(dated);
   }
 
   /*Updating data from child*/
