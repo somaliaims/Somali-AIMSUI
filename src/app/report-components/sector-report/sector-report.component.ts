@@ -269,8 +269,6 @@ export class SectorReportComponent implements OnInit {
     this.loadFinancialYears();
     this.getDefaultCurrency();
     this.getNationalCurrency();
-    //this.getManualExchangeRateForToday();
-    this.datedToday = this.storeService.getLongDateString(new Date());
 
     this.sectorsSettings = {
       singleSelection: false,
@@ -427,6 +425,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   searchProjectsByCriteriaReport() {
+    var currentDate = new Date();
     this.blockUI.start('Searching Projects...');
 
     this.chartLables = [];
@@ -450,6 +449,9 @@ export class SectorReportComponent implements OnInit {
         this.reportDataList = data;
         this.btnReportText = 'Update report';
         if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+          this.reportDataList.sectorProjectsList.forEach((s) => {
+            s.isDisplay = false;
+          });
           var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
           this.chartLables = sectorNames;
           if (this.reportDataList.reportSettings) {
@@ -460,6 +462,9 @@ export class SectorReportComponent implements OnInit {
           this.manageDataToDisplay();
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
+          setTimeout(() => {
+            this.datedToday = this.storeService.getLongDateString(currentDate);  
+          });
         }
         this.blockUI.stop();
       }
@@ -883,6 +888,15 @@ export class SectorReportComponent implements OnInit {
   setExcelFile() {
     if (this.excelFile) {
       this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+    }
+  }
+
+  displayHideRow(sector) {
+    if (this.reportDataList.sectorProjectsList) {
+      var selectSector = this.reportDataList.sectorProjectsList.filter(s => s.sectorName == sector);
+      if (selectSector.length > 0) {
+        selectSector[0].isDisplay = !selectSector[0].isDisplay;
+      }
     }
   }
 
