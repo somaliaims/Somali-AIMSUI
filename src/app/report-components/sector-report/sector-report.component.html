@@ -18,7 +18,8 @@
               <div class="row">
                 <div class="col-lg-6 col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projects"
-                    [(ngModel)]="model.selectedProjects" [settings]="projectsSettings" name="selectedProjects"
+                    [(ngModel)]="model.selectedProjects" (onSelect)="onProjectSelect($event)" (onSelectAll)="onProjectSelectAll($event)" 
+                    (onDeSelect)="onProjectDeselect($event)" (onDeSelectAll)="onProjectDeSelectAll($event)" [settings]="projectsSettings" name="selectedProjects"
                     #selectedProjects="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
@@ -30,7 +31,7 @@
                       </td>
                       <td>
                         <select class="form-control" id="startingYear" title="Starting financial year"
-                          [(ngModel)]="model.startingYear" name="startingYear" #startingYear="ngModel" required>
+                          [(ngModel)]="model.startingYear" name="startingYear" (change)="onChangeStartingYear()" #startingYear="ngModel" required>
                           <option value="0">--Start--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
@@ -39,7 +40,7 @@
                       <td>&nbsp;&nbsp;</td>
                       <td>
                         <select class="form-control" id="endingYear" title="Ending financial year"
-                          [(ngModel)]="model.endingYear" name="endingYear" #endingYear="ngModel" required>
+                          [(ngModel)]="model.endingYear" name="endingYear" (change)="onChangeEndingYear()" #endingYear="ngModel" required>
                           <option value="0">--End--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
@@ -52,7 +53,7 @@
               <div class="row margin-top-10">
                 <div class="col-lg-3 col-md-3">
                   <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
-                    title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel()">
+                    title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel();onChangeParentSector();">
                     <option value="0">--Sector Levels--</option>
                     <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
                     </option>
@@ -62,7 +63,7 @@
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
                     (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
-                    (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
+                    (onSelectAll)="onSectorSelectAll($event)" (onDeselectAll)="onSectorDeselectAll($event)" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -70,6 +71,7 @@
                     [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
                     [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)"
                     (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)"
+                    (onDeselectAll)="onOrganizationDeselectAll($event)"
                     name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
@@ -94,14 +96,16 @@
                 </div>
 
                 <div [class.disable]="!defaultCurrency" class="col-md-6">
-                  <div class="float-right">
-                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>&nbsp;
+                  <div class="container text-right">
+                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
-                      class="btn btn-danger margin-top-2" (click)="generatePDF()">Download PDF</button>&nbsp;
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2">Download
-                      spreadsheet</a>&nbsp;
+                      class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2 margin-left-2">Download
+                      spreadsheet</a>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
-                      class="btn btn-warning margin-top-2" (click)="printReport()">Print report</button>
+                      class="btn btn-warning margin-top-2 margin-left-2" (click)="printReport()">Print report</button>
+                    <button *ngIf="isAnyFilterSet" type="button"
+                      class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
                   </div>
                 </div>
               </div>

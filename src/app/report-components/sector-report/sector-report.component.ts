@@ -54,6 +54,7 @@ export class SectorReportComponent implements OnInit {
   isDefaultCurrencySet: boolean = true;
   pageHeight: number = Settings.pdfPrintPageHeight;
   btnReportText: string = 'View report';
+  isAnyFilterSet: boolean = false;
 
   yearsList: any = [];
   allSectorsList: any = [];
@@ -242,6 +243,18 @@ export class SectorReportComponent implements OnInit {
     private currencyService: CurrencyService, private errorModal: ErrorModalComponent,
     private route: ActivatedRoute, private projectService: ProjectService
   ) { }
+
+  /*checkIfFilterSet() {
+    if (this.model.title || this.model.organizationIds.length > 0 || this.model.startingYear != 0 ||
+      this.model.endingYear != 0 || this.model.parentSectorId != 0 || 
+      this.model.selectedSectors.length > 0 || this.model.selectedOrganizations.length > 0 ||
+      this.model.selectedCurrency
+      ) {
+        this.isAnyFilterSet = true;
+      } else {
+        this.isAnyFilterSet = false;
+      }
+  }*/
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
@@ -594,6 +607,58 @@ export class SectorReportComponent implements OnInit {
     )
   }
 
+  onChangeStartingYear() {
+    if (this.model.startingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  onChangeEndingYear() {
+    if (this.model.endingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  onChangeParentSector() {
+    if (this.model.parentSectorId != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  onChangeCurrency() {
+    if (this.model.selectedCurrency) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  onProjectSelect(item: any) {
+    this.setFilter();
+  }
+
+  onProjectSelectAll(items: any) {
+    this.setFilter();
+  }
+
+  onProjectDeselect(item: any) {
+    if (this.model.selectedProjects.length == 0) {
+      this.manageResetDisplay();
+    } else {
+      this.setFilter();
+    }
+  }
+
+  onProjectDeselectAll(items: any) {
+    this.manageResetDisplay();
+  }
+
   onSectorSelect(item: any) {
     var id = item.id;
     if (this.selectedSectors.indexOf(id) == -1) {
@@ -605,7 +670,11 @@ export class SectorReportComponent implements OnInit {
     var id = item.id;
     var index = this.selectedSectors.indexOf(id);
     this.selectedSectors.splice(index, 1);
-
+    if (this.model.selectedSectors.length == 0) {
+      this.manageResetDisplay();
+    } else {
+      this.setFilter();
+    }
     this.searchProjectsByCriteriaReport();
   }
 
@@ -618,30 +687,33 @@ export class SectorReportComponent implements OnInit {
     }.bind(this))
   }
 
+  onSectorDeselectAll(items: any) {
+    this.manageResetDisplay();
+  }
+
   onOrganizationSelect(item: any) {
+    this.setFilter();
   }
 
   onOrganizationDeSelect(item: any) {
     var id = item.id;
+    if (this.selectedOrganizations.length == 0) {
+      this.manageResetDisplay();
+    } else {
+      this.setFilter();
+    }
     this.searchProjectsByCriteriaReport();
   }
 
   onOrganizationSelectAll(items: any) {
+    this.setFilter();
   }
 
-  onLocationSelect(item: any) {
-    var id = item.id;
+  onOrganizationDeselectAll(items: any) {
+    this.manageResetDisplay();
   }
 
-  onLocationDeSelect(item: any) {
-    var id = item.id;
-    this.searchProjectsByCriteriaReport();
-  }
-
-  onLocationSelectAll(items: any) {
-  }
-
-  onDataOptionSelect(item: any) {
+  /*onDataOptionSelect(item: any) {
     var id = item.id;
     if (this.selectedDataOptions.indexOf(id) == -1) {
       this.selectedDataOptions.push(id);
@@ -669,7 +741,7 @@ export class SectorReportComponent implements OnInit {
   onDataOptionDeSelectAll(items: any) {
     this.selectedDataOptions = [];
     this.manageDataOptions();
-  }
+  }*/
 
   manageDataToDisplay() {
     this.chartData = [];
@@ -898,6 +970,31 @@ export class SectorReportComponent implements OnInit {
         selectSector[0].isDisplay = !selectSector[0].isDisplay;
       }
     }
+  }
+
+  manageResetDisplay() {
+    if (this.model.selectedProjects.length == 0 && this.model.startingYear == 0 &&
+      this.model.endingYear == 0 && this.model.parentSectorId == 0 &&
+      this.model.selectedSectors.length == 0 && this.model.selectedOrganizations.length == 0 && 
+      this.model.selectedCurrency == this.defaultCurrency) {
+        this.isAnyFilterSet = false;
+      } else {
+        this.isAnyFilterSet = true;
+      }
+  }
+
+  setFilter() {
+    this.isAnyFilterSet = true;
+  }
+
+  resetFilters() {
+    this.model.selectedProjects = [];
+    this.model.startingYear = 0;
+    this.model.endingYear = 0;
+    this.model.parentSectorId = 0;
+    this.model.selectedSectors = [];
+    this.model.selectedOrganizations = [];
+    this.isAnyFilterSet = false;
   }
 
   formatNumber(value: number) {
