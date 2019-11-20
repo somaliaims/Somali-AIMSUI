@@ -133,6 +133,10 @@ html {
     justify-content: flex-end !important;
   }
 
+  break-word-into-lines {
+    word-wrap: break-word;
+  }
+
   .padding-5 {
     padding: 5px !important;
   }
@@ -300,7 +304,7 @@ html {
     table-layout: fixed;
   }
   
-  table.row-highlight tr:first-child:hover {
+  table tr.row-highlight:hover {
     background: lightgoldenrodyellow !important;
     cursor: pointer;
   }

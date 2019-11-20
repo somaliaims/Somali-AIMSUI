@@ -241,7 +241,10 @@ export class LocationReportComponent implements OnInit {
     this.loadFinancialYears();
     this.getDefaultCurrency();
     this.getNationalCurrency();
-    this.datedToday = this.storeService.getLongDateString(new Date());
+    setTimeout(() => {
+      this.datedToday = this.storeService.getLongDateString(new Date());
+    }, 1000);
+    
 
     this.locationsSettings = {
       singleSelection: false,
@@ -392,6 +395,9 @@ export class LocationReportComponent implements OnInit {
         this.reportDataList = data;
         this.btnReportText = 'Update report';
         if (this.reportDataList && this.reportDataList.locationProjectsList) {
+          this.reportDataList.locationProjectsList.forEach((p) => {
+            p.isDisplay = false;
+          });
           var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
           this.chartLables = locationNames;
           if (this.reportDataList.reportSettings) {
@@ -825,6 +831,15 @@ export class LocationReportComponent implements OnInit {
         default:
           this.chartData = this.reportDataList.locationProjectsList.map(p => p.actualDisbursements);
           break;
+      }
+    }
+  }
+
+  displayHideRow(id) {
+    if (this.reportDataList.locationProjectsList) {
+      var selectLocation = this.reportDataList.locationProjectsList.filter(l => l.id == id);
+      if (selectLocation.length > 0) {
+        selectLocation[0].isDisplay = !selectLocation[0].isDisplay;
       }
     }
   }

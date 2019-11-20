@@ -4,7 +4,7 @@
       <div class="col-lg-12 col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab">Sector projects report</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Sectors report</a>
           </li>
         </ul>
       </div>
@@ -233,8 +233,8 @@
                 </tr>
                 <tr *ngFor="let project of sectorProject.projects">
                   <td width="25%">{{project.title}}</td>
-                  <td class="text-center" width="15%">{{project.funders}}</td>
-                  <td class="text-center" width="15%">{{project.implementers}}</td>
+                  <td class="text-center break-word-into-lines" width="15%">{{project.funders}}</td>
+                  <td class="text-center break-word-into-lines" width="15%">{{project.implementers}}</td>
                   <td class="text-right" width="15%">{{formatNumber(project.projectPercentValue)}}</td>
                   <td class="text-right" width="15%">
                     {{formatNumber(project.actualDisbursements)}}<br />

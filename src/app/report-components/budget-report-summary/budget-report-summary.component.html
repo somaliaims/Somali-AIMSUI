@@ -86,9 +86,9 @@
               <tbody>
             </table>
             
-            <table class="table small margin-bottom-none row-highlight" *ngFor="let project of reportDataList.projects">
+            <table class="table small margin-bottom-none" *ngFor="let project of reportDataList.projects">
               <tbody>
-                  <tr title="Click here to view detail" (click)="displayHideRow(project.id)">
+                  <tr class="row-highlight" title="Click here to view detail" (click)="displayHideRow(project.id)">
                     <td width="25%">
                       <span *ngIf="!project.isDisplay"><i class="fa fa-plus-square"></i></span> 
                       <span *ngIf="project.isDisplay"><i class="fa fa-minus-square"></i></span> 
