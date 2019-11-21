@@ -1,8 +1,9 @@
 <block-ui>
-  <div *ngIf="currentTab == tabConstants.FINANCIALS" class="card row padding-20 margin-top-5">
+  <div *ngIf="currentTab == tabConstants.FINANCIALS" class="card padding-20 margin-top-5">
+    
     <div class="col-lg-12 col-md-12 col-sm-12">
       <form class="form-signin" (ngSubmit)="saveDisbursements(financialsForm)" #financialsForm="ngForm">
-        <div class="col-offset-2 col-lg-8 col-md-8">
+        <div class="col-offset-2 col-lg-10 col-md-10">
           <div class="form-group form-inline">
             <label class="col-md-3">Currency</label>
             <select [disabled]="true" class="form-control col-md-9" name="currency"
@@ -45,16 +46,12 @@
                   (click)="showSource()" type="button"><i class="fa fa-database"></i></button>
                 </span>
 
-              <span class="text-warning col-md-3" *ngIf="checkIfCurrentActual(disbursement.year, disbursement.disbursementType)">
-                <small><b><i>(Disbursements to date)</i></b></small>
+              <span class="text-warning col-md-4" *ngIf="checkIfCurrentActual(disbursement.year, disbursement.disbursementType)">
+                <small><b><i>(Disbursements to date in {{disbursement.year}})</i></b></small>
               </span>
               <span class="text-warning col-md-4" *ngIf="checkIfCurrentPlanned(disbursement.year, disbursement.disbursementType)">
-                <small><b><i>(Disbursements remaining)</i></b></small>
+                <small><b><i>(Disbursements planned for the remainder {{disbursement.year}})</i></b></small>
               </span>
-              <span class="text-warning col-md-4" *ngIf="checkIfFuturePlanned(disbursement.year, disbursement.disbursementType)">
-                <small><b><i>(Disbursements planned for future)</i></b></small>
-              </span>
-              
               
           </div>
 

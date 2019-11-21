@@ -104,11 +104,6 @@
             #selectedFunders="ngModel">
           </ng-multiselect-dropdown>
 
-          <!--<span class="col-sm-1">
-            <button type="button" (click)="openCreateOrg()" title="Create your organization if not listed as funder/implementer"
-              class="btn btn-info"><i class="fa fa-plus"></i></button>
-          </span>-->
-
           <span class="col-sm-1">
             <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()"
               class="col-sm-1" title="Source data available for funders" class="btn btn-warning"><i
@@ -118,7 +113,7 @@
             <span class="col-sm-1">
               &nbsp;
             </span>
-            <span class="col-sm-11 text-center">
+            <span class="col-sm-11">
               <a href="#" class="text-info" (click)="openCreateOrg($event)">
                 Add an organisation which is not listed
               </a>
@@ -131,22 +126,25 @@
       <div class="col-lg-6 col-md-6">
         <div class="form-group form-inline">
           <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
-          <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Select implementers'" [data]="organizationsList"
+          <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select implementers'" [data]="organizationsList"
             [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings"
             name="selectedImplementers" #selectedImplementers="ngModel">
           </ng-multiselect-dropdown>
-
-          <span class="col-sm-1">
-            <button type="button" (click)="openCreateOrg()"
-              title="Create your organization if not listed as funder/implementer" class="btn btn-info"><i
-                class="fa fa-plus"></i></button>
-          </span>
 
           <span class="col-sm-1">
             <button type="button" *ngIf="isImplementerDataAvailable && projectId != 0"
               (click)="showImplementersSource()" title="Source data available for implementers"
               class="btn btn-warning"><i class="fa fa-database"></i></button>
           </span>
+
+          <div class="container row margin-top-5">
+            <div class="col-sm-2">&nbsp;&nbsp;</div>
+            <span class="col-md-10">
+              <a href="#" class="text-info margin-left-10" (click)="openCreateOrg($event)">
+                Add an organisation which is not listed
+              </a>
+            </span>
+          </div>
 
         </div>
       </div>
