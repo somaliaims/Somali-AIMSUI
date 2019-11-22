@@ -664,6 +664,7 @@ export class SectorReportComponent implements OnInit {
     if (this.selectedSectors.indexOf(id) == -1) {
       this.selectedSectors.push(id);
     }
+    this.setFilter();
   }
 
   onSectorDeSelect(item: any) {
@@ -675,7 +676,10 @@ export class SectorReportComponent implements OnInit {
     } else {
       this.setFilter();
     }
-    this.searchProjectsByCriteriaReport();
+    //this.searchProjectsByCriteriaReport();
+    if (this.selectedSectors.length == 0) {
+      this.manageResetDisplay();
+    } 
   }
 
   onSectorSelectAll(items: any) {
@@ -684,7 +688,8 @@ export class SectorReportComponent implements OnInit {
       if (this.selectedSectors.indexOf(id) == -1) {
         this.selectedSectors.push(id);
       }
-    }.bind(this))
+    }.bind(this));
+    this.setFilter();
   }
 
   onSectorDeselectAll(items: any) {
@@ -702,7 +707,7 @@ export class SectorReportComponent implements OnInit {
     } else {
       this.setFilter();
     }
-    this.searchProjectsByCriteriaReport();
+    //this.searchProjectsByCriteriaReport();
   }
 
   onOrganizationSelectAll(items: any) {
