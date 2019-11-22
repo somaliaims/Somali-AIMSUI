@@ -47,7 +47,7 @@
                     <ng-multiselect-dropdown [placeholder]="'-- All organization types --'" title="Organization type" [data]="organizationTypes"
                     [(ngModel)]="selectedOrganizationTypes" [settings]="organizationTypeSettings"
                     name="selectedOrganizationTypes" (onSelect)="getOrganizationsForType()" 
-                    (onDeSelect)="getOrganizationsForType()" (onSelectAll)="getOrganizationsForType(1)"
+                    (onDeSelect)="getOrganizationsForType(0)" (onSelectAll)="getOrganizationsForType(1)"
                     (onDeSelectAll)="getOrganizationsForType(0)"
                     #selectedOrganizationTypesList="ngModel">
                   </ng-multiselect-dropdown>

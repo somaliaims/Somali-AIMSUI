@@ -270,6 +270,7 @@ export class EnvelopeReportComponent implements OnInit {
       data => {
         if (data) {
           this.organizations = data;
+          this.filteredOrganizations = data;
           if (this.loadReport) {
             if (this.paramFunders.length > 0) {
               var org = this.organizations.filter(o => o.id == this.paramFunders[0]);
@@ -294,7 +295,7 @@ export class EnvelopeReportComponent implements OnInit {
       this.filteredOrganizations = this.organizations;
     } else if (selectionType == 0) {
       this.selectedOrganizations = [];
-      this.filteredOrganizations = [];
+      this.filteredOrganizations = this.organizations;
     } else if (this.selectedOrganizationTypes && this.selectedOrganizationTypes.length > 0) {
       var ids = this.selectedOrganizationTypes.map(o => o.id);
       this.filteredOrganizations = this.organizations.filter(o => ids.includes(o.organizationTypeId));
