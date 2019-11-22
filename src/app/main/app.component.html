@@ -52,11 +52,11 @@
               <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial
                 years</a>
               <a *ngIf="permissions.canEditCustomFields" class="dropdown-item" [routerLink]="['/markers']">Markers</a>
+              <a *ngIf="permissions.canEditCustomFields" class="nav-link" class="dropdown-item" [routerLink]="['/help-text']">Help text</a>
               <div class="dropdown-divider"></div>
               <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & organizations management</h5>
               <h5 *ngIf="!permissions.canManage" class="dropdown-header">User management</h5>
               <a class="dropdown-item" [routerLink]="['/manage-account']">Account management</a>
-              <!--<a class="dropdown-item" [routerLink]="['/user-subscriptions']">Report subscriptions</a>-->
               <a *ngIf="permissions.canEditOrganization" class="dropdown-item"
                 [routerLink]="['/organizations']">Organizations</a>
               <a *ngIf="permissions.canEditEnvelopeType" class="dropdown-item"
@@ -77,16 +77,16 @@
             <a class="nav-link" [routerLink]="['/contact']" [ngClass]="{'active-link': isContactActive == true}">Contact
               us</a>
           </li>
-          <li class="nav-item active"> 
+          <!--<li class="nav-item active"> 
               <a class="nav-link" [routerLink]="['/data-import']">Data import</a>
-          </li>
+          </li>-->
           <!--<li class="nav-item active"> 
             <a class="nav-link" [routerLink]="['/data-backup']">Data backup</a>
         </li>-->
-          <li class="nav-item" *ngIf="permissions.canEditHelp">
+         <!-- <li class="nav-item" *ngIf="permissions.canEditHelp">
             <a class="nav-link" [routerLink]="['/manage-help']" [ngClass]="{'active-link': isHelpActive == true}">Manage
               help</a>
-          </li>
+          </li>-->
         </ul>
         <ul class="nav navbar-nav ml-auto">
           <li *ngIf="isLoggedIn && notificationsCount > 0" class="nav-item active">

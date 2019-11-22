@@ -163,7 +163,7 @@ export const routes: Routes = [
   { path: 'membership-requests', component: MembershipRequestsComponent },
   { path: 'data-import', component: DataImportComponent },
   { path: 'contact', component: ContactFormComponent },
-  { path: 'manage-help', component: ManageHelpComponent },
+  { path: 'help-text', component: ManageHelpComponent },
   { path: 'data-backup', component: DataBackupComponent },
   { path: '**', component: NotFoundComponent },
 ];

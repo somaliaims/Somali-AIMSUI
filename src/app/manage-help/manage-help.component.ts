@@ -60,6 +60,7 @@ export class ManageHelpComponent implements OnInit {
     private errorModal: ErrorModalComponent, private storeService: StoreService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
