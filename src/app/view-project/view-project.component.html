@@ -21,9 +21,9 @@
       <div class="col margin-top-10">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-info">
               <span class="float-left">
-                Project detail
+                <h6 class="text-white">Project detail</h6>
               </span>
               <span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowContactToUser(projectData.id)">
                 <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
@@ -43,272 +43,165 @@
                   <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
                 </div>
               </div>
-              <table class="table table-stripped">
-                <tr>
-                  <td width="15%"><b>Title: </b></td>
-                  <td colspan="3">{{projectData.title}}</td>
-                </tr>
-                <tr>
-                  <td><b>Starting year: </b></td>
-                  <td>{{projectData.startingFinancialYear}}</td>
-                  <td><b>Ending year: </b></td>
-                  <td>{{projectData.endingFinancialYear}}</td>
-                </tr>
-                <tr>
-                  <td><b>Project value: </b></td>
-                  <td>{{formatNumber(projectData.projectValue)}}</td>
-                  <td><b>Currency: </b></td>
-                  <td>{{projectData.projectCurrency}}</td>
-                </tr>
-                <tr>
-                  <td><b>Description: </b></td>
-                  <td colspan="3">
-                    {{projectData.description}}
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!--Project Locations-->
-    <div class="row">
-      <div class="col margin-top-10">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <span class="float-left">
-                Project Locations
-              </span>
-              <!--<span *ngIf="permissions.canEditProject" class="float-right">
-                <button class="btn btn-success" (click)="addProjectLocation()">Add Project Location</button>
-              </span>-->
-            </div>
-            <div class="card-body">
-              <div class="row text-center margin-top-10" *ngIf="isLocationLoading">
-                <div class="col-md-12">
-                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading locations...</span>
-                </div>
-              </div>
-              <table *ngIf="projectLocations.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Location</th>
-                  <th>Funds percentage</th>
-                </tr>
-                <tr *ngFor="let location of projectLocations">
-                  <td>{{location.location}}</td>
-                  <td>{{location.fundsPercentage}}%</td>
-                  <!-- <td>
-                    <a title="Remove Location" (click)="deleteProjectLocation(projectId, location.id)" class="btn btn-danger"><i
-                        class="fa fa-trash color-white"></i></a>
-                  </td> -->
-                </tr>
-              </table>
-              <p *ngIf="projectLocations.length == 0 && !isLocationLoading">No project locations found.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col margin-top-10">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <span class="float-left">
-                Project sectors
-              </span>
-              <!--<span *ngIf="permissions.canEditProject" class="float-right">
-                <button class="btn btn-success" (click)="addProjectSector()">Add Project Sector</button>
-              </span>-->
-            </div>
-            <div class="card-body">
-              <div class="row text-center margin-top-10" *ngIf="isSectorLoading">
-                <div class="col-md-12">
-                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sectors...</span>
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <table class="table table-striped">
+                    <tr>
+                      <td width="15%"><b>Title: </b></td>
+                      <td colspan="3">{{projectData.title}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Starting year: </b></td>
+                      <td>{{projectData.startingFinancialYear}}</td>
+                      <td><b>Ending year: </b></td>
+                      <td>{{projectData.endingFinancialYear}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Project value: </b></td>
+                      <td>{{formatNumber(projectData.projectValue)}}</td>
+                      <td><b>Currency: </b></td>
+                      <td>{{projectData.projectCurrency}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Description: </b></td>
+                      <td colspan="3">
+                        {{projectData.description}}
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </div>
 
-              <table *ngIf="projectSectors.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Sector</th>
-                  <th>Funds percentage</th>
-                </tr>
-                <tr *ngFor="let sector of projectSectors">
-                  <td>{{sector.sector}}</td>
-                  <td>{{sector.fundsPercentage}}%</td>
-                  <!-- <td>
-                    <a title="Remove Sector" (click)="deleteProjectSector(projectId, sector.sectorId)" class="btn btn-danger"><i
-                        class="fa fa-trash color-white"></i></a>
-                  </td> -->
-                </tr>
-              </table>
-              <p *ngIf="projectSectors.length == 0 && !isSectorLoading">No project sectors found.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <h6 class="text-info">Project locations</h6>
+                  <div class="container text-center margin-top-10" *ngIf="isLocationLoading">
+                      <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading locations...</span>
+                  </div>
+                  <table *ngIf="projectLocations.length > 0" class="table table-striped">
+                    <tr>
+                      <th>Location</th>
+                      <th>Funds percentage</th>
+                    </tr>
+                    <tr *ngFor="let location of projectLocations">
+                      <td>{{location.location}}</td>
+                      <td>{{location.fundsPercentage}}%</td>
+                    </tr>
+                  </table>
+                  <p *ngIf="projectLocations.length == 0 && !isLocationLoading" class="text-info"><i>No project locations found.</i></p>
+                </div>
 
-
-    <div class="row">
-      <div class="col margin-top-10">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <span class="float-left">
-                Project funders
-              </span>
-              <!--<span *ngIf="permissions.canEditProject" class="float-right">
-                <button class="btn btn-success" (click)="addProjectFunder()">Add Project Funder</button>
-              </span>-->
-            </div>
-            <div class="card-body">
-              <div class="row text-center margin-top-10" *ngIf="isFunderLoading">
-                <div class="col-md-12">
-                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading funders...</span>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <h6 class="text-info">Project sectors</h6>
+                  <div class="container text-center margin-top-10" *ngIf="isSectorLoading">
+                        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sectors...</span>
+                    </div>
+                    <table *ngIf="projectSectors.length > 0" class="table table-striped">
+                      <tr>
+                        <th>Sector</th>
+                        <th>Funds percentage</th>
+                      </tr>
+                      <tr *ngFor="let sector of projectSectors">
+                        <td>{{sector.sector}}</td>
+                        <td>{{sector.fundsPercentage}}%</td>
+                      </tr>
+                    </table>
+                    <p *ngIf="projectSectors.length == 0 && !isSectorLoading" class="text-info"><i>No project sectors found.</i></p>
                 </div>
               </div>
 
-              <table *ngIf="projectFunders.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Funder name</th>
-                </tr>
-                <tr *ngFor="let funder of projectFunders">
-                  <td>{{funder.funder}}</td>
-                </tr>
-              </table>
-              <p *ngIf="projectFunders.length == 0 && !isFunderLoading">No project funders found.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <h6 class="text-info">Project funders</h6>
+                  <div class="container text-center margin-top-10" *ngIf="isFunderLoading">
+                        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading funders...</span>
+                    </div>
+      
+                    <table *ngIf="projectFunders.length > 0" class="table table-striped">
+                      <tr>
+                        <th>Funder name</th>
+                      </tr>
+                      <tr *ngFor="let funder of projectFunders">
+                        <td>{{funder.funder}}</td>
+                      </tr>
+                    </table>
+                    <p *ngIf="projectFunders.length == 0 && !isFunderLoading" class="text-info"><i>No project funders found.</i></p>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <h6 class="text-info">Project implementers</h6>
+                    <div class="container text-center margin-top-10" *ngIf="isImplementerLoading">
+                          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading implementers...</span>
+                      </div>
+                      <table *ngIf="projectImplementers.length > 0" class="table table-striped">
+                        <tr>
+                          <th>Implementer</th>
+                        </tr>
+                        <tr *ngFor="let implementer of projectImplementers">
+                          <td>{{implementer.implementer}}</td>
+                        </tr>
+                      </table>
+                      <p *ngIf="projectImplementers.length == 0 && !isImplementerLoading" class="text-info">
+                        <i>No project implementers found.</i>
+                      </p>
+                </div>
 
-    <!--Project Implementers-->
-    <div class="row">
-      <div class="col margin-top-10">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <span class="float-left">
-                Project Implementers
-              </span>
-            </div>
-            <div class="card-body">
-              <div class="row text-center margin-top-10" *ngIf="isImplementerLoading">
-                <div class="col-md-12">
-                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading implementers...</span>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <h6 class="text-info">Project disbursements</h6>
+                  <div class="row text-center margin-top-10" *ngIf="isDisbursementLoading">
+                      <div class="container">
+                        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading disbursements...</span>
+                      </div>
+                    </div>
+      
+                    <table *ngIf="projectDisbursements.length > 0" class="table table-striped">
+                      <tr>
+                        <th>Type</th>
+                        <th>Financial year</th>
+                        <th>Amount</th>
+                        <th>Currency</th>
+                        <th>Exchange rate</th>
+                      </tr>
+                      <tr *ngFor="let disbursement of projectDisbursements">
+                        <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
+                        <td>{{disbursement.year}}</td>
+                        <td>{{formatNumber(disbursement.amount)}}</td>
+                        <td>{{disbursement.currency}}</td>
+                        <td>{{disbursement.exchangeRate}}</td>
+                      </tr>
+                    </table>
+                    <p *ngIf="projectDisbursements.length == 0 && !isDisbursementLoading" class="text-info">
+                      <i>No project disbursements found.</i>
+                    </p>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <h6 class="text-info">Project documents</h6>
+                    <div class="row text-center margin-top-10" *ngIf="isDocumentLoading">
+                        <div class="container">
+                          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading documents...</span>
+                        </div>
+                      </div>
+        
+                      <table *ngIf="projectDocuments.length > 0" class="table table-striped">
+                        <tr>
+                          <th>Document Title</th>
+                          <th>Url</th>
+                        </tr>
+                        <tr *ngFor="let document of projectDocuments">
+                          <td>{{document.documentTitle}}</td>
+                          <td>{{document.documentUrl}}</td>
+                        </tr>
+                      </table>
+                      <p *ngIf="projectDocuments.length == 0 && !isDocumentLoading" class="text-info">
+                        <i>No project documents found.</i>
+                      </p>
                 </div>
               </div>
 
-              <table *ngIf="projectImplementers.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Implementer</th>
-                </tr>
-                <tr *ngFor="let implementer of projectImplementers">
-                  <td>{{implementer.implementer}}</td>
-                </tr>
-              </table>
-              <p *ngIf="projectImplementers.length == 0 && !isImplementerLoading">No project implementers found.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!--Project Disbursements-->
-    <div class="row">
-      <div class="col margin-top-10">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <span class="float-left">
-                Project disbursements
-              </span>
-              <!--<span *ngIf="permissions.canEditProject" class="float-right">
-                <button class="btn btn-success" (click)="addProjectDisbursement()">Add Project Disbursement</button>
-              </span>-->
-            </div>
-            <div class="card-body">
-              <div class="row text-center margin-top-10" *ngIf="isDisbursementLoading">
-                <div class="col-md-12">
-                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading disbursements...</span>
-                </div>
-              </div>
-
-              <table *ngIf="projectDisbursements.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Type</th>
-                  <th>Financial year</th>
-                  <th>Amount</th>
-                  <th>Currency</th>
-                  <th>Exchange rate</th>
-                </tr>
-                <tr *ngFor="let disbursement of projectDisbursements">
-                  <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
-                  <td>{{disbursement.year}}</td>
-                  <td>{{formatNumber(disbursement.amount)}}</td>
-                  <td>{{disbursement.currency}}</td>
-                  <td>{{disbursement.exchangeRate}}</td>
-                  <!-- <td>
-                    <a title="Remove Disbursement" (click)="deleteProjectDisbursement(disbursement.projectId, disbursement.startingYear, disbursement.startingMonth)" class="btn btn-danger"><i
-                        class="fa fa-trash color-white"></i></a>
-                  </td> -->
-                </tr>
-              </table>
-              <p *ngIf="projectDisbursements.length == 0 && !isDisbursementLoading">No project disbursements found.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!--Project Documents-->
-    <div class="row">
-      <div class="col margin-top-10">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <span class="float-left">
-                Project Documents
-              </span>
-              <span class="float-right" *ngIf="isLoggedIn && isShowContactToUser(projectData.id)">
-                <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
-                  Suggest a change
-                </button>
-              </span>
-              <span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowDeleteProject(projectData.id)">
-                <button class="btn btn-danger btn-sm" (click)="makeDeleteRequest(projectData.id)">
-                  Request deletion
-                </button>
-              </span>
-            </div>
-            <div class="card-body">
-              <div class="row text-center margin-top-10" *ngIf="isDocumentLoading">
-                <div class="col-md-12">
-                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading documents...</span>
-                </div>
-              </div>
-
-              <table *ngIf="projectDocuments.length > 0" class="table table-stripped">
-                <tr>
-                  <th>Document Title</th>
-                  <th>Url</th>
-                </tr>
-                <tr *ngFor="let document of projectDocuments">
-                  <td>{{document.documentTitle}}</td>
-                  <td>{{document.documentUrl}}</td>
-                  <!-- <td>
-                    <a title="Remove Document" (click)="deleteProjectDocument(document.id)" class="btn btn-danger"><i
-                        class="fa fa-trash color-white"></i></a>
-                  </td> -->
-                </tr>
-              </table>
-              <p *ngIf="projectDocuments.length == 0 && !isDocumentLoading">No project documents found.</p>
             </div>
           </div>
         </div>
