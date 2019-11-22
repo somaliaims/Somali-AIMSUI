@@ -30,6 +30,7 @@ export class EnvelopeReportComponent implements OnInit {
   selectedOrganizations: any = [];
   paramFunders: any = [];
   paramEnvelopeTypes: any = [];
+  currentYear: number = 0;
 
   reportSettings: any = {};
   envelopeTypeSettings: any = {};
@@ -307,7 +308,14 @@ export class EnvelopeReportComponent implements OnInit {
     this.financialYearService.getYearsList().subscribe(
       data => {
         if (data) {
-          this.financialYears = data;
+          this.currentYear = this.storeService.getCurrentYear();
+          var yearsList = [];
+          for(var y = (this.currentYear - 1); y <= (this.currentYear + 1); y++) {
+            yearsList.push(y);
+          }
+          if (data.length > 0) {
+            this.financialYears = data.filter(f => yearsList.includes(f.financialYear));
+          }
         }
 
         if (this.loadReport) {
