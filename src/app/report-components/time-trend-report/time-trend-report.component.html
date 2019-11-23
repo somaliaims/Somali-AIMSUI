@@ -19,6 +19,8 @@
                 <div class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projects"
                     [(ngModel)]="model.selectedProjects" [settings]="projectsSettings" name="selectedProjects"
+                    (onSelect)="onProjectSelect($event)" (onDeSelect)="onProjectDeSelect($event)"
+                    (onSelectAll)="onProjectSelectAll($event)" (onDeSelectAll)="onProjectDeSelectAll($event)"
                     #selectedProjects="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
@@ -30,7 +32,7 @@
                       </td>
                       <td>
                         <select class="form-control" id="startingYear" title="Starting financial year"
-                          [(ngModel)]="model.startingYear" name="startingYear" #startingYear="ngModel" required>
+                          [(ngModel)]="model.startingYear" name="startingYear" #startingYear="ngModel" (change)="onChangeStartingYear()" required>
                           <option value="0">--Start--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
@@ -39,7 +41,7 @@
                       <td>&nbsp;&nbsp;</td>
                       <td>
                         <select class="form-control" id="endingYear" title="Ending financial year"
-                          [(ngModel)]="model.endingYear" name="endingYear" #endingYear="ngModel" required>
+                          [(ngModel)]="model.endingYear" name="endingYear" #endingYear="ngModel" (change)="onChangeEndingYear()" required>
                           <option value="0">--End--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
                           </option>
@@ -54,7 +56,7 @@
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="Sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
                     (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
-                    (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
+                    (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeSelectAll($event)" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
@@ -62,7 +64,7 @@
                     [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
                     [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)"
                     (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)"
-                    name="selectedOrganizations" #selectedOrganizations="ngModel">
+                    (onDeSelectAll)="onOrganizationDeSelectAll($event)" name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
               </div>
@@ -86,12 +88,15 @@
                 </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">{{btnReportText}}</button>&nbsp;
-                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger"
-                      (click)="generatePDF()">Download PDF</button>&nbsp;
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
+                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
-                      class="btn btn-warning" (click)="printReport()">Print report</button>
+                      class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2 margin-left-2">Download
+                      spreadsheet</a>
+                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
+                      class="btn btn-warning margin-top-2 margin-left-2" (click)="printReport()">Print report</button>
+                    <button *ngIf="isAnyFilterSet" type="button"
+                      class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
                   </span>
                 </div>
               </div>

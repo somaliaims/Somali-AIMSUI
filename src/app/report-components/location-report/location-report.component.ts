@@ -30,12 +30,12 @@ export class LocationReportComponent implements OnInit {
   subLocationsList: any = [];
   organizationsList: any = [];
   currenciesList: any = [];
-  
   exchangeRatesList: any = [];
   manualExchangeRatesList: any = [];
   selectedDataOptions: any = [];
   projects: any = [];
 
+  isAnyFilterSet: boolean = false;
   defaultCurrency: string = null;
   nationalCurrency: string = null;
   nationalCurrencyName: string = null;
@@ -508,54 +508,82 @@ export class LocationReportComponent implements OnInit {
     )
   }
 
+  startYearChanged() {
+    if (this.model.startingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  endYearChanged() {
+    if (this.model.endingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  onProjectSelect(item: any) {
+    this.setFilter();
+  }
+
+  onProjectSelectAll(item: any) {
+    this.setFilter();
+  }
+
+  onProjectDeSelect(item: any) {
+    if (this.model.selectedProjects.length == 0) {
+      this.manageResetDisplay();
+    } else {
+      this.setFilter();
+    }
+  }
+
+  onProjectDeSelectAll(items: any) {
+    this.model.selectedProjects = [];
+    this.manageResetDisplay();
+  }
+
   onLocationSelect(item: any) {
-    var id = item.id;
-    /*if (this.selectedLocations.indexOf(id) == -1) {
-      this.selectedLocations.push(id);
-    }*/
+    this.setFilter();
   }
 
   onLocationDeSelect(item: any) {
-    var id = item.id;
-    /*var index = this.selectedLocations.indexOf(id);
-    this.selectedLocations.splice(index, 1);*/
-
-    this.searchProjectsByCriteriaReport();
+    if (this.model.selectedLocations.length == 0) {
+      this.manageResetDisplay();
+    } 
   }
 
   onLocationSelectAll(items: any) {
-    /*items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedLocations.indexOf(id) == -1) {
-        this.selectedLocations.push(id);
-      }
-    }.bind(this));*/
+    this.setFilter();
+  }
+
+  onLocationDeSelectAll(items: any) {
+    this.model.selectedLocations = [];
+    this.manageResetDisplay();
   }
 
   onOrganizationSelect(item: any) {
-    var id = item.id;
-    /*if (this.selectedOrganizations.indexOf(id) == -1) {
-      this.selectedOrganizations.push(id);
-    }*/
+    this.setFilter();
   }
 
   onOrganizationDeSelect(item: any) {
-    var id = item.id;
-    /*var index = this.selectedOrganizations.indexOf(id);
-    this.selectedOrganizations.splice(index, 1);*/
-    this.searchProjectsByCriteriaReport();
+    if (this.selectedOrganizations.length == 0) {
+      this.manageResetDisplay();
+    }
   }
 
   onOrganizationSelectAll(items: any) {
-    /*items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedOrganizations.indexOf(id) == -1) {
-        this.selectedOrganizations.push(id);
-      }
-    }.bind(this));*/
+    this.setFilter();
   }
 
-  onDataOptionSelect(item: any) {
+  onOrganizationDeSelectAll(items: any) {
+    this.model.selectedOrganizations = [];  
+    this.manageResetDisplay();
+  }
+
+  /*onDataOptionSelect(item: any) {
     var id = item.id;
     if (this.selectedDataOptions.indexOf(id) == -1) {
       this.selectedDataOptions.push(id);
@@ -583,7 +611,7 @@ export class LocationReportComponent implements OnInit {
   onDataOptionDeSelectAll(items: any) {
     this.selectedDataOptions = [];
     this.manageDataOptions();
-  }
+  }*/
 
   selectDataOption() {
     this.chartData = [];
@@ -842,6 +870,31 @@ export class LocationReportComponent implements OnInit {
         selectLocation[0].isDisplay = !selectLocation[0].isDisplay;
       }
     }
+  }
+
+  manageResetDisplay() {
+    if (this.model.selectedProjects.length == 0 && this.model.startingYear == 0 &&
+      this.model.endingYear == 0 && this.model.selectedLocations.length == 0 && 
+      this.model.selectedOrganizations.length == 0 && 
+      this.model.selectedCurrency == this.defaultCurrency) {
+        this.isAnyFilterSet = false;
+      } else {
+        this.isAnyFilterSet = true;
+      }
+  }
+
+  setFilter() {
+    this.isAnyFilterSet = true;
+  }
+
+  resetFilters() {
+    this.model.selectedProjects = [];
+    this.model.startingYear = 0;
+    this.model.endingYear = 0;
+    this.model.selectedLocations = [];
+    this.model.selectedOrganizations = [];
+    //this.model.currency = this.defaultCurrency;
+    this.isAnyFilterSet = false;
   }
 
   formatNumber(value: number) {

@@ -655,7 +655,8 @@ export class SectorReportComponent implements OnInit {
     }
   }
 
-  onProjectDeselectAll(items: any) {
+  onProjectDeSelectAll(items: any) {
+    this.model.selectedProjects = [];
     this.manageResetDisplay();
   }
 
@@ -683,16 +684,11 @@ export class SectorReportComponent implements OnInit {
   }
 
   onSectorSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedSectors.indexOf(id) == -1) {
-        this.selectedSectors.push(id);
-      }
-    }.bind(this));
     this.setFilter();
   }
 
   onSectorDeselectAll(items: any) {
+    this.model.selectedSectors = [];
     this.manageResetDisplay();
   }
 
@@ -707,46 +703,16 @@ export class SectorReportComponent implements OnInit {
     } else {
       this.setFilter();
     }
-    //this.searchProjectsByCriteriaReport();
   }
 
   onOrganizationSelectAll(items: any) {
     this.setFilter();
   }
 
-  onOrganizationDeselectAll(items: any) {
+  onOrganizationDeSelectAll(items: any) {
+    this.model.selectedOrganizations = [];
     this.manageResetDisplay();
   }
-
-  /*onDataOptionSelect(item: any) {
-    var id = item.id;
-    if (this.selectedDataOptions.indexOf(id) == -1) {
-      this.selectedDataOptions.push(id);
-      this.manageDataOptions();
-    }
-  }
-
-  onDataOptionDeSelect(item: any) {
-    var id = item.id;
-    var index = this.selectedDataOptions.indexOf(id);
-    this.selectedDataOptions.splice(index, 1);
-    this.manageDataOptions();
-  }
-
-  onDataOptionSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedDataOptions.indexOf(id) == -1) {
-        this.selectedDataOptions.push(id);
-      }
-    }.bind(this));
-    this.manageDataOptions();
-  }
-
-  onDataOptionDeSelectAll(items: any) {
-    this.selectedDataOptions = [];
-    this.manageDataOptions();
-  }*/
 
   manageDataToDisplay() {
     this.chartData = [];

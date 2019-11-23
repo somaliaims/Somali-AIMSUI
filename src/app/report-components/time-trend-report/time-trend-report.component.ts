@@ -61,6 +61,7 @@ export class TimeTrendReportComponent implements OnInit {
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
+  isAnyFilterSet: boolean = false;
   //chartTypeName: string = 'bar';
   chartType: string = 'bar';
   btnReportText: string = 'View report';
@@ -93,99 +94,8 @@ export class TimeTrendReportComponent implements OnInit {
       }]
     }
   };
-
-  /*chartOptions: any = [
-    { id: 1, type: 'bar', title: 'Bar chart' },
-    { id: 2, type: 'pie', title: 'Pie chart' },
-    { id: 3, type: 'doughnut', title: 'Doughnut chart' },
-    { id: 4, type: 'line', title: 'Line chart' },
-    { id: 5, type: 'radar', title: 'Radar' },
-    { id: 6, type: 'polarArea', title: 'Polar area' }
-  ];*/
-
-  /*chartTypes: any = {
-    BAR: 'bar',
-    PIE: 'pie',
-    DOUGHNUT: 'doughnut',
-    LINE: 'line',
-    RADAR: 'radar',
-    POLAR: 'polarArea'
-  };
-
-  chartTypeCodes: any = {
-    BAR: 1,
-    PIE: 2,
-    DOUGHNUT: 3,
-    LINE: 4,
-    RADAR: 5,
-    POLAR: 6
-  };
-
-  dataOptions: any = [
-    { id: 1, type: 'actual-disbursements', value: 'Actual disbursements' },
-    { id: 2, type: 'planned-disbursements', value: 'Planned disbursements' },
-    { id: 3, type: 'total-disbursements', value: 'Total disbursements' }
-  ];
-
-  dataOptionsIndexForDoughnut: any = {
-    1: 0,
-    2: 1,
-    3: 2
-  };
-
-  dataOptionsCodes: any = {
-    'ACTUAL_DISBURSEMENTS': 1,
-    'PLANNED_DISBURSEMENTS': 2,
-    'DISBURSEMENTS': 3
-  };
-
-  dataOptionLabels: any = {
-    ACTUAL_DISBURSEMENTS: 'Actual disbursements',
-    PLANNED_DISBURSEMENTS: 'Planned disbursements',
-    DISBURSEMENTS: 'Total disbursements'
-  };
-
-  exRateSourceCodes: any = {
-    'OPEN_EXCHANGE': 1,
-    'AFRICAN_BANK': 2
-  };
-
-  exRateSources: any = [
-    { id: 1, value: 'Open exchange api' },
-    { id: 2, value: 'African bank' }
-  ];*/
-
   reportDataList: any = [];
   dropdownSettings: any = {};
-
-  /*chartOptions: any = {
-    responsive: true,
-    tooltips: {
-      callbacks: {
-        label: function (tooltipItem, data) {
-          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          return parseInt(tooltipValue).toLocaleString();
-        }
-      }
-    },
-    scales: {
-      yAxes: [{
-        stacked: true,
-        ticks: {
-          beginAtZero: true,
-          callback: function (value, index, values) {
-            return value.toLocaleString("en-US");
-          }
-        }
-      }],
-      xAxes: [{
-        stacked: true,
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
-  };*/
 
   barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -361,12 +271,6 @@ export class TimeTrendReportComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
-
-    /*var dataOption = this.dataOptions.filter(o => o.id == 1);
-    if (dataOption.length > 0) {
-      this.model.selectedDataOptions.push(dataOption[0]);
-      this.selectedDataOptions.push(this.dataOptionsCodes.PROJECTS);
-    }*/
   }
 
   getProjectTitles() {
@@ -453,7 +357,6 @@ export class TimeTrendReportComponent implements OnInit {
             this.setExcelFile();
           }
 
-          //this.manageDataToDisplay();
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
           this.setupChartData();
@@ -553,7 +456,7 @@ export class TimeTrendReportComponent implements OnInit {
     this.sectorService.getDefaultSectors().subscribe(
       data => {
         var sectorsList = data;
-        this.sectorsList = sectorsList.filter(s => s.parentSectorId == null);
+        this.sectorsList = sectorsList.filter(s => s.parentSectorId == 0);
         this.subSectorsList = [];
         if (this.loadReport) {
           if (this.paramSectorIds.length > 0) {
@@ -618,69 +521,98 @@ export class TimeTrendReportComponent implements OnInit {
           }
           this.searchProjectsByCriteriaReport();
         }
-      },
-      error => {
-        console.log(error);
       }
-    )
+    );
   }
 
-  onSectorSelect(item: any) {
-    var id = item.id;
-    if (this.selectedSectors.indexOf(id) == -1) {
-      this.selectedSectors.push(id);
+  onChangeStartingYear() {
+    if (this.model.startingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
     }
   }
 
-  onSectorDeSelect(item: any) {
-    var id = item.id;
-    var index = this.selectedSectors.indexOf(id);
-    this.selectedSectors.splice(index, 1);
+  onChangeEndingYear() {
+    if (this.model.endingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
 
-    this.searchProjectsByCriteriaReport();
+  onSectorSelect(item: any) {
+    this.setFilter();
+  }
+
+  onSectorDeSelect(item: any) {
+    this.manageResetDisplay();
   }
 
   onSectorSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedSectors.indexOf(id) == -1) {
-        this.selectedSectors.push(id);
-      }
-    }.bind(this))
+    this.setFilter();
+  }
+
+  onSectorDeSelectAll(items: any) {
+    this.model.selectedSectors = [];
+    this.manageResetDisplay();
+  }
+
+  onProjectSelect(item: any) {
+    this.setFilter();
+  }
+
+  onProjectDeSelect(item: any) {
+    this.manageResetDisplay();
+  }
+
+  onProjectSelectAll(items: any) {
+    this.setFilter();
+  }
+
+  onProjectDeSelectAll(items: any) {
+    this.model.selectedProjects = [];
+    this.manageResetDisplay();
   }
 
   onOrganizationSelect(item: any) {
-    var id = item.id;
-    /*if (this.selectedOrganizations.indexOf(id) == -1) {
-      this.selectedOrganizations.push(id);
-    }*/
+    this.setFilter();
   }
 
   onOrganizationDeSelect(item: any) {
-    var id = item.id;
-    this.searchProjectsByCriteriaReport();
+    this.manageResetDisplay();
   }
 
   onOrganizationSelectAll(items: any) {
+    this.setFilter();
+  }
+
+  onOrganizationDeSelectAll(items: any) {
+    this.model.selectedOrganizations = [];
+    this.manageResetDisplay();
   }
 
   onLocationSelect(item: any) {
-    var id = item.id;
+    this.setFilter();
   }
 
   onLocationDeSelect(item: any) {
-    var id = item.id;
-    this.searchProjectsByCriteriaReport();
+    this.manageResetDisplay();
   }
 
   onLocationSelectAll(items: any) {
+    this.setFilter();
   }
 
-  onDataOptionSelect(item: any) {
+  onLocationDeSelectAll(items: any) {
+    this.model.locations = [];
+    this.manageResetDisplay();
+  }
+
+  /*onDataOptionSelect(item: any) {
     var id = item.id;
     if (this.selectedDataOptions.indexOf(id) == -1) {
       this.selectedDataOptions.push(id);
-      //this.manageDataOptions();
     }
   }
 
@@ -688,7 +620,6 @@ export class TimeTrendReportComponent implements OnInit {
     var id = item.id;
     var index = this.selectedDataOptions.indexOf(id);
     this.selectedDataOptions.splice(index, 1);
-    //this.manageDataOptions();
   }
 
   onDataOptionSelectAll(items: any) {
@@ -704,7 +635,7 @@ export class TimeTrendReportComponent implements OnInit {
   onDataOptionDeSelectAll(items: any) {
     this.selectedDataOptions = [];
     //this.manageDataOptions();
-  }
+  }*/
 
 
   getGrandTotalFundingForYear() {
@@ -824,6 +755,31 @@ export class TimeTrendReportComponent implements OnInit {
     if (this.excelFile) {
       this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
     }
+  }
+
+  manageResetDisplay() {
+    if (this.model.selectedProjects.length == 0 && this.model.startingYear == 0 &&
+      this.model.endingYear == 0 && this.model.selectedSectors.length == 0 && 
+      this.model.selectedOrganizations.length == 0 && 
+      this.model.selectedCurrency == this.defaultCurrency) {
+        this.isAnyFilterSet = false;
+      } else {
+        this.isAnyFilterSet = true;
+      }
+  }
+
+  setFilter() {
+    this.isAnyFilterSet = true;
+  }
+
+  resetFilters() {
+    this.model.selectedProjects = [];
+    this.model.startingYear = 0;
+    this.model.endingYear = 0;
+    this.model.parentSectorId = 0;
+    this.model.selectedSectors = [];
+    this.model.selectedOrganizations = [];
+    this.isAnyFilterSet = false;
   }
 
   formatNumber(value: number) {

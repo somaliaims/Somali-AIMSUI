@@ -63,7 +63,7 @@
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
                     (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
-                    (onSelectAll)="onSectorSelectAll($event)" (onDeselectAll)="onSectorDeselectAll($event)" #selectedSectors="ngModel">
+                    (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeselectAll($event)" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -71,7 +71,7 @@
                     [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
                     [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)"
                     (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)"
-                    (onDeselectAll)="onOrganizationDeselectAll($event)"
+                    (onDeSelectAll)="onOrganizationDeSelectAll($event)"
                     name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
