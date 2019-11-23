@@ -26,8 +26,9 @@
                                     <label>Starting year (Optional): </label>&nbsp;&nbsp;
                                     <select [class.disable]="isLoading" title="Starting year" class="form-control col-sm-12" name="startingYear"
                                         [(ngModel)]="model.startingYear" #startingYear="ngModel" id="startingYear"
+                                        (change)="onChangeStartYear()"
                                         >
-                                        <option value="null">--Starting year--</option>
+                                        <option value="0">--Starting year--</option>
                                         <option *ngFor="let year of financialYears" value="{{year.financialYear}}">
                                             {{year.financialYear}}</option>
                                     </select>
@@ -36,8 +37,8 @@
                                     <label>Ending year (Optional): </label>&nbsp;&nbsp;
                                     <select [class.disable]="isLoading" title="Ending year" class="form-control col-sm-12"
                                         name="endingYear" [(ngModel)]="model.endingYear"
-                                        #endingYear="ngModel" id="endingYear">
-                                        <option value="null">--Ending year--</option>
+                                        #endingYear="ngModel" id="endingYear" (change)="onChangeEndYear()">
+                                        <option value="0">--Ending year--</option>
                                         <option *ngFor="let year of financialYears" value="{{year.financialYear}}">
                                             {{year.financialYear}}</option>
                                     </select>

@@ -24,6 +24,7 @@ export class ProjectReportComponent implements OnInit {
     documents: [],
     customFields: []
   };
+  isAnyFilterSet: boolean = false;
   model: any = {criteria: null, selectedProjectId: 0, projectTitle: null };
   @BlockUI() blockUI: NgBlockUI;
   
@@ -88,6 +89,31 @@ export class ProjectReportComponent implements OnInit {
   reset() {
     this.model.selectedProjectId = 0;
     this.model.projectTitle = null;
+  }
+
+  onChangeStartYear() {
+    this.manageResetDisplay();
+  }
+
+  onChangeEndYear() {
+    this.manageResetDisplay();
+  }
+
+  manageResetDisplay() {
+    if (this.model.startingYear == 0 && this.model.endingYear == 0) {
+        this.isAnyFilterSet = false;
+      } else {
+        this.isAnyFilterSet = true;
+      }
+  }
+
+  setFilter() {
+    this.isAnyFilterSet = true;
+  }
+
+  resetFilters() {
+    this.model.startingYear = 0;
+    this.model.endingYear = 0;
   }
 
   displayFieldValues(json: any) {

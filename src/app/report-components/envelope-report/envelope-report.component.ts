@@ -31,7 +31,6 @@ export class EnvelopeReportComponent implements OnInit {
   paramFunders: any = [];
   paramEnvelopeTypes: any = [];
   currentYear: number = 0;
-
   reportSettings: any = {};
   envelopeTypeSettings: any = {};
   organizationTypeSettings: any = {};
@@ -51,6 +50,7 @@ export class EnvelopeReportComponent implements OnInit {
   isLoading: boolean = true;
   isDataLoading: boolean = true;
   loadReport: boolean = false;
+  isAnyFilterSet: boolean = false;
   errorMessage: string = null;
   chartTypeName: string = 'bar';
   btnReportText: string = 'View report';
@@ -471,6 +471,97 @@ export class EnvelopeReportComponent implements OnInit {
     result.then(() => {
       this.blockUI.stop();
     });
+  }
+
+  onChangeStartingYear() {
+    if (this.model.startingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  onChangeEndingYear() {
+    if (this.model.endingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  onEnvelopeSelect(item: any) {
+    this.setFilter();
+  }
+
+  onEnvelopeDeSelect(item: any) {
+    this.manageResetDisplay();
+  }
+
+  onEnvelopeSelectAll(item: any) {
+    this.setFilter();
+  }
+
+  onEnvelopeDeSelectAll(items: any) {
+    this.selectedEnvelopeTypes = [];
+    this.manageResetDisplay();
+  }
+
+  onOrganizationTypeSelect(item: any) {
+    this.setFilter();
+  }
+
+  onOrganizationTypeDeSelect(item: any) {
+    this.manageResetDisplay();
+  }
+
+  onOrganizationTypeSelectAll(item: any) {
+    this.setFilter();
+  }
+
+  onOrganizationTypeDeSelectAll(items: any) {
+    this.selectedOrganizationTypes = [];
+    this.manageResetDisplay();
+  }
+
+  onOrganizationSelect(item: any) {
+    this.setFilter();
+  }
+
+  onOrganizationDeSelect(item: any) {
+    this.manageResetDisplay();
+  }
+
+  onOrganizationSelectAll(item: any) {
+    this.setFilter();
+  }
+
+  onOrganizationDeSelectAll(items: any) {
+    this.selectedOrganizations = [];
+    this.manageResetDisplay();
+  }
+
+  manageResetDisplay() {
+    if (this.selectedEnvelopeTypes == 0 && this.selectedOrganizationTypes == 0 &&
+      this.model.startingYear == 0 && this.model.endingYear == 0 && 
+      this.selectedOrganizations.length == 0 && 
+      this.model.selectedCurrency == this.defaultCurrency) {
+        this.isAnyFilterSet = false;
+      } else {
+        this.isAnyFilterSet = true;
+      }
+  }
+
+  setFilter() {
+    this.isAnyFilterSet = true;
+  }
+
+  resetFilters() {
+    this.selectedEnvelopeTypes = [];
+    this.selectedOrganizationTypes = [];
+    this.selectedOrganizations = [];
+    this.model.startingYear = 0;
+    this.model.endingYear = 0;
+    this.isAnyFilterSet = false;
   }
 
   formatNumber(value: number) {

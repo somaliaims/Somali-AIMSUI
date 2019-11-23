@@ -508,7 +508,7 @@ export class LocationReportComponent implements OnInit {
     )
   }
 
-  startYearChanged() {
+  onChangeStartingYear() {
     if (this.model.startingYear != 0) {
       this.setFilter();
     } else {
@@ -516,7 +516,7 @@ export class LocationReportComponent implements OnInit {
     }
   }
 
-  endYearChanged() {
+  onChangeEndingYear() {
     if (this.model.endingYear != 0) {
       this.setFilter();
     } else {
@@ -893,7 +893,6 @@ export class LocationReportComponent implements OnInit {
     this.model.endingYear = 0;
     this.model.selectedLocations = [];
     this.model.selectedOrganizations = [];
-    //this.model.currency = this.defaultCurrency;
     this.isAnyFilterSet = false;
   }
 

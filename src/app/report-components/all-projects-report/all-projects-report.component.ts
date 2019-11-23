@@ -17,9 +17,10 @@ export class AllProjectsReportComponent implements OnInit {
   excelFile: string = null;
   financialYears: any = [];
   requestNo: number = 0;
+  isAnyFilterSet: boolean = false;
   errorMessage: string = null;
   btnReportText: string = 'Request report';
-  model: any = { startingYear: null, endingYear: null };
+  model: any = { startingYear: 0, endingYear: 0 };
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
@@ -71,6 +72,31 @@ export class AllProjectsReportComponent implements OnInit {
     if (this.excelFile) {
       this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
     }
+  }
+
+  onChangeStartYear() {
+    this.manageResetDisplay();
+  }
+
+  onChangeEndYear() {
+    this.manageResetDisplay();
+  }
+
+  manageResetDisplay() {
+    if (this.model.startingYear == 0 && this.model.endingYear == 0) {
+        this.isAnyFilterSet = false;
+      } else {
+        this.isAnyFilterSet = true;
+      }
+  }
+
+  setFilter() {
+    this.isAnyFilterSet = true;
+  }
+
+  resetFilters() {
+    this.model.startingYear = 0;
+    this.model.endingYear = 0;
   }
 
 }

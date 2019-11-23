@@ -61,9 +61,6 @@
     <div *ngIf="reportView == 'report'" class="row margin-top-10">
       <div class="col-md-12">
         <span class="float-right">
-          <!--<button type="submit" class="btn btn-info">Get Report</button>&nbsp;
-          <button type="button" class="btn btn-primary" (click)="generatePDF()">Get PDF</button>&nbsp;
-          <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Get Excel</a>&nbsp;-->
           <button *ngIf="projectProfile && projectProfile.title" type="button" class="btn btn-warning" (click)="printReport()">Print Report</button>
         </span>
       </div>

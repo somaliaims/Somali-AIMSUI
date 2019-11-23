@@ -19,7 +19,7 @@
               <div class="row">
                 <div class="col-md-3">
                   <select class="form-control" id="startingYear" title="Starting financial year" [(ngModel)]="model.startingYear" name="startingYear"
-                    #startingYear="ngModel" required>
+                    #startingYear="ngModel" (change)="onChangeStartingYear()" required>
                     <option value="0">--Starting year--</option>
                     <option *ngFor="let year of financialYears" [value]="year.financialYear">{{year.financialYear}}
                     </option>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-3">
                   <select class="form-control" id="endingYear" title="Ending financial year" [(ngModel)]="model.endingYear" name="endingYear" #endingYear="ngModel"
-                    required>
+                    (change)="onChangeEndingYear()" required>
                     <option value="0">--Ending year--</option>
                     <option *ngFor="let year of financialYears" [value]="year.financialYear">{{year.financialYear}}
                     </option>
@@ -36,6 +36,8 @@
                 <div class="col-md-6">
                     <ng-multiselect-dropdown [placeholder]="'-- All Envelope type/s --'" title="Envelope type" [data]="envelopeTypes"
                     [(ngModel)]="selectedEnvelopeTypes" [settings]="envelopeTypeSettings"
+                    (onSelect)="onEnvelopeSelect($event)" (onDeSelect)="onEnvelopeDeSelect($event)"
+                    (onSelectAll)="onEnvelopeSelectAll($event)" (onDeSelectAll)="onEnvelopeDeSelectAll($event)"
                     name="selectedEnvelopeTypes"
                     #selectedEnvelopeTypesList="ngModel">
                   </ng-multiselect-dropdown>
@@ -46,15 +48,18 @@
                 <div class="col-md-6">
                     <ng-multiselect-dropdown [placeholder]="'-- All organization types --'" title="Organization type" [data]="organizationTypes"
                     [(ngModel)]="selectedOrganizationTypes" [settings]="organizationTypeSettings"
-                    name="selectedOrganizationTypes" (onSelect)="getOrganizationsForType()" 
-                    (onDeSelect)="getOrganizationsForType(0)" (onSelectAll)="getOrganizationsForType(1)"
-                    (onDeSelectAll)="getOrganizationsForType(0)"
+                    name="selectedOrganizationTypes" (onSelect)="getOrganizationsForType();onOrganizationTypeSelect($event)" 
+                    (onDeSelect)="getOrganizationsForType(0);onOrganizationTypeDeSelect($event)" 
+                    (onSelectAll)="getOrganizationsForType(1);onOrganizationTypeSelectAll($event)"
+                    (onDeSelectAll)="getOrganizationsForType(0);onOrganizationTypeDeSelectAll($event)"
                     #selectedOrganizationTypesList="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
                     <ng-multiselect-dropdown [placeholder]="'-- All organizations --'" title="Organization" [data]="filteredOrganizations"
                     [(ngModel)]="selectedOrganizations" [settings]="organizationSettings"
+                    (onSelect)="onOrganizationSelectAll($event)" (onDeSelect)="onOrganizationDeSelect($event)"
+                    (onSelectAll)="onOrganizationSelectAll($event)" (onDeSelectAll)="onOrganizationDeSelectAll($event)"
                     name="selectedOrganizations"
                     #selectedOrganizationsList="ngModel">
                   </ng-multiselect-dropdown>
@@ -80,12 +85,14 @@
                 </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">{{btnReportText}}</button>&nbsp;
-                    <button *ngIf="envelopeList && envelopeList.length > 0" type="button" class="btn btn-danger"
-                      (click)="generatePDF()">Download PDF</button>&nbsp;
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
+                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                     <button *ngIf="envelopeList && envelopeList.length > 0" type="button"
-                      class="btn btn-warning" (click)="printReport()">Print report</button>
+                      class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-left-2 margin-top-2">Download spreadsheet</a>
+                    <button *ngIf="envelopeList && envelopeList.length > 0" type="button"
+                      class="btn btn-warning margin-top-2 margin-left-2" (click)="printReport()">Print report</button>
+                    <button *ngIf="isAnyFilterSet" type="button" class="btn btn-primary margin-top-2 margin-left-2"
+                      (click)="resetFilters()">Reset filters</button>
                   </span>
                 </div>
               </div>
