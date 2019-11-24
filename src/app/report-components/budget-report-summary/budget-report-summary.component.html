@@ -72,7 +72,7 @@
         </div>
       </div>
   
-      <div class="row margin-top-20" id="rpt-budget-report">
+      <div class="col margin-top-20" id="rpt-budget-report">
         <div class="col-md-12 margin-top-10">
           <div *ngIf="reportDataList && reportDataList.projects && chartLabels.length > 0" class="margin-bottom-none">
             <table class="table table-striped small margin-bottom-none">
@@ -144,9 +144,15 @@
         </div>
       </div>
 
-      <div class="col-md-12">
-          <span><i><small>Generated on: {{getTodaysDate()}}</small></i></span>
+      <div class="col-md-12 small">
+        <div *ngIf="reportDataList && reportDataList.reportSettings" class="text-center margin-top-20 text-info">
+          Report link: <a class="text-info" href="{{reportDataList.reportSettings.reportUrl}}">{{reportDataList.reportSettings.reportUrl}}</a>
         </div>
+        <div class="text-center margin-top-5">
+          <span><i>Generated on: {{getTodaysDate()}}</i></span>
+        </div>
+      </div>
+      
     </div>
     
 

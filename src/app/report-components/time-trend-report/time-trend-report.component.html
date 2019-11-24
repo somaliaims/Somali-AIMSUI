@@ -225,9 +225,15 @@
 
       </div>
 
-      <div class="col-md-12">
-          <span><i><small>Generated on: {{getTodaysDate()}}</small></i></span>
+      <div class="col-md-12 small">
+        <div *ngIf="reportDataList && reportDataList.reportSettings" class="text-center margin-top-20 text-info">
+          Report link: <a class="text-info" href="{{reportDataList.reportSettings.reportUrl}}">{{reportDataList.reportSettings.reportUrl}}</a>
         </div>
+        <div class="text-center margin-top-5">
+          <span><i>Generated on: {{getTodaysDate()}}</i></span>
+        </div>
+      </div>
+      
     </div>
 
   </block-ui>
