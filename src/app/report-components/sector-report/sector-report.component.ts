@@ -544,9 +544,9 @@ export class SectorReportComponent implements OnInit {
         this.allSectorsList = data;
         this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
         this.sectorIds = this.sectorsList.map(s => s.id);
-        var subSectorsList = this.allSectorsList.filter(s => this.sectorIds.indexOf(s.sectorParentId) != -1);
+        var subSectorsList = this.allSectorsList.filter(s => this.sectorIds.indexOf(s.parentSectorId) != -1);
         this.subSectorIds = subSectorsList.map(s => s.id);
-        var subSubSectors = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.parentSectorId) != 0);
+        var subSubSectors = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.parentSectorId) != -1);
         this.subSubSectorIds = subSubSectors.map(s => s.id);
         
         if (this.loadReport) {
