@@ -161,10 +161,10 @@
                   Projects</button>
               </td>
               <td>
-                <button *ngIf="countAIMSProjects() == 1 && isProjectPermitted" [class.disable]='isSearchingProjects'
+                <button *ngIf="!isAIMSLoading && countAIMSProjects() == 1 && isProjectPermitted" [class.disable]='isSearchingProjects'
                   class="btn btn-success btn-lg float-right text-uppercase" (click)="editProject()">Edit
                   Project</button>
-                <button *ngIf="countAIMSProjects() == 1 && !isProjectPermitted" [class.disable]='isSearchingProjects'
+                <button *ngIf="!isAIMSLoading && countAIMSProjects() == 1 && !isProjectPermitted" [class.disable]='isSearchingProjects'
                   class="btn btn-warning btn-lg float-right text-uppercase" (click)="applyForMembership()">Join project</button>
               </td>
               <td>

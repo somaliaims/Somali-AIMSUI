@@ -518,10 +518,12 @@ export class NewProjectComponent implements OnInit {
 
       this.projectService.filterProjects(this.model.title).subscribe(
         data => {
-          this.isSearchingProjects = false;
           if (data && data.length) {
             this.filteredAIMSProjects = data
-            this.isSearchingProjects = false;
+            setTimeout(() => {
+              this.isSearchingProjects = false;
+            }, 1000);
+            
           } else {
             setTimeout(() => {
               this.isSearchingProjects = false;
