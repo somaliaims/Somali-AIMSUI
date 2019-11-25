@@ -19,7 +19,7 @@ export class AllProjectsReportComponent implements OnInit {
   requestNo: number = 0;
   isAnyFilterSet: boolean = false;
   errorMessage: string = null;
-  btnReportText: string = 'Request report';
+  btnReportText: string = 'Generate export';
   model: any = { startingYear: 0, endingYear: 0 };
 
   @BlockUI() blockUI: NgBlockUI;

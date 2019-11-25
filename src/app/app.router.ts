@@ -122,7 +122,7 @@ export const routes: Routes = [
   { path: 'project-entry', component: ProjectEntryComponent },
   { path: 'data-entry', component: DataEntryComponent },
   { path: 'sectors-report', component: SectorReportComponent },
-  { path: 'projects-report', component: AllProjectsReportComponent },
+  { path: 'data-export', component: AllProjectsReportComponent },
   { path: 'locations-report', component: LocationReportComponent },
   { path: 'time-trend-report', component: TimeTrendReportComponent },
   { path: 'budget-report', component: BudgetReportSummaryComponent },

@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active btn-info" data-toggle="tab">Projects report (Excel spreadsheet)</a>
+                        <a class="nav-link active btn-info" data-toggle="tab">Data export (Excel spreadsheet)</a>
                     </li>
                 </ul>
             </div>
@@ -44,11 +44,13 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-lg-12 col-sm-12 text-right margin-top-10">
-                                <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
-                                <button [class.disable]="isProcessing" type="submit" class="btn btn-info">
-                                    {{btnReportText}}
-                                </button>
+                            <div class="col-md-12 col-lg-12 col-sm-12  margin-top-10">
+                                <div class="float-right">
+                                        <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
+                                        <button [class.disable]="isProcessing" type="submit" class="btn btn-info">
+                                            {{btnReportText}}
+                                        </button>
+                                </div>
                             </div>
                         </form>
                     </div>
