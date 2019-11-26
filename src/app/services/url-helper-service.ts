@@ -720,6 +720,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationsCountUrl);
     }
 
+    getOrganizationHavingEnvelopeUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationsHavingEnvelopeUrl);
+    }
+
     getCurrentYearDisbursementsUrl() {
         return (this.BASE_URL + urlsList.urls.currentYearDisbursementsUrl);
     }

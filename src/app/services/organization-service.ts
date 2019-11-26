@@ -67,6 +67,12 @@ export class OrganizationService {
       catchError(this.storeService.handleError<any>('User Organizations')));
   }
 
+  getOrganizationsHavingEnvelope() {
+    var url = this.urlHelper.getOrganizationHavingEnvelopeUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Organization with Envelope')));
+  }
+
   filterOrganizations(criteria: string) {
     var url = this.urlHelper.organizationsFilterUrl(criteria);
     return this.httpClient.get(url, httpOptions).pipe(

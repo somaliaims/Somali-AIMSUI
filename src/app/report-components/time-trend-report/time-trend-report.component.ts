@@ -506,7 +506,7 @@ export class TimeTrendReportComponent implements OnInit {
   }
 
   getOrganizationsList() {
-    this.organizationService.getOrganizationsList().subscribe(
+    this.organizationService.getOrganizationsHavingEnvelope().subscribe(
       data => {
         this.organizationsList = data;
 

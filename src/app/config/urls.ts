@@ -19,6 +19,7 @@ export const urls = {
 	searchOrganizations: "Organization/",
 	getOrganization: "Organization/GetById/",
 	organizationsWithTypeUrl: "Organization/GetWithTypes",
+	organizationsHavingEnvelopeUrl: "Organization/GetOrganizationsHavingEnvelope",
 	userOrganizationsUrl: "Organization/GetUserOrganizations",
 	organizationUrl: "Organization",
 	mergeOrganization: "Organization/Merge",

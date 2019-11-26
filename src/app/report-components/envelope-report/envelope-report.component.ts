@@ -266,7 +266,7 @@ export class EnvelopeReportComponent implements OnInit {
   }
 
   getOrganizations() {
-    this.organizationService.getUserOrganizations().subscribe(
+    this.organizationService.getOrganizationsHavingEnvelope().subscribe(
       data => {
         if (data) {
           this.organizations = data;
