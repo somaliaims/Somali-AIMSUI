@@ -230,7 +230,7 @@ export class SectorReportComponent implements OnInit {
   doughnutChartData: any = [];
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, parentSectorId: 0, chartType: 1,
-    sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
+    sectorIds: [], locationId: 0, selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], selectedProjects: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS
@@ -449,6 +449,7 @@ export class SectorReportComponent implements OnInit {
     }
     var searchModel = {
       projectIds: projectIds,
+      locationId: this.model.locationId,
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
@@ -576,10 +577,9 @@ export class SectorReportComponent implements OnInit {
   getLocationsList() {
     this.locationService.getLocationsList().subscribe(
       data => {
-        this.locationsList = data;
-      },
-      error => {
-        console.log(error);
+        if (data) {
+          this.locationsList = data;
+        }
       }
     );
   }

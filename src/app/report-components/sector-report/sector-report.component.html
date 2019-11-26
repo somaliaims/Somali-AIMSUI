@@ -79,7 +79,18 @@
 
               <div class="row margin-top-10">
                 <div class="col-lg-6 col-md-6">
-                  <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
+                    <select class="form-control" title="Location"
+                    (change)="selectLocation();" id="selectedLocation" [(ngModel)]="model.locationId"
+                    name="selectedLocation" #selectedLocation="ngModel">
+                    <option value="0">--All location/s--</option>
+                    <option *ngFor="let location of locationsList" value="{{location.id}}">
+                      {{location.location}}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                    <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
                     (change)="selectCurrency();manageResetDisplay();" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
                     name="selectedCurrency" #selectedCurrency="ngModel">
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
@@ -93,11 +104,18 @@
                   <span *ngIf="manualExRate == 0 && !isDataLoading" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
+                  <div *ngIf="!defaultCurrency && !isDataLoading" class="row margin-top-10">
+                      <span class="text-danger">
+                        Default currency is not set and it may produce errors on reports.
+                        Please contact administrator.
+                      </span>
+                    </div>
                 </div>
+              </div>
 
-                <div [class.disable]="!defaultCurrency" class="col-md-6">
-                  <div class="float-right">
-                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
+              <div class="col-md-12">
+                <div class="float-right">
+                  <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
                       class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2 margin-left-2">Download
@@ -106,15 +124,7 @@
                       class="btn btn-warning margin-top-2 margin-left-2" (click)="printReport()">Print report</button>
                     <button *ngIf="isAnyFilterSet" type="button"
                       class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
-                  </div>
                 </div>
-              </div>
-
-              <div *ngIf="!defaultCurrency && !isDataLoading" class="row margin-top-10">
-                <span class="text-danger">
-                  Default currency is not set and it may produce errors on reports.
-                  Please contact administrator.
-                </span>
               </div>
 
             </form>
