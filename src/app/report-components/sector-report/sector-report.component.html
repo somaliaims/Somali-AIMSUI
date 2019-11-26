@@ -54,7 +54,7 @@
                 <div class="col-lg-3 col-md-3">
                   <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
                     title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel();onChangeParentSector();">
-                    <option value="0">--Sector Levels--</option>
+                    <option value="0">--Sector levels--</option>
                     <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
                     </option>
                   </select>
@@ -62,16 +62,13 @@
                 <div class="col-lg-3 col-md-3">
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
-                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
-                    (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeselectAll($event)" #selectedSectors="ngModel">
+                     #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-lg-6 col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
                     [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
-                    [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)"
-                    (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)"
-                    (onDeSelectAll)="onOrganizationDeSelectAll($event)"
+                    [settings]="organizationsSettings" 
                     name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>

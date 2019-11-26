@@ -8,14 +8,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a class="nav-link active btn-info" data-toggle="tab">Projects list</a>
           </li>
         </ul>
       </div>
-      <div class="col-md-6">
+      <!--<div class="col-md-6">
         <div class="input-group mb-3">
           <input type="search" class="form-control" onkeypress="return event.keyCode != 13;" 
           placeholder="Enter project name to search" name="title" (input)="filterProjects()" [(ngModel)]="model.title" #title="ngModel"  aria-describedby="basic-addon2">
@@ -24,26 +24,28 @@
               search</button>
           </div>
         </div>
-      </div>
+      </div>-->
     </div>
 
-    <div *ngIf="isSearchVisible" class="row">
+    <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
             <form class="form-signin" #searchForm="ngForm">
               <div class="row">
-                <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="model.title"
-                   name="title" #title="ngModel" aria-describedby="basic-addon2">
+                <div class="col-lg-6 col-md-6">
+                    <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projectTitles"
+                    [(ngModel)]="model.selectedProjects" (onSelect)="onProjectSelect($event)" (onSelectAll)="onProjectSelectAll($event)" 
+                    (onDeSelect)="onProjectDeselect($event)" (onDeSelectAll)="onProjectDeSelectAll($event)" [settings]="projectsSettings" name="selectedProjects"
+                    #selectedProjects="ngModel"></ng-multiselect-dropdown>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6">
                   <table>
                     <tr>
                       <td>
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear" name="startingYear"
                           #startingYear="ngModel" required>
-                          <option value="0">--Select starting year--</option>
+                          <option value="0">--Starting year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
                       </td>
@@ -51,7 +53,7 @@
                       <td>
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
                           #endingYear="ngModel" required>
-                          <option value="0">--Select ending year--</option>
+                          <option value="0">--Ending year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
                       </td>
@@ -60,17 +62,27 @@
                 </div>
               </div>
               <div class="row margin-top-10">
-                <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select Sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
-                    [settings]="sectorsSettings" name="selectedSectors" (onSelect)="onSectorSelect($event)"
-                    (onDeSelect)="onSectorDeSelect($event)" (onSelectAll)="onSectorSelectAll($event)" #selectedSectors="ngModel">
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
+                    title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel();">
+                    <option value="0">--Sector levels--</option>
+                    <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
+                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                    (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeselectAll($event)"
+                    #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList"
-                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings" (onSelect)="onOrganizationSelect($event)"
-                    (onDeSelect)="onOrganizationDeSelect($event)" (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations"
-                    #selectedOrganizations="ngModel">
+                    [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
+                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
+                    (onSelectAll)="onOrganizationSelectAll($event)" name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
               </div>
@@ -82,12 +94,17 @@
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
-                  <span class="float-right">
-                    <button class="btn btn-danger" (click)="hideSearchOptions()">Close search</button>&nbsp;
-                    <button class="btn btn-info" (click)="advancedSearchProjects()">Search projects</button>
-                  </span>
+                  <input type="text" class="form-control" title="Enter some keywords from description to search" placeholder="Keywords from description"
+                  maxlength="100" name="description" [(ngModel)]="model.description" #description="ngModel" />
                 </div>
               </div>
+
+              <div class="col-lg-12 col-md-12 margin-top-10">
+                <span class="float-right">
+                  <button class="btn btn-info" (click)="advancedSearchProjects()">Search projects</button>
+                </span>
+              </div>
+
             </form>
           </div>
         </div>

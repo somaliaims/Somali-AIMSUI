@@ -37,29 +37,47 @@ export class ProjectsComponent implements OnInit {
   pagingSize: number = Settings.rowsPerPage;
   requestNo: number = 0;
   permissions: any = {};
-  sectorsSettings: any = [];
+  projectsSettings: any = {};
+  sectorsSettings: any = {};
   selectedSectors: any = [];
   selectedOrganizations: any = [];
   selectedLocations: any = [];
   organizationsSettings: any = [];
   locationsSettings: any = [];
+  projectTitles: any = [];
   yearsList: any = [];
-  sectorsList: any = [];
   organizationsList: any = [];
   locationsList: any = [];
   userProjectIds: any = [];
   deleteProjectIds: any = [];
+  allSectorsList: any = [];
+  sectorsList: any = [];
+  sectorIds: any = [];
+  subSectorIds: any = [];
+  subSubSectorIds: any = [];
   searchField: FormControl;
 
+  sectorLevels: any = [
+    { "id": 1, "level": "Parent sectors"},
+    { "id": 2, "level": "Sub sectors"},
+    { "id": 3, "level": "Sub sub sectors"},
+  ];
+
+  sectorLevelCodes: any = {
+    SECTORS: 1,
+    SUB_SECTORS: 2,
+    SUB_SUB_SECTORS: 3
+  }
+
   model: any = {
-    title: '', organizationIds: [], startingYear: 0, endingYear: 0,
-    sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
-    selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: []
+    title: null, description: null, organizationIds: [], startingYear: 0, endingYear: 0,
+    sectorIds: [], locationIds: [], parentSectorId: 0, selectedProjects: [], selectedSectors: [], 
+    selectedOrganizations: [], selectedLocations: [], sectorsList: [], locationsList: [], 
+    organizationsList: [], sectorLevel: this.sectorLevelCodes.SECTORS
   }
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
-
   constructor(private projectService: ProjectService, private router: Router,
     private storeService: StoreService, private securityService: SecurityHelperService,
     private sectorService: SectorService, private organizationService: OrganizationService,
@@ -92,6 +110,7 @@ export class ProjectsComponent implements OnInit {
     }, Settings.displayMessageTime);
 
     this.permissions = this.securityService.getUserPermissions();
+    this.getProjectTitles();
     this.getSectorsList();
     this.getOrganizationsList();
     this.getLocationsList();
@@ -126,6 +145,49 @@ export class ProjectsComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+
+    this.projectsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'title',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+  }
+
+  manageSectorLevel() {
+    if (this.model.sectorLevel) {
+      var level = parseInt(this.model.sectorLevel);
+      switch(level) {
+        case this.sectorLevelCodes.SECTORS:
+            this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          break;
+        
+        case this.sectorLevelCodes.SUB_SECTORS:
+            this.sectorsList = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.id) != -1);
+          break;
+
+        case this.sectorLevelCodes.SUB_SUB_SECTORS:
+            this.sectorsList = this.allSectorsList.filter(s => this.subSubSectorIds.indexOf(s.id) != -1);
+          break;
+
+        default:
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          break;
+      }
+    }
+  }
+
+  getProjectTitles() {
+    this.projectService.getProjectTitles().subscribe(
+      data => {
+        if (data) {
+          this.projectTitles = data;
+        }
+      }
+    );
   }
 
   filterProjects() {
@@ -174,12 +236,17 @@ export class ProjectsComponent implements OnInit {
   }
 
   getSectorsList() {
-    this.sectorService.getSectorsList().subscribe(
+    this.sectorService.getDefaultSectors().subscribe(
       data => {
         if (data) {
-          this.sectorsList = data;
+          this.allSectorsList = data;
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          this.sectorIds = this.sectorsList.map(s => s.id);
+          var subSectorsList = this.allSectorsList.filter(s => this.sectorIds.indexOf(s.parentSectorId) != -1);
+          this.subSectorIds = subSectorsList.map(s => s.id);
+          var subSubSectors = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.parentSectorId) != -1);
+          this.subSubSectorIds = subSubSectors.map(s => s.id);
         }
-        
       }
     );
   }
@@ -206,12 +273,13 @@ export class ProjectsComponent implements OnInit {
 
   advancedSearchProjects() {
     var searchModel = {
-      title: this.model.title,
+      projectIds: this.model.projectIds,
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
       organizationIds: this.selectedOrganizations,
       sectorIds: this.selectedSectors,
-      locationIds: this.selectedLocations
+      locationIds: this.selectedLocations,
+      description: this.model.description
     };
 
     this.criteria = null;
@@ -222,10 +290,6 @@ export class ProjectsComponent implements OnInit {
           this.projectsList = data;  
           this.filteredProjectsList = data;
         }
-        this.blockUI.stop();
-      },
-      error => {
-        console.log(error);
         this.blockUI.stop();
       }
     )

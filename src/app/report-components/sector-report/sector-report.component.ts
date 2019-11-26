@@ -542,32 +542,34 @@ export class SectorReportComponent implements OnInit {
   getSectorsList() {
     this.sectorService.getDefaultSectors().subscribe(
       data => {
-        this.allSectorsList = data;
-        this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
-        this.sectorIds = this.sectorsList.map(s => s.id);
-        var subSectorsList = this.allSectorsList.filter(s => this.sectorIds.indexOf(s.parentSectorId) != -1);
-        this.subSectorIds = subSectorsList.map(s => s.id);
-        var subSubSectors = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.parentSectorId) != -1);
-        this.subSubSectorIds = subSubSectors.map(s => s.id);
-        
-        if (this.loadReport) {
-          if (this.paramSectorIds.length > 0) {
-            var sectorId = this.paramSectorIds[0];
-            if (this.sectorIds.indexOf(sectorId) != -1) {
-              this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
-            } else if (this.subSubSectorIds.indexOf(sectorId) != -1) {
-              this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
-            } else if (this.subSubSectorIds.indexOf(sectorId) != -1) {
-              this.model.sectorLevel = this.sectorLevelCodes.SUB_SUB_SECTORS;
-            }
+        if (data) {
+          this.allSectorsList = data;
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          this.sectorIds = this.sectorsList.map(s => s.id);
+          var subSectorsList = this.allSectorsList.filter(s => this.sectorIds.indexOf(s.parentSectorId) != -1);
+          this.subSectorIds = subSectorsList.map(s => s.id);
+          var subSubSectors = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.parentSectorId) != -1);
+          this.subSubSectorIds = subSubSectors.map(s => s.id);
 
-            this.manageSectorLevel();
-            this.paramSectorIds.forEach(function (id) {
-              var sector = this.sectorsList.filter(s => s.id == id);
-              if (sector.length > 0) {
-                this.model.selectedSectors.push(sector[0]);
+          if (this.loadReport) {
+            if (this.paramSectorIds.length > 0) {
+              var sectorId = this.paramSectorIds[0];
+              if (this.sectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
+              } else if (this.subSubSectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
+              } else if (this.subSubSectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SUB_SUB_SECTORS;
               }
-            }.bind(this));
+
+              this.manageSectorLevel();
+              this.paramSectorIds.forEach(function (id) {
+                var sector = this.sectorsList.filter(s => s.id == id);
+                if (sector.length > 0) {
+                  this.model.selectedSectors.push(sector[0]);
+                }
+              }.bind(this));
+            }
           }
         }
       }
