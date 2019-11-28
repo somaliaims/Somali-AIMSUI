@@ -183,7 +183,7 @@
                       {{formatNumber(project.plannedDisbursements)}}
                     </td>
                   </tr>
-                  <tr *ngIf="yearProject.projects.length == 0">
+                  <tr class="child" [hidden]="!project.isDisplay" *ngIf="yearProject.projects.length == 0">
                     <td width="100%" colspan="6">
                       <span class="text-info"><i>No projects found</i></span>
                     </td>
