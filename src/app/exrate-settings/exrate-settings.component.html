@@ -44,16 +44,22 @@
 
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
-            <form class="form-inline" (ngSubmit)="saveRate(rateForm)" #rateForm="ngForm">
-              <div class="form-group mb-2">
-                <input type="text" placeholder="Exchange rate" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="exchangeRate"
-                  [(ngModel)]="model.exchangeRate" name="exchangeRate" #exchangeRate="ngModel" maxlength="6">
+              <div *ngIf="!defaultCurrency" class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Error!</strong> Please set the default and national currencies first before
+                you save the exchange rates.
               </div>
+            <form class="form-inline" (ngSubmit)="saveRate(rateForm)" #rateForm="ngForm">
               <div class="form-group mx-sm-3 mb-2">
-                <select name="currency" id="currency" class="form-control" [(ngModel)]="model.currency" #currency="ngModel">
+                <select name="currency" id="currency" title="Currency" class="form-control" [(ngModel)]="model.currency" 
+                #currency="ngModel" (change)="getExRateForSelectedCurrency()">
                   <option value="null">--Currency--</option>
                   <option *ngFor="let currency of currenciesList" value={{currency.currency}}>{{currency.currencyName}}</option>
                 </select>
+              </div>
+              <div class="form-group mb-2">
+                <input type="text" placeholder="Exchange rate" pattern="^\d*(\.\d{0,2})?$" class="form-control" id="exchangeRate"
+                  [(ngModel)]="model.exchangeRate" title="Manually entered/suggested exchange rate by system" name="exchangeRate" #exchangeRate="ngModel" maxlength="6">
               </div>
               <div class="form-group mx-sm-3 mb-2">
                 <select name="newYear" id="newYear" class="form-control" [(ngModel)]="model.newYear" #newYear="ngModel">
@@ -61,12 +67,11 @@
                   <option *ngFor="let year of financialYearsList" value={{year.financialYear}}>{{year.financialYear}}</option>
                 </select>
               </div>
-              <button type="submit" class="btn btn-warning mb-2 text-uppercase">Save new rate</button>
+              <button [class.disable]="!defaultCurrency" type="submit" class="btn btn-info mb-2 text-uppercase">Save new rate</button>
               <span class="float-right margin-left-10">
                 {{manualExchangeRateSource}} for 1 {{defaultCurrency}} to <span class="text-warning" *ngIf="!model.currency">no currency selected</span> <span class="text-warning" *ngIf="model.currency">{{model.currency}}</span>
               </span>
             </form>
-
             
             <table *ngIf="filteredManualExchangeRates.length > 0" class="table table-bordered">
               <tr>

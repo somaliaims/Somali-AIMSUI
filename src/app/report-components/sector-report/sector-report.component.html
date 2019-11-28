@@ -111,7 +111,7 @@
               </div>
 
               <div class="col-md-12">
-                <div class="float-right">
+                <div [class.disable]="!defaultCurrency" class="float-right">
                   <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
                       class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>

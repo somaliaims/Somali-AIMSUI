@@ -44,7 +44,7 @@ export class ExrateSettingsComponent implements OnInit {
 
   criteria: string = null;
   pagingSize: number = Settings.rowsPerPage;
-  model: any = { exchangeRate: null, searchYear: null, newYear: null, exRateLabel: null};
+  model: any = { exchangeRate: null, searchYear: null, currency: null, newYear: null, exRateLabel: null};
   currentTab: string = 'exrates';
   manualExRateLabel: string = 'Central Bank exchange rate';
 
@@ -137,7 +137,16 @@ export class ExrateSettingsComponent implements OnInit {
         }
         this.isLoading = false;
       }
-    )
+    );
+  }
+
+  getExRateForSelectedCurrency() {
+    if (this.model.currency) {
+      var findExRate = this.exchangeRates.filter(c => c.currency == this.model.currency);
+      if (findExRate.length > 0) {
+        this.model.exchangeRate = findExRate[0].rate;
+      }
+    }
   }
 
   getCurrenciesList() {
@@ -317,7 +326,7 @@ export class ExrateSettingsComponent implements OnInit {
           }
         }
       }
-    )
+    );
   }
 
   formatDate(dated: string) {
