@@ -55,6 +55,7 @@ export class SectorReportComponent implements OnInit {
   pageHeight: number = Settings.pdfPrintPageHeight;
   btnReportText: string = 'View report';
   isAnyFilterSet: boolean = false;
+  isShowStackedChart: boolean = false;
 
   yearsList: any = [];
   allSectorsList: any = [];
@@ -73,27 +74,21 @@ export class SectorReportComponent implements OnInit {
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
     { id: 3, type: 'doughnut', title: 'Doughnut chart' },
-    { id: 4, type: 'line', title: 'Line chart' },
-    { id: 5, type: 'radar', title: 'Radar' },
-    { id: 6, type: 'polarArea', title: 'Polar area' }
+    { id: 4, type: 'stacked-bar', title: 'Stacked bar' },
   ];
 
   chartTypes: any = {
     BAR: 'bar',
     PIE: 'pie',
     DOUGHNUT: 'doughnut',
-    LINE: 'line',
-    RADAR: 'radar',
-    POLAR: 'polarArea'
+    STACKEDBAR: 'stacked-bar'
   };
 
   chartTypeCodes: any = {
     BAR: 1,
     PIE: 2,
     DOUGHNUT: 3,
-    LINE: 4,
-    RADAR: 5,
-    POLAR: 6
+    STACKEDBAR: 4,
   };
 
   dataOptions: any = [
@@ -179,6 +174,35 @@ export class SectorReportComponent implements OnInit {
     }
   };
 
+  stackedChartOptions: any = {
+    responsive: true,
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return parseInt(tooltipValue).toLocaleString();
+        }
+      }
+    },
+    scales: {
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value.toLocaleString("en-US");
+          }
+        }
+      }],
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  };
+
   pieChartOptions: any = {
     responsive: true,
     legend: {
@@ -224,9 +248,12 @@ export class SectorReportComponent implements OnInit {
   ];
   chartLables: any = [];
   doughnutChartLabels: any = [];
+  stackedChartLabels: any = [];
   barChartType: string = 'bar';
+  stackedChartType: string = 'bar';
   chartLegend: boolean = true;
   chartData: any = [];
+  stackedChartData: any = [];
   doughnutChartData: any = [];
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, parentSectorId: 0, chartType: 1,
@@ -489,6 +516,31 @@ export class SectorReportComponent implements OnInit {
     }, 1000);
   }
 
+  setupStackedChartData() {
+    this.stackedChartData = [];
+    var sectorProjects = this.reportDataList.sectorProjectsList;
+    this.stackedChartLabels = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
+    var disbursements = sectorProjects.map(s => s.actualDisbursements);
+    var expectedDisbursements = sectorProjects.map(s => s.plannedDisbursements);
+
+    this.stackedChartData.push({
+      data: disbursements,
+      label: 'Actual disbursements',
+      stack: 'Stack 0'
+    });
+
+    this.stackedChartData.push({
+      data: expectedDisbursements,
+      label: 'Planned disbursements',
+      stack: 'Stack 0'
+    });
+
+    setTimeout(() => {
+      this.isShowStackedChart = true;
+    }, 1000);
+    
+  }
+
   resetSearchResults() {
     this.chartData = [];
     this.chartLables = [];
@@ -729,7 +781,11 @@ export class SectorReportComponent implements OnInit {
     if (chartType.length > 0) {
       this.model.chartTypeName = chartType[0].type;
     }
-    if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
+
+    if (this.model.chartType == this.chartTypeCodes.STACKEDBAR) {
+      this.isShowStackedChart = false;
+      this.setupStackedChartData();
+    } else if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
