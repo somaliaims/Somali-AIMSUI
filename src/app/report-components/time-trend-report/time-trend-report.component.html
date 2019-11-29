@@ -120,6 +120,28 @@
       </div>
     </div>
 
+    <div *ngIf="!isLoading" class="row margin-top-10">
+      <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="col-md-12">
+              <form class="form-inline float-right">
+                    <label>Chart type to display:&nbsp;</label>
+                    <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
+                      #chartType="ngModel" (change)="manageDataToDisplay()" required>
+                      <option *ngFor="let chart of chartTypesList" value="{{chart.type}}">
+                        {{chart.title}}
+                      </option>
+                    </select>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div *ngIf="reportDataList && reportDataList.yearlyProjectsList" id="rpt-timetrend-pdf-view" class="col-md-12">
         <div class="col-md-12 text-center margin-top-10">
           <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
@@ -128,8 +150,12 @@
         
           <div *ngIf="reportDataList && reportDataList.reportSettings && chartData.length > 0" class="col-md-12 margin-top-10">
             <div class="offset-2 col-md-8">
-              <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
-                [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+              <canvas *ngIf="chartType == chartTypes.BAR" id="chart" baseChart [datasets]="chartData" [labels]="chartLabels"
+                [options]="chartOptions" [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+          
+              <canvas *ngIf="chartType == chartTypes.LINE" id="chart" baseChart [datasets]="chartData" [labels]="chartLabels"
+                [options]="lineChartOptions" [legend]="chartLegend" [colors]="lineChartColors" [chartType]="chartType" (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
           </div>

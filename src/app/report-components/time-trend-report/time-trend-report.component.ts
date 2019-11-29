@@ -12,6 +12,7 @@ import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { Settings } from 'src/app/config/settings';
+import { Color } from 'ng2-charts';
 
 @Component({
   selector: 'time-trend-report',
@@ -65,6 +66,21 @@ export class TimeTrendReportComponent implements OnInit {
   //chartTypeName: string = 'bar';
   chartType: string = 'bar';
   btnReportText: string = 'View report';
+
+  chartTypesList: any = [
+    { id: 1, type: 'bar', title: 'Stacked bar' },
+    { id: 2, type: 'line', title: 'Stacked line' },
+  ];
+
+  chartTypes: any = {
+    BAR: 'bar',
+    LINE: 'line',
+  };
+
+  chartTypeCodes: any = {
+    BAR: 1,
+    LINE: 2,
+  };
 
   chartOptions: any = {
     responsive: true,
@@ -162,6 +178,24 @@ export class TimeTrendReportComponent implements OnInit {
       }
     }
   }
+
+  public lineChartOptions = {
+    responsive: true,
+    scales: {
+      yAxes: [
+        {
+          stacked: true,
+        }
+      ]
+    }
+  };
+
+  public lineChartColors: Color[] = [
+    {
+      borderColor: 'black',
+      backgroundColor: 'rgba(255,0,0,0.3)',
+    },
+  ];
   
   chartColors: any = [
     {
@@ -172,12 +206,12 @@ export class TimeTrendReportComponent implements OnInit {
   ];
   chartLabels: any = [];
   doughnutChartLabels: any = [];
-  barChartType: string = 'bar';
+  barChartType: string = this.chartTypes.BAR;
   chartLegend: boolean = true;
   chartData: any = [];
   doughnutChartData: any = [];
   model: any = {
-    title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 1,
+    title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: this.chartTypes.BAR,
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
@@ -368,7 +402,10 @@ export class TimeTrendReportComponent implements OnInit {
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);
-    
+  }
+
+  manageDataToDisplay() {
+    this.chartType = this.model.chartType;
   }
 
   setupChartData() {

@@ -119,12 +119,8 @@
     <div *ngIf="!isLoading" class="row margin-top-10">
       <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12">
         <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-6">
-
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-6">
-            <div class="row">
-              <form class="form-inline">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+              <form class="form-inline float-right">
                 <label>Chart type to display:&nbsp;</label>
                 <select class="form-control" id="chartType" [(ngModel)]="model.chartType" name="chartType"
                   #chartType="ngModel" (change)="manageDataToDisplay()" required>
@@ -141,7 +137,6 @@
                   </option>
                 </select>
               </form>
-            </div>
           </div>
         </div>
       </div>
