@@ -56,33 +56,28 @@ export class LocationReportComponent implements OnInit {
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
+  isShowStackedChart: boolean = false;
   btnReportText: string = 'View report';
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
     { id: 3, type: 'doughnut', title: 'Doughnut chart' },
-    { id: 4, type: 'line', title: 'Line chart' },
-    { id: 5, type: 'radar', title: 'Radar' },
-    { id: 6, type: 'polarArea', title: 'Polar area' }
+    { id: 4, type: 'stacked-bar', title: 'Stacked bar' },
   ];
 
   chartTypes: any = {
     BAR: 'bar',
     PIE: 'pie',
     DOUGHNUT: 'doughnut',
-    LINE: 'line',
-    RADAR: 'radar',
-    POLAR: 'polarArea'
+    STACKEDBAR: 'stacked-bar'
   };
 
   chartTypeCodes: any = {
     BAR: 1,
     PIE: 2,
     DOUGHNUT: 3,
-    LINE: 4,
-    RADAR: 5,
-    POLAR: 6
+    STACKEDBAR: 4,
   };
 
   dataOptions: any = [
@@ -121,6 +116,35 @@ export class LocationReportComponent implements OnInit {
 
   reportDataList: any = [];
   dropdownSettings: any = {};
+  stackedChartOptions: any = {
+    responsive: true,
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return parseInt(tooltipValue).toLocaleString();
+        }
+      }
+    },
+    scales: {
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value.toLocaleString("en-US");
+          }
+        }
+      }],
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  };
+
   barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -195,10 +219,12 @@ export class LocationReportComponent implements OnInit {
     }
   ];
   chartLables: any = [];
+  stackedChartLabels: any = [];
   doughnutChartLabels: any = [];
   barChartType: string = 'bar';
   chartLegend: boolean = true;
   chartData: any = [];
+  stackedChartData: any = [];
   doughnutChartData: any = [];
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
@@ -820,6 +846,31 @@ export class LocationReportComponent implements OnInit {
     }
   }
 
+  setupStackedChartData() {
+    this.stackedChartData = [];
+    var locationProjects = this.reportDataList.locationProjectsList;
+    this.stackedChartLabels = this.reportDataList.locationProjectsList.map(p => p.locationName);
+    var disbursements = locationProjects.map(s => s.actualDisbursements);
+    var expectedDisbursements = locationProjects.map(s => s.plannedDisbursements);
+
+    this.stackedChartData.push({
+      data: disbursements,
+      label: 'Actual disbursements',
+      stack: 'Stack 0'
+    });
+
+    this.stackedChartData.push({
+      data: expectedDisbursements,
+      label: 'Planned disbursements',
+      stack: 'Stack 0'
+    });
+
+    setTimeout(() => {
+      this.isShowStackedChart = true;
+    }, 1000);
+    
+  }
+
   setExcelFile() {
     if (this.excelFile) {
       this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
@@ -840,7 +891,10 @@ export class LocationReportComponent implements OnInit {
       this.model.chartTypeName = chartType[0].type;
     }
     
-    if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
+    if (this.model.chartType == this.chartTypeCodes.STACKEDBAR) {
+      this.isShowStackedChart = false;
+      this.setupStackedChartData();
+    } else if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
