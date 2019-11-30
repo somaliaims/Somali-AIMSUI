@@ -77,8 +77,7 @@ export class EnvelopeReportComponent implements OnInit {
     },
   ];
 
-  barChartOptions: any = {
-    scaleShowVerticalLines: false,
+  stackedChartOptions: any = {
     responsive: true,
     tooltips: {
       callbacks: {
@@ -90,6 +89,7 @@ export class EnvelopeReportComponent implements OnInit {
     },
     scales: {
       yAxes: [{
+        stacked: true,
         ticks: {
           beginAtZero: true,
           callback: function (value, index, values) {
@@ -98,50 +98,13 @@ export class EnvelopeReportComponent implements OnInit {
         }
       }],
       xAxes: [{
-        beginAtZero: true,
+        stacked: true,
         ticks: {
-          autoSkip: false
+          beginAtZero: true
         }
-      }],
-    },
-    plugins: {
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-      }
+      }]
     }
   };
-
-  pieChartOptions: any = {
-    responsive: true,
-    legend: {
-      position: 'top',
-    },
-    tooltips: {
-      callbacks: {
-        label: function (tooltipItem, data) {
-          var dataLabel = data.labels[tooltipItem.index];
-          var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
-          dataLabel += value;
-          return dataLabel;
-        }
-      }
-    }
-  }
-
-  radarChartOptions: any = {
-    responsive: true,
-    tooltips: {
-      callbacks: {
-        label: function (tooltipItem, data) {
-          var dataLabel = data.labels[tooltipItem.index];
-          var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
-          dataLabel += value;
-          return dataLabel;
-        }
-      }
-    }
-  }
 
   chartColors: any = [
     {
@@ -443,29 +406,9 @@ export class EnvelopeReportComponent implements OnInit {
 
     this.envelopeYearsList.forEach((year) => {
       var humanitarianAmount: number = 0;
-      var developmentAmount: number = 0;
-
-      this.envelopeList.forEach((e) => {
-        var hBreakups = e.envelopeBreakupsByType.filter(b => b.envelopeType.toLowerCase() == this.envelopeTypeCodes.HUMANITARIAN.toLowerCase());
-        var dBreakups = e.envelopeBreakupsByType.filter(b => b.envelopeType.toLowerCase() == this.envelopeTypeCodes.DEVELOPMENT.toLowerCase());
-
-        hBreakups.forEach((b) => {
-          b.yearlyBreakup.forEach((y) => {
-            if (y.year == year) {
-              humanitarianAmount += y.amount;
-            }
-          });
-        });
-
-        dBreakups.forEach((b) => {
-          b.yearlyBreakup.forEach((y) => {
-            if (y.year == year) {
-              developmentAmount += y.amount;
-            }
-          });
-        });
-      });
-
+      var developmentAmount: number = 0; 
+      humanitarianAmount = this.calculateTotalForEnvelopeType(year, this.envelopeTypeCodes.HUMANITARIAN);
+      developmentAmount = this.calculateTotalForEnvelopeType(year, this.envelopeTypeCodes.DEVELOPMENT);
       this.humanitarianSummary.push(humanitarianAmount);
       this.developmentSummary.push(developmentAmount);
     });
@@ -485,26 +428,6 @@ export class EnvelopeReportComponent implements OnInit {
   }
 
   manageChartType() {
-    /*this.chartData = [];
-    var yearlyProjects = this.reportDataList.yearlyProjectsList;
-    this.chartLabels = yearlyProjects.map(y => y.year);
-    var actualDisbursements = yearlyProjects.map(y => y.totalActualDisbursements);
-    var plannedDisbursements = yearlyProjects.map(y => y.totalPlannedDisbursements);
-
-    this.chartData.push({
-      data: actualDisbursements,
-      label: 'Actual disbursements',
-      stack: 'Stack 0'
-    });
-
-    this.chartData.push({
-      data: plannedDisbursements,
-      label: 'Planned disbursements',
-      stack: 'Stack 0'
-    });*/
-  }
-
-  manageChartDisplay() {
     this.chartType = this.model.chartType;
   }
 
@@ -528,6 +451,20 @@ export class EnvelopeReportComponent implements OnInit {
     var envelope = this.envelopeList.filter(e => e.funderId == funderId);
     envelope.forEach((e) => {
       e.envelopeBreakupsByType.forEach((b) => {
+        var yearlyBreakup = b.yearlyBreakup.filter(y => y.year == year);
+        if (yearlyBreakup.length > 0) {
+          totalAmount += parseFloat(yearlyBreakup[0].amount);
+        }
+      });
+    });
+    return totalAmount;
+  }
+
+  calculateTotalForEnvelopeType(year: number, envelopeType: string) {
+    var totalAmount = 0;
+    this.envelopeList.forEach((e) => {
+      var envelopeBreakup = e.envelopeBreakupsByType.filter(b => b.envelopeType.toLowerCase() == envelopeType.toLowerCase());
+      envelopeBreakup.forEach((b) => {
         var yearlyBreakup = b.yearlyBreakup.filter(y => y.year == year);
         if (yearlyBreakup.length > 0) {
           totalAmount += parseFloat(yearlyBreakup[0].amount);
