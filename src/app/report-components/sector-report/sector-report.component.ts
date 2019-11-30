@@ -768,6 +768,49 @@ export class SectorReportComponent implements OnInit {
     this.manageResetDisplay();
   }
 
+  /*
+  manageDataToDisplay() {
+    this.chartData = [];
+    var funderIds = this.envelopeList.map(e => e.funderId);
+    var fundersChartData: any = [];
+    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    if (chartType.length > 0) {
+      this.model.chartTypeName = chartType[0].type;
+    }
+
+    funderIds.forEach((f) => {
+      var envelope = this.envelopeList.filter(e => e.funderId == f);
+      var yearlySummary: any = [];
+      var funderName: string = null;
+
+      if (envelope.length > 0) {
+        funderName = envelope[0].funder;
+      }
+
+      this.envelopeYearsList.forEach((year) => {
+        var totalAmount: number = 0;
+        envelope.forEach((e) => {
+          e.envelopeBreakupsByType.forEach((b) => {
+            var yearlyBreakup = b.yearlyBreakup.filter(y => y.year == year);
+            if (yearlyBreakup.length > 0) {
+              totalAmount += parseFloat(yearlyBreakup[0].amount);
+            }
+          });
+        });
+        yearlySummary.push(totalAmount);
+      });
+
+      fundersChartData.push({
+        data: yearlySummary,
+        label: funderName 
+      });
+    });
+
+    this.chartData = fundersChartData;
+    this.isShowChart = true;
+  }
+  */
+
   manageDataToDisplay() {
     this.chartData = [];
     var selectedDataOption = 1;

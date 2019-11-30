@@ -8,6 +8,7 @@ import { StoreService } from 'src/app/services/store-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/config/settings';
+import { Color } from 'ng2-charts';
 
 @Component({
   selector: 'app-envelope-report',
@@ -30,6 +31,9 @@ export class EnvelopeReportComponent implements OnInit {
   selectedOrganizations: any = [];
   paramFunders: any = [];
   paramEnvelopeTypes: any = [];
+  humanitarianSummary: any = [];
+  developmentSummary: any = [];
+  
   currentYear: number = 0;
   reportSettings: any = {};
   envelopeTypeSettings: any = {};
@@ -54,6 +58,24 @@ export class EnvelopeReportComponent implements OnInit {
   errorMessage: string = null;
   chartTypeName: string = 'bar';
   btnReportText: string = 'View report';
+
+  public lineChartOptions = {
+    responsive: true,
+    scales: {
+      yAxes: [
+        {
+          stacked: true,
+        }
+      ]
+    }
+  };
+
+  public lineChartColors: Color[] = [
+    {
+      borderColor: 'black',
+      backgroundColor: 'rgba(255,0,0,0.3)',
+    },
+  ];
 
   barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -97,7 +119,7 @@ export class EnvelopeReportComponent implements OnInit {
     },
     tooltips: {
       callbacks: {
-        label: function(tooltipItem, data) {
+        label: function (tooltipItem, data) {
           var dataLabel = data.labels[tooltipItem.index];
           var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
           dataLabel += value;
@@ -111,7 +133,7 @@ export class EnvelopeReportComponent implements OnInit {
     responsive: true,
     tooltips: {
       callbacks: {
-        label: function(tooltipItem, data) {
+        label: function (tooltipItem, data) {
           var dataLabel = data.labels[tooltipItem.index];
           var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
           dataLabel += value;
@@ -128,31 +150,47 @@ export class EnvelopeReportComponent implements OnInit {
       ]
     }
   ];
-  chartLables: any = [];
+
+  chartOptions: any = [
+    { id: 1, type: 'bar', title: 'Bar chart' },
+    { id: 2, type: 'line', title: 'Line chart' },
+  ];
+
+  chartTypesList: any = [
+    { id: 1, type: 'bar', title: 'Stacked bar' },
+    { id: 2, type: 'line', title: 'Stacked line' },
+  ];
+
+  envelopeTypeCodes: any = {
+    HUMANITARIAN: 'Humanitarian',
+    DEVELOPMENT: 'Development'
+  };
+
+  chartTypes: any = {
+    BAR: 'bar',
+    LINE: 'line',
+  };
+
+  chartTypeCodes: any = {
+    BAR: 1,
+    LINE: 2,
+  };
+
+  chartLabels: any = [];
   doughnutChartLabels: any = [];
   barChartType: string = 'bar';
   chartLegend: boolean = true;
   chartData: any = [];
   doughnutChartData: any = [];
-  model: any = { funderTypeId: 0, funderIds: [], startingYear: 0, endingYear: 0, envelopeTypes: [],
-  envelopeTypeIds: [], chartType: 1, chartTypeName: 'bar' };
-
-  chartOptions: any = [
-    { id: 1, type: 'bar', title: 'Bar chart' },
-    { id: 2, type: 'line', title: 'Line chart' },
-    { id: 3, type: 'radar', title: 'Radar' },
-  ];
-
-  chartTypes: any = {
-    BAR: 'bar',
-    LINE: 'line',
-    RADAR: 'radar',
+  model: any = {
+    funderTypeId: 0, funderIds: [], startingYear: 0, endingYear: 0, envelopeTypes: [],
+    envelopeTypeIds: [], chartType: this.chartTypes.BAR, chartTypeName: this.chartTypes.BAR
   };
+
   @BlockUI() blockUI: NgBlockUI;
-  
-  constructor(private organizationService: OrganizationService, 
+  constructor(private organizationService: OrganizationService,
     private financialYearService: FinancialYearService,
-    private envelopeTypeService: EnvelopeTypeService, 
+    private envelopeTypeService: EnvelopeTypeService,
     private reportService: ReportService,
     private currencyService: CurrencyService,
     private storeService: StoreService,
@@ -199,7 +237,7 @@ export class EnvelopeReportComponent implements OnInit {
           this.paramFunders = (params.funders) ? params.funders.split(',') : [];
           this.paramEnvelopeTypes = (params.envelopeTypes) ? params.envelopeTypes.split(',') : [];
           this.loadReport = true;
-        } 
+        }
       });
     } else {
       this.isLoading = false;
@@ -234,7 +272,7 @@ export class EnvelopeReportComponent implements OnInit {
           this.envelopeYearsList = data.envelopeYears;
           this.cellCount = (this.envelopeYearsList.length + 2);
           this.cellPercent = (80 / this.cellCount);
-          this.chartLables = this.envelopeYearsList;
+          this.chartLabels = this.envelopeYearsList;
           this.manageDataToDisplay();
         }
         setTimeout(() => {
@@ -311,7 +349,7 @@ export class EnvelopeReportComponent implements OnInit {
         if (data) {
           this.currentYear = this.storeService.getCurrentYear();
           var yearsList = [];
-          for(var y = (this.currentYear - 1); y <= (this.currentYear + 1); y++) {
+          for (var y = (this.currentYear - 1); y <= (this.currentYear + 1); y++) {
             yearsList.push(y);
           }
           if (data.length > 0) {
@@ -398,48 +436,82 @@ export class EnvelopeReportComponent implements OnInit {
 
   manageDataToDisplay() {
     this.chartData = [];
-    var funderIds = this.envelopeList.map(e => e.funderId);
-    var fundersChartData: any = [];
-    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    var chartType = this.chartTypes.BAR;
     if (chartType.length > 0) {
       this.model.chartTypeName = chartType[0].type;
     }
 
-    funderIds.forEach((f) => {
-      var envelope = this.envelopeList.filter(e => e.funderId == f);
-      var yearlySummary: any = [];
-      var funderName: string = null;
+    this.envelopeYearsList.forEach((year) => {
+      var humanitarianAmount: number = 0;
+      var developmentAmount: number = 0;
 
-      if (envelope.length > 0) {
-        funderName = envelope[0].funder;
-      }
+      this.envelopeList.forEach((e) => {
+        var hBreakups = e.envelopeBreakupsByType.filter(b => b.envelopeType.toLowerCase() == this.envelopeTypeCodes.HUMANITARIAN.toLowerCase());
+        var dBreakups = e.envelopeBreakupsByType.filter(b => b.envelopeType.toLowerCase() == this.envelopeTypeCodes.DEVELOPMENT.toLowerCase());
 
-      this.envelopeYearsList.forEach((year) => {
-        var totalAmount: number = 0;
-        envelope.forEach((e) => {
-          e.envelopeBreakupsByType.forEach((b) => {
-            var yearlyBreakup = b.yearlyBreakup.filter(y => y.year == year);
-            if (yearlyBreakup.length > 0) {
-              totalAmount += parseFloat(yearlyBreakup[0].amount);
+        hBreakups.forEach((b) => {
+          b.yearlyBreakup.forEach((y) => {
+            if (y.year == year) {
+              humanitarianAmount += y.amount;
             }
           });
         });
-        yearlySummary.push(totalAmount);
+
+        dBreakups.forEach((b) => {
+          b.yearlyBreakup.forEach((y) => {
+            if (y.year == year) {
+              developmentAmount += y.amount;
+            }
+          });
+        });
       });
 
-      fundersChartData.push({
-        data: yearlySummary,
-        label: funderName 
-      });
+      this.humanitarianSummary.push(humanitarianAmount);
+      this.developmentSummary.push(developmentAmount);
     });
 
-    this.chartData = fundersChartData;
+    this.chartData.push({
+      data: this.humanitarianSummary,
+      label: 'Humanitarian',
+      stack: 'Stack 0'
+    });
+
+    this.chartData.push({
+      data: this.developmentSummary,
+      label: 'Development',
+      stack: 'Stack 0'
+    });
     this.isShowChart = true;
+  }
+
+  manageChartType() {
+    /*this.chartData = [];
+    var yearlyProjects = this.reportDataList.yearlyProjectsList;
+    this.chartLabels = yearlyProjects.map(y => y.year);
+    var actualDisbursements = yearlyProjects.map(y => y.totalActualDisbursements);
+    var plannedDisbursements = yearlyProjects.map(y => y.totalPlannedDisbursements);
+
+    this.chartData.push({
+      data: actualDisbursements,
+      label: 'Actual disbursements',
+      stack: 'Stack 0'
+    });
+
+    this.chartData.push({
+      data: plannedDisbursements,
+      label: 'Planned disbursements',
+      stack: 'Stack 0'
+    });*/
+  }
+
+  manageChartDisplay() {
+    this.chartType = this.model.chartType;
   }
 
   calculateEnvelopeTypeTotal(funderId: number, envelopeTypeId: number) {
     var totalAmount = 0;
     var envelope = this.envelopeList.filter(e => e.funderId == funderId);
+
     if (envelope.length > 0) {
       var envelopeBreakup = envelope[0].envelopeBreakupsByType.filter(e => e.envelopeTypeId == envelopeTypeId);
       if (envelopeBreakup.length > 0) {
@@ -542,13 +614,13 @@ export class EnvelopeReportComponent implements OnInit {
 
   manageResetDisplay() {
     if (this.selectedEnvelopeTypes == 0 && this.selectedOrganizationTypes == 0 &&
-      this.model.startingYear == 0 && this.model.endingYear == 0 && 
-      this.selectedOrganizations.length == 0 && 
+      this.model.startingYear == 0 && this.model.endingYear == 0 &&
+      this.selectedOrganizations.length == 0 &&
       this.model.selectedCurrency == this.defaultCurrency) {
-        this.isAnyFilterSet = false;
-      } else {
-        this.isAnyFilterSet = true;
-      }
+      this.isAnyFilterSet = false;
+    } else {
+      this.isAnyFilterSet = true;
+    }
   }
 
   setFilter() {
