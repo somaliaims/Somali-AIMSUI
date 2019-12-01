@@ -155,7 +155,7 @@
                 (chartClick)="chartClicked($event)"></canvas>
           
               <canvas *ngIf="chartType == chartTypes.LINE" id="chart" baseChart [datasets]="chartData" [labels]="chartLabels"
-                [options]="lineChartOptions" [legend]="chartLegend" [colors]="lineChartColors" [chartType]="chartType" (chartHover)="chartHovered($event)"
+                [options]="lineChartOptions" [legend]="chartLegend"  [chartType]="chartType" (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
           </div>

@@ -19,6 +19,8 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./sector-report.component.css']
 })
 export class SectorReportComponent implements OnInit {
+  parentSectorsSummary: any = [];
+  parentSectorLabels: any = [];
   sectorsSettings: any = [];
   selectedSectors: any = [];
   selectedOrganizations: any = [];
@@ -74,7 +76,7 @@ export class SectorReportComponent implements OnInit {
     { id: 1, type: 'bar', title: 'Bar chart' },
     { id: 2, type: 'pie', title: 'Pie chart' },
     { id: 3, type: 'doughnut', title: 'Doughnut chart' },
-    { id: 4, type: 'stacked-bar', title: 'Stacked bar' },
+    { id: 4, type: 'stacked-bar', title: 'Stacked bar chart' },
   ];
 
   chartTypes: any = {
@@ -104,9 +106,9 @@ export class SectorReportComponent implements OnInit {
   };
 
   sectorLevels: any = [
-    { "id": 1, "level": "Parent sectors"},
-    { "id": 2, "level": "Sub sectors"},
-    { "id": 3, "level": "Sub sub sectors"},
+    { "id": 1, "level": "Parent sectors" },
+    { "id": 2, "level": "Sub sectors" },
+    { "id": 3, "level": "Sub sub sectors" },
   ];
 
   sectorLevelCodes: any = {
@@ -211,7 +213,7 @@ export class SectorReportComponent implements OnInit {
     tooltips: {
       callbacks: {
         // this callback is used to create the tooltip label
-        label: function(tooltipItem, data) {
+        label: function (tooltipItem, data) {
           // get the data label and data value to display
           // convert the data value to local string so it uses a comma seperated number
           var dataLabel = data.labels[tooltipItem.index];
@@ -229,7 +231,7 @@ export class SectorReportComponent implements OnInit {
     responsive: true,
     tooltips: {
       callbacks: {
-        label: function(tooltipItem, data) {
+        label: function (tooltipItem, data) {
           var dataLabel = data.labels[tooltipItem.index];
           var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
           dataLabel += value;
@@ -238,7 +240,7 @@ export class SectorReportComponent implements OnInit {
       }
     }
   }
-  
+
   chartColors: any = [
     {
       backgroundColor: [
@@ -271,18 +273,6 @@ export class SectorReportComponent implements OnInit {
     private route: ActivatedRoute, private projectService: ProjectService
   ) { }
 
-  /*checkIfFilterSet() {
-    if (this.model.title || this.model.organizationIds.length > 0 || this.model.startingYear != 0 ||
-      this.model.endingYear != 0 || this.model.parentSectorId != 0 || 
-      this.model.selectedSectors.length > 0 || this.model.selectedOrganizations.length > 0 ||
-      this.model.selectedCurrency
-      ) {
-        this.isAnyFilterSet = true;
-      } else {
-        this.isAnyFilterSet = false;
-      }
-  }*/
-
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
     if (this.route.snapshot.queryParams.load) {
@@ -301,7 +291,7 @@ export class SectorReportComponent implements OnInit {
       this.isLoading = false;
     }
 
-    this.model.chartType = this.chartTypes.BAR;
+    this.model.chartType = this.chartTypeCodes.BAR;
     this.getProjectTitles();
     this.getSectorsList();
     this.getLocationsList();
@@ -394,17 +384,17 @@ export class SectorReportComponent implements OnInit {
   manageSectorLevel() {
     if (this.model.sectorLevel) {
       var level = parseInt(this.model.sectorLevel);
-      switch(level) {
+      switch (level) {
         case this.sectorLevelCodes.SECTORS:
-            this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
           break;
-        
+
         case this.sectorLevelCodes.SUB_SECTORS:
-            this.sectorsList = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.id) != -1);
+          this.sectorsList = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.id) != -1);
           break;
 
         case this.sectorLevelCodes.SUB_SUB_SECTORS:
-            this.sectorsList = this.allSectorsList.filter(s => this.subSubSectorIds.indexOf(s.id) != -1);
+          this.sectorsList = this.allSectorsList.filter(s => this.subSubSectorIds.indexOf(s.id) != -1);
           break;
 
         default:
@@ -470,6 +460,8 @@ export class SectorReportComponent implements OnInit {
 
     this.chartLables = [];
     this.chartData = [];
+    this.stackedChartData = [];
+    this.parentSectorsSummary = [];
     var projectIds = [];
     if (this.model.selectedProjects.length > 0) {
       projectIds = this.model.selectedProjects.map(p => p.id);
@@ -493,8 +485,35 @@ export class SectorReportComponent implements OnInit {
           this.reportDataList.sectorProjectsList.forEach((s) => {
             s.isDisplay = false;
           });
-          var sectorNames = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
-          this.chartLables = sectorNames;
+          var sectorProjectsList = this.reportDataList.sectorProjectsList;
+          var parentSectorIds = sectorProjectsList.map(item => item.parentSectorId)
+            .filter((value, index, self) => self.indexOf(value) === index);
+
+          parentSectorIds.forEach((pid) => {
+            var sectors = sectorProjectsList.filter(s => s.parentSectorId == pid);
+            var actualDisbursements = 0;
+            var plannedDisbursements = 0;
+            var totalDisbursements = 0;
+            var sectorName = '';
+
+            sectors.forEach((s) => {
+              actualDisbursements += s.actualDisbursements;
+              plannedDisbursements += s.plannedDisbursements;
+              totalDisbursements += s.totalDisbursements;
+              sectorName = s.parentSector;
+            });
+
+            this.parentSectorsSummary.push({
+              sectorName: sectorName,
+              actualDisbursements: actualDisbursements,
+              plannedDisbursements: plannedDisbursements,
+              totalDisbursements: totalDisbursements
+            }
+            );
+            this.chartLables.push(sectorName);
+          });
+
+          //var sectorNames = sectorProjectsList.map(p => p.sectorName);
           if (this.reportDataList.reportSettings) {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();
@@ -504,7 +523,7 @@ export class SectorReportComponent implements OnInit {
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
           setTimeout(() => {
-            this.datedToday = this.storeService.getLongDateString(currentDate);  
+            this.datedToday = this.storeService.getLongDateString(currentDate);
           });
         }
         this.blockUI.stop();
@@ -518,19 +537,18 @@ export class SectorReportComponent implements OnInit {
 
   setupStackedChartData() {
     this.stackedChartData = [];
-    var sectorProjects = this.reportDataList.sectorProjectsList;
-    this.stackedChartLabels = this.reportDataList.sectorProjectsList.map(p => p.sectorName);
-    var disbursements = sectorProjects.map(s => s.actualDisbursements);
-    var expectedDisbursements = sectorProjects.map(s => s.plannedDisbursements);
+    this.stackedChartLabels = this.chartLables;
+    var actualDisbursements = this.parentSectorsSummary.map(s => s.actualDisbursements);
+    var plannedDisbursements = this.parentSectorsSummary.map(s => s.plannedDisbursements);
 
     this.stackedChartData.push({
-      data: disbursements,
+      data: actualDisbursements,
       label: 'Actual disbursements',
       stack: 'Stack 0'
     });
 
     this.stackedChartData.push({
-      data: expectedDisbursements,
+      data: plannedDisbursements,
       label: 'Planned disbursements',
       stack: 'Stack 0'
     });
@@ -538,7 +556,6 @@ export class SectorReportComponent implements OnInit {
     setTimeout(() => {
       this.isShowStackedChart = true;
     }, 1000);
-    
   }
 
   resetSearchResults() {
@@ -734,7 +751,7 @@ export class SectorReportComponent implements OnInit {
     //this.searchProjectsByCriteriaReport();
     if (this.selectedSectors.length == 0) {
       this.manageResetDisplay();
-    } 
+    }
   }
 
   onSectorSelectAll(items: any) {
@@ -768,48 +785,6 @@ export class SectorReportComponent implements OnInit {
     this.manageResetDisplay();
   }
 
-  /*
-  manageDataToDisplay() {
-    this.chartData = [];
-    var funderIds = this.envelopeList.map(e => e.funderId);
-    var fundersChartData: any = [];
-    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
-    if (chartType.length > 0) {
-      this.model.chartTypeName = chartType[0].type;
-    }
-
-    funderIds.forEach((f) => {
-      var envelope = this.envelopeList.filter(e => e.funderId == f);
-      var yearlySummary: any = [];
-      var funderName: string = null;
-
-      if (envelope.length > 0) {
-        funderName = envelope[0].funder;
-      }
-
-      this.envelopeYearsList.forEach((year) => {
-        var totalAmount: number = 0;
-        envelope.forEach((e) => {
-          e.envelopeBreakupsByType.forEach((b) => {
-            var yearlyBreakup = b.yearlyBreakup.filter(y => y.year == year);
-            if (yearlyBreakup.length > 0) {
-              totalAmount += parseFloat(yearlyBreakup[0].amount);
-            }
-          });
-        });
-        yearlySummary.push(totalAmount);
-      });
-
-      fundersChartData.push({
-        data: yearlySummary,
-        label: funderName 
-      });
-    });
-
-    this.chartData = fundersChartData;
-    this.isShowChart = true;
-  }
-  */
 
   manageDataToDisplay() {
     this.chartData = [];
@@ -820,32 +795,31 @@ export class SectorReportComponent implements OnInit {
       this.selectedDataOptions.push(selectedDataOption);
     }
     selectedDataOption = parseInt(this.model.selectedDataOption);
-    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
-    if (chartType.length > 0) {
-      this.model.chartTypeName = chartType[0].type;
+    var tChartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    if (tChartType.length > 0) {
+      this.model.chartTypeName = tChartType[0].type;
     }
 
     if (this.model.chartType == this.chartTypeCodes.STACKEDBAR) {
-      this.isShowStackedChart = false;
       this.setupStackedChartData();
     } else if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
         case this.dataOptionsCodes.ACTUAL_DISBURSEMENTS:
-          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.actualDisbursements);
+          this.chartData = this.parentSectorsSummary.map(p => p.actualDisbursements);
           break;
 
         case this.dataOptionsCodes.PLANNED_DISBURSEMENTS:
-          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.plannedDisbursements);
+          this.chartData = this.parentSectorsSummary.map(p => p.plannedDisbursements);
           break;
 
         case this.dataOptionsCodes.DISBURSEMENTS:
-          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
+          this.chartData = this.parentSectorsSummary.map(p => p.totalDisbursements);
           break;
 
         default:
-          this.chartData = this.reportDataList.sectorProjectsList.map(p => p.actualDisbursements);
+          this.chartData = this.parentSectorsSummary.map(p => p.actualDisbursements);
           break;
       }
     }
@@ -880,7 +854,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   manageDataOptions() {
-    if (this.selectedDataOptions.length > 0 && this.reportDataList.sectorProjectsList) {
+    if (this.selectedDataOptions.length > 0 && this.parentSectorsSummary) {
       this.chartData = [];
       this.doughnutChartData = [];
       this.showChart = false;
@@ -888,10 +862,10 @@ export class SectorReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.ACTUAL_DISBURSEMENTS) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.ACTUAL_DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorProjects = this.reportDataList.sectorProjectsList.map(p => p.actualDisbursements);
-          var chartData = { data: sectorProjects, label: this.dataOptionLabels.ACTUAL_DISBURSEMENTS };
+          var actualDisbursements = this.parentSectorsSummary.map(p => p.actualDisbursements);
+          var chartData = { data: actualDisbursements, label: this.dataOptionLabels.ACTUAL_DISBURSEMENTS };
           this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorProjects);
+          this.doughnutChartData.push(actualDisbursements);
           this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.ACTUAL_DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
@@ -902,7 +876,7 @@ export class SectorReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.PLANNED_DISBURSEMENTS) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.PLANNED_DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var plannedDisbursements = this.reportDataList.sectorProjectsList.map(p => p.plannedDisbursements);
+          var plannedDisbursements = this.parentSectorsSummary.map(p => p.plannedDisbursements);
           var chartData = { data: plannedDisbursements, label: this.dataOptionLabels.PLANNED_DISBURSEMENTS };
           this.chartData.push(chartData);
           this.doughnutChartData.push(plannedDisbursements);
@@ -916,10 +890,10 @@ export class SectorReportComponent implements OnInit {
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.DISBURSEMENTS) != -1) {
         var isDataExists = this.chartData.filter(d => d.label == this.dataOptionLabels.DISBURSEMENTS);
         if (isDataExists.length == 0) {
-          var sectorDisbursements = this.reportDataList.sectorProjectsList.map(p => p.totalDisbursements);
-          var chartData = { data: sectorDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
+          var totalDisbursements = this.parentSectorsSummary.map(p => p.totalDisbursements);
+          var chartData = { data: totalDisbursements, label: this.dataOptionLabels.DISBURSEMENTS };
           this.chartData.push(chartData);
-          this.doughnutChartData.push(sectorDisbursements);
+          this.doughnutChartData.push(totalDisbursements);
           this.dataOptionsIndexForDoughnut[this.dataOptionsCodes.DISBURSEMENTS] = (this.doughnutChartData.length - 1);
         }
       } else {
@@ -1047,12 +1021,12 @@ export class SectorReportComponent implements OnInit {
   manageResetDisplay() {
     if (this.model.selectedProjects.length == 0 && this.model.startingYear == 0 &&
       this.model.endingYear == 0 && this.model.parentSectorId == 0 &&
-      this.model.selectedSectors.length == 0 && this.model.selectedOrganizations.length == 0 && 
+      this.model.selectedSectors.length == 0 && this.model.selectedOrganizations.length == 0 &&
       this.model.selectedCurrency == this.defaultCurrency) {
-        this.isAnyFilterSet = false;
-      } else {
-        this.isAnyFilterSet = true;
-      }
+      this.isAnyFilterSet = false;
+    } else {
+      this.isAnyFilterSet = true;
+    }
   }
 
   setFilter() {

@@ -262,7 +262,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getOrganizationsList() {
-    this.organizationService.getOrganizationsList().subscribe(
+    this.organizationService.getUserOrganizations().subscribe(
       data => {
         if (data) {
           this.organizationsList = data;
@@ -273,12 +273,12 @@ export class ProjectsComponent implements OnInit {
 
   advancedSearchProjects() {
     var searchModel = {
-      projectIds: this.model.projectIds,
+      projectIds: this.model.selectedProjects.map(p => p.id),
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
-      organizationIds: this.selectedOrganizations,
-      sectorIds: this.selectedSectors,
-      locationIds: this.selectedLocations,
+      organizationIds: this.model.selectedOrganizations.map(o => o.id),
+      sectorIds: this.model.selectedSectors.map(s => s.id),
+      locationIds: this.model.selectedLocations.map(l => l.id),
       description: this.model.description
     };
 

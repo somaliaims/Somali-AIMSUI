@@ -399,6 +399,8 @@ export class EnvelopeReportComponent implements OnInit {
 
   manageDataToDisplay() {
     this.chartData = [];
+    this.humanitarianSummary = [];
+    this.developmentSummary = [];
     var chartType = this.chartTypes.BAR;
     if (chartType.length > 0) {
       this.model.chartTypeName = chartType[0].type;
