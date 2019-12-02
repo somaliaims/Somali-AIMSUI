@@ -147,7 +147,8 @@ export class EnvelopeReportComponent implements OnInit {
   doughnutChartData: any = [];
   model: any = {
     funderTypeId: 0, funderIds: [], startingYear: 0, endingYear: 0, envelopeTypes: [],
-    envelopeTypeIds: [], chartType: this.chartTypes.BAR, chartTypeName: this.chartTypes.BAR
+    envelopeTypeIds: [], chartType: this.chartTypes.BAR, chartTypeName: this.chartTypes.BAR,
+    organizationTypeIds: []
   };
 
   @BlockUI() blockUI: NgBlockUI;
@@ -221,9 +222,18 @@ export class EnvelopeReportComponent implements OnInit {
     this.chartType = this.chartTypes.BAR;
     this.model.chartType = this.chartTypes.BAR;
     this.model.envelopeTypeIds = this.selectedEnvelopeTypes.map(t => t.id);
+    this.model.organizationTypeIds = this.selectedOrganizationTypes.map(t => t.id);
     this.model.funderIds = this.selectedOrganizations.map(o => o.id);
+
+    var model = {
+      startingYear: this.model.startingYear,
+      endingYear: this.model.endingYear,
+      envelopeTypeIds: this.selectedEnvelopeTypes.map(t => t.id),
+      funderTypeIds: this.selectedOrganizationTypes.map(t => t.id),
+      funderIds: this.selectedOrganizations.map(o => o.id)
+    };
     this.blockUI.start('Loading report...');
-    this.reportService.getEnvelopeReport(this.model).subscribe(
+    this.reportService.getEnvelopeReport(model).subscribe(
       data => {
         if (data) {
           this.btnReportText = 'Update report';
