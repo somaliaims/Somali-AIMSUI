@@ -60,6 +60,7 @@
                     [data]="locationsList" [(ngModel)]="model.selectedLocations" [settings]="locationsSettings"
                     name="selectedLocations" (onSelect)="onLocationSelect($event)"
                     (onDeSelect)="onLocationDeSelect($event)" (onSelectAll)="onLocationSelectAll($event)"
+                    (onDeSelectAll)="onLocationDeSelectAll($event)"
                     #selectedLocations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>

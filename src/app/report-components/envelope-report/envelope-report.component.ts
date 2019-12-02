@@ -219,6 +219,7 @@ export class EnvelopeReportComponent implements OnInit {
     this.isShowChart = false;
     this.chartData = [];
     this.chartType = this.chartTypes.BAR;
+    this.model.chartType = this.chartTypes.BAR;
     this.model.envelopeTypeIds = this.selectedEnvelopeTypes.map(t => t.id);
     this.model.funderIds = this.selectedOrganizations.map(o => o.id);
     this.blockUI.start('Loading report...');

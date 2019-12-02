@@ -359,10 +359,12 @@ export class TimeTrendReportComponent implements OnInit {
 
   searchProjectsByCriteriaReport() {
     this.blockUI.start('Searching Projects...');
-
     this.chartLabels = [];
     this.chartData = [];
     var projectIds = [];
+    this.chartType = this.chartTypes.BAR;
+    this.model.chartType = this.chartTypes.BAR;
+
     if (this.model.selectedProjects.length > 0) {
       projectIds = this.model.selectedProjects.map(p => p.id);
     }

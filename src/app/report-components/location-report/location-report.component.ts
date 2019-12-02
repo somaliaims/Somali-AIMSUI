@@ -399,6 +399,9 @@ export class LocationReportComponent implements OnInit {
     this.chartLables = [];
     this.chartData = [];
     var projectIds = [];
+    this.model.chartType = this.chartTypeCodes.BAR;
+    this.model.chartTypeName = this.chartTypes.BAR;
+    
     if (this.model.selectedProjects.length > 0) {
       projectIds = this.model.selectedProjects.map(p => p.id);
     }

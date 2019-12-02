@@ -457,12 +457,14 @@ export class SectorReportComponent implements OnInit {
   searchProjectsByCriteriaReport() {
     var currentDate = new Date();
     this.blockUI.start('Searching Projects...');
-
     this.chartLables = [];
     this.chartData = [];
     this.stackedChartData = [];
     this.parentSectorsSummary = [];
     var projectIds = [];
+    this.model.chartType = this.chartTypeCodes.BAR;
+    this.model.chartTypeName = this.chartTypes.BAR;
+
     if (this.model.selectedProjects.length > 0) {
       projectIds = this.model.selectedProjects.map(p => p.id);
     }
@@ -748,7 +750,6 @@ export class SectorReportComponent implements OnInit {
     } else {
       this.setFilter();
     }
-    //this.searchProjectsByCriteriaReport();
     if (this.selectedSectors.length == 0) {
       this.manageResetDisplay();
     }
@@ -758,7 +759,7 @@ export class SectorReportComponent implements OnInit {
     this.setFilter();
   }
 
-  onSectorDeselectAll(items: any) {
+  onSectorDeSelectAll(items: any) {
     this.model.selectedSectors = [];
     this.manageResetDisplay();
   }
@@ -785,6 +786,13 @@ export class SectorReportComponent implements OnInit {
     this.manageResetDisplay();
   }
 
+  changeLocation() {
+    if (this.model.locationId != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
 
   manageDataToDisplay() {
     this.chartData = [];
@@ -1022,7 +1030,8 @@ export class SectorReportComponent implements OnInit {
     if (this.model.selectedProjects.length == 0 && this.model.startingYear == 0 &&
       this.model.endingYear == 0 && this.model.parentSectorId == 0 &&
       this.model.selectedSectors.length == 0 && this.model.selectedOrganizations.length == 0 &&
-      this.model.selectedCurrency == this.defaultCurrency) {
+      this.model.selectedCurrency == this.defaultCurrency &&
+      this.model.locationId == 0) {
       this.isAnyFilterSet = false;
     } else {
       this.isAnyFilterSet = true;

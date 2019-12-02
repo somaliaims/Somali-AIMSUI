@@ -62,13 +62,17 @@
                 <div class="col-lg-3 col-md-3">
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
-                     #selectedSectors="ngModel">
+                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                    (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeSelectAll($event)" 
+                    #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-lg-6 col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
                     [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
                     [settings]="organizationsSettings" 
+                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
+                    (onSelectAll)="onOrganizationSelectAll($event)" (onDeSelectAll)="onOrganizationDeSelectAll($event)" 
                     name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
@@ -77,7 +81,7 @@
               <div class="row margin-top-10">
                 <div class="col-lg-6 col-md-6">
                     <select class="form-control" title="Location"
-                    (change)="selectLocation();" id="selectedLocation" [(ngModel)]="model.locationId"
+                    (change)="changeLocation();" id="selectedLocation" [(ngModel)]="model.locationId"
                     name="selectedLocation" #selectedLocation="ngModel">
                     <option value="0">--All location/s--</option>
                     <option *ngFor="let location of locationsList" value="{{location.id}}">
@@ -110,7 +114,6 @@
                 </div>
               </div>
 
-              <div class="col-md-12">
                 <div [class.disable]="!defaultCurrency" class="float-right">
                   <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
@@ -122,7 +125,6 @@
                     <button *ngIf="isAnyFilterSet" type="button"
                       class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
                 </div>
-              </div>
 
             </form>
           </div>
