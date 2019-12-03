@@ -14,6 +14,7 @@ export const urls = {
 	allOrganizationsList: "Organization",
 	deleteLocation: "Location/Delete/",
 	organizationTypesList: "OrganizationType",
+	organizationTypeUrl: "OrganizationType",
 	iatiOrganizationsUrl: "Organization/GetIATIOrganizations",
 	userNotificationsList: "Notification",
 	userAccountActivation: "User/ActivateAccount/",

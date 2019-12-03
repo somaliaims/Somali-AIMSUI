@@ -113,6 +113,8 @@ import { EnvelopeReportComponent } from './report-components/envelope-report/env
 import { DataBackupComponent } from './data-backup/data-backup.component';
 import { CreateOrgModalComponent } from './create-org-modal/create-org-modal.component';
 import { AllProjectsReportComponent } from './report-components/all-projects-report/all-projects-report.component';
+import { OrganizationTypesComponent } from './organization-types/organization-types.component';
+import { ManageOrganizationTypeComponent } from './manage-organization-type/manage-organization-type.component';
 
 @NgModule({
   declarations: [
@@ -212,6 +214,8 @@ import { AllProjectsReportComponent } from './report-components/all-projects-rep
     DataBackupComponent,
     CreateOrgModalComponent,
     AllProjectsReportComponent,
+    OrganizationTypesComponent,
+    ManageOrganizationTypeComponent,
   ],
   imports: [
     BrowserModule,

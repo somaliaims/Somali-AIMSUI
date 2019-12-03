@@ -58,6 +58,8 @@
               <h5 *ngIf="!permissions.canManage" class="dropdown-header">User management</h5>
               <a class="dropdown-item" [routerLink]="['/manage-account']">Account management</a>
               <a *ngIf="permissions.canEditOrganization" class="dropdown-item"
+                [routerLink]="['/organization-types']">Organization types</a>
+              <a *ngIf="permissions.canEditOrganization" class="dropdown-item"
                 [routerLink]="['/organizations']">Organizations</a>
               <a *ngIf="permissions.canEditEnvelopeType" class="dropdown-item"
                 [routerLink]="['/envelope-types']">Envelope types</a>
