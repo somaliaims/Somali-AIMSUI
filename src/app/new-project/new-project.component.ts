@@ -125,7 +125,8 @@ export class NewProjectComponent implements OnInit {
     this.getFinancialYearsList();
     this.getSectorsList();
     this.getLocationsList();
-    this.getOrganizationsList();
+    this.getUserOrganizationsList();
+    this.getIATIOrganizationsList();
     this.loadUserProjects();
     this.loadIATIProjects();
     this.loadAIMSProjects();
@@ -267,12 +268,21 @@ export class NewProjectComponent implements OnInit {
     );
   }
 
-  getOrganizationsList() {
-    this.organizationService.getAllOrganizationsList().subscribe(
+  getUserOrganizationsList() {
+    this.organizationService.getUserOrganizations().subscribe(
       data => {
         if (data) {
-          this.organizationsList = data.filter(o => o.sourceType == this.organizationSourceTypes.USER);
-          this.iatiOrganizationsList = data.filter(o => o.sourceType == this.organizationSourceTypes.IATI)
+          this.organizationsList = data;
+        }
+      }
+    );
+  }
+
+  getIATIOrganizationsList() {
+    this.organizationService.getIATIOrganizations().subscribe(
+      data => {
+        if (data) {
+          this.iatiOrganizationsList = data;
         }
       }
     );

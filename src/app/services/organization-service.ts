@@ -67,6 +67,12 @@ export class OrganizationService {
       catchError(this.storeService.handleError<any>('User Organizations')));
   }
 
+  getIATIOrganizations() {
+    var url = this.urlHelper.getUserOrganizationsUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('User Organizations')));
+  }
+
   getOrganizationsHavingEnvelope() {
     var url = this.urlHelper.getOrganizationHavingEnvelopeUrl();
     return this.httpClient.get(url, httpOptions).pipe(
