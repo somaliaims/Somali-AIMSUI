@@ -217,7 +217,7 @@
                       <td>
                         <div class="float-left">
                           <span class="overflow-wrap">
-                            <b>Project title: </b>{{project.title}}<br />
+                            <b>Project title: </b>{{project.title | truncate : 30}}<br />
                             <b>Start date: </b>{{getLongDateString(project.startDate)}}<br />
                             <b>End date: </b>{{getLongDateString(project.endDate)}}<br />
                           </span>
@@ -261,7 +261,7 @@
                       *ngFor="let project of filteredAIMSProjects | paginate: { itemsPerPage: pagingSize, currentPage: p, id: 'p' }">
                       <td>
                         <span class="float-left overflow-wrap">
-                          <b>Project title: </b>{{project.title}}<br />
+                          <b>Project title: </b>{{project.title | truncate : 30}}<br />
                           <b>Starting year: </b>{{project.startingFinancialYear}}<br />
                           <b>Ending year: </b>{{project.endingFinancialYear}}<br />
                         </span>

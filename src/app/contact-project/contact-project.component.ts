@@ -27,7 +27,7 @@ export class ContactProjectComponent implements OnInit {
   messageLimitLeft: number = Settings.descriptionMediumLimit;
   @BlockUI() blockUI: NgBlockUI;
 
-  model = { senderName: null, senderEmail: null, suggesstionType: null, subject: null, message: null, 
+  model = { senderName: null, senderEmail: null, subject: null, message: null, 
     projectId: 0, projectTitle: null };
   
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
