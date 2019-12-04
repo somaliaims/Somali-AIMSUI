@@ -94,7 +94,7 @@ export class ReportService {
             catchError(this.storeService.handleError<any>('Projects Report by Years')));
     }
 
-    generatePDF(reportElement) {
+    /*generatePDF(reportElement) {
       var quotes = document.getElementById(reportElement);
       var result  = html2canvas(quotes)
         .then((canvas) => {
@@ -164,6 +164,73 @@ export class ReportService {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .52), (height * .45));
             } else if (width <= this.screenConstants.TEN_TWENTY_FOUR && width > this.screenConstants.EIGHT_HUNDRED) {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .60), (height * .45));
+            } else {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .70), (height * .45));
+            }
+          }
+          pdf.save('Report.pdf');
+        });
+        return result;
+    }*/
+
+    generatePDF(reportElement) {
+      var quotes = document.getElementById(reportElement);
+      var result  = html2canvas(quotes)
+        .then((canvas) => {
+          var container = document.querySelector(".row");
+          //var docWidth = container.getBoundingClientRect().width;
+          var docWidth = container.clientWidth;
+          var pageHeight = this.pageHeight;
+          //! MAKE YOUR PDF
+          var pdf = null;
+          if (docWidth > 1920) {
+            pdf = new jsPDF('l', 'pt', 'a4');
+          } else {
+            pdf = new jsPDF('p', 'pt', 'a4');
+          }
+          for (var i = 0; i <= quotes.clientHeight / pageHeight; i++) {
+            //! This is all just html2canvas stuff
+            var srcImg = canvas;
+            var sX = 0;
+            var sY = pageHeight * i; // start this.pageHeight pixels down for every new page
+            var sWidth = docWidth;
+            var sHeight = pageHeight;
+            var dX = 0;
+            var dY = 0;
+            var dWidth = docWidth;
+            var dHeight = pageHeight;
+              
+            var onePageCanvas = document.createElement("canvas");
+            onePageCanvas.setAttribute('width', docWidth.toString());
+            onePageCanvas.setAttribute('height', this.pageHeight.toString());
+            var ctx = onePageCanvas.getContext('2d');
+            ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
+  
+            var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
+            var width = onePageCanvas.width;
+            var height = onePageCanvas.height;
+            if (i > 0) {
+              if (width > this.screenConstants.NINETEEN_TWENTY) {
+                pdf.addPage([ 595.28,  841.89]);
+              } else {
+                pdf.addPage([ 595.28,  841.89]); 
+              }
+            }
+            pdf.setPage(i + 1);
+            if (width > this.screenConstants.NINETEEN_TWENTY) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .30), (height * .35));
+            } else if (width <= this.screenConstants.SIXTEEN_EIGHTY && width > this.screenConstants.SIXTEEN_HUNDRED) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .35), (height * .45));
+            } else if (width <= this.screenConstants.SIXTEEN_HUNDRED && width > this.screenConstants.FOURTEEN_FOURTY) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .35), (height * .45));
+            } else if (width <= this.screenConstants.FOURTEEN_FOURTY && width > this.screenConstants.THIRTEEN_SIXTY_SIX) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .41), (height * .45));
+            } else if(width <= this.screenConstants.THIRTEEN_SIXTY_SIX && width > this.screenConstants.TWELVE_EIGHTY) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .43), (height * .45));
+            } else if (width <= this.screenConstants.TWELVE_EIGHTY && width > this.screenConstants.TEN_TWENTY_FOUR) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .51), (height * .45));
+            } else if (width <= this.screenConstants.TEN_TWENTY_FOUR && width > this.screenConstants.EIGHT_HUNDRED) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .63), (height * .45));
             } else {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .70), (height * .45));
             }
