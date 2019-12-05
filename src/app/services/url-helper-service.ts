@@ -547,6 +547,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getFinancialYears);
     }
 
+    getFinancialYearRangeUrl() {
+        return (this.BASE_URL + urlsList.urls.financialYearsRangeUrl);
+    }
+
     getIATISettingsUrl() {
         return (this.BASE_URL + urlsList.urls.getIatiSettings);
     }

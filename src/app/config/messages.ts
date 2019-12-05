@@ -12,6 +12,7 @@ export const Messages = {
     EX_RATE_REQUIREMENTS: 'Date, currency, and exchange rate source are required to fetch exchange rate',
     SAVED_SUCCESSFULLY: ' saved successfully',
     INVALID_DATE: 'Enter valid date',
+    INVALID_DATE_RANGE: 'Start date cannot be greater than end date',
     INVALID_YEAR: 'Invalid year provided',
     INVALID_START_END_YEAR: 'Starting year cannot be greater than ending year',
     INVALID_FUTURE_DATE: 'You cannot select a date in future',

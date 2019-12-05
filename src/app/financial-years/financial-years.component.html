@@ -33,13 +33,13 @@
       <table class="table table-bordered table-stripped">
         <tr>
           <th>Financial Year</th>
-          <th *ngIf="permissions.canEditYear">Actions</th>
+          <!--<th *ngIf="permissions.canEditYear">Actions</th>-->
         </tr>
         <tr *ngFor="let year of financialYearsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{year.financialYear}}</td>
-          <td *ngIf="permissions.canEditYear">
+          <!--<td *ngIf="permissions.canEditYear">
             <a title="Delete" (click)="deleteYear(year.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
-          </td>
+          </td>-->
         </tr>
       </table>
       <pagination-controls (pageChange)="p=$event"></pagination-controls>

@@ -19,18 +19,37 @@
           </div>
           <h5 class="card-title text-center">Financial Year</h5>
           <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveFinancialYear()" #yearForm="ngForm">
-            <div class="form-group">
+            <!--<div class="form-group">
               <label for="year">Financial Year</label>
               <input type="text" pattern="\d*" onKeyPress="if(this.value.length==4) return false;" class="form-control" id="year" [(ngModel)]="model.year" name="year"
                 #year="ngModel" required>
               <div *ngIf="yearForm.submitted" [hidden]="year.valid" class="alert alert-danger">
                 Enter valid financial year
               </div>
+            </div>-->
+
+            <div class="form-group">
+              <label>Start date:&nbsp;</label>
+              <input type="date" name="startDate" class="form-control" [(ngModel)]="model.startDate" #startDate required />
+              <div *ngIf="yearForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
+                Start date is required
+              </div>
             </div>
-            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+            
+            <div class="form-group">
+              <label>End date:&nbsp;</label>
+              <input type="date" name="endDate" class="form-control" [(ngModel)]="model.endDate" #endDate required />
+              <div *ngIf="yearForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
+                End date is required
+              </div>
+            </div>
+            
+            <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase margin-top-10" type="submit">{{btnText}}</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<error-modal message="{{errorMessage}}"></error-modal>

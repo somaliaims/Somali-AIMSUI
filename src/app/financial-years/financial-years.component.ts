@@ -48,8 +48,5 @@ export class FinancialYearsComponent implements OnInit {
     );
   }
 
-  searchFinancialYears() {
-    
-  }
-
+  
 }
