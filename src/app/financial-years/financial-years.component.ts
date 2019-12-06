@@ -15,6 +15,7 @@ export class FinancialYearsComponent implements OnInit {
   isLoading: boolean = true;
   permissions: any = {};
   financialYearsList: any = [];
+  filteredYearsList: any = [];
   pagingSize: number = Settings.rowsPerPage;
   selectedYearId: number = 0;
   criteria: string = '';
@@ -39,13 +40,21 @@ export class FinancialYearsComponent implements OnInit {
         this.isLoading = false;
         if (data && data.length) {
           this.financialYearsList = data;
+          this.filteredYearsList = data;
         }
-      },
-      error => {
-        this.isLoading = false;
-        console.log("Request Failed: ", error);
       }
     );
+  }
+
+  searchFinancialYears() {
+    if (!this.criteria) {
+      this.filteredYearsList = this.financialYearsList;
+    } else {
+      if (this.financialYearsList.length > 0) {
+        this.filteredYearsList = this.financialYearsList.filter(y => 
+          (y.financialYear.toString().indexOf(this.criteria) != -1));
+      }
+    }
   }
 
   

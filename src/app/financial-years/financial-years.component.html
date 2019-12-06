@@ -4,17 +4,17 @@
     <div class="col-md-6">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab" >Financial Years List</a>
+          <a class="nav-link active btn-info" data-toggle="tab" >Financial years list</a>
         </li>
         <li *ngIf="permissions.canEditYear" class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-year']">Create New</a>
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-year']">Create new</a>
         </li>
       </ul>
     </div>
     <div class="col-md-6">
       <div class="input-group mb-3">
-        <input type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==4) return false;"  class="form-control" placeholder="Enter financial year" [(ngModel)]="criteria"
-          aria-describedby="basic-addon2" maxlength="4">
+        <input type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==4) return false;"  class="form-control" placeholder="Enter financial year to search" [(ngModel)]="criteria"
+          aria-describedby="basic-addon2" (input)="searchFinancialYears()" maxlength="4">
         <div class="input-group-append">
           <button class="btn btn-outline-info" (click)="searchFinancialYears()" type="button"><i class="fa fa-search"></i></button>
         </div>
@@ -32,10 +32,10 @@
     <div class="col margin-top-10">
       <table class="table table-bordered table-stripped">
         <tr>
-          <th>Financial Year</th>
+          <th>Financial year</th>
           <!--<th *ngIf="permissions.canEditYear">Actions</th>-->
         </tr>
-        <tr *ngFor="let year of financialYearsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+        <tr *ngFor="let year of filteredYearsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{year.financialYear}}</td>
           <!--<td *ngIf="permissions.canEditYear">
             <a title="Delete" (click)="deleteYear(year.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>

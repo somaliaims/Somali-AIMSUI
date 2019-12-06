@@ -233,8 +233,8 @@
                 </tr>
                 <tr class="child" [hidden]="!sectorProject.isDisplay" *ngFor="let project of sectorProject.projects">
                   <td width="25%">{{project.title}}</td>
-                  <td class="text-center break-word-into-lines" width="15%">{{project.funders}}</td>
-                  <td class="text-center break-word-into-lines" width="15%">{{project.implementers}}</td>
+                  <td class="text-center word-wrap" width="15%">{{project.funders}}</td>
+                  <td class="text-center word-wrap" width="15%">{{project.implementers}}</td>
                   <td class="text-right" width="15%">{{formatNumber(project.projectPercentValue)}}</td>
                   <td class="text-right" width="15%">
                     {{formatNumber(project.actualDisbursements)}}<br />

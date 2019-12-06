@@ -3,10 +3,10 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/financial-years']">Financial Years List</a>
+          <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/financial-years']">Financial years list</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Create New</a>
+          <a class="nav-link active btn-info" data-toggle="tab">Create new</a>
         </li>
       </ul>
     </div>
@@ -17,17 +17,8 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Error!</strong> {{errorMessage}}
           </div>
-          <h5 class="card-title text-center">Financial Year</h5>
+          <h5 class="card-title text-center">Manage financial year/s</h5>
           <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveFinancialYear()" #yearForm="ngForm">
-            <!--<div class="form-group">
-              <label for="year">Financial Year</label>
-              <input type="text" pattern="\d*" onKeyPress="if(this.value.length==4) return false;" class="form-control" id="year" [(ngModel)]="model.year" name="year"
-                #year="ngModel" required>
-              <div *ngIf="yearForm.submitted" [hidden]="year.valid" class="alert alert-danger">
-                Enter valid financial year
-              </div>
-            </div>-->
-
             <div class="form-group">
               <label>Start date:&nbsp;</label>
               <input type="date" name="startDate" class="form-control" [(ngModel)]="model.startDate" #startDate required />

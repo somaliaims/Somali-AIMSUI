@@ -459,7 +459,7 @@ export class SectorReportComponent implements OnInit {
 
   searchProjectsByCriteriaReport() {
     var currentDate = new Date();
-    this.blockUI.start('Searching Projects...');
+    this.blockUI.start('Generating report...');
     this.chartLables = [];
     this.chartData = [];
     this.stackedChartData = [];

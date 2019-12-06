@@ -71,10 +71,6 @@ export class ManageYearComponent implements OnInit {
     this.financialYearService.addYearRange(model).subscribe(
       data => {
         this.router.navigateByUrl('financial-years');
-      },
-      error => {
-        this.isError = true;
-        this.errorMessage = error;
       }
     )
     
