@@ -1,0 +1,87 @@
+<div class="container-fluid view-area">
+
+    <block-ui>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active btn-info" data-toggle="tab">Delete organization type</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-info" data-toggle="tab"
+                            [routerLink]="['/organization-types']">Organization types</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="card card-signin my-5">
+                    <div class="card-body iati-box">
+                        <h5 class="card-title text-center">Dependent organization type list</h5>
+                        <div *ngIf="isLoading">
+                            Loading organizations...
+                        </div>
+                        <table *ngIf="organizationsList.length > 0" class="table table-bordered">
+                            <tr *ngFor="let organization of organizationsList; let number = index">
+                                <td>
+                                    <span class="float-left">
+                                        <span class="badge badge-info">{{number + 1}}</span>
+                                        {{organization.organizationName}}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                        <span *ngIf="organizationsList.length == 0" class="text-info">
+                            No dependent organizations found
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!--organizations box from AIMS-->
+            <div class="col-md-6 col-sm-6">
+                <div class="card card-signin my-5">
+                    <div class="card-body iati-box">
+                        <form class="form-signin" (ngSubmit)="organizationForm.form.valid && delete()"
+                            #organizationForm="ngForm">
+
+                            <h5 class="card-title text-center">{{deletionMessage}}</h5>
+                            <div class="form-group">
+                                <label>Map organization type to:</label>
+                                <select class="form-control" name="mappingOrganization" [(ngModel)]="mappingOrganizationTypeId"
+                                    #mappingOrganization="ngModel" required>
+                                    <option value="0">--Organization type--</option>
+                                    <option *ngFor="let type of organizationTypesList" value="type.id">
+                                        {{type.typeName}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <p *ngIf="organizationsList.length > 0" class="text-warning">
+                                    There are {{organizationsList.length}} dependent organization/s for this
+                                    organization type. Delete all
+                                    dependent organization/s first before attempting to delete this organization type.
+                                </p>
+                                <p *ngIf="organizationsList.length == 0" class="text-info">
+                                    There are no dependent organizations under this organization type. You can delete
+                                    this organization type
+                                    safely. This action cannot be undone.
+                                </p>
+                            </div>
+                            <button *ngIf="organizationsList.length == 0" [class.disable]="isLoading"
+                                class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
+                            <button *ngIf="organizationsList.length > 0" (click)="showList()"
+                                [class.disable]="isLoading" class="btn btn-lg btn-info btn-block text-uppercase"
+                                type="button">Back to List</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </block-ui>
+</div>
+
+<error-modal message={{errorMessage}}></error-modal>

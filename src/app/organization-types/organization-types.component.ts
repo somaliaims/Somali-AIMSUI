@@ -41,10 +41,6 @@ export class OrganizationTypesComponent implements OnInit {
           this.organizationTypesList = data;
           this.filteredOrganizationTypesList = data;
         }
-      },
-      error => {
-        this.isLoading = false;
-        console.log("Request Failed: ", error);
       }
     );
   }

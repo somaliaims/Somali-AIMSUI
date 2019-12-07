@@ -15,6 +15,7 @@ export const urls = {
 	deleteLocation: "Location/Delete/",
 	organizationTypesList: "OrganizationType",
 	organizationTypeUrl: "OrganizationType",
+	organizationsForTypeUrl: "Organization/GetOrganizationsForType",
 	iatiOrganizationsUrl: "Organization/GetIATIOrganizations",
 	userNotificationsList: "Notification",
 	userAccountActivation: "User/ActivateAccount/",

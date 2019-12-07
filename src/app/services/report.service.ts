@@ -220,7 +220,7 @@ export class ReportService {
             if (width > this.screenConstants.NINETEEN_TWENTY) {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .32), (height * .35));
             } else if (width <= this.screenConstants.NINETEEN_TWENTY && width > this.screenConstants.SIXTEEN_EIGHTY) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .33), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .30), (height * .45));
             } else if (width <= this.screenConstants.SIXTEEN_EIGHTY && width > this.screenConstants.SIXTEEN_HUNDRED) {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .35), (height * .45));
             } else if (width <= this.screenConstants.SIXTEEN_HUNDRED && width > this.screenConstants.FOURTEEN_FOURTY) {

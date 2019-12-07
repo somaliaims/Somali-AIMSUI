@@ -78,6 +78,7 @@ import { DataBackupComponent } from './data-backup/data-backup.component';
 import { AllProjectsReportComponent } from './report-components/all-projects-report/all-projects-report.component';
 import { OrganizationTypesComponent } from './organization-types/organization-types.component';
 import { ManageOrganizationTypeComponent } from './manage-organization-type/manage-organization-type.component';
+import { DeleteOrganizationTypeComponent } from './delete-organization-type/delete-organization-type.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -96,6 +97,7 @@ export const routes: Routes = [
   { path: 'organizations', component: OrganizationsComponent},
   { path: 'organization-types', component: OrganizationTypesComponent},
   { path: 'delete-organization/:{id}', component: DeleteOrganizationComponent },
+  { path: 'delete-organization-type/:{id}', component: DeleteOrganizationTypeComponent },
   { path: 'manage-organization/:{id}', component: ManageOrganizationComponent, data: { isForEdit: true } },
   { path: 'manage-organization', component: ManageOrganizationComponent },
   { path: 'manage-organization-type/:{id}', component: ManageOrganizationTypeComponent, data: { isForEdit: true } },

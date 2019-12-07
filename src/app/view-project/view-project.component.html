@@ -25,7 +25,7 @@
               <span class="float-left">
                 <h6 class="text-white">Project detail</h6>
               </span>
-              <span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowContactToUser(projectData.id)">
+              <!--<span class="float-right" *ngIf="!isLoading && isLoggedIn && isShowContactToUser(projectData.id)">
                 <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
                   Suggest a change
                 </button>
@@ -35,7 +35,7 @@
                 <button class="btn btn-danger btn-sm" (click)="makeDeleteRequest(projectData.id)">
                   Request deletion
                 </button>
-              </span>
+              </span>-->
             </div>
             <div class="card-body">
               <div class="row text-center" *ngIf="isLoading">

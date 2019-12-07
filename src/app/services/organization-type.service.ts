@@ -39,6 +39,13 @@ export class OrganizationTypeService {
     var url = this.urlHelper.organizationTypesUrl() + '/' + id;
     return this.httpClient.put(url,
       JSON.stringify(model), httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('Update Organization')));
+        catchError(this.storeService.handleError<any>('Update Organization Type')));
+  }
+
+  deleteOrganizationType(id: string, newId: string) {
+    var url = this.urlHelper.deleteOrganizationTypeUrl(id, newId);
+    return this.httpClient.delete(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Delete Organization Type'))
+    );
   }
 }

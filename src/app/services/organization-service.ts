@@ -44,6 +44,13 @@ export class OrganizationService {
     );
   }
 
+  getOrganizationsForType(id: string) {
+    var url = this.urlHelper.getOrganizationsForTypeUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Organizations for Type'))
+    );
+  }
+
   getOrganizationsWithType() {
     var url = this.urlHelper.getOrganizationWithTypeUrl();
     return this.httpClient.get<any>(url);

@@ -47,6 +47,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.deleteOrganization + id + '/' + newId);
     }
 
+    deleteOrganizationTypeUrl(id: string, newId: string) {
+        return (this.BASE_URL + urlsList.urls.organizationTypeUrl + '/' + id + '/' + newId);
+    }
+
     getOrganizationProjectsUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.organizationProjects + id);
     }
@@ -722,6 +726,10 @@ export class UrlHelperService {
 
     getOrganizationsCountUrl() {
         return (this.BASE_URL + urlsList.urls.organizationsCountUrl);
+    }
+
+    getOrganizationsForTypeUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.organizationsForTypeUrl + '/' + id);
     }
 
     getOrganizationHavingEnvelopeUrl() {

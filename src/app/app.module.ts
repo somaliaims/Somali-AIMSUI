@@ -115,6 +115,7 @@ import { CreateOrgModalComponent } from './create-org-modal/create-org-modal.com
 import { AllProjectsReportComponent } from './report-components/all-projects-report/all-projects-report.component';
 import { OrganizationTypesComponent } from './organization-types/organization-types.component';
 import { ManageOrganizationTypeComponent } from './manage-organization-type/manage-organization-type.component';
+import { DeleteOrganizationTypeComponent } from './delete-organization-type/delete-organization-type.component';
 
 @NgModule({
   declarations: [
@@ -216,6 +217,7 @@ import { ManageOrganizationTypeComponent } from './manage-organization-type/mana
     AllProjectsReportComponent,
     OrganizationTypesComponent,
     ManageOrganizationTypeComponent,
+    DeleteOrganizationTypeComponent,
   ],
   imports: [
     BrowserModule,
