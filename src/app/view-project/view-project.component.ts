@@ -26,6 +26,7 @@ export class ViewProjectComponent implements OnInit {
   isImplementerLoading: boolean = true;
   isDisbursementLoading: boolean = true;
   isDocumentLoading: boolean = true;
+  excelFile: string = null;
   projectId: number = 0;
   delayTime: number = 2000;
   userProjectIds: any = [];
@@ -72,7 +73,7 @@ export class ViewProjectComponent implements OnInit {
         } else {
           this.loadProjectData(id);   
         }
-        
+        this.getProjectExcelReport();
 
         setTimeout(() => {
           this.loadProjectLocations(id);
@@ -216,7 +217,7 @@ export class ViewProjectComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
   }
 
   loadUserProjects() {
@@ -230,18 +231,37 @@ export class ViewProjectComponent implements OnInit {
     );
   }
 
+  getProjectExcelReport() {
+    this.projectService.getProjectReport(this.projectId.toString()).subscribe(
+      data => {
+        if (data) {
+          if (data.message) {
+            this.excelFile = data.message;
+            this.setExcelFile();
+          }
+        }
+      }
+    );
+  }
+
+  setExcelFile() {
+    if (this.excelFile) {
+      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+    }
+  }
+
+  printReport() {
+    this.storeService.printSimpleReport('rpt-project', 'Project profile');
+  }
+
   deleteProjectLocation(projectId, locationId) {
     this.blockUI.start('Working...');
     this.projectService.deleteProjectLocation(projectId, locationId).subscribe(
       data => {
         this.projectLocations = this.projectLocations.filter(l => l.id != locationId);
         this.blockUI.stop();
-      },
-      error => {
-        console.log(error);
-        this.blockUI.stop();
       }
-    )
+    );
   }
 
   deleteProjectSector(projectId, sectorId) {
@@ -250,12 +270,8 @@ export class ViewProjectComponent implements OnInit {
       data => {
         this.projectSectors = this.projectSectors.filter(s => s.sectorId != sectorId);
         this.blockUI.stop();
-      },
-      error => {
-        console.log(error);
-        this.blockUI.stop();
       }
-    )
+    );
   }
 
   deleteProjectFunder(projectId, funderId) {

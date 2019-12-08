@@ -66,7 +66,6 @@ export class ProjectsComponent implements OnInit {
   sectorLevelCodes: any = {
     SECTORS: 1,
     SUB_SECTORS: 2,
-    SUB_SUB_SECTORS: 3
   }
 
   model: any = {

@@ -114,17 +114,24 @@
                 </div>
               </div>
 
-                <div [class.disable]="!defaultCurrency" class="float-right">
-                  <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
-                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
-                      class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2 margin-left-2">Download
-                      spreadsheet</a>
-                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
-                      class="btn btn-warning margin-top-2 margin-left-2" (click)="printReport()">Print report</button>
-                    <button *ngIf="isAnyFilterSet" type="button"
-                      class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
+              <div class="row">
+                <div class="col-lg-4 col-md-4">
+
                 </div>
+                <div class="col-lg-8 col-md-8">
+                  <div [class.disable]="!defaultCurrency" class="float-right">
+                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
+                      <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
+                        class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>
+                      <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2 margin-left-2">Download
+                        spreadsheet</a>
+                      <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
+                        class="btn btn-warning margin-top-2 margin-left-2" (click)="printReport()">Print report</button>
+                      <button *ngIf="isAnyFilterSet" type="button"
+                        class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
+                  </div>
+                </div>
+              </div>
 
             </form>
           </div>

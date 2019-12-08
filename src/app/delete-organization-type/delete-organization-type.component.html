@@ -70,9 +70,9 @@
                                     safely. This action cannot be undone.
                                 </p>
                             </div>
-                            <button *ngIf="organizationsList.length == 0" [class.disable]="isLoading"
+                            <button [class.disable]="isLoading"
                                 class="btn btn-lg btn-danger btn-block text-uppercase" type="submit">Delete Now</button>
-                            <button *ngIf="organizationsList.length > 0" (click)="showList()"
+                            <button type="button" *ngIf="organizationsList.length > 0" (click)="showList()"
                                 [class.disable]="isLoading" class="btn btn-lg btn-info btn-block text-uppercase"
                                 type="button">Back to List</button>
                         </form>

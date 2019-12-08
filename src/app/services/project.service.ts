@@ -247,6 +247,12 @@ export class ProjectService {
       catchError(this.storeService.handleError<any>('Project Sectors')));
   }
 
+  getProjectReport(id: string) {
+    var url = this.urlHelper.getProjectReportUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Project Report')));
+  }
+
   deleteProjectFunder(projectId: string, funderId: string) {
     var url = this.urlHelper.deleteProjectFunderUrl(projectId, funderId);
     return this.httpClient.delete(url, httpOptions).pipe(

@@ -471,6 +471,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getProjectProfileReport + id);
     }
 
+    getProjectReportUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.getProjectReport + '/' + id);
+    }
+
     getAllProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.allProjectsReport);
     }
