@@ -222,6 +222,22 @@
                   </div>
                 </div>
 
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <h6 class="text-info">Project markers</h6>
+                    <table class="table table-striped table-condensed">
+                      <tr>
+                        <th>Marker</th>
+                        <th>Values</th>
+                      </tr>
+                      <tr *ngFor="let marker of projectMarkers">
+                        <td>{{marker.marker}}</td>
+                        <td>{{displayFieldValues(marker.values)}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
                 <div class="col-md-12">
                     <div *ngIf="projectProfileLink" class="text-center margin-top-20 text-info">
                       Report link: <a class="text-info" href="{{projectProfileLink}}">{{projectProfileLink}}</a>

@@ -163,7 +163,7 @@ export class StoreService {
       try {
         parsedJson = (JSON.parse(json));
       } catch (e) {
-        parsedJson = json;
+        return json;
       }
 
       if (parsedJson && parsedJson.length > 0) {

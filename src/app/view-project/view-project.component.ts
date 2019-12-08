@@ -53,6 +53,7 @@ export class ViewProjectComponent implements OnInit {
   projectImplementers: any = [];
   projectDisbursements: any = [];
   projectDocuments: any = [];
+  projectMarkers: any = [];
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -245,10 +246,19 @@ export class ViewProjectComponent implements OnInit {
             var currentDate = this.storeService.getLongDateString(new Date());
             this.dated = currentDate;
             this.setExcelFile();
+            var projects = data.projectProfile.projects;
+            if (projects.length > 0) {
+              var project = projects[0];
+              this.projectMarkers = project.markers;
+            }
           }
         }
       }
     );
+  }
+
+  displayFieldValues(json: any) {
+    return this.storeService.parseAndDisplayJsonAsString(json);
   }
 
   setExcelFile() {
