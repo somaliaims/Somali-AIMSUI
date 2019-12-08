@@ -32,7 +32,7 @@
                 </button>
               </span>
               <span class="float-right margin-left-5">
-                <button [class.disable]="excelFile == null" class="btn btn-danger btn-sm" (click)="downloadPDF()">
+                <button [class.disable]="excelFile == null" class="btn btn-danger btn-sm" (click)="generatePDF()">
                   Download PDF
                 </button>
               </span>
@@ -60,163 +60,178 @@
                 </div>
               </div>
 
-              <div id="rpt-project" class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <table class="table table-striped">
-                    <tr>
-                      <td width="15%"><b>Project title: </b></td>
-                      <td colspan="3">{{projectData.title}}</td>
-                    </tr>
-                    <tr>
-                      <td><b>Starting year: </b></td>
-                      <td>{{projectData.startingFinancialYear}}</td>
-                      <td><b>Ending year: </b></td>
-                      <td>{{projectData.endingFinancialYear}}</td>
-                    </tr>
-                    <tr>
-                      <td><b>Project value: </b></td>
-                      <td>{{formatNumber(projectData.projectValue)}}</td>
-                      <td><b>Currency: </b></td>
-                      <td>{{projectData.projectCurrency}}</td>
-                    </tr>
-                    <tr>
-                      <td><b>Description: </b></td>
-                      <td colspan="3">
-                        {{projectData.description}}
-                      </td>
-                    </tr>
-                  </table>
+              <div id="rpt-project" class="container-fluid">
+                <div class="col-lg-12 col-md-12 text-center">
+                  <h6 class="text-info">Project profile report</h6>
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                  <h6 class="text-info">Project locations</h6>
-                  <div class="container text-center margin-top-10" *ngIf="isLocationLoading">
-                      <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading locations...</span>
-                  </div>
-                  <table *ngIf="projectLocations.length > 0" class="table table-striped">
-                    <tr>
-                      <th>Location</th>
-                      <th>Funds percentage</th>
-                    </tr>
-                    <tr *ngFor="let location of projectLocations">
-                      <td>{{location.location}}</td>
-                      <td>{{location.fundsPercentage}}%</td>
-                    </tr>
-                  </table>
-                  <p *ngIf="projectLocations.length == 0 && !isLocationLoading" class="text-info"><i>No project locations found.</i></p>
-                </div>
-
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                  <h6 class="text-info">Project sectors</h6>
-                  <div class="container text-center margin-top-10" *ngIf="isSectorLoading">
-                        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sectors...</span>
-                    </div>
-                    <table *ngIf="projectSectors.length > 0" class="table table-striped">
+                <div class="row margin-top-20">
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <table class="table table-striped">
                       <tr>
-                        <th>Sector</th>
+                        <td width="15%"><b>Project title: </b></td>
+                        <td colspan="3">{{projectData.title}}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Starting year: </b></td>
+                        <td>{{projectData.startingFinancialYear}}</td>
+                        <td><b>Ending year: </b></td>
+                        <td>{{projectData.endingFinancialYear}}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Project value: </b></td>
+                        <td>{{formatNumber(projectData.projectValue)}}</td>
+                        <td><b>Currency: </b></td>
+                        <td>{{projectData.projectCurrency}}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Description: </b></td>
+                        <td colspan="3">
+                          {{projectData.description}}
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <h6 class="text-info">Project locations</h6>
+                    <div class="container text-center margin-top-10" *ngIf="isLocationLoading">
+                        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading locations...</span>
+                    </div>
+                    <table *ngIf="projectLocations.length > 0" class="table table-striped">
+                      <tr>
+                        <th>Location</th>
                         <th>Funds percentage</th>
                       </tr>
-                      <tr *ngFor="let sector of projectSectors">
-                        <td>{{sector.sector}}</td>
-                        <td>{{sector.fundsPercentage}}%</td>
+                      <tr *ngFor="let location of projectLocations">
+                        <td>{{location.location}}</td>
+                        <td>{{location.fundsPercentage}}%</td>
                       </tr>
                     </table>
-                    <p *ngIf="projectSectors.length == 0 && !isSectorLoading" class="text-info"><i>No project sectors found.</i></p>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                  <h6 class="text-info">Project funders</h6>
-                  <div class="container text-center margin-top-10" *ngIf="isFunderLoading">
-                        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading funders...</span>
-                    </div>
-      
-                    <table *ngIf="projectFunders.length > 0" class="table table-striped">
-                      <tr>
-                        <th>Funder name</th>
-                      </tr>
-                      <tr *ngFor="let funder of projectFunders">
-                        <td>{{funder.funder}}</td>
-                      </tr>
-                    </table>
-                    <p *ngIf="projectFunders.length == 0 && !isFunderLoading" class="text-info"><i>No project funders found.</i></p>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                  <h6 class="text-info">Project implementers</h6>
-                    <div class="container text-center margin-top-10" *ngIf="isImplementerLoading">
-                          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading implementers...</span>
+                    <p *ngIf="projectLocations.length == 0 && !isLocationLoading" class="text-info"><i>No project locations found.</i></p>
+                  </div>
+  
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <h6 class="text-info">Project sectors</h6>
+                    <div class="container text-center margin-top-10" *ngIf="isSectorLoading">
+                          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sectors...</span>
                       </div>
-                      <table *ngIf="projectImplementers.length > 0" class="table table-striped">
+                      <table *ngIf="projectSectors.length > 0" class="table table-striped">
                         <tr>
-                          <th>Implementer</th>
+                          <th>Sector</th>
+                          <th>Funds percentage</th>
                         </tr>
-                        <tr *ngFor="let implementer of projectImplementers">
-                          <td>{{implementer.implementer}}</td>
+                        <tr *ngFor="let sector of projectSectors">
+                          <td>{{sector.sector}}</td>
+                          <td>{{sector.fundsPercentage}}%</td>
                         </tr>
                       </table>
-                      <p *ngIf="projectImplementers.length == 0 && !isImplementerLoading" class="text-info">
-                        <i>No project implementers found.</i>
-                      </p>
+                      <p *ngIf="projectSectors.length == 0 && !isSectorLoading" class="text-info"><i>No project sectors found.</i></p>
+                  </div>
                 </div>
-
-              </div>
-
-              <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                  <h6 class="text-info">Project disbursements</h6>
-                  <div class="row text-center margin-top-10" *ngIf="isDisbursementLoading">
-                      <div class="container">
-                        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading disbursements...</span>
+  
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <h6 class="text-info">Project funders</h6>
+                    <div class="container text-center margin-top-10" *ngIf="isFunderLoading">
+                          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading funders...</span>
                       </div>
-                    </div>
-      
-                    <table *ngIf="projectDisbursements.length > 0" class="table table-striped">
-                      <tr>
-                        <th>Type</th>
-                        <th>Financial year</th>
-                        <th>Amount</th>
-                        <th>Currency</th>
-                        <th>Exchange rate</th>
-                      </tr>
-                      <tr *ngFor="let disbursement of projectDisbursements">
-                        <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
-                        <td>{{disbursement.year}}</td>
-                        <td>{{formatNumber(disbursement.amount)}}</td>
-                        <td>{{disbursement.currency}}</td>
-                        <td>{{disbursement.exchangeRate}}</td>
-                      </tr>
-                    </table>
-                    <p *ngIf="projectDisbursements.length == 0 && !isDisbursementLoading" class="text-info">
-                      <i>No project disbursements found.</i>
-                    </p>
+        
+                      <table *ngIf="projectFunders.length > 0" class="table table-striped">
+                        <tr>
+                          <th>Funder name</th>
+                        </tr>
+                        <tr *ngFor="let funder of projectFunders">
+                          <td>{{funder.funder}}</td>
+                        </tr>
+                      </table>
+                      <p *ngIf="projectFunders.length == 0 && !isFunderLoading" class="text-info"><i>No project funders found.</i></p>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <h6 class="text-info">Project implementers</h6>
+                      <div class="container text-center margin-top-10" *ngIf="isImplementerLoading">
+                            <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading implementers...</span>
+                        </div>
+                        <table *ngIf="projectImplementers.length > 0" class="table table-striped">
+                          <tr>
+                            <th>Implementer</th>
+                          </tr>
+                          <tr *ngFor="let implementer of projectImplementers">
+                            <td>{{implementer.implementer}}</td>
+                          </tr>
+                        </table>
+                        <p *ngIf="projectImplementers.length == 0 && !isImplementerLoading" class="text-info">
+                          <i>No project implementers found.</i>
+                        </p>
+                  </div>
+  
                 </div>
-
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                  <h6 class="text-info">Project documents</h6>
-                    <div class="row text-center margin-top-10" *ngIf="isDocumentLoading">
+  
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <h6 class="text-info">Project disbursements</h6>
+                    <div class="row text-center margin-top-10" *ngIf="isDisbursementLoading">
                         <div class="container">
-                          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading documents...</span>
+                          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading disbursements...</span>
                         </div>
                       </div>
         
-                      <table *ngIf="projectDocuments.length > 0" class="table table-striped">
+                      <table *ngIf="projectDisbursements.length > 0" class="table table-striped">
                         <tr>
-                          <th>Document Title</th>
-                          <th>Url</th>
+                          <th>Type</th>
+                          <th>Financial year</th>
+                          <th>Amount</th>
+                          <th>Currency</th>
+                          <th>Exchange rate</th>
                         </tr>
-                        <tr *ngFor="let document of projectDocuments">
-                          <td>{{document.documentTitle}}</td>
-                          <td>{{document.documentUrl}}</td>
+                        <tr *ngFor="let disbursement of projectDisbursements">
+                          <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
+                          <td>{{disbursement.year}}</td>
+                          <td>{{formatNumber(disbursement.amount)}}</td>
+                          <td>{{disbursement.currency}}</td>
+                          <td>{{disbursement.exchangeRate}}</td>
                         </tr>
                       </table>
-                      <p *ngIf="projectDocuments.length == 0 && !isDocumentLoading" class="text-info">
-                        <i>No project documents found.</i>
+                      <p *ngIf="projectDisbursements.length == 0 && !isDisbursementLoading" class="text-info">
+                        <i>No project disbursements found.</i>
                       </p>
+                  </div>
+  
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <h6 class="text-info">Project documents</h6>
+                      <div class="row text-center margin-top-10" *ngIf="isDocumentLoading">
+                          <div class="container">
+                            <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading documents...</span>
+                          </div>
+                        </div>
+          
+                        <table *ngIf="projectDocuments.length > 0" class="table table-striped">
+                          <tr>
+                            <th>Document Title</th>
+                            <th>Url</th>
+                          </tr>
+                          <tr *ngFor="let document of projectDocuments">
+                            <td>{{document.documentTitle}}</td>
+                            <td>{{document.documentUrl}}</td>
+                          </tr>
+                        </table>
+                        <p *ngIf="projectDocuments.length == 0 && !isDocumentLoading" class="text-info">
+                          <i>No project documents found.</i>
+                        </p>
+                  </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div *ngIf="projectProfileLink" class="text-center margin-top-20 text-info">
+                      Report link: <a class="text-info" href="{{projectProfileLink}}">{{projectProfileLink}}</a>
+                    </div>
+                    <div *ngIf="dated" class="text-center margin-top-5">
+                      <span><i>Generated on: {{dated}}</i></span>
+                    </div>
+                  </div>
               </div>
+              
 
             </div>
           </div>

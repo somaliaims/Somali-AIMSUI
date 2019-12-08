@@ -632,10 +632,12 @@ export class SectorReportComponent implements OnInit {
 
   generatePDF() {
     this.blockUI.start('Generating PDF...');
-    var result = Promise.resolve(this.reportService.generatePDF('rpt-sector-pdf-view'));
-    result.then(() => {
-      this.blockUI.stop();
-    });
+    setTimeout(() => {
+      var result = Promise.resolve(this.reportService.generatePDF('rpt-sector-pdf-view'));
+      result.then(() => {
+        this.blockUI.stop();
+      });
+    },500);
   }
 
   printReport() {

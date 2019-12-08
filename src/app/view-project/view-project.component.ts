@@ -7,6 +7,7 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Messages } from '../config/messages';
 import { Settings } from '../config/settings';
+import { ReportService } from '../services/report.service';
 
 @Component({
   selector: 'app-view-project',
@@ -27,6 +28,8 @@ export class ViewProjectComponent implements OnInit {
   isDisbursementLoading: boolean = true;
   isDocumentLoading: boolean = true;
   excelFile: string = null;
+  projectProfileLink: string = null;
+  dated: string = null;
   projectId: number = 0;
   delayTime: number = 2000;
   userProjectIds: any = [];
@@ -57,7 +60,8 @@ export class ViewProjectComponent implements OnInit {
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router,
     private storeService: StoreService, private securityService: SecurityHelperService,
-    private infoModal: InfoModalComponent) { }
+    private infoModal: InfoModalComponent,
+    private reportService: ReportService) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.projects);
@@ -235,8 +239,11 @@ export class ViewProjectComponent implements OnInit {
     this.projectService.getProjectReport(this.projectId.toString()).subscribe(
       data => {
         if (data) {
-          if (data.message) {
-            this.excelFile = data.message;
+          if (data.reportSettings) {
+            this.excelFile = data.reportSettings.excelReportName;
+            this.projectProfileLink = data.reportSettings.reportUrl;
+            var currentDate = this.storeService.getLongDateString(new Date());
+            this.dated = currentDate;
             this.setExcelFile();
           }
         }
@@ -250,8 +257,18 @@ export class ViewProjectComponent implements OnInit {
     }
   }
 
-  printReport() {
-    this.storeService.printSimpleReport('rpt-project', 'Project profile');
+  printProfile() {
+    this.storeService.printSimpleReport('rpt-project', 'Project profile report');
+  }
+
+  generatePDF() {
+    this.blockUI.start('Generating PDF...');
+    setTimeout(() => {
+      var result = Promise.resolve(this.reportService.generatePDF('rpt-project'));
+      result.then(() => {
+        this.blockUI.stop();
+      });
+    },500);
   }
 
   deleteProjectLocation(projectId, locationId) {
