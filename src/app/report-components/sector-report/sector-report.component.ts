@@ -554,6 +554,12 @@ export class SectorReportComponent implements OnInit {
             this.sectorProjectsList = sectorProjectsList;
           }
 
+          if (this.sectorProjectsList.length > 1) {
+            this.sectorProjectsList.sort((a, b) => (a.sectorName > b.sectorName) ? 1 : -1);
+            this.sectorProjectsList.forEach((pl) => {
+              pl.projects.sort((c, d) => (c.title > d.title) ? 1 : -1);
+            });
+          }
           if (this.reportDataList.reportSettings) {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();
