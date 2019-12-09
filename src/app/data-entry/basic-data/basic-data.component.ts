@@ -7,6 +7,7 @@ import { StoreService } from 'src/app/services/store-service';
 import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-info-modal.component';
 import { ProjectiInfoModalComponent } from 'src/app/projecti-info-modal/projecti-info-modal.component';
 import { CreateOrgModalComponent } from 'src/app/create-org-modal/create-org-modal.component';
+import { HelpService } from 'src/app/services/help-service';
 
 @Component({
   selector: 'basic-data',
@@ -70,6 +71,13 @@ export class BasicDataComponent implements OnInit {
   @Output()
   projectDocumentsChanged = new EventEmitter<any []>();
 
+  projectHelp: any = {};
+  projectFundersHelp: any = {};
+  projectImplementersHelp: any = {};
+  isProjectHelpLoaded: boolean = false;
+  isFunderHelpLoaded: boolean = false;
+  isImplementerHelpLoaded: boolean = false;
+
   basicModel: any = { startDate: null, endDate: null };
 
   displayTabs: any = [
@@ -122,7 +130,8 @@ export class BasicDataComponent implements OnInit {
   constructor(private projectService: ProjectService, private errorModal: ErrorModalComponent,
     private storeService: StoreService, private projectInfoModal: ProjectInfoModalComponent,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
-    private orgModal: CreateOrgModalComponent) { }
+    private orgModal: CreateOrgModalComponent,
+    private helpService: HelpService) { }
 
   ngOnInit() {
     this.currentTab = this.tabConstants.PROJECT;
@@ -258,6 +267,36 @@ export class BasicDataComponent implements OnInit {
       }
     } else {
       this.projectData.exchangeRate = 1;
+    }
+  }
+
+  getProjectHelp() {
+    if (!this.projectHelp.title) {
+      this.helpService.getProjectHelpFields().subscribe(
+        data => {
+          this.projectHelp = data;
+        }
+      );
+    }
+  }
+
+  getProjectFundersHelp() {
+    if (!this.projectFundersHelp.funder) {
+      this.helpService.getProjectFunderHelpFields().subscribe(
+        data => {
+          this.projectFundersHelp = data;
+        }
+      );
+    }
+  }
+
+  getProjectImplementersHelp() {
+    if (!this.projectImplementersHelp.implementer) {
+      this.helpService.getProjectImplementerHelpFields().subscribe(
+        data => {
+          this.projectImplementersHelp = data;
+        }
+      );
     }
   }
 
