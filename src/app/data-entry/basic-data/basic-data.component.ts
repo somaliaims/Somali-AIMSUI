@@ -71,12 +71,16 @@ export class BasicDataComponent implements OnInit {
   @Output()
   projectDocumentsChanged = new EventEmitter<any []>();
 
-  projectHelp: any = {};
-  projectFundersHelp: any = {};
-  projectImplementersHelp: any = {};
+  projectHelp: any = { title: null, startingFinancialYear: null, endingFinancialYear: null,
+    description: null, projectValue: null, projectCurrency: null, fundingType: null,
+    startDate: null, endDate: null};
+  projectFunderHelp: any = { funder: null};
+  projectImplementerHelp: any = { implementer: null};
+  projectDocumentHelp: any = { documentTitle: null, documentUrl: null };
   isProjectHelpLoaded: boolean = false;
   isFunderHelpLoaded: boolean = false;
   isImplementerHelpLoaded: boolean = false;
+  isDocumentHelpLoaded: boolean = false;
 
   basicModel: any = { startDate: null, endDate: null };
 
@@ -250,6 +254,10 @@ export class BasicDataComponent implements OnInit {
         }
       });
     }
+
+    this.getProjectHelp();
+    this.getprojectFunderHelp();
+    this.getprojectImplementerHelp();
   }
 
   getDescriptionLimitInfo() {
@@ -280,21 +288,33 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
-  getProjectFundersHelp() {
-    if (!this.projectFundersHelp.funder) {
+  getprojectFunderHelp() {
+    if (!this.projectFunderHelp.funder) {
       this.helpService.getProjectFunderHelpFields().subscribe(
         data => {
-          this.projectFundersHelp = data;
+          this.projectFunderHelp = data;
         }
       );
     }
   }
 
-  getProjectImplementersHelp() {
-    if (!this.projectImplementersHelp.implementer) {
+  getprojectImplementerHelp() {
+    if (!this.projectImplementerHelp.implementer) {
       this.helpService.getProjectImplementerHelpFields().subscribe(
         data => {
-          this.projectImplementersHelp = data;
+          this.projectImplementerHelp = data;
+        }
+      );
+    }
+  }
+
+  getProjectDocumentHelp() {
+    if (!this.projectDocumentHelp.documentTitle) {
+      this.helpService.getProjectDocumentsHelpFields().subscribe(
+        data => {
+          if (data) {
+            this.projectDocumentHelp = data;
+          }
         }
       );
     }

@@ -57,6 +57,24 @@
                 </div>
               </div>
               <div class="form-group">
+                <label>Start date help</label>
+                <input type="text" class="form-control" [(ngModel)]="projectModel.startDate"
+                  name="startDate" #startDate="ngModel" maxlength="{{helpTextLimit}}"
+                  required />
+                <div *ngIf="projectForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
+                  Help for start date is required
+                </div>
+              </div>
+              <div class="form-group">
+                <label>End date help</label>
+                <input type="text" class="form-control" [(ngModel)]="projectModel.endDate"
+                  name="endDate" #endDate="ngModel" maxlength="{{helpTextLimit}}"
+                  required />
+                <div *ngIf="projectForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
+                  Help for end date is required
+                </div>
+              </div>
+              <div class="form-group">
                 <label>Starting financial year help</label>
                 <input type="text" class="form-control" [(ngModel)]="projectModel.startingFinancialYear"
                   name="startingFinancialYear" #startingFinancialYear="ngModel" maxlength="{{helpTextLimit}}"

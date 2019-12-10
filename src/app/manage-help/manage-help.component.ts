@@ -13,8 +13,8 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 })
 export class ManageHelpComponent implements OnInit {
   helpTextLimit: number = Settings.helpTextLength;
-  projectModel: any = { title: null, startDate: null, endDate: null, projectValue: null, 
-    description: null };
+  projectModel: any = { title: null, startDate: null, endDate: null, startingFinancialYear: null,
+     endingFinancialYear: null, projectValue: null, description: null, fundingType: null };
   funderModel: any = { funder: null };
   implementerModel: any = { implementer: null };
   sectorModel: any = { sector: null, percentage: null };

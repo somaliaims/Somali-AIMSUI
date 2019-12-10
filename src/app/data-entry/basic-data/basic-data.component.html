@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-4 col-md-4">
         <div class="input-group mb-3">
-          <input placeholder="Project name/title" title="Project name/title" class="form-control col-sm-12" type="text"
+          <input placeholder="Project name/title" title={{projectHelp.title}} class="form-control col-sm-12" type="text"
             name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title" required>
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">
             <button class="btn btn-warning" title="Source data available" (click)="showProjectSource()" type="button"><i
@@ -18,13 +18,7 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <!--<select title="Starting financial year" class="form-control col-sm-12" name="startingFinancialYear"
-            [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel" id="startingFinancialYear"
-            required>
-            <option value="null">--Starting year--</option>
-            <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
-          </select>-->
-          <input type="text" title="Start date of the project" onfocus="(this.type='date')" onblur="(this.type='text')"
+          <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
             class="form-control col-sm-12" name="startingDate" placeholder="Project start date"
             [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
         </div>
@@ -35,15 +29,9 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <!--<select title="Ending financial year" class="form-control col-sm-12" name="endingFinancialYear"
-            [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" id="endingFinancialYear"
-            required>
-            <option value="null">--Ending year--</option>
-            <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}</option>
-          </select>-->
-          <input type="text" title="End date of the project" onfocus="(this.type='date')" onblur="(this.type='text')"
+          <input type="text" title="{{projectHelp.endDate}}" onfocus="(this.type='date')" onblur="(this.type='text')"
             class="form-control col-sm-12" name="endDate" placeholder="Project end date"
-            [(ngModel)]="projectData.endDate" #endDate="ngModel" required />
+            [(ngModel)]="projectData.endDate" #endDate="ngModel"  required />
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
           End date is required
@@ -55,7 +43,7 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <select title="Project currency" class="form-control col-sm-12" name="currency"
+          <select title="{{projectHelp.projectCurrency}}" class="form-control col-sm-12" name="currency"
             [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" id="projectCurrency"
             (change)="getExchangeRateForCurrency()" required>
             <option value="null">--Project currency--</option>
@@ -70,9 +58,9 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <input placeholder="Project value (0.00)" title="Project value" class="form-control col-sm-12" type="number"
+          <input placeholder="Project value (0.00)" title="{{projectHelp.projectValue}}" class="form-control col-sm-12" type="number"
             maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue" #projectValue="ngModel"
-            id="projectValue" required>
+            id="projectValue" title="{{projectHelp.projectValue}}" required>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
           Project value is required
@@ -82,8 +70,9 @@
 
       <div class="col-lg-4 col-md-4">
         <div class="form-group form-inline">
-          <select title="Funding type" class="form-control col-sm-12" name="fundingTypeId"
-            [(ngModel)]="projectData.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
+          <select title="{{projectHelp.fundingType}}" class="form-control col-sm-12" name="fundingTypeId"
+            [(ngModel)]="projectData.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId"
+            title="{{projectHelp.fundingType}}" required>
             <option value="null">--Funding type--</option>
             <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
           </select>
@@ -101,7 +90,7 @@
           <label class="col-sm-1 col-form-label justify-left" for="funders">Funders</label>
           <ng-multiselect-dropdown class="col-sm-10" [placeholder]="'Select funders'" [data]="organizationsList"
             [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
-            #selectedFunders="ngModel">
+            #selectedFunders="ngModel" title="{{projectFunderHelp.funder}}">
           </ng-multiselect-dropdown>
 
           <span class="col-sm-1">
@@ -128,7 +117,7 @@
           <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
           <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select implementers'" [data]="organizationsList"
             [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings"
-            name="selectedImplementers" #selectedImplementers="ngModel">
+            name="selectedImplementers" #selectedImplementers="ngModel" title="{{projectImplementerHelp.implementer}}">
           </ng-multiselect-dropdown>
 
           <span class="col-sm-1">
@@ -155,7 +144,7 @@
         <div class="form-group">
           <label for="title">Project description <span class="text-info">(Max characters: {{descriptionLimit}} Left:
               {{descriptionLimitLeft}})</span></label>
-          <textarea class="form-control" id="description" (input)="getDescriptionLimitInfo()"
+          <textarea class="form-control" title="{{projectHelp.description}}" id="description" (input)="getDescriptionLimitInfo()"
             [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="5"
             maxlength="{{descriptionLimit}}">
                         </textarea>
