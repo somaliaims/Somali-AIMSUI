@@ -157,16 +157,15 @@ export class StoreService {
 
   parseAndDisplayJsonAsString(json: any) {
     if (json && json.length > 0) {
-      var parsedJson = null
       var valuesString = '';
-
+      var parsedJson = null;
       try {
-        parsedJson = (JSON.parse(json));
+        parsedJson = eval(json);
       } catch (e) {
         return json;
       }
 
-      if (parsedJson && parsedJson.length > 0) {
+      if(parsedJson[0].id) {
         parsedJson.forEach(function (f) {
           if (valuesString) {
             valuesString += ', ' + f.value;
@@ -174,8 +173,9 @@ export class StoreService {
             valuesString += f.value;
           }
         });
+        return valuesString;
       }
-      return valuesString;
+      return json;
     }
     return json;
   }

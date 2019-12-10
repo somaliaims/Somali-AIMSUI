@@ -71,17 +71,20 @@ export class BasicDataComponent implements OnInit {
   @Output()
   projectDocumentsChanged = new EventEmitter<any []>();
 
+  tooltipOptions = {
+    'placement': 'top',
+    'show-delay': 500
+  }
   projectHelp: any = { title: null, startingFinancialYear: null, endingFinancialYear: null,
     description: null, projectValue: null, projectCurrency: null, fundingType: null,
     startDate: null, endDate: null};
   projectFunderHelp: any = { funder: null};
   projectImplementerHelp: any = { implementer: null};
-  projectDocumentHelp: any = { documentTitle: null, documentUrl: null };
+  projectDocumentHelp: any = { document: null, documentUrl: null };
   isProjectHelpLoaded: boolean = false;
   isFunderHelpLoaded: boolean = false;
   isImplementerHelpLoaded: boolean = false;
   isDocumentHelpLoaded: boolean = false;
-
   basicModel: any = { startDate: null, endDate: null };
 
   displayTabs: any = [
@@ -258,6 +261,7 @@ export class BasicDataComponent implements OnInit {
     this.getProjectHelp();
     this.getprojectFunderHelp();
     this.getprojectImplementerHelp();
+    this.getProjectDocumentHelp();
   }
 
   getDescriptionLimitInfo() {
@@ -309,7 +313,7 @@ export class BasicDataComponent implements OnInit {
   }
 
   getProjectDocumentHelp() {
-    if (!this.projectDocumentHelp.documentTitle) {
+    if (!this.projectDocumentHelp.document) {
       this.helpService.getProjectDocumentsHelpFields().subscribe(
         data => {
           if (data) {

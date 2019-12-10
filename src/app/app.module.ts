@@ -10,11 +10,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxPaginationModule } from 'ngx-pagination';
-import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDatepickerModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import { BlockUIModule } from 'ng-block-ui';
 import { ChartsModule } from 'ng2-charts';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { EmbedVideo } from 'ngx-embed-video';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
@@ -234,6 +235,7 @@ import { DeleteOrganizationTypeComponent } from './delete-organization-type/dele
     AngularFontAwesomeModule,
     NgxPaginationModule,
     NgbDatepickerModule,
+    TooltipModule,
     BlockUIModule.forRoot(),
     ChartsModule,
     NgMultiSelectDropDownModule.forRoot(),

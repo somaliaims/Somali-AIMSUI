@@ -9,6 +9,9 @@
             <button class="btn btn-warning" title="Source data available" (click)="showProjectSource()" type="button"><i
                 class="fa fa-database"></i></button>
           </div>
+          <span class="margin-left-2" tooltip="{{projectHelp.title}}" [options]="tooltipOptions">
+            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+          </span>
         </div>
 
         <div *ngIf="projectForm.submitted" [hidden]="title.valid" class="alert alert-danger">
@@ -17,10 +20,13 @@
       </div>
 
       <div class="col-lg-4 col-md-4">
-        <div class="form-group form-inline">
-          <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-            class="form-control col-sm-12" name="startingDate" placeholder="Project start date"
-            [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
+        <div class="input-group mb-3">
+          <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12"
+            name="startingDate" placeholder="Project start date" [(ngModel)]="projectData.startDate"
+            #startDate="ngModel" required />
+          <span class="margin-left-2" tooltip="{{projectHelp.startDate}}" [options]="tooltipOptions">
+            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+          </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
           Start date is required
@@ -28,10 +34,13 @@
       </div>
 
       <div class="col-lg-4 col-md-4">
-        <div class="form-group form-inline">
+        <div class="input-group mb-3">
           <input type="text" title="{{projectHelp.endDate}}" onfocus="(this.type='date')" onblur="(this.type='text')"
             class="form-control col-sm-12" name="endDate" placeholder="Project end date"
-            [(ngModel)]="projectData.endDate" #endDate="ngModel"  required />
+            [(ngModel)]="projectData.endDate" #endDate="ngModel" required />
+          <span class="margin-left-2" tooltip="{{projectHelp.endDate}}" [options]="tooltipOptions">
+            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+          </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
           End date is required
@@ -42,7 +51,7 @@
     <div class="row">
 
       <div class="col-lg-4 col-md-4">
-        <div class="form-group form-inline">
+        <div class="input-group mb-3">
           <select title="{{projectHelp.projectCurrency}}" class="form-control col-sm-12" name="currency"
             [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" id="projectCurrency"
             (change)="getExchangeRateForCurrency()" required>
@@ -50,6 +59,9 @@
             <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}
             </option>
           </select>
+          <span class="margin-left-2" tooltip="{{projectHelp.projectCurrency}}" [options]="tooltipOptions">
+            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+          </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
           Project currency is required
@@ -57,10 +69,13 @@
       </div>
 
       <div class="col-lg-4 col-md-4">
-        <div class="form-group form-inline">
-          <input placeholder="Project value (0.00)" title="{{projectHelp.projectValue}}" class="form-control col-sm-12" type="number"
-            maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue" #projectValue="ngModel"
-            id="projectValue" title="{{projectHelp.projectValue}}" required>
+        <div class="input-group mb-3">
+          <input placeholder="Project value (0.00)" title="{{projectHelp.projectValue}}" class="form-control col-sm-12"
+            type="number" maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue"
+            #projectValue="ngModel" id="projectValue" title="{{projectHelp.projectValue}}" required>
+          <span class="margin-left-2" tooltip="{{projectHelp.projectValue}}" [options]="tooltipOptions">
+            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+          </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
           Project value is required
@@ -69,26 +84,29 @@
 
 
       <div class="col-lg-4 col-md-4">
-        <div class="form-group form-inline">
+        <div class="input-group mb-3">
           <select title="{{projectHelp.fundingType}}" class="form-control col-sm-12" name="fundingTypeId"
             [(ngModel)]="projectData.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId"
             title="{{projectHelp.fundingType}}" required>
             <option value="null">--Funding type--</option>
             <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
           </select>
+          <span class="margin-left-2" tooltip="{{projectHelp.fundingType}}" [options]="tooltipOptions">
+            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+          </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="fundingTypeId.valid" class="alert alert-danger">
           Funding type is required
         </div>
-
       </div>
+
     </div>
 
     <div class="row margin-top-10">
       <div class="col-lg-6 col-md-6">
         <div class="form-group form-inline">
           <label class="col-sm-1 col-form-label justify-left" for="funders">Funders</label>
-          <ng-multiselect-dropdown class="col-sm-10" [placeholder]="'Select funders'" [data]="organizationsList"
+          <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select funders'" [data]="organizationsList"
             [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
             #selectedFunders="ngModel" title="{{projectFunderHelp.funder}}">
           </ng-multiselect-dropdown>
@@ -98,6 +116,10 @@
               class="col-sm-1" title="Source data available for funders" class="btn btn-warning"><i
                 class="fa fa-database"></i></button>
           </span>
+          <span class="col-sm-1" tooltip="{{projectFunderHelp.funder}}" [options]="tooltipOptions">
+              <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            </span>
+
           <div class="container margin-top-5">
             <span class="col-sm-1">
               &nbsp;
@@ -115,16 +137,18 @@
       <div class="col-lg-6 col-md-6">
         <div class="form-group form-inline">
           <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
-          <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select implementers'" [data]="organizationsList"
+          <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Select implementers'" [data]="organizationsList"
             [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings"
             name="selectedImplementers" #selectedImplementers="ngModel" title="{{projectImplementerHelp.implementer}}">
           </ng-multiselect-dropdown>
-
           <span class="col-sm-1">
             <button type="button" *ngIf="isImplementerDataAvailable && projectId != 0"
               (click)="showImplementersSource()" title="Source data available for implementers"
               class="btn btn-warning"><i class="fa fa-database"></i></button>
           </span>
+          <span class="col-sm-1" tooltip="{{projectImplementerHelp.implementer}}" [options]="tooltipOptions">
+              <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            </span>
 
           <div class="container row margin-top-5">
             <div class="col-sm-2">&nbsp;&nbsp;</div>
@@ -144,9 +168,9 @@
         <div class="form-group">
           <label for="title">Project description <span class="text-info">(Max characters: {{descriptionLimit}} Left:
               {{descriptionLimitLeft}})</span></label>
-          <textarea class="form-control" title="{{projectHelp.description}}" id="description" (input)="getDescriptionLimitInfo()"
-            [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="5"
-            maxlength="{{descriptionLimit}}">
+          <textarea class="form-control" title="{{projectHelp.description}}" id="description"
+            (input)="getDescriptionLimitInfo()" [(ngModel)]="projectData.description" name="description"
+            #description="ngModel" rows="5" maxlength="{{descriptionLimit}}">
                         </textarea>
         </div>
       </div>
@@ -156,22 +180,39 @@
       <table width="100%">
         <tr>
           <td width="35%">
-            <input type="text" placeholder="Resource name" class="form-control" maxlength="50" name="document"
-              [(ngModel)]="documentModel.document" #document="ngModel" />
+            <input type="text" title="{{projectDocumentHelp.document}}" placeholder="Resource name" class="form-control"
+              maxlength="50" name="document" [(ngModel)]="documentModel.document" #document="ngModel" />
+          </td>
+          <td width="5%">
+            <span tooltip="{{projectDocumentHelp.document}}" [options]="tooltipOptions">
+              <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            </span>
+          </td>
+          <td width="5%" *ngIf="isDocumentSourceAvailable && projectId != 0">
+            <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
+              class="btn btn-warning"><i class="fa fa-database"></i></button>
+          </td>
+          <td width="35%">
+            <input type="url" title="{{projectDocumentHelp.documentUrl}}" placeholder="Link to resource"
+              class="form-control" maxlength="255" name="documentUrl" [(ngModel)]="documentModel.documentUrl"
+              #documentUrl="ngModel" />
+          </td>
+          <td width="5%">
+            <span tooltip="{{projectDocumentHelp.documentUrl}}" [options]="tooltipOptions">
+              <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            </span>
           </td>
           <td width="10%" *ngIf="isDocumentSourceAvailable && projectId != 0">
             <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
               class="btn btn-warning"><i class="fa fa-database"></i></button>
           </td>
-          <td width="35%">
-            <input type="url" placeholder="Link to resource" class="form-control" maxlength="255" name="documentUrl"
-              [(ngModel)]="documentModel.documentUrl" #documentUrl="ngModel" />
-          </td>
           <td width="10%">
             <button type="button" class="btn btn-warning text-uppercase" (click)="addResource()">Add resource</button>
           </td>
           <td width="10%">
-            <button class="btn btn-info text-uppercase" type="submit">Save data</button>
+            <span class="float-right">
+              <button class="btn btn-info text-uppercase" type="submit">Save data</button>
+            </span>
           </td>
         </tr>
       </table>
@@ -240,16 +281,6 @@
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
-                <!--<tr>
-                  <td>
-                    <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button id="btnsdate-{{project.id}}"
-                      (click)="enterStartYear($event)" class="btn btn-sm btn-outline-success">>></button>
-                  </td>
-                  <td>
-                    <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button id="btnedate-{{project.id}}"
-                      (click)="enterEndYear($event)" class="btn btn-sm btn-outline-success">>></button>
-                  </td>
-                </tr>-->
                 <tr>
                   <td>
                     <b>Project value:</b> {{project.projectValue}} &nbsp; <button id="btnpvalue-{{project.id}}"
@@ -360,13 +391,6 @@
 
             <div class="form-group">
               <label>start date</label>
-              <!--<select title="Starting financial year" class="form-control col-sm-12" name="startingFinancialYear"
-              [(ngModel)]="projectData.startingFinancialYear" #startingFinancialYear="ngModel"
-              id="startingFinancialYear" required>
-              <option value="null">--Starting year--</option>
-              <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}
-              </option>
-            </select>-->
               <input type="text" title="Start date of the project" onfocus="(this.type='date')"
                 onblur="(this.type='text')" class="form-control col-sm-12" name="startDate"
                 placeholder="Project start date" [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
@@ -377,13 +401,6 @@
 
             <div class="form-group">
               <label>End date</label>
-              <!--<select title="Ending financial year" class="form-control col-sm-12" name="endingFinancialYear"
-              [(ngModel)]="projectData.endingFinancialYear" #endingFinancialYear="ngModel" id="endingFinancialYear"
-              required>
-              <option value="null">--Ending year--</option>
-              <option *ngFor="let year of financialYears" value="{{year.financialYear}}">{{year.financialYear}}
-              </option>
-            </select>-->
               <input type="text" title="End date of the project" onfocus="(this.type='date')"
                 onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
                 [(ngModel)]="projectData.endDate" #startDate="ngModel" required />
