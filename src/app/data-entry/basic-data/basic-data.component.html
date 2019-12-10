@@ -10,7 +10,7 @@
                 class="fa fa-database"></i></button>
           </div>
           <span class="margin-left-2" tooltip="{{projectHelp.title}}" [options]="tooltipOptions">
-            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
         </div>
 
@@ -25,7 +25,7 @@
             name="startingDate" placeholder="Project start date" [(ngModel)]="projectData.startDate"
             #startDate="ngModel" required />
           <span class="margin-left-2" tooltip="{{projectHelp.startDate}}" [options]="tooltipOptions">
-            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
@@ -39,7 +39,7 @@
             class="form-control col-sm-12" name="endDate" placeholder="Project end date"
             [(ngModel)]="projectData.endDate" #endDate="ngModel" required />
           <span class="margin-left-2" tooltip="{{projectHelp.endDate}}" [options]="tooltipOptions">
-            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
@@ -60,7 +60,7 @@
             </option>
           </select>
           <span class="margin-left-2" tooltip="{{projectHelp.projectCurrency}}" [options]="tooltipOptions">
-            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="projectCurrency.valid" class="alert alert-danger">
@@ -74,7 +74,7 @@
             type="number" maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue"
             #projectValue="ngModel" id="projectValue" title="{{projectHelp.projectValue}}" required>
           <span class="margin-left-2" tooltip="{{projectHelp.projectValue}}" [options]="tooltipOptions">
-            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
@@ -92,7 +92,7 @@
             <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
           </select>
           <span class="margin-left-2" tooltip="{{projectHelp.fundingType}}" [options]="tooltipOptions">
-            <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+            <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="fundingTypeId.valid" class="alert alert-danger">
@@ -117,7 +117,7 @@
                 class="fa fa-database"></i></button>
           </span>
           <span class="col-sm-1" tooltip="{{projectFunderHelp.funder}}" [options]="tooltipOptions">
-              <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+              <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
             </span>
 
           <div class="container margin-top-5">
@@ -147,7 +147,7 @@
               class="btn btn-warning"><i class="fa fa-database"></i></button>
           </span>
           <span class="col-sm-1" tooltip="{{projectImplementerHelp.implementer}}" [options]="tooltipOptions">
-              <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+              <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
             </span>
 
           <div class="container row margin-top-5">
@@ -171,7 +171,7 @@
           <textarea class="form-control" title="{{projectHelp.description}}" id="description"
             (input)="getDescriptionLimitInfo()" [(ngModel)]="projectData.description" name="description"
             #description="ngModel" rows="5" maxlength="{{descriptionLimit}}">
-                        </textarea>
+                            </textarea>
         </div>
       </div>
     </div>
@@ -185,7 +185,7 @@
           </td>
           <td width="5%">
             <span tooltip="{{projectDocumentHelp.document}}" [options]="tooltipOptions">
-              <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+              <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
             </span>
           </td>
           <td width="5%" *ngIf="isDocumentSourceAvailable && projectId != 0">
@@ -199,7 +199,7 @@
           </td>
           <td width="5%">
             <span tooltip="{{projectDocumentHelp.documentUrl}}" [options]="tooltipOptions">
-              <button class="btn btn-primary" type="button"><i class="fa fa-question-circle"></i></button>
+              <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
             </span>
           </td>
           <td width="10%" *ngIf="isDocumentSourceAvailable && projectId != 0">

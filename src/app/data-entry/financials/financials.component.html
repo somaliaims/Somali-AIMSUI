@@ -40,19 +40,21 @@
             <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (change)="calculateDisbursementsTotal()"
               name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"
               class="form-control col-md-5" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
+          
+            <span *ngIf="isSourceAvailable && i == 0" class="col-md-1">
+              <button class="btn btn-warning" title="Source data available" (click)="showSource()" type="button"><i
+                  class="fa fa-database"></i></button>
+            </span>
+          
+            <span class="margin-left-2 col-md-1" *ngIf="checkIfCurrentActual(disbursement.year, disbursement.disbursementType)"
+              tooltip="({{help.disbursementActual}} {{disbursement.year}})" [options]="tooltipOptions">
+              <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+            </span>
 
-              <span *ngIf="isSourceAvailable && i == 0" class="col-md-1">
-                  <button  class="btn btn-warning" title="Source data available"
-                  (click)="showSource()" type="button"><i class="fa fa-database"></i></button>
-                </span>
-
-              <span class="text-warning col-md-4" *ngIf="checkIfCurrentActual(disbursement.year, disbursement.disbursementType)">
-                <small><b><i>(Disbursements to date in {{disbursement.year}})</i></b></small>
-              </span>
-              <span class="text-warning col-md-4" *ngIf="checkIfCurrentPlanned(disbursement.year, disbursement.disbursementType)">
-                <small><b><i>(Disbursements planned for the remainder {{disbursement.year}})</i></b></small>
-              </span>
-              
+            <span class="margin-left-2 col-md-1" *ngIf="checkIfCurrentPlanned(disbursement.year, disbursement.disbursementType)" 
+              tooltip="({{help.disbursementPlanned}} {{disbursement.year}})" [options]="tooltipOptions">
+              <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+            </span>
           </div>
 
           <div class="form-group form-inline">

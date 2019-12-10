@@ -4,6 +4,7 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ProjectService } from 'src/app/services/project.service';
+import { HelpService } from 'src/app/services/help-service';
 
 @Component({
   selector: 'financials',
@@ -39,6 +40,8 @@ export class FinancialsComponent implements OnInit {
   @Output()
   disbursementsChanged = new EventEmitter<any[]>();
 
+  help: any = { disbursementActual: null, disbursementPlanned: null };
+
   errorMessage: string = null;
   requestNo: number = 0;
   disbursementsTotal: number = 0;
@@ -59,7 +62,8 @@ export class FinancialsComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private storeService: StoreService, private errorModal: ErrorModalComponent,
-    private projectService: ProjectService) { }
+    private projectService: ProjectService,
+    private helpService: HelpService) { }
 
   ngOnInit() {
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -75,7 +79,7 @@ export class FinancialsComponent implements OnInit {
     this.disbursementModel.projectValue = this.projectValue;
     this.setDisbursementsData();
     this.getExchangeRateForCurrency();
-    
+    this.getHelp();
   }
 
   ngOnChanges() {
@@ -86,6 +90,16 @@ export class FinancialsComponent implements OnInit {
 
   indexTracker(index: number) {
     return index;
+  }
+
+  getHelp() {
+    if (!this.help.disbursementActual) {
+      this.helpService.getProjectDisbursementsHelpFields().subscribe(
+        data => {
+          this.help = data;
+        }
+      );
+    }
   }
 
   getExchangeRateForCurrency() {

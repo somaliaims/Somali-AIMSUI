@@ -72,7 +72,7 @@ export class ProjectSectorsComponent implements OnInit {
   newMappings: any = [];
   locationModel: any = { locationId: null, location: null, fundsPercentage: null, saved: false };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
-
+  sectorHelp: any = {  };
   fieldTypeConstants: any = {
     'Dropdown': 1,
     'Checkbox': 2,
