@@ -27,6 +27,7 @@ export class ViewProjectComponent implements OnInit {
   isImplementerLoading: boolean = true;
   isDisbursementLoading: boolean = true;
   isDocumentLoading: boolean = true;
+  isExcelGenerating: boolean = true;
   excelFile: string = null;
   projectProfileLink: string = null;
   dated: string = null;
@@ -249,9 +250,10 @@ export class ViewProjectComponent implements OnInit {
             var projects = data.projectProfile.projects;
             if (projects.length > 0) {
               var project = projects[0];
-              this.projectMarkers = project.markers;
+              this.projectMarkers = project.markers.filter(m => m.values != '');
             }
           }
+          this.isExcelGenerating = false;
         }
       }
     );

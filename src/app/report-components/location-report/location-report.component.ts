@@ -483,10 +483,12 @@ export class LocationReportComponent implements OnInit {
 
   generatePDF() {
     this.blockUI.start('Generating PDF...');
-    var result = Promise.resolve(this.reportService.generatePDF('rpt-location-pdf-view'));
-    result.then(() => {
-      this.blockUI.stop();
-    });
+    setTimeout(() => {
+      var result = Promise.resolve(this.reportService.generatePDF('rpt-location-pdf-view'));
+      result.then(() => {
+        this.blockUI.stop();
+      });
+    }, 500);
   }
 
   printReport() {

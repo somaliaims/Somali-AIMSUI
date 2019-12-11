@@ -218,23 +218,23 @@ export class ReportService {
             }
             pdf.setPage(i + 1);
             if (width > this.screenConstants.NINETEEN_TWENTY) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .32), (height * .35));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .32), (height * .35), undefined, 'FAST');
             } else if (width <= this.screenConstants.NINETEEN_TWENTY && width > this.screenConstants.SIXTEEN_EIGHTY) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .30), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .30), (height * .45), undefined, 'FAST');
             } else if (width <= this.screenConstants.SIXTEEN_EIGHTY && width > this.screenConstants.SIXTEEN_HUNDRED) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .35), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .35), (height * .45), undefined, 'FAST');
             } else if (width <= this.screenConstants.SIXTEEN_HUNDRED && width > this.screenConstants.FOURTEEN_FOURTY) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .36), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .36), (height * .45), undefined, 'FAST');
             } else if (width <= this.screenConstants.FOURTEEN_FOURTY && width > this.screenConstants.THIRTEEN_SIXTY_SIX) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .41), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .41), (height * .45), undefined, 'FAST');
             } else if(width <= this.screenConstants.THIRTEEN_SIXTY_SIX && width > this.screenConstants.TWELVE_EIGHTY) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .43), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .43), (height * .45), undefined, 'FAST');
             } else if (width <= this.screenConstants.TWELVE_EIGHTY && width > this.screenConstants.TEN_TWENTY_FOUR) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .47), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .47), (height * .45), undefined, 'FAST');
             } else if (width <= this.screenConstants.TEN_TWENTY_FOUR && width > this.screenConstants.EIGHT_HUNDRED) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .61), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .61), (height * .45), undefined, 'FAST');
             } else {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .70), (height * .45));
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .70), (height * .45), undefined, 'FAST');
             }
           }
           pdf.save('Report.pdf');

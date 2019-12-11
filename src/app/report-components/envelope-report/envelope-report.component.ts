@@ -489,10 +489,12 @@ export class EnvelopeReportComponent implements OnInit {
 
   generatePDF() {
     this.blockUI.start('Generating PDF...');
-    var result = Promise.resolve(this.reportService.generatePDF('rpt-envelope-pdf-view'));
-    result.then(() => {
-      this.blockUI.stop();
-    });
+    setTimeout(() => {
+      var result = Promise.resolve(this.reportService.generatePDF('rpt-envelope-pdf-view'));
+      result.then(() => {
+        this.blockUI.stop();
+      });
+    }, 500);
   }
 
   onChangeStartingYear() {

@@ -289,10 +289,12 @@ export class BudgetReportSummaryComponent implements OnInit {
 
   generatePDF() {
     this.blockUI.start('Generating PDF...');
-    var result = Promise.resolve(this.reportService.generatePDF('rpt-budget-report'));
-    result.then(() => {
-      this.blockUI.stop();
-    });
+    setTimeout(() => {
+      var result = Promise.resolve(this.reportService.generatePDF('rpt-budget-report'));
+      result.then(() => {
+        this.blockUI.stop();
+      });
+    }, 500);
   }
 
   getTodaysDate() {
