@@ -310,7 +310,7 @@ export class NewProjectComponent implements OnInit {
 
   filterProjectMatches() {
     var str = this.model.title;
-
+    
     if (this.model.title) {
       str = str.toLowerCase();
       this.filteredIatiProjects = this.iatiProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
@@ -322,7 +322,7 @@ export class NewProjectComponent implements OnInit {
 
     if (this.model.selectedIATIOrganizations.length > 0) {
       var orgs = this.model.selectedIATIOrganizations.map(o => o.organizationName);
-      this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
+      this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
         var isMatched = false;
         var projectOrgs = project.organizations.map(o => o.name);
         for (var i = 0; i < projectOrgs.length; i++) {
@@ -339,7 +339,7 @@ export class NewProjectComponent implements OnInit {
 
     if (this.model.selectedOrganizations.length > 0) {
       var orgs = this.model.selectedOrganizations.map(o => o.organizationName);
-      this.filteredAIMSProjects = this.aimsProjects.filter(function (project) {
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
         var isMatched = false;
         var projectOrgs = project.organizations.map(o => o.name);
         for (var i = 0; i < projectOrgs.length; i++) {
@@ -358,7 +358,7 @@ export class NewProjectComponent implements OnInit {
     if (this.model.selectedSectors.length > 0) {
       var sectors = this.model.selectedSectors.map(s => s.sectorName);
       //IATI
-      this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
+      this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
         var isMatched = false;
         var projectSectors = project.sectors.map(o => o.name);
         for (var i = 0; i < projectSectors.length; i++) {
@@ -373,7 +373,7 @@ export class NewProjectComponent implements OnInit {
       }.bind(this));
 
       //AIMS
-      this.filteredAIMSProjects = this.aimsProjects.filter(function (project) {
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
         var isMatched = false;
         var projectSectors = project.sectors.map(o => o.name);
         for (var i = 0; i < projectSectors.length; i++) {
@@ -392,7 +392,7 @@ export class NewProjectComponent implements OnInit {
     if (this.model.selectedLocations.length > 0) {
       var locations = this.model.selectedLocations.map(l => l.location);
       //IATI
-      this.filteredIatiProjects = this.iatiProjects.filter(function (project) {
+      this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
         var isMatched = false;
         var projectLocations = project.locations.map(o => o.name);
         for (var i = 0; i < projectLocations.length; i++) {
@@ -407,7 +407,7 @@ export class NewProjectComponent implements OnInit {
       }.bind(this));
 
       //AIMS
-      this.filteredAIMSProjects = this.aimsProjects.filter(function (project) {
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
         var isMatched = false;
         var projectLocations = project.locations.map(o => o.name);
         for (var i = 0; i < projectLocations.length; i++) {
@@ -423,7 +423,7 @@ export class NewProjectComponent implements OnInit {
     }
 
     if (this.model.startingYear != 0) {
-      this.filteredIatiProjects = this.iatiProjects.filter((project) => {
+      this.filteredIatiProjects = this.filteredIatiProjects.filter((project) => {
         if (Date.parse(project.startDate)) {
           var dated = new Date(project.startDate);
           var year = dated.getFullYear();
@@ -433,7 +433,7 @@ export class NewProjectComponent implements OnInit {
         }
       });
 
-      this.filteredAIMSProjects = this.aimsProjects.filter((project) => {
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter((project) => {
         var dated = new Date(project.startDate);
         var year = dated.getFullYear();
         if (year >= this.model.startingYear) {
@@ -443,7 +443,7 @@ export class NewProjectComponent implements OnInit {
     }
 
     if (this.model.endingYear != 0) {
-      this.filteredIatiProjects = this.iatiProjects.filter((project) => {
+      this.filteredIatiProjects = this.filteredIatiProjects.filter((project) => {
         if (Date.parse(project.startDate)) {
           var dated = new Date(project.startDate);
           var year = dated.getFullYear();
@@ -453,7 +453,7 @@ export class NewProjectComponent implements OnInit {
         }
       });
 
-      this.filteredAIMSProjects = this.aimsProjects.filter((project) => {
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter((project) => {
         var dated = new Date(project.endDate);
         var year = dated.getFullYear();
         if (year <= this.model.endingYear) {

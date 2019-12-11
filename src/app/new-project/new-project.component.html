@@ -73,7 +73,7 @@
                 <div class="col-md-8">
                   <div class="input-group">
                     <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
-                      [(ngModel)]="model.title" name="title" #title onkeypress="return event.keyCode != 13;" required>
+                      [(ngModel)]="model.title" (input)="filterProjectMatches()" name="title" #title onkeypress="return event.keyCode != 13;">
                     <span class="input-group-btn">
                       <button class="btn btn-outline-info btn-lg" type="button">
                         <i class="fa fa-search"></i>
