@@ -25,6 +25,7 @@ import { Messages } from '../config/messages';
 export class ProjectsComponent implements OnInit {
 
   isSearchVisible = false;
+  isAnyFilterSet = false;
   projectsList: any = [];
   filteredProjectsList: any = [];
   errorMessage: string = null;
@@ -156,6 +157,117 @@ export class ProjectsComponent implements OnInit {
     };
   }
 
+  onSelectProject(item: any) {
+    this.setFilter();
+  }
+
+  onDeSelectProject(item: any) {
+    if (this.model.selectedProjects.length == 0) {
+      this.manageResetDisplay();
+    } else {
+      this.setFilter();
+    }
+  }
+
+  onSelectAllProjects(items: any) {
+    this.setFilter();
+  }
+
+  onDeSelectAllProjects(items: any) {
+    this.model.selectedProjects = [];
+    this.manageResetDisplay();
+  }
+
+  onSelectSector(item: any) {
+    this.setFilter();
+  }
+
+  onDeSelectSector(item: any) {
+    var id = item.id;
+    if (this.model.selectedSectors.length == 0) {
+      this.manageResetDisplay();
+    } else {
+      this.setFilter();
+    }
+  }
+
+  onSelectAllSectors(items: any) {
+    this.setFilter();
+  }
+
+  onDeSelectAllSectors(items: any) {
+    this.model.selectedSectors = [];
+    this.manageResetDisplay();
+  }
+
+  onSelectOrganization(item: any) {
+    this.setFilter();
+  }
+
+  onDeSelectOrganization(item: any) {
+    var id = item.id;
+    if (this.model.selectedOrganizations.length == 0) {
+      this.manageResetDisplay();
+    } else {
+      this.setFilter();
+    }
+  }
+
+  onSelectAllOrganizations(items: any) {
+    this.setFilter();
+  }
+
+  onDeSelectAllOrganizations(items: any) {
+    this.model.selectedOrganizations = [];
+    this.manageResetDisplay();
+  }
+
+  onSelectLocation(item: any) {
+    this.setFilter();
+  }
+
+  onDeSelectLocation(item: any) {
+    var id = item.id;
+    if (this.model.selectedLocations.length == 0) {
+      this.manageResetDisplay();
+    } else {
+      this.setFilter();
+    }
+  }
+
+  onSelectAllLocations(items: any) {
+    this.setFilter();
+  }
+
+  onDeSelectAllLocations(items: any) {
+    this.model.selectedLocations = [];
+    this.manageResetDisplay();
+  }
+
+  startingYearChanged() {
+    if (this.model.startingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  endingYearChanged() {
+    if (this.model.endingYear != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
+  descriptionChanged() {
+    if (this.model.description.length > 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
   manageSectorLevel() {
     if (this.model.sectorLevel) {
       var level = parseInt(this.model.sectorLevel);
@@ -176,6 +288,9 @@ export class ProjectsComponent implements OnInit {
           this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
           break;
       }
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
     }
   }
 
@@ -302,72 +417,6 @@ export class ProjectsComponent implements OnInit {
     this.router.navigateByUrl('/view-project/' + id);
   }
 
-  onSectorSelect(item: any) {
-    var id = item.id;
-    if (this.selectedSectors.indexOf(id) == -1) {
-      this.selectedSectors.push(id);
-    }
-  }
-
-  onSectorDeSelect(item: any) {
-    var id = item.id;
-    var index = this.selectedSectors.indexOf(id);
-    this.selectedSectors.splice(index, 1);
-  }
-
-  onSectorSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedSectors.indexOf(id) == -1) {
-        this.selectedSectors.push(id);
-      }
-    }.bind(this))
-  }
-
-  onOrganizationSelect(item: any) {
-    var id = item.id;
-    if (this.selectedOrganizations.indexOf(id) == -1) {
-      this.selectedOrganizations.push(id);
-    }
-  }
-
-  onOrganizationDeSelect(item: any) {
-    var id = item.id;
-    var index = this.selectedOrganizations.indexOf(id);
-    this.selectedOrganizations.splice(index, 1);
-  }
-
-  onOrganizationSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedOrganizations.indexOf(id) == -1) {
-        this.selectedOrganizations.push(id);
-      }
-    }.bind(this));
-  }
-
-  onLocationSelect(item: any) {
-    var id = item.id;
-    if (this.selectedLocations.indexOf(id) == -1) {
-      this.selectedLocations.push(id);
-    }
-  }
-
-  onLocationDeSelect(item: any) {
-    var id = item.id;
-    var index = this.selectedLocations.indexOf(id);
-    this.selectedLocations.splice(index, 1);
-  }
-
-  onLocationSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedLocations.indexOf(id) == -1) {
-        this.selectedLocations.push(id);
-      }
-    }.bind(this));
-  }
-
   showSearchOptions() {
     this.isSearchVisible = true;
     return false;
@@ -428,6 +477,31 @@ export class ProjectsComponent implements OnInit {
         }
       }
     );
+  }
+
+  setFilter() {
+    this.isAnyFilterSet = true;
+  }
+
+  manageResetDisplay() {
+    if (this.model.selectedProjects.length == 0 && this.model.startingYear == 0 &&
+      this.model.endingYear == 0 && this.model.parentSectorId == 0 &&
+      this.model.selectedSectors.length == 0 && this.model.selectedOrganizations.length == 0 &&
+      this.model.selectedLocations.length == 0 && !this.model.description) {
+      this.isAnyFilterSet = false;
+    } else {
+      this.isAnyFilterSet = true;
+    }
+  }
+
+  resetFilters() {
+    this.model.selectedProjects = [];
+    this.model.selectedOrganizations = [];
+    this.model.selectedLocations = [];
+    this.model.selectedSectors = [];
+    this.model.startingYear = 0;
+    this.model.endingYear = 0;
+    this.model.description = null;
   }
 
 }

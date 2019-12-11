@@ -27,8 +27,7 @@
       </div>-->
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
+    <div class="col-lg-12 col-md-12">
         <div class="card">
           <div class="card-body">
             <form class="form-signin" #searchForm="ngForm">
@@ -37,6 +36,8 @@
                     <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projectTitles"
                     [(ngModel)]="model.selectedProjects" 
                     [settings]="projectsSettings" name="selectedProjects"
+                    (onSelect)="onSelectProject($event)" (onDeSelect)="onDeSelectProject($event)"
+                    (onSelectAll)="onSelectAllProjects($event)" (onDeSelectAll)="onDeSelectAllProjects($event)"
                     #selectedProjects="ngModel"></ng-multiselect-dropdown>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -44,7 +45,7 @@
                     <tr>
                       <td>
                         <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear" name="startingYear"
-                          #startingYear="ngModel" required>
+                          #startingYear="ngModel" (change)="startingYearChanged()" required>
                           <option value="0">--Starting year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
@@ -52,7 +53,7 @@
                       <td>&nbsp;&nbsp;</td>
                       <td>
                         <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
-                          #endingYear="ngModel" required>
+                          #endingYear="ngModel" (change)="endingYearChanged()" required>
                           <option value="0">--Ending year--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}</option>
                         </select>
@@ -73,12 +74,16 @@
                 <div class="col-lg-3 col-md-3">
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                    (onSelect)="onSelectSector($event)" (onDeSelect)="onDeSelectSector($event)"
+                    (onSelectAll)="onSelectAllSectors($event)" (onDeSelectAll)="onDeSelectAllSectors($event)"
                     #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" [data]="organizationsList"
                     [(ngModel)]="model.selectedOrganizations" [settings]="organizationsSettings"
+                    (onSelect)="onSelectOrganization($event)" (onDeSelect)="onDeSelectOrganization($event)"
+                    (onSelectAll)="onSelectAllOrganizations($event)" (onDeSelectAll)="onDeSelectAllOrganizations($event)"
                      name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
@@ -86,25 +91,29 @@
               <div class="row margin-top-10">
                 <div class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'" [data]="locationsList" [(ngModel)]="model.selectedLocations"
-                    [settings]="locationsSettings"  name="selectedLocations" #selectedLocations="ngModel">
+                    [settings]="locationsSettings"  name="selectedLocations" 
+                    (onSelect)="onSelectLocation($event)" (onDeSelect)="onDeSelectLocation($event)"
+                    (onSelectAll)="onSelectAllLocations($event)" (onDeSelectAll)="onDeSelectAllLocations($event)"
+                    #selectedLocations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
                   <input type="text" class="form-control" title="Enter some keywords from description to search" placeholder="Keywords from description"
-                  maxlength="100" name="description" [(ngModel)]="model.description" #description="ngModel" />
+                  maxlength="100" name="description" (input)="descriptionChanged()" [(ngModel)]="model.description" #description="ngModel" />
                 </div>
               </div>
 
               <div class="col-lg-12 col-md-12 margin-top-10">
-                <span class="float-right">
+                <div class="float-right">
                   <button class="btn btn-info" (click)="advancedSearchProjects()">Search projects</button>
-                </span>
+                  <button *ngIf="isAnyFilterSet" type="button"
+                      class="btn btn-primary margin-left-2" (click)="resetFilters()">Reset filters</button>
+                </div>
               </div>
 
             </form>
           </div>
         </div>
-      </div>
     </div>
 
     <div class="row text-center" *ngIf="isLoading">
