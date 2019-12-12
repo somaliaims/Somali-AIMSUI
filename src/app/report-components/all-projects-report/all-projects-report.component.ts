@@ -62,7 +62,6 @@ export class AllProjectsReportComponent implements OnInit {
             this.setExcelFile();
           }
         }
-        this.btnReportText = 'Update report';
         this.blockUI.stop();
       }
     );

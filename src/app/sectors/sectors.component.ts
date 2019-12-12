@@ -16,7 +16,7 @@ export class SectorsComponent implements OnInit {
   defaultSectorTypeId: number = 0;
   selectedSectorTypeId: number = 0;
   sectorsList: any = [];
-  inputTextHolder: string = 'Enter sector name';
+  inputTextHolder: string = 'Enter sector to search';
   filteredSectorsList: any = [];
   sectorTypesList: any = [];
   criteria: string = null;

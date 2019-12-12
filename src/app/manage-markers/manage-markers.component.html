@@ -61,13 +61,14 @@
             <div *ngIf="isManyValuesDisplay" class="form-group">
               <label for="title">Enter value</label>
               <div class="input-group">
-                <input class="form-control" type="text" id="new-value" [elFocus]="isNewValueFocus" maxlength="20"
+                <input class="form-control" type="text" id="new-value" [elFocus]="isNewValueFocus" maxlength="30"
                   [(ngModel)]="model.newValue" name="newValue" #newValue="ngModel" aria-label="Enter value"
                   onkeypress="return event.keyCode != 13;" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-success" (click)="addValue()" type="button">Add value >></button>
+                  <button class="btn btn-info" (click)="addValue()" type="button">Add value >></button>
                 </div>
               </div>
+              <div class="text-info"><i>(Max length: 30)</i></div>
             </div>
 
             <button [class.disable]="isBtnDisbaled" class="btn btn-lg btn-info btn-block text-uppercase"

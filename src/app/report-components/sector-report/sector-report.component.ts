@@ -110,7 +110,6 @@ export class SectorReportComponent implements OnInit {
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors" },
     { "id": 2, "level": "Sub sectors" },
-    //{ "id": 3, "level": "Sub sub sectors" },
   ];
 
   sectorLevelCodes: any = {
@@ -214,15 +213,10 @@ export class SectorReportComponent implements OnInit {
     },
     tooltips: {
       callbacks: {
-        // this callback is used to create the tooltip label
         label: function (tooltipItem, data) {
-          // get the data label and data value to display
-          // convert the data value to local string so it uses a comma seperated number
           var dataLabel = data.labels[tooltipItem.index];
           var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
-          // make this isn't a multi-line label (e.g. [["label 1 - line 1, "line 2, ], [etc...]])
           dataLabel += value;
-          // return the text to display on the tooltip
           return dataLabel;
         }
       }
@@ -266,7 +260,6 @@ export class SectorReportComponent implements OnInit {
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS
   };
-  //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
     private sectorService: SectorService, private fyService: FinancialYearService,
@@ -473,13 +466,14 @@ export class SectorReportComponent implements OnInit {
       projectIds = this.model.selectedProjects.map(p => p.id);
     }
     var searchModel = {
-      projectIds: projectIds,
+      projectIds: (this.loadReport) ? this.paramProjectIds : projectIds,
       locationId: this.model.locationId,
       startingYear: this.model.startingYear,
       endingYear: this.model.endingYear,
-      organizationIds: this.model.selectedOrganizations.map(o => o.id),
+      organizationIds: (this.loadReport) ? this.paramOrgIds : this.model.selectedOrganizations.map(o => o.id),
       parentSectorId: this.model.parentSectorId,
-      sectorIds: this.model.selectedSectors.map(s => s.id),
+      sectorLevel: this.model.sectorLevel,
+      sectorIds: (this.loadReport) ? this.paramSectorIds : this.model.selectedSectors.map(s => s.id),
     };
 
     this.resetSearchResults();
@@ -574,8 +568,9 @@ export class SectorReportComponent implements OnInit {
         }
         this.blockUI.stop();
       }
-    )
+    );
 
+    this.loadReport = false;
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);
@@ -660,28 +655,32 @@ export class SectorReportComponent implements OnInit {
     this.sectorService.getDefaultSectors().subscribe(
       data => {
         if (data) {
-          this.allSectorsList = data;
-          this.sectorsList = this.allSectorsList.filter(s => s.parentSector == null);
-          this.sectorIds = this.sectorsList.map(s => s.id);
-          var subSectorsList = this.allSectorsList.filter(s => this.sectorIds.indexOf(s.parentSectorId) != -1);
-          this.subSectorIds = subSectorsList.map(s => s.id);
-          var subSubSectors = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.parentSectorId) != -1);
-          this.subSubSectorIds = subSubSectors.map(s => s.id);
+          var allSectorsList = data;
+          this.allSectorsList = allSectorsList;
+          var sectorsList = allSectorsList.filter(s => s.parentSector == null);
+          this.sectorsList = sectorsList;
+          var sectorIds = sectorsList.map(s => s.id);
+          var subSectorsList = allSectorsList.filter(s => sectorIds.indexOf(s.parentSectorId) != -1);
+          var subSectorIds = subSectorsList.map(s => s.id);
+          this.subSectorIds = subSectorIds;
+          var subSubSectors = allSectorsList.filter(s => subSectorIds.indexOf(s.parentSectorId) != -1);
+          var subSubSectorIds = subSubSectors.map(s => s.id);
+          this.subSubSectorIds = subSubSectorIds;
 
           if (this.loadReport) {
             if (this.paramSectorIds.length > 0) {
-              var sectorId = this.paramSectorIds[0];
-              if (this.sectorIds.indexOf(sectorId) != -1) {
+              var sectorId = parseInt(this.paramSectorIds[0]);
+              if (sectorIds.indexOf(sectorId) != -1) {
                 this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
-              } else if (this.subSubSectorIds.indexOf(sectorId) != -1) {
+              } else if (subSectorIds.indexOf(sectorId) != -1) {
                 this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
-              } else if (this.subSubSectorIds.indexOf(sectorId) != -1) {
+              } else if (subSubSectorIds.indexOf(sectorId) != -1) {
                 this.model.sectorLevel = this.sectorLevelCodes.SUB_SUB_SECTORS;
               }
 
               this.manageSectorLevel();
               this.paramSectorIds.forEach(function (id) {
-                var sector = this.sectorsList.filter(s => s.id == id);
+                var sector = allSectorsList.filter(s => s.id == id);
                 if (sector.length > 0) {
                   this.model.selectedSectors.push(sector[0]);
                 }
@@ -707,7 +706,6 @@ export class SectorReportComponent implements OnInit {
     this.organizationService.getOrganizationsHavingEnvelope().subscribe(
       data => {
         this.organizationsList = data;
-
         if (this.loadReport) {
           if (this.paramOrgIds.length > 0) {
             this.paramOrgIds.forEach(function (id) {
@@ -719,11 +717,8 @@ export class SectorReportComponent implements OnInit {
           }
           this.searchProjectsByCriteriaReport();
         }
-      },
-      error => {
-        console.log(error);
       }
-    )
+    );
   }
 
   onChangeStartingYear() {
