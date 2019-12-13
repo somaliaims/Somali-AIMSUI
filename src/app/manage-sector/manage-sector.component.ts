@@ -85,7 +85,7 @@ export class ManageSectorComponent implements OnInit {
           }
         }
       }
-    )
+    );
   }
 
   getSectors() {
@@ -93,18 +93,15 @@ export class ManageSectorComponent implements OnInit {
       data => {
         if (data) {
           var sectors = data;
-          this.sectors = sectors.filter(s => s.sectorTypeId == this.model.sectorTypeId);
+          this.sectors = sectors.filter(s => s.sectorTypeId == this.model.sectorTypeId && s.parentSector == null);
           if (this.model.id != 0) {
             if (this.sectors.filter(s => s.id == this.model.id).length == 0) {
               this.router.navigateByUrl('sectors');
             }
           }
         }
-      },
-      error => {
-        console.log(error);
       }
-    )
+    );
   }
 
   getSectorChildren(id: string) {

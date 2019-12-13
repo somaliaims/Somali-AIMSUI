@@ -20,7 +20,12 @@ export class ManageYearComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   sectorTypes: any = [];
-  model = { startDate: null, endDate: null };
+  months: any = Settings.months;
+  yearLowerLimit: number = 0;
+  yearUpperLimit: number = 0;
+  yearSpan: number = Settings.yearLimit;
+  yearsList: any = [];
+  model = { startingMonth: 0, startingYear: 0, endingMonth: 0, endingYear: 0 };
 
   constructor(private financialYearService: FinancialYearService,     
     private router: Router,
@@ -29,6 +34,7 @@ export class ManageYearComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
@@ -36,34 +42,20 @@ export class ManageYearComponent implements OnInit {
       }
     });
     this.storeService.newReportItem(Settings.dropDownMenus.management);
+    var currentYear = this.storeService.getCurrentYear();
+    this.yearLowerLimit = currentYear - this.yearSpan;
+    this.yearUpperLimit = currentYear + this.yearSpan;
+    for(var year = this.yearLowerLimit; year <= this.yearUpperLimit; year++) {
+      this.yearsList.push(year);
+    }
   }
 
   saveFinancialYear() {
-    var startDate = new Date(this.model.startDate);
-    var endDate = new Date(this.model.endDate);
-
-    if (startDate > endDate) {
-      this.errorMessage = Messages.INVALID_DATE_RANGE;
-      this.errorModal.openModal();
-      return false;
-    }
-
-    var sDay = startDate.getDate();
-    var sMonth = startDate.getMonth() + 1;
-    var sYear = startDate.getFullYear();
-    var eDay = endDate.getDate();
-    var eMonth = endDate.getMonth() + 1;
-    var eYear = endDate.getFullYear();
-
-    if ((eYear - 1 == sYear)) {
-      if ((sMonth == 12 && sDay >= 25) && (eMonth == 1 && eDay <= 5)) {
-        eYear = sYear;
-      }
-    }
-
     var model = {
-      startingYear: sYear,
-      endingYear: eYear
+      startingMonth: this.model.startingMonth,
+      startingYear: this.model.startingYear,
+      endingMonth: this.model.endingMonth,
+      endingYear: this.model.endingYear
     };
 
     this.isBtnDisabled = true;
@@ -72,8 +64,7 @@ export class ManageYearComponent implements OnInit {
       data => {
         this.router.navigateByUrl('financial-years');
       }
-    )
-    
+    );
   }
 
   resetForm() {

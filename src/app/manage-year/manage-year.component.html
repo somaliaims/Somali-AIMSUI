@@ -10,7 +10,7 @@
         </li>
       </ul>
     </div>
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="col-sm-12 col-md-9 col-lg-9 mx-auto">
       <div class="card card-signin my-5">
         <div class="card-body">
           <div *ngIf="isError" class="alert alert-danger alert-dismissible">
@@ -18,21 +18,40 @@
             <strong>Error!</strong> {{errorMessage}}
           </div>
           <h5 class="card-title text-center">Manage financial year/s</h5>
+          
           <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveFinancialYear()" #yearForm="ngForm">
-            <div class="form-group">
-              <label>Start date:&nbsp;</label>
-              <input type="date" name="startDate" class="form-control" [(ngModel)]="model.startDate" #startDate required />
-              <div *ngIf="yearForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
-                Start date is required
-              </div>
+            <div class="input-group mb-3">
+              <label class="col-md-3">Starting month/year:&nbsp;</label>
+              <select class="form-control" name="startingMonth" [(ngModel)]="model.startingMonth" #startingMonth="ngModel">
+                <option value="0">--Starting month--</option>
+                <option *ngFor="let month of months" value="{{month.id}}">
+                  {{month.month}}
+                </option>
+              </select>
+              &nbsp;
+              <select class="form-control" name="startingYear" [(ngModel)]="model.startingYear" #startingYear="ngModel">
+                <option value="0">--Starting year--</option>
+                <option *ngFor="let year of yearsList" value="{{year}}">
+                  {{year}}
+                </option>
+              </select>
             </div>
-            
-            <div class="form-group">
-              <label>End date:&nbsp;</label>
-              <input type="date" name="endDate" class="form-control" [(ngModel)]="model.endDate" #endDate required />
-              <div *ngIf="yearForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
-                End date is required
-              </div>
+
+            <div class="input-group mb-3">
+              <label class="col-md-3">Ending month/year:&nbsp;</label>
+              <select class="form-control" name="endingMonth" [(ngModel)]="model.endingMonth" #endingMonth="ngModel">
+                <option value="0">--Ending month--</option>
+                <option *ngFor="let month of months" value="{{month.id}}">
+                  {{month.month}}
+                </option>
+              </select>
+              &nbsp;
+              <select class="form-control" name="endingYear" [(ngModel)]="model.endingYear" #endingYear="ngModel">
+                <option value="0">--Ending year--</option>
+                <option *ngFor="let year of yearsList" value="{{year}}">
+                  {{year}}
+                </option>
+              </select>
             </div>
             
             <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase margin-top-10" type="submit">{{btnText}}</button>
