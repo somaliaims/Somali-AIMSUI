@@ -178,8 +178,9 @@ export class ReportService {
       var result  = html2canvas(quotes)
         .then((canvas) => {
           var container = document.querySelector(".row");
+          var aspectRatio = window.devicePixelRatio;
           //var docWidth = container.getBoundingClientRect().width;
-          var docWidth = container.clientWidth;
+          var docWidth = (container.clientWidth * aspectRatio);
           var pageHeight = this.pageHeight;
           //! MAKE YOUR PDF
           var pdf = null;
