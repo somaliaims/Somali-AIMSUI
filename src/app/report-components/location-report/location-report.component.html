@@ -225,18 +225,23 @@
               <tbody>
                 <tr class="row-highlight" title="Click here to view detail"
                   (click)="displayHideRow(locationProject.locationName)">
-                  <td colspan="6" width="100%">
+                  <td colspan="3">
                     <span *ngIf="!locationProject.isDisplay"><i class="fa fa-plus-square"></i></span>
                     <span *ngIf="locationProject.isDisplay"><i class="fa fa-minus-square"></i></span>
                     &nbsp;
                     <b>
                       <i>
-                        {{locationProject.locationName}} - Project cost ({{formatNumber(locationProject.totalFunding)}})
-                        &nbsp;&nbsp;
-                        Disbursements ({{formatNumber(locationProject.totalDisbursements)}})
+                        {{locationProject.locationName}}
                       </i>
                     </b>
                   </td>
+                  <td class="text-right">
+                    {{formatNumber(locationProject.totalFunding)}}
+                  </td>
+                  <td class="text-right">
+                    {{formatNumber(locationProject.totalDisbursements)}}
+                  </td>
+                  <td>&nbsp;</td>
                 </tr>
                 <tr [hidden]="!locationProject.isDisplay" class="child"
                   *ngFor="let project of locationProject.projects">
@@ -264,7 +269,7 @@
           <div>
             <table class="table table-condensed table-striped small table-fixed">
               <tr>
-                <th width="25%">&nbsp;</th>
+                <th width="15%">&nbsp;</th>
                 <th width="15%">&nbsp;</th>
                 <th width="15%">&nbsp;</th>
                 <th class="text-right" width="15%">

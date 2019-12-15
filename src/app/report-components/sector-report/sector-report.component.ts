@@ -1062,7 +1062,7 @@ export class SectorReportComponent implements OnInit {
   displayHideRow(sector) {
     if (this.model.sectorLevel == this.sectorLevelCodes.SECTORS) {
       if (this.parentSectorsWithProjects.length > 0) {
-        var selectSector = this.parentSectorsWithProjects.filter(s => s.sectorId == sector);
+        var selectSector = this.parentSectorsWithProjects.filter(s => s.sectorName == sector);
         if (selectSector.length > 0) {
           selectSector[0].isDisplay = !selectSector[0].isDisplay;
         }
