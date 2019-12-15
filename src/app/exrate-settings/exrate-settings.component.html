@@ -64,7 +64,7 @@
               <div class="form-group mx-sm-3 mb-2">
                 <select name="newYear" id="newYear" class="form-control" [(ngModel)]="model.newYear" #newYear="ngModel">
                   <option value="null">--Financial year--</option>
-                  <option *ngFor="let year of financialYearsList" value={{year.financialYear}}>{{year.financialYear}}</option>
+                  <option *ngFor="let year of financialYearsList" value={{year.financialYear}}>{{year.label}}</option>
                 </select>
               </div>
               <button [class.disable]="!defaultCurrency" type="submit" class="btn btn-info mb-2 text-uppercase">Save new rate</button>

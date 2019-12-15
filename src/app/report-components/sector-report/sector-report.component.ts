@@ -110,6 +110,7 @@ export class SectorReportComponent implements OnInit {
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors" },
     { "id": 2, "level": "Sub sectors" },
+    //{ "id": 0, "level": "No sectors" }
   ];
 
   sectorLevelCodes: any = {
