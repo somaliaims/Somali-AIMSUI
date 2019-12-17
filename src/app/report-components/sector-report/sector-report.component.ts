@@ -60,6 +60,7 @@ export class SectorReportComponent implements OnInit {
   btnReportText: string = 'View report';
   isAnyFilterSet: boolean = false;
   isShowStackedChart: boolean = false;
+  isNoSectorReport: boolean = false;
 
   yearsList: any = [];
   allSectorsList: any = [];
@@ -141,6 +142,11 @@ export class SectorReportComponent implements OnInit {
     { id: 1, value: 'Open exchange api' },
     { id: 2, value: 'African bank' }
   ];
+
+  noSectorOptions: any = {
+    PROJECTS_WITH_SECTORS: 1,
+    PROJECTS_WITHOUT_SECTORS: 2
+  };
 
   reportDataList: any = [];
   dropdownSettings: any = {};
@@ -260,7 +266,8 @@ export class SectorReportComponent implements OnInit {
     sectorIds: [], locationId: 0, selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], selectedProjects: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS
+    selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS,
+    noSectorOption: this.noSectorOptions.PROJECTS_WITH_SECTORS
   };
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
@@ -276,6 +283,7 @@ export class SectorReportComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         if (params) {
           this.model.title = (params.title) ? params.title : null;
+          this.isNoSectorReport = (params.noSectors) ? true : false; 
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
@@ -483,6 +491,11 @@ export class SectorReportComponent implements OnInit {
     };
 
     this.resetSearchResults();
+    if (this.isNoSectorReport) {
+      this.model.sectorLevel = this.sectorLevelCodes.NO_SECTORS;
+      this.model.selectedSectors = [];
+    }
+
     if (this.model.sectorLevel == this.sectorLevelCodes.NO_SECTORS) {
       
       this.reportService.getNoSectorProjectsReport(searchModel).subscribe(
@@ -515,7 +528,7 @@ export class SectorReportComponent implements OnInit {
           }
         }
       );
-
+      this.isNoSectorReport = false;
     } else {
 
       this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(

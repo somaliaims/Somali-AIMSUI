@@ -57,6 +57,7 @@ export class LocationReportComponent implements OnInit {
   isLoading: boolean = true;
   isDataLoading: boolean = true;
   isShowStackedChart: boolean = false;
+  isNoSectorReport: boolean = false;
   btnReportText: string = 'View report';
 
   chartOptions: any = [
@@ -97,6 +98,16 @@ export class LocationReportComponent implements OnInit {
     'PLANNED_DISBURSEMENTS': 2,
     'DISBURSEMENTS': 3
   };
+
+  noLocationOptions: any = [
+    { id: 1, option: 'Project with locations' },
+    { id: 2, option: 'Project without locations' },
+  ];
+
+  noLocationCodes: any = {
+    PROJECTS_WITH_LOCATIONS: 1,
+    PROJECTS_WITHOUT_LOCATIONS: 2
+  }
 
   dataOptionLabels: any = {
     ACTUAL_DISBURSEMENTS: 'Actual disbursements',
@@ -231,7 +242,8 @@ export class LocationReportComponent implements OnInit {
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: []
+    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], 
+    noLocationOption: this.noLocationCodes.PROJECTS_WITH_LOCATIONS
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -249,6 +261,7 @@ export class LocationReportComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         if (params) {
           this.model.title = (params.title) ? params.title : null;
+          this.model.noLocationOption = (params.noLocations) ? params.noLocations : this.noLocationCodes.PROJECTS_WITH_LOCATIONS;
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
@@ -401,7 +414,7 @@ export class LocationReportComponent implements OnInit {
     var projectIds = [];
     this.model.chartType = this.chartTypeCodes.BAR;
     this.model.chartTypeName = this.chartTypes.BAR;
-    
+
     if (this.model.selectedProjects.length > 0) {
       projectIds = this.model.selectedProjects.map(p => p.id);
     }
@@ -416,30 +429,63 @@ export class LocationReportComponent implements OnInit {
 
     this.resetSearchResults();
     this.blockUI.start('Preparing report...');
-    this.reportService.getLocationWiseProjectsReport(searchModel).subscribe(
-      data => {
-        this.reportDataList = data;
-        this.btnReportText = 'Update report';
-        if (this.reportDataList && this.reportDataList.locationProjectsList) {
-          this.reportDataList.locationProjectsList.forEach((p) => {
-            p.isDisplay = false;
-          });
-          var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
-          this.chartLables = locationNames;
-          if (this.reportDataList.reportSettings) {
-            this.excelFile = this.reportDataList.reportSettings.excelReportName;
-            this.setExcelFile();
+    if (this.model.noLocationOption == this.noLocationCodes.PROJECTS_WITHOUT_LOCATIONS) {
+      this.reportService.getNoLocationProjectsReport(searchModel).subscribe(
+        data => {
+          if (data) {
+            this.reportDataList = data;
+            this.btnReportText = 'Update report';
+            if (this.reportDataList && this.reportDataList.locationProjectsList) {
+              this.reportDataList.locationProjectsList.forEach((p) => {
+                p.isDisplay = false;
+              });
+              var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
+              this.chartLables = locationNames;
+              if (this.reportDataList.reportSettings) {
+                this.excelFile = this.reportDataList.reportSettings.excelReportName;
+                this.setExcelFile();
+              }
+              this.manageDataToDisplay();
+              this.model.selectedCurrency = this.defaultCurrency;
+              this.selectCurrency();
+              setTimeout(() => {
+                this.datedToday = this.storeService.getLongDateString(currentDate);
+              });
+            }
           }
-          this.manageDataToDisplay();
-          this.model.selectedCurrency = this.defaultCurrency;
-          this.selectCurrency();
-          setTimeout(() => {
-            this.datedToday = this.storeService.getLongDateString(currentDate);
-          });
+          this.blockUI.stop();
         }
-        this.blockUI.stop();
-      }
-    );
+      );
+
+    } else {
+      this.reportService.getLocationWiseProjectsReport(searchModel).subscribe(
+        data => {
+          if (data) {
+            this.reportDataList = data;
+            this.btnReportText = 'Update report';
+            if (this.reportDataList && this.reportDataList.locationProjectsList) {
+              this.reportDataList.locationProjectsList.forEach((p) => {
+                p.isDisplay = false;
+              });
+              var locationNames = this.reportDataList.locationProjectsList.map(p => p.locationName);
+              this.chartLables = locationNames;
+              if (this.reportDataList.reportSettings) {
+                this.excelFile = this.reportDataList.reportSettings.excelReportName;
+                this.setExcelFile();
+              }
+              this.manageDataToDisplay();
+              this.model.selectedCurrency = this.defaultCurrency;
+              this.selectCurrency();
+              setTimeout(() => {
+                this.datedToday = this.storeService.getLongDateString(currentDate);
+              });
+            }
+          }
+          this.blockUI.stop();
+        }
+      );
+
+    }
 
     setTimeout(() => {
       this.isLoading = false;
@@ -450,6 +496,13 @@ export class LocationReportComponent implements OnInit {
     this.chartData = [];
     this.chartLables = [];
     this.reportDataList = [];
+  }
+
+  noLocationChanged() {
+    if (this.model.noLocationOption == this.noLocationCodes.PROJECTS_WITHOUT_LOCATIONS) {
+      this.model.selectedLocations = [];
+    }
+    this.manageResetDisplay();
   }
 
   formatFunders(funders: any = null) {
@@ -533,6 +586,7 @@ export class LocationReportComponent implements OnInit {
               }
             }.bind(this));
           }
+
           this.searchProjectsByCriteriaReport();
         }
       }
