@@ -96,6 +96,7 @@ export const urls = {
 	aimsProjectsByIds: "Project/ExtractProjectsByIds",
 	sectorProjects: "Project/GetSectorProjects/",
 	sectorProjectsReport: "Report/GetSectorWiseProjects",
+	noSectorProjectsReport: "Report/GetNoSectorProjects",
 	locationProjectsReport: "Report/GetLocationWiseProjects",
 	yearlyProjectsReport: "Report/GetYearWiseProjects",
 	budgetReport: "Report/GetProjectsBudgetReport",

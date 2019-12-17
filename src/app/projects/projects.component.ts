@@ -502,6 +502,7 @@ export class ProjectsComponent implements OnInit {
     this.model.startingYear = 0;
     this.model.endingYear = 0;
     this.model.description = null;
+    this.isAnyFilterSet = false;
   }
 
 }

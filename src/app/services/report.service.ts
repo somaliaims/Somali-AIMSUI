@@ -73,6 +73,13 @@ export class ReportService {
             catchError(this.storeService.handleError<any>('Projects Report by Sectors')));
     }
 
+    getNoSectorProjectsReport(model: any) {
+      var url = this.urlHelper.getNoSectorProjectsReportUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Projects Report for No Sectors')));
+    }
+
     getEnvelopeReport(model: any) {
       var url = this.urlHelper.getEnvelopeReportUrl();
       return this.httpClient.post(url,

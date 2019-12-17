@@ -59,7 +59,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="col-lg-3 col-md-3">
+                <div [class.disable]="(model.sectorLevel == 0)" class="col-lg-3 col-md-3">
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
                     (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
@@ -239,9 +239,11 @@
                     {{formatNumber(sectorProject.totalFunding)}}
                   </td>
                   <td class="text-right">
-                    {{formatNumber(sectorProject.totalDisbursements)}}
+                    {{formatNumber(sectorProject.actualDisbursements)}}
                   </td>
-                  <td>&nbsp;</td>
+                  <td class="text-right">
+                    {{formatNumber(sectorProject.plannedDisbursements)}}
+                  </td>
                 </tr>
                 <tr class="child" [hidden]="!sectorProject.isDisplay" *ngFor="let project of sectorProject.projects">
                   <td width="25%">{{project.title}}</td>
@@ -275,11 +277,17 @@
               <th class="text-right" width="15%">
                 <b>
                   <i>
-                    Total: {{formatNumber(getGrandTotalDisbursementForSector())}}
+                    Total: {{formatNumber(getGrandTotalActualDisbursementForSector())}}
                   </i>
                 </b>
               </th>
-              <th width="15%">&nbsp;</th>
+              <th class="text-right" width="15%">
+                <b>
+                  <i>
+                    Total: {{formatNumber(getGrandTotalPlannedDisbursementForSector())}}
+                  </i>
+                </b>
+              </th>
             </tr>
           </table>
 

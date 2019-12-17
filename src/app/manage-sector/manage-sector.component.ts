@@ -94,11 +94,11 @@ export class ManageSectorComponent implements OnInit {
         if (data) {
           var sectors = data;
           this.sectors = sectors.filter(s => s.sectorTypeId == this.model.sectorTypeId && s.parentSector == null);
-          if (this.model.id != 0) {
+          /*if (this.model.id != 0) {
             if (this.sectors.filter(s => s.id == this.model.id).length == 0) {
               this.router.navigateByUrl('sectors');
             }
-          }
+          }*/
         }
       }
     );
