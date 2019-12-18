@@ -36,6 +36,7 @@ export class LocationReportComponent implements OnInit {
   projects: any = [];
 
   isAnyFilterSet: boolean = false;
+  isNoLocationReport: boolean = false;
   defaultCurrency: string = null;
   nationalCurrency: string = null;
   nationalCurrencyName: string = null;
@@ -261,13 +262,16 @@ export class LocationReportComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         if (params) {
           this.model.title = (params.title) ? params.title : null;
-          this.model.noLocationOption = (params.noLocations) ? params.noLocations : this.noLocationCodes.PROJECTS_WITH_LOCATIONS;
+          this.model.noLocationOption = (params.noLocations) ? this.noLocationCodes.PROJECTS_WITHOUT_LOCATIONS : this.noLocationCodes.PROJECTS_WITH_LOCATIONS;
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.loadReport = true;
+          if (this.model.noLocationOption) {
+            this.isNoLocationReport = true;
+          }
         } 
       });
     } else {
@@ -429,6 +433,10 @@ export class LocationReportComponent implements OnInit {
 
     this.resetSearchResults();
     this.blockUI.start('Preparing report...');
+    if (this.isNoLocationReport) {
+      this.model.selectedLocations = [];
+    }
+
     if (this.model.noLocationOption == this.noLocationCodes.PROJECTS_WITHOUT_LOCATIONS) {
       this.reportService.getNoLocationProjectsReport(searchModel).subscribe(
         data => {
@@ -454,6 +462,7 @@ export class LocationReportComponent implements OnInit {
             }
           }
           this.blockUI.stop();
+          this.isNoLocationReport = false;
         }
       );
 

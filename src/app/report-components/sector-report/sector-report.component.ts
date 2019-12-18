@@ -111,11 +111,11 @@ export class SectorReportComponent implements OnInit {
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors" },
     { "id": 2, "level": "Sub sectors" },
-    { "id": 0, "level": "No sectors" }
+    { "id": 4, "level": "No sectors" }
   ];
 
   sectorLevelCodes: any = {
-    NO_SECTORS: 0,
+    NO_SECTORS: 4,
     SECTORS: 1,
     SUB_SECTORS: 2,
     SUB_SUB_SECTORS: 3
@@ -284,6 +284,7 @@ export class SectorReportComponent implements OnInit {
         if (params) {
           this.model.title = (params.title) ? params.title : null;
           this.isNoSectorReport = (params.noSectors) ? true : false; 
+          this.model.sectorLevel = (params.noSectors) ? this.sectorLevelCodes.NO_SECTORS : this.model.sectorLevel;
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
