@@ -101,8 +101,8 @@ export class LocationReportComponent implements OnInit {
   };
 
   noLocationOptions: any = [
-    { id: 1, option: 'Project with locations' },
-    { id: 2, option: 'Project without locations' },
+    { id: 1, option: 'Projects with locations' },
+    { id: 2, option: 'Projects without locations' },
   ];
 
   noLocationCodes: any = {
@@ -493,7 +493,6 @@ export class LocationReportComponent implements OnInit {
           this.blockUI.stop();
         }
       );
-
     }
 
     setTimeout(() => {
@@ -595,7 +594,6 @@ export class LocationReportComponent implements OnInit {
               }
             }.bind(this));
           }
-
           this.searchProjectsByCriteriaReport();
         }
       }
@@ -677,36 +675,6 @@ export class LocationReportComponent implements OnInit {
     this.manageResetDisplay();
   }
 
-  /*onDataOptionSelect(item: any) {
-    var id = item.id;
-    if (this.selectedDataOptions.indexOf(id) == -1) {
-      this.selectedDataOptions.push(id);
-      this.manageDataOptions();
-    }
-  }
-
-  onDataOptionDeSelect(item: any) {
-    var id = item.id;
-    var index = this.selectedDataOptions.indexOf(id);
-    this.selectedDataOptions.splice(index, 1);
-    this.manageDataOptions();
-  }
-
-  onDataOptionSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedDataOptions.indexOf(id) == -1) {
-        this.selectedDataOptions.push(id);
-      }
-    }.bind(this));
-    this.manageDataOptions();
-  }
-
-  onDataOptionDeSelectAll(items: any) {
-    this.selectedDataOptions = [];
-    this.manageDataOptions();
-  }*/
-
   selectDataOption() {
     this.chartData = [];
     var selectedDataOption = 1;
@@ -743,11 +711,21 @@ export class LocationReportComponent implements OnInit {
     return totalFunding;
   }
 
-  getGrandTotalDisbursementForLocation() {
+  getGrandTotalActualDisbursementForLocation() {
     var totalDisursement = 0;
     if (this.reportDataList && this.reportDataList.locationProjectsList) {
       this.reportDataList.locationProjectsList.forEach(function (p) {
-        totalDisursement += p.totalDisbursements;
+        totalDisursement += p.actualDisbursements;
+      });
+    }
+    return totalDisursement;
+  }
+
+  getGrandTotalPlannedDisbursementForLocation() {
+    var totalDisursement = 0;
+    if (this.reportDataList && this.reportDataList.locationProjectsList) {
+      this.reportDataList.locationProjectsList.forEach(function (p) {
+        totalDisursement += p.plannedDisbursements;
       });
     }
     return totalDisursement;
@@ -823,7 +801,8 @@ export class LocationReportComponent implements OnInit {
       });
 
       this.getGrandTotalFundingForLocation();
-      this.getGrandTotalDisbursementForLocation();
+      this.getGrandTotalActualDisbursementForLocation();
+      this.getGrandTotalPlannedDisbursementForLocation();
 
       this.showChart = false;
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {

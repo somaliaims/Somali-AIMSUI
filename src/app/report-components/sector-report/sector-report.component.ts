@@ -510,7 +510,7 @@ export class SectorReportComponent implements OnInit {
               });
 
               var sectorProjectsList = this.reportDataList.sectorProjectsList;
-              this.chartLables = sectorProjectsList.map(p => p.sectorName);
+              this.chartLables = sectorProjectsList.map(p => p.sectorName).sort();
               this.sectorProjectsList = sectorProjectsList;
             }
 
@@ -596,10 +596,10 @@ export class SectorReportComponent implements OnInit {
                 });
                 this.chartLables.push(sectorName);
               });
-  
+              this.chartLables = this.chartLables.sort();
               this.sectorProjectsList = this.parentSectorsWithProjects;
             } else {
-              this.chartLables = sectorProjectsList.map(p => p.sectorName);
+              this.chartLables = sectorProjectsList.map(p => p.sectorName).sort();
               this.sectorProjectsList = sectorProjectsList;
             }
           }

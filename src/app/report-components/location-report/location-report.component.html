@@ -246,9 +246,11 @@
                     {{formatNumber(locationProject.totalFunding)}}
                   </td>
                   <td class="text-right">
-                    {{formatNumber(locationProject.totalDisbursements)}}
+                    {{formatNumber(locationProject.actualDisbursements)}}
                   </td>
-                  <td>&nbsp;</td>
+                  <td class="text-right">
+                    {{formatNumber(locationProject.plannedDisbursements)}}
+                  </td>
                 </tr>
                 <tr [hidden]="!locationProject.isDisplay" class="child"
                   *ngFor="let project of locationProject.projects">
@@ -287,11 +289,17 @@
                 <th class="text-right" width="15%">
                   <b>
                     <i>
-                      Total: {{formatNumber(getGrandTotalDisbursementForLocation())}}
+                      Total: {{formatNumber(getGrandTotalActualDisbursementForLocation())}}
                     </i>
                   </b>
                 </th>
-                <th width="15%">&nbsp;</th>
+                <th class="text-right" width="15%">
+                  <b>
+                    <i>
+                      Total: {{formatNumber(getGrandTotalPlannedDisbursementForLocation())}}
+                    </i>
+                  </b>
+                </th>
               </tr>
             </table>
           </div>
