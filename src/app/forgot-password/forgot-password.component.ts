@@ -28,7 +28,7 @@ export class ForgotPasswordComponent{
     this.storeService.newReportItem(Settings.dropDownMenus.management);
   }
 
-  sendPasswordResetLink() {
+  sendPasswordResetLink(frm: any) {
     this.isError = false;
     this.isInfo = false;
     this.btnText = 'Checking and Resetting...';
@@ -39,10 +39,12 @@ export class ForgotPasswordComponent{
           this.infoMessage = Messages.PASSWORD_RESET_SENT;
           this.isInfo = true;
           this.resetFormStatus();
+          frm.resetForm();
         } else {
           this.errorMessage = Messages.EMAIL_NOT_FOUND;
           this.isError = true;
           this.resetFormStatus();
+          frm.resetForm();
         }
       },
       error => {
