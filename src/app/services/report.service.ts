@@ -18,6 +18,7 @@ export class ReportService {
   pageHeightLarge: number = Settings.pdfPrintPageHeightLarge;
   screenConstants: any = {
     TWENTY_FIVE_SIXTY: 2560,
+    TWENTY_FOURTY_EIGHT: 2048,
     NINETEEN_TWENTY: 1920,
     SIXTEEN_EIGHTY: 1680,
     SIXTEEN_HUNDRED: 1600,
@@ -197,14 +198,19 @@ export class ReportService {
           //var docWidth = container.getBoundingClientRect().width;
           var docWidth = (container.clientWidth * aspectRatio);
           var pageHeight = this.pageHeight;
+          if (docWidth > this.screenConstants.NINETEEN_TWENTY) {
+            pageHeight = this.pageHeightLandscape;
+          }
           //! MAKE YOUR PDF
           var pdf = null;
-          //if (docWidth > 1920) {
-            //pdf = new jsPDF('l', 'pt', 'a4');
-          //} else {
+          if (docWidth > this.screenConstants.NINETEEN_TWENTY) {
+            pdf = new jsPDF('l', 'pt', 'a4');
+          } else {
             pdf = new jsPDF('p', 'pt', 'a4');
-          //}
-          for (var i = 0; i <= quotes.clientHeight / pageHeight; i++) {
+          }
+
+          var reportHeight = ((quotes.clientHeight * aspectRatio) / pageHeight);
+          for (var i = 0; i <= reportHeight; i++) {
             //! This is all just html2canvas stuff
             var srcImg = canvas;
             var sX = 0;
@@ -226,15 +232,17 @@ export class ReportService {
             var width = onePageCanvas.width;
             var height = onePageCanvas.height;
             if (i > 0) {
-              //if (width > this.screenConstants.NINETEEN_TWENTY) {
-                //pdf.addPage([ 841.89, 595.28]);
-              //} else {
+              if (width > this.screenConstants.NINETEEN_TWENTY) {
+                pdf.addPage([ 841.89, 595.28]);
+              } else {
                 pdf.addPage([ 595.28,  841.89]); 
-              //}
+              }
             }
             pdf.setPage(i + 1);
-            if (width > this.screenConstants.NINETEEN_TWENTY) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .28), (height * .35), undefined, 'FAST');
+            if (width > this.screenConstants.TWENTY_FOURTY_EIGHT) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .33), (height * .36), undefined, 'FAST');
+            } else if (width <= this.screenConstants.TWENTY_FOURTY_EIGHT && width > this.screenConstants.NINETEEN_TWENTY) {
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .40), (height * .35), undefined, 'FAST');
             } else if (width <= this.screenConstants.NINETEEN_TWENTY && width > this.screenConstants.SIXTEEN_EIGHTY) {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .30), (height * .45), undefined, 'FAST');
             } else if (width <= this.screenConstants.SIXTEEN_EIGHTY && width > this.screenConstants.SIXTEEN_HUNDRED) {
@@ -248,7 +256,7 @@ export class ReportService {
             } else if (width <= this.screenConstants.TWELVE_EIGHTY && width > this.screenConstants.TEN_TWENTY_FOUR) {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .47), (height * .45), undefined, 'FAST');
             } else if (width <= this.screenConstants.TEN_TWENTY_FOUR && width > this.screenConstants.EIGHT_HUNDRED) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .61), (height * .45), undefined, 'FAST');
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .59), (height * .45), undefined, 'FAST');
             } else {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .70), (height * .45), undefined, 'FAST');
             }
