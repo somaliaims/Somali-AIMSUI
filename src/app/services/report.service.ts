@@ -14,6 +14,7 @@ import { Settings } from '../config/settings';
 
 export class ReportService {
   pageHeight: number = Settings.pdfPrintPageHeight;
+  pageHeightLandscape: number = Settings.pdfPrintPageHeightLandscape;
   pageHeightLarge: number = Settings.pdfPrintPageHeightLarge;
   screenConstants: any = {
     TWENTY_FIVE_SIXTY: 2560,
@@ -198,11 +199,11 @@ export class ReportService {
           var pageHeight = this.pageHeight;
           //! MAKE YOUR PDF
           var pdf = null;
-          if (docWidth > 1920) {
-            pdf = new jsPDF('l', 'pt', 'a4');
-          } else {
+          //if (docWidth > 1920) {
+            //pdf = new jsPDF('l', 'pt', 'a4');
+          //} else {
             pdf = new jsPDF('p', 'pt', 'a4');
-          }
+          //}
           for (var i = 0; i <= quotes.clientHeight / pageHeight; i++) {
             //! This is all just html2canvas stuff
             var srcImg = canvas;
@@ -225,15 +226,15 @@ export class ReportService {
             var width = onePageCanvas.width;
             var height = onePageCanvas.height;
             if (i > 0) {
-              if (width > this.screenConstants.NINETEEN_TWENTY) {
-                pdf.addPage([ 841.89, 595.28]);
-              } else {
+              //if (width > this.screenConstants.NINETEEN_TWENTY) {
+                //pdf.addPage([ 841.89, 595.28]);
+              //} else {
                 pdf.addPage([ 595.28,  841.89]); 
-              }
+              //}
             }
             pdf.setPage(i + 1);
             if (width > this.screenConstants.NINETEEN_TWENTY) {
-              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .32), (height * .35), undefined, 'FAST');
+              pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .28), (height * .35), undefined, 'FAST');
             } else if (width <= this.screenConstants.NINETEEN_TWENTY && width > this.screenConstants.SIXTEEN_EIGHTY) {
               pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .30), (height * .45), undefined, 'FAST');
             } else if (width <= this.screenConstants.SIXTEEN_EIGHTY && width > this.screenConstants.SIXTEEN_HUNDRED) {
