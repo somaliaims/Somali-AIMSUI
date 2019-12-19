@@ -49,8 +49,8 @@ export class ManageSectortypeComponent implements OnInit {
           data => {
             this.model.id = data.id;
             this.model.typeName = data.typeName;
-            this.model.isPrimary = data.isPrimary;
-            this.model.isSourceType = data.isSourceType;
+            this.model.isPrimary = (data.isPrimary == null) ? false : data.isPrimary ;
+            this.model.isSourceType = (data.isSourceType == null) ? false : data.isSourceType;
           },
           error => {
             console.log("Request Failed: ", error);

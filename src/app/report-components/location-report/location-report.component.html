@@ -36,7 +36,7 @@
                           [(ngModel)]="model.startingYear" name="startingYear" #startingYear="ngModel" 
                           (change)="onChangeStartingYear()" required>
                           <option value="0">--Start--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.label}}
                           </option>
                         </select>
                       </td>
@@ -46,7 +46,7 @@
                           [(ngModel)]="model.endingYear" name="endingYear" #endingYear="ngModel"
                           (change)="onChangeEndingYear()" required>
                           <option value="0">--End--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.label}}
                           </option>
                         </select>
                       </td>
@@ -55,7 +55,7 @@
                 </div>
               </div>
               <div class="row margin-top-10">
-                <div class="col-md-6">
+                <div [class.disable]="model.noLocationOption != 1" class="col-md-3">
                   <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" title="Location/s"
                     [data]="locationsList" [(ngModel)]="model.selectedLocations" [settings]="locationsSettings"
                     name="selectedLocations" (onSelect)="onLocationSelect($event)"
@@ -63,6 +63,13 @@
                     (onDeSelectAll)="onLocationDeSelectAll($event)"
                     #selectedLocations="ngModel">
                   </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control" name="nolocation" (change)="noLocationChanged()" [(ngModel)]="model.noLocationOption" #noLocationOption="ngModel">
+                    <option *ngFor="let option of noLocationOptions" value="{{option.id}}">
+                      {{option.option}}
+                    </option>
+                  </select>
                 </div>
                 <div class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
@@ -95,7 +102,7 @@
 
                 <div [class.disable]="!defaultCurrency" class="col-md-6">
                   <div class="float-right">
-                    <button type="submit" class="btn btn-info">{{btnReportText}}</button>&nbsp;
+                    <button type="submit" class="btn btn-info">{{btnReportText}}</button>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger margin-left-2 margin-top-2"
                       (click)="generatePDF()">Download PDF</button>
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2 margin-left-2">Download spreadsheet</a>
@@ -225,17 +232,24 @@
               <tbody>
                 <tr class="row-highlight" title="Click here to view detail"
                   (click)="displayHideRow(locationProject.locationName)">
-                  <td colspan="6" width="100%">
+                  <td colspan="3">
                     <span *ngIf="!locationProject.isDisplay"><i class="fa fa-plus-square"></i></span>
                     <span *ngIf="locationProject.isDisplay"><i class="fa fa-minus-square"></i></span>
                     &nbsp;
                     <b>
                       <i>
-                        {{locationProject.locationName}} - Project cost ({{formatNumber(locationProject.totalFunding)}})
-                        &nbsp;&nbsp;
-                        Disbursements ({{formatNumber(locationProject.totalDisbursements)}})
+                        {{locationProject.locationName}}
                       </i>
                     </b>
+                  </td>
+                  <td class="text-right">
+                    {{formatNumber(locationProject.totalFunding)}}
+                  </td>
+                  <td class="text-right">
+                    {{formatNumber(locationProject.actualDisbursements)}}
+                  </td>
+                  <td class="text-right">
+                    {{formatNumber(locationProject.plannedDisbursements)}}
                   </td>
                 </tr>
                 <tr [hidden]="!locationProject.isDisplay" class="child"
@@ -264,7 +278,7 @@
           <div>
             <table class="table table-condensed table-striped small table-fixed">
               <tr>
-                <th width="25%">&nbsp;</th>
+                <th width="15%">&nbsp;</th>
                 <th width="15%">&nbsp;</th>
                 <th width="15%">&nbsp;</th>
                 <th class="text-right" width="15%">
@@ -275,11 +289,17 @@
                 <th class="text-right" width="15%">
                   <b>
                     <i>
-                      Total: {{formatNumber(getGrandTotalDisbursementForLocation())}}
+                      Total: {{formatNumber(getGrandTotalActualDisbursementForLocation())}}
                     </i>
                   </b>
                 </th>
-                <th width="15%">&nbsp;</th>
+                <th class="text-right" width="15%">
+                  <b>
+                    <i>
+                      Total: {{formatNumber(getGrandTotalPlannedDisbursementForLocation())}}
+                    </i>
+                  </b>
+                </th>
               </tr>
             </table>
           </div>

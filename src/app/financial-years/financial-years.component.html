@@ -32,11 +32,11 @@
     <div class="col margin-top-10">
       <table class="table table-bordered table-stripped">
         <tr>
-          <th>Calendar year</th>
+          <!--<th>Calendar year</th>-->
           <th>Financial year</th>
         </tr>
         <tr *ngFor="let year of filteredYearsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
-          <td>{{year.financialYear}}</td>
+          <!--<td>{{year.financialYear}}</td>-->
           <td>{{year.label}}</td>
         </tr>
       </table>

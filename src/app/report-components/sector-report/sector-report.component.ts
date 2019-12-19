@@ -60,6 +60,7 @@ export class SectorReportComponent implements OnInit {
   btnReportText: string = 'View report';
   isAnyFilterSet: boolean = false;
   isShowStackedChart: boolean = false;
+  isNoSectorReport: boolean = false;
 
   yearsList: any = [];
   allSectorsList: any = [];
@@ -110,9 +111,11 @@ export class SectorReportComponent implements OnInit {
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors" },
     { "id": 2, "level": "Sub sectors" },
+    { "id": 4, "level": "No sectors" }
   ];
 
   sectorLevelCodes: any = {
+    NO_SECTORS: 4,
     SECTORS: 1,
     SUB_SECTORS: 2,
     SUB_SUB_SECTORS: 3
@@ -139,6 +142,11 @@ export class SectorReportComponent implements OnInit {
     { id: 1, value: 'Open exchange api' },
     { id: 2, value: 'African bank' }
   ];
+
+  noSectorOptions: any = {
+    PROJECTS_WITH_SECTORS: 1,
+    PROJECTS_WITHOUT_SECTORS: 2
+  };
 
   reportDataList: any = [];
   dropdownSettings: any = {};
@@ -258,7 +266,8 @@ export class SectorReportComponent implements OnInit {
     sectorIds: [], locationId: 0, selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], selectedProjects: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS
+    selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS,
+    noSectorOption: this.noSectorOptions.PROJECTS_WITH_SECTORS
   };
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
@@ -274,6 +283,8 @@ export class SectorReportComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         if (params) {
           this.model.title = (params.title) ? params.title : null;
+          this.isNoSectorReport = (params.noSectors) ? true : false; 
+          this.model.sectorLevel = (params.noSectors) ? this.sectorLevelCodes.NO_SECTORS : this.model.sectorLevel;
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
@@ -393,6 +404,10 @@ export class SectorReportComponent implements OnInit {
           this.sectorsList = this.allSectorsList.filter(s => this.subSubSectorIds.indexOf(s.id) != -1);
           break;
 
+        case this.sectorLevelCodes.NO_SECTORS:
+          this.sectorsList = [];
+          break;
+
         default:
           this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
           break;
@@ -477,75 +492,116 @@ export class SectorReportComponent implements OnInit {
     };
 
     this.resetSearchResults();
-    this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(
-      data => {
-        this.reportDataList = data;
-        this.btnReportText = 'Update report';
-        if (this.reportDataList && this.reportDataList.sectorProjectsList) {
-          this.reportDataList.sectorProjectsList.forEach((s) => {
-            s.isDisplay = false;
-          });
-          
-          var sectorProjectsList = this.reportDataList.sectorProjectsList;
-          if (this.model.sectorLevel == this.sectorLevelCodes.SECTORS) {
-            var parentSectorIds = sectorProjectsList.map(item => item.parentSectorId)
-              .filter((value, index, self) => self.indexOf(value) === index);
+    if (this.isNoSectorReport) {
+      this.model.sectorLevel = this.sectorLevelCodes.NO_SECTORS;
+      this.model.selectedSectors = [];
+    }
 
-            parentSectorIds.forEach((pid) => {
-              var sectors = sectorProjectsList.filter(s => s.parentSectorId == pid);
-              var actualDisbursements = 0;
-              var plannedDisbursements = 0;
-              var totalDisbursements = 0;
-              var totalFunding = 0;
-              var sectorName = '';
-              var sectorId = 0;
-              var projectsList: any = [];
+    if (this.model.sectorLevel == this.sectorLevelCodes.NO_SECTORS) {
+      
+      this.reportService.getNoSectorProjectsReport(searchModel).subscribe(
+        data => {
+          if (data) {
+            this.reportDataList = data;
+            this.btnReportText = 'Update report';
+            if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+              this.reportDataList.sectorProjectsList.forEach((s) => {
+                s.isDisplay = false;
+              });
 
-              sectors.forEach((s) => {
-                actualDisbursements += s.actualDisbursements;
-                plannedDisbursements += s.plannedDisbursements;
-                totalDisbursements += s.totalDisbursements;
-                totalFunding += s.totalFunding;
-                sectorName = s.parentSector;
-                sectorId = s.parentSectorId;
+              var sectorProjectsList = this.reportDataList.sectorProjectsList;
+              this.chartLables = sectorProjectsList.map(p => p.sectorName).sort();
+              this.sectorProjectsList = sectorProjectsList;
+            }
 
-                var sectorProjects = s.projects;
-                sectorProjects.forEach((p) => {
-                  if (projectsList.length > 0) {
-                    var projectAdded = projectsList.filter(project => project.projectId == p.projectId);
-                    if (projectAdded.length == 0) {
+            if (this.reportDataList.reportSettings) {
+              this.excelFile = this.reportDataList.reportSettings.excelReportName;
+              this.setExcelFile();
+            }
+  
+            this.manageDataToDisplay();
+            this.model.selectedCurrency = this.defaultCurrency;
+            this.selectCurrency();
+            setTimeout(() => {
+              this.datedToday = this.storeService.getLongDateString(currentDate);
+            });
+            this.blockUI.stop();
+          }
+        }
+      );
+      this.isNoSectorReport = false;
+    } else {
+
+      this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(
+        data => {
+          this.reportDataList = data;
+          this.btnReportText = 'Update report';
+          if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+            this.reportDataList.sectorProjectsList.forEach((s) => {
+              s.isDisplay = false;
+            });
+            
+            var sectorProjectsList = this.reportDataList.sectorProjectsList;
+            if (this.model.sectorLevel == this.sectorLevelCodes.SECTORS) {
+              var parentSectorIds = sectorProjectsList.map(item => item.parentSectorId)
+                .filter((value, index, self) => self.indexOf(value) === index);
+  
+              parentSectorIds.forEach((pid) => {
+                var sectors = sectorProjectsList.filter(s => s.parentSectorId == pid);
+                var actualDisbursements = 0;
+                var plannedDisbursements = 0;
+                var totalDisbursements = 0;
+                var totalFunding = 0;
+                var sectorName = '';
+                var sectorId = 0;
+                var projectsList: any = [];
+  
+                sectors.forEach((s) => {
+                  actualDisbursements += s.actualDisbursements;
+                  plannedDisbursements += s.plannedDisbursements;
+                  totalDisbursements += s.totalDisbursements;
+                  totalFunding += s.totalFunding;
+                  sectorName = s.parentSector;
+                  sectorId = s.parentSectorId;
+  
+                  var sectorProjects = s.projects;
+                  sectorProjects.forEach((p) => {
+                    if (projectsList.length > 0) {
+                      var projectAdded = projectsList.filter(project => project.projectId == p.projectId);
+                      if (projectAdded.length == 0) {
+                        projectsList.push(p);
+                      }
+                    } else {
                       projectsList.push(p);
                     }
-                  } else {
-                    projectsList.push(p);
-                  }
+                  });
                 });
+  
+                this.parentSectorsSummary.push({
+                  sectorName: sectorName,
+                  actualDisbursements: actualDisbursements,
+                  plannedDisbursements: plannedDisbursements,
+                  totalDisbursements: totalDisbursements,
+                });
+  
+                this.parentSectorsWithProjects.push({
+                  sectorId: sectorId,
+                  sectorName: sectorName,
+                  actualDisbursements: actualDisbursements,
+                  plannedDisbursements: plannedDisbursements,
+                  totalDisbursements: totalDisbursements,
+                  totalFunding: totalFunding,
+                  projects: projectsList,
+                  isDisplay: false
+                });
+                this.chartLables.push(sectorName);
               });
-
-              this.parentSectorsSummary.push({
-                sectorName: sectorName,
-                actualDisbursements: actualDisbursements,
-                plannedDisbursements: plannedDisbursements,
-                totalDisbursements: totalDisbursements,
-              });
-
-              this.parentSectorsWithProjects.push({
-                sectorId: sectorId,
-                sectorName: sectorName,
-                actualDisbursements: actualDisbursements,
-                plannedDisbursements: plannedDisbursements,
-                totalDisbursements: totalDisbursements,
-                totalFunding: totalFunding,
-                projects: projectsList,
-                isDisplay: false
-              });
-              this.chartLables.push(sectorName);
-            });
-
-            this.sectorProjectsList = this.parentSectorsWithProjects;
-          } else {
-            this.chartLables = sectorProjectsList.map(p => p.sectorName);
-            this.sectorProjectsList = sectorProjectsList;
+              this.chartLables = this.chartLables.sort();
+              this.sectorProjectsList = this.parentSectorsWithProjects;
+            } else {
+              this.chartLables = sectorProjectsList.map(p => p.sectorName).sort();
+              this.sectorProjectsList = sectorProjectsList;
+            }
           }
 
           if (this.sectorProjectsList.length > 1) {
@@ -554,6 +610,7 @@ export class SectorReportComponent implements OnInit {
               pl.projects.sort((c, d) => (c.title > d.title) ? 1 : -1);
             });
           }
+
           if (this.reportDataList.reportSettings) {
             this.excelFile = this.reportDataList.reportSettings.excelReportName;
             this.setExcelFile();
@@ -565,10 +622,10 @@ export class SectorReportComponent implements OnInit {
           setTimeout(() => {
             this.datedToday = this.storeService.getLongDateString(currentDate);
           });
+          this.blockUI.stop();
         }
-        this.blockUI.stop();
-      }
-    );
+      );
+    }
 
     this.loadReport = false;
     setTimeout(() => {
@@ -884,11 +941,21 @@ export class SectorReportComponent implements OnInit {
     return totalFunding;
   }
 
-  getGrandTotalDisbursementForSector() {
+  getGrandTotalActualDisbursementForSector() {
     var totalDisbursement = 0;
     if (this.reportDataList && this.reportDataList.sectorProjectsList) {
       this.reportDataList.sectorProjectsList.forEach(function (p) {
-        totalDisbursement += p.totalDisbursements;
+        totalDisbursement += p.actualDisbursements;
+      });
+    }
+    return totalDisbursement;
+  }
+
+  getGrandTotalPlannedDisbursementForSector() {
+    var totalDisbursement = 0;
+    if (this.reportDataList && this.reportDataList.sectorProjectsList) {
+      this.reportDataList.sectorProjectsList.forEach(function (p) {
+        totalDisbursement += p.plannedDisbursements;
       });
     }
     return totalDisbursement;
@@ -1024,7 +1091,8 @@ export class SectorReportComponent implements OnInit {
         }
       });
       this.getGrandTotalFundingForSector();
-      this.getGrandTotalDisbursementForSector();
+      this.getGrandTotalActualDisbursementForSector();
+      this.getGrandTotalPlannedDisbursementForSector();
 
       this.showChart = false;
       if (this.selectedDataOptions.indexOf(this.dataOptionsCodes.FUNDING) != -1) {
@@ -1061,7 +1129,7 @@ export class SectorReportComponent implements OnInit {
   displayHideRow(sector) {
     if (this.model.sectorLevel == this.sectorLevelCodes.SECTORS) {
       if (this.parentSectorsWithProjects.length > 0) {
-        var selectSector = this.parentSectorsWithProjects.filter(s => s.sectorId == sector);
+        var selectSector = this.parentSectorsWithProjects.filter(s => s.sectorName == sector);
         if (selectSector.length > 0) {
           selectSector[0].isDisplay = !selectSector[0].isDisplay;
         }

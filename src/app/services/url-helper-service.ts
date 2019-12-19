@@ -592,6 +592,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);
     }
 
+    getNoSectorProjectsReportUrl() {
+        return (this.BASE_URL + urlsList.urls.noSectorProjectsReport);
+    }
+
+    getNoLocationProjectsReportUrl() {
+        return (this.BASE_URL + urlsList.urls.noLocationProjectsReport);
+    }
+
     getLocationProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.locationProjectsReport);
     }

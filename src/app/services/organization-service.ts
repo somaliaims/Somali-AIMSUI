@@ -75,7 +75,7 @@ export class OrganizationService {
   }
 
   getIATIOrganizations() {
-    var url = this.urlHelper.getUserOrganizationsUrl();
+    var url = this.urlHelper.getIATIOrganizationsUrl();
     return this.httpClient.get(url, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('User Organizations')));
   }

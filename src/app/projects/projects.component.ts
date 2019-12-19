@@ -61,7 +61,7 @@ export class ProjectsComponent implements OnInit {
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors"},
     { "id": 2, "level": "Sub sectors"},
-    { "id": 3, "level": "Sub sub sectors"},
+    //{ "id": 3, "level": "Sub sub sectors"},
   ];
 
   sectorLevelCodes: any = {
@@ -502,6 +502,7 @@ export class ProjectsComponent implements OnInit {
     this.model.startingYear = 0;
     this.model.endingYear = 0;
     this.model.description = null;
+    this.isAnyFilterSet = false;
   }
 
 }

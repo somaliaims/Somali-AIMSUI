@@ -33,7 +33,7 @@
                         <select class="form-control" id="startingYear" title="Starting financial year"
                           [(ngModel)]="model.startingYear" name="startingYear" (change)="onChangeStartingYear()" #startingYear="ngModel" required>
                           <option value="0">--Start--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.label}}
                           </option>
                         </select>
                       </td>
@@ -42,7 +42,7 @@
                         <select class="form-control" id="endingYear" title="Ending financial year"
                           [(ngModel)]="model.endingYear" name="endingYear" (change)="onChangeEndingYear()" #endingYear="ngModel" required>
                           <option value="0">--End--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.financialYear}}
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.label}}
                           </option>
                         </select>
                       </td>
@@ -59,7 +59,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="col-lg-3 col-md-3">
+                <div [class.disable]="(model.sectorLevel == 0)" class="col-lg-3 col-md-3">
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
                     (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
@@ -224,18 +224,25 @@
           <div *ngFor="let sectorProject of sectorProjectsList; let i = index;">
             <table class="table table-condensed table-fixed small" style="margin-bottom: 0rem !important">
               <tbody>
-                <tr class="row-highlight" title="Click here to view detail" (click)="displayHideRow(sectorProject.sectorId)">
-                  <td width="100%" colspan="6">
+                <tr class="row-highlight" title="Click here to view detail" (click)="displayHideRow(sectorProject.sectorName)">
+                  <td colspan="3">
                     <span *ngIf="!sectorProject.isDisplay"><i class="fa fa-plus-square"></i></span>
                     <span *ngIf="sectorProject.isDisplay"><i class="fa fa-minus-square"></i></span>
                     &nbsp;
                     <b>
                       <i>
-                        {{sectorProject.sectorName}} - Project value ({{formatNumber(sectorProject.totalFunding)}})
-                        &nbsp;&nbsp;
-                        Disbursements ({{formatNumber(sectorProject.totalDisbursements)}})
+                        {{sectorProject.sectorName}} 
                       </i>
                     </b>
+                  </td>
+                  <td class="text-right">
+                    {{formatNumber(sectorProject.totalFunding)}}
+                  </td>
+                  <td class="text-right">
+                    {{formatNumber(sectorProject.actualDisbursements)}}
+                  </td>
+                  <td class="text-right">
+                    {{formatNumber(sectorProject.plannedDisbursements)}}
                   </td>
                 </tr>
                 <tr class="child" [hidden]="!sectorProject.isDisplay" *ngFor="let project of sectorProject.projects">
@@ -261,7 +268,7 @@
           </div>
           <table class="table table-striped table-condensed table-fixed small">
             <tr>
-              <th width="55%">&nbsp;</th>
+              <th width="45%">&nbsp;</th>
               <th class="text-right" width="15%">
                 <b>
                   <i>Total: {{formatNumber(getGrandTotalFundingForSector())}}</i>
@@ -270,11 +277,17 @@
               <th class="text-right" width="15%">
                 <b>
                   <i>
-                    Total: {{formatNumber(getGrandTotalDisbursementForSector())}}
+                    Total: {{formatNumber(getGrandTotalActualDisbursementForSector())}}
                   </i>
                 </b>
               </th>
-              <th width="15%">&nbsp;</th>
+              <th class="text-right" width="15%">
+                <b>
+                  <i>
+                    Total: {{formatNumber(getGrandTotalPlannedDisbursementForSector())}}
+                  </i>
+                </b>
+              </th>
             </tr>
           </table>
 

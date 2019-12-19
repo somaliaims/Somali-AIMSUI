@@ -35,6 +35,10 @@ export class NewProjectComponent implements OnInit {
   isBtnDisabled: boolean = false;
   isTextReadOnly: boolean = true;
   selectedProjectTitle: string = null;
+  selectedProjectStartDate: string = null;
+  selectedProjectEndDate: string = null;
+  selectedProjectValue: string = 'N/a';
+  selectedProjectCurrency: string = null;
   selectedProjectDescription: string = null;
   selectedProjectOrganizations: any = [];
   selectedProjectLocations: any = [];
@@ -586,6 +590,10 @@ export class NewProjectComponent implements OnInit {
     var project = this.filteredIatiProjects.filter(project => project.id == id);
     if (project && project.length) {
       this.selectedProjectTitle = project[0].title;
+      this.selectedProjectStartDate = project[0].startDate;
+      this.selectedProjectEndDate = project[0].endDate;
+      this.selectedProjectValue = project[0].projectValue;
+      this.selectedProjectCurrency = project[0].defaultCurrency;
       this.selectedProjectDescription = (project[0].description) ? project[0].description : 'Not available';
       this.selectedProjectOrganizations = project[0].organizations;
       this.selectedProjectSectors = project[0].sectors;
@@ -604,6 +612,10 @@ export class NewProjectComponent implements OnInit {
     var project = this.filteredAIMSProjects.filter(project => project.id == id);
     if (project && project.length) {
       this.selectedProjectTitle = project[0].title;
+      this.selectedProjectStartDate = project[0].startDate;
+      this.selectedProjectEndDate = project[0].endDate;
+      this.selectedProjectValue = project[0].projectValue;
+      this.selectedProjectCurrency = project[0].projectCurrency;
       this.selectedProjectDescription = (project[0].description) ? project[0].description : 'Not available';
       this.selectedProjectOrganizations = project[0].organizations;
       this.selectedProjectSectors = project[0].sectors;
@@ -816,5 +828,21 @@ export class NewProjectComponent implements OnInit {
 
   getLongDateString(dated) {
     return this.storeService.getLongDateString(dated);
+  }
+
+  formatDateUKStyle(dated: any) {
+    var validDate = Date.parse(dated);
+    if (isNaN(validDate)) {
+      return 'Invalid date';
+    }
+    var datesArr = dated.split('/');
+    return this.storeService.formatDateInUkStyle(parseInt(datesArr[2]), parseInt(datesArr[0]), parseInt(datesArr[1]));
+  }
+
+  formatProjectValue(value: number) {
+    if (value == 0) {
+      return 'N/a';
+    }
+    return this.storeService.getNumberWithCommas(value);
   }
 }
