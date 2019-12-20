@@ -42,7 +42,7 @@ export class ManageSectortypeComponent implements OnInit {
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit SectorType';
+        this.btnText = 'Edit sector type';
         this.isForEdit = true;
         this.typeId = id;
         this.sectorTypeService.getSectorType(id).subscribe(

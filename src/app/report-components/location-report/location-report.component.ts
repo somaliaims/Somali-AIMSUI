@@ -1087,6 +1087,7 @@ export class LocationReportComponent implements OnInit {
     this.model.selectedLocations = [];
     this.model.selectedOrganizations = [];
     this.model.sectorId = 0;
+    this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
     this.isAnyFilterSet = false;
   }
 

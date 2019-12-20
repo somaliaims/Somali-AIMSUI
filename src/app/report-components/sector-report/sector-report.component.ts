@@ -1169,6 +1169,7 @@ export class SectorReportComponent implements OnInit {
     this.model.parentSectorId = 0;
     this.model.selectedSectors = [];
     this.model.selectedOrganizations = [];
+    this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
     this.model.locationId = 0;
     this.isAnyFilterSet = false;
   }

@@ -13,7 +13,7 @@
     <div class="col-md-6">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Enter sector type name" [(ngModel)]="criteria"
-          aria-describedby="basic-addon2">
+          aria-describedby="basic-addon2" onkeypress="return event.keyCode != 13;" (input)="searchSectorTypes()">
         <div class="input-group-append">
           <button class="btn btn-outline-info" (click)="searchSectorTypes()" type="button"><i
               class="fa fa-search"></i></button>
@@ -29,7 +29,7 @@
   </div>
 
   <div *ngIf="!isLoading" class="row">
-    <div class="col margin-top-10">
+    <div *ngIf="filteredSectorTypesList.length > 0" class="col margin-top-10">
       <table class="table table-bordered table-stripped">
         <tr>
           <th>Sector type name</th>
@@ -37,17 +37,21 @@
           <th>Source</th>
           <th>Actions</th>
         </tr>
-        <tr *ngFor="let sector of sectorTypesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+        <tr *ngFor="let sector of filteredSectorTypesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{sector.typeName}}</td>
           <td>{{isTrue(sector.isPrimary)}}</td>
           <td>{{isTrue(sector.isSourceType)}}</td>
           <td>
-            <a title="Edit" (click)="edit(sector.id)" class="btn btn-info"><i class="fa fa-edit color-white"></i></a>
-            <!--<a title="Delete" (click)="delete(sector.id)" class="btn btn-danger margin-left-2"><i class="fa fa-trash color-white"></i></a>-->
+            <a title="Rename" (click)="edit(sector.id)" class="btn btn-info"><i class="fa fa-edit color-white"></i></a>
+            <a *ngIf="!sector.isSourceType" title="Delete" (click)="delete(sector.id)" class="btn btn-danger margin-left-2"><i class="fa fa-trash color-white"></i></a>
           </td>
         </tr>
       </table>
+      
       <pagination-controls (pageChange)="p=$event"></pagination-controls>
+    </div>
+    <div *ngIf="filteredSectorTypesList.length == 0" class="text-info">
+      <i>No sector types to show</i>
     </div>
   </div>
 </div>

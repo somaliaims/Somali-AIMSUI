@@ -11,7 +11,8 @@ import { Settings } from '../config/settings';
 })
 export class SectorTypesComponent implements OnInit {
 
-  sectorTypesList: any = null;
+  sectorTypesList: any = [];
+  filteredSectorTypesList: any = [];
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
@@ -41,32 +42,20 @@ export class SectorTypesComponent implements OnInit {
         this.isLoading = false;
         if (data && data.length) {
           this.sectorTypesList = data;
+          this.filteredSectorTypesList = data;
         }
-      },
-      error => {
-        this.isLoading = false;
-        console.log("Request Failed: ", error);
       }
     );
   }
 
   searchSectorTypes() {
-    if (this.criteria != null) {
-      this.isLoading = true;
-      
-      this.sectorTypeService.filterSectorTypes(this.criteria).subscribe(
-        data => {
-          this.isLoading = false;
-          if (data && data.length) {
-            this.sectorTypesList = data
-          }
-        },
-        error => {
-          this.isLoading = false;
-        }
-      );
+    if (!this.criteria) {
+        this.filteredSectorTypesList = this.sectorTypesList;
     } else {
-      this.sectorTypesList();
+      if (this.sectorTypesList.length > 0) {
+        var criteria = this.criteria.toLowerCase();
+          this.filteredSectorTypesList = this.sectorTypesList.filter(s => (s.typeName.toLowerCase().indexOf(criteria) != -1));
+      }
     }
   }
 
