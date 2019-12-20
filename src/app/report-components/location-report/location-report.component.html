@@ -83,6 +83,22 @@
               </div>
 
               <div class="row margin-top-10">
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
+                    title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel();onChangeParentSector();">
+                    <option value="0">--Sector levels--</option>
+                    <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
+                    </option>
+                  </select>
+                </div>
+                <div [class.disable]="(model.sectorLevel == 0)" class="col-lg-3 col-md-3">
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
+                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                    (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeSelectAll($event)" 
+                    #selectedSectors="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
                 <div class="col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
                     (change)="selectCurrency();currencyChanged();" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
@@ -99,8 +115,9 @@
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
+              </div>
 
-                <div [class.disable]="!defaultCurrency" class="col-md-6">
+              <div [class.disable]="!defaultCurrency">
                   <div class="float-right">
                     <button type="submit" class="btn btn-info">{{btnReportText}}</button>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger margin-left-2 margin-top-2"
@@ -111,7 +128,6 @@
                       <button *ngIf="isAnyFilterSet" type="button"
                       class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
                   </div>
-                </div>
               </div>
 
             </form>

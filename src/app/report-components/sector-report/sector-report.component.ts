@@ -287,6 +287,7 @@ export class SectorReportComponent implements OnInit {
           this.model.sectorLevel = (params.noSectors) ? this.sectorLevelCodes.NO_SECTORS : this.model.sectorLevel;
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
+          this.model.locationId = (params.locationId) ? params.locationId : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
@@ -631,6 +632,7 @@ export class SectorReportComponent implements OnInit {
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);
+    this.manageResetDisplay();
   }
 
   setupStackedChartData() {
@@ -1167,6 +1169,7 @@ export class SectorReportComponent implements OnInit {
     this.model.parentSectorId = 0;
     this.model.selectedSectors = [];
     this.model.selectedOrganizations = [];
+    this.model.locationId = 0;
     this.isAnyFilterSet = false;
   }
 

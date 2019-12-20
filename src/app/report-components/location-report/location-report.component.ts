@@ -11,6 +11,7 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { Settings } from 'src/app/config/settings';
+import { SectorService } from 'src/app/services/sector.service';
 
 @Component({
   selector: 'location-report',
@@ -34,6 +35,11 @@ export class LocationReportComponent implements OnInit {
   manualExchangeRatesList: any = [];
   selectedDataOptions: any = [];
   projects: any = [];
+  allSectorsList: any = [];
+  sectorsList: any = [];
+  sectorIds: any = [];
+  subSectorIds: any = [];
+  subSubSectorIds: any = [];
 
   isAnyFilterSet: boolean = false;
   isNoLocationReport: boolean = false;
@@ -87,6 +93,19 @@ export class LocationReportComponent implements OnInit {
     { id: 2, type: 'planned-disbursements', value: 'Planned disbursements' },
     { id: 3, type: 'total-disbursements', value: 'Total disbursements' }
   ];
+
+  sectorLevels: any = [
+    { "id": 1, "level": "Parent sectors" },
+    { "id": 2, "level": "Sub sectors" },
+    { "id": 4, "level": "No sectors" }
+  ];
+
+  sectorLevelCodes: any = {
+    NO_SECTORS: 4,
+    SECTORS: 1,
+    SUB_SECTORS: 2,
+    SUB_SUB_SECTORS: 3
+  }
 
   dataOptionsIndexForDoughnut: any = {
     1: 0,
@@ -243,8 +262,8 @@ export class LocationReportComponent implements OnInit {
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], 
-    noLocationOption: this.noLocationCodes.PROJECTS_WITH_LOCATIONS
+    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], sectorId: 0, 
+    noLocationOption: this.noLocationCodes.PROJECTS_WITH_LOCATIONS, sectorLevel: 0
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -253,7 +272,7 @@ export class LocationReportComponent implements OnInit {
     private locationService: LocationService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private currencyService: CurrencyService,
     private errorModal: ErrorModalComponent, private route: ActivatedRoute, 
-    private projectService: ProjectService
+    private projectService: ProjectService, private sectorService: SectorService
   ) { }
 
   ngOnInit() {
@@ -265,6 +284,7 @@ export class LocationReportComponent implements OnInit {
           this.model.noLocationOption = (params.noLocations) ? this.noLocationCodes.PROJECTS_WITHOUT_LOCATIONS : this.noLocationCodes.PROJECTS_WITH_LOCATIONS;
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
+          this.model.sectorId = (params.sectorId) ? params.sectorId : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
@@ -282,6 +302,7 @@ export class LocationReportComponent implements OnInit {
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
+    this.getSectorsList();
     this.getDefaultCurrency();
     this.getNationalCurrency();
 
@@ -358,6 +379,41 @@ export class LocationReportComponent implements OnInit {
           }
         }
       });
+  }
+
+  getSectorsList() {
+    this.sectorService.getDefaultSectors().subscribe(
+      data => {
+        if (data) {
+          var allSectorsList = data;
+          this.allSectorsList = allSectorsList;
+          var sectorsList = allSectorsList.filter(s => s.parentSector == null);
+          this.sectorsList = sectorsList;
+          var sectorIds = sectorsList.map(s => s.id);
+          var subSectorsList = allSectorsList.filter(s => sectorIds.indexOf(s.parentSectorId) != -1);
+          var subSectorIds = subSectorsList.map(s => s.id);
+          this.subSectorIds = subSectorIds;
+          var subSubSectors = allSectorsList.filter(s => subSectorIds.indexOf(s.parentSectorId) != -1);
+          var subSubSectorIds = subSubSectors.map(s => s.id);
+          this.subSubSectorIds = subSubSectorIds;
+
+          if (this.loadReport) {
+            if (this.model.sectorId != 0) {
+              var sectorId = this.model.sectorId;
+              if (sectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
+              } else if (subSectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
+              } else if (subSubSectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SUB_SUB_SECTORS;
+              }
+
+              this.manageSectorLevel();
+            }
+          }
+        }
+      }
+    );
   }
 
   getProjectTitles() {
@@ -498,6 +554,34 @@ export class LocationReportComponent implements OnInit {
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);
+  }
+
+  manageSectorLevel() {
+    this.model.selectedSectors = [];
+    if (this.model.sectorLevel) {
+      var level = parseInt(this.model.sectorLevel);
+      switch (level) {
+        case this.sectorLevelCodes.SECTORS:
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          break;
+
+        case this.sectorLevelCodes.SUB_SECTORS:
+          this.sectorsList = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.id) != -1);
+          break;
+
+        case this.sectorLevelCodes.SUB_SUB_SECTORS:
+          this.sectorsList = this.allSectorsList.filter(s => this.subSubSectorIds.indexOf(s.id) != -1);
+          break;
+
+        case this.sectorLevelCodes.NO_SECTORS:
+          this.sectorsList = [];
+          break;
+
+        default:
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          break;
+      }
+    }
   }
 
   resetSearchResults() {
