@@ -97,7 +97,6 @@ export class LocationReportComponent implements OnInit {
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors" },
     { "id": 2, "level": "Sub sectors" },
-    { "id": 4, "level": "No sectors" }
   ];
 
   sectorLevelCodes: any = {
@@ -398,8 +397,8 @@ export class LocationReportComponent implements OnInit {
           this.subSubSectorIds = subSubSectorIds;
 
           if (this.loadReport) {
-            if (this.model.sectorId != 0) {
-              var sectorId = this.model.sectorId;
+            if (this.model.sectorId > 0) {
+              var sectorId = parseInt(this.model.sectorId);
               if (sectorIds.indexOf(sectorId) != -1) {
                 this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
               } else if (subSectorIds.indexOf(sectorId) != -1) {
@@ -485,6 +484,7 @@ export class LocationReportComponent implements OnInit {
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       locationIds: this.model.selectedLocations.map(l => l.id),
+      sectorId: this.model.sectorId
     };
 
     this.resetSearchResults();
@@ -581,6 +581,14 @@ export class LocationReportComponent implements OnInit {
           this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
           break;
       }
+    }
+  }
+
+  onChangeParentSector() {
+    if (this.model.parentSectorId != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
     }
   }
 
@@ -1078,6 +1086,7 @@ export class LocationReportComponent implements OnInit {
     this.model.endingYear = 0;
     this.model.selectedLocations = [];
     this.model.selectedOrganizations = [];
+    this.model.sectorId = 0;
     this.isAnyFilterSet = false;
   }
 

@@ -92,12 +92,12 @@
                   </select>
                 </div>
                 <div [class.disable]="(model.sectorLevel == 0)" class="col-lg-3 col-md-3">
-                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
-                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
-                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
-                    (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeSelectAll($event)" 
-                    #selectedSectors="ngModel">
-                  </ng-multiselect-dropdown>
+                  <select class="form-control" id="sectorId" [(ngModel)]="model.sectorId" name="sectorId"
+                    title="Select a sector" #sectorId="ngModel" required>
+                    <option value="0">--Select sector--</option>
+                    <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}
+                    </option>
+                  </select>
                 </div>
                 <div class="col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
