@@ -37,7 +37,7 @@ export class NewProjectComponent implements OnInit {
   selectedProjectTitle: string = null;
   selectedProjectStartDate: string = null;
   selectedProjectEndDate: string = null;
-  selectedProjectValue: string = 'N/a';
+  selectedProjectValue: number = 0;
   selectedProjectCurrency: string = null;
   selectedProjectDescription: string = null;
   selectedProjectOrganizations: any = [];

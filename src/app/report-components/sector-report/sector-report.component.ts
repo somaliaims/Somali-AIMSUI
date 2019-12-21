@@ -443,7 +443,7 @@ export class SectorReportComponent implements OnInit {
           this.oldCurrency = this.model.selectedCurrency;
           this.selectedCurrencyName = data.currencyName;
           this.currenciesList.push(data);
-          this.getManualExchangeRateForToday();
+          //this.getManualExchangeRateForToday();
         } else {
           this.isDefaultCurrencySet = false;
         }
@@ -459,9 +459,13 @@ export class SectorReportComponent implements OnInit {
           this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
         }
+        this.getManualExchangeRateForToday();
         setTimeout(() => {
           this.isDataLoading = false;
-        }, 2000);
+          if (this.loadReport) {
+            this.searchProjectsByCriteriaReport();
+          }
+        }, 3000);
       }
     );
   }
@@ -726,6 +730,14 @@ export class SectorReportComponent implements OnInit {
           var subSubSectorIds = subSubSectors.map(s => s.id);
           this.subSubSectorIds = subSubSectorIds;
 
+          if (this.subSubSectorIds.length > 0) {
+            this.sectorLevels.push({
+              id: 3,
+              level: 'Sub-sub sectors'
+            });
+            this.sectorLevels.sort(s => s.id);
+          }
+
           if (this.loadReport) {
             if (this.paramSectorIds.length > 0) {
               var sectorId = parseInt(this.paramSectorIds[0]);
@@ -774,7 +786,7 @@ export class SectorReportComponent implements OnInit {
               }
             }.bind(this));
           }
-          this.searchProjectsByCriteriaReport();
+          //this.searchProjectsByCriteriaReport();
         }
       }
     );

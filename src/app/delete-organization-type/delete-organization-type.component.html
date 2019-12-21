@@ -53,7 +53,7 @@
                                 <select class="form-control" name="mappingOrganization" [(ngModel)]="mappingOrganizationTypeId"
                                     #mappingOrganization="ngModel" required>
                                     <option value="0">--Organization type--</option>
-                                    <option *ngFor="let type of organizationTypesList" value="type.id">
+                                    <option *ngFor="let type of organizationTypesList" value="{{type.id}}">
                                         {{type.typeName}}
                                     </option>
                                 </select>

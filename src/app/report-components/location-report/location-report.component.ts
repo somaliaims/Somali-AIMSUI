@@ -396,6 +396,14 @@ export class LocationReportComponent implements OnInit {
           var subSubSectorIds = subSubSectors.map(s => s.id);
           this.subSubSectorIds = subSubSectorIds;
 
+          if (this.subSubSectorIds.length > 0) {
+            this.sectorLevels.push({
+              id: 3,
+              level: 'Sub-sub sectors'
+            });
+            this.sectorLevels.sort(s => s.id);
+          }
+
           if (this.loadReport) {
             if (this.model.sectorId > 0) {
               var sectorId = parseInt(this.model.sectorId);
@@ -461,7 +469,10 @@ export class LocationReportComponent implements OnInit {
 
         setTimeout(() => {
           this.isDataLoading = false;
-        }, 2000);
+          if (this.loadReport) {
+            this.searchProjectsByCriteriaReport();
+          }
+        }, 3000);
       }
     );
   }
@@ -554,6 +565,7 @@ export class LocationReportComponent implements OnInit {
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);
+    this.manageResetDisplay();
   }
 
   manageSectorLevel() {
@@ -578,6 +590,7 @@ export class LocationReportComponent implements OnInit {
           break;
 
         default:
+          this.model.sectorId = 0;
           this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
           break;
       }
@@ -686,7 +699,7 @@ export class LocationReportComponent implements OnInit {
               }
             }.bind(this));
           }
-          this.searchProjectsByCriteriaReport();
+          //this.searchProjectsByCriteriaReport();
         }
       }
     )
@@ -1068,7 +1081,7 @@ export class LocationReportComponent implements OnInit {
   manageResetDisplay() {
     if (this.model.selectedProjects.length == 0 && this.model.startingYear == 0 &&
       this.model.endingYear == 0 && this.model.selectedLocations.length == 0 && 
-      this.model.selectedOrganizations.length == 0 && 
+      this.model.selectedOrganizations.length == 0 && this.model.sectorId == 0 &&
       this.model.selectedCurrency == this.defaultCurrency) {
         this.isAnyFilterSet = false;
       } else {

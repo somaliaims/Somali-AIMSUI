@@ -360,6 +360,14 @@ export class ProjectsComponent implements OnInit {
           this.subSectorIds = subSectorsList.map(s => s.id);
           var subSubSectors = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.parentSectorId) != -1);
           this.subSubSectorIds = subSubSectors.map(s => s.id);
+
+          if (this.subSubSectorIds.length > 0) {
+            this.sectorLevels.push({
+              id: 3,
+              level: 'Sub-sub sectors'
+            });
+            this.sectorLevels.sort(s => s.id);
+          }
         }
       }
     );
