@@ -26,4 +26,10 @@ export class DatabackupService {
         return this.httpClient.get(url, httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Backup files')));
     }
+
+    performRestore(model: any) {
+        var url = this.urlHelper.getDataRestoreUrl();
+        return this.httpClient.post(url, model, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Data restore')));
+    }
 }

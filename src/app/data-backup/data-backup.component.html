@@ -32,17 +32,17 @@
             </div>
 
             <div *ngIf="currentTab == tabConstants.RESTORE" class="col-lg-12 col-md-12 col-sm-12">
-              <h5>Data backups list</h5>
+              <h6>Backups list</h6>
               <div class="row text-center" *ngIf="areFilesLoading">
                 <div class="col-md-12">
                   <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
                 </div>
               </div>
-              <table *ngIf="backupFiles.length > 0 && !areFilesLoading" class="table table-striped">
+              <table *ngIf="backupFiles.length > 0 && !areFilesLoading" class="table table-striped small">
                 <thead>
                   <tr>
-                    <th>Data backup</th>
-                    <th class="text-center">Date & TIME</th>
+                    <th>Backup file name</th>
+                    <th class="text-center">Date and Time</th>
                     <th class="text-center">Action</th>
                   </tr>
                 </thead>
@@ -51,7 +51,8 @@
                     <td>{{file.backupFileName}}</td>
                     <td class="text-center">{{formatDate(file.takenOn)}}</td>
                     <td class="text-center">
-                      <button type="button" (click)="restoreBackup(file.backupFileName)" class="btn btn-warning btn-sm">Restore</button>
+                      <button type="button" (click)="setRestoreRequest(file.id)" class="btn btn-warning btn-sm">Restore</button>
+                      <!--<a (click)="checkLink($e)" href="{{setBackupFileUrl(file.backupFileName)}}" class="btn btn-info btn-sm margin-left-2">Download file</a>-->
                     </td>
                   </tr>
                 </tbody>
@@ -60,6 +61,20 @@
                 <i>No backup files found to show.</i>
               </span>
             </div>
+
+            <div *ngIf="currentTab == tabConstants.RESTORE_CONFIRMATION" class="col-lg-12 col-md-12 col-sm-12">
+              <h6>Restoring database confirmation</h6>
+              <p class="lead">
+                Please confirm that you want to restore the database status to the selected backup file
+                ({{selectedBackupFileName}}) which was taken on ({{formatDate(backupTakenOn)}})? It must be noted that
+                this action cannot be undone.
+              </p>
+              <div>
+                <button class="btn btn-info text-uppercase small" (click)="performRestore()">Ok restore</button>
+                <button class="btn btn-danger text-uppercase margin-left-2 small" (click)="cancelRequest()">Cancel request</button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

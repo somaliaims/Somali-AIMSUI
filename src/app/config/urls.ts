@@ -1,8 +1,12 @@
 export const urls = {
-	baseUrl: "http://104.140.103.36/api/",
-	excelFilesUrl: "http://104.140.103.36/ExcelFiles/",
-	//baseUrl: "http://localhost:60815/api/",
-	//excelFilesUrl: "http://localhost:60815/ExcelFiles/",
+	//baseUrl: "http://104.140.103.36/api/",
+	//excelFilesUrl: "http://104.140.103.36/ExcelFiles/",
+	//backupFilesUrl: "http://104.140.103.36/DataBackups/",
+	//baseUrl: "http://104.140.103.166:7000/api/",
+	//excelFilesUrl: "http://104.140.103.166:7000/ExcelFiles/",
+	baseUrl: "http://localhost:60815/api/",
+	excelFilesUrl: "http://localhost:60815/ExcelFiles/",
+	dataBackupFilesUrl: "http://localhost:60815/DataBackups/",
 	getToken: "User/Token",
 	checkEmailAvailability: "User/CheckEmailAvailability/",
 	userRegistration: "User",
@@ -185,5 +189,6 @@ export const urls = {
 	addProjectSectorHelpUrl: "Help/AddProjectSectorHelp",
 	addProjectLocationHelpUrl: "Help/AddProjectLocationHelp",
 	backupDataUrl: "DataBackup/PerformBackup",
+	restoreDataUrl: "DataBackup/PerformRestore",
 	backupFilesUrl: "DataBackup/GetBackupFiles"
 };

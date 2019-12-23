@@ -22,7 +22,7 @@
       <div class="col-lg-4 col-md-4">
         <div class="input-group mb-3">
           <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12"
-            name="startingDate" placeholder="Project start date" [(ngModel)]="projectData.startDate"
+            name="startDate" placeholder="Project start date" [(ngModel)]="projectData.startDate"
             #startDate="ngModel" required />
           <span class="margin-left-2" tooltip="{{projectHelp.startDate}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
@@ -403,7 +403,7 @@
               <label>End date</label>
               <input type="text" title="End date of the project" onfocus="(this.type='date')"
                 onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
-                [(ngModel)]="projectData.endDate" #startDate="ngModel" required />
+                [(ngModel)]="projectData.endDate" #endDate="ngModel" required />
             </div>
             <div *ngIf="projectSourceForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
               End date is required
@@ -492,9 +492,10 @@
                 <td>
                   {{funder.funder}}
                 </td>
-                <td [class.disable]="checkIfFunderInActionList(funder.funder)">
-                  <button *ngIf="checkIfFunderAdded(funder.funder)" id="aFunder-{{project.id}}-{{funder.funderId}}"
-                    (click)="enterAIMSFunder($event)" class="btn btn-success btn-sm">Enter >></button>
+                <td>
+                  <button *ngIf="!checkIfFunderAdded(funder.funder)" id="dfunder-{{project.id}}-{{funder.id}}"
+                      (click)="addFunderToList(funder.funder)" class="btn btn-success btn-sm"><i
+                        [className]="checkIfFunderInActionList(funder.funder) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                 </td>
               </tr>
             </table>
@@ -569,10 +570,10 @@
                   {{implementer.implementer}}
                 </td>
                 <td>
-                  <button *ngIf="!checkIfImplementerAdded(implementer.name)"
+                  <button *ngIf="!checkIfImplementerAdded(implementer.implementer)"
                     id="dimplementer-{{project.id}}-{{implementer.implementerId}}"
-                    (click)="addImplementerToList(implementer.name)" class="btn btn-success btn-sm"><i
-                      [className]="checkIfImplementerInActionList(implementer.name) ? 'fa fa-check' : 'fa fa-square'"></i></button>
+                    (click)="addImplementerToList(implementer.implementer)" class="btn btn-success btn-sm"><i
+                      [className]="checkIfImplementerInActionList(implementer.implementer) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                 </td>
               </tr>
             </table>
@@ -601,7 +602,7 @@
                   </td>
                   <td>
                     <button *ngIf="!checkIfImplementerAdded(implementer.name)"
-                      id="dimplementer-{{project.id}}-{{implementer.implementerId}}"
+                      id="dimplementer-{{project.id}}-{{implementer.id}}"
                       (click)="addImplementerToList(implementer.name)" class="btn btn-success btn-sm"><i
                         [className]="checkIfImplementerInActionList(implementer.name) ? 'fa fa-check' : 'fa fa-square'"></i></button>
                   </td>

@@ -110,7 +110,6 @@ export class ProjectSectorsComponent implements OnInit {
       }
     });
     this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
-
     this.sectorsSettings = {
       singleSelection: true,
       idField: 'id',
@@ -146,7 +145,7 @@ export class ProjectSectorsComponent implements OnInit {
       }
     });
 
-    this.ndpSectorsList = this.defaultSectorsList;
+    this.ndpSectorsList = this.defaultSectorsList.filter(s => s.parentSector != null);
     if (this.ndpSectorsList.length > 0) {
       this.isNdpSectorsLoading = false;
     } 

@@ -226,6 +226,7 @@ export class BasicDataComponent implements OnInit {
           i.isSaved = true;
         });
       });
+      console.log(this.iatiProjects);
     }
 
     if (this.aimsProjects.length > 0) {
@@ -256,6 +257,7 @@ export class BasicDataComponent implements OnInit {
           this.isDocumentSourceAvailable = true;
         }
       });
+      console.log(this.aimsProjects);
     }
 
     this.getProjectHelp();
@@ -325,8 +327,10 @@ export class BasicDataComponent implements OnInit {
   }
 
   saveBasicData() {
-    var startingYear = parseInt(this.projectData.startingFinancialYear);
-    var endingYear = parseInt(this.projectData.endingFinancialYear);
+    var startingYear = new Date(this.projectData.startDate).getFullYear();
+    var endingYear = new Date(this.projectData.endDate).getFullYear();
+    this.projectData.startingFinancialYear = startingYear;
+    this.projectData.endingFinancialYear = endingYear;
 
     if (startingYear > endingYear) {
       this.errorMessage = 'Starting year cannot be greater than ending year';
@@ -829,18 +833,20 @@ export class BasicDataComponent implements OnInit {
   }
 
   checkIfFunderAdded(funder) {
+    var exists = [];
     if (this.projectFunders.length > 0) {
-      var isExists = this.projectFunders.filter(f =>
+      exists = this.projectFunders.filter(f =>
         f.funder.trim().toLowerCase() == funder.trim().toLowerCase());
-      return isExists.length > 0 ? true : false;
+      return exists.length > 0 ? true : false;
     }
   }
 
   checkIfImplementerAdded(implementer) {
+    var exists = [];
     if (this.projectImplementers.length > 0) {
-      var isExists = this.projectImplementers.filter(i =>
+      exists = this.projectImplementers.filter(i =>
         i.implementer.trim().toLowerCase() == implementer.trim().toLowerCase());
-      return isExists.length > 0 ? true : false;
+      return exists.length > 0 ? true : false;
     }
   }
 

@@ -16,17 +16,21 @@ export class DataBackupComponent implements OnInit {
   infoMessage: string = null;
   errorMessage: string = null;
   currentDate: string = null;
+  selectedBackupFileName: string = null;
+  backupTakenOn: string = null;
   areFilesLoading: boolean = false;
   backupFiles: any = [];
 
   displayTabs: any = [
     { visible: true, identity: 'backup' },
     { visible: false, identity: 'restore' },
+    { visible: false, identity: 'restore_confirmation' }
   ];
 
   tabConstants: any = {
     BACKUP: 'backup',
     RESTORE: 'restore',
+    RESTORE_CONFIRMATION: 'restore_confirmation'
   };
 
   @BlockUI() blockUI: NgBlockUI;
@@ -91,12 +95,55 @@ export class DataBackupComponent implements OnInit {
     return date.toLocaleString('en-US');
   }
 
-  restoreBackup() {
+  setRestoreRequest(id: number) {
+    if (id) {
+      var backup = this.backupFiles.filter(b => b.id == id);
+      if (backup.length > 0) {
+        this.selectedBackupFileName = backup[0].backupFileName;
+        this.backupTakenOn = backup[0].takenOn;
+        this.manageTabsDisplay(this.tabConstants.RESTORE_CONFIRMATION);
+      }
+    }
+  }
 
+  performRestore() {
+    if (this.selectedBackupFileName) {
+      var model = {
+        fileName: this.selectedBackupFileName
+      };
+
+      this.blockUI.start('Wait restoring database...');
+      this.backupService.performRestore(model).subscribe(
+        data => {
+          if (data) {
+            this.infoMessage = Messages.DATA_RESTORE_MESSAGE;
+            this.infoModal.openModal();
+            this.manageTabsDisplay(this.tabConstants.BACKUP);
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  cancelRequest() {
+    this.manageTabsDisplay(this.tabConstants.RESTORE);
   }
 
   setCurrentDate() {
     this.currentDate = this.storeService.getLongDateString(new Date());
+  }
+
+  setBackupFileUrl(fileName: string) {
+    if (fileName) {
+      return (this.storeService.getBackupFileUrl() + fileName);
+    }
+    return fileName;
+  }
+
+  checkLink(e) {
+    e.preventDefault();
+    return false;
   }
 
 }

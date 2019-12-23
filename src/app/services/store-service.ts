@@ -228,6 +228,10 @@ export class StoreService {
     return (urlsList.urls.excelFilesUrl);
   }
 
+  getBackupFileUrl() {
+    return (urlsList.urls.dataBackupFilesUrl);
+  }
+
   isDateValid(dated: any) {
     var formattedDate = null;
     if (dated.year && dated.month && dated.day) {

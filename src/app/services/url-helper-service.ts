@@ -692,6 +692,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.backupDataUrl);
     }
 
+    getDataRestoreUrl() {
+        return (this.BASE_URL + urlsList.urls.restoreDataUrl);
+    }
+
     getBackupFilesUrl() {
         return (this.BASE_URL + urlsList.urls.backupFilesUrl);
     }
