@@ -27,11 +27,11 @@
             </div>
 
             <div *ngIf="currentTab == 'password'" class="col-md-12">
-              <h5 class="card-title text-center">Change Password</h5>
+              <h5 class="card-title text-center">Change password</h5>
               <form class="form-signin" (ngSubmit)="accountForm.form.valid && changePassword()" #accountForm="ngForm">
 
                 <div class="form-group">
-                  <label for="password">Enter New Password</label>
+                  <label for="password">Enter new password</label>
                   <input type="password" class="form-control" id="password" [(ngModel)]="model.password" name="location"
                     #password="ngModel" required>
                   <div *ngIf="accountForm.submitted" [hidden]="password.valid" class="alert alert-danger">
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="confirmPassword">Confirm Password</label>
+                  <label for="confirmPassword">Confirm password</label>
                   <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="model.confirmPassword"
                     name="confirmPassword" #confirmPassword="ngModel" required>
                   <div *ngIf="accountForm.submitted" [hidden]="model.password == model.confirmPassword" class="alert alert-danger">
@@ -53,11 +53,11 @@
             </div>
 
             <div *ngIf="currentTab == 'account'">
-              <h5 class="card-title text-center">Delete Account</h5>
+              <h5 class="card-title text-center">Delete account</h5>
               <form class="form-signin" (ngSubmit)="dAccountForm.form.valid && confirmDeleteAccount()" #dAccountForm="ngForm">
 
                 <div class="form-group">
-                  <label for="password">Enter Current Password</label>
+                  <label for="password">Enter current password</label>
                   <input type="password" class="form-control" id="password" [(ngModel)]="dModel.password"
                     name="password" #password="ngModel" required>
                   <div *ngIf="dAccountForm.submitted" [hidden]="password.valid" class="alert alert-danger">
@@ -102,6 +102,20 @@
               Your password is reset successfully. You must use new password on next login.
           </div>
         </div><br />
+    </div>
+  </div>
+</jw-modal>
+
+<jw-modal id="error-message-modal">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-danger text-white">Error Message</div>
+          <div class="card-body text-danger">
+              {{errorMessageForModal}}
+          </div>
+        </div><br />
+        <button class="btn btn-danger" (click)="closeErrorModal()">Close</button>
     </div>
   </div>
 </jw-modal>

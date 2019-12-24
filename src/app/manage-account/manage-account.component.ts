@@ -6,6 +6,7 @@ import { Messages } from '../config/messages';
 import { ModalService } from '../services/modal.service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Settings } from '../config/settings';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 @Component({
   selector: 'manage-account',
@@ -13,7 +14,7 @@ import { Settings } from '../config/settings';
   styleUrls: ['./manage-account.component.css']
 })
 export class ManageAccountComponent implements OnInit {
-  model = { password: null };
+  model = { password: null, confirmPassword: null };
   dModel = { password: null };
   currentTab: string = 'password';
   btnPasswordText: string = 'Save New Password';
@@ -23,6 +24,8 @@ export class ManageAccountComponent implements OnInit {
   isError: boolean = false;
   infoMessage: string = '';
   errorMessage: string = '';
+  errorMessageForModal: string = '';
+  requestNo: number = 0;
 
   constructor(private userService: UserService, private router: Router,
     private storeService: StoreService, private modalService: ModalService,
@@ -33,6 +36,14 @@ export class ManageAccountComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
     this.storeService.newReportItem(Settings.dropDownMenus.management);
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessageForModal = model.errorMessage;
+        this.isBtnDisabled = false;
+        this.modalService.open('error-message-modal');
+      }
+    });
   }
 
   showPasswordTab() {
@@ -46,6 +57,9 @@ export class ManageAccountComponent implements OnInit {
   }
 
   changePassword() {
+    if (this.model.password != this.model.confirmPassword) {
+      return false;
+    }
     this.isBtnDisabled = true;
     this.btnPasswordText = 'Updating password...';
     this.userService.editUserPassword(this.model.password).subscribe(
@@ -97,6 +111,10 @@ export class ManageAccountComponent implements OnInit {
 
   closeModal() {
     this.modalService.close('confirmation-modal');
+  }
+
+  closeErrorModal() {
+    this.modalService.close('error-message-modal');
   }
 
   resetFormsState() {
