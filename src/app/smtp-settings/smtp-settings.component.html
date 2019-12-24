@@ -49,6 +49,15 @@
               </div>
 
               <div class="form-group">
+                <label for="email">Sender name</label>
+                <input type="email" maxlength="255" class="form-control" id="senderName" [(ngModel)]="model.senderName"
+                  name="senderName" #senderName="ngModel" required>
+                <div *ngIf="smtpForm.submitted" [hidden]="senderName.valid" class="alert alert-danger">
+                  Sender name is required
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="username">SMTP username</label>
                 <input type="text" maxlength="255" class="form-control" id="username" [(ngModel)]="model.username"
                   name="username" #username="ngModel" required>

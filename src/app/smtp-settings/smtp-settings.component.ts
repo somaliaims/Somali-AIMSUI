@@ -21,7 +21,8 @@ export class SmtpSettingsComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   infoMessage: string = null;
-  model: any = { host: null, port: null, username: null, password: null, adminEmail: null };
+  model: any = { host: null, port: null, username: null, password: null, 
+    adminEmail: null, senderName: null };
   permissions: any = {};
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -48,6 +49,7 @@ export class SmtpSettingsComponent implements OnInit {
         this.model.port = data.port;
         this.model.adminEmail = data.adminEmail;
         this.model.username = data.username;
+        this.model.senderName = data.senderName;
       }
     )
   }
