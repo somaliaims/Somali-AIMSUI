@@ -226,7 +226,7 @@
                 Loading IATI projects...
               </div>
               <div *ngIf="!isIATILoading">
-                <div *ngIf="filteredIatiProjects.length > 0">
+                <div *ngIf="filteredIatiProjects.length > 0" class="projects-list-box">
                   <table class="table table-bordered table-fixed-layout">
                     <tr
                       *ngFor="let project of filteredIatiProjects | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }">
@@ -271,7 +271,7 @@
                 Loading AIMS projects...
               </div>
               <div *ngIf="!isAIMSLoading">
-                <div *ngIf="filteredAIMSProjects.length > 0">
+                <div *ngIf="filteredAIMSProjects.length > 0" class="projects-list-box">
                   <table class="table table-bordered">
                     <tr
                       *ngFor="let project of filteredAIMSProjects | paginate: { itemsPerPage: pagingSize, currentPage: p, id: 'p' }">

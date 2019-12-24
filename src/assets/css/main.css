@@ -212,6 +212,12 @@ html {
     margin-top: 5px !important;
   }
 
+  .projects-list-box {
+    max-height: 480px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   .sectors-list-box-small {
     max-height: 350px;
     overflow-y: auto;
