@@ -52,6 +52,7 @@ export class SectorReportComponent implements OnInit {
   paramSectorIds: any = [];
   paramOrgIds: any = [];
   paramProjectIds: any = [];
+  paramChartType: string = null;
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
@@ -61,7 +62,6 @@ export class SectorReportComponent implements OnInit {
   isAnyFilterSet: boolean = false;
   isShowStackedChart: boolean = false;
   isNoSectorReport: boolean = false;
-
   yearsList: any = [];
   allSectorsList: any = [];
   sectorsList: any = [];
@@ -279,6 +279,8 @@ export class SectorReportComponent implements OnInit {
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
+    this.model.chartType = this.chartTypeCodes.BAR;
+
     if (this.route.snapshot.queryParams.load) {
       this.route.queryParams.subscribe(params => {
         if (params) {
@@ -291,14 +293,13 @@ export class SectorReportComponent implements OnInit {
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
+          this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.loadReport = true;
         }
       });
     } else {
       this.isLoading = false;
     }
-
-    this.model.chartType = this.chartTypeCodes.BAR;
     this.getProjectTitles();
     this.getSectorsList();
     this.getLocationsList();
@@ -479,12 +480,14 @@ export class SectorReportComponent implements OnInit {
     this.parentSectorsSummary = [];
     this.parentSectorsWithProjects = [];
     var projectIds = [];
-    this.model.chartType = this.chartTypeCodes.BAR;
-    this.model.chartTypeName = this.chartTypes.BAR;
+    //this.model.chartType = this.chartTypeCodes.BAR;
+    //this.model.chartTypeName = this.chartTypes.BAR;
 
     if (this.model.selectedProjects.length > 0) {
       projectIds = this.model.selectedProjects.map(p => p.id);
     }
+
+    var chartType = (this.loadReport) ? this.paramChartType : this.model.chartType;
     var searchModel = {
       projectIds: (this.loadReport) ? this.paramProjectIds : projectIds,
       locationId: this.model.locationId,
@@ -493,6 +496,7 @@ export class SectorReportComponent implements OnInit {
       organizationIds: (this.loadReport) ? this.paramOrgIds : this.model.selectedOrganizations.map(o => o.id),
       parentSectorId: this.model.parentSectorId,
       sectorLevel: this.model.sectorLevel,
+      chartType: chartType,
       sectorIds: (this.loadReport) ? this.paramSectorIds : this.model.selectedSectors.map(s => s.id),
     };
 
@@ -527,10 +531,14 @@ export class SectorReportComponent implements OnInit {
             this.manageDataToDisplay();
             this.model.selectedCurrency = this.defaultCurrency;
             this.selectCurrency();
+            this.blockUI.stop();
             setTimeout(() => {
               this.datedToday = this.storeService.getLongDateString(currentDate);
-            });
-            this.blockUI.stop();
+              if (this.loadReport) {
+                this.model.chartType = this.paramChartType;
+                this.loadReport = false;
+              }
+            }, 2000);
           }
         }
       );
@@ -624,15 +632,18 @@ export class SectorReportComponent implements OnInit {
           this.manageDataToDisplay();
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
+          this.blockUI.stop();
           setTimeout(() => {
             this.datedToday = this.storeService.getLongDateString(currentDate);
-          });
-          this.blockUI.stop();
+            if (this.loadReport) {
+              this.model.chartType = this.paramChartType;
+              this.loadReport = false;
+            }
+          }, 2000);
         }
       );
     }
-
-    this.loadReport = false;
+    
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);
@@ -909,20 +920,21 @@ export class SectorReportComponent implements OnInit {
   manageDataToDisplay() {
     this.chartData = [];
     var selectedDataOption = 1;
+    var chartType = (this.loadReport) ? this.paramChartType : this.model.chartType;
     if (this.model.selectedDataOption) {
       this.selectedDataOptions = [];
       selectedDataOption = parseInt(this.model.selectedDataOption);
       this.selectedDataOptions.push(selectedDataOption);
     }
     selectedDataOption = parseInt(this.model.selectedDataOption);
-    var tChartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    var tChartType = this.chartOptions.filter(c => c.id == chartType);
     if (tChartType.length > 0) {
       this.model.chartTypeName = tChartType[0].type;
     }
 
-    if (this.model.chartType == this.chartTypeCodes.STACKEDBAR) {
+    if (chartType == this.chartTypeCodes.STACKEDBAR) {
       this.setupStackedChartData();
-    } else if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
+    } else if (chartType != this.chartTypeCodes.PIE && chartType != this.chartTypeCodes.POLAR) {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
