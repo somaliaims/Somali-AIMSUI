@@ -115,8 +115,8 @@ export class EnvelopeReportComponent implements OnInit {
   ];
 
   chartOptions: any = [
-    { id: 1, type: 'bar', title: 'Bar chart' },
-    { id: 2, type: 'line', title: 'Line chart' },
+    { id: 1, type: 'bar', title: 'Stacked bar' },
+    { id: 2, type: 'line', title: 'Stacked line' },
   ];
 
   chartTypesList: any = [

@@ -57,6 +57,7 @@ export class TimeTrendReportComponent implements OnInit {
   datedToday: string = null;
   paramSectorIds: any = [];
   paramOrgIds: any = [];
+  paramChartType: string = null;
   paramLocationIds: any = [];
   paramProjectIds: any = [];
   loadReport: boolean = false;
@@ -239,6 +240,7 @@ export class TimeTrendReportComponent implements OnInit {
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
+          this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.loadReport = true;
         } 
       });
@@ -362,8 +364,17 @@ export class TimeTrendReportComponent implements OnInit {
     this.chartLabels = [];
     this.chartData = [];
     var projectIds = [];
-    this.chartType = this.chartTypes.BAR;
-    this.model.chartType = this.chartTypes.BAR;
+    //this.chartType = this.chartTypes.BAR;
+    //this.model.chartType = this.chartTypes.BAR;
+    var chartType = null;
+    if (this.loadReport) {
+      chartType = this.paramChartType;
+    } else {
+      var searchType = this.chartTypesList.filter(c => c.type == this.model.chartType);
+      if (searchType.length > 0) {
+        chartType = searchType[0].id;
+      }
+    }
 
     if (this.model.selectedProjects.length > 0) {
       projectIds = this.model.selectedProjects.map(p => p.id);
@@ -375,6 +386,7 @@ export class TimeTrendReportComponent implements OnInit {
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       sectorIds: this.model.selectedSectors.map(s => s.id),
+      chartType: chartType
     };
 
     this.resetSearchResults();
@@ -398,6 +410,18 @@ export class TimeTrendReportComponent implements OnInit {
           this.setupChartData();
         }
         this.blockUI.stop();
+
+        if (this.loadReport) {
+          setTimeout(() => {
+            this.loadReport = false;
+            var searchType = this.chartTypesList.filter(c => c.id == this.paramChartType);
+            if (searchType.length > 0) {
+              this.model.chartType = searchType[0].type;
+              this.chartType = searchType[0].type;
+            }
+          }, 2000);
+        }
+      
       }
     )
 

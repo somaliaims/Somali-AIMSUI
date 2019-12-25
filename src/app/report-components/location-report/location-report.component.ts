@@ -60,6 +60,7 @@ export class LocationReportComponent implements OnInit {
   paramLocationIds: any = [];
   paramOrgIds: any = [];
   paramProjectIds: any = [];
+  paramChartType: string = null;
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
@@ -257,7 +258,7 @@ export class LocationReportComponent implements OnInit {
   stackedChartData: any = [];
   doughnutChartData: any = [];
   model: any = {
-    title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: 'bar',
+    title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: this.chartTypeCodes.BAR,
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
@@ -287,6 +288,7 @@ export class LocationReportComponent implements OnInit {
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
+          this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.loadReport = true;
           if (this.model.noLocationOption) {
             this.isNoLocationReport = true;
@@ -482,9 +484,9 @@ export class LocationReportComponent implements OnInit {
     this.chartLables = [];
     this.chartData = [];
     var projectIds = [];
-    this.model.chartType = this.chartTypeCodes.BAR;
-    this.model.chartTypeName = this.chartTypes.BAR;
-
+    //this.model.chartType = this.chartTypeCodes.BAR;
+    //this.model.chartTypeName = this.chartTypes.BAR;
+    var chartType = (this.loadReport) ? this.paramChartType : this.model.chartType;
     if (this.model.selectedProjects.length > 0) {
       projectIds = this.model.selectedProjects.map(p => p.id);
     }
@@ -495,7 +497,8 @@ export class LocationReportComponent implements OnInit {
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       locationIds: this.model.selectedLocations.map(l => l.id),
-      sectorId: this.model.sectorId
+      sectorId: this.model.sectorId,
+      chartType: chartType
     };
 
     this.resetSearchResults();
@@ -525,7 +528,11 @@ export class LocationReportComponent implements OnInit {
               this.selectCurrency();
               setTimeout(() => {
                 this.datedToday = this.storeService.getLongDateString(currentDate);
-              });
+                if (this.loadReport) {
+                  this.model.chartType = this.paramChartType;
+                  this.loadReport = false;
+                }
+              }, 2000);
             }
           }
           this.blockUI.stop();
@@ -554,7 +561,11 @@ export class LocationReportComponent implements OnInit {
               this.selectCurrency();
               setTimeout(() => {
                 this.datedToday = this.storeService.getLongDateString(currentDate);
-              });
+                if (this.loadReport) {
+                  this.model.chartType = this.paramChartType;
+                  this.loadReport = false;
+                }
+              }, 2000);
             }
           }
           this.blockUI.stop();
@@ -1032,21 +1043,22 @@ export class LocationReportComponent implements OnInit {
   manageDataToDisplay() {
     this.chartData = [];
     var selectedDataOption = 1;
+    var chartType = (this.loadReport) ? this.paramChartType : this.model.chartType;
     if (this.model.selectedDataOption) {
       this.selectedDataOptions = [];
       selectedDataOption = parseInt(this.model.selectedDataOption);
       this.selectedDataOptions.push(selectedDataOption);
     }
     selectedDataOption = parseInt(this.model.selectedDataOption);
-    var chartType = this.chartOptions.filter(c => c.id == this.model.chartType);
+    var chartType = this.chartOptions.filter(c => c.id == chartType);
     if (chartType.length > 0) {
       this.model.chartTypeName = chartType[0].type;
     }
     
-    if (this.model.chartType == this.chartTypeCodes.STACKEDBAR) {
+    if (chartType == this.chartTypeCodes.STACKEDBAR) {
       this.isShowStackedChart = false;
       this.setupStackedChartData();
-    } else if (this.model.chartType != this.chartTypeCodes.PIE && this.model.chartType != this.chartTypeCodes.POLAR) {
+    } else if (chartType != this.chartTypeCodes.PIE && chartType != this.chartTypeCodes.POLAR) {
       this.manageDataOptions();
     } else {
       switch (selectedDataOption) {
