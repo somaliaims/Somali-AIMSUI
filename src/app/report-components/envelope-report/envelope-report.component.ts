@@ -33,7 +33,7 @@ export class EnvelopeReportComponent implements OnInit {
   paramEnvelopeTypes: any = [];
   humanitarianSummary: any = [];
   developmentSummary: any = [];
-  
+  paramChartType: string = null;
   currentYear: number = 0;
   reportSettings: any = {};
   envelopeTypeSettings: any = {};
@@ -200,6 +200,7 @@ export class EnvelopeReportComponent implements OnInit {
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.paramFunders = (params.funders) ? params.funders.split(',') : [];
           this.paramEnvelopeTypes = (params.envelopeTypes) ? params.envelopeTypes.split(',') : [];
+          this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.loadReport = true;
         }
       });
@@ -219,8 +220,22 @@ export class EnvelopeReportComponent implements OnInit {
   getEnvelopeReport() {
     this.isShowChart = false;
     this.chartData = [];
-    this.chartType = this.chartTypes.BAR;
-    this.model.chartType = this.chartTypes.BAR;
+    //this.chartType = this.chartTypes.BAR;
+    //this.model.chartType = this.chartTypes.BAR;
+    var chartType = this.chartTypeCodes.BAR;
+    if (this.loadReport) {
+      chartType = this.paramChartType;
+      var searchType = this.chartTypesList.filter(c => c.id == chartType);
+      if (searchType.length > 0) {
+        this.chartType = searchType[0].type;
+      }
+    } else {
+      var searchType = this.chartTypesList.filter(c => c.type == this.model.chartType);
+      if (searchType.length > 0) {
+        chartType = searchType[0].id;
+        this.chartType = searchType[0].type;
+      }
+    }
     this.model.envelopeTypeIds = this.selectedEnvelopeTypes.map(t => t.id);
     this.model.organizationTypeIds = this.selectedOrganizationTypes.map(t => t.id);
     this.model.funderIds = this.selectedOrganizations.map(o => o.id);
@@ -230,7 +245,8 @@ export class EnvelopeReportComponent implements OnInit {
       endingYear: this.model.endingYear,
       envelopeTypeIds: this.selectedEnvelopeTypes.map(t => t.id),
       funderTypeIds: this.selectedOrganizationTypes.map(t => t.id),
-      funderIds: this.selectedOrganizations.map(o => o.id)
+      funderIds: this.selectedOrganizations.map(o => o.id),
+      chartType: chartType
     };
     this.blockUI.start('Loading report...');
     this.reportService.getEnvelopeReport(model).subscribe(
@@ -251,6 +267,12 @@ export class EnvelopeReportComponent implements OnInit {
         }
         setTimeout(() => {
           this.isLoading = false;
+          if (this.loadReport) {
+            var typeName = this.chartTypesList.filter(t => t.id == chartType);
+            if (typeName.length > 0) {
+              this.model.chartType = typeName[0].type;
+            }
+          }
         }, 1000);
         this.blockUI.stop();
       }
@@ -413,10 +435,13 @@ export class EnvelopeReportComponent implements OnInit {
     this.humanitarianSummary = [];
     this.developmentSummary = [];
     var chartType = this.chartTypes.BAR;
-    if (chartType.length > 0) {
-      this.model.chartTypeName = chartType[0].type;
+    if (this.loadReport) {
+      var searchType = this.chartTypesList.filter(c => c.id == this.paramChartType);
+      if (searchType.length > 0) {
+        chartType = searchType[0].type;
+      }
     }
-
+    this.model.chartTypeName = chartType;
     this.envelopeYearsList.forEach((year) => {
       var humanitarianAmount: number = 0;
       var developmentAmount: number = 0; 
