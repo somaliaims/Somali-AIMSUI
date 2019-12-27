@@ -152,7 +152,7 @@ export class ProjectSectorsComponent implements OnInit {
     
     if (this.currentTab == this.tabConstants.SECTORS_SOURCE) {
       this.isNdpSectorsLoading = false;
-      this.ndpSectorsList = this.defaultSectorsList;
+      this.ndpSectorsList = this.defaultSectorsList.filter(s => s.parentSector != null);
     }
   }
 
@@ -349,7 +349,15 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   removeProjectLocation(id) {
-    this.currentProjectLocations = this.currentProjectLocations.filter(l => (l.saved == false && l.locationId != id));
+    var filterLocationList = [];
+    this.currentProjectLocations.forEach((l) => {
+      if (l.saved) {
+        filterLocationList.push(l);
+      } else if (!l.saved && l.locationId != id) {
+        filterLocationList.push(l);
+      }
+    });
+    this.currentProjectLocations = filterLocationList;
   }
 
   deleteProjectSector(sectorId) {
