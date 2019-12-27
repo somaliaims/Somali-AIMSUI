@@ -226,7 +226,6 @@ export class BasicDataComponent implements OnInit {
           i.isSaved = true;
         });
       });
-      console.log(this.iatiProjects);
     }
 
     if (this.aimsProjects.length > 0) {
@@ -257,7 +256,6 @@ export class BasicDataComponent implements OnInit {
           this.isDocumentSourceAvailable = true;
         }
       });
-      console.log(this.aimsProjects);
     }
 
     this.getProjectHelp();

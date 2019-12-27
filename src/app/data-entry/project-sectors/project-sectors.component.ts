@@ -244,6 +244,14 @@ export class ProjectSectorsComponent implements OnInit {
       }
     }
 
+    if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
+      if (!this.sectorModel.selectedMapping) {
+        this.errorMessage = 'Sector mapping is requred';
+        this.errorModal.openModal();
+        return false;
+      }
+    }
+
     var mappingId = 0;
     if (this.sectorModel.selectedMapping && this.sectorModel.selectedMapping.length > 0) {
       mappingId = this.sectorModel.selectedMapping[0].id;
@@ -258,7 +266,7 @@ export class ProjectSectorsComponent implements OnInit {
     if (this.defaultSectorTypeId == this.sectorModel.sectorTypeId) {
       isSectorExists = this.currentProjectSectors.filter(s => s.mappingId == mappingId && s.saved == false);
     } else {
-      isSectorExists = this.currentProjectSectors.filter(s => s.sectorId == mappingId && s.saved == false);
+      isSectorExists = this.currentProjectSectors.filter(s => s.mappingId == mappingId && s.saved == false);
     }
     
     if (isSectorExists.length > 0) {
@@ -273,10 +281,14 @@ export class ProjectSectorsComponent implements OnInit {
       this.currentProjectSectors.unshift(this.sectorModel);
     }
     
+    var sectorTypeId = this.sectorModel.sectorTypeId;
     this.sectorModel = { sectorTypeId: null, sectorId: null, mappingId: null, saved: false };
     this.mappingsCount = 0;
     this.sectorMappings = [];
     frm.resetForm();
+    setTimeout(() => {
+      this.sectorModel.sectorTypeId = sectorTypeId;
+    },500);
   }
 
   addLocation(frm: any) {
@@ -315,11 +327,25 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   removeProjectSector(id, isSomaliSector: boolean) {
+    var filterSectorsList = [];
     if (isSomaliSector) {
-      this.currentProjectSectors = this.currentProjectSectors.filter(s => s.saved == false && s.mappingId != id);
+      this.currentProjectSectors.forEach((s) => {
+        if (s.saved) {
+          filterSectorsList.push(s);
+        } else if (!s.saved && s.mappingId != id) {
+          filterSectorsList.push(s);
+        }
+      });
     } else {
-      this.currentProjectSectors = this.currentProjectSectors.filter(s => s.saved == false && s.sectorId != id);
+      this.currentProjectSectors.forEach((s) => {
+        if (s.saved) {
+          filterSectorsList.push(s);
+        } else if (!s.saved && s.sectorId != id) {
+          filterSectorsList.push(s);
+        }
+      });
     }
+    this.currentProjectSectors = filterSectorsList;
   }
 
   removeProjectLocation(id) {
@@ -334,8 +360,8 @@ export class ProjectSectorsComponent implements OnInit {
           if (data) {
             this.currentProjectSectors = this.currentProjectSectors.filter(s => s.sectorId != sectorId);
             this.updateSectorsToParent();
+            this.getProjectSectors();
           }
-          this.blockUI.stop();
         }
       );
     }
@@ -349,8 +375,8 @@ export class ProjectSectorsComponent implements OnInit {
           if (data) {
             this.currentProjectLocations = this.currentProjectLocations.filter(l => l.locationId != locationId);
             this.updateLocationsToParent();
+            this.getProjectLocations();
           }
-          this.blockUI.stop();
         }
       );
     }
@@ -457,6 +483,9 @@ export class ProjectSectorsComponent implements OnInit {
             });
           }
           this.currentProjectSectors = data;
+          this.currentProjectSectors.forEach((s) => {
+            s.mappingId = s.sectorId
+          });
           this.updateSectorsToParent();
         }
         this.blockUI.stop();

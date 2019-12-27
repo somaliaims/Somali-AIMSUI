@@ -22,6 +22,7 @@ export const Messages = {
     INVALID_ATTEMPT: 'You made an invalid attempt for this action',
     CANNOT_BE_ZERO: 'cannot be less than or equal to zero',
     INVALID_PERCENTAGE: 'Percentage total cannot be greater than 100%',
+    PERCENT_MUST_EQUAL_HUNDRED: 'Percentage must be equal to 100%',
     INVALID_STARTEND_DATE: 'Start date cannot be greater than end date',
     INVALID_API_KEY: 'API key cannot be set as null',
     INVALID_EXRATE_SAVE: 'You must provide some updated exchange rates to save',

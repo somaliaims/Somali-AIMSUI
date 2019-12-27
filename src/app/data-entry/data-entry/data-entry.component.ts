@@ -236,6 +236,7 @@ export class DataEntryComponent implements OnInit {
             this.currentProjectSectors = data.sectors;
             this.currentProjectSectors.forEach(s => {
               s.saved = true;
+              s.mappingId = s.sectorId;
             });
             this.sectorTotalPercentage = this.calculateSectorPercentage();
           }
