@@ -153,7 +153,7 @@
                   </option>
                 </select>
                 <label>&nbsp;Data on chart:&nbsp;</label>
-                <select class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
+                <select [class.disable]="model.chartTypeName == chartTypes.STACKEDBAR" class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="dataOption"
                   #dataOption="ngModel" (change)="manageDataToDisplay()" required>
                   <option value="null">-- Chart data option --</option>
                   <option *ngFor="let option of dataOptions" value="{{option.id}}">
@@ -318,15 +318,15 @@
             </table>
           </div>
 
-          <div class="col-md-12 small">
-            <div *ngIf="reportDataList && reportDataList.reportSettings" class="text-center margin-top-20 text-info">
-              Report link: <a class="text-info" href="{{reportDataList.reportSettings.reportUrl}}">{{reportDataList.reportSettings.reportUrl}}</a>
-            </div>
-            <div class="text-center margin-top-5">
-              <span><i>Generated on: {{getTodaysDate()}}</i></span>
-            </div>
-          </div>
+        </div>
 
+        <div class="col-md-12 small">
+          <div *ngIf="reportDataList && reportDataList.reportSettings" class="text-center margin-top-20 text-info">
+            Report link: <a class="text-info" href="{{reportDataList.reportSettings.reportUrl}}">{{reportDataList.reportSettings.reportUrl}}</a>
+          </div>
+          <div class="text-center margin-top-5">
+            <span><i>Generated on: {{getTodaysDate()}}</i></span>
+          </div>
         </div>
         
       </div>

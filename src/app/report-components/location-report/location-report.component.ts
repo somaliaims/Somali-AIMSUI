@@ -66,6 +66,7 @@ export class LocationReportComponent implements OnInit {
   isDataLoading: boolean = true;
   isShowStackedChart: boolean = false;
   isNoSectorReport: boolean = false;
+  isManageDataDisplay: boolean = true;
   btnReportText: string = 'View report';
 
   chartOptions: any = [
@@ -502,7 +503,7 @@ export class LocationReportComponent implements OnInit {
     };
 
     this.resetSearchResults();
-    this.blockUI.start('Preparing report...');
+    this.blockUI.start('Generating report...');
     if (this.isNoLocationReport) {
       this.model.selectedLocations = [];
     }
@@ -523,17 +524,23 @@ export class LocationReportComponent implements OnInit {
                 this.excelFile = this.reportDataList.reportSettings.excelReportName;
                 this.setExcelFile();
               }
-              this.manageDataToDisplay();
+
+              if (!this.loadReport) {
+                this.manageDataToDisplay();
+              }
+              
               this.model.selectedCurrency = this.defaultCurrency;
               this.selectCurrency();
               setTimeout(() => {
                 this.datedToday = this.storeService.getLongDateString(currentDate);
                 if (this.loadReport) {
                   this.loadReport = false;
+                  if (chartType) {
+                    this.model.chartType = parseInt(chartType);
+                    this.manageDataToDisplay();
+                  }
                 }
-                if (chartType) {
-                  this.model.chartType = parseInt(chartType);
-                }
+                
               }, 2000);
             }
           }
@@ -558,16 +565,20 @@ export class LocationReportComponent implements OnInit {
                 this.excelFile = this.reportDataList.reportSettings.excelReportName;
                 this.setExcelFile();
               }
-              this.manageDataToDisplay();
+
+              if (!this.loadReport) {
+                this.manageDataToDisplay();
+              }
               this.model.selectedCurrency = this.defaultCurrency;
               this.selectCurrency();
               setTimeout(() => {
                 this.datedToday = this.storeService.getLongDateString(currentDate);
                 if (this.loadReport) {
                   this.loadReport = false;
-                }
-                if (chartType) {
-                  this.model.chartType = parseInt(chartType);
+                  if (chartType) {
+                    this.model.chartType = parseInt(chartType);
+                    this.manageDataToDisplay();
+                  }
                 }
               }, 2000);
             }
@@ -1035,7 +1046,6 @@ export class LocationReportComponent implements OnInit {
     setTimeout(() => {
       this.isShowStackedChart = true;
     }, 1000);
-    
   }
 
   setExcelFile() {
@@ -1048,11 +1058,6 @@ export class LocationReportComponent implements OnInit {
     this.chartData = [];
     var selectedDataOption = 1;
     var chartType = (this.loadReport) ? this.paramChartType : this.model.chartType;
-    if (this.model.selectedDataOption) {
-      this.selectedDataOptions = [];
-      selectedDataOption = parseInt(this.model.selectedDataOption);
-      this.selectedDataOptions.push(selectedDataOption);
-    }
     selectedDataOption = parseInt(this.model.selectedDataOption);
     var searchChartType = this.chartOptions.filter(c => c.id == chartType);
     if (searchChartType.length > 0) {

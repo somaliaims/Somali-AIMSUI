@@ -528,7 +528,9 @@ export class SectorReportComponent implements OnInit {
               this.setExcelFile();
             }
   
-            this.manageDataToDisplay();
+            if (!this.loadReport) {
+              this.manageDataToDisplay();
+            }
             this.model.selectedCurrency = this.defaultCurrency;
             this.selectCurrency();
             this.blockUI.stop();
@@ -536,10 +538,12 @@ export class SectorReportComponent implements OnInit {
               this.datedToday = this.storeService.getLongDateString(currentDate);
               if (this.loadReport) {
                 this.loadReport = false;
+                if (chartType) {
+                  this.model.chartType = parseInt(chartType);
+                  this.manageDataToDisplay();
+                }
               }
-              if (chartType) {
-                this.model.chartType = parseInt(chartType);
-              }
+              
             }, 2000);
           }
         }
@@ -631,7 +635,10 @@ export class SectorReportComponent implements OnInit {
             this.setExcelFile();
           }
 
-          this.manageDataToDisplay();
+          if (!this.loadReport) {
+            this.manageDataToDisplay();
+          }
+          
           this.model.selectedCurrency = this.defaultCurrency;
           this.selectCurrency();
           this.blockUI.stop();
@@ -639,10 +646,12 @@ export class SectorReportComponent implements OnInit {
             this.datedToday = this.storeService.getLongDateString(currentDate);
             if (this.loadReport) {
               this.loadReport = false;
+              if (chartType) {
+                this.model.chartType = parseInt(chartType);
+                this.manageDataToDisplay();
+              }
             }
-            if (chartType) {
-              this.model.chartType = parseInt(chartType);
-            }
+            
           }, 2000);
         }
       );
@@ -925,11 +934,6 @@ export class SectorReportComponent implements OnInit {
     this.chartData = [];
     var selectedDataOption = 1;
     var chartType = (this.loadReport) ? this.paramChartType : this.model.chartType;
-    if (this.model.selectedDataOption) {
-      this.selectedDataOptions = [];
-      selectedDataOption = parseInt(this.model.selectedDataOption);
-      this.selectedDataOptions.push(selectedDataOption);
-    }
     selectedDataOption = parseInt(this.model.selectedDataOption);
     var tChartType = this.chartOptions.filter(c => c.id == chartType);
     if (tChartType.length > 0) {

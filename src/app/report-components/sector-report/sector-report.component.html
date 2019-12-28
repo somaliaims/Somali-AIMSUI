@@ -156,7 +156,7 @@
                   </option>
                 </select>
                 <label>&nbsp;Data on chart:&nbsp;</label>
-                <select [class.disable]="model.chartTypeName == chartTypes.STACKEDBAR" class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="chartType"
+                <select [class.disable]="model.chartTypeName == chartTypes.STACKEDBAR" class="form-control" id="dataOption" [(ngModel)]="model.selectedDataOption" name="dataOption"
                   #dataOption="ngModel" (change)="manageDataToDisplay()">
                   <option value="0">-- Chart data option --</option>
                   <option *ngFor="let option of dataOptions" value="{{option.id}}">
