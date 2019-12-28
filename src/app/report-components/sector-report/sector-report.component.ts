@@ -535,8 +535,10 @@ export class SectorReportComponent implements OnInit {
             setTimeout(() => {
               this.datedToday = this.storeService.getLongDateString(currentDate);
               if (this.loadReport) {
-                this.model.chartType = this.paramChartType;
                 this.loadReport = false;
+              }
+              if (chartType) {
+                this.model.chartType = parseInt(chartType);
               }
             }, 2000);
           }
@@ -636,8 +638,10 @@ export class SectorReportComponent implements OnInit {
           setTimeout(() => {
             this.datedToday = this.storeService.getLongDateString(currentDate);
             if (this.loadReport) {
-              this.model.chartType = this.paramChartType;
               this.loadReport = false;
+            }
+            if (chartType) {
+              this.model.chartType = parseInt(chartType);
             }
           }, 2000);
         }

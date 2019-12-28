@@ -529,8 +529,10 @@ export class LocationReportComponent implements OnInit {
               setTimeout(() => {
                 this.datedToday = this.storeService.getLongDateString(currentDate);
                 if (this.loadReport) {
-                  this.model.chartType = this.paramChartType;
                   this.loadReport = false;
+                }
+                if (chartType) {
+                  this.model.chartType = parseInt(chartType);
                 }
               }, 2000);
             }
@@ -562,8 +564,10 @@ export class LocationReportComponent implements OnInit {
               setTimeout(() => {
                 this.datedToday = this.storeService.getLongDateString(currentDate);
                 if (this.loadReport) {
-                  this.model.chartType = this.paramChartType;
                   this.loadReport = false;
+                }
+                if (chartType) {
+                  this.model.chartType = parseInt(chartType);
                 }
               }, 2000);
             }
@@ -1050,9 +1054,9 @@ export class LocationReportComponent implements OnInit {
       this.selectedDataOptions.push(selectedDataOption);
     }
     selectedDataOption = parseInt(this.model.selectedDataOption);
-    var chartType = this.chartOptions.filter(c => c.id == chartType);
-    if (chartType.length > 0) {
-      this.model.chartTypeName = chartType[0].type;
+    var searchChartType = this.chartOptions.filter(c => c.id == chartType);
+    if (searchChartType.length > 0) {
+      this.model.chartTypeName = searchChartType[0].type;
     }
     
     if (chartType == this.chartTypeCodes.STACKEDBAR) {

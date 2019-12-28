@@ -225,8 +225,6 @@
         </div>
       </div>
 
-
-
       <div *ngIf="reportDataList.reportSettings" class="row margin-top-10" id="rpt-location-project">
 
         <div *ngIf="reportDataList && reportDataList.locationProjectsList" class="col-md-12">
@@ -319,15 +317,16 @@
               </tr>
             </table>
           </div>
-        </div>
 
-        <div class="col-md-12 small">
-          <div *ngIf="reportDataList && reportDataList.reportSettings" class="text-center margin-top-20 text-info">
-            Report link: <a class="text-info" href="{{reportDataList.reportSettings.reportUrl}}">{{reportDataList.reportSettings.reportUrl}}</a>
+          <div class="col-md-12 small">
+            <div *ngIf="reportDataList && reportDataList.reportSettings" class="text-center margin-top-20 text-info">
+              Report link: <a class="text-info" href="{{reportDataList.reportSettings.reportUrl}}">{{reportDataList.reportSettings.reportUrl}}</a>
+            </div>
+            <div class="text-center margin-top-5">
+              <span><i>Generated on: {{getTodaysDate()}}</i></span>
+            </div>
           </div>
-          <div class="text-center margin-top-5">
-            <span><i>Generated on: {{getTodaysDate()}}</i></span>
-          </div>
+
         </div>
         
       </div>

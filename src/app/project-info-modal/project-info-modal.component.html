@@ -24,10 +24,10 @@
                 <td colspan="3">{{project.title}}</td>
               </tr>
               <tr>
-                <td><b>Starting year: </b></td>
-                <td>{{project.startingFinancialYear}}</td>
-                <td><b>Ending year: </b></td>
-                <td>{{project.endingFinancialYear}}</td>
+                <td><b>Start date: </b></td>
+                <td>{{formatDateUKStyle(project.startDate)}}</td>
+                <td><b>End date: </b></td>
+                <td>{{formatDateUKStyle(project.endDate)}}</td>
               </tr>
               <tr>
                 <td><b>Description: </b></td>

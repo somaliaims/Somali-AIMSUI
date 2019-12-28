@@ -267,12 +267,12 @@ export class EnvelopeReportComponent implements OnInit {
         }
         setTimeout(() => {
           this.isLoading = false;
-          if (this.loadReport) {
+          //if (this.loadReport) {
             var typeName = this.chartTypesList.filter(t => t.id == chartType);
             if (typeName.length > 0) {
               this.model.chartType = typeName[0].type;
             }
-          }
+          //}
         }, 1000);
         this.blockUI.stop();
       }
