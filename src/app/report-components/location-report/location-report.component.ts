@@ -1058,6 +1058,11 @@ export class LocationReportComponent implements OnInit {
     this.chartData = [];
     var selectedDataOption = 1;
     var chartType = (this.loadReport) ? this.paramChartType : this.model.chartType;
+    if (this.model.selectedDataOption) {
+      this.selectedDataOptions = [];
+      selectedDataOption = parseInt(this.model.selectedDataOption);
+      this.selectedDataOptions.push(selectedDataOption);
+    }
     selectedDataOption = parseInt(this.model.selectedDataOption);
     var searchChartType = this.chartOptions.filter(c => c.id == chartType);
     if (searchChartType.length > 0) {
