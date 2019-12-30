@@ -22,8 +22,9 @@ export class IatiSettingsComponent implements OnInit {
   isError: boolean = false;
   infoMessage: string = null;
   countriesList: any = [];
-  model = { baseUrl: null };
+  model = { baseUrl: null, countryCode: null };
   permissions: any = {};
+  isLoading: boolean = true;
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -40,11 +41,37 @@ export class IatiSettingsComponent implements OnInit {
     }
 
     this.storeService.newReportItem(Settings.dropDownMenus.management);
-    this.getIATISettings();
+    this.getCountriesList();
   }
 
   getCountriesList() {
-    
+    this.iatiService.getIATICountries().subscribe(
+      data => {
+        if (data) {
+          var countries = data;
+          this.countriesList = countries;
+          var activeCountry = countries.filter(c => c.isActive == true);
+          if (activeCountry.length > 0) {
+            setTimeout(() => {
+              this.model.countryCode = activeCountry[0].code;
+            }, 2000);
+          }
+        }
+        this.isLoading = false;
+      }
+    );
+  }
+
+  setActiveCountry() {
+    var countryCode = this.model.countryCode;
+    this.blockUI.start('Saving changes...');
+    this.iatiService.setActiveCountry(countryCode).subscribe(
+      data => {
+        if (data) {
+        }
+        this.blockUI.stop();
+      }
+    );
   }
 
   getIATISettings() {
