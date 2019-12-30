@@ -56,4 +56,19 @@ export class IATIService {
             catchError(this.storeService.handleError<any>('IATI Settings')));
     }
 
+    getIATICountries() {
+      var url = this.urlHelper.getCountriesUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Countries'))
+      );
+    }
+
+    setActiveCountry(code: string) {
+      var url = this.urlHelper.setActiveCountryUrl(code);
+      return this.httpClient.post(url,
+        JSON.stringify(code), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Setting Active Country')));
+    }
+
+
 }

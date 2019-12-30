@@ -21,8 +21,10 @@ export class IatiSettingsComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   infoMessage: string = null;
+  countriesList: any = [];
   model = { baseUrl: null };
   permissions: any = {};
+
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
 
@@ -39,6 +41,10 @@ export class IatiSettingsComponent implements OnInit {
 
     this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getIATISettings();
+  }
+
+  getCountriesList() {
+    
   }
 
   getIATISettings() {

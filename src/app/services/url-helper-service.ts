@@ -700,6 +700,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.backupFilesUrl);
     }
 
+    getCountriesUrl() {
+        return (this.BASE_URL + urlsList.urls.countriesUrl);
+    }
+
+    setActiveCountryUrl(code: string) {
+        return (this.BASE_URL + urlsList.urls.setActiveCountryUrl + '/' + code);
+    }
+
     averageCurrencyRateForDateUrl() {
         return (this.BASE_URL + urlsList.urls.averageCurrencyRate);
     }
