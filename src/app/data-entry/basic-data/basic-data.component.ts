@@ -378,6 +378,7 @@ export class BasicDataComponent implements OnInit {
     this.isProjectBtnDisabled = true;
     if (this.projectId != 0) {
       this.blockUI.start('Saving project...');
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.updateProject(this.projectId, this.projectData).subscribe(
         data => {
           if (data) {
@@ -390,6 +391,7 @@ export class BasicDataComponent implements OnInit {
       );
     } else {
       this.blockUI.start('Saving project...');
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.addProject(this.projectData).subscribe(
         data => {
           if (data) {
@@ -411,6 +413,7 @@ export class BasicDataComponent implements OnInit {
       projectId: this.projectId,
       funderIds: funderIds
     };
+    this.requestNo = this.storeService.getCurrentRequestId();
     this.projectService.addProjectFunder(model).subscribe(
       data => {
         if (data) {
@@ -438,6 +441,7 @@ export class BasicDataComponent implements OnInit {
       }
 
       this.blockUI.start('Saving funders...');
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.addProjectFunderFromSource(model).subscribe(
         data => {
           if (data) {
@@ -459,6 +463,7 @@ export class BasicDataComponent implements OnInit {
       }
 
       this.blockUI.start('Saving implementers...');
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.addProjectImplementerFromSource(model).subscribe(
         data => {
           if (data) {
@@ -478,6 +483,7 @@ export class BasicDataComponent implements OnInit {
       projectId: this.projectId,
       implementerIds: implementerIds
     };
+    this.requestNo = this.storeService.getCurrentRequestId();
     this.projectService.addProjectImplementer(model).subscribe(
       data => {
         if (data) {
@@ -499,6 +505,7 @@ export class BasicDataComponent implements OnInit {
 
   getProjectFunders(isDBSync: any = false) {
     if (this.projectId) {
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.getProjectFunders(this.projectId.toString()).subscribe(
         data => {
           if (data) {
@@ -523,6 +530,7 @@ export class BasicDataComponent implements OnInit {
 
   getProjectImplementers(isDBSync: any = false) {
     if (this.projectId) {
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.getProjectImplementers(this.projectId.toString()).subscribe(
         data => {
           if (data) {
@@ -553,6 +561,7 @@ export class BasicDataComponent implements OnInit {
         documents: newDocuments
       };
 
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.addProjectDocument(model).subscribe(
         data => {
           if (data) {
@@ -575,6 +584,7 @@ export class BasicDataComponent implements OnInit {
       }
 
       this.blockUI.start('Saving documents...');
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.addProjectDocument(model).subscribe(
         data => {
           if (data) {
@@ -630,6 +640,7 @@ export class BasicDataComponent implements OnInit {
   deleteResource(id) {
     if (id) {
       this.blockUI.start('Deleting resource');
+      this.requestNo = this.storeService.getCurrentRequestId();
       this.projectService.deleteProjectDocument(id).subscribe(
         data => {
           if (data) {
@@ -916,6 +927,10 @@ export class BasicDataComponent implements OnInit {
         d.documentUrl.toLowerCase() == documentUrl.toLowerCase()).length > 0 ? true : false;
     }
     return result;
+  }
+
+  checkIfDocumentInvalid(document, url) {
+    return (!document || !url) ? true : false;
   }
 
 

@@ -15,6 +15,7 @@ import { SectorService } from 'src/app/services/sector.service';
 import { LocationService } from 'src/app/services/location.service';
 import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-info-modal.component';
 import { MarkerService } from 'src/app/services/marker.service';
+import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-data-entry',
@@ -33,6 +34,7 @@ export class DataEntryComponent implements OnInit {
   isProjectLoading: boolean = true;
   permissions: any = {};
   sourceProjects: number = 0;
+  errorMessage: string = null;
   fieldTypes: any = Settings.markerTypes;
 
   userProjectIds: any = [];
@@ -118,6 +120,7 @@ export class DataEntryComponent implements OnInit {
     private sectorTypeService: SectorTypeService,
     private sectorService: SectorService,
     private locationService: LocationService,
+    private errorModal: ErrorModalComponent,
     private markerService: MarkerService) { }
 
   ngOnInit() {
@@ -127,9 +130,7 @@ export class DataEntryComponent implements OnInit {
       this.router.navigateByUrl('projects');
     }
 
-    this.requestNo = this.storeService.getCurrentRequestId();
     var projectId = localStorage.getItem('active-project');
-
     var projects = localStorage.getItem('selected-projects');
     if (projects) {
       var parsedProjects = JSON.parse(projects);

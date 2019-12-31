@@ -690,7 +690,7 @@
                     {{document.documentUrl}}
                   </td>
                   <td>
-                    <button *ngIf="!checkIfDocumentAdded(document.documentTitle, document.documentUrl)"
+                    <button [class.disable]="checkIfDocumentInvalid(document.documentTitle, document.documentUrl)" *ngIf="!checkIfDocumentAdded(document.documentTitle, document.documentUrl)"
                       id="didocument-{{project.id}}-{{counter}}"
                       (click)="addDocumentToList(document.documentTitle, document.documentUrl)"
                       class="btn btn-success btn-sm"><i
