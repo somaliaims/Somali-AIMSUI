@@ -41,6 +41,12 @@ export const Settings = {
     mediumRowsPerPage: 20,
     displayMessageTime: 10000,
     helpTextLength: 150,
+    entryTabConstants: {
+        BASIC: 1,
+        FINANCIALS: 2,
+        SECTORS: 3,
+        FINISH: 4
+    },
     months: [
         { id: 1, month: 'January' },
         { id: 2, month: 'February' },

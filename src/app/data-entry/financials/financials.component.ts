@@ -41,6 +41,9 @@ export class FinancialsComponent implements OnInit {
   disbursementsChanged = new EventEmitter<any[]>();
 
   help: any = { disbursementActual: null, disbursementPlanned: null };
+  projectHelp: any = { title: null, startingFinancialYear: null, endingFinancialYear: null,
+    description: null, projectValue: null, projectCurrency: null, fundingType: null,
+    startDate: null, endDate: null};
 
   errorMessage: string = null;
   requestNo: number = 0;
@@ -79,6 +82,7 @@ export class FinancialsComponent implements OnInit {
     this.disbursementModel.projectValue = this.projectValue;
     this.setDisbursementsData();
     this.getExchangeRateForCurrency();
+    this.getProjectHelp();
     this.getHelp();
   }
 
@@ -97,6 +101,16 @@ export class FinancialsComponent implements OnInit {
       this.helpService.getProjectDisbursementsHelpFields().subscribe(
         data => {
           this.help = data;
+        }
+      );
+    }
+  }
+
+  getProjectHelp() {
+    if (!this.projectHelp.projectValue) {
+      this.helpService.getProjectHelpFields().subscribe(
+        data => {
+          this.projectHelp = data;
         }
       );
     }
