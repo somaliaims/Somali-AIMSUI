@@ -35,7 +35,7 @@
               </tr>
             </table>
             <span *ngIf="selectedProjectOrganizations.length == 0" class="text-info">
-              <i>No member organizations to show</i>
+              <i>No organizations found</i>
             </span>
 
             <h6>Sectors</h6>
@@ -45,7 +45,7 @@
               </tr>
             </table>
             <span *ngIf="selectedProjectSectors.length == 0" class="text-info">
-              <i>No member sectors to show</i>
+              <i>No sectors found</i>
             </span>
 
             <h6>Locations</h6>
@@ -55,7 +55,7 @@
               </tr>
             </table>
             <span *ngIf="selectedProjectLocations.length == 0" class="text-info">
-              <i>No member locations to show</i>
+              <i>No locations found</i>
             </span>
           </div>
         </div>
@@ -233,9 +233,7 @@
                       <td>
                         <div class="float-left">
                           <span class="overflow-wrap">
-                            <b>Project title: </b>{{project.title | truncate : 30}}
-                            <!--<b>Start date: </b>{{getLongDateString(project.startDate)}}<br />
-                            <b>End date: </b>{{getLongDateString(project.endDate)}}<br />-->
+                            {{project.title | truncate : 30}}
                           </span>
                         </div>
                         <div class="float-right">
@@ -277,9 +275,7 @@
                       *ngFor="let project of filteredAIMSProjects | paginate: { itemsPerPage: pagingSize, currentPage: p, id: 'p' }">
                       <td>
                         <span class="float-left overflow-wrap">
-                          <b>Project title: </b>{{project.title | truncate : 30}}
-                          <!--<b>Starting year: </b>{{project.startingFinancialYear}}<br />
-                          <b>Ending year: </b>{{project.endingFinancialYear}}<br />-->
+                          {{project.title | truncate : 30}}
                         </span>
   
                         <span class="float-right margin-right-15">
@@ -320,7 +316,7 @@
                 <tr *ngFor="let project of selectedProjects">
                   <td>
                     <span class="float-left">
-                      <b>Title: </b>{{project.title}}<br />
+                      {{project.title}}<br />
                     </span>
                     <span class="float-right">
                       <button type="button" id="selected-{{project.id}}" class="btn btn-info btn-sm"
