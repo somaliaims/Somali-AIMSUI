@@ -9,9 +9,10 @@
         <h6>Project sectors</h6>
       </div>
     </div>
-    
+
     <div class="row">
-      <form class="form-signin col-lg-12 col-md-12" (ngSubmit)="sectorsForm.form.valid && addSector(sectorsForm)" #sectorsForm="ngForm">
+      <form class="form-signin col-lg-12 col-md-12" (ngSubmit)="sectorsForm.form.valid && addSector(sectorsForm)"
+        #sectorsForm="ngForm">
         <div class="row">
 
           <div class="col-md-3 col-lg-3">
@@ -33,12 +34,12 @@
               Sector type is required
             </div>
           </div>
-  
+
           <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)" class="col-md-3 col-lg-3">
             <div class="input-group form-inline mb-3">
-              <ng-multiselect-dropdown class="w-100 col-sm-10" [placeholder]="'-- Sector--'" title="Sector" [data]="typeSectorsList"
-                [(ngModel)]="sectorModel.selectedSector" [settings]="sectorsSettings" name="selectedSector"
-                #selectedSector="ngModel">
+              <ng-multiselect-dropdown class="w-100 col-sm-10" [placeholder]="'-- Sector--'" title="Sector"
+                [data]="typeSectorsList" [(ngModel)]="sectorModel.selectedSector" [settings]="sectorsSettings"
+                name="selectedSector" #selectedSector="ngModel">
               </ng-multiselect-dropdown>
               <span class="col-sm-2" tooltip="{{sectorHelp.sector}}" [options]="tooltipOptions">
                 <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
@@ -48,23 +49,23 @@
               </div>
             </div>
           </div>
-  
+
           <div class="col-md-3 col-lg-3">
             <div class="input-group form-inline mb-3">
-                <ng-multiselect-dropdown class="w-100 col-sm-10" [placeholder]="'-- NDP sector/s --'" title="NDP sector/s" [data]="ndpSectorsList"
-                  [(ngModel)]="sectorModel.selectedMapping" [settings]="sectorsSettings" name="selectedMappingSector"
-                  #selectedMappingSector="ngModel">
-                </ng-multiselect-dropdown>
-                <span class="col-sm-2" tooltip="{{sectorHelp.mappingSector}}" [options]="tooltipOptions">
-                  <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
-                </span>
+              <ng-multiselect-dropdown class="col-sm-10" [placeholder]="'-- NDP sector/s --'" title="NDP sector/s"
+                [data]="ndpSectorsList" [(ngModel)]="sectorModel.selectedMapping" [settings]="sectorsSettings"
+                name="selectedMappingSector" #selectedMappingSector="ngModel">
+              </ng-multiselect-dropdown>
+              <span class="col-sm-2" tooltip="{{sectorHelp.mappingSector}}" [options]="tooltipOptions">
+                <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+              </span>
             </div>
-  
-            <div class="col-md-12 col-lg-12" *ngIf="mappingsCount > 0">
-              <span *ngIf="showMappingManual" class="float-left margin-top-2">
+
+            <div class="col" *ngIf="mappingsCount > 0">
+              <span *ngIf="showMappingManual" class="float-left">
                 <button type="button" class="btn btn-info btn-sm" (click)="setManualMappings()">Map manual</button>
               </span>
-              <span *ngIf="showMappingAuto" class="float-left margin-top-2">
+              <span *ngIf="showMappingAuto" class="float-left">
                 <button type="button" class="btn btn-warning btn-sm" (click)="setAutomaticMappings()">Map
                   auto</button>
               </span>
@@ -72,24 +73,26 @@
                 {{mappingsCount}} mapping/s found
               </span>
             </div>
-            <div *ngIf="mappingsCount == 0 && sectorModel.sectorTypeId != defaultSectorTypeId" class="text-warning small">
+            <div *ngIf="mappingsCount == 0 && sectorModel.sectorTypeId != defaultSectorTypeId"
+              class="col text-warning small">
               <i>No mappings found</i></div>
             <div *ngIf="sectorsForm.submitted" [hidden]="selectedMappingSector != null" class="alert alert-danger">
               Mapping is required
             </div>
           </div>
-  
+
           <div class="col-md-3 col-lg-3">
             <div class="input-group mb-3 form-inline">
-              <input type="number" class="form-control col-sm-6" id="fundsPercentage" [(ngModel)]="sectorModel.fundsPercentage"
-                placeholder="Percentage" name="fundsPercentage" #fundsPercentage="ngModel" min="1" max="100" required>
+              <input type="number" class="form-control col-sm-6" id="fundsPercentage"
+                [(ngModel)]="sectorModel.fundsPercentage" placeholder="Percentage" name="fundsPercentage"
+                #fundsPercentage="ngModel" min="1" max="100" required>
+              <button [class.disable]="calculateSectorPercentage() >= 100"
+                class="margin-left-2 btn btn-sm btn-warning text-uppercase" type="submit">
+                Add sector
+              </button>
               <span class="col-sm-2" tooltip="{{sectorHelp.percentage}}" [options]="tooltipOptions">
                 <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
               </span>
-              <button [class.disable]="calculateSectorPercentage() >= 100" class="margin-left-2 btn btn-sm btn-warning text-uppercase"
-                type="submit">
-                Add sector
-              </button>
             </div>
             <div *ngIf="sectorsForm.submitted" [hidden]="(fundsPercentage.value > 0 && fundsPercentage.value < 101)"
               class="alert alert-danger">
@@ -98,55 +101,60 @@
           </div>
 
         </div>
-        
+
       </form>
     </div>
 
-
+    <div class="row">
+      <div *ngIf="currentProjectSectors.length > 0" class="text-info col-md-6 col-lg-6"><b>Percentage</b>:
+        {{calculateSectorPercentage()}}%
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <span class="float-right"><button *ngIf="areUnSavedSectors()" (click)="saveProjectSectors()"
+          class="btn btn-info btn-sm text-uppercase">Save sectors</button></span>
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-lg-12 col-md-12">
-        <span *ngIf="currentProjectSectors.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
-          {{calculateSectorPercentage()}}%</span>
-        <span class="col-md-6 text-right"><button *ngIf="areUnSavedSectors()" (click)="saveProjectSectors()"
-            class="btn btn-info btn-sm text-uppercase">Save sectors</button></span>
-      </div>
-
-      <div class="sectors-list-box-small">
-        <table *ngIf="currentProjectSectors.length > 0" class="table table-striped small margin-top-5">
-          <thead>
-            <tr>
-              <th>Sector</th>
-              <th class="text-center">Percentage</th>
-              <th class="text-center">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let sector of currentProjectSectors">
-              <td>{{sector.sector}}</td>
-              <td class="text-center">{{sector.fundsPercentage}}</td>
-              <td class="text-center">
-                <button *ngIf="sector.saved" title="Delete sector" (click)="deleteProjectSector(sector.sectorId)"
-                  class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                <button *ngIf="!sector.saved && sector.sectorId" title="Delete sector"
-                  (click)="removeProjectSector(sector.sectorId, false)" class="btn btn-warning btn-sm"><i
-                    class="fa fa-remove"></i></button>
-                <button *ngIf="!sector.saved && !sector.sectorId" title="Remove sector"
-                  (click)="removeProjectSector(sector.mappingId, true)" class="btn btn-warning btn-sm"><i
-                    class="fa fa-remove"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="sectors-list-box-small">
+          <table *ngIf="currentProjectSectors.length > 0" class="table table-striped small margin-top-5">
+            <thead>
+              <tr>
+                <th>Sector</th>
+                <th class="text-center">Percentage</th>
+                <th class="text-center">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sector of currentProjectSectors">
+                <td>{{sector.sector}}</td>
+                <td class="text-center">{{sector.fundsPercentage}}</td>
+                <td class="text-center">
+                  <button *ngIf="sector.saved" title="Delete sector" (click)="deleteProjectSector(sector.sectorId)"
+                    class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                  <button *ngIf="!sector.saved && sector.sectorId" title="Delete sector"
+                    (click)="removeProjectSector(sector.sectorId, false)" class="btn btn-warning btn-sm"><i
+                      class="fa fa-remove"></i></button>
+                  <button *ngIf="!sector.saved && !sector.sectorId" title="Remove sector"
+                    (click)="removeProjectSector(sector.mappingId, true)" class="btn btn-warning btn-sm"><i
+                      class="fa fa-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
     </div>
 
+  </div>
 
+  <div *ngIf="currentTab == tabConstants.SECTORS_LOCATIONS" class="box">
     <div class="row">
-      <div class="col-md-6 col-lg-6">
+      <div class="col-md-12 col-lg-12">
         <form class="form-signin" (ngSubmit)="locationsForm.form.valid && addLocation(locationsForm)"
           #locationsForm="ngForm">
           <h6>Project locations</h6>
@@ -155,8 +163,8 @@
             <div class="col-md-6 col-lg-6">
               <div class="input-group form-inline mb-3">
                 <select
-                  [ngClass]="{'col-sm-12': isSectorsSourceAvailable == false, 'col-sm-10': isSectorsSourceAvailable == true}"
-                  class="form-control col-md-12" name="locationId" [(ngModel)]="locationModel.locationId"
+                  [ngClass]="{'col-sm-10': isSectorsSourceAvailable == false, 'col-sm-8': isSectorsSourceAvailable == true}"
+                  class="form-control" name="locationId" [(ngModel)]="locationModel.locationId"
                   #locationId="ngModel" required>
                   <option value="null">--Location--</option>
                   <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
@@ -164,6 +172,9 @@
                 <button *ngIf="isLocationsSourceAvailable" class="btn btn-warning col-sm-2"
                   title="Source data available" (click)="showLocationsSource()" type="button"><i
                     class="fa fa-database"></i></button>
+                <span class="col-sm-2" tooltip="{{locationHelp.location}}" [options]="tooltipOptions">
+                  <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+                </span>
               </div>
               <div *ngIf="locationsForm.submitted" [hidden]="locationId.valid" class="alert alert-danger">
                 Location is required
@@ -171,14 +182,17 @@
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <div class="input-group">
-                <input type="number" class="form-control col-md-10" [(ngModel)]="locationModel.fundsPercentage"
+              <div class="input-group form-inline mb-3">
+                <input type="number" class="form-control col-sm-8" [(ngModel)]="locationModel.fundsPercentage"
                   placeholder="Percentage" name="lfundsPercentage" #lfundsPercentage="ngModel" min="1" max="100"
                   required>
                 <button [class.disable]="calculateLocationPercentage() >= 100"
                   class="btn btn-sm btn-warning text-uppercase" type="submit">
                   Add location
                 </button>
+                <span class="col-sm-2" tooltip="{{locationHelp.percentage}}" [options]="tooltipOptions">
+                  <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+                </span>
               </div>
               <div *ngIf="locationsForm.submitted"
                 [hidden]="(lfundsPercentage.value > 0 && lfundsPercentage.value < 101)" class="alert alert-danger">
@@ -266,9 +280,21 @@
             </div>
 
             <span class="float-right margin-top-10">
-              <button class="btn btn-info btn-sm btn-block text-uppercase" (click)="saveProjectMarkers(field.id)"
-                type="button">Save Field</button>
+                <table>
+                  <tr>
+                    <td>
+                      <span tooltip="{{field.help}}" [options]="tooltipOptions">
+                        <button class="btn btn-info btn-sm" type="button"><i class="fa fa-question-circle"></i></button>
+                      </span>
+                    </td>
+                    <td>
+                      <button class="btn btn-info btn-sm btn-block text-uppercase" (click)="saveProjectMarkers(field.id)"
+                    type="button">Save Field</button>
+                    </td>
+                  </tr>
+                </table>
             </span>
+
           </div>
         </div>
         <div *ngIf="markersList.length == 0">

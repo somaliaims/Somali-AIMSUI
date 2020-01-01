@@ -139,7 +139,7 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   getProjectLocationHelp() {
-    this.helpService.getProjectSectorHelpFields().subscribe(
+    this.helpService.getProjectLocationHelpFields().subscribe(
       data => {
         if (data) {
           this.locationHelp = data;
