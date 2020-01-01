@@ -17,7 +17,7 @@ export class ManageHelpComponent implements OnInit {
      endingFinancialYear: null, projectValue: null, description: null, fundingType: null };
   funderModel: any = { funder: null };
   implementerModel: any = { implementer: null };
-  sectorModel: any = { sector: null, percentage: null };
+  sectorModel: any = { sectorType: null, sector: null, mappingSector: null, percentage: null };
   locationModel: any = { location: null, percentage: null };
   documentModel: any = { document: null, documentUrl: null };
   disbursementModel: any = { disbursementActual: null, disbursementPlanned: null, year: null };

@@ -6,7 +6,7 @@ import { StoreService } from 'src/app/services/store-service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { Settings } from 'src/app/config/settings';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { HelpService } from 'src/app/services/help-service';
 
 @Component({
   selector: 'project-sectors',
@@ -58,6 +58,8 @@ export class ProjectSectorsComponent implements OnInit {
   sourceSectorsList: any = [];
   currentSelectedFieldValues: any = [];
   sectorsSettings: any = {};
+  sectorHelp: any = { sectorType: null, sector: null, mappingSector: null, percentage: null };
+  locationHelp: any = { location: null, percentage: null };
   mappingsCount: number = 0;
   sourceSectorPercentage: number = 0;
   requestNo: number = 0;
@@ -67,12 +69,13 @@ export class ProjectSectorsComponent implements OnInit {
   showMappingAuto: boolean = false;
   isSectorsSourceAvailable: boolean = false;
   isLocationsSourceAvailable: boolean = false;
+  isSectorHelpLoading: boolean = true;
+  isLocationHelpLoading: boolean = true;
   isNdpSectorsLoading: boolean = true;
   sectorModel: any = { sectorTypeId: null, sector: null, selectedSector: null, sectorId: null, selectedMapping: null, mappingId: null, fundsPercentage: null, saved: false };
   newMappings: any = [];
   locationModel: any = { locationId: null, location: null, fundsPercentage: null, saved: false };
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
-  sectorHelp: any = {  };
   fieldTypeConstants: any = {
     'Dropdown': 1,
     'Checkbox': 2,
@@ -99,7 +102,8 @@ export class ProjectSectorsComponent implements OnInit {
   
   @BlockUI() blockUI: NgBlockUI;
   constructor(private projectService: ProjectService, private sectorService: SectorService,
-    private storeService: StoreService, private errorModal: ErrorModalComponent) { }
+    private storeService: StoreService, private errorModal: ErrorModalComponent,
+    private helpService: HelpService) { }
 
   ngOnInit() {
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -119,6 +123,29 @@ export class ProjectSectorsComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+
+    this.getProjectSectorHelp();
+    this.getProjectLocationHelp();
+  }
+
+  getProjectSectorHelp() {
+    this.helpService.getProjectSectorHelpFields().subscribe(
+      data => {
+        if (data) {
+          this.sectorHelp = data;
+        }
+      }
+    );
+  }
+
+  getProjectLocationHelp() {
+    this.helpService.getProjectSectorHelpFields().subscribe(
+      data => {
+        if (data) {
+          this.locationHelp = data;
+        }
+      }
+    );
   }
 
   ngOnChanges() {

@@ -193,11 +193,27 @@
           <h5>Help for sector fields</h5>
           <form (ngSubmit)="sectorForm.form.valid && saveProjectSectorHelp(sectorForm)" #sectorForm="ngForm">
             <div class="form-group">
+              <label>Sector type</label>
+              <input type="text" class="form-control" [(ngModel)]="sectorModel.sectorType" name="sectorType" #sectorType="ngModel"
+                maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="sectorForm.submitted" [hidden]="sectorType.valid" class="alert alert-danger">
+                Help for sector type is required
+              </div>
+            </div>
+            <div class="form-group">
               <label>Sector help</label>
               <input type="text" class="form-control" [(ngModel)]="sectorModel.sector" name="sector" #sector="ngModel"
                 maxlength="{{helpTextLimit}}" required />
               <div *ngIf="sectorForm.submitted" [hidden]="sector.valid" class="alert alert-danger">
                 Help for sector is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Mapping Sector help</label>
+              <input type="text" class="form-control" [(ngModel)]="sectorModel.mappingSector" name="mappingSector" #mappingSector="ngModel"
+                maxlength="{{helpTextLimit}}" required />
+              <div *ngIf="sectorForm.submitted" [hidden]="mappingSector.valid" class="alert alert-danger">
+                Help for sector mapping is required
               </div>
             </div>
             <div class="form-group">
