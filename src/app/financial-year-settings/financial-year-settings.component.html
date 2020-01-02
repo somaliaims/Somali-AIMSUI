@@ -1,0 +1,50 @@
+<div class="container-fluid view-area">
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/financial-year-settings']">Financial year settings</a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Financial year settings</h5>
+  
+            <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveSettings()" #locationForm="ngForm">
+  
+              <div class="form-group">
+                <label for="month">Month</label>
+                <select name="month" [(ngModel)]="model.month" #month="ngModel" (change)="onMonthChange()" required>
+                    <option value="0">--Select month--</option>
+                    <option *ngFor="let month of months" value="{{month.index}}">
+                        {{month.month}}
+                    </option>
+                </select>
+                <div *ngIf="yearForm.submitted" [hidden]="month != 0" class="alert alert-danger">
+                  Month is required
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label for="day">Day</label>
+                <select name="day" [(ngModel)]="model.day" #day="ngModel" required>
+                    <option value="0">--Select day--</option>
+                    <option *ngFor="let day of days" value="{{day}}">
+                        {{day}}
+                    </option>
+                </select>
+                <div *ngIf="yearForm.submitted" [hidden]="day != 0" class="alert alert-danger">
+                  Day is required
+                </div>
+              </div>
+  
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save settings</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

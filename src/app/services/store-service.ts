@@ -253,5 +253,16 @@ export class StoreService {
     }
     return date;
   }
+
+  isLeapYear(year: number) {
+    return !((year % 4) && (year % 100) || !(year % 400));
+  }
+
+  isCurrentlyLeapYear() {
+    var dated = new Date();
+    var year = dated.getFullYear();
+    return !((year % 4) && (year % 100) || !(year % 400));
+  }
+
   
 }

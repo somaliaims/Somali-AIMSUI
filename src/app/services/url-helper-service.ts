@@ -828,4 +828,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.addProjectDocumentHelpUrl);
     }
 
+    getFinancialYearSettingsUrl() {
+        return (this.BASE_URL + urlsList.urls.financialYearSettingsUrl);
+    }
+
 }
