@@ -30,7 +30,6 @@ export class FinancialYearsComponent implements OnInit {
     }
 
     this.storeService.newReportItem(Settings.dropDownMenus.management);
-    this.permissions = this.securityService.getUserPermissions();
     this.getFinancialYearsList();
   }
 

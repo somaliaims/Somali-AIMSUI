@@ -79,6 +79,7 @@ import { AllProjectsReportComponent } from './report-components/all-projects-rep
 import { OrganizationTypesComponent } from './organization-types/organization-types.component';
 import { ManageOrganizationTypeComponent } from './manage-organization-type/manage-organization-type.component';
 import { DeleteOrganizationTypeComponent } from './delete-organization-type/delete-organization-type.component';
+import { FinancialYearSettingsComponent } from './financial-year-settings/financial-year-settings.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -142,6 +143,7 @@ export const routes: Routes = [
   { path: 'manage-currency', component: ManageCurrencyComponent },
   { path: 'manage-currency/:{id}', component: ManageCurrencyComponent, data: { isForEdit: true } },
   { path: 'financial-years', component: FinancialYearsComponent },
+  { path: 'financial-year-settings', component: FinancialYearSettingsComponent },
   { path: 'manage-year', component:  ManageYearComponent},
   { path: 'user-subscriptions', component: UserSubscriptionComponent },
   { path: 'merge-projects', component: MergeProjectsComponent },

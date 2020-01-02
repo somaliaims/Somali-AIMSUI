@@ -21,6 +21,12 @@ export class FinancialYearService {
       catchError(this.storeService.handleError<any>('Financial Years')));
   }
 
+  getSettings() {
+    var url = this.urlHelper.getFinancialYearSettingsUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Financial Year Settings')));
+  }
+
   addYear(model: any) {
     var url  = this.urlHelper.getFinancialYearsUrl();
       return this.httpClient.post(url,
@@ -33,6 +39,13 @@ export class FinancialYearService {
       return this.httpClient.post(url,
           JSON.stringify(model), httpOptions).pipe(
               catchError(this.storeService.handleError<any>('New Financial Year Range')));
+  }
+
+  saveSettings(model: any) {
+    var url  = this.urlHelper.getFinancialYearSettingsUrl();
+      return this.httpClient.post(url,
+          JSON.stringify(model), httpOptions).pipe(
+              catchError(this.storeService.handleError<any>('Financial Year Settings')));
   }
 
 }
