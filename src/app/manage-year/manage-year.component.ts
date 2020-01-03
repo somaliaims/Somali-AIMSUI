@@ -14,18 +14,27 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 export class ManageYearComponent implements OnInit {
 
   isBtnDisabled: boolean = false;
-  btnText: string = 'Add financial year/s';
+  btnText: string = 'Add financial year';
   errorMessage: string = '';
-  financialYearTypes: any = null;
   requestNo: number = 0;
   isError: boolean = false;
-  sectorTypes: any = [];
-  months: any = Settings.months;
-  yearLowerLimit: number = 0;
-  yearUpperLimit: number = 0;
-  yearSpan: number = Settings.yearLimit;
-  yearsList: any = [];
-  model = { startingMonth: 0, startingYear: 0, endingMonth: 0, endingYear: 0 };
+  months: any = [
+    { index: 1, month: 'January', date: 31 },
+    { index: 2, month: 'February', date: 28 },
+    { index: 3, month: 'March', date: 31 },
+    { index: 4, month: 'April', date: 30 },
+    { index: 5, month: 'May', date: 31 },
+    { index: 6, month: 'June', date: 30 },
+    { index: 7, month: 'July', date: 31 },
+    { index: 8, month: 'August', date: 31 },
+    { index: 9, month: 'September', date: 30 },
+    { index: 10, month: 'October', date: 31 },
+    { index: 11, month: 'November', date: 30 },
+    { index: 12, month: 'December', date: 31 }
+  ];
+  model: any = { month: 0, day: 0 };
+  days: any = [];
+  isLeapYear: boolean = false;
 
   constructor(private financialYearService: FinancialYearService,     
     private router: Router,
@@ -42,25 +51,49 @@ export class ManageYearComponent implements OnInit {
       }
     });
     this.storeService.newReportItem(Settings.dropDownMenus.management);
-    var currentYear = this.storeService.getCurrentYear();
-    this.yearLowerLimit = currentYear - this.yearSpan;
-    this.yearUpperLimit = currentYear + this.yearSpan;
-    for(var year = this.yearLowerLimit; year <= this.yearUpperLimit; year++) {
-      this.yearsList.push(year);
+  }
+
+  onMonthChange() {
+    var month = parseInt(this.model.month);
+    switch(month) {
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+      case 8:
+      case 10:
+      case 12:
+        this.fillDays(31);
+        break;
+
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        this.fillDays(30);
+        break;
+
+      case 2:
+        if (this.isLeapYear) {
+          this.fillDays(29);
+        } else {
+          this.fillDays(28);
+        }
+        break;
+    }
+  }
+
+  fillDays(dayLimit: number) {
+    this.days = [];
+    for(var day=1; day <= dayLimit; day++) {
+      this.days.push(day);
     }
   }
 
   saveFinancialYear() {
-    var model = {
-      startingMonth: this.model.startingMonth,
-      startingYear: this.model.startingYear,
-      endingMonth: this.model.endingMonth,
-      endingYear: this.model.endingYear
-    };
-
     this.isBtnDisabled = true;
     this.btnText = 'Saving...';
-    this.financialYearService.addYearRange(model).subscribe(
+    this.financialYearService.addYear(this.model).subscribe(
       data => {
         this.router.navigateByUrl('financial-years');
       }
