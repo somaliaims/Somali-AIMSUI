@@ -36,7 +36,7 @@
 
           <div *ngFor="let disbursement of projectDisbursements; let i = index;" class="form-group form-inline">
             <label class="col-md-3">
-              {{disbursement.year}}&nbsp;
+              {{disbursement.financialYear}}&nbsp;
               <span *ngIf="disbursement.disbursementType == 1">Actual</span>
               <span *ngIf="disbursement.disbursementType == 2">Planned</span>
             </label>

@@ -72,6 +72,12 @@
                         <td colspan="3">{{projectData.title}}</td>
                       </tr>
                       <tr>
+                        <td><b>Start date: </b></td>
+                        <td>{{formatDateUKStyle(projectData.startDate)}}</td>
+                        <td><b>End date: </b></td>
+                        <td>{{formatDateUKStyle(projectData.endDate)}}</td>
+                      </tr>
+                      <tr>
                         <td><b>Starting year: </b></td>
                         <td>{{projectData.startingFinancialYear}}</td>
                         <td><b>Ending year: </b></td>
@@ -187,7 +193,7 @@
                         </tr>
                         <tr *ngFor="let disbursement of projectDisbursements">
                           <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
-                          <td>{{disbursement.year}}</td>
+                          <td>{{disbursement.financialYear}}</td>
                           <td>{{formatNumber(disbursement.amount)}}</td>
                           <td>{{disbursement.currency}}</td>
                           <td>{{disbursement.exchangeRate}}</td>
