@@ -249,7 +249,12 @@ export class StoreService {
 
   convertDateToYMDBySlash(date: string) {
     if (date) {
-      return new Date(date).toISOString().split('T')[0];
+      //return new Date(date).toISOString().split('T')[0];
+      var timestamp = Date.parse(date);
+      if (isNaN(timestamp) == false) {
+        var dateParts = date.split('/');
+        return (dateParts[2] + '-' + dateParts[0] + '-' + dateParts[1]);
+      }
     }
     return date;
   }
