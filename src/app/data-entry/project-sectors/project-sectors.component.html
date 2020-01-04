@@ -183,16 +183,19 @@
 
             <div class="col-md-6 col-lg-6">
               <div class="input-group form-inline mb-3">
-                <input type="number" class="form-control col-sm-8" [(ngModel)]="locationModel.fundsPercentage"
+                <input type="number" class="form-control col-md-5" [(ngModel)]="locationModel.fundsPercentage"
                   placeholder="Percentage" name="lfundsPercentage" #lfundsPercentage="ngModel" min="1" max="100"
                   required>
                 <button [class.disable]="calculateLocationPercentage() >= 100"
-                  class="btn btn-sm btn-warning text-uppercase" type="submit">
+                  class="btn btn-sm btn-warning text-uppercase col-md-3" type="submit">
                   Add location
                 </button>
-                <span class="col-sm-2" tooltip="{{locationHelp.percentage}}" [options]="tooltipOptions">
+                <span class="col-md-2" tooltip="{{locationHelp.percentage}}" [options]="tooltipOptions">
                   <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
                 </span>
+                <button class="btn btn-sm btn-info text-uppercase col-md-2" (click)="proceedToNext()" type="button">
+                  Next >>
+                </button>
               </div>
               <div *ngIf="locationsForm.submitted"
                 [hidden]="(lfundsPercentage.value > 0 && lfundsPercentage.value < 101)" class="alert alert-danger">

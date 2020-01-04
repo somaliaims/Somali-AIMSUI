@@ -70,6 +70,8 @@ export class BasicDataComponent implements OnInit {
   projectImplementersChanged = new EventEmitter<any[]>();
   @Output()
   projectDocumentsChanged = new EventEmitter<any []>();
+  @Output()
+  proceedToFinancials = new EventEmitter();
 
   tooltipOptions = {
     'placement': 'top',
@@ -701,6 +703,10 @@ export class BasicDataComponent implements OnInit {
 
   updateProjectIdToParent() {
     this.projectCreated.emit(this.projectId);
+  }
+
+  proceedToNext() {
+    this.proceedToFinancials.emit();
   }
 
   /*Handling IATI Stuff*/

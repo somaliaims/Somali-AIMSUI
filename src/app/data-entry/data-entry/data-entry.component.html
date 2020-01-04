@@ -35,6 +35,7 @@
         (projectFundersChanged)="updateProjectFunders($event)"
         (projectImplementersChanged)="updateProjectImplementers($event)"
         (projectCreated)="updateProjectId($event)"
+        (proceedToFinancials)="showFinancials()"
         (projectDocumentsChanged)="updateProjectDocuments($event)">
       </basic-data>
     </div>
@@ -45,6 +46,7 @@
         [projectDisbursements]="currentProjectDisbursements" [startingYear]="projectData.startingFinancialYear"
         [endingYear]="projectData.endingFinancialYear" [projectId]="activeProjectId"
         [aimsProjects]="aimsProjects" [iatiProjects]="iatiProjects"
+        (proceedToSectors)="showSectors()"
         (disbursementsChanged)="updateProjectDisbursements($event)">
       </financials>
     </div>
@@ -56,6 +58,7 @@
         [currentProjectSectors]="currentProjectSectors" [currentProjectLocations]="currentProjectLocations"
         [currentProjectMarkers]="currentProjectMarkers" [markersList]="markersList"
         [aimsProjects]="aimsProjects" [iatiProjects]="iatiProjects"
+        (proceedToFinish)="showFinish()"
         (projectSectorsChanged)="updateProjectSectors($event)"
         (projectLocationsChanged)="updateProjectLocations($event)"
         (projectMarkersChanged)="updateProjectMarkers($event)">

@@ -39,6 +39,8 @@ export class FinancialsComponent implements OnInit {
 
   @Output()
   disbursementsChanged = new EventEmitter<any[]>();
+  @Output()
+  proceedToSectors = new EventEmitter();
 
   help: any = { disbursementActual: null, disbursementPlanned: null };
   projectHelp: any = { title: null, startingFinancialYear: null, endingFinancialYear: null,
@@ -173,12 +175,24 @@ export class FinancialsComponent implements OnInit {
     this.disbursementsTotal = totalAmount;
   }
 
+  getDisbursementsTotal() {
+    var totalAmount = 0;
+    if (this.projectDisbursements.length > 0) {
+      this.projectDisbursements.forEach((d) => {
+        totalAmount += parseFloat(d.amount);
+      });
+    }
+    return totalAmount;
+  }
+
   handleNullAmount(amount: number) {
     if (amount == null) {
       return 0;
     }
     return amount;
   }
+
+
 
   setDisbursementForYear(e) {
     var newValue = e.target.value;
@@ -223,6 +237,31 @@ export class FinancialsComponent implements OnInit {
       }
     }
     this.calculateDisbursementsTotal();
+  }
+
+  splitRemainingAmountEqually() {
+    var projectValue = this.projectValue;
+    var disbursementsTotal = this.getDisbursementsTotal();
+    var remainingAmount = projectValue - disbursementsTotal; 
+    if (remainingAmount > 0) {
+      var countZeros = 0;
+      this.projectDisbursements.forEach((d) => {
+        countZeros = (d.amount == 0) ? ++countZeros : countZeros;
+      });
+
+      if (countZeros > 0) {
+        var equalSplit = (remainingAmount / countZeros);
+         this.projectDisbursements.forEach((d) => {
+          if (d.amount == 0) {
+            d.amount = equalSplit;
+          }
+         });
+         this.calculateDisbursementsTotal();
+      } else {
+        this.errorMessage = Messages.INVALID_DISBURSEMENT_SPLIT;
+        this.errorModal.openModal();
+      }
+    }
   }
 
   enterAIMSDisbursement(e) {
@@ -331,6 +370,10 @@ export class FinancialsComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  proceedToNext() {
+    this.proceedToSectors.emit();
   }
   
 }

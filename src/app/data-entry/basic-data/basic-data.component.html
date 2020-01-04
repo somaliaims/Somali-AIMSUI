@@ -179,7 +179,7 @@
     <div class="col-md-12">
       <table width="100%">
         <tr>
-          <td width="35%">
+          <td width="30%">
             <input type="text" title="{{projectDocumentHelp.document}}" placeholder="Resource name" class="form-control"
               maxlength="50" name="document" [(ngModel)]="documentModel.document" #document="ngModel" />
           </td>
@@ -192,7 +192,7 @@
             <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
               class="btn btn-warning"><i class="fa fa-database"></i></button>
           </td>
-          <td width="35%">
+          <td width="30%">
             <input type="url" title="{{projectDocumentHelp.documentUrl}}" placeholder="Link to resource"
               class="form-control" maxlength="255" name="documentUrl" [(ngModel)]="documentModel.documentUrl"
               #documentUrl="ngModel" />
@@ -209,9 +209,14 @@
           <td width="10%">
             <button type="button" class="btn btn-warning text-uppercase" (click)="addResource()">Add resource</button>
           </td>
-          <td width="10%">
+          <td width="12%">
             <span class="float-right">
               <button class="btn btn-info text-uppercase" type="submit">Save data</button>
+            </span>
+          </td>
+          <td width="8%">
+            <span class="float-right">
+              <button class="btn btn-info text-uppercase" (click)="proceedToNext()" type="button">Next >></button>
             </span>
           </td>
         </tr>

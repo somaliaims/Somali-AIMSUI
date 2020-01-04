@@ -65,15 +65,28 @@
             <input type="text" [readonly]="true" name="disbursementTotal" [(ngModel)]="disbursementsTotal"
               class="form-control col-md-5" />
           </div>
+          
+            <div class="form-group form-inline">
+              <label class="col-md-3">&nbsp;</label>
+              <button
+                [class.disable]="(disbursementsTotal < disbursementModel.projectValue || disbursementsTotal > disbursementModel.projectValue)"
+                type="submit" class="btn btn-info text-uppercase btn-block col-md-5">Save disbursements</button>
+            </div>
 
-          <div class="form-group">
-            <label class="col-md-3">&nbsp;</label>
-            <button
-              [class.disable]="(disbursementsTotal < disbursementModel.projectValue || disbursementsTotal > disbursementModel.projectValue)"
-              type="submit" class="btn btn-info text-uppercase">Save disbursements</button>
+            <div class="form-group form-inline">
+              <label class="col-md-3">&nbsp;</label>
+              <button class="btn btn-warning text-uppercase btn-block col-md-5" (click)="splitRemainingAmountEqually()" type="button">
+                Split remaining amount equally
+              </button>
+            </div>
+
+            <div class="form-group form-inline">
+              <label class="col-md-3"></label>
+              <button class="btn btn-info text-uppercase btn-block col-md-5" (click)="proceedToNext()" type="button">
+                Next >>
+              </button>
+            </div>
           </div>
-
-        </div>
 
       </form>
     </div>

@@ -48,6 +48,8 @@ export class ProjectSectorsComponent implements OnInit {
   projectLocationsChanged = new EventEmitter<any[]>();
   @Output()
   projectMarkersChanged = new EventEmitter<any[]>();
+  @Output()
+  proceedToFinish = new EventEmitter();
 
   fieldTypes: any = Settings.markerTypes;
   typeSectorsList: any = [];
@@ -835,6 +837,10 @@ export class ProjectSectorsComponent implements OnInit {
 
   checkIfSectorInActionList(sectorId: number) {
     return this.sourceSectorsList.filter(s => s.mappingId == sectorId).length > 0 ? true : false;
+  }
+
+  proceedToNext() {
+    this.proceedToFinish.emit();
   }
 
   /*Sending updated data to parent*/

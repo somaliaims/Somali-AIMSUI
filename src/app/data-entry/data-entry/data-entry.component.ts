@@ -450,12 +450,10 @@ export class DataEntryComponent implements OnInit {
 
   updateProjectDisbursements($event) {
     this.currentProjectDisbursements = $event;
-    this.manageTabsDisplay(this.tabConstants.SECTORS);
   }
 
   updateProjectId($event) {
     this.activeProjectId = $event;
-    this.manageTabsDisplay(this.tabConstants.FINANCIALS);
   }
 
 }
