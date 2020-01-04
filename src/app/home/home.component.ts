@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   currentYearDisbursements: number = 0;
   defaultCurrency: string = null;
   currentYear: number = 0;
+  currentFinancialYear: string = 'FY...';
   model: any = { aimsTitle: null, introductionHeading: null, introductionText: null };
   latestProjects: any = [];
   safeSrcVideoOne: SafeResourceUrl;
@@ -59,7 +60,6 @@ export class HomeComponent implements OnInit {
       this.showMessage = false;
     }, Settings.displayMessageTime);
 
-    this.currentYear = this.storeService.getCurrentYear();
     this.getCurrentYearDisbursements();
     this.getHomePageSettings();
     this.getUsersCount();
@@ -113,7 +113,9 @@ export class HomeComponent implements OnInit {
     this.projectService.getCurrentYearsDisbursements().subscribe(
       data => {
         if (data) {
-          this.currentYearDisbursements = Math.round(data);
+          this.currentYear = data.currentYear;
+          this.currentFinancialYear = data.financialYear;
+          this.currentYearDisbursements = Math.round(data.disbursements);
         }
       }
     );

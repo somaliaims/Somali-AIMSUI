@@ -106,14 +106,16 @@
                         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading locations...</span>
                     </div>
                     <table *ngIf="projectLocations.length > 0" class="table table-striped">
-                      <tr>
-                        <th>Location</th>
-                        <th>Funds percentage</th>
-                      </tr>
-                      <tr *ngFor="let location of projectLocations">
-                        <td>{{location.location}}</td>
-                        <td>{{location.fundsPercentage}}%</td>
-                      </tr>
+                      <tbody>
+                        <tr>
+                          <th>Location</th>
+                          <th>Funds percentage</th>
+                        </tr>
+                        <tr *ngFor="let location of projectLocations">
+                          <td>{{location.location}}</td>
+                          <td>{{location.fundsPercentage}}%</td>
+                        </tr>
+                      </tbody>
                     </table>
                     <p *ngIf="projectLocations.length == 0 && !isLocationLoading" class="text-info"><i>No project locations found.</i></p>
                   </div>
@@ -124,14 +126,16 @@
                           <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sectors...</span>
                       </div>
                       <table *ngIf="projectSectors.length > 0" class="table table-striped">
-                        <tr>
-                          <th>Sector</th>
-                          <th>Funds percentage</th>
-                        </tr>
-                        <tr *ngFor="let sector of projectSectors">
-                          <td>{{sector.sector}}</td>
-                          <td>{{sector.fundsPercentage}}%</td>
-                        </tr>
+                        <tbody>
+                          <tr>
+                            <th>Sector</th>
+                            <th>Funds percentage</th>
+                          </tr>
+                          <tr *ngFor="let sector of projectSectors">
+                            <td>{{sector.sector}}</td>
+                            <td>{{sector.fundsPercentage}}%</td>
+                          </tr>
+                        </tbody>
                       </table>
                       <p *ngIf="projectSectors.length == 0 && !isSectorLoading" class="text-info"><i>No project sectors found.</i></p>
                   </div>
@@ -143,14 +147,15 @@
                     <div class="container text-center margin-top-10" *ngIf="isFunderLoading">
                           <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading funders...</span>
                       </div>
-        
                       <table *ngIf="projectFunders.length > 0" class="table table-striped">
-                        <tr>
-                          <th>Funder name</th>
-                        </tr>
-                        <tr *ngFor="let funder of projectFunders">
-                          <td>{{funder.funder}}</td>
-                        </tr>
+                        <tbody>
+                          <tr>
+                            <th>Funder name</th>
+                          </tr>
+                          <tr *ngFor="let funder of projectFunders">
+                            <td>{{funder.funder}}</td>
+                          </tr>
+                        </tbody>
                       </table>
                       <p *ngIf="projectFunders.length == 0 && !isFunderLoading" class="text-info"><i>No project funders found.</i></p>
                   </div>
@@ -160,12 +165,14 @@
                             <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading implementers...</span>
                         </div>
                         <table *ngIf="projectImplementers.length > 0" class="table table-striped">
-                          <tr>
-                            <th>Implementer</th>
-                          </tr>
-                          <tr *ngFor="let implementer of projectImplementers">
-                            <td>{{implementer.implementer}}</td>
-                          </tr>
+                          <tbody>
+                            <tr>
+                              <th>Implementer</th>
+                            </tr>
+                            <tr *ngFor="let implementer of projectImplementers">
+                              <td>{{implementer.implementer}}</td>
+                            </tr>
+                          </tbody>
                         </table>
                         <p *ngIf="projectImplementers.length == 0 && !isImplementerLoading" class="text-info">
                           <i>No project implementers found.</i>
@@ -184,20 +191,22 @@
                       </div>
         
                       <table *ngIf="projectDisbursements.length > 0" class="table table-striped">
-                        <tr>
-                          <th>Type</th>
-                          <th>Financial year</th>
-                          <th>Amount</th>
-                          <th>Currency</th>
-                          <th>Exchange rate</th>
-                        </tr>
-                        <tr *ngFor="let disbursement of projectDisbursements">
-                          <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
-                          <td>{{disbursement.financialYear}}</td>
-                          <td>{{formatNumber(disbursement.amount)}}</td>
-                          <td>{{disbursement.currency}}</td>
-                          <td>{{disbursement.exchangeRate}}</td>
-                        </tr>
+                        <tbody>
+                          <tr>
+                            <th>Type</th>
+                            <th>Financial year</th>
+                            <th>Amount</th>
+                            <th>Currency</th>
+                            <th>Exchange rate</th>
+                          </tr>
+                          <tr *ngFor="let disbursement of projectDisbursements">
+                            <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
+                            <td>{{disbursement.financialYear}}</td>
+                            <td>{{formatNumber(disbursement.amount)}}</td>
+                            <td>{{disbursement.currency}}</td>
+                            <td>{{disbursement.exchangeRate}}</td>
+                          </tr>
+                        </tbody>
                       </table>
                       <p *ngIf="projectDisbursements.length == 0 && !isDisbursementLoading" class="text-info">
                         <i>No project disbursements found.</i>
@@ -213,14 +222,16 @@
                         </div>
           
                         <table *ngIf="projectDocuments.length > 0" class="table table-striped">
-                          <tr>
-                            <th>Document Title</th>
-                            <th>Url</th>
-                          </tr>
-                          <tr *ngFor="let document of projectDocuments">
-                            <td>{{document.documentTitle}}</td>
-                            <td>{{document.documentUrl}}</td>
-                          </tr>
+                          <tbody>
+                            <tr>
+                              <th>Document Title</th>
+                              <th>Url</th>
+                            </tr>
+                            <tr *ngFor="let document of projectDocuments">
+                              <td>{{document.documentTitle}}</td>
+                              <td>{{document.documentUrl}}</td>
+                            </tr>
+                          </tbody>
                         </table>
                         <p *ngIf="projectDocuments.length == 0 && !isDocumentLoading" class="text-info">
                           <i>No project documents found.</i>
@@ -232,14 +243,16 @@
                   <div class="col-md-12 col-lg-12">
                     <h6 class="text-info">Project markers</h6>
                     <table *ngIf="projectMarkers.length > 0" class="table table-striped table-condensed">
-                      <tr>
-                        <th>Marker</th>
-                        <th>Values</th>
-                      </tr>
-                      <tr *ngFor="let marker of projectMarkers">
-                        <td>{{marker.marker}}</td>
-                        <td>{{displayFieldValues(marker.values)}}</td>
-                      </tr>
+                      <tbody>
+                        <tr>
+                          <th>Marker</th>
+                          <th>Values</th>
+                        </tr>
+                        <tr *ngFor="let marker of projectMarkers">
+                          <td>{{marker.marker}}</td>
+                          <td>{{displayFieldValues(marker.values)}}</td>
+                        </tr>
+                      </tbody>
                     </table>
                     <p *ngIf="projectMarkers.length == 0 && !isExcelGenerating" class="text-info">
                         <i>No project markers found.</i>
