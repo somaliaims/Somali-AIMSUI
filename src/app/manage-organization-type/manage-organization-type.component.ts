@@ -3,6 +3,7 @@ import { OrganizationTypeService } from '../services/organization-type.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-manage-organization-type',
@@ -12,6 +13,7 @@ import { Settings } from '../config/settings';
 export class ManageOrganizationTypeComponent implements OnInit {
   @Input()
   isForEdit: boolean = false;
+  permissions: any = {};
   isBtnDisabled: boolean = false;
   orgId: number = 0;
   btnText: string = 'Add organization type';
@@ -25,10 +27,16 @@ export class ManageOrganizationTypeComponent implements OnInit {
 
   constructor(private organizationService: OrganizationTypeService, private route: ActivatedRoute,
     private router: Router,
-    private storeService: StoreService) {
+    private storeService: StoreService,
+    private securityService: SecurityHelperService) {
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditOrganization) {
+      this.router.navigateByUrl('home');
+    }
+
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {

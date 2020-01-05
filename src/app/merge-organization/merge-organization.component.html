@@ -84,6 +84,18 @@
             <form class="form-signin" (ngSubmit)="organizationForm.form.valid"
               #organizationForm="ngForm">
               <div class="form-group">
+                <label>Organization type</label>
+                <select name="organizationType" class="form-control" [(ngModel)]="model.organizationTypeId" #organizationType="ngModel" >
+                  <option value="0">--Select one--</option>
+                  <option *ngFor="let type of organizationTypes" value={{type.id}}>
+                    {{type.typeName}}
+                  </option>
+                </select>
+                <div *ngIf="organizationForm.submitted" [hidden]="organizationType != 0" class="alert alert-danger">
+                  Organization type is required
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="name">New name for organization/s</label>
                 <input type="text" placeholder="Enter new name for merged organizations" class="form-control" id="name" maxlength="200" [(ngModel)]="model.name" name="name"
                   #title="ngModel" required>

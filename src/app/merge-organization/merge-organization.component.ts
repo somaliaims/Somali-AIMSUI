@@ -6,6 +6,8 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
+import { OrganizationTypeService } from '../services/organization-type.service';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-merge-organization',
@@ -14,23 +16,43 @@ import { Settings } from '../config/settings';
 })
 export class MergeOrganizationComponent implements OnInit {
 
+  permissions: any = {};
+  organizationTypes: any = [];
   organizationsList: any = [];
   isLoading: boolean = true;
   filteredOrganizationsList: any = [];
   selectedOrganizations: any = [];
-  model = {title: null, name: null };
+  model = {title: null, name: null, organizationTypeId: 0 };
   errorMessage: string = null;
   isTextReadOnly: boolean = false;
   inputTextHolder: string = 'Enter organization name to search';
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private organizationService: OrganizationService, 
-    private errorModal: ErrorModalComponent, private router: Router, private storeService: StoreService) { 
+    private errorModal: ErrorModalComponent, private router: Router, 
+    private storeService: StoreService,
+    private organizationTypeService: OrganizationTypeService,
+    private securityService: SecurityHelperService) { 
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditOrganization) {
+      this.router.navigateByUrl('home');
+    }
     this.storeService.newReportItem(Settings.dropDownMenus.management);
+    this.loadOrganizationTypes();
     this.loadOrganizations();
+  }
+
+  loadOrganizationTypes() {
+    this.organizationTypeService.getOrganizationTypes().subscribe(
+      data => {
+        if (data) {
+          this.organizationTypes = data;
+        }
+      }
+    );
   }
 
   loadOrganizations() {
@@ -68,6 +90,12 @@ export class MergeOrganizationComponent implements OnInit {
   }
 
   mergeOrganizations() {
+    if (this.model.organizationTypeId == 0) {
+      this.errorMessage = 'Organization type is required';
+      this.errorModal.openModal();
+      return false;
+    }
+
     if (!this.model.name || this.model.name.length < 2 ) {
       this.errorMessage = Messages.INVALID_ORG_NAME;
       this.errorModal.openModal();
@@ -84,7 +112,8 @@ export class MergeOrganizationComponent implements OnInit {
     var ids = this.selectedOrganizations.map(org => org.id);
     var model = {
       newName: this.model.name,
-      Ids: ids
+      Ids: ids,
+      organizationTypeId: this.model.organizationTypeId
     };
 
     this.organizationService.mergeOrganizations(model).subscribe(
