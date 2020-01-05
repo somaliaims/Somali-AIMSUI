@@ -363,7 +363,7 @@ export class BasicDataComponent implements OnInit {
       );
     }
   }
-
+  
   saveProject(frm: any) {
     this.entryForm = frm;
     var startingYear = new Date(this.projectData.startDate).getFullYear();

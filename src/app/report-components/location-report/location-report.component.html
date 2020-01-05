@@ -55,7 +55,7 @@
                 </div>
               </div>
               <div class="row margin-top-10">
-                <div [class.disable]="model.noLocationOption != 1" class="col-md-3">
+                <div [class.disable]="model.noLocationOption != 1" class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" title="Location/s"
                     [data]="locationsList" [(ngModel)]="model.selectedLocations" [settings]="locationsSettings"
                     name="selectedLocations" (onSelect)="onLocationSelect($event)"
@@ -64,13 +64,13 @@
                     #selectedLocations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
-                <div class="col-md-3">
+                <!--<div class="col-md-3">
                   <select class="form-control" name="nolocation" (change)="noLocationChanged()" [(ngModel)]="model.noLocationOption" #noLocationOption="ngModel">
                     <option *ngFor="let option of noLocationOptions" value="{{option.id}}">
                       {{option.option}}
                     </option>
                   </select>
-                </div>
+                </div>-->
                 <div class="col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
                     [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"

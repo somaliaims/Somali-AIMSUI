@@ -128,6 +128,16 @@ export class ProjectSectorsComponent implements OnInit {
 
     this.getProjectSectorHelp();
     this.getProjectLocationHelp();
+    if (this.currentProjectSectors.length == 0) {
+      this.blockUI.start('Wait loading data...');
+      this.getProjectSectors();
+    }
+    if (this.currentProjectLocations.length == 0) {
+      if (!this.blockUI.isActive) {
+        this.blockUI.start('Wait loading data...');
+        this.getProjectLocations();
+      }
+    }
   }
 
   getProjectSectorHelp() {
@@ -525,7 +535,7 @@ export class ProjectSectorsComponent implements OnInit {
           });
           this.updateSectorsToParent();
         }
-        this.blockUI.stop();
+          this.blockUI.stop();
       }
     );
   }
