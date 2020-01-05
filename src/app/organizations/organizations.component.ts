@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { OrganizationTypeService } from '../services/organization-type.service';
 @Component({
   selector: 'app-organizations',
   templateUrl: './organizations.component.html',
@@ -11,7 +12,9 @@ import { SecurityHelperService } from '../services/security-helper.service';
 })
 export class OrganizationsComponent implements OnInit {
   organizationsList: any = [];
+  organizationTypes: any = [];
   filteredOrganizationsList: any = [];
+  organizationTypeId: number = 0;
   criteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
@@ -20,7 +23,8 @@ export class OrganizationsComponent implements OnInit {
   permissions: any = {};
 
   constructor(private organizationService: OrganizationService, private router: Router,
-    private storeService: StoreService, private securityService: SecurityHelperService) { }
+    private storeService: StoreService, private securityService: SecurityHelperService,
+    private organizationTypeService: OrganizationTypeService) { }
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
@@ -28,6 +32,7 @@ export class OrganizationsComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
     this.storeService.newReportItem(Settings.dropDownMenus.management);
+    this.getOrganizationTypes();
     this.getOrganizationsList();
   }
 
@@ -39,22 +44,36 @@ export class OrganizationsComponent implements OnInit {
           this.organizationsList = data;
           this.filteredOrganizationsList = data;
         }
-      },
-      error => {
-        this.isLoading = false;
-        console.log("Request Failed: ", error);
       }
     );
   }
 
+  getOrganizationTypes() {
+    this.organizationTypeService.getOrganizationTypes().subscribe(
+      data => {
+        if (data) {
+          this.organizationTypes = data;
+        }
+      }
+    );
+  }
+
+
   searchOrganizations() {
+    var organizations = [];
+    if (this.organizationTypeId != 0) {
+      organizations = this.organizationsList.filter(t => t.organizationTypeId == this.organizationTypeId);
+    } else {
+      organizations = this.organizationsList;
+    }
+
     if (!this.criteria) {
-      this.filteredOrganizationsList = this.organizationsList;
+      this.filteredOrganizationsList = organizations;
     }
     else {
-      if (this.organizationsList.length > 0) {
+      if (organizations.length > 0) {
         var criteria = this.criteria.toLowerCase();
-        this.filteredOrganizationsList = this.organizationsList.filter(s => (s.organizationName.toLowerCase().indexOf(criteria) != -1));
+        this.filteredOrganizationsList = organizations.filter(s => (s.organizationName.toLowerCase().indexOf(criteria) != -1));
       }
     }
   }

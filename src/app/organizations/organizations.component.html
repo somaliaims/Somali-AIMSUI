@@ -10,7 +10,16 @@
         </li>
       </ul>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-3">
+      <select class="form-control" name="organizationType" [(ngModel)]="organizationTypeId" 
+        (change)="searchOrganizations()" #organizationType="ngModel">
+        <option value="0">--Organization type--</option>
+        <option *ngFor="let type of organizationTypes" value="{{type.id}}">
+          {{type.typeName}}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-3">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Enter organization name" [(ngModel)]="criteria"
         (input)="searchOrganizations()" onkeypress="return event.keyCode != 13;">
