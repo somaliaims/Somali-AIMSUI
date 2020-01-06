@@ -215,7 +215,7 @@
             </span>
           </td>
           <td width="8%">
-            <span class="float-right">
+            <span [class.disable]="projectId == 0" class="float-right">
               <button class="btn btn-info text-uppercase" (click)="proceedToNext()" type="button">Next >></button>
             </span>
           </td>
