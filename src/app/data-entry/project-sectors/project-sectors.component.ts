@@ -253,6 +253,10 @@ export class ProjectSectorsComponent implements OnInit {
     }
   }
 
+  onDeSelectSector() {
+    this.sectorModel.selectedSector = null;
+  }
+
   addSector(frm: any) {
     var sectorPercentage = this.sectorModel.fundsPercentage + this.calculateSectorPercentage();
     if (sectorPercentage > 100) {
