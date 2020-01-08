@@ -118,6 +118,7 @@ import { OrganizationTypesComponent } from './organization-types/organization-ty
 import { ManageOrganizationTypeComponent } from './manage-organization-type/manage-organization-type.component';
 import { DeleteOrganizationTypeComponent } from './delete-organization-type/delete-organization-type.component';
 import { FinancialYearSettingsComponent } from './financial-year-settings/financial-year-settings.component';
+import { ProjectMarkersComponent } from './data-entry/project-markers/project-markers.component';
 
 @NgModule({
   declarations: [
@@ -221,6 +222,7 @@ import { FinancialYearSettingsComponent } from './financial-year-settings/financ
     ManageOrganizationTypeComponent,
     DeleteOrganizationTypeComponent,
     FinancialYearSettingsComponent,
+    ProjectMarkersComponent,
   ],
   imports: [
     BrowserModule,
