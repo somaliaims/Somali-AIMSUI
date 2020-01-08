@@ -44,7 +44,7 @@ export class ProjectSectorsComponent implements OnInit {
   @Output()
   projectLocationsChanged = new EventEmitter<any[]>();
   @Output()
-  proceedToFinish = new EventEmitter();
+  proceedToNext = new EventEmitter();
 
   typeSectorsList: any = [];
   ndpSectorsList: any = [];
@@ -667,8 +667,8 @@ export class ProjectSectorsComponent implements OnInit {
     return this.sourceSectorsList.filter(s => s.mappingId == sectorId).length > 0 ? true : false;
   }
 
-  proceedToNext() {
-    this.proceedToFinish.emit();
+  proceedToMarkers() {
+    this.proceedToNext.emit();
   }
 
   /*Sending updated data to parent*/

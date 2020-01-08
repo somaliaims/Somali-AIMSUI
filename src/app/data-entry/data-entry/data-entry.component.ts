@@ -100,6 +100,7 @@ export class DataEntryComponent implements OnInit {
     { visible: true, identity: 'basic' },
     { visible: false, identity: 'financials' },
     { visible: false, identity: 'sectors' },
+    { visible: false, identity: 'markers' },
     { visible: false, identity: 'finish' }
   ];
 
@@ -107,6 +108,7 @@ export class DataEntryComponent implements OnInit {
     BASIC: 'basic',
     FINANCIALS: 'financials',
     SECTORS: 'sectors',
+    MARKERS: 'markers',
     FINISH: 'finish'
   };
 
@@ -397,6 +399,10 @@ export class DataEntryComponent implements OnInit {
 
   showFinancials() {
     this.manageTabsDisplay(this.tabConstants.FINANCIALS);
+  }
+
+  showMarkers() {
+    this.manageTabsDisplay(this.tabConstants.MARKERS);
   }
 
   showSectors() {

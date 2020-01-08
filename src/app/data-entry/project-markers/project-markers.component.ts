@@ -7,7 +7,7 @@ import { StoreService } from 'src/app/services/store-service';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 
 @Component({
-  selector: 'app-project-markers',
+  selector: 'project-markers',
   templateUrl: './project-markers.component.html',
   styleUrls: ['./project-markers.component.css']
 })
@@ -21,6 +21,8 @@ export class ProjectMarkersComponent implements OnInit {
   currentProjectMarkers: any = [];
   @Output()
   projectMarkersChanged = new EventEmitter<any[]>();
+  @Output()
+  proceedToNext = new EventEmitter();
 
   currentSelectedFieldValues: any = [];
   fieldModel = { projectId: 0, fieldId: 0, values: [], dropdownId: null, newText: null };
@@ -213,6 +215,10 @@ export class ProjectMarkersComponent implements OnInit {
 
   updateMarkersToParent() {
     this.projectMarkersChanged.emit(this.currentProjectMarkers);
+  }
+
+  proceedToFinish() {
+    this.proceedToNext.emit();
   }
 
 

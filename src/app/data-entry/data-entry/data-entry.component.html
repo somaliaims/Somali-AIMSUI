@@ -15,7 +15,11 @@
           </li>
           <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'sectors', 'text-info': currentTab != 'sectors'}" href="#"
-              class="nav-link text-info" (click)="showSectors()" data-toggle="tab">Sectors, Locations & Markers</a>
+              class="nav-link text-info" (click)="showSectors()" data-toggle="tab">Sectors & Locations</a>
+          </li>
+          <li *ngIf="activeProjectId != 0" class="nav-item">
+            <a [ngClass]="{'btn-info': currentTab == 'markers', 'text-info': currentTab != 'markers'}" href="#"
+              class="nav-link text-info" (click)="showMarkers()" data-toggle="tab">Markers</a>
           </li>
           <li *ngIf="activeProjectId != 0" class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'finish', 'text-info': currentTab != 'finish'}" href="#"
@@ -56,13 +60,22 @@
         [defaultSectorsList]="defaultSectorsList" [defaultSectorTypeId]="defaultSectorTypeId"
         [projectId]="activeProjectId" [defaultSectorType]="defaultSectorType" [locationsList]="locationsList"
         [currentProjectSectors]="currentProjectSectors" [currentProjectLocations]="currentProjectLocations"
-        [currentProjectMarkers]="currentProjectMarkers" [markersList]="markersList"
         [aimsProjects]="aimsProjects" [iatiProjects]="iatiProjects"
-        (proceedToFinish)="showFinish()"
+        (proceedToNext)="showMarkers()"
         (projectSectorsChanged)="updateProjectSectors($event)"
         (projectLocationsChanged)="updateProjectLocations($event)"
-        (projectMarkersChanged)="updateProjectMarkers($event)">
+        >
       </project-sectors>
+    </div>
+
+    <div *ngIf="!isProjectLoading && currentTab == tabConstants.MARKERS" class="col-lg-12 col-md-12">
+      <project-markers [currentProjectMarkers]="currentProjectMarkers" [markersList]="markersList"
+        [projectId]="activeProjectId"
+        (projectMarkersChanged)="updateProjectMarkers($event)"
+        (proceedToNext)="showFinish()"
+      >
+      </project-markers
+      >
     </div>
 
     <div *ngIf="!isProjectLoading && currentTab == tabConstants.FINISH" class="col-lg-12 col-md-12">
