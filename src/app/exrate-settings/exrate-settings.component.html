@@ -62,7 +62,8 @@
                   [(ngModel)]="model.exchangeRate" title="Manually entered/suggested exchange rate by system" name="exchangeRate" #exchangeRate="ngModel" maxlength="6">
               </div>
               <div class="form-group mx-sm-3 mb-2">
-                <select name="newYear" id="newYear" class="form-control" [(ngModel)]="model.newYear" #newYear="ngModel">
+                <select name="newYear" id="newYear" class="form-control" [(ngModel)]="model.newYear" 
+                #newYear="ngModel" (change)="onChangeYear()">
                   <option value="null">--Year--</option>
                   <option *ngFor="let year of financialYearsList" value={{year.financialYear}}>{{year.financialYear}}</option>
                 </select>

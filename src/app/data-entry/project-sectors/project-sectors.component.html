@@ -83,16 +83,15 @@
 
           <div class="col-md-3 col-lg-3">
             <div class="input-group mb-3 form-inline">
-              <input type="number" class="form-control col-sm-6" id="fundsPercentage"
-                [(ngModel)]="sectorModel.fundsPercentage" placeholder="Percentage" name="fundsPercentage"
-                #fundsPercentage="ngModel" min="1" max="100" required>
-              <button [class.disable]="calculateSectorPercentage() >= 100"
-                class="margin-left-2 btn btn-sm btn-warning text-uppercase" type="submit">
-                Add sector
-              </button>
-              <span class="col-sm-2" tooltip="{{sectorHelp.percentage}}" [options]="tooltipOptions">
+              <input type="number" class="form-control col-sm-5" id="fundsPercentage" [(ngModel)]="sectorModel.fundsPercentage"
+                placeholder="Percentage" name="fundsPercentage" #fundsPercentage="ngModel" min="1" max="100" required>
+              <span class="col-sm-3" tooltip="{{sectorHelp.percentage}}" [options]="tooltipOptions">
                 <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
               </span>
+              <button [class.disable]="calculateSectorPercentage() >= 100"
+                class="col-sm-4 btn btn-sm btn-warning text-uppercase" type="submit">
+                Add sector
+              </button>
             </div>
             <div *ngIf="sectorsForm.submitted" [hidden]="(fundsPercentage.value > 0 && fundsPercentage.value < 101)"
               class="alert alert-danger">
@@ -106,10 +105,7 @@
     </div>
 
     <div class="row">
-      <div *ngIf="currentProjectSectors.length > 0" class="text-info col-md-6 col-lg-6"><b>Percentage</b>:
-        {{calculateSectorPercentage()}}%
-      </div>
-      <div class="col-lg-6 col-md-6">
+      <div class="col-lg-12 col-md-12">
         <span class="float-right"><button *ngIf="areUnSavedSectors()" (click)="saveProjectSectors()"
           class="btn btn-info btn-sm text-uppercase">Save sectors</button></span>
       </div>
@@ -143,6 +139,15 @@
                       class="fa fa-remove"></i></button>
                 </td>
               </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td class="text-center">
+                  <span *ngIf="currentProjectSectors.length > 0" class="text-info"><b>Total</b>:
+                    {{calculateSectorPercentage()}}%
+                  </span>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -169,7 +174,7 @@
                   <option value="null">--Location--</option>
                   <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
                 </select>
-                <button *ngIf="isLocationsSourceAvailable" class="btn btn-warning col-sm-2"
+                <button *ngIf="isLocationsSourceAvailable" class="btn btn-warning col-sm-1"
                   title="Source data available" (click)="showLocationsSource()" type="button"><i
                     class="fa fa-database"></i></button>
                 <span class="col-sm-2" tooltip="{{locationHelp.location}}" [options]="tooltipOptions">
@@ -186,16 +191,18 @@
                 <input type="number" class="form-control col-md-5" [(ngModel)]="locationModel.fundsPercentage"
                   placeholder="Percentage" name="lfundsPercentage" #lfundsPercentage="ngModel" min="1" max="100"
                   required>
-                <button [class.disable]="calculateLocationPercentage() >= 100"
-                  class="btn btn-sm btn-warning text-uppercase col-md-3" type="submit">
-                  Add location
-                </button>
-                <span class="col-md-2" tooltip="{{locationHelp.percentage}}" [options]="tooltipOptions">
-                  <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
-                </span>
-                <button class="btn btn-sm btn-info text-uppercase col-md-2" (click)="proceedToNext()" type="button">
-                  Next >>
-                </button>
+
+                  <span class="col-md-2" tooltip="{{locationHelp.percentage}}" [options]="tooltipOptions">
+                    <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+                  </span>
+                  <button [class.disable]="calculateLocationPercentage() >= 100"
+                    class="btn btn-sm btn-warning text-uppercase col-md-3 col-md-2" type="submit">
+                    Add location
+                  </button>
+                  
+                  <button class="margin-left-2 btn btn-sm btn-info text-uppercase col-md-2" (click)="proceedToNext()" type="button">
+                    Next >>
+                  </button>
               </div>
               <div *ngIf="locationsForm.submitted"
                 [hidden]="(lfundsPercentage.value > 0 && lfundsPercentage.value < 101)" class="alert alert-danger">
@@ -206,8 +213,6 @@
         </form>
         <div class="col-lg-12 col-md-12">
           <div class="row">
-            <span *ngIf="currentProjectLocations.length > 0" class="float-left text-info col-md-6"><b>Percentage</b>:
-              {{calculateLocationPercentage()}}%</span>
             <span class="col-md-6 text-right"><button *ngIf="areUnSavedLocations()" (click)="saveProjectLocations()"
                 class="btn btn-info btn-sm text-uppercase">Save locations</button></span>
           </div>
@@ -235,6 +240,14 @@
                       (click)="removeProjectLocation(location.locationId)" class="btn btn-warning btn-sm"><i
                         class="fa fa-remove"></i></button>
                   </td>
+                </tr>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th class="text-center">
+                    <span *ngIf="currentProjectLocations.length > 0" class="text-info"><b>Total</b>:
+                      {{calculateLocationPercentage()}}%</span>
+                  </th>
+                  <th>&nbsp;</th>
                 </tr>
               </tbody>
             </table>

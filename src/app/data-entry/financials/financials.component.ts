@@ -169,6 +169,9 @@ export class FinancialsComponent implements OnInit {
     var totalAmount = 0;
     if (this.projectDisbursements.length > 0) {
       this.projectDisbursements.forEach((d) => {
+        if (!d.amount) {
+          d.amount = 0;
+        }
         totalAmount += parseFloat(d.amount);
       });
     }
@@ -179,6 +182,9 @@ export class FinancialsComponent implements OnInit {
     var totalAmount = 0;
     if (this.projectDisbursements.length > 0) {
       this.projectDisbursements.forEach((d) => {
+        if (!d.amount) {
+          d.amount = 0;
+        }
         totalAmount += parseFloat(d.amount);
       });
     }
@@ -246,13 +252,15 @@ export class FinancialsComponent implements OnInit {
     if (remainingAmount > 0) {
       var countZeros = 0;
       this.projectDisbursements.forEach((d) => {
-        countZeros = (d.amount == 0) ? ++countZeros : countZeros;
+        if (d.disbursementType == 2) {
+          countZeros = (d.amount == 0) ? ++countZeros : countZeros;
+        }
       });
 
       if (countZeros > 0) {
         var equalSplit = (remainingAmount / countZeros);
          this.projectDisbursements.forEach((d) => {
-          if (d.amount == 0) {
+          if (d.amount == 0 && d.disbursementType == 2) {
             d.amount = equalSplit;
           }
          });

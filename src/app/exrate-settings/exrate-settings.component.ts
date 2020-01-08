@@ -178,6 +178,14 @@ export class ExrateSettingsComponent implements OnInit {
     );
   }
 
+  onChangeYear() {
+    if (this.model.newYear) {
+      this.filteredManualExchangeRates = this.manualExchangeRates.filter(r => r.year == this.model.newYear);
+    } else {
+      this.filteredManualExchangeRates = this.manualExchangeRates;
+    }
+  }
+
   saveRate(frm: any) {
     this.currentForm = frm;
     if (!this.model.exchangeRate || this.model.currency == 'null') {
@@ -210,13 +218,13 @@ export class ExrateSettingsComponent implements OnInit {
             isRateExist[0].exchangeRate = model.exchangeRate;
           } else {
             this.manualExchangeRates.push(model);
-            this.filteredManualExchangeRates = this.manualExchangeRates;
+            this.filteredManualExchangeRates.push(model);
             this.model.searchYear = null;
           }
-          this.currentForm.resetForm();
+          //this.currentForm.resetForm();
           this.model.searchYear = null;
           this.model.exchangeRate = null;
-          this.model.newYear = null;
+          //this.model.newYear = null;
           this.model.currency = null;
         }
         this.blockUI.stop();
