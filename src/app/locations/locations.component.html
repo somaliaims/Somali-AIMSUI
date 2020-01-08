@@ -13,8 +13,9 @@
   </div>
   <div class="col-md-6">
     <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Enter location name" [(ngModel)]="criteria" aria-label="Recipient's username"
-        aria-describedby="basic-addon2">
+      <input type="text" class="form-control" placeholder="Enter location name" (input)="searchLocations()"
+      [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;"
+      maxlength="50" aria-describedby="basic-addon2">
       <div class="input-group-append">
         <button class="btn btn-outline-info" (click)="searchLocations()" type="button"><i class="fa fa-search"></i></button>
       </div>
@@ -44,7 +45,7 @@
         <td *ngIf="permissions.canEditLocation">
           <a title="Edit" (click)="edit(loc.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
           &nbsp;
-          <a title="Delete" (click)="delete(loc.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+          <a [class.disable]="loc.isUnAttributed" title="Delete" (click)="delete(loc.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
         </td>
       </tr>
     </table>

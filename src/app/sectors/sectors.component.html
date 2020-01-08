@@ -49,7 +49,7 @@
         <td>{{sector.sectorType}}</td>
         <td *ngIf="selectedSectorTypeId == defaultSectorTypeId">
           <a title="Edit" (click)="edit(sector.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
-          <a title="Delete" (click)="delete(sector.id)" class="btn btn-danger margin-left-2"><i class="fa fa-trash color-white"></i></a>
+          <a [class.disable]="sector.isUnAttributed" title="Delete" (click)="delete(sector.id)" class="btn btn-danger margin-left-2"><i class="fa fa-trash color-white"></i></a>
         </td>
       </tr>
     </table>
