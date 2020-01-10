@@ -49,13 +49,13 @@
                   class="fa fa-database"></i></button>
             </span>
           
-            <span class="margin-left-2 col-md-1" *ngIf="checkIfCurrentActual(disbursement.year, disbursement.disbursementType)"
-              tooltip="({{help.disbursementActual}} {{disbursement.year}})" [options]="tooltipOptions">
+            <span class="margin-left-2 col-md-1" *ngIf="disbursement.disbursementType == disbursementTypeCodes.ACTUAL"
+              tooltip="({{help.disbursementActual}} {{disbursement.financialYear}})" [options]="tooltipOptions">
               <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
             </span>
 
-            <span class="margin-left-2 col-md-1" *ngIf="checkIfCurrentPlanned(disbursement.year, disbursement.disbursementType)" 
-              tooltip="({{help.disbursementPlanned}} {{disbursement.year}})" [options]="tooltipOptions">
+            <span class="margin-left-2 col-md-1" *ngIf="disbursement.disbursementType == disbursementTypeCodes.PLANNED" 
+              tooltip="({{help.disbursementPlanned}} {{disbursement.financialYear}})" [options]="tooltipOptions">
               <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
             </span>
           </div>

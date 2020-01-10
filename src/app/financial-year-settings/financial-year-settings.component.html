@@ -14,7 +14,9 @@
               <div class="card-body">
                 <h5 class="card-title text-center">Financial year settings</h5>
                 <p class="text-info">
-                    Please select and set month and day of the year when financial year starts. e.g. April 1st
+                    Please select and set month and day of the year when financial year starts. e.g. April 1st.
+                    It must be noted that on changing the month and day system will change the financial years
+                    for projects already entered.
                 </p>
                 <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveSettings()" #yearForm="ngForm">
       

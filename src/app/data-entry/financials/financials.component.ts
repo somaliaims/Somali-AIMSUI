@@ -61,6 +61,10 @@ export class FinancialsComponent implements OnInit {
     1: 'Actual',
     2: 'Planned'
   };
+  disbursementTypeCodes: any = {
+    ACTUAL: 1,
+    PLANNED: 2
+  };
 
   currentTab: string = this.tabConstants.FINANCIALS;
   isSourceAvailable: boolean = false;

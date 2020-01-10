@@ -102,7 +102,7 @@ export class FinancialYearSettingsComponent implements OnInit {
   }
 
   saveSettings() {
-    this.blockUI.start('Saving settings...');
+    this.blockUI.start('Saving settings, be patient, will take some time...');
     this.yearService.saveSettings(this.model).subscribe(
       data => {
         if (data) {
