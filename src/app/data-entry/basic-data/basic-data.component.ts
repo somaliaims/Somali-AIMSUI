@@ -72,6 +72,8 @@ export class BasicDataComponent implements OnInit {
   projectDocumentsChanged = new EventEmitter<any []>();
   @Output()
   proceedToFinancials = new EventEmitter();
+  @Output()
+  disbursementsChanged = new EventEmitter<any>();
 
   tooltipOptions = {
     'placement': 'top',
@@ -140,7 +142,8 @@ export class BasicDataComponent implements OnInit {
     private storeService: StoreService, private projectInfoModal: ProjectInfoModalComponent,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private orgModal: CreateOrgModalComponent,
-    private helpService: HelpService) { }
+    private helpService: HelpService
+  ) { }
 
   ngOnInit() {
     this.currentTab = this.tabConstants.PROJECT;
@@ -385,6 +388,7 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.saveProjectFunders();
+            this.getProjectDisbursements();
             this.updateProjectIdToParent();
           } else {
             this.blockUI.stop();
@@ -400,6 +404,7 @@ export class BasicDataComponent implements OnInit {
             this.projectId = data;
             localStorage.setItem('active-project', data);
             this.updateProjectIdToParent();
+            this.getProjectDisbursements();
             this.saveProjectFunders();
           } else {
             this.blockUI.stop();
@@ -503,6 +508,20 @@ export class BasicDataComponent implements OnInit {
         }
       }
     );
+  }
+
+  getProjectDisbursements() {
+    this.projectService.getProjectDisbursements(this.projectId.toString()).subscribe(
+      data => {
+        if (data) {
+          this.updateDisbursementsToParent(data);
+        }
+      }
+    );
+  }
+
+  updateDisbursementsToParent(disbursements: any) {
+    this.disbursementsChanged.emit(disbursements);
   }
 
   getProjectFunders(isDBSync: any = false) {

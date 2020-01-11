@@ -191,7 +191,7 @@
 
             <div class="col-md-6 col-lg-6">
               <div class="input-group form-inline mb-3">
-                <input type="number" class="form-control col-md-5" [(ngModel)]="locationModel.fundsPercentage"
+                <input type="number" class="form-control col-md-7" [(ngModel)]="locationModel.fundsPercentage"
                   placeholder="Percentage" name="lfundsPercentage" #lfundsPercentage="ngModel" min="1" max="100"
                   required>
 
@@ -202,10 +202,6 @@
                   class="btn btn-sm btn-warning text-uppercase col-md-3 col-md-2" type="submit">
                   Add location
                 </button>
-                <button class="margin-left-2 btn btn-info text-uppercase col-md-2" (click)="proceedToMarkers()" type="button">
-                  Next >>
-                </button>
-
               </div>
               <div *ngIf="locationsForm.submitted"
                 [hidden]="(lfundsPercentage.value > 0 && lfundsPercentage.value < 101)" class="alert alert-danger">
@@ -257,7 +253,16 @@
                   </tr>
                 </tbody>
               </table>
+
+              <div>
+                <span class="float-right">
+                  <button class="margin-left-2 btn btn-info text-uppercase" (click)="proceedToMarkers()" type="button">
+                    Next >>
+                  </button>
+                </span>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
