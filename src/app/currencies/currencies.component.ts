@@ -21,6 +21,7 @@ export class CurrenciesComponent implements OnInit {
   filteredCurrencies: any = [];
   manualFilteredCurrencies: any = [];
   criteria: string = null;
+  mcriteria: string = null;
   isLoading: boolean = true;
   infoMessage: string = null;
   errorMessage: string = null;
@@ -132,8 +133,17 @@ export class CurrenciesComponent implements OnInit {
         var criteria = this.criteria.toLowerCase();
         this.filteredCurrencies = this.currenciesList.filter(c => 
           (c.currency.toLowerCase().indexOf(criteria) != -1 || (((c.currencyName) ? c.currencyName.toLowerCase().indexOf(criteria) != -1 : false))));
-      
-        this.manualFilteredCurrencies = this.manualEnteredCurrencies.filter(c =>
+      }
+    }
+  }
+
+  searchCurrenciesManual() {
+    if (!this.mcriteria) {
+      this.manualFilteredCurrencies = this.manualEnteredCurrencies;
+    } else {
+      if (this.manualEnteredCurrencies.length > 0) {
+        var criteria = this.mcriteria.toLowerCase();
+        this.manualFilteredCurrencies = this.manualFilteredCurrencies.filter(c => 
           (c.currency.toLowerCase().indexOf(criteria) != -1 || (((c.currencyName) ? c.currencyName.toLowerCase().indexOf(criteria) != -1 : false))));
       }
     }
@@ -174,9 +184,6 @@ export class CurrenciesComponent implements OnInit {
       this.currencyService.setDefaultCurrency(id).subscribe(
         data => {
           if (data) {
-            /*setTimeout(() => {
-              location.reload();
-            }, 1000);*/
             var selectedCurrency = null;
             this.currenciesList.map(c => c.isDefault = false);
             this.filteredCurrencies.map(c => c.isDefault = false);

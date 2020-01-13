@@ -2,7 +2,7 @@
 
   <block-ui>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-lg-12 col-md-12">
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a class="nav-link active btn-info" data-toggle="tab">Currencies List</a>
@@ -15,18 +15,7 @@
           </li>-->
         </ul>
       </div>
-      <div class="col-md-6">
-        <div class="input-group">
-          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria"
-            (input)="searchCurrencies()" [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel"
-            onkeypress="return event.keyCode != 13;" maxlength="15" required>
-          <span class="input-group-btn">
-            <button class="btn btn-outline-info btn-lg" type="button">
-              <i class="fa fa-search"></i>
-            </button>
-          </span>
-        </div>
-      </div>
+      
     </div>
 
     <div class="row text-center" *ngIf="isLoading">
@@ -43,11 +32,21 @@
         </span>
       </div>
       <div class="col-md-6">
+        <div class="input-group">
+          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria" (input)="searchCurrencies()"
+            [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;"
+            maxlength="15" required>
+          <span class="input-group-btn">
+            <button class="btn btn-outline-info btn-lg" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
         <div class="card margin-top-5">
-          <div class="card-header bg-info text-white">Currencies from {{currencySource[1]}}</div>
+          <div class="card-header bg-info text-white">Currencies imported from exchange rate sources</div>
           <div class="card-body">
             <div *ngIf="filteredCurrencies.length > 0">
-              <table class="table table-bordered table-stripped">
+              <table class="table table-bordered table-striped">
                 <tr>
                   <th>Code</th>
                   <th>Currency</th>
@@ -90,22 +89,45 @@
       </div>
 
       <div class="col-md-6">
+        <div class="input-group">
+          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="mcriteria" (input)="searchCurrenciesManual()"
+            [(ngModel)]="mcriteria" name="mcriteria" #mCriteriaModel="ngModel" onkeypress="return event.keyCode != 13;"
+            maxlength="15" required>
+          <span class="input-group-btn">
+            <button class="btn btn-outline-info btn-lg" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
         <div class="card margin-top-5">
           <div class="card-header bg-info text-white">Manual entered currencies</div>
           <div class="card-body">
             <div *ngIf="manualFilteredCurrencies.length > 0">
-              <table class="table table-bordered table-stripped">
+              <table class="table table-bordered table-striped">
                 <tr>
                   <th>Code</th>
                   <th>Currency</th>
+                  <th>Is Default / National?</th>
                 </tr>
                 <tr
-                  *ngFor="let currency of manualFilteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+                  *ngFor="let currency of manualFilteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: m, id: 'm' }">
                   <td>{{currency.currency}}</td>
                   <td>{{currency.currencyName}}</td>
+                  <td>
+                    <div class="btn-group" data-toggle="buttons">
+                      <button id="btnd-{{currency.id}}" title="Is default?" (click)="toggleDefault($event)" class="btn btn-info btn-sm">
+                        <i id="id-{{currency.id}}" *ngIf="!currency.isDefault" class="fa fa-square text-white"></i>
+                        <i id="id-{{currency.id}}" *ngIf="currency.isDefault" class="fa fa-check text-white"></i>
+                      </button>&nbsp;&nbsp;
+                      <button id="btnn-{{currency.id}}" title="Is national?" (click)="toggleNational($event)" class="btn btn-warning btn-sm">
+                        <i id="in-{{currency.id}}" *ngIf="!currency.isNational" class="fa fa-square text-white"></i>
+                        <i id="in-{{currency.id}}" *ngIf="currency.isNational" class="fa fa-check text-white"></i>
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               </table>
-              <pagination-controls (pageChange)="p=$event"></pagination-controls>
+              <pagination-controls (pageChange)="m=$event" id="m"></pagination-controls>
             </div>
             <div class="col-md-12 text-info" *ngIf="manualFilteredCurrencies.length == 0">
               <i>No currencies to show</i>
