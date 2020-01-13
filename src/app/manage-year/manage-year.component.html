@@ -6,18 +6,18 @@
           <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/financial-years']">Financial years list</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Create new</a>
+          <a class="nav-link active btn-info" data-toggle="tab">Adjust start day</a>
         </li>
       </ul>
     </div>
-    <div class="col-sm-6 col-md-3 col-lg-3 mx-auto">
+    <div class="col-sm-6 col-md-4 col-lg-4 mx-auto">
       <div class="card card-signin my-5">
         <div class="card-body">
           <div *ngIf="isError" class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Error!</strong> {{errorMessage}}
           </div>
-          <h5 class="card-title text-center">Manage financial year</h5>
+          <h5 class="card-title text-center">Set start day</h5>
           
           <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveFinancialYear()" #yearForm="ngForm">
             

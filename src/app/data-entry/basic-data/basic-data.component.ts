@@ -8,6 +8,8 @@ import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-in
 import { ProjectiInfoModalComponent } from 'src/app/projecti-info-modal/projecti-info-modal.component';
 import { CreateOrgModalComponent } from 'src/app/create-org-modal/create-org-modal.component';
 import { HelpService } from 'src/app/services/help-service';
+import { SecurityHelperService } from 'src/app/services/security-helper.service';
+import { Messages } from 'src/app/config/messages';
 
 @Component({
   selector: 'basic-data',
@@ -125,6 +127,7 @@ export class BasicDataComponent implements OnInit {
   descriptionLimitLeft: number = Settings.descriptionLongLimit;
   requestNo: number = 0;
   exchangeRate: number = 0;
+  userOrgId: number = 0;
 
   isShowContact: boolean = false;
   aimsProjectId: number = 0;
@@ -142,12 +145,14 @@ export class BasicDataComponent implements OnInit {
     private storeService: StoreService, private projectInfoModal: ProjectInfoModalComponent,
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private orgModal: CreateOrgModalComponent,
+    private securityService: SecurityHelperService,
     private helpService: HelpService
   ) { }
 
   ngOnInit() {
     this.currentTab = this.tabConstants.PROJECT;
     this.requestNo = this.storeService.getNewRequestNumber();
+    this.userOrgId = parseInt(this.securityService.getUserOrganizationId());
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
@@ -335,6 +340,23 @@ export class BasicDataComponent implements OnInit {
     this.projectData.startingFinancialYear = startingYear;
     this.projectData.endingFinancialYear = endingYear;
 
+    var isOrgProvided = false;
+    var userOrgInFunders = this.funderModel.selectedFunders.filter(f => f.id == this.userOrgId);
+    if (userOrgInFunders.length == 0) {
+      var userOrgInImplementers = this.implementerModel.selectedImplementers.filter(i => i.id == this.userOrgId);
+      if (userOrgInImplementers.length > 0) {
+        isOrgProvided = true;
+      }
+    } else {
+      isOrgProvided = true;
+    }
+
+    if (!isOrgProvided) {
+      this.errorMessage = Messages.ORG_NOT_PROVIDED_PROJECT;
+      this.errorModal.openModal();
+      return false;
+    }
+
     if (startingYear > endingYear) {
       this.errorMessage = 'Starting year cannot be greater than ending year';
       this.errorModal.openModal();
@@ -376,6 +398,23 @@ export class BasicDataComponent implements OnInit {
 
     if (startingYear > endingYear) {
       this.errorMessage = 'Starting year cannot be greater than ending year';
+      this.errorModal.openModal();
+      return false;
+    }
+
+    var isOrgProvided = false;
+    var userOrgInFunders = this.funderModel.selectedFunders.filter(f => f.id == this.userOrgId);
+    if (userOrgInFunders.length == 0) {
+      var userOrgInImplementers = this.implementerModel.selectedImplementers.filter(i => i.id == this.userOrgId);
+      if (userOrgInImplementers.length > 0) {
+        isOrgProvided = true;
+      }
+    } else {
+      isOrgProvided = true;
+    }
+
+    if (!isOrgProvided) {
+      this.errorMessage = Messages.ORG_NOT_PROVIDED_PROJECT;
       this.errorModal.openModal();
       return false;
     }

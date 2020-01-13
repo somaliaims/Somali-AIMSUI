@@ -49,5 +49,6 @@ export const Messages = {
     MEMBERSHIP_REQUEST_MESSAGE: 'Your request is submitted successfully, you will get a notification about the status of this request through email',
     DATA_BACKUP_MESSAGE: 'Data backup is performed successfully for the current state of the database.',
     DATA_RESTORE_MESSAGE: 'Data restore is performed successfully using the selected backup file',
-    INVALID_DISBURSEMENT_SPLIT: 'All the amounts are entered manually, split feature cannot be applied.'
+    INVALID_DISBURSEMENT_SPLIT: 'All the amounts are entered manually, split feature cannot be applied.',
+    ORG_NOT_PROVIDED_PROJECT: 'Please provide your organization as funder/implementer'
 }
