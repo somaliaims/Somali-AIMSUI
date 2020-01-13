@@ -86,10 +86,11 @@ export class FinancialsComponent implements OnInit {
     this.currentYear = this.storeService.getCurrentYear();
     this.disbursementModel.currency = this.projectCurrency;
     this.disbursementModel.projectValue = this.projectValue;
-    this.setDisbursementsData();
+    //this.setDisbursementsData();
     this.getExchangeRateForCurrency();
     this.getProjectHelp();
     this.getHelp();
+    this.calculateDisbursementsTotal();
   }
 
   ngOnChanges() {
@@ -141,7 +142,7 @@ export class FinancialsComponent implements OnInit {
 
         if (yr <= this.currentYear) {
           var newDisbursement = {
-            year: yr,
+            financialYear: yr,
             currency: this.projectCurrency,
             exchangeRate: 1,
             disbursementType: 1,
@@ -152,7 +153,7 @@ export class FinancialsComponent implements OnInit {
 
         if (yr >= this.currentYear) {
           var newDisbursement = {
-            year: yr,
+            financialYear: yr,
             currency: this.projectCurrency,
             exchangeRate: 1,
             disbursementType: 2,
