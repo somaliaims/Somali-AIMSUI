@@ -293,6 +293,12 @@ export class ProjectService {
       catchError(this.storeService.handleError<any>('Project Disbursements')));
   }
 
+  adjustProjectDisbursements(id: string) {
+    var url = this.urlHelper.getAdjustProjectDisbursementsUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Adjust Project Disbursements')));
+  }
+
   deleteProjectDisbursement(id: string) {
     var url = this.urlHelper.deleteProjectDisbursementUrl(id);
     return this.httpClient.delete(url, httpOptions).pipe(

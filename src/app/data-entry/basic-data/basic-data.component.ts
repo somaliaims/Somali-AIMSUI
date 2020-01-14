@@ -402,7 +402,7 @@ export class BasicDataComponent implements OnInit {
       return false;
     }
 
-    var isOrgProvided = false;
+    /*var isOrgProvided = false;
     var userOrgInFunders = this.funderModel.selectedFunders.filter(f => f.id == this.userOrgId);
     if (userOrgInFunders.length == 0) {
       var userOrgInImplementers = this.implementerModel.selectedImplementers.filter(i => i.id == this.userOrgId);
@@ -417,7 +417,7 @@ export class BasicDataComponent implements OnInit {
       this.errorMessage = Messages.ORG_NOT_PROVIDED_PROJECT;
       this.errorModal.openModal();
       return false;
-    }
+    }*/
 
     this.isProjectBtnDisabled = true;
     if (this.projectId != 0) {
@@ -427,7 +427,7 @@ export class BasicDataComponent implements OnInit {
         data => {
           if (data) {
             this.saveProjectFunders();
-            this.getProjectDisbursements();
+            this.adjustProjectDisbursements();
             this.updateProjectIdToParent();
           } else {
             this.blockUI.stop();
@@ -443,7 +443,7 @@ export class BasicDataComponent implements OnInit {
             this.projectId = data;
             localStorage.setItem('active-project', data);
             this.updateProjectIdToParent();
-            this.getProjectDisbursements();
+            this.adjustProjectDisbursements();
             this.saveProjectFunders();
           } else {
             this.blockUI.stop();
@@ -549,8 +549,8 @@ export class BasicDataComponent implements OnInit {
     );
   }
 
-  getProjectDisbursements() {
-    this.projectService.getProjectDisbursements(this.projectId.toString()).subscribe(
+  adjustProjectDisbursements() {
+    this.projectService.adjustProjectDisbursements(this.projectId.toString()).subscribe(
       data => {
         if (data) {
           this.updateDisbursementsToParent(data);

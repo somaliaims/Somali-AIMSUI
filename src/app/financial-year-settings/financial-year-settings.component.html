@@ -16,7 +16,8 @@
                 <p class="text-info">
                     Please select and set month and day of the year when financial year starts. e.g. April 1st.
                     It must be noted that by changing the month and day system will update the financial years
-                    for projects which are already entered as per new settings.
+                    for projects which are already entered as per new settings and may drop disbursements that are out
+                    of the span of the financial years assigned.
                 </p>
                 <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveSettings()" #yearForm="ngForm">
       

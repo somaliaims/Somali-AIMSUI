@@ -499,6 +499,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getProjectDisbursementUrl + id);
     }
 
+    getAdjustProjectDisbursementsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.adjustProjectDisbursementsUrl + id);
+    }
+
     addProjectDisbursementUrl() {
         return (this.BASE_URL + urlsList.urls.addProjectDisbursement);
     }
