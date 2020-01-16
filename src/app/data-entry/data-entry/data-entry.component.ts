@@ -28,6 +28,7 @@ export class DataEntryComponent implements OnInit {
   defaultSectorType: string = null;
   defaultSectorTypeId: number = 0;
   isForEdit: boolean = false;
+  isUpdatingSectors: boolean = false;
   sectorTotalPercentage: number = 0;
   locationTotalPercentage: number = 0;
   currentTab: string = null;
@@ -198,11 +199,27 @@ export class DataEntryComponent implements OnInit {
       data => {
         if (data) {
           this.iatiProjects = data;
-          if (this.iatiProjects.length > 0) {
-          }
+          this.amendSectorNames();
         }
       }
     );
+  }
+
+  amendSectorNames() {
+    if (this.iatiProjects.length > 0 && this.sectorsList.length > 0 && !this.isUpdatingSectors) {
+      this.isUpdatingSectors = true;
+        this.iatiProjects.forEach((p) => {
+          if (p.sectors.length > 0) {
+            p.sectors.forEach((s) => {
+              var matchingSector = this.sectorsList.filter(sec => sec.iatiCode == s.code);
+              if (matchingSector.length > 0) {
+                s.sectorName = matchingSector[0].sectorName;
+              }
+            });
+          }
+        });
+        this.isUpdatingSectors = false;
+    }
   }
 
   loadUserProjects(projectId: number) {
@@ -330,6 +347,7 @@ export class DataEntryComponent implements OnInit {
         if (data) {
           this.sectorsList = data;
           this.defaultSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId)
+          this.amendSectorNames();
         }
       }
     );

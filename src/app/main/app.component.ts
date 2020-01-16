@@ -27,6 +27,7 @@ export class AppComponent {
   isHelpActive: boolean = false;
   isContactActive: boolean = false;
   isNotificationsActive: boolean = false;
+  isBackupActive: boolean = false;
   menuConstants: any = Settings.dropDownMenusConstants;
 
   constructor(private securityService: SecurityHelperService, private router: Router,
@@ -52,6 +53,7 @@ export class AppComponent {
         this.isNotificationsActive = false;
         this.isContactActive = false;
         this.isHelpActive = false;
+        this.isBackupActive = false;
       }, 500);
 
       switch (menu) {
@@ -96,6 +98,12 @@ export class AppComponent {
             this.isHelpActive = true;
           }, 1000);
           break;
+
+          case this.menuConstants.BACKUP:
+            setTimeout(() => {
+              this.isBackupActive = true;
+            }, 1000);
+            break;
       }
     });
     this.currentUrl = this.router.url;

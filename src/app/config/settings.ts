@@ -17,7 +17,8 @@ export const Settings = {
         reports: 5,
         contact: 6,
         help: 7,
-        notifications: 8
+        notifications: 8,
+        backup: 9
     },
     dropDownMenusConstants: {
         HOME: 1,
@@ -27,7 +28,8 @@ export const Settings = {
         REPORTS: 5,
         CONTACT: 6,
         HELP: 7,
-        NOTIFICATIONS: 8
+        NOTIFICATIONS: 8,
+        BACKUP: 9
     },
     pdfPrintPageHeight: 1550,
     pdfPrintPageHeightLandscape: 1250,
@@ -83,6 +85,7 @@ export const Settings = {
             canEditEmailMessage: false,
             canEditNotifications: true,
             canEditHelp: false,
+            canTakeBackup: false
         },
         manager: {
             canManage: true,
@@ -105,6 +108,7 @@ export const Settings = {
             canEditEmailMessage: true,
             canEditNotifications: true,
             canEditHelp: true,
+            canTakeBackup: true
         },
         superAdmin: {
             canManage: true,
@@ -127,6 +131,7 @@ export const Settings = {
             canEditEmailMessage: true,
             canEditNotifications: true,
             canEditHelp: true,
+            canTakeBackup: true
         },
         guest: {
             canManage: false,
@@ -149,6 +154,7 @@ export const Settings = {
             canEditEmailMessage: false,
             canEditNotifications: false,
             canEditHelp: false,
+            canTakeBackup: false
         }
     },
     markerTypes: [
