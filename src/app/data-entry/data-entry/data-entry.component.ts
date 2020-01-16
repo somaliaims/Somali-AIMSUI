@@ -208,17 +208,21 @@ export class DataEntryComponent implements OnInit {
   amendSectorNames() {
     if (this.iatiProjects.length > 0 && this.sectorsList.length > 0 && !this.isUpdatingSectors) {
       this.isUpdatingSectors = true;
-        this.iatiProjects.forEach((p) => {
-          if (p.sectors.length > 0) {
-            p.sectors.forEach((s) => {
+      this.iatiProjects.forEach((p) => {
+        if (p.sectors.length > 0) {
+          p.sectors.forEach((s) => {
+            if (s.code.length == 5) {
               var matchingSector = this.sectorsList.filter(sec => sec.iatiCode == s.code);
               if (matchingSector.length > 0) {
                 s.sectorName = matchingSector[0].sectorName;
               }
-            });
-          }
-        });
-        this.isUpdatingSectors = false;
+            }
+          });
+        }
+      });
+      this.isUpdatingSectors = false;
+    } else {
+      this.isUpdatingSectors = false;
     }
   }
 
