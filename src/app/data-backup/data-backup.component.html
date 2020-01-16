@@ -51,8 +51,8 @@
                     <td>{{file.backupFileName}}</td>
                     <td class="text-center">{{formatDate(file.takenOn)}}</td>
                     <td class="text-center">
-                      <button type="button" (click)="setRestoreRequest(file.id)" class="btn btn-warning btn-sm">Restore</button>
-                      <!--<a (click)="checkLink($e)" href="{{setBackupFileUrl(file.backupFileName)}}" class="btn btn-info btn-sm margin-left-2">Download file</a>-->
+                      <button type="button" title="Restore this backup to database" (click)="setRestoreRequest(file.id)" class="btn btn-warning text-uppercase btn-sm">Restore</button>
+                      <a (click)="checkLink($e)" title="Download backup file to store on some other media" href="{{setBackupFileUrl(file.downloadPath)}}" class="btn btn-info text-uppercase btn-sm margin-left-2">Download backup file</a>
                     </td>
                   </tr>
                 </tbody>

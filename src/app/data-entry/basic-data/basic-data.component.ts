@@ -402,7 +402,7 @@ export class BasicDataComponent implements OnInit {
       return false;
     }
 
-    /*var isOrgProvided = false;
+    var isOrgProvided = false;
     var userOrgInFunders = this.funderModel.selectedFunders.filter(f => f.id == this.userOrgId);
     if (userOrgInFunders.length == 0) {
       var userOrgInImplementers = this.implementerModel.selectedImplementers.filter(i => i.id == this.userOrgId);
@@ -417,7 +417,7 @@ export class BasicDataComponent implements OnInit {
       this.errorMessage = Messages.ORG_NOT_PROVIDED_PROJECT;
       this.errorModal.openModal();
       return false;
-    }*/
+    }
 
     this.isProjectBtnDisabled = true;
     if (this.projectId != 0) {
