@@ -9,15 +9,16 @@
             </ul>
           </div>
           
-          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="col-sm-9 col-md-9 col-lg-9 mx-auto">
             <div class="card card-signin my-5">
               <div class="card-body">
                 <h5 class="card-title text-center">Financial year settings</h5>
-                <p class="text-info">
-                    Please select and set month and day of the year when financial year starts. e.g. April 1st.
-                    It must be noted that by changing the month and day system will update the financial years
+                <p class="text-info text-justify">
+                    Please set month and day of the year to mark when financial year starts. e.g. April 1st.
+                    It must be noted that by changing the month and day settings, system will update the financial years
                     for projects which are already entered as per new settings and may drop disbursements that are out
-                    of the span of the financial years assigned.
+                    of the span of the financial years assigned to projects. We recommend to take backup of the database before applying
+                    new settings so that in any other case AIMS may be reverted to the current state of the database.
                 </p>
                 <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveSettings()" #yearForm="ngForm">
       
