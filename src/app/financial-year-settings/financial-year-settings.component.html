@@ -17,7 +17,7 @@
                     Please set month and day of the year to mark when financial year starts. e.g. April 1st.
                     It must be noted that by changing the month and day settings, system will update the financial years
                     for projects which are already entered as per new settings and may drop disbursements that are out
-                    of the span of the financial years assigned to projects. We recommend to take backup of the database before applying
+                    of the span of the financial years assigned to projects. It is recommended to take backup of the database before applying
                     new settings so that in any other case AIMS may be reverted to the current state of the database.
                 </p>
                 <form class="form-signin" (ngSubmit)="yearForm.form.valid && saveSettings()" #yearForm="ngForm">

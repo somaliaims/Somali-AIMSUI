@@ -27,6 +27,12 @@ export class DatabackupService {
             catchError(this.storeService.handleError<any>('Backup files')));
     }
 
+    deleteBackup(model: any) {
+        var url = this.urlHelper.getDeleteBackupUrl();
+        return this.httpClient.post(url, model, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Delete backup')));
+    }
+
     performRestore(model: any) {
         var url = this.urlHelper.getDataRestoreUrl();
         return this.httpClient.post(url, model, httpOptions).pipe(

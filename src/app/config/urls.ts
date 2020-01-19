@@ -193,6 +193,7 @@ export const urls = {
 	backupDataUrl: "DataBackup/PerformBackup",
 	restoreDataUrl: "DataBackup/PerformRestore",
 	backupFilesUrl: "DataBackup/GetBackupFiles",
+	deleteBackupUrl: "DataBackup/DeleteBackup",
 	countriesUrl: "IATICountry",
 	setActiveCountryUrl: "IATICountry/SetActiveCountry",
 	financialYearSettingsUrl: "FinancialYearSettings"

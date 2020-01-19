@@ -28,12 +28,14 @@ export class DataBackupComponent implements OnInit {
   displayTabs: any = [
     { visible: true, identity: 'backup' },
     { visible: false, identity: 'restore' },
-    { visible: false, identity: 'restore_confirmation' }
+    { visible: false, identity: 'restore_confirmation' },
+    { visible: false, identity: 'delete_confirmation' }
   ];
 
   tabConstants: any = {
     BACKUP: 'backup',
     RESTORE: 'restore',
+    DELETE_CONFIRMATION: 'delete_confirmation',
     RESTORE_CONFIRMATION: 'restore_confirmation'
   };
 
@@ -129,7 +131,41 @@ export class DataBackupComponent implements OnInit {
           if (data) {
             this.infoMessage = Messages.DATA_RESTORE_MESSAGE;
             this.infoModal.openModal();
-            this.manageTabsDisplay(this.tabConstants.BACKUP);
+            this.manageTabsDisplay(this.tabConstants.RESTORE);
+            this.selectedBackupFileName = null;
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  setDeleteRequest(id: number) {
+    if (id) {
+      var backup = this.backupFiles.filter(b => b.id == id);
+      if (backup.length > 0) {
+        this.selectedBackupFileName = backup[0].backupFileName;
+        this.backupTakenOn = backup[0].takenOn;
+        this.manageTabsDisplay(this.tabConstants.DELETE_CONFIRMATION);
+      }
+    } else {
+      this.selectedBackupFileName = null;
+    }
+  }
+
+  deleteBackup() {
+    if (this.selectedBackupFileName) {
+      var model = {
+        fileName: this.selectedBackupFileName
+      };
+
+      this.blockUI.start('Deleting backup...');
+      this.backupService.deleteBackup(model).subscribe(
+        data => {
+          if (data) {
+            this.backupFiles = this.backupFiles.filter(b => b.backupFileName != model.fileName);
+            this.selectedBackupFileName = null;
+            this.manageTabsDisplay(this.tabConstants.RESTORE);
           }
           this.blockUI.stop();
         }
@@ -138,6 +174,12 @@ export class DataBackupComponent implements OnInit {
   }
 
   cancelRequest() {
+    this.selectedBackupFileName = null;
+    this.manageTabsDisplay(this.tabConstants.RESTORE);
+  }
+
+  cancelDelete() {
+    this.selectedBackupFileName = null;
     this.manageTabsDisplay(this.tabConstants.RESTORE);
   }
 

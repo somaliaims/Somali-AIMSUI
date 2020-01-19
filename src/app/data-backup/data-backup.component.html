@@ -53,6 +53,7 @@
                     <td class="text-center">
                       <button type="button" title="Restore this backup to database" (click)="setRestoreRequest(file.id)" class="btn btn-warning text-uppercase btn-sm">Restore</button>
                       <a (click)="checkLink($e)" title="Download backup file to store on some other media" href="{{setBackupFileUrl(file.downloadPath)}}" class="btn btn-info text-uppercase btn-sm margin-left-2">Download backup file</a>
+                      <button type="button" title="Delete backup" (click)="setDeleteRequest(file.id)" class="btn btn-danger text-uppercase btn-sm margin-left-2">Delete</button>
                     </td>
                   </tr>
                 </tbody>
@@ -60,6 +61,19 @@
               <span *ngIf="backupFiles.length == 0 && !areFilesLoading" class="text-info">
                 <i>No backup files found to show.</i>
               </span>
+            </div>
+
+            <div *ngIf="currentTab == tabConstants.DELETE_CONFIRMATION" class="col-lg-12 col-md-12 col-sm-12">
+              <h6>Deleting database backup confirmation</h6>
+              <p class="lead">
+                Please confirm that you want to delete the database backup named as
+                ({{selectedBackupFileName}}) which was taken on ({{formatDate(backupTakenOn)}})? It must be noted that
+                this action cannot be undone.
+              </p>
+              <div>
+                <button class="btn btn-info text-uppercase small" (click)="deleteBackup()">Ok delete</button>
+                <button class="btn btn-danger text-uppercase margin-left-2 small" (click)="cancelDelete()">Cancel request</button>
+              </div>
             </div>
 
             <div *ngIf="currentTab == tabConstants.RESTORE_CONFIRMATION" class="col-lg-12 col-md-12 col-sm-12">

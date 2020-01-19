@@ -696,6 +696,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.backupDataUrl);
     }
 
+    getDeleteBackupUrl() {
+        return (this.BASE_URL + urlsList.urls.deleteBackupUrl);
+    }
+
     getDataRestoreUrl() {
         return (this.BASE_URL + urlsList.urls.restoreDataUrl);
     }
