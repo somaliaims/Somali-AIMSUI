@@ -36,8 +36,11 @@ export class TimeTrendReportComponent implements OnInit {
   oldCurrency: string = null;
   currencyRate: number = 0;
   yearsList: any = [];
+  allSectorsList: any = [];
   sectorsList: any = [];
-  subSectorsList: any = [];
+  sectorIds: any = [];
+  subSectorIds: any = [];
+  subSubSectorIds: any = [];
   organizationsList: any = [];
   currenciesList: any = [];
   locationsList: any = [];
@@ -82,6 +85,18 @@ export class TimeTrendReportComponent implements OnInit {
     BAR: 1,
     LINE: 2,
   };
+
+  sectorLevels: any = [
+    { "id": 1, "level": "Parent sectors" },
+    { "id": 2, "level": "Sub sectors" },
+  ];
+
+  sectorLevelCodes: any = {
+    NO_SECTORS: 4,
+    SECTORS: 1,
+    SUB_SECTORS: 2,
+    SUB_SUB_SECTORS: 3
+  }
 
   chartOptions: any = {
     responsive: true,
@@ -216,7 +231,8 @@ export class TimeTrendReportComponent implements OnInit {
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: []
+    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], 
+    sectorLevel: this.sectorLevelCodes.SECTORS
   };
 
   //Overlay UI blocker
@@ -520,25 +536,80 @@ export class TimeTrendReportComponent implements OnInit {
   getSectorsList() {
     this.sectorService.getDefaultSectors().subscribe(
       data => {
-        var sectorsList = data;
-        this.sectorsList = sectorsList.filter(s => s.parentSectorId == 0);
-        this.subSectorsList = [];
-        if (this.loadReport) {
-          if (this.paramSectorIds.length > 0) {
-            this.paramSectorIds.forEach(function (id) {
-              var sector = this.sectorsList.filter(s => s.id == id);
-              if (sector.length > 0) {
-                this.model.selectedSectors.push(sector[0]);
+        if (data) {
+          var allSectorsList = data;
+          this.allSectorsList = allSectorsList;
+          var sectorsList = allSectorsList.filter(s => s.parentSector == null);
+          this.sectorsList = sectorsList;
+          var sectorIds = sectorsList.map(s => s.id);
+          var subSectorsList = allSectorsList.filter(s => sectorIds.indexOf(s.parentSectorId) != -1);
+          var subSectorIds = subSectorsList.map(s => s.id);
+          this.subSectorIds = subSectorIds;
+          var subSubSectors = allSectorsList.filter(s => subSectorIds.indexOf(s.parentSectorId) != -1);
+          var subSubSectorIds = subSubSectors.map(s => s.id);
+          this.subSubSectorIds = subSubSectorIds;
+
+          if (this.subSubSectorIds.length > 0) {
+            this.sectorLevels.push({
+              id: 3,
+              level: 'Sub-sub sectors'
+            });
+            this.sectorLevels.sort(s => s.id);
+          }
+
+          if (this.loadReport) {
+            if (this.paramSectorIds.length > 0) {
+              var sectorId = parseInt(this.paramSectorIds[0]);
+              if (sectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
+              } else if (subSectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
+              } else if (subSubSectorIds.indexOf(sectorId) != -1) {
+                this.model.sectorLevel = this.sectorLevelCodes.SUB_SUB_SECTORS;
               }
-            }.bind(this));
+
+              this.manageSectorLevel();
+              this.paramSectorIds.forEach(function (id) {
+                var sector = allSectorsList.filter(s => s.id == id);
+                if (sector.length > 0) {
+                  this.model.selectedSectors.push(sector[0]);
+                }
+              }.bind(this));
+            }
           }
         }
-      },
-      error => {
-        console.log(error);
       }
     );
   }
+
+  manageSectorLevel() {
+    this.model.selectedSectors = [];
+    if (this.model.sectorLevel) {
+      var level = parseInt(this.model.sectorLevel);
+      switch (level) {
+        case this.sectorLevelCodes.SECTORS:
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          break;
+
+        case this.sectorLevelCodes.SUB_SECTORS:
+          this.sectorsList = this.allSectorsList.filter(s => this.subSectorIds.indexOf(s.id) != -1);
+          break;
+
+        case this.sectorLevelCodes.SUB_SUB_SECTORS:
+          this.sectorsList = this.allSectorsList.filter(s => this.subSubSectorIds.indexOf(s.id) != -1);
+          break;
+
+        case this.sectorLevelCodes.NO_SECTORS:
+          this.sectorsList = [];
+          break;
+
+        default:
+          this.sectorsList = this.allSectorsList.filter(s => s.parentSectorId == 0);
+          break;
+      }
+    }
+  }
+
 
   getManualExchangeRateForToday() {
     var dated = this.storeService.getCurrentDateSQLFormat();
