@@ -231,7 +231,7 @@ export class TimeTrendReportComponent implements OnInit {
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
-    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], 
+    selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], locationId: 0,
     sectorLevel: this.sectorLevelCodes.SECTORS
   };
 
@@ -254,8 +254,8 @@ export class TimeTrendReportComponent implements OnInit {
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
+          this.model.locationId = (params.locationId) ? params.locationId : 0;
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
-          this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.loadReport = true;
         } 
@@ -380,8 +380,6 @@ export class TimeTrendReportComponent implements OnInit {
     this.chartLabels = [];
     this.chartData = [];
     var projectIds = [];
-    //this.chartType = this.chartTypes.BAR;
-    //this.model.chartType = this.chartTypes.BAR;
     var chartType = null;
     if (this.loadReport) {
       chartType = this.paramChartType;
@@ -402,6 +400,7 @@ export class TimeTrendReportComponent implements OnInit {
       endingYear: this.model.endingYear,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       sectorIds: this.model.selectedSectors.map(s => s.id),
+      locationId: this.model.locationId,
       chartType: chartType
     };
 
@@ -728,51 +727,13 @@ export class TimeTrendReportComponent implements OnInit {
     this.manageResetDisplay();
   }
 
-  onLocationSelect(item: any) {
-    this.setFilter();
-  }
-
-  onLocationDeSelect(item: any) {
-    this.manageResetDisplay();
-  }
-
-  onLocationSelectAll(items: any) {
-    this.setFilter();
-  }
-
-  onLocationDeSelectAll(items: any) {
-    this.model.locations = [];
-    this.manageResetDisplay();
-  }
-
-  /*onDataOptionSelect(item: any) {
-    var id = item.id;
-    if (this.selectedDataOptions.indexOf(id) == -1) {
-      this.selectedDataOptions.push(id);
+  changeLocation() {
+    if (this.model.locationId != 0) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
     }
   }
-
-  onDataOptionDeSelect(item: any) {
-    var id = item.id;
-    var index = this.selectedDataOptions.indexOf(id);
-    this.selectedDataOptions.splice(index, 1);
-  }
-
-  onDataOptionSelectAll(items: any) {
-    items.forEach(function (item) {
-      var id = item.id;
-      if (this.selectedDataOptions.indexOf(id) == -1) {
-        this.selectedDataOptions.push(id);
-      }
-    }.bind(this));
-    //this.manageDataOptions();
-  }
-
-  onDataOptionDeSelectAll(items: any) {
-    this.selectedDataOptions = [];
-    //this.manageDataOptions();
-  }*/
-
 
   getGrandTotalFundingForYear() {
     var totalFunding = 0;

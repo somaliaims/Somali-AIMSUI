@@ -79,6 +79,17 @@
               </div>
 
               <div class="row margin-top-10">
+                <div class="col-lg-6 col-md-6">
+                  <select class="form-control" title="Location"
+                  (change)="changeLocation();" id="selectedLocation" [(ngModel)]="model.locationId"
+                  name="selectedLocation" #selectedLocation="ngModel">
+                  <option value="0">--All location/s--</option>
+                  <option *ngFor="let location of locationsList" value="{{location.id}}">
+                    {{location.location}}
+                  </option>
+                </select>
+              </div>
+
                 <div class="col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
                     (change)="selectCurrency()" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
@@ -95,7 +106,10 @@
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
-                <div class="col-md-6">
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12 col-md-12">
                   <span [class.disable]="!defaultCurrency" class="float-right">
                     <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                     <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
@@ -111,7 +125,7 @@
               </div>
 
               <div class="row margin-top-10">
-                <div class="col-md-12">
+                <div class="col-lg-12 col-md-12">
                   <span *ngIf="!defaultCurrency && !isDataLoading" class="text-danger">
                     Default currency is not set and it may produce errors on reports.
                     Please contact administrator.
