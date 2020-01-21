@@ -25,7 +25,7 @@ export class ManageSectortypeComponent implements OnInit {
   requestNo: number = 0;
   isError: boolean = false;
   permissions: any = {};
-  model = { id: 0, typeName: '', isPrimary: false, isSourceType: false };
+  model = { id: 0, typeName: '', sourceUrl: null, isPrimary: false, isSourceType: false };
 
   constructor(private sectorTypeService: SectorTypeService, private route: ActivatedRoute,
     private router: Router, private securityService: SecurityHelperService,
@@ -88,14 +88,14 @@ export class ManageSectortypeComponent implements OnInit {
       TypeName: this.model.typeName,
       Id: this.model.id,
       isPrimary: this.model.isPrimary,
-      isSourceType: this.model.isSourceType
+      isSourceType: this.model.isSourceType,
+      sourceUrl: this.model.sourceUrl
     };
 
     this.isBtnDisabled = true;
     if (!model.isPrimary) {
       model.isPrimary = false;
     }
-
 
     if (this.isForEdit) {
       this.btnText = 'Updating...';

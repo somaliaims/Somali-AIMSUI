@@ -59,8 +59,16 @@ export class SectorTypesComponent implements OnInit {
     }
   }
 
-  isTrue(val) {
+  isTrue(val: string) {
     return (val) ? 'Yes' : 'No';
+  }
+
+  isSourceType(val: string) {
+    return (val) ? 'IATI' : 'Manual';
+  }
+
+  displayIATICode(code) {
+    return (code == 0) ? 'N/a' : code;
   }
   
   edit(id: string) {

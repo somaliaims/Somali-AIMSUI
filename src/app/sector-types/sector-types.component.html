@@ -33,14 +33,18 @@
       <table class="table table-bordered table-stripped">
         <tr>
           <th>Sector type name</th>
-          <th>Default type</th>
+          <th>Default sector</th>
           <th>Source</th>
+          <th>IATI code</th>
+          <th>IATI source URL</th>
           <th>Actions</th>
         </tr>
         <tr *ngFor="let sector of filteredSectorTypesList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{sector.typeName}}</td>
           <td>{{isTrue(sector.isPrimary)}}</td>
-          <td>{{isTrue(sector.isSourceType)}}</td>
+          <td>{{isSourceType(sector.isSourceType)}}</td>
+          <td>{{displayIATICode(sector.iatiCode)}}</td>
+          <td>{{sector.sourceUrl}}</td>
           <td>
             <a title="Rename" (click)="edit(sector.id)" class="btn btn-info"><i class="fa fa-edit color-white"></i></a>
             <a *ngIf="!sector.isSourceType" title="Delete" (click)="delete(sector.id)" class="btn btn-danger margin-left-2"><i class="fa fa-trash color-white"></i></a>

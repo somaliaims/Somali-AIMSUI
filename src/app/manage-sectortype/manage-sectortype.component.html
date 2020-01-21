@@ -31,6 +31,15 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label for="text">IATI source URL</label>
+            <input type="url" class="form-control" id="sourceUrl" [(ngModel)]="model.sourceUrl" name="sourceUrl"
+              #sourceUrl="ngModel">
+            <div [hidden]="sourceUrl.valid" class="alert alert-danger">
+              Enter valid url for IATI source
+            </div>
+          </div>
+
           <div *ngIf="(!isForEdit || model.isPrimary)" class="form-group">
             <div class="row">
               <div class="col-offset-2 col-md-9">

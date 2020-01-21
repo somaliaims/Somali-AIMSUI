@@ -41,7 +41,7 @@ export class IatiSettingsComponent implements OnInit {
     }
 
     this.storeService.newReportItem(Settings.dropDownMenus.management);
-    this.getCountriesList();
+    this.getIATISettings();
   }
 
   getCountriesList() {
