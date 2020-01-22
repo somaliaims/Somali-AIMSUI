@@ -14,7 +14,7 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 export class ManageYearComponent implements OnInit {
 
   isBtnDisabled: boolean = false;
-  btnText: string = 'Generate financial years';
+  btnText: string = 'Generate financial year/s';
   errorMessage: string = '';
   requestNo: number = 0;
   isError: boolean = false;

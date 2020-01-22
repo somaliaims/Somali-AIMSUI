@@ -41,7 +41,6 @@ export class ManageEmailMessageComponent implements OnInit {
         this.isForEdit = true;
         this.messageId = id;
       }
-      this.requestNo = this.storeService.getNewRequestNumber();
     }
 
     this.getEmailMessages();

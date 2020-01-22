@@ -8,10 +8,10 @@
             <a [ngClass]="{'btn-info': currentTab == 'messages', 'text-info': currentTab != 'messages'}" href="#"
               class="nav-link text-info" (click)="showMessages()" data-toggle="tab">Email messages list</a>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <a [ngClass]="{'btn-info': currentTab == 'email', 'text-info': currentTab != 'email'}" href="#"
               class="nav-link text-info" (click)="showEmail()" data-toggle="tab">Send email</a>
-          </li>
+          </li>-->
           <!--<li *ngIf="permissions.canEditLocation" class="nav-item">
             <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-email-message']">Create new message</a>
           </li>-->
@@ -66,66 +66,6 @@
         </div>
       </div>
 
-    </div>
-
-    <div *ngIf="currentTab == 'email'" class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-            <div class="col-md-12">
-              <div class="row margin-top-10">
-                <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select manager email/s --'" [data]="managerUsersList"
-                    [(ngModel)]="emailModel.selectedManagers" [settings]="usersSettings" name="selectedManagers"
-                    (onSelect)="onManagerSelect($event)" (onDeSelect)="onManagerDeSelect($event)"
-                    (onSelectAll)="onManagerSelectAll($event)" #selectedManagers="ngModel">
-                  </ng-multiselect-dropdown>
-                </div>
-                <div class="col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- Select user email/s --'" [data]="standardUsersList"
-                    [(ngModel)]="emailModel.selectedUsers" [settings]="usersSettings" (onSelect)="onUserSelect($event)"
-                    (onDeSelect)="onUserDeSelect($event)" (onSelectAll)="onUserSelectAll($event)" name="selectedUsers"
-                    #selectedUsers="ngModel">
-                  </ng-multiselect-dropdown>
-                </div>
-              </div>
-            </div>
-            <form class="form-signin" (ngSubmit)="emailForm.form.valid && sendEmailMessage(emailForm)"
-              #emailForm="ngForm">
-
-              <div class="form-group margin-top-20">
-                <label>Subject</label>
-                <input type="text" class="form-control" id="subject" [(ngModel)]="emailModel.subject" name="subject"
-                  #subject="ngModel" maxlength="100" required>
-                <div *ngIf="emailForm.submitted" [hidden]="subject.valid" class="alert alert-danger">
-                  Subject is required
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Email title</label>
-                <input type="text" class="form-control" id="title" [(ngModel)]="emailModel.title" name="title"
-                  #title="ngModel" maxlength="100" required>
-                <div *ngIf="emailForm.submitted" [hidden]="title.valid" class="alert alert-danger">
-                  Title is required
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Message</label>
-                <textarea rows="5" class="form-control" id="message" [(ngModel)]="emailModel.message" name="message"
-                  #message="ngModel" maxlength="500" required></textarea>
-                <div *ngIf="emailForm.submitted" [hidden]="message.valid" class="alert alert-danger">
-                  Message is required
-                </div>
-              </div>
-
-              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-                type="submit">{{btnText}}</button>
-            </form>
-          </div>
-        </div>
-      </div>
     </div>
 
   </block-ui>

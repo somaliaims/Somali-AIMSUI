@@ -75,6 +75,8 @@
                 settings</a>
               <a *ngIf="permissions.canEditEmailMessage" class="dropdown-item" [routerLink]="['/email-messages']">Email
                 messages</a>
+              <a *ngIf="permissions.canEditEmailMessage" class="dropdown-item" [routerLink]="['/email-users']">Email
+                  users</a>
             </div>
           </li>
           <li class="nav-item">

@@ -40,7 +40,7 @@ export class LocationReportComponent implements OnInit {
   sectorIds: any = [];
   subSectorIds: any = [];
   subSubSectorIds: any = [];
-
+  requestNo: number = 0;
   isAnyFilterSet: boolean = false;
   isNoLocationReport: boolean = false;
   defaultCurrency: string = null;
@@ -278,6 +278,15 @@ export class LocationReportComponent implements OnInit {
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.blockUI.stop();
+        this.errorModal.openModal();
+      }
+    });
+
     if (this.route.snapshot.queryParams.load) {
       this.route.queryParams.subscribe(params => {
         if (params) {
@@ -297,7 +306,7 @@ export class LocationReportComponent implements OnInit {
         } 
       });
     } else {
-      this.isLoading = false;
+      this.searchProjectsByCriteriaReport();
     }
 
     this.getProjectTitles();

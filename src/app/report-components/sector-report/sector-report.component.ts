@@ -57,6 +57,7 @@ export class SectorReportComponent implements OnInit {
   isLoading: boolean = true;
   isDataLoading: boolean = true;
   isDefaultCurrencySet: boolean = true;
+  requestNo: number = 0;
   pageHeight: number = Settings.pdfPrintPageHeight;
   btnReportText: string = 'View report';
   isAnyFilterSet: boolean = false;
@@ -280,6 +281,15 @@ export class SectorReportComponent implements OnInit {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
     this.model.chartType = this.chartTypeCodes.BAR;
 
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.blockUI.stop();
+        this.errorModal.openModal();
+      }
+    });
+
     if (this.route.snapshot.queryParams.load) {
       this.route.queryParams.subscribe(params => {
         if (params) {
@@ -297,7 +307,7 @@ export class SectorReportComponent implements OnInit {
         }
       });
     } else {
-      this.isLoading = false;
+      this.searchProjectsByCriteriaReport();
     }
     this.getProjectTitles();
     this.getSectorsList();
@@ -498,56 +508,6 @@ export class SectorReportComponent implements OnInit {
     };
 
     this.resetSearchResults();
-    if (this.isNoSectorReport) {
-      this.model.sectorLevel = this.sectorLevelCodes.NO_SECTORS;
-      this.model.selectedSectors = [];
-    }
-
-    if (this.model.sectorLevel == this.sectorLevelCodes.NO_SECTORS) {
-      
-      this.reportService.getNoSectorProjectsReport(searchModel).subscribe(
-        data => {
-          if (data) {
-            this.reportDataList = data;
-            this.btnReportText = 'Update report';
-            if (this.reportDataList && this.reportDataList.sectorProjectsList) {
-              this.reportDataList.sectorProjectsList.forEach((s) => {
-                s.isDisplay = false;
-              });
-
-              var sectorProjectsList = this.reportDataList.sectorProjectsList;
-              this.chartLables = sectorProjectsList.map(p => p.sectorName).sort();
-              this.sectorProjectsList = sectorProjectsList;
-            }
-
-            if (this.reportDataList.reportSettings) {
-              this.excelFile = this.reportDataList.reportSettings.excelReportName;
-              this.setExcelFile();
-            }
-  
-            if (!this.loadReport) {
-              this.manageDataToDisplay();
-            }
-            this.model.selectedCurrency = this.defaultCurrency;
-            this.selectCurrency();
-            this.blockUI.stop();
-            setTimeout(() => {
-              this.datedToday = this.storeService.getLongDateString(currentDate);
-              if (this.loadReport) {
-                this.loadReport = false;
-                if (chartType) {
-                  this.model.chartType = parseInt(chartType);
-                  this.manageDataToDisplay();
-                }
-              }
-              
-            }, 2000);
-          }
-        }
-      );
-      this.isNoSectorReport = false;
-    } else {
-
       this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(
         data => {
           this.reportDataList = data;
@@ -563,7 +523,7 @@ export class SectorReportComponent implements OnInit {
                 .filter((value, index, self) => self.indexOf(value) === index);
   
               parentSectorIds.forEach((pid) => {
-                var sectors = sectorProjectsList.filter(s => s.parentSectorId == pid);
+                var sectors = sectorProjectsList.filter(s => (s.parentSectorId == pid));
                 var actualDisbursements = 0;
                 var plannedDisbursements = 0;
                 var totalDisbursements = 0;
@@ -577,7 +537,7 @@ export class SectorReportComponent implements OnInit {
                   plannedDisbursements += s.plannedDisbursements;
                   totalDisbursements += s.totalDisbursements;
                   totalFunding += s.totalFunding;
-                  sectorName = s.parentSector;
+                  sectorName = (s.parentSector == null && s.parentSectorId == 0) ? s.sectorName : s.parentSector;
                   sectorId = s.parentSectorId;
   
                   var sectorProjects = s.projects;
@@ -652,7 +612,7 @@ export class SectorReportComponent implements OnInit {
           }, 2000);
         }
       );
-    }
+    //}
     
     setTimeout(() => {
       this.isLoading = false;

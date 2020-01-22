@@ -80,6 +80,7 @@ import { OrganizationTypesComponent } from './organization-types/organization-ty
 import { ManageOrganizationTypeComponent } from './manage-organization-type/manage-organization-type.component';
 import { DeleteOrganizationTypeComponent } from './delete-organization-type/delete-organization-type.component';
 import { FinancialYearSettingsComponent } from './financial-year-settings/financial-year-settings.component';
+import { EmailUsersComponent } from './email-users/email-users.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -142,7 +143,7 @@ export const routes: Routes = [
   { path: 'currencies', component: CurrenciesComponent },
   { path: 'manage-currency', component: ManageCurrencyComponent },
   { path: 'manage-currency/:{id}', component: ManageCurrencyComponent, data: { isForEdit: true } },
-  { path: 'financial-years', component: FinancialYearsComponent },
+  { path: 'financial-years', component: ManageYearComponent },
   { path: 'financial-year-settings', component: FinancialYearSettingsComponent },
   { path: 'manage-year', component:  ManageYearComponent},
   { path: 'user-subscriptions', component: UserSubscriptionComponent },
@@ -165,6 +166,7 @@ export const routes: Routes = [
   { path: 'manage-funding-type', component: ManageFundingTypeComponent },
   { path: 'manage-funding-type/:{id}', component: ManageFundingTypeComponent, data: { isForEdit: true } },
   { path: 'email-messages', component: EmailMessagesComponent },
+  { path: 'email-users', component: EmailUsersComponent },
   { path: 'manage-email-message', component: ManageEmailMessageComponent },
   { path: 'manage-email-message/:{id}', component: ManageEmailMessageComponent, data: { isForEdit: true } },
   { path: 'project-membership/:{id}', component: ProjectMembershipComponent },
