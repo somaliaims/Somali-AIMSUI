@@ -767,7 +767,6 @@ export class SectorReportComponent implements OnInit {
               }
             }.bind(this));
           }
-          //this.searchProjectsByCriteriaReport();
         }
       }
     );

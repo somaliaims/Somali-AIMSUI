@@ -152,6 +152,7 @@ export class ProjectsComponent implements OnInit {
       textField: 'title',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      searchPlaceholderText: 'Select/Search project titles',
       itemsShowLimit: 5,
       allowSearchFilter: true
     };

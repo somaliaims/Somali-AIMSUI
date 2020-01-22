@@ -26,10 +26,10 @@
 
             <form class="form-signin" (ngSubmit)="sectorForm.form.valid && saveSector()" #sectorForm="ngForm">
 
-              <div [class.disable]="true" class="form-group">
+              <div class="form-group">
                 <label for="sectorTypeId">Sector Type</label>
                 <select class="form-control" id="sectorTypeId" [(ngModel)]="model.sectorTypeId" name="sectorTypeId"
-                  #sectorTypeId="ngModel">
+                  #sectorTypeId="ngModel" (change)="filterParentSectors()">
                   <option *ngFor="let sectorType of sectorTypes" [value]="sectorType.id">{{sectorType.typeName}}</option>
                 </select>
               </div>
@@ -76,7 +76,7 @@
                 </div>
               </div>
 
-              <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+              <button [class.disable]="isBtnDisabled || isLoading" class="btn btn-lg btn-info btn-block text-uppercase"
                 type="submit">Add Child Sector</button>
             </form>
           </div>

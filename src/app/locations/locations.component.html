@@ -33,15 +33,11 @@
   <div *ngIf="filteredLocationsList.length > 0" class="col margin-top-10">
     <table class="table table-bordered table-stripped">
       <tr>
-        <th>Location anme</th>
-        <th>Latitude</th>
-        <th>Longitude</th>
+        <th>Location name</th>
         <th *ngIf="permissions.canEditLocation">Actions</th>
       </tr>
       <tr *ngFor="let loc of filteredLocationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
         <td>{{loc.location}}</td>
-        <td>{{loc.latitude}}</td>
-        <td>{{loc.longitude}}</td>
         <td *ngIf="permissions.canEditLocation">
           <a title="Edit" (click)="edit(loc.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
           &nbsp;

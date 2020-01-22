@@ -17,6 +17,7 @@ import { Settings } from '../config/settings';
 export class ManageSectorComponent implements OnInit {
 
   @Input()
+  isLoading: boolean = true;
   isForEdit: boolean = false;
   isBtnDisabled: boolean = false;
   isDvDisabled: boolean = true;
@@ -24,8 +25,10 @@ export class ManageSectorComponent implements OnInit {
   btnText: string = 'Add sector';
   sectorTabText: string = 'New sector';
   errorMessage: string = '';
+  allSectors: any = [];
   sectors: any = [];
   sectorTypes: any = [];
+  editableSectorTypes: any = [];
   sectorChildren: any = [];
   requestNo: number = 0;
   isError: boolean = false;
@@ -59,9 +62,13 @@ export class ManageSectorComponent implements OnInit {
         this.sectorTabText = 'Edit sector';
         this.isForEdit = true;
         this.sectorId = id;
-        this.loadSectorData();
-        this.getSectorChildren(id);
         this.isDvDisabled = false;
+        setTimeout(() => {
+          this.loadSectorData();
+          this.getSectorChildren(id);
+        }, 1000);
+    } else {
+      this.isLoading = false;
     }
 
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -77,8 +84,10 @@ export class ManageSectorComponent implements OnInit {
     this.sectorTypeService.getSectorTypesList().subscribe(
       data => {
         if (data) {
-          this.sectorTypes = data;
-          var sectorType = this.sectorTypes.filter(s => s.isPrimary == true);
+          var sectorTypesList = data;
+          var sectorType = sectorTypesList.filter(s => s.isPrimary == true);
+          this.sectorTypes = sectorTypesList.filter(s => s.isPrimary == true || s.isSourceType == false);
+          this.editableSectorTypes = this.sectorTypes.map(t => t.id)
           if (sectorType.length > 0) {
             this.model.sectorTypeId = sectorType[0].id;
             this.getSectors();
@@ -92,16 +101,17 @@ export class ManageSectorComponent implements OnInit {
     this.sectorService.getSectorsList().subscribe(
       data => {
         if (data) {
-          var sectors = data;
-          this.sectors = sectors.filter(s => s.sectorTypeId == this.model.sectorTypeId && s.parentSector == null);
-          /*if (this.model.id != 0) {
-            if (this.sectors.filter(s => s.id == this.model.id).length == 0) {
-              this.router.navigateByUrl('sectors');
-            }
-          }*/
+          this.allSectors = data;
+          this.sectors = this.allSectors.filter(s => s.sectorTypeId == this.model.sectorTypeId && s.parentSector == null);
         }
       }
     );
+  }
+
+  filterParentSectors() {
+    if (this.model.sectorTypeId > 0) {
+      this.sectors = this.allSectors.filter(s => s.sectorTypeId == this.model.sectorTypeId && s.parentSector == null);
+    }
   }
 
   getSectorChildren(id: string) {
@@ -121,11 +131,18 @@ export class ManageSectorComponent implements OnInit {
     this.sectorService.getSector(this.sectorId.toString()).subscribe(
       data => {
         if (data) {
+          var sectorTypeId = data.sectorTypeId;
+          if (sectorTypeId) {
+            if (!this.editableSectorTypes.includes(sectorTypeId)) {
+              this.router.navigateByUrl('sectors');
+            }
+          }
           this.model.id = data.id;
           this.model.sectorTypeId = data.sectorTypeId;
           this.model.parentId = data.parentId;
           this.model.sectorName = data.sectorName;
         }
+        this.isLoading = false;
       },
       error => {
         console.log("Request Failed: ", error);

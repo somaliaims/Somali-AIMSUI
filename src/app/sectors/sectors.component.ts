@@ -55,8 +55,9 @@ export class SectorsComponent implements OnInit {
     this.sectorTypeService.getSectorTypesList().subscribe(
       data => {
         if (data) {
-          this.sectorTypesList = data;
-          var sectorType = this.sectorTypesList.filter(t => t.isPrimary == true);
+          var sectorTypes = data;
+          var sectorType = sectorTypes.filter(t => t.isPrimary == true);
+          this.sectorTypesList = sectorTypes.filter(t => t.isPrimary == true || t.isSourceType == false);
           if (sectorType.length > 0) {
             var typeId = sectorType[0].id;
             this.defaultSectorTypeId = typeId;

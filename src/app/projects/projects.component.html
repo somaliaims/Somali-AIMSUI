@@ -33,7 +33,7 @@
             <form class="form-signin" #searchForm="ngForm">
               <div class="row">
                 <div class="col-lg-6 col-md-6">
-                    <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projectTitles"
+                    <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="Select/Search project titles" [data]="projectTitles"
                     [(ngModel)]="model.selectedProjects" 
                     [settings]="projectsSettings" name="selectedProjects"
                     (onSelect)="onSelectProject($event)" (onDeSelect)="onDeSelectProject($event)"
