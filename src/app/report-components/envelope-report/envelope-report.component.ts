@@ -162,6 +162,9 @@ export class EnvelopeReportComponent implements OnInit {
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
+    this.getDefaultCurrency();
+    this.getNationalCurrency();
+    
     this.envelopeTypeSettings = {
       singleSelection: false,
       idField: 'id',
@@ -212,8 +215,6 @@ export class EnvelopeReportComponent implements OnInit {
     this.getEnvelopeTypes();
     this.getOrganizationTypes();
     this.getOrganizations();
-    this.getDefaultCurrency();
-    this.getNationalCurrency();
     this.getFinancialYears();
   }
 

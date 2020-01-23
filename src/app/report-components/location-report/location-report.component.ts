@@ -278,6 +278,9 @@ export class LocationReportComponent implements OnInit {
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
+    this.getDefaultCurrency();
+    this.getNationalCurrency();
+
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -314,8 +317,6 @@ export class LocationReportComponent implements OnInit {
     this.getOrganizationsList();
     this.loadFinancialYears();
     this.getSectorsList();
-    this.getDefaultCurrency();
-    this.getNationalCurrency();
 
     this.locationsSettings = {
       singleSelection: false,
@@ -539,8 +540,8 @@ export class LocationReportComponent implements OnInit {
               }
               
               this.model.selectedCurrency = this.defaultCurrency;
-              this.selectCurrency();
               setTimeout(() => {
+                this.selectCurrency();
                 this.datedToday = this.storeService.getLongDateString(currentDate);
                 if (this.loadReport) {
                   this.loadReport = false;
@@ -549,8 +550,7 @@ export class LocationReportComponent implements OnInit {
                     this.manageDataToDisplay();
                   }
                 }
-                
-              }, 2000);
+              }, 1000);
             }
           }
           this.blockUI.stop();
