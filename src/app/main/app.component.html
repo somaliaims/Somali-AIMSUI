@@ -77,6 +77,10 @@
                 messages</a>
               <a *ngIf="permissions.canEditEmailMessage" class="dropdown-item" [routerLink]="['/email-users']">Email
                   users</a>
+              <h5 *ngIf="permissions.canTakeBackup" class="dropdown-header">AIMS database management</h5>
+              <a *ngIf="permissions.canTakeBackup"  class="dropdown-item" [routerLink]="['/data-backup']">
+                Data backup & restore
+              </a>
             </div>
           </li>
           <li class="nav-item">
@@ -86,9 +90,9 @@
           <!--<li class="nav-item active"> 
               <a class="nav-link" [routerLink]="['/data-import']">Data import</a>
           </li>-->
-        <li *ngIf="permissions.canTakeBackup" class="nav-item"> 
+        <!--<li *ngIf="permissions.canTakeBackup" class="nav-item"> 
             <a [ngClass]="{'active-link': isBackupActive == true}" class="nav-link" [routerLink]="['/data-backup']">Data backup</a>
-        </li>
+        </li> -->
          <!-- <li class="nav-item" *ngIf="permissions.canEditHelp">
             <a class="nav-link" [routerLink]="['/manage-help']" [ngClass]="{'active-link': isHelpActive == true}">Manage
               help</a>

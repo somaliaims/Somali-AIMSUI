@@ -67,7 +67,7 @@ export class LocationReportComponent implements OnInit {
   isShowStackedChart: boolean = false;
   isNoSectorReport: boolean = false;
   isManageDataDisplay: boolean = true;
-  btnReportText: string = 'View report';
+  btnReportText: string = 'Update report';
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },

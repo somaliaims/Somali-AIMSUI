@@ -69,7 +69,7 @@ export class TimeTrendReportComponent implements OnInit {
   isAnyFilterSet: boolean = false;
   //chartTypeName: string = 'bar';
   chartType: string = 'bar';
-  btnReportText: string = 'View report';
+  btnReportText: string = 'Update report';
 
   chartTypesList: any = [
     { id: 1, type: 'bar', title: 'Stacked bar' },
@@ -246,6 +246,10 @@ export class TimeTrendReportComponent implements OnInit {
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
+    this.getDefaultCurrency();
+    this.getNationalCurrency();
+    this.getManualExchangeRateForToday();
+
     if (this.route.snapshot.queryParams.load) {
       this.route.queryParams.subscribe(params => {
         if (params) {
@@ -261,7 +265,7 @@ export class TimeTrendReportComponent implements OnInit {
         } 
       });
     } else {
-      this.isLoading = false;
+      this.searchProjectsByCriteriaReport();
     }
 
     this.getProjectTitles();
@@ -269,9 +273,6 @@ export class TimeTrendReportComponent implements OnInit {
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
-    this.getDefaultCurrency();
-    this.getNationalCurrency();
-    this.getManualExchangeRateForToday();
     this.datedToday = this.storeService.getLongDateString(new Date());
 
     this.sectorsSettings = {
@@ -421,7 +422,9 @@ export class TimeTrendReportComponent implements OnInit {
           }
 
           this.model.selectedCurrency = this.defaultCurrency;
-          this.selectCurrency();
+          setTimeout(() => {
+            this.selectCurrency();
+          }, 1000);
           this.setupChartData();
         }
         this.blockUI.stop();

@@ -57,7 +57,7 @@ export class EnvelopeReportComponent implements OnInit {
   isAnyFilterSet: boolean = false;
   errorMessage: string = null;
   chartTypeName: string = 'bar';
-  btnReportText: string = 'View report';
+  btnReportText: string = 'Update report';
 
   public lineChartOptions = {
     responsive: true,
@@ -205,7 +205,7 @@ export class EnvelopeReportComponent implements OnInit {
         }
       });
     } else {
-      this.isLoading = false;
+      this.getEnvelopeReport();
     }
 
     this.chartType = this.chartTypes.BAR;

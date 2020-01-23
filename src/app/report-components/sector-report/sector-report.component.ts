@@ -59,7 +59,7 @@ export class SectorReportComponent implements OnInit {
   isDefaultCurrencySet: boolean = true;
   requestNo: number = 0;
   pageHeight: number = Settings.pdfPrintPageHeight;
-  btnReportText: string = 'View report';
+  btnReportText: string = 'Update report';
   isAnyFilterSet: boolean = false;
   isShowStackedChart: boolean = false;
   isNoSectorReport: boolean = false;
@@ -280,6 +280,8 @@ export class SectorReportComponent implements OnInit {
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
     this.model.chartType = this.chartTypeCodes.BAR;
+    this.getDefaultCurrency();
+    this.getNationalCurrency();
 
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
@@ -314,9 +316,7 @@ export class SectorReportComponent implements OnInit {
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
-    this.getDefaultCurrency();
-    this.getNationalCurrency();
-
+    
     this.sectorsSettings = {
       singleSelection: false,
       idField: 'id',
@@ -597,9 +597,9 @@ export class SectorReportComponent implements OnInit {
           }
           
           this.model.selectedCurrency = this.defaultCurrency;
-          this.selectCurrency();
           this.blockUI.stop();
           setTimeout(() => {
+            this.selectCurrency();
             this.datedToday = this.storeService.getLongDateString(currentDate);
             if (this.loadReport) {
               this.loadReport = false;
@@ -609,7 +609,7 @@ export class SectorReportComponent implements OnInit {
               }
             }
             
-          }, 2000);
+          }, 1000);
         }
       );
     //}
