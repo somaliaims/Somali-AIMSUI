@@ -17,6 +17,7 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 export class EmailUsersComponent implements OnInit {
 
   requestNo: number = 0;
+  isBtnDisabled: boolean = false;
   standardUsersList: any = [];
   managerUsersList: any = [];
   permissions: any = {};

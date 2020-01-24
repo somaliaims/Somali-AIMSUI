@@ -50,32 +50,26 @@
                 <tr>
                   <th>Code</th>
                   <th>Currency</th>
-                  <!--<th>Source</th>-->
-                  <th>Is Default / National?</th>
+                  <th>Set as Default</th>
+                  <th>Set as National</th>
                 </tr>
                 <tr
                   *ngFor="let currency of filteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: p }">
                   <td>{{currency.currency}}</td>
                   <td>{{currency.currencyName}}</td>
-                  <!--<td>{{showCurrencySource(currency.source) }}</td>-->
-                  <!--<td>
-                              <a title="Delete" (click)="edit(currency.id)" class="btn btn-info"><i
-                                class="fa fa-edit color-white"></i></a>&nbsp;
-              
-                            <a title="Delete" (click)="delete(currency.id)" class="btn btn-danger"><i
-                                class="fa fa-trash color-white"></i></a>
-                          </td>-->
                     <td>
                       <div class="btn-group" data-toggle="buttons">
-                        <button id="btnd-{{currency.id}}" title="Is default?" (click)="toggleDefault($event)" class="btn btn-info btn-sm">
+                        <button id="btnd-{{currency.id}}" title="Click here to set this currency as Default" (click)="toggleDefault($event)" class="btn btn-info btn-sm">
                           <i id="id-{{currency.id}}" *ngIf="!currency.isDefault" class="fa fa-square text-white"></i>
                           <i id="id-{{currency.id}}" *ngIf="currency.isDefault" class="fa fa-check text-white"></i>
-                        </button>&nbsp;&nbsp;
-                        <button id="btnn-{{currency.id}}" title="Is national?" (click)="toggleNational($event)" class="btn btn-warning btn-sm">
-                          <i id="in-{{currency.id}}" *ngIf="!currency.isNational" class="fa fa-square text-white"></i>
-                          <i id="in-{{currency.id}}" *ngIf="currency.isNational" class="fa fa-check text-white"></i>
                         </button>
                       </div>
+                    </td>
+                    <td>
+                      <button id="btnn-{{currency.id}}" title="Click here to set this currency as National" (click)="toggleNational($event)" class="btn btn-warning btn-sm">
+                        <i id="in-{{currency.id}}" *ngIf="!currency.isNational" class="fa fa-square text-white"></i>
+                        <i id="in-{{currency.id}}" *ngIf="currency.isNational" class="fa fa-check text-white"></i>
+                      </button>
                     </td>
                 </tr>
               </table>
@@ -107,7 +101,8 @@
                 <tr>
                   <th>Code</th>
                   <th>Currency</th>
-                  <th>Is Default / National?</th>
+                  <th>Set as Default</th>
+                  <th>Set as National</th>
                 </tr>
                 <tr
                   *ngFor="let currency of manualFilteredCurrencies | paginate: { itemsPerPage: pagingSize, currentPage: m, id: 'm' }">
@@ -115,15 +110,17 @@
                   <td>{{currency.currencyName}}</td>
                   <td>
                     <div class="btn-group" data-toggle="buttons">
-                      <button id="btnd-{{currency.id}}" title="Is default?" (click)="toggleDefault($event)" class="btn btn-info btn-sm">
+                      <button id="btnd-{{currency.id}}" title="Click here to set this currency as Default" (click)="toggleDefault($event)" class="btn btn-info btn-sm">
                         <i id="id-{{currency.id}}" *ngIf="!currency.isDefault" class="fa fa-square text-white"></i>
                         <i id="id-{{currency.id}}" *ngIf="currency.isDefault" class="fa fa-check text-white"></i>
-                      </button>&nbsp;&nbsp;
-                      <button id="btnn-{{currency.id}}" title="Is national?" (click)="toggleNational($event)" class="btn btn-warning btn-sm">
-                        <i id="in-{{currency.id}}" *ngIf="!currency.isNational" class="fa fa-square text-white"></i>
-                        <i id="in-{{currency.id}}" *ngIf="currency.isNational" class="fa fa-check text-white"></i>
                       </button>
                     </div>
+                  </td>
+                  <td>
+                    <button id="btnn-{{currency.id}}" title="Click here to set this currency as National" (click)="toggleNational($event)" class="btn btn-warning btn-sm">
+                      <i id="in-{{currency.id}}" *ngIf="!currency.isNational" class="fa fa-square text-white"></i>
+                      <i id="in-{{currency.id}}" *ngIf="currency.isNational" class="fa fa-check text-white"></i>
+                    </button>
                   </td>
                 </tr>
               </table>

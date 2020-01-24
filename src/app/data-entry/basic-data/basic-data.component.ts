@@ -91,6 +91,8 @@ export class BasicDataComponent implements OnInit {
   isFunderHelpLoaded: boolean = false;
   isImplementerHelpLoaded: boolean = false;
   isDocumentHelpLoaded: boolean = false;
+  previousStartingYear: number = 0;
+  previousEndingYear: number = 0;
   basicModel: any = { startDate: null, endDate: null };
 
   displayTabs: any = [
@@ -205,6 +207,8 @@ export class BasicDataComponent implements OnInit {
     }
     
     if (this.projectData && this.projectData.description) {
+      this.previousStartingYear = this.projectData.startingFinancialYear;
+      this.previousEndingYear = this.projectData.endingFinancialYear;
       this.getDescriptionLimitInfo();
     }
 
@@ -368,6 +372,8 @@ export class BasicDataComponent implements OnInit {
       this.projectService.updateProject(this.projectId, this.projectData).subscribe(
         data => {
           if (data) {
+            this.previousStartingYear = this.projectData.startingFinancialYear;
+            this.previousEndingYear = this.projectData.endingFinancialYear;
             this.showProjectData();
           } 
           this.blockUI.stop();
@@ -378,6 +384,8 @@ export class BasicDataComponent implements OnInit {
       this.projectService.addProject(this.projectData).subscribe(
         data => {
           if (data) {
+            this.previousStartingYear = this.projectData.startingFinancialYear;
+            this.previousEndingYear = this.projectData.endingFinancialYear;
             this.projectId = data;
             this.updateProjectIdToParent();
             localStorage.setItem('active-project', data);
@@ -426,6 +434,8 @@ export class BasicDataComponent implements OnInit {
       this.projectService.updateProject(this.projectId, this.projectData).subscribe(
         data => {
           if (data) {
+            this.previousStartingYear = this.projectData.startingFinancialYear;
+            this.previousEndingYear = this.projectData.endingFinancialYear;
             this.saveProjectFunders();
             this.adjustProjectDisbursements();
             this.updateProjectIdToParent();
@@ -440,6 +450,8 @@ export class BasicDataComponent implements OnInit {
       this.projectService.addProject(this.projectData).subscribe(
         data => {
           if (data) {
+            this.previousStartingYear = this.projectData.startingFinancialYear;
+            this.previousEndingYear = this.projectData.endingFinancialYear;
             this.projectId = data;
             localStorage.setItem('active-project', data);
             this.updateProjectIdToParent();
