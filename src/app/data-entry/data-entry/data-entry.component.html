@@ -36,6 +36,7 @@
         [financialYears]="financialYears" [exchangeRates]="exchangeRates" [organizationsList]="organizationsList"
         [fundingTypesList]="fundingTypesList" [currenciesList]="currenciesList" [(projectId)]="activeProjectId"
         [aimsProjects]="aimsProjects" [iatiProjects]="iatiProjects"
+        [projectDisbursements]="currentProjectDisbursements"
         (projectFundersChanged)="updateProjectFunders($event)"
         (projectImplementersChanged)="updateProjectImplementers($event)"
         (projectCreated)="updateProjectId($event)"

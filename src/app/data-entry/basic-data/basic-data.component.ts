@@ -10,6 +10,7 @@ import { CreateOrgModalComponent } from 'src/app/create-org-modal/create-org-mod
 import { HelpService } from 'src/app/services/help-service';
 import { SecurityHelperService } from 'src/app/services/security-helper.service';
 import { Messages } from 'src/app/config/messages';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'basic-data',
@@ -25,6 +26,8 @@ export class BasicDataComponent implements OnInit {
   fundersSettings: any = [];
   implementersSettings: any = [];
   newDocuments: any = [];
+  totalDisbursementsValue: number = 0;
+  invalidDisbursementsMessage: string = Messages.INVALID_PROJECT_VALUE_DISBURSEMENTS;
 
   sourceFundersList: any = [];
   sourceImplementersList: any = [];
@@ -63,6 +66,8 @@ export class BasicDataComponent implements OnInit {
   aimsProjects: any = [];
   @Input()
   iatiProjects: any = [];
+  @Input()
+  projectDisbursements: any = [];
 
   @Output()
   projectCreated = new EventEmitter<number>();
@@ -148,7 +153,8 @@ export class BasicDataComponent implements OnInit {
     private projectIATIInfoModal: ProjectiInfoModalComponent,
     private orgModal: CreateOrgModalComponent,
     private securityService: SecurityHelperService,
-    private helpService: HelpService
+    private helpService: HelpService,
+    private modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -272,6 +278,7 @@ export class BasicDataComponent implements OnInit {
       });
     }
 
+    this.calculateDisbursements();
     this.getProjectHelp();
     this.getprojectFunderHelp();
     this.getprojectImplementerHelp();
@@ -338,12 +345,26 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
-  saveBasicData() {
+  updateBasicData() {
     var startingYear = new Date(this.projectData.startDate).getFullYear();
     var endingYear = new Date(this.projectData.endDate).getFullYear();
     this.projectData.startingFinancialYear = startingYear;
     this.projectData.endingFinancialYear = endingYear;
 
+    if (startingYear > endingYear) {
+      this.errorMessage = 'Starting year cannot be greater than ending year';
+      this.errorModal.openModal();
+      return false;
+    }
+
+    if ((startingYear > this.previousStartingYear) || (endingYear < this.previousEndingYear)) {
+      this.modalService.open('confirmation-modal-source');
+      return false;
+    }
+    this.saveBasicData();
+  }
+
+  saveBasicData() {
     var isOrgProvided = false;
     var userOrgInFunders = this.funderModel.selectedFunders.filter(f => f.id == this.userOrgId);
     if (userOrgInFunders.length == 0) {
@@ -361,12 +382,6 @@ export class BasicDataComponent implements OnInit {
       return false;
     }
 
-    if (startingYear > endingYear) {
-      this.errorMessage = 'Starting year cannot be greater than ending year';
-      this.errorModal.openModal();
-      return false;
-    }
-
     if (this.projectId != 0) {
       this.blockUI.start('Saving project...');
       this.projectService.updateProject(this.projectId, this.projectData).subscribe(
@@ -375,6 +390,7 @@ export class BasicDataComponent implements OnInit {
             this.previousStartingYear = this.projectData.startingFinancialYear;
             this.previousEndingYear = this.projectData.endingFinancialYear;
             this.showProjectData();
+            this.adjustProjectDisbursements();
           } 
           this.blockUI.stop();
         }
@@ -390,6 +406,7 @@ export class BasicDataComponent implements OnInit {
             this.updateProjectIdToParent();
             localStorage.setItem('active-project', data);
             this.showProjectData();
+            this.adjustProjectDisbursements();
           } 
           this.blockUI.stop();
         }
@@ -397,8 +414,7 @@ export class BasicDataComponent implements OnInit {
     }
   }
   
-  saveProject(frm: any) {
-    this.entryForm = frm;
+  updateProject(frm: any) {
     var startingYear = new Date(this.projectData.startDate).getFullYear();
     var endingYear = new Date(this.projectData.endDate).getFullYear();
     this.projectData.startingFinancialYear = startingYear;
@@ -409,6 +425,19 @@ export class BasicDataComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
+
+    if ((startingYear > this.previousStartingYear) || (endingYear < this.previousEndingYear)) {
+      this.modalService.open('confirmation-modal');
+      return false;
+    } else {
+      this.saveProject(frm);
+    }
+  }
+
+  saveProject(frm: any) {
+    this.modalService.close('confirmation-modal');
+    this.entryForm = frm;
+    
 
     var isOrgProvided = false;
     var userOrgInFunders = this.funderModel.selectedFunders.filter(f => f.id == this.userOrgId);
@@ -462,6 +491,15 @@ export class BasicDataComponent implements OnInit {
           }
         }
       );
+    }
+  }
+
+  calculateDisbursements() {
+    var totalDisbursements = 0;
+    if (this.projectDisbursements.length > 0) {
+      this.projectDisbursements.forEach((d) => {
+        totalDisbursements += d.amount;
+      });
     }
   }
 
@@ -561,11 +599,17 @@ export class BasicDataComponent implements OnInit {
     );
   }
 
+  cancelSaving() {
+    this.modalService.close('confirmation-modal');
+    this.modalService.close('confirmation-modal-source');
+  }
+
   adjustProjectDisbursements() {
     this.projectService.adjustProjectDisbursements(this.projectId.toString()).subscribe(
       data => {
         if (data) {
           this.updateDisbursementsToParent(data);
+          this.calculateDisbursements();
         }
       }
     );

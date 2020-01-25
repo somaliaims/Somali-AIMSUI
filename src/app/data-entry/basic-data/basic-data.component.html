@@ -1,5 +1,5 @@
 <div *ngIf="currentTab == tabConstants.PROJECT" class="col-lg-12 col-md-12 card padding-20 margin-top-5">
-  <form class="form-signin" (ngSubmit)="projectForm.form.valid && saveProject(projectForm)" #projectForm="ngForm">
+  <form class="form-signin" (ngSubmit)="projectForm.form.valid && updateProject(projectForm)" #projectForm="ngForm">
     <div class="row">
       <div class="col-lg-4 col-md-4">
         <div class="input-group mb-3">
@@ -75,6 +75,9 @@
             #projectValue="ngModel" id="projectValue" title="{{projectHelp.projectValue}}" required>
           <span class="margin-left-2" tooltip="{{projectHelp.projectValue}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+          </span>
+          <span *ngIf="projectData.projectValue != totalDisbursementsValue" class="margin-left-2" tooltip="{{invalidDisbursementsMessage}}" [options]="tooltipOptions">
+            <button class="btn btn-danger" type="button"><i class="fa fa-times-circle"></i></button>
           </span>
         </div>
         <div *ngIf="projectForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
@@ -372,7 +375,7 @@
     <div class="col-md-12 col-sm-12">
       <div class="card card-signin my-5 margin-top-10">
         <div class="card-body">
-          <form class="form-signin" (ngSubmit)="projectSourceForm.form.valid && saveBasicData(projectSourceForm)"
+          <form class="form-signin" (ngSubmit)="projectSourceForm.form.valid && updateBasicData(projectSourceForm)"
             #projectSourceForm="ngForm">
 
             <div class="row">
@@ -431,8 +434,14 @@
 
             <div class="form-group">
               <label>Project value</label>
-              <input type="number" class="form-control" name="projectValue" [(ngModel)]="projectData.projectValue"
-                #projectValue="ngModel" required />
+              <div class="input-group mb-3">
+                <input type="number" class="form-control" name="projectValue" [(ngModel)]="projectData.projectValue"
+                  #projectValue="ngModel" required />
+                <span *ngIf="projectData.projectValue != totalDisbursementsValue" class="margin-left-2"
+                  tooltip="{{invalidDisbursementsMessage}}" [options]="tooltipOptions">
+                  <button class="btn btn-danger" type="button"><i class="fa fa-times-circle"></i></button>
+                </span>
+              </div>
             </div>
             <div *ngIf="projectSourceForm.submitted" [hidden]="projectValue.valid" class="alert alert-danger">
               Project value is required
@@ -734,3 +743,39 @@
 
 <create-org-modal (organizationCreated)="updateFundersImplementers($event)">
 </create-org-modal>
+
+<jw-modal id="confirmation-modal">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-info text-white">Confirmation Message</div>
+          <div class="card-body text-info">
+              You have changed the dates in a way that will change the financial years for this project 
+              and will delete disbursements for years not covering the dates. Please be sure you are 
+              performing the right action.
+          </div>
+        </div><br />
+        <button class="btn btn-info text-uppercase" (click)="saveProject()">Yes Update</button>
+        &nbsp;
+        <button class="btn btn-danger text-uppercase" (click)="cancelSaving();">Cancel</button>
+    </div>
+  </div>
+</jw-modal>
+
+<jw-modal id="confirmation-modal-source">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-info text-white">Confirmation Message</div>
+          <div class="card-body text-info">
+              You have changed the dates in a way that will change the financial years for this project 
+              and will delete disbursements for years not covering the dates. Please be sure you are 
+              performing the right action.
+          </div>
+        </div><br />
+        <button class="btn btn-info text-uppercase" (click)="saveBasicData()">Yes Update</button>
+        &nbsp;
+        <button class="btn btn-danger text-uppercase" (click)="cancelSaving();">Cancel</button>
+    </div>
+  </div>
+</jw-modal>
