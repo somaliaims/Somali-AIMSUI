@@ -205,6 +205,7 @@ export class BasicDataComponent implements OnInit {
       itemsShowLimit: this.itemsToShowInDropdowns,
       allowSearchFilter: true
     };
+    this.calculateDisbursements();
   }
 
   ngOnChanges() {
@@ -498,9 +499,10 @@ export class BasicDataComponent implements OnInit {
     var totalDisbursements = 0;
     if (this.projectDisbursements.length > 0) {
       this.projectDisbursements.forEach((d) => {
-        totalDisbursements += d.amount;
+        totalDisbursements += parseFloat(d.amount);
       });
     }
+    this.totalDisbursementsValue = totalDisbursements;
   }
 
   saveProjectFunders() {

@@ -72,7 +72,7 @@
         <div class="input-group mb-3">
           <input placeholder="Project value (0.00)" title="{{projectHelp.projectValue}}" class="form-control col-sm-12"
             type="number" maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue"
-            #projectValue="ngModel" id="projectValue" title="{{projectHelp.projectValue}}" required>
+            #projectValue="ngModel" (input)="calculateDisbursements()" id="projectValue" title="{{projectHelp.projectValue}}" required>
           <span class="margin-left-2" tooltip="{{projectHelp.projectValue}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
@@ -436,7 +436,7 @@
               <label>Project value</label>
               <div class="input-group mb-3">
                 <input type="number" class="form-control" name="projectValue" [(ngModel)]="projectData.projectValue"
-                  #projectValue="ngModel" required />
+                  #projectValue="ngModel" (input)="calculateDisbursements()" required />
                 <span *ngIf="projectData.projectValue != totalDisbursementsValue" class="margin-left-2"
                   tooltip="{{invalidDisbursementsMessage}}" [options]="tooltipOptions">
                   <button class="btn btn-danger" type="button"><i class="fa fa-times-circle"></i></button>

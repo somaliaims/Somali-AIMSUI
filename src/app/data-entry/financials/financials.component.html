@@ -40,7 +40,7 @@
               <span *ngIf="disbursement.disbursementType == 1">Actual</span>
               <span *ngIf="disbursement.disbursementType == 2">Planned</span>
             </label>
-            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (change)="calculateDisbursementsTotal()"
+            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (input)="calculateDisbursementsTotal()"
               name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"
               class="form-control col-md-5" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
           
