@@ -753,7 +753,7 @@ export class SectorReportComponent implements OnInit {
   }
 
   getOrganizationsList() {
-    this.organizationService.getOrganizationsHavingEnvelope().subscribe(
+    this.organizationService.getOrganizationsList().subscribe(
       data => {
         this.organizationsList = data;
         if (this.loadReport) {

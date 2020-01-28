@@ -49,7 +49,7 @@ export class DataBackupComponent implements OnInit {
     if (!this.permissions.canTakeBackup) {
       this.router.navigateByUrl('home');
     }
-    this.storeService.newReportItem(Settings.dropDownMenus.backup);
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.currentTab = this.tabConstants.BACKUP;
     this.setCurrentDate();
   }

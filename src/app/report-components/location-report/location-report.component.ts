@@ -721,7 +721,7 @@ export class LocationReportComponent implements OnInit {
   }
 
   getOrganizationsList() {
-    this.organizationService.getOrganizationsHavingEnvelope().subscribe(
+    this.organizationService.getOrganizationsList().subscribe(
       data => {
         this.organizationsList = data;
 

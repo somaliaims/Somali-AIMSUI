@@ -27,6 +27,7 @@ export class BasicDataComponent implements OnInit {
   implementersSettings: any = [];
   newDocuments: any = [];
   totalDisbursementsValue: number = 0;
+  projectTotalValue: number = 0;
   invalidDisbursementsMessage: string = Messages.INVALID_PROJECT_VALUE_DISBURSEMENTS;
 
   sourceFundersList: any = [];
@@ -214,8 +215,8 @@ export class BasicDataComponent implements OnInit {
     }
     
     if (this.projectData && this.projectData.description) {
-      this.previousStartingYear = this.projectData.startingFinancialYear;
-      this.previousEndingYear = this.projectData.endingFinancialYear;
+      this.previousStartingYear = new Date(this.projectData.startDate).getFullYear();
+      this.previousEndingYear = new Date(this.projectData.endDate).getFullYear();
       this.getDescriptionLimitInfo();
     }
 
@@ -427,18 +428,21 @@ export class BasicDataComponent implements OnInit {
       return false;
     }
 
-    if ((startingYear > this.previousStartingYear) || (endingYear < this.previousEndingYear)) {
-      this.modalService.open('confirmation-modal');
-      return false;
+    if (this.projectId > 0) {
+      if ((startingYear > this.previousStartingYear) || (endingYear < this.previousEndingYear)) {
+        this.modalService.open('confirmation-modal');
+        return false;
+      } else {
+        this.saveProject();
+      }
     } else {
-      this.saveProject(frm);
+      this.saveProject();
     }
+    
   }
 
-  saveProject(frm: any) {
+  saveProject() {
     this.modalService.close('confirmation-modal');
-    this.entryForm = frm;
-    
 
     var isOrgProvided = false;
     var userOrgInFunders = this.funderModel.selectedFunders.filter(f => f.id == this.userOrgId);
@@ -464,11 +468,12 @@ export class BasicDataComponent implements OnInit {
       this.projectService.updateProject(this.projectId, this.projectData).subscribe(
         data => {
           if (data) {
-            this.previousStartingYear = this.projectData.startingFinancialYear;
-            this.previousEndingYear = this.projectData.endingFinancialYear;
+            this.previousStartingYear = new Date(this.projectData.startDate).getFullYear();
+            this.previousEndingYear = new Date(this.projectData.endDate).getFullYear();
             this.saveProjectFunders();
             this.adjustProjectDisbursements();
             this.updateProjectIdToParent();
+            this.calculateDisbursements();
           } else {
             this.blockUI.stop();
           }
@@ -480,13 +485,14 @@ export class BasicDataComponent implements OnInit {
       this.projectService.addProject(this.projectData).subscribe(
         data => {
           if (data) {
-            this.previousStartingYear = this.projectData.startingFinancialYear;
-            this.previousEndingYear = this.projectData.endingFinancialYear;
+            this.previousStartingYear = new Date(this.projectData.startDate).getFullYear();
+            this.previousEndingYear = new Date(this.projectData.endDate).getFullYear();
             this.projectId = data;
             localStorage.setItem('active-project', data);
             this.updateProjectIdToParent();
             this.adjustProjectDisbursements();
             this.saveProjectFunders();
+            this.calculateDisbursements();
           } else {
             this.blockUI.stop();
           }
@@ -502,6 +508,7 @@ export class BasicDataComponent implements OnInit {
         totalDisbursements += parseFloat(d.amount);
       });
     }
+    this.projectTotalValue = (this.projectData.projectValue) ? parseFloat(this.projectData.projectValue) : 0;
     this.totalDisbursementsValue = totalDisbursements;
   }
 

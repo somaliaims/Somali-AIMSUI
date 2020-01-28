@@ -24,7 +24,7 @@
             <form class="form-signin" (ngSubmit)="iatiForm.form.valid && saveIATISettings()" #iatiForm="ngForm">
 
               <div cs="form-group">
-                <label for="baseUrl">Base Url</label>
+                <label for="baseUrl">Datastore query link</label>
                 <input type="url" class="form-control" id="baseUrl" [(ngModel)]="model.baseUrl" name="baseUrl"
                   #baseUrl="ngModel" required>
                 <div *ngIf="iatiForm.submitted" [hidden]="baseUrl.valid" class="alert alert-danger">

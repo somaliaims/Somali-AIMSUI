@@ -287,7 +287,6 @@ export class DataEntryComponent implements OnInit {
 
           if (data.disbursements && data.disbursements.length > 0) {
             this.currentProjectDisbursements = data.disbursements;
-            console.log(data.disbursements);
           }
 
           if (data.markers && data.markers.length > 0) {
