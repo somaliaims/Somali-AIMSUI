@@ -490,7 +490,7 @@ export class BasicDataComponent implements OnInit {
             this.projectId = data;
             localStorage.setItem('active-project', data);
             this.updateProjectIdToParent();
-            this.adjustProjectDisbursements();
+            this.createProjectDisbursements();
             this.saveProjectFunders();
             this.calculateDisbursements();
           } else {
@@ -611,6 +611,17 @@ export class BasicDataComponent implements OnInit {
   cancelSaving() {
     this.modalService.close('confirmation-modal');
     this.modalService.close('confirmation-modal-source');
+  }
+
+  createProjectDisbursements() {
+    this.projectService.createProjectDisbursements(this.projectId.toString()).subscribe(
+      data => {
+        if (data) {
+          this.updateDisbursementsToParent(data);
+          this.calculateDisbursements();
+        }
+      }
+    );
   }
 
   adjustProjectDisbursements() {
