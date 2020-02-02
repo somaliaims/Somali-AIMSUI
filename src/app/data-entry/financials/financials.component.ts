@@ -266,7 +266,7 @@ export class FinancialsComponent implements OnInit {
         var equalSplit = (remainingAmount / countZeros);
          this.projectDisbursements.forEach((d) => {
           if (d.amount == 0 && d.disbursementType == 2) {
-            d.amount = equalSplit;
+            d.amount = Math.round(equalSplit);
           }
          });
          this.calculateDisbursementsTotal();
