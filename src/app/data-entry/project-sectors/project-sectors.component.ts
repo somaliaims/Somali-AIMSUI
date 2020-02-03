@@ -53,6 +53,7 @@ export class ProjectSectorsComponent implements OnInit {
   newProjectSectors: any = [];
   sourceSectorsList: any = [];
   sectorsSettings: any = {};
+  sectorsWithCodeSettings: any = {};
   sectorHelp: any = { sectorType: null, sector: null, mappingSector: null, percentage: null };
   locationHelp: any = { location: null, percentage: null };
   mappingsCount: number = 0;
@@ -105,7 +106,7 @@ export class ProjectSectorsComponent implements OnInit {
     this.sectorsSettings = {
       singleSelection: true,
       idField: 'id',
-      textField: 'sectorName',
+      textField: 'sectorWithCode',
       selectAllText: '',
       unSelectAllText: '',
       itemsShowLimit: 5,
