@@ -103,7 +103,7 @@
                 <tr *ngFor="let sector of filteredSectorsForType">
                   <td [class.disable]="checkIfSectorMapped(sector.id)">
                     <span class="float-left">
-                      {{sector.sectorName}}<br />
+                      {{sector.sectorWithCode}}<br />
                     </span>
                     <span class="float-right margin-right-15">
                       <button type="button" id="select-{{sector.id}}" class="btn btn-success btn-sm"

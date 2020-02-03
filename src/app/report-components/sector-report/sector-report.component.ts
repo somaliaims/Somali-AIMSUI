@@ -928,7 +928,7 @@ export class SectorReportComponent implements OnInit {
     var totalFunding = 0;
     if (this.reportDataList && this.reportDataList.sectorProjectsList) {
       this.reportDataList.sectorProjectsList.forEach(function (p) {
-        totalFunding += p.totalFunding;
+        totalFunding += p.totalDisbursements;
       });
     }
     return totalFunding;
