@@ -85,7 +85,7 @@
               <div class="row margin-top-10">
                 <div class="col-lg-3 col-md-3">
                   <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
-                    title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel();onChangeParentSector();">
+                    title="Sector level" #sectorLevel="ngModel" (change)="manageSectorLevel();onChangeParentSector();">
                     <option value="0">--Sector levels--</option>
                     <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
                     </option>
@@ -93,12 +93,31 @@
                 </div>
                 <div [class.disable]="(model.sectorLevel == 0)" class="col-lg-3 col-md-3">
                   <select class="form-control" id="sectorId" [(ngModel)]="model.sectorId" name="sectorId"
-                    title="Select a sector" #sectorId="ngModel" required>
+                    title="Select a sector" #sectorId="ngModel" >
                     <option value="0">--Select sector--</option>
                     <option *ngFor="let sector of sectorsList" [value]="sector.id">{{sector.sectorName}}
                     </option>
                   </select>
                 </div>
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="markerId" [(ngModel)]="model.markerId" name="markerId"
+                    title="Select a marker" (change)="getSelectedMarkerValues()" #sectorId="ngModel">
+                    <option value="0">--Select marker--</option>
+                    <option *ngFor="let marker of markersList" [value]="marker.id">{{marker.fieldTitle}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="markerValue" [(ngModel)]="model.markerValue" name="markerValue"
+                    title="Select marker value" #sectorId="ngModel">
+                    <option value="null">--Marker value--</option>
+                    <option *ngFor="let value of markerValues" [value]="value.value">{{value.value}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row margin-top-10">
                 <div class="col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
                     (change)="selectCurrency();currencyChanged();" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
@@ -115,19 +134,21 @@
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
-              </div>
 
-              <div [class.disable]="!defaultCurrency">
-                  <div class="float-right">
-                    <button type="submit" class="btn btn-info">{{btnReportText}}</button>
-                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger margin-left-2 margin-top-2"
-                      (click)="generatePDF()">Download PDF</button>
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2 margin-left-2">Download spreadsheet</a>
-                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
-                      class="btn btn-warning margin-left-2 margin-top-2" (click)="printReport()">Print report</button>
-                      <button *ngIf="isAnyFilterSet" type="button"
-                      class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
-                  </div>
+                <div class="col-md-6">
+                  <div [class.disable]="!defaultCurrency">
+                    <div class="float-right">
+                      <button type="submit" class="btn btn-info">{{btnReportText}}</button>
+                      <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger margin-left-2 margin-top-2"
+                        (click)="generatePDF()">Download PDF</button>
+                      <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2 margin-left-2">Download spreadsheet</a>
+                      <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
+                        class="btn btn-warning margin-left-2 margin-top-2" (click)="printReport()">Print report</button>
+                        <button *ngIf="isAnyFilterSet" type="button"
+                        class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
+                    </div>
+                </div>
+                </div>
               </div>
 
             </form>

@@ -608,7 +608,7 @@ export class SectorReportComponent implements OnInit {
               this.manageDataToDisplay();
             }
           }
-        }, 1000);
+        }, 2000);
       }
     );
 

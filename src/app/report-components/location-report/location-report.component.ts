@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { Settings } from 'src/app/config/settings';
 import { SectorService } from 'src/app/services/sector.service';
+import { MarkerService } from 'src/app/services/marker.service';
 
 @Component({
   selector: 'location-report',
@@ -37,6 +38,8 @@ export class LocationReportComponent implements OnInit {
   projects: any = [];
   allSectorsList: any = [];
   sectorsList: any = [];
+  markersList: any = [];
+  markerValues: any = [];
   sectorIds: any = [];
   subSectorIds: any = [];
   subSubSectorIds: any = [];
@@ -264,7 +267,8 @@ export class LocationReportComponent implements OnInit {
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], sectorId: 0, 
-    noLocationOption: this.noLocationCodes.PROJECTS_WITH_LOCATIONS, sectorLevel: 0
+    noLocationOption: this.noLocationCodes.PROJECTS_WITH_LOCATIONS, sectorLevel: 0,
+    markerId: 0, markerValue: null
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -273,7 +277,8 @@ export class LocationReportComponent implements OnInit {
     private locationService: LocationService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private currencyService: CurrencyService,
     private errorModal: ErrorModalComponent, private route: ActivatedRoute, 
-    private projectService: ProjectService, private sectorService: SectorService
+    private projectService: ProjectService, private sectorService: SectorService,
+    private markerService: MarkerService
   ) { }
 
   ngOnInit() {
@@ -298,6 +303,8 @@ export class LocationReportComponent implements OnInit {
           this.model.startingYear = (params.syear) ? params.syear : 0;
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.model.sectorId = (params.sectorId) ? params.sectorId : 0;
+          this.model.markerId = (params.mid) ? params.mid : 0;
+          this.model.markerValue = (params.mvalue) ? params.mvalue: null;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
@@ -317,6 +324,7 @@ export class LocationReportComponent implements OnInit {
     this.getOrganizationsList();
     this.loadFinancialYears();
     this.getSectorsList();
+    this.getMarkers();
 
     this.locationsSettings = {
       singleSelection: false,
@@ -509,6 +517,8 @@ export class LocationReportComponent implements OnInit {
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       locationIds: this.model.selectedLocations.map(l => l.id),
       sectorId: this.model.sectorId,
+      markerId: this.model.markerId,
+      markerValue: this.model.markerValue,
       chartType: chartType
     };
 
@@ -541,7 +551,6 @@ export class LocationReportComponent implements OnInit {
               
               this.model.selectedCurrency = this.defaultCurrency;
               setTimeout(() => {
-                this.selectCurrency();
                 this.datedToday = this.storeService.getLongDateString(currentDate);
                 if (this.loadReport) {
                   this.loadReport = false;
@@ -551,6 +560,10 @@ export class LocationReportComponent implements OnInit {
                   }
                 }
               }, 1000);
+
+              setTimeout(() => {
+                this.selectCurrency();
+              }, 2000);
             }
           }
           this.blockUI.stop();
@@ -579,7 +592,7 @@ export class LocationReportComponent implements OnInit {
                 this.manageDataToDisplay();
               }
               this.model.selectedCurrency = this.defaultCurrency;
-              this.selectCurrency();
+              
               setTimeout(() => {
                 this.datedToday = this.storeService.getLongDateString(currentDate);
                 if (this.loadReport) {
@@ -589,6 +602,7 @@ export class LocationReportComponent implements OnInit {
                     this.manageDataToDisplay();
                   }
                 }
+                this.selectCurrency();
               }, 2000);
             }
           }
@@ -1122,6 +1136,29 @@ export class LocationReportComponent implements OnInit {
       } else {
         this.isAnyFilterSet = true;
       }
+  }
+
+  getMarkers() {
+    this.markerService.getMarkers().subscribe(
+      data => {
+        if (data) {
+          this.markersList = data;
+          if (this.model.markerId) {
+            this.getSelectedMarkerValues();
+          }
+        }
+      }
+    );
+  }
+
+  getSelectedMarkerValues() {
+    this.markerValues = [];
+    if (this.model.markerId) {
+      var values = this.markersList.filter(m => m.id == this.model.markerId).map(m => m.values);
+      if (values) {
+        this.markerValues = JSON.parse(values);
+      };
+    }
   }
 
   setFilter() {

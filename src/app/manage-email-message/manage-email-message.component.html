@@ -50,7 +50,7 @@
                     <div class="form-group">
                       <label for="footerMessage">Footer message</label>
                       <input type="text" class="form-control" id="footerMessage" [(ngModel)]="model.footerMessage" name="footerMessage"
-                          #footerMessage="ngModel" maxlength="100" required>
+                          #footerMessage="ngModel" maxlength="100">
                       <div *ngIf="messageForm.submitted" [hidden]="footerMessage.valid" class="alert alert-danger">
                         Footer message is required
                       </div>
@@ -62,15 +62,21 @@
                 <div class="col-md-6">
                   <div class="alert alert-info">
                     <h6>Message preview</h6>
+                    <p>Dear User, </p>
                     <p>
                       {{model.message}}
                     </p>
-                    <p>
-                      <i>Text produced by the system will go here</i>
+                    <p class="text-success">
+                      <i>Facts produced by the system</i>
                     </p>
-                    <p>
+                    <p *ngIf="model.footerMessage">
                       {{model.footerMessage}}
                     </p>
+                    <p *ngIf="!model.footerMessage">
+                      If you need further assistance, please submit a help request via the contact form in the AIMS.
+                      <i><small class="text-success">(If you do not set footer, this message will appear)</small></i>
+                    </p>
+                      <h6>AIMS Support Team</h6>
                   </div>
                 </div>
           </div>

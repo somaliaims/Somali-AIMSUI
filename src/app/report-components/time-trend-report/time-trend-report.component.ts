@@ -424,7 +424,7 @@ export class TimeTrendReportComponent implements OnInit {
           this.model.selectedCurrency = this.defaultCurrency;
           setTimeout(() => {
             this.selectCurrency();
-          }, 1000);
+          }, 2000);
           this.setupChartData();
         }
         this.blockUI.stop();
