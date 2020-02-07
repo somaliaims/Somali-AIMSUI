@@ -39,7 +39,7 @@
                   </td>
               <td>
                 <button [class.disable]='(selectedOrganizations.length < 2)'
-                  class="btn btn-info btn-lg pull-right float-right" (click)="mergeOrganizations()">Merge
+                  class="btn btn-info btn-lg pull-right float-right" (click)="checkIfOrganizationsHaveUsers()">Merge
                   organizations</button>
               </td>
             </tr>
@@ -133,3 +133,4 @@
 </div>
 
 <error-modal message={{errorMessage}}></error-modal>
+<info-modal message={{successMessage}}></info-modal>

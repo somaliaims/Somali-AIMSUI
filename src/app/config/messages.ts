@@ -14,6 +14,7 @@ export const Messages = {
     INVALID_DATE: 'Enter valid date',
     INVALID_DATE_RANGE: 'Start date cannot be greater than end date',
     INVALID_YEAR: 'Invalid year provided',
+    MERGE_ORG_REQUESTED: 'Merge request for the selected organizations is forwarded successfully to other members of the organizations. You will be notified about any changes to the status of request.',
     INVALID_START_END_YEAR: 'Starting year cannot be greater than ending year',
     INVALID_FUTURE_DATE: 'You cannot select a date in future',
     PASSWORD_RESET_SENT: 'Password reset link sent to the provided email Id',

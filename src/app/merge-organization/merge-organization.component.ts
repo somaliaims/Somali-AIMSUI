@@ -8,6 +8,7 @@ import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
 import { OrganizationTypeService } from '../services/organization-type.service';
 import { SecurityHelperService } from '../services/security-helper.service';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
 
 @Component({
   selector: 'app-merge-organization',
@@ -24,6 +25,7 @@ export class MergeOrganizationComponent implements OnInit {
   selectedOrganizations: any = [];
   model = {title: null, name: null, organizationTypeId: 0 };
   errorMessage: string = null;
+  successMessage: string = null;
   isTextReadOnly: boolean = false;
   inputTextHolder: string = 'Enter organization name to search';
 
@@ -32,6 +34,7 @@ export class MergeOrganizationComponent implements OnInit {
     private errorModal: ErrorModalComponent, private router: Router, 
     private storeService: StoreService,
     private organizationTypeService: OrganizationTypeService,
+    private infoModal: InfoModalComponent,
     private securityService: SecurityHelperService) { 
   }
 
@@ -89,7 +92,7 @@ export class MergeOrganizationComponent implements OnInit {
     this.selectedOrganizations = this.selectedOrganizations.filter(o => o.id != id);
   }
 
-  mergeOrganizations() {
+  checkIfOrganizationsHaveUsers() {
     if (this.model.organizationTypeId == 0) {
       this.errorMessage = 'Organization type is required';
       this.errorModal.openModal();
@@ -107,8 +110,44 @@ export class MergeOrganizationComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
+    var ids = this.selectedOrganizations.map(org => org.id);
+    var model = {
+      ids: ids
+    };
+    this.blockUI.start('Wait working on merge...');
+    this.organizationService.checkIfOrganizationsHaveUsers(model).subscribe(
+      data => {
+        if (data) {
+          if (data.returnedId && data.returnedId > 0) {
+            this.mergeOrganizationsRequest();
+          } else if (data.returnedId == 0) {
+            this.mergeOrganizations();
+          } else {
+            this.blockUI.stop();
+          }
+        }
+      }
+    );
+  }
 
-    this.blockUI.start('Merging organizations...');
+  mergeOrganizationsRequest() {
+    var ids = this.selectedOrganizations.map(org => org.id);
+    var model = {
+      newName: this.model.name,
+      Ids: ids,
+      organizationTypeId: this.model.organizationTypeId
+    };
+    this.organizationService.addMergeOrganizationsRequest(model).subscribe(
+      data => {
+        if (data) {
+          this.selectedOrganizations = [];
+          
+        }
+      }
+    );
+  }
+
+  mergeOrganizations() {
     var ids = this.selectedOrganizations.map(org => org.id);
     var model = {
       newName: this.model.name,

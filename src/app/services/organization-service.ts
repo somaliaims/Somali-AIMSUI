@@ -51,6 +51,27 @@ export class OrganizationService {
     );
   }
 
+  getMergeOrganizationRequestsForUser() {
+    var url = this.urlHelper.getMergeOrganizationsRequestsForUserUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Merge Organizations Requests for User'))
+    );
+  }
+
+  approveMergeOrganizationsRequest(id: string) {
+    var url = this.urlHelper.getApproveMergeOrganizationsRequestUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Approve Merge Organizations Requests'))
+    );
+  }
+
+  rejectMergeOrganizationsRequest(id: string) {
+    var url = this.urlHelper.getApproveMergeOrganizationsRequestUrl(id);
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Reject Merge Organizations Requests'))
+    );
+  }
+
   getOrganizationsWithType() {
     var url = this.urlHelper.getOrganizationWithTypeUrl();
     return this.httpClient.get<any>(url);
@@ -96,6 +117,19 @@ export class OrganizationService {
     var url = this.urlHelper.getSearchOrganizationUrl(id);
     return this.httpClient.get(url, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('Organization')));
+  }
+
+  checkIfOrganizationsHaveUsers(model: any) {
+    var url = this.urlHelper.getIfOrganizationsHaveUsersUrl();
+    return this.httpClient.post(url, model, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Organizations have users')));
+  }
+
+  addMergeOrganizationsRequest(model: any) {
+    var url = this.urlHelper.getMergeOrganizationsRequestUrl();
+    return this.httpClient.post(url,
+      JSON.stringify(model), httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('New Merge Organizations Request')));
   }
 
   addOrganization(model: any) {

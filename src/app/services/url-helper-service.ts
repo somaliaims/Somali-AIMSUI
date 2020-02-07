@@ -31,6 +31,26 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationsList);
     }
 
+    getMergeOrganizationsRequestUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationsMergeRequest);
+    }
+
+    getIfOrganizationsHaveUsersUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationsHaveUsersUrl);
+    }
+
+    getMergeOrganizationsRequestsForUserUrl() {
+        return (this.BASE_URL + urlsList.urls.getOrgMergeRequestsForUser);
+    }
+
+    getApproveMergeOrganizationsRequestUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.approveOrganizationMergeRequest + id);
+    }
+
+    getRejectMergeOrganizationsRequestUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.rejectOrganizationsMergeRequest + id);
+    }
+
     getMergeOrganizationsUrl() {
         return (this.BASE_URL + urlsList.urls.mergeOrganization);
     }
