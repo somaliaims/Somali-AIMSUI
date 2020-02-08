@@ -140,9 +140,11 @@ export class MergeOrganizationComponent implements OnInit {
     this.organizationService.addMergeOrganizationsRequest(model).subscribe(
       data => {
         if (data) {
+          this.successMessage = Messages.MERGE_ORG_REQUESTED;
+          this.infoModal.openModal();
           this.selectedOrganizations = [];
-          
         }
+        this.blockUI.stop();
       }
     );
   }

@@ -142,6 +142,30 @@
           </table>
       </div>
 
+      <div *ngIf="currentTab == tabConstants.MERGE_ORGS_REQUESTS" class="col-md-12 margin-top-10">
+        <p class="text-info">
+          This section lists all the requests for organizations merge where you are member of an
+          organization. Please accept or reject a merge, so that AIMS takes the required steps.
+        </p>
+        <table class="table table-striped small">
+          <tr>
+            <th>Organizations to merge</th>
+            <th class="text-right">Action</th>
+          </tr>
+          <tr *ngFor="let request of organizationMergeRequests">
+            <td>{{formatMergeOrganizations(request.organizations)}}</td>
+            <td>
+              <span class="float-right">
+                <button class="btn btn-warning btn-sm" id="btn-org-merge-approve-{{i}}-{{request.projectId}}-{{request.userId}}"
+                (click)="approveDeletionRequest($event)">Approve request</button>&nbsp;
+              <button class="btn btn-danger btn-sm" id="btn-org-merge-reject-{{i}}-{{request.projectId}}-{{request.userId}}"
+                (click)="unApproveDeletionRequest($event)">Reject request</button>
+            </span>
+            </td>
+          </tr>
+        </table>
+      </div>
+
     </div>
   </block-ui>
 </div>

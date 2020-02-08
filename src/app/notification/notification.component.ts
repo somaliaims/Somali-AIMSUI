@@ -7,6 +7,7 @@ import { StoreService } from '../services/store-service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { ProjectService } from '../services/project.service';
+import { OrganizationService } from '../services/organization-service';
 
 @Component({
   selector: 'app-notification',
@@ -17,6 +18,7 @@ export class NotificationComponent implements OnInit {
   notifications: any = [];
   projectRequests: any = [];
   projectDeletionRequests: any = [];
+  organizationMergeRequests: any = [];
   isLoading: boolean = true;
   showNoFound: boolean = false;
   infoMessage: string = null;
@@ -31,7 +33,8 @@ export class NotificationComponent implements OnInit {
   tabConstants: any = {
     'NOTIFICATIONS': 'notifications',
     'REQUESTS': 'requests',
-    'DELETION_REQUESTS': 'deletionRequests'
+    'DELETION_REQUESTS': 'deletionRequests',
+    'MERGE_ORGS_REQUESTS': 'organizationMergeRequests'
   };
 
   deletionStatus: any = {
@@ -43,25 +46,29 @@ export class NotificationComponent implements OnInit {
   displayTabs: any = [
     { visible: true, identity: 'notifications' },
     { visible: false, identity: 'requests' },
-    { visible: false, identity: 'deletionRequests' }
+    { visible: false, identity: 'deletionRequests' },
+    { visible: false, identity: 'organizationMergeRequests' }
   ];
 
   notificationTypeCodes: any = {
     'NOTIFICATIONS': 1,
     'REQUESTS': 2,
-    'PROJECT_DELETION_REQUESTS': 3
+    'PROJECT_DELETION_REQUESTS': 3,
+    'MERGE_ORGS_REQUESTS': 4
   };
 
   notificationTypes: any = [
     { id: 1, text: 'Notifications' },
     { id: 2, text: 'Project permission requests' },
     { id: 3, text: 'Project deletion requests' },
+    { id: 4, text: 'Merge organizations requests' }
   ];
 
   constructor(private notificationService: NotificationService, private infoModal: InfoModalComponent,
     private errorModal: ErrorModalComponent, private storeService: StoreService,
     private securityService: SecurityHelperService, private router: Router,
-    private projectService: ProjectService) {
+    private projectService: ProjectService,
+    private organizationService: OrganizationService) {
 
   }
 
@@ -79,6 +86,7 @@ export class NotificationComponent implements OnInit {
     this.getNotifications();
     this.getProjectRequests();
     this.getProjectDeletionRequests();
+    this.getMergeOrganizationRequestsForUser();
     this.displayOption = this.notificationTypeCodes.NOTIFICATIONS;
   }
 
@@ -89,6 +97,8 @@ export class NotificationComponent implements OnInit {
       this.showRequests();
     } else if (this.displayOption == this.notificationTypeCodes.PROJECT_DELETION_REQUESTS) {
       this.showDeletionRequests();
+    } else if (this.displayOption == this.notificationTypeCodes.MERGE_ORGS_REQUESTS) {
+      this.showMergeOrganizationsRequests();
     }
   }
 
@@ -126,6 +136,10 @@ export class NotificationComponent implements OnInit {
     this.manageTabsDisplay(this.tabConstants.DELETION_REQUESTS);
   }
 
+  showMergeOrganizationsRequests() {
+    this.manageTabsDisplay(this.tabConstants.MERGE_ORGS_REQUESTS);
+  }
+
   reloadPage() {
     location.reload();
   }
@@ -133,11 +147,20 @@ export class NotificationComponent implements OnInit {
   getProjectRequests() {
     this.projectService.getProjectMembershipRequests().subscribe(
       data => {
-        console.log(data);
         if (data) {
           this.projectRequests = data;
         }
         this.isLoading = false;
+      }
+    );
+  }
+
+  getMergeOrganizationRequestsForUser() {
+    this.organizationService.getMergeOrganizationRequestsForUser().subscribe(
+      data => {
+        if (data) {
+          this.organizationMergeRequests = data;
+        }
       }
     );
   }
@@ -255,6 +278,10 @@ export class NotificationComponent implements OnInit {
         tab.visible = false;
       }
     }
+  }
+
+  formatMergeOrganizations(orgs: any) {
+    return (orgs) ? orgs.map(o => o.organizationName).join(',') : '';
   }
 
   stopScreenBlocker() {
