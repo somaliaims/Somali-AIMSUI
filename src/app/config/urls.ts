@@ -58,6 +58,7 @@ export const urls = {
 	deleteSector: "Sector/Delete/",
 	sectorChildren: "Sector/GetChildren/",
 	financialYearsUrl: "FinancialYear",
+	envelopeFinancialYearsUrl: "FinancialYear/GetForEnvelope",
 	financialYearsRangeUrl: "FinancialYear/AddRange",
 	getSector: "Sector/GetById/",
 	setSectorChild: "Sector/SetChild/",

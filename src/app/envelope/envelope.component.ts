@@ -9,6 +9,7 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { StoreService } from '../services/store-service';
 import { EnvelopeTypeService } from '../services/envelope-type.service';
 import { Settings } from '../config/settings';
+import { FinancialYearService } from '../services/financial-year.service';
 
 @Component({
   selector: 'app-envelope',
@@ -20,9 +21,11 @@ export class EnvelopeComponent implements OnInit {
   permissions: any = {};
   userOrganizationId: number = 0;
   manualExchangeRate: number = 0;
+  yearsLoading: boolean = false;
 
   envelopeTypes: any = [];
   yearsList: any = [];
+  financialYears: any = [];
   currenciesList: any = [];
   exchangeRates: any = [];
   isError: boolean = false;
@@ -54,7 +57,8 @@ export class EnvelopeComponent implements OnInit {
   constructor(private securityService: SecurityHelperService, private router: Router,
     private envelopeService: EnvelopeService, private currencyService: CurrencyService,
     private errorModal: ErrorModalComponent, private storeService: StoreService,
-    private envelopeTypeService: EnvelopeTypeService) { }
+    private envelopeTypeService: EnvelopeTypeService,
+    private yearsService: FinancialYearService) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.entry);
@@ -63,6 +67,7 @@ export class EnvelopeComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.getFinancialYears();
     this.getAverageExchangeRates();
     this.getCurrenciesList();
     this.getEnvelopeData();
@@ -77,6 +82,14 @@ export class EnvelopeComponent implements OnInit {
         if (data) {
           this.envelopeTypes = data;
         }
+      }
+    );
+  }
+
+  getFinancialYears() {
+    this.yearsService.getYearsForEnvelope().subscribe(
+      data => {
+        this.yearsList = data
       }
     );
   }

@@ -105,7 +105,7 @@
           </li>
           <li *ngIf="isLoggedIn" class="nav-item"><span class="nav-link small highlight-color margin-top-5"
               title="You are logged in as {{loggedInAsFullName}}">Logged in as {{loggedInAs}}</span></li>
-          <li *ngIf="!isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="['/login']">Log in</a>
+          <li *ngIf="!isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="['/login']">Log in / Register</a>
           <li *ngIf="isLoggedIn" class="nav-item"> <a class="nav-link" [routerLink]="" (click)="logout($event)">Log
               out</a>
         </ul>

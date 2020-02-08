@@ -556,7 +556,7 @@ export class UrlHelperService {
     }
 
     getIATIOrganizationsUrl() {
-        return (this.BASE_URL + urlsList.urls.iatiOrganizations);
+        return (this.BASE_URL + urlsList.urls.iatiOrganizationsUrl);
     }
 
     getIATIProjectsUrl() {
@@ -581,6 +581,10 @@ export class UrlHelperService {
 
     getFinancialYearsUrl() {
         return (this.BASE_URL + urlsList.urls.getFinancialYears);
+    }
+
+    getFinancialYearsForEnvelopeUrl() {
+        return (this.BASE_URL + urlsList.urls.envelopeFinancialYearsUrl);
     }
 
     getFinancialYearRangeUrl() {

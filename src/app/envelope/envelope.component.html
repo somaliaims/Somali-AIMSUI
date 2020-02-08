@@ -28,9 +28,12 @@
                   <thead>
                     <tr>
                       <th>Envelope type</th>
-                      <th class="text-center">{{previousYear}}</th>
+                      <!--<th class="text-center">{{previousYear}}</th>
                       <th class="text-center">{{currentYear}}</th>
-                      <th class="text-center">{{nextYear}}</th>
+                      <th class="text-center">{{nextYear}}</th>-->
+                      <th class="text-center" *ngFor="let year of yearsList">
+                        {{year.label}}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -42,9 +45,12 @@
                     </tr>
                     <tr>
                       <td><b>Total</b></td>
-                      <td class="text-center"><b>{{formatNumber(yearlyTotals[previousYear])}}</b></td>
+                      <!--<td class="text-center"><b>{{formatNumber(yearlyTotals[previousYear])}}</b></td>
                       <td class="text-center"><b>{{formatNumber(yearlyTotals[currentYear])}}</b></td>
-                      <td class="text-center"><b>{{formatNumber(yearlyTotals[nextYear])}}</b></td>
+                      <td class="text-center"><b>{{formatNumber(yearlyTotals[nextYear])}}</b></td>-->
+                      <td class="text-center" *ngFor="let year of yearsList">
+                        <b>{{formatNumber(yearlyTotals[year.financialYear])}}</b>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

@@ -21,6 +21,12 @@ export class FinancialYearService {
       catchError(this.storeService.handleError<any>('Financial Years')));
   }
 
+  getYearsForEnvelope() {
+    var url = this.urlHelper.getFinancialYearsForEnvelopeUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Financial Years')));
+  }
+
   getSettings() {
     var url = this.urlHelper.getFinancialYearSettingsUrl();
     return this.httpClient.get(url, httpOptions).pipe(
