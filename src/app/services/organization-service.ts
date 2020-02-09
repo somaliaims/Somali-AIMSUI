@@ -66,7 +66,7 @@ export class OrganizationService {
   }
 
   rejectMergeOrganizationsRequest(id: string) {
-    var url = this.urlHelper.getApproveMergeOrganizationsRequestUrl(id);
+    var url = this.urlHelper.getRejectMergeOrganizationsRequestUrl(id);
     return this.httpClient.get(url, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('Reject Merge Organizations Requests'))
     );

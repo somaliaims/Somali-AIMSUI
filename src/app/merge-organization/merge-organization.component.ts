@@ -143,6 +143,8 @@ export class MergeOrganizationComponent implements OnInit {
           this.successMessage = Messages.MERGE_ORG_REQUESTED;
           this.infoModal.openModal();
           this.selectedOrganizations = [];
+          this.model.name = null;
+          this.model.organizationTypeId = 0;
         }
         this.blockUI.stop();
       }

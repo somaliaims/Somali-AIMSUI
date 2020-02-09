@@ -42,7 +42,7 @@
                     <tr *ngFor="let org of filteredOrganizations">
                       <td>{{org.organizationName}}</td>
                       <td>
-                        <button [class.disable]="selectedOrganizationId == org.id" type="button" id="org-{{org.id}}" (click)="selectOrganization($event)" class="btn btn-success"><i id="iorg-{{org.id}}" class="fa fa-check"></i></button>
+                        <button [class.disable]="selectedOrganizationId == org.id" type="button" id="org-{{org.id}}" (click)="selectOrganization($event)" class="btn btn-success btn-sm">Select</button>
                       </td>
                     </tr>
                   </table>

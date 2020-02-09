@@ -219,6 +219,38 @@ export class NotificationComponent implements OnInit {
     }
   }
 
+  approveOrganizationsMergeRequest(e) {
+    var arr = e.currentTarget.id.split('-');
+    var requestId = arr[2];
+    if (requestId) {
+      this.blockUI.start('Wait approving and merging organizations');
+      this.organizationService.approveMergeOrganizationsRequest(requestId).subscribe(
+        data => {
+          if (data) {
+            this.reloadPage();
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  unApproveOrganizationsMergeRequest(e) {
+    var arr = e.currentTarget.id.split('-');
+    var requestId = arr[2];
+    if (requestId) {
+      this.blockUI.start('Wait rejecting merge organizations request');
+      this.organizationService.rejectMergeOrganizationsRequest(requestId).subscribe(
+        data => {
+          if (data) {
+            this.reloadPage();
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
   approveDeletionRequest(e) {
     var arr = e.currentTarget.id.split('-');
     var projectId = arr[2];
@@ -281,7 +313,20 @@ export class NotificationComponent implements OnInit {
   }
 
   formatMergeOrganizations(orgs: any) {
-    return (orgs) ? orgs.map(o => o.organizationName).join(',') : '';
+    var resultStr = '';
+    if (orgs && orgs.length) {
+      var orgsList = orgs.map(o => o.organizationName);
+      if (orgsList.length > 0) {
+        var strList = [];
+        strList.push('<ul>');
+        orgsList.forEach((o) => {
+          strList.push('<li>' + o + '</li>');
+        });
+        strList.push('</ul>');
+        resultStr = strList.join('');
+      }
+    }
+    return resultStr;
   }
 
   stopScreenBlocker() {

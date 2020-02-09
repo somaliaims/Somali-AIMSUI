@@ -153,13 +153,16 @@
             <th class="text-right">Action</th>
           </tr>
           <tr *ngFor="let request of organizationMergeRequests">
-            <td>{{formatMergeOrganizations(request.organizations)}}</td>
+            <td>
+              <div [innerHTML]="formatMergeOrganizations(request.organizations)">
+              </div>
+            </td>
             <td>
               <span class="float-right">
-                <button class="btn btn-warning btn-sm" id="btn-org-merge-approve-{{i}}-{{request.projectId}}-{{request.userId}}"
-                (click)="approveDeletionRequest($event)">Approve request</button>&nbsp;
-              <button class="btn btn-danger btn-sm" id="btn-org-merge-reject-{{i}}-{{request.projectId}}-{{request.userId}}"
-                (click)="unApproveDeletionRequest($event)">Reject request</button>
+                <button class="btn btn-warning btn-sm" id="btnmerge-approve-{{request.id}}"
+                (click)="approveOrganizationsMergeRequest($event)">Approve request</button>&nbsp;
+              <button class="btn btn-danger btn-sm" id="btnmerge-reject-{{request.id}}"
+                (click)="unApproveOrganizationsMergeRequest($event)">Reject request</button>
             </span>
             </td>
           </tr>
