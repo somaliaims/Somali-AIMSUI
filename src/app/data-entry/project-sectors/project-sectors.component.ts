@@ -548,9 +548,6 @@ export class ProjectSectorsComponent implements OnInit {
     );
   }
 
-  
-
-
   showSectorsSource() {
     this.currentTab = this.tabConstants.SECTORS_SOURCE;
   }
@@ -673,6 +670,20 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   proceedToMarkers() {
+    var unSavedSectors = this.currentProjectSectors.filter(s => !s.saved);
+    if (unSavedSectors.length > 0) {
+      this.errorMessage = 'You have unsaved sectors data. Please save data first before proceeding next.';
+      this.errorModal.openModal();
+      return false;
+    }
+    var unSavedLocations = this.currentProjectLocations.filter(l => !l.saved);
+    if (unSavedLocations.length > 0) {
+      this.errorMessage = 'You have unsaved locations data. Please save data first before proceeding next.';
+      this.errorModal.openModal();
+      return false;
+    }
+    this.updateSectorsToParent();
+    this.updateLocationsToParent();
     this.proceedToNext.emit();
   }
 

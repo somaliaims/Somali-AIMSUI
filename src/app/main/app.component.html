@@ -56,6 +56,9 @@
               <a *ngIf="permissions.canEditCustomFields" class="dropdown-item" [routerLink]="['/markers']">Markers</a>
               <a *ngIf="permissions.canEditCustomFields" class="nav-link" class="dropdown-item" [routerLink]="['/help-text']">Help text</a>
               <div class="dropdown-divider"></div>
+              <h5 class="dropdown-header">Notifications management</h5>
+              <a class="dropdown-item" [routerLink]="['/notification']">Notifications</a>
+              <div class="dropdown-divider"></div>
               <h5 *ngIf="permissions.canManage" class="dropdown-header">Users & organizations management</h5>
               <h5 *ngIf="!permissions.canManage" class="dropdown-header">User management</h5>
               <a class="dropdown-item" [routerLink]="['/manage-account']">Account management</a>
