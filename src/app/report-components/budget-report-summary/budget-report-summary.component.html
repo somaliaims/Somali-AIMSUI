@@ -37,11 +37,11 @@
                 </div>
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">{{btnReportText}}</button>&nbsp;
-                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger"
+                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>&nbsp;
+                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button" class="btn btn-danger margin-top-2"
                       (click)="generatePDF()">Download PDF</button>&nbsp;
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
-                    <button *ngIf="reportDataList && reportDataList.projects" type="button" class="btn btn-warning"
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2">Download spreadsheet</a>&nbsp;
+                    <button *ngIf="reportDataList && reportDataList.projects" type="button" class="btn btn-warning margin-top-2"
                       (click)="printReport()">Print report</button>
                   </span>
                 </div>

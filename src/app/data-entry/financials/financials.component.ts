@@ -180,7 +180,7 @@ export class FinancialsComponent implements OnInit {
         totalAmount += parseFloat(d.amount);
       });
     }
-    this.disbursementsTotal = totalAmount;
+    this.disbursementsTotal = Math.ceil(totalAmount);
   }
 
   getDisbursementsTotal() {

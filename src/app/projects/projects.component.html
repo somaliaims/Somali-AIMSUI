@@ -103,11 +103,22 @@
                 </div>
               </div>
 
-              <div class="margin-top-10">
-                <div class="float-right">
-                  <button class="btn btn-info" (click)="advancedSearchProjects()">Search projects</button>
-                  <button *ngIf="isAnyFilterSet" type="button"
-                      class="btn btn-primary margin-left-2" (click)="resetFilters()">Reset filters</button>
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+                  <select name="financial-range" title="Select a financial range to filter projects" [(ngModel)]="model.financialRange"
+                    (change)="changeFinancialRange()" class="form-control">
+                    <option value="0">--Financial range (Any)--</option>
+                    <option *ngFor="let range of financialRanges" value="{{range.id}}">
+                      {{range.label}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <div class="float-right">
+                    <button class="btn btn-info" (click)="advancedSearchProjects()">Search projects</button>
+                    <button *ngIf="isAnyFilterSet" type="button"
+                        class="btn btn-primary margin-left-2" (click)="resetFilters()">Reset filters</button>
+                  </div>
                 </div>
               </div>
 
@@ -127,6 +138,7 @@
         <table class="table table-bordered table-stripped">
           <tr>
             <th>Project title</th>
+            <th>Project value (In {{defaultCurrency}})</th>
             <th>Start date</th>
             <th>End date</th>
             <th>Updated on</th>
@@ -143,6 +155,7 @@
                 <button class="btn btn-sm btn-outline-danger" (click)="makeDeleteRequest(project.id)">Make delete request</button>
               </span>-->
             </td>
+            <td>{{formatNumber(project.projectValueInDefaultCurrency)}}</td>
             <td>{{formatDateUKStyle(project.startDate)}}</td>
             <td>{{formatDateUKStyle(project.endDate)}}</td>
             <td>{{formatDateUKStyle(project.dateUpdated)}}</td>

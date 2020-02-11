@@ -63,6 +63,14 @@ export const Settings = {
         { id: 11, month: 'November' },
         { id: 12, month: 'December' },
     ],
+    financialRangeConstants: [
+        { id: 1, label: '1 to 10 Million' },
+        { id: 2, label: '10 to 20 Million' },
+        { id: 3, label: '20 to 30 Million' },
+        { id: 4, label: '30 to 40 Million' },
+        { id: 5, label: '40 to 50 Million' },
+        { id: 6, label: '50 Million or more' },
+    ],
     permissions: {
         standard: {
             canManage: false,

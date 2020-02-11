@@ -16,6 +16,7 @@ import { Identifiers } from '@angular/compiler';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Messages } from '../config/messages';
+import { CurrencyService } from '../services/currency.service';
 
 @Component({
   selector: 'app-projects',
@@ -24,6 +25,7 @@ import { Messages } from '../config/messages';
 })
 export class ProjectsComponent implements OnInit {
 
+  defaultCurrency: string = null;
   isSearchVisible = false;
   isAnyFilterSet = false;
   projectsList: any = [];
@@ -56,6 +58,7 @@ export class ProjectsComponent implements OnInit {
   sectorIds: any = [];
   subSectorIds: any = [];
   subSubSectorIds: any = [];
+  financialRanges: any = Settings.financialRangeConstants;
   searchField: FormControl;
 
   sectorLevels: any = [
@@ -73,7 +76,7 @@ export class ProjectsComponent implements OnInit {
     title: null, description: null, organizationIds: [], startingYear: 0, endingYear: 0,
     sectorIds: [], locationIds: [], parentSectorId: 0, selectedProjects: [], selectedSectors: [], 
     selectedOrganizations: [], selectedLocations: [], sectorsList: [], locationsList: [], 
-    organizationsList: [], sectorLevel: this.sectorLevelCodes.SECTORS
+    organizationsList: [], sectorLevel: this.sectorLevelCodes.SECTORS, financialRange: 0
   }
 
   //Overlay UI blocker
@@ -82,11 +85,13 @@ export class ProjectsComponent implements OnInit {
     private storeService: StoreService, private securityService: SecurityHelperService,
     private sectorService: SectorService, private organizationService: OrganizationService,
     private locationService: LocationService, private fyService: FinancialYearService,
-    private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent
+    private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent,
+    private currencyService: CurrencyService
   ) { }
 
   ngOnInit() {
     this.blockUI.start('Loading Projects...');
+    this.getDefaultCurrency();
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
     if (this.isLoggedIn) {
       this.loadUserProjects();
@@ -205,6 +210,14 @@ export class ProjectsComponent implements OnInit {
     this.setFilter();
   }
 
+  changeFinancialRange() {
+    if (this.model.financialRange) {
+      this.setFilter();
+    } else {
+      this.manageResetDisplay();
+    }
+  }
+
   onDeSelectOrganization(item: any) {
     var id = item.id;
     if (this.model.selectedOrganizations.length == 0) {
@@ -293,6 +306,16 @@ export class ProjectsComponent implements OnInit {
     } else {
       this.manageResetDisplay();
     }
+  }
+
+  getDefaultCurrency() {
+    this.currencyService.getDefaultCurrency().subscribe(
+      data => {
+        if (data) {
+          this.defaultCurrency = data.currency;
+        } 
+      }
+    );
   }
 
   getProjectTitles() {
@@ -402,7 +425,8 @@ export class ProjectsComponent implements OnInit {
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       sectorIds: this.model.selectedSectors.map(s => s.id),
       locationIds: this.model.selectedLocations.map(l => l.id),
-      description: this.model.description
+      description: this.model.description,
+      financialRange: this.model.financialRange
     };
 
     this.criteria = null;
@@ -433,6 +457,16 @@ export class ProjectsComponent implements OnInit {
 
   hideSearchOptions() {
     this.isSearchVisible = false;
+  }
+
+  formatNumber(value: number) {
+    if (!value) {
+      return value;
+    }
+    if (!isNaN(value) && value > 0) {
+      return this.storeService.getNumberWithCommas(value);
+    }
+    return value;
   }
 
   formatDateUKStyle(dated: any) {
@@ -508,6 +542,7 @@ export class ProjectsComponent implements OnInit {
     this.model.selectedOrganizations = [];
     this.model.selectedLocations = [];
     this.model.selectedSectors = [];
+    this.model.financialRange = 0;
     this.model.startingYear = 0;
     this.model.endingYear = 0;
     this.model.description = null;

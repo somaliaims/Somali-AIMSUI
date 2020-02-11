@@ -119,7 +119,7 @@
 
                 </div>
                 <div class="col-lg-8 col-md-8">
-                  <div [class.disable]="!defaultCurrency" class="float-right">
+                  <div [class.disable]="!defaultCurrency" class="float-right margin-top-10">
                     <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                       <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
                         class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>
@@ -216,7 +216,7 @@
               <td width="15%"><b>Project</b></td>
               <td class="text-center" width="15%"><b>Funders</b></td>
               <td class="text-center" width="15%"><b>Implementers</b></td>
-              <td class="text-right" width="15%"><b>Project value</b></td>
+              <!--<td class="text-right" width="15%"><b>Project value</b></td>-->
               <td class="text-right" width="15%"><b>Actual disbursements</b></td>
               <td class="text-right" width="15%"><b>Planned disbursements</b></td>
             </tr>
@@ -235,9 +235,9 @@
                       </i>
                     </b>
                   </td>
-                  <td class="text-right">
+                  <!--<td class="text-right">
                     {{formatNumber(sectorProject.totalFunding)}}
-                  </td>
+                  </td>-->
                   <td class="text-right">
                     {{formatNumber(sectorProject.actualDisbursements)}}
                   </td>
@@ -249,7 +249,7 @@
                   <td width="25%">{{project.title}}</td>
                   <td class="text-center word-wrap" width="15%">{{project.funders}}</td>
                   <td class="text-center word-wrap" width="15%">{{project.implementers}}</td>
-                  <td class="text-right" width="15%">{{formatNumber(project.projectPercentValue)}}</td>
+                  <!--<td class="text-right" width="15%">{{formatNumber(project.projectPercentValue)}}</td>-->
                   <td class="text-right" width="15%">
                     {{formatNumber(project.actualDisbursements)}}<br />
                   </td>
@@ -269,11 +269,11 @@
           <table class="table table-striped table-condensed table-fixed small">
             <tr>
               <th width="45%">&nbsp;</th>
-              <th class="text-right" width="15%">
+              <!--<th class="text-right" width="15%">
                 <b>
                   <i>Total: {{formatNumber(getGrandTotalFundingForSector())}}</i>
                 </b>
-              </th>
+              </th>-->
               <th class="text-right" width="15%">
                 <b>
                   <i>
