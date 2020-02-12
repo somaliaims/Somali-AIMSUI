@@ -73,6 +73,7 @@ export const Settings = {
     ],
     permissions: {
         standard: {
+            canManageUsers: false,
             canManage: false,
             canEditCurrency: false,
             canEditOrganization: false,
@@ -96,6 +97,7 @@ export const Settings = {
             canTakeBackup: false
         },
         manager: {
+            canManageUsers: true,
             canManage: true,
             canEditCurrency: true,
             canEditOrganization: true,
@@ -119,6 +121,7 @@ export const Settings = {
             canTakeBackup: true
         },
         superAdmin: {
+            canManageUsers: true,
             canManage: true,
             canEditCurrency: true,
             canEditOrganization: true,
@@ -142,6 +145,7 @@ export const Settings = {
             canTakeBackup: true
         },
         guest: {
+            canManageUsers: false,
             canManage: false,
             canEditCurrency: false,
             canEditOrganization: false,

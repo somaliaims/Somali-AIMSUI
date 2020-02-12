@@ -44,6 +44,20 @@ export class UserService {
         );
     }
 
+    promoteUser(id: string) {
+        var url = this.urlHelper.getPromoteUserUrl(id);
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Promote user'))
+        );
+    }
+
+    demoteUser(id: string) {
+        var url = this.urlHelper.getDemoteUserUrl(id);
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Demote user'))
+        );
+    }
+
     checkEmailAvailability(email: string) {
         var url = this.urlHelper.emailAvailabilityUrl(email);
         return this.httpClient

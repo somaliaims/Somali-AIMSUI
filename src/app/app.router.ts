@@ -81,6 +81,7 @@ import { ManageOrganizationTypeComponent } from './manage-organization-type/mana
 import { DeleteOrganizationTypeComponent } from './delete-organization-type/delete-organization-type.component';
 import { FinancialYearSettingsComponent } from './financial-year-settings/financial-year-settings.component';
 import { EmailUsersComponent } from './email-users/email-users.component';
+import { UserManagerComponent } from './user-manager/user-manager.component';
 
 // Route Configuration
 export const routes: Routes = [
@@ -142,6 +143,7 @@ export const routes: Routes = [
   { path: 'manage-account', component: ManageAccountComponent },
   { path: 'currencies', component: CurrenciesComponent },
   { path: 'manage-currency', component: ManageCurrencyComponent },
+  { path: 'manage-users', component: UserManagerComponent },
   { path: 'manage-currency/:{id}', component: ManageCurrencyComponent, data: { isForEdit: true } },
   { path: 'financial-years', component: ManageYearComponent },
   { path: 'financial-year-settings', component: FinancialYearSettingsComponent },

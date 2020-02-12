@@ -611,6 +611,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.usersUrl);
     }
 
+    getPromoteUserUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.promoteUserUrl + id);
+    }
+
+    getDemoteUserUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.demoteUserUrl + id);
+    }
+
     getManagerUsersUrl() {
         return (this.BASE_URL + urlsList.urls.getManagerUsers);
     }

@@ -156,6 +156,8 @@ export const urls = {
 	fundingTypeUrl: "FundingType",
 	emailMessageUrl: "EmailMessage",
 	usersUrl: "User",
+	promoteUserUrl: "User/PromoteUser/",
+	demoteUserUrl: "User/DemoteUser/",
 	getManagerUsers: "User/GetManagerUsers",
 	getStandardUsers: "User/GetStandardUsers",
 	sendEmailUrl: "Email/SendEmailToUsers",
