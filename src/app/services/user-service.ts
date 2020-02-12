@@ -37,6 +37,13 @@ export class UserService {
         );
     }
 
+    getUsersList() {
+        var url = this.urlHelper.getUsersUrl();
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Users list'))
+        );
+    }
+
     checkEmailAvailability(email: string) {
         var url = this.urlHelper.emailAvailabilityUrl(email);
         return this.httpClient

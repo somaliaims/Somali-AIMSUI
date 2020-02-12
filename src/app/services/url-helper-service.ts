@@ -607,6 +607,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.userSubscriptionsUrl);
     }
 
+    getUsersUrl() {
+        return (this.BASE_URL + urlsList.urls.usersUrl);
+    }
+
     getManagerUsersUrl() {
         return (this.BASE_URL + urlsList.urls.getManagerUsers);
     }

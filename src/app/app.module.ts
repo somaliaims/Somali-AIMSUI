@@ -120,6 +120,7 @@ import { DeleteOrganizationTypeComponent } from './delete-organization-type/dele
 import { FinancialYearSettingsComponent } from './financial-year-settings/financial-year-settings.component';
 import { ProjectMarkersComponent } from './data-entry/project-markers/project-markers.component';
 import { EmailUsersComponent } from './email-users/email-users.component';
+import { UserManagerComponent } from './user-manager/user-manager.component';
 
 @NgModule({
   declarations: [
@@ -225,6 +226,7 @@ import { EmailUsersComponent } from './email-users/email-users.component';
     FinancialYearSettingsComponent,
     ProjectMarkersComponent,
     EmailUsersComponent,
+    UserManagerComponent,
   ],
   imports: [
     BrowserModule,
