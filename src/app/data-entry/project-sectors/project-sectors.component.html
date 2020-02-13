@@ -52,7 +52,7 @@
           </div>
 
           <div class="col-md-3 col-lg-3">
-            <div class="input-group form-inline mb-3">
+            <div [class.disable]="sectorModel.sectorTypeId == null || sectorModel.sectorTypeId == 'null'" class="input-group form-inline mb-3">
               <ng-multiselect-dropdown class="col-sm-10" [placeholder]="'-- NDP sector/s --'" title="NDP sector/s"
                 [data]="ndpSectorsList" [(ngModel)]="sectorModel.selectedMapping" [settings]="sectorsSettings"
                 name="selectedMappingSector" #selectedMappingSector="ngModel">

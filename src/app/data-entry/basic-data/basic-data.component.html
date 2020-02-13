@@ -6,7 +6,7 @@
           <input placeholder="Project name/title" title={{projectHelp.title}} class="form-control col-sm-12" type="text"
             name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title" required>
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">
-            <button class="btn btn-warning" title="Source data available" (click)="showProjectSource()" type="button"><i
+            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
                 class="fa fa-database"></i></button>
           </div>
           <span class="margin-left-2" tooltip="{{projectHelp.title}}" [options]="tooltipOptions">
@@ -24,6 +24,10 @@
           <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control col-sm-12"
             name="startDate" placeholder="Project start date" [(ngModel)]="projectData.startDate"
             #startDate="ngModel" required />
+            <div *ngIf="isProjectSourceAvailable" class="input-group-append">
+              <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+                  class="fa fa-database"></i></button>
+            </div>
           <span class="margin-left-2" tooltip="{{projectHelp.startDate}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
@@ -36,8 +40,12 @@
       <div class="col-lg-4 col-md-4">
         <div class="input-group mb-3">
           <input type="text" title="{{projectHelp.endDate}}" onfocus="(this.type='date')" onblur="(this.type='text')"
-            class="form-control col-sm-12" name="endDate" placeholder="Project end date"
-            [(ngModel)]="projectData.endDate" #endDate="ngModel" required />
+            class="form-control col-sm-12" name="endDate" placeholder="Project end date" [(ngModel)]="projectData.endDate"
+            #endDate="ngModel" required />
+          <div *ngIf="isProjectSourceAvailable" class="input-group-append">
+            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+                class="fa fa-database"></i></button>
+          </div>
           <span class="margin-left-2" tooltip="{{projectHelp.endDate}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
@@ -46,7 +54,7 @@
           End date is required
         </div>
       </div>
-    </div>
+      </div>
 
     <div class="row">
 
@@ -59,6 +67,10 @@
             <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}
             </option>
           </select>
+          <div *ngIf="isProjectSourceAvailable" class="input-group-append">
+            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+                class="fa fa-database"></i></button>
+          </div>
           <span class="margin-left-2" tooltip="{{projectHelp.projectCurrency}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
@@ -71,12 +83,17 @@
       <div class="col-lg-4 col-md-4">
         <div class="input-group mb-3">
           <input placeholder="Project value (0.00)" title="{{projectHelp.projectValue}}" class="form-control col-sm-12"
-            type="number" maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue"
-            #projectValue="ngModel" (input)="calculateDisbursements()" id="projectValue" title="{{projectHelp.projectValue}}" required>
+            type="number" maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue" #projectValue="ngModel"
+            (input)="calculateDisbursements()" id="projectValue" title="{{projectHelp.projectValue}}" required>
+          <div *ngIf="isProjectSourceAvailable" class="input-group-append">
+            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+                class="fa fa-database"></i></button>
+          </div>
           <span class="margin-left-2" tooltip="{{projectHelp.projectValue}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
-          <span *ngIf="projectTotalValue != totalDisbursementsValue && projectId > 0" class="margin-left-2" tooltip="{{invalidDisbursementsMessage}}" [options]="tooltipOptions">
+          <span *ngIf="projectTotalValue != totalDisbursementsValue && projectId > 0" class="margin-left-2"
+            tooltip="{{invalidDisbursementsMessage}}" [options]="tooltipOptions">
             <button class="btn btn-danger" type="button"><i class="fa fa-times-circle"></i></button>
           </span>
         </div>
@@ -94,6 +111,10 @@
             <option value="null">--Funding type--</option>
             <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
           </select>
+          <div *ngIf="isProjectSourceAvailable" class="input-group-append">
+            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+                class="fa fa-database"></i></button>
+          </div>
           <span class="margin-left-2" tooltip="{{projectHelp.fundingType}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
@@ -116,7 +137,7 @@
 
           <span class="col-sm-1">
             <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()"
-              class="col-sm-1" title="Source data available for funders" class="btn btn-warning"><i
+              class="col-sm-1" title="Source data available for funders" class="btn btn-primary"><i
                 class="fa fa-database"></i></button>
           </span>
           <span class="col-sm-1" tooltip="{{projectFunderHelp.funder}}" [options]="tooltipOptions">
@@ -141,18 +162,17 @@
         <div class="form-group form-inline">
           <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
           <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Select implementers'" [data]="organizationsList"
-            [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings"
-            name="selectedImplementers" #selectedImplementers="ngModel" title="{{projectImplementerHelp.implementer}}">
+            [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings" name="selectedImplementers"
+            #selectedImplementers="ngModel" title="{{projectImplementerHelp.implementer}}">
           </ng-multiselect-dropdown>
           <span class="col-sm-1">
-            <button type="button" *ngIf="isImplementerDataAvailable && projectId != 0"
-              (click)="showImplementersSource()" title="Source data available for implementers"
-              class="btn btn-warning"><i class="fa fa-database"></i></button>
+            <button type="button" *ngIf="isImplementerDataAvailable && projectId != 0" (click)="showImplementersSource()"
+              title="Source data available for implementers" class="btn btn-primary"><i class="fa fa-database"></i></button>
           </span>
           <span class="col-sm-1" tooltip="{{projectImplementerHelp.implementer}}" [options]="tooltipOptions">
-              <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
-            </span>
-
+            <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+          </span>
+      
           <div class="container row margin-top-5">
             <div class="col-sm-2">&nbsp;&nbsp;</div>
             <span class="col-md-10">
@@ -161,7 +181,7 @@
               </a>
             </span>
           </div>
-
+      
         </div>
       </div>
     </div>
@@ -186,28 +206,29 @@
             <input type="text" title="{{projectDocumentHelp.document}}" placeholder="Resource name" class="form-control"
               maxlength="50" name="document" [(ngModel)]="documentModel.document" #document="ngModel" />
           </td>
+          <td width="5%" *ngIf="isDocumentSourceAvailable && projectId != 0">
+            <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
+              class="btn btn-primary"><i class="fa fa-database"></i></button>
+          </td>
           <td width="5%">
             <span tooltip="{{projectDocumentHelp.document}}" [options]="tooltipOptions">
               <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
             </span>
           </td>
-          <td width="5%" *ngIf="isDocumentSourceAvailable && projectId != 0">
-            <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
-              class="btn btn-warning"><i class="fa fa-database"></i></button>
-          </td>
+          
           <td width="38%">
             <input type="url" title="{{projectDocumentHelp.documentUrl}}" placeholder="Link to resource"
               class="form-control" maxlength="255" name="documentUrl" [(ngModel)]="documentModel.documentUrl"
               #documentUrl="ngModel" />
           </td>
+          <td width="10%" *ngIf="isDocumentSourceAvailable && projectId != 0">
+            <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
+              class="btn btn-primary"><i class="fa fa-database"></i></button>
+          </td>
           <td width="5%">
             <span tooltip="{{projectDocumentHelp.documentUrl}}" [options]="tooltipOptions">
               <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
             </span>
-          </td>
-          <td width="10%" *ngIf="isDocumentSourceAvailable && projectId != 0">
-            <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
-              class="btn btn-warning"><i class="fa fa-database"></i></button>
           </td>
           <td width="10%">
             <button type="button" class="btn btn-warning text-uppercase" (click)="addResource()">Add resource</button>

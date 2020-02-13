@@ -17,6 +17,15 @@
                     </li>
                 </ul>
             </div>
+            <!--<div class="col-lg-6 col-md-6">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Enter email/organization to search" [(ngModel)]="criteria"
+                    (input)="searchUsers()" onkeypress="return event.keyCode != 13;">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-info" (click)="searchUsers()" type="button"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+            </div>-->
         </div>
 
         <div class="row text-center" *ngIf="isManagersLoading || isStandardUsersLoading">
@@ -37,7 +46,7 @@
                         <tr *ngFor="let user of managerUsers | paginate: { itemsPerPage: pagingSize, currentPage: m, id: 'm'}">
                             <td>{{user.email}}</td>
                             <td>{{user.organization}}</td>
-                            <td>
+                            <td [class.disable]="loggedInUserId == user.id">
                                 <button id="demote-{{user.id}}" (click)="demoteUser(user.id)" class="btn btn-info btn-sm">Demote</button>
                             </td>
                         </tr>
@@ -64,7 +73,7 @@
                         <tr *ngFor="let user of standardUsers | paginate: { itemsPerPage: pagingSize, currentPage: s, id: 's' }">
                             <td>{{user.email}}</td>
                             <td>{{user.organization}}</td>
-                            <td>
+                            <td [class.disable]="loggedInUserId == user.id">
                                 <button id="promote-{{user.id}}" (click)="promoteUser(user.id)" class="btn btn-info btn-sm">Promote</button>
                             </td>
                         </tr>

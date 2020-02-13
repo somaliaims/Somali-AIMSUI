@@ -918,7 +918,7 @@ export class BasicDataComponent implements OnInit {
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
       var sDate = new Date(selectedProject[0].startDate);
-      this.projectData.startingFinancialYear = sDate.getFullYear();
+      this.projectData.startDate = sDate.getFullYear() + '-' + (sDate.getMonth() + 1) + '-' + sDate.getDate();
     }
   }
 
@@ -927,7 +927,7 @@ export class BasicDataComponent implements OnInit {
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
       var eDate = new Date(selectedProject[0].endDate);
-      this.projectData.endingFinancialYear = eDate.getFullYear();
+      this.projectData.endDate = eDate.getFullYear() + '-' + (eDate.getMonth() + 1) + '-' + eDate.getDate();
     }
   }
 

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { StoreService } from '../services/store-service';
+import { SecurityHelperService } from '../services/security-helper.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-manager',
@@ -9,6 +12,8 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
   styleUrls: ['./user-manager.component.css']
 })
 export class UserManagerComponent implements OnInit {
+  loggedInUserId: string = null;
+  permissions: any = {};
   usersList: any = [];
   managerUsers: any = [];
   standardUsers: any = [];
@@ -31,9 +36,17 @@ export class UserManagerComponent implements OnInit {
   ];
 
   @BlockUI() blockUI: NgBlockUI;
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private storeService: StoreService,
+    private securityService: SecurityHelperService, private router: Router) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.management);
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canManageUsers) {
+      this.router.navigateByUrl('home');
+    }
+
+    this.loggedInUserId = localStorage.getItem('userId');
     this.currentTab = this.userTypeConstants.MANAGER_USER;
     this.getManagerUsers();
     this.getStandardUsers();
