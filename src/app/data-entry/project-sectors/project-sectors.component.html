@@ -24,7 +24,7 @@
                 <option value="null">--Sector type--</option>
                 <option *ngFor="let type of sectorTypesList" [value]="type.id">{{type.typeName}}</option>
               </select>
-              <button *ngIf="isSectorsSourceAvailable" class="btn btn-warning col-sm-2" title="Source data available"
+              <button *ngIf="isSectorsSourceAvailable" class="btn btn-success col-sm-2" title="Source data available"
                 (click)="showSectorsSource()" type="button"><i class="fa fa-database"></i></button>
               <span class="margin-left-2" tooltip="{{sectorHelp.sectorType}}" [options]="tooltipOptions">
                 <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
@@ -177,7 +177,7 @@
                   <option value="null">--Location--</option>
                   <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
                 </select>
-                <button *ngIf="isLocationsSourceAvailable" class="btn btn-warning col-sm-1"
+                <button *ngIf="isLocationsSourceAvailable" class="btn btn-success col-sm-1"
                   title="Source data available" (click)="showLocationsSource()" type="button"><i
                     class="fa fa-database"></i></button>
                 <span class="col-sm-2" tooltip="{{locationHelp.location}}" [options]="tooltipOptions">

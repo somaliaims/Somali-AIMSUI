@@ -87,6 +87,15 @@ export class BasicDataComponent implements OnInit {
     'placement': 'top',
     'show-delay': 500
   }
+  basicDataSource: any = {
+    TITLE: 1,
+    START_DATE: 2,
+    END_DATE: 3,
+    CURRENCY: 4,
+    PROJECT_VALUE: 5,
+    GRANT_TYPE: 6
+  };
+
   projectHelp: any = { title: null, startingFinancialYear: null, endingFinancialYear: null,
     description: null, projectValue: null, projectCurrency: null, fundingType: null,
     startDate: null, endDate: null};
@@ -126,6 +135,7 @@ export class BasicDataComponent implements OnInit {
     FINISH: 'finish'
   };
 
+  currentSource: number = 0;
   isShowSource: boolean = false;
   isProjectSourceAvailable: boolean = false;
   isFunderSourceAvailable: boolean = false;
@@ -794,7 +804,8 @@ export class BasicDataComponent implements OnInit {
     this.manageTabsDisplay(this.tabConstants.PROJECT);
   }
 
-  showProjectSource() {
+  showProjectSource(source: number) {
+    this.currentSource = source;
     this.manageTabsDisplay(this.tabConstants.PROJECT_SOURCE);
   }
 

@@ -6,7 +6,7 @@
           <input placeholder="Project name/title" title={{projectHelp.title}} class="form-control col-sm-12" type="text"
             name="title" [(ngModel)]="projectData.title" #title="ngModel" id="title" required>
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">
-            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+            <button class="btn btn-success" title="Source data available" (click)="showProjectSource(basicDataSource.TITLE)" type="button"><i
                 class="fa fa-database"></i></button>
           </div>
           <span class="margin-left-2" tooltip="{{projectHelp.title}}" [options]="tooltipOptions">
@@ -25,7 +25,7 @@
             name="startDate" placeholder="Project start date" [(ngModel)]="projectData.startDate"
             #startDate="ngModel" required />
             <div *ngIf="isProjectSourceAvailable" class="input-group-append">
-              <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+              <button class="btn btn-success" title="Source data available" (click)="showProjectSource(basicDataSource.START_DATE)" type="button"><i
                   class="fa fa-database"></i></button>
             </div>
           <span class="margin-left-2" tooltip="{{projectHelp.startDate}}" [options]="tooltipOptions">
@@ -43,7 +43,7 @@
             class="form-control col-sm-12" name="endDate" placeholder="Project end date" [(ngModel)]="projectData.endDate"
             #endDate="ngModel" required />
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">
-            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+            <button class="btn btn-success" title="Source data available" (click)="showProjectSource(basicDataSource.END_DATE)" type="button"><i
                 class="fa fa-database"></i></button>
           </div>
           <span class="margin-left-2" tooltip="{{projectHelp.endDate}}" [options]="tooltipOptions">
@@ -68,7 +68,7 @@
             </option>
           </select>
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">
-            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+            <button class="btn btn-success" title="Source data available" (click)="showProjectSource(basicDataSource.CURRENCY)" type="button"><i
                 class="fa fa-database"></i></button>
           </div>
           <span class="margin-left-2" tooltip="{{projectHelp.projectCurrency}}" [options]="tooltipOptions">
@@ -86,7 +86,7 @@
             type="number" maxlength="10" name="projectValue" [(ngModel)]="projectData.projectValue" #projectValue="ngModel"
             (input)="calculateDisbursements()" id="projectValue" title="{{projectHelp.projectValue}}" required>
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">
-            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+            <button class="btn btn-success" title="Source data available" (click)="showProjectSource(basicDataSource.PROJECT_VALUE)" type="button"><i
                 class="fa fa-database"></i></button>
           </div>
           <span class="margin-left-2" tooltip="{{projectHelp.projectValue}}" [options]="tooltipOptions">
@@ -111,10 +111,10 @@
             <option value="null">--Funding type--</option>
             <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
           </select>
-          <div *ngIf="isProjectSourceAvailable" class="input-group-append">
-            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource()" type="button"><i
+          <!--<div *ngIf="isProjectSourceAvailable" class="input-group-append">
+            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource(FUNDING_TYPE)" type="button"><i
                 class="fa fa-database"></i></button>
-          </div>
+          </div>-->
           <span class="margin-left-2" tooltip="{{projectHelp.fundingType}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
@@ -137,7 +137,7 @@
 
           <span class="col-sm-1">
             <button type="button" *ngIf="isFunderDataAvailable && projectId != 0" (click)="showFundersSource()"
-              class="col-sm-1" title="Source data available for funders" class="btn btn-primary"><i
+              class="col-sm-1" title="Source data available for funders" class="btn btn-success"><i
                 class="fa fa-database"></i></button>
           </span>
           <span class="col-sm-1" tooltip="{{projectFunderHelp.funder}}" [options]="tooltipOptions">
@@ -167,7 +167,7 @@
           </ng-multiselect-dropdown>
           <span class="col-sm-1">
             <button type="button" *ngIf="isImplementerDataAvailable && projectId != 0" (click)="showImplementersSource()"
-              title="Source data available for implementers" class="btn btn-primary"><i class="fa fa-database"></i></button>
+              title="Source data available for implementers" class="btn btn-success"><i class="fa fa-database"></i></button>
           </span>
           <span class="col-sm-1" tooltip="{{projectImplementerHelp.implementer}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
@@ -208,7 +208,7 @@
           </td>
           <td width="5%" *ngIf="isDocumentSourceAvailable && projectId != 0">
             <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
-              class="btn btn-primary"><i class="fa fa-database"></i></button>
+              class="btn btn-success"><i class="fa fa-database"></i></button>
           </td>
           <td width="5%">
             <span tooltip="{{projectDocumentHelp.document}}" [options]="tooltipOptions">
@@ -223,7 +223,7 @@
           </td>
           <td width="10%" *ngIf="isDocumentSourceAvailable && projectId != 0">
             <button type="button" (click)="showDocumentsSource()" title="Source data available for resources/documents"
-              class="btn btn-primary"><i class="fa fa-database"></i></button>
+              class="btn btn-success"><i class="fa fa-database"></i></button>
           </td>
           <td width="5%">
             <span tooltip="{{projectDocumentHelp.documentUrl}}" [options]="tooltipOptions">
@@ -290,7 +290,8 @@
               <table *ngFor="let project of aimsProjects" class="small">
                 <tr>
                   <td colspan="2" width="100%">
-                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button
+                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b>
+                    <button *ngIf="currentSource == basicDataSource.TITLE"  
                       id="aimst-{{project.id}}" class="btn btn-outline-info btn-sm"
                       (click)="enterProjectTitleAIMS($event)">Title
                       >></button>&nbsp;
@@ -301,23 +302,23 @@
                 </tr>
                 <tr>
                   <td>
-                    <b>Start date: </b>{{formatToLongDate(project.startDate)}}&nbsp;<button
+                    <b>Start date: </b>{{formatToLongDate(project.startDate)}}&nbsp;<button *ngIf="currentSource == basicDataSource.START_DATE"
                       [class.disable]="!project.startDate" id="btnsdate-{{project.id}}" (click)="enterStartDate($event)"
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
-                    <b>End date: </b>{{formatToLongDate(project.endDate)}}&nbsp;<button
+                    <b>End date: </b>{{formatToLongDate(project.endDate)}}&nbsp;<button *ngIf="currentSource == basicDataSource.END_DATE"
                       [class.disable]="!project.endDate" id="btnedate-{{project.id}}" (click)="enterEndDate($event)"
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <b>Project value:</b> {{project.projectValue}} &nbsp; <button id="btnpvalue-{{project.id}}"
+                    <b>Project value:</b> {{project.projectValue}} &nbsp; <button *ngIf="currentSource == basicDataSource.PROJECT_VALUE" id="btnpvalue-{{project.id}}"
                       (click)="enterProjectValueAIMS($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
-                    <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
+                    <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button *ngIf="currentSource == basicDataSource.CURRENCY" id="btnacurrency-{{project.id}}"
                       (click)="enterCurrencyAIMS($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
@@ -343,7 +344,8 @@
               <table *ngFor="let project of iatiProjects" class="margin-top-10">
                 <tr>
                   <td colspan="2">
-                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b><button
+                    <b>Project title: <span class="text-info">{{project.title | truncate}} &nbsp;</span></b>
+                    <button *ngIf="currentSource == basicDataSource.TITLE"
                       id="iatit-{{project.id}}" class="btn btn-outline-info btn-sm"
                       (click)="enterProjectTitleIATI($event)">Title
                       >></button>&nbsp;
@@ -354,19 +356,19 @@
                 </tr>
                 <tr>
                   <td>
-                    <b>Start date: </b>{{project.startDate}}&nbsp;<button *ngIf="project.startDate"
+                    <b>Start date: </b>{{project.startDate}}&nbsp;<button *ngIf="project.startDate && currentSource == basicDataSource.START_DATE"
                       id="btnisdate-{{project.id}}" (click)="enterStartDateIATI($event)"
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
-                    <b>End date: </b>{{project.endDate}}&nbsp;<button *ngIf="project.endDate"
+                    <b>End date: </b>{{project.endDate}}&nbsp;<button *ngIf="project.endDate && currentSource == basicDataSource.END_DATE"
                       id="btniedate-{{project.id}}" (click)="enterEndDateIATI($event)"
                       class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <b>Currency:</b> {{project.defaultCurrency}} &nbsp; <button id="btncurrency-{{project.id}}"
+                    <b>Currency:</b> {{project.defaultCurrency}} &nbsp; <button *ngIf="currentSource == basicDataSource.CURRENCY" id="btncurrency-{{project.id}}"
                       (click)="enterCurrencyIATI($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
@@ -404,14 +406,14 @@
                 <h6 class="card-title text-left">Project data</h6>
               </span>
               <span class="col-md-6 text-right">
-                <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
+                <!--<button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;-->
                 <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go
                   back</button>
               </span>
             </div>
 
-            <div class="form-group">
-              <label>Project name</label>
+            <div *ngIf="currentSource == basicDataSource.TITLE" class="form-group">
+              <label>Project title</label>
               <input type="text" class="form-control" name="title" [(ngModel)]="projectData.title" #title="ngModel"
                 required />
             </div>
@@ -419,8 +421,8 @@
               Project title is required
             </div>
 
-            <div class="form-group">
-              <label>start date</label>
+            <div *ngIf="currentSource == basicDataSource.START_DATE" class="form-group">
+              <label>Start date</label>
               <input type="text" title="Start date of the project" onfocus="(this.type='date')"
                 onblur="(this.type='text')" class="form-control col-sm-12" name="startDate"
                 placeholder="Project start date" [(ngModel)]="projectData.startDate" #startDate="ngModel" required />
@@ -429,7 +431,7 @@
               Start date is required
             </div>
 
-            <div class="form-group">
+            <div *ngIf="currentSource == basicDataSource.END_DATE" class="form-group">
               <label>End date</label>
               <input type="text" title="End date of the project" onfocus="(this.type='date')"
                 onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
@@ -439,7 +441,7 @@
               End date is required
             </div>
 
-            <div class="form-group">
+            <div *ngIf="currentSource == basicDataSource.CURRENCY" class="form-group">
               <label>Project currency</label>
               <select title="Project currency" class="form-control col-sm-12" name="currency"
                 [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" id="projectCurrency"
@@ -453,7 +455,7 @@
               Project currency is required
             </div>
 
-            <div class="form-group">
+            <div *ngIf="currentSource == basicDataSource.PROJECT_VALUE" class="form-group">
               <label>Project value</label>
               <div class="input-group mb-3">
                 <input type="number" class="form-control" name="projectValue" [(ngModel)]="projectData.projectValue"
@@ -468,7 +470,7 @@
               Project value is required
             </div>
 
-            <div class="form-group">
+            <!--<div class="form-group">
               <label>Funding type</label>
               <select title="Funding type" class="form-control col-sm-12" name="fundingTypeId"
                 [(ngModel)]="projectData.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
@@ -478,7 +480,7 @@
             </div>
             <div *ngIf="projectSourceForm.submitted" [hidden]="fundingTypeId.valid" class="alert alert-danger">
               Funding type is required
-            </div>
+            </div>-->
 
             <div class="form-group">
               <label>Project description</label>
@@ -490,7 +492,7 @@
 
             <div class="row">
               <div class="col-md-12 text-right">
-                <button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;
+                <!--<button type="submit" class="btn btn-info btn-sm text-uppercase">Save</button>&nbsp;-->
                 <button type="button" (click)="showProjectData()" class="btn btn-warning btn-sm text-uppercase">Go
                   back</button>
               </div>
