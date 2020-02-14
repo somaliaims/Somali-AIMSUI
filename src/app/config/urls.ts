@@ -54,6 +54,7 @@ export const urls = {
 	sectorSubCategoriesUrl: "SectorSubCategory",
 	getSectorSubCategory: "SectorSubCategory/GetById/",
 	sectorsUrl: "Sector",
+	allSectorMappingsUrl: "SectorMappings/GetAllMappings",
 	addSectorWithMapping: "Sector/AddSectorWithMapping",
 	deleteSector: "Sector/Delete/",
 	sectorChildren: "Sector/GetChildren/",

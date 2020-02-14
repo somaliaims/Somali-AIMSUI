@@ -387,6 +387,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.otherSectorTypesUrl);
     }
 
+    getAllSectorMappingsUrl() {
+        return (this.BASE_URL + urlsList.urls.allSectorMappingsUrl);
+    }
+
     getSectorMappingsUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.sectorMappingsUrl + id);
     }
