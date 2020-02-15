@@ -395,6 +395,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sectorMappingsUrl + id);
     }
 
+    getSectorMappingsAddOrUpdateUrl() {
+        return (this.BASE_URL + urlsList.urls.sectorMappingsAddOrUpdateUrl);
+    }
+
     getDeleteSectorMappingsUrl(sectorId: string, mappingId: string) {
         return (this.BASE_URL + urlsList.urls.sectorMappings + '/' + sectorId + '/' + mappingId);
     }

@@ -14,92 +14,35 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-6 margin-top-10">
-        <div class="input-group">
-          <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="criteria" (input)="filterSectors()"
-            [(ngModel)]="criteria" name="criteria" #title="ngModel" onkeypress="return event.keyCode != 13;" required>
-          <span class="input-group-btn">
-            <button class="btn btn-outline-info btn-lg" type="button">
-              <i class="fa fa-search"></i>
-            </button>
-          </span>
-        </div>
-      </div>
-
-      <div class="col-md-6 margin-top-10">
-        <div class="float-right">
-          <table>
-            <tr>
-              <td>
-                <button [class.disable]="newMappings.length == 0" class="btn btn-info btn-lg pull-right text-uppercase float-right"
-                  (click)="saveNewMappings()">Save new
-                  mappings</button>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <!--IATI Activity Box-->
-      <!--<div class="col-md-4 col-sm-6">
-        <div class="card card-signin my-5">
-          <div class="card-body iati-box">
-            <h5 class="card-title text-center">Somali sectors list</h5>
-            <div *ngIf="isLoading">
-              Loading sectors...
-            </div>
-            <table *ngIf="filteredSectors.length > 0" class="table table-bordered">
-              <tr *ngFor="let sector of filteredSectors">
-                <td>
-                  <span class="float-left">
-                    {{sector.sectorName}}
-                  </span>
-                  <span class="float-right margin-right-15">
-                    <button [class.disable]="sector.id == model.selectedSectorId" type="button"
-                      id="select-{{sector.id}}" class="btn btn-success btn-sm" (click)="viewMappings($event)">View
-                      mappings</button>
-                  </span>
-                </td>
-              </tr>
-            </table>
-            <span *ngIf="filteredSectors.length == 0" class="text-info">
-              No sectors to show
-            </span>
-          </div>
-        </div>
-      </div>-->
-
       <!--Sectors box from AIMS-->
-      <div class="col-md-4 col-sm-6">
-        <div class="card card-signin my-5">
-          <div class="card-body iati-box">
-            <h5 class="card-title text-center">Sector types</h5>
-
-            <!--<form class="form-signin" (ngSubmit)="sectorForm.form.valid" #sectorForm="ngForm">-->
-              <div [class.disable]="model.selectedSectorId == null" class="form-group">
-                <label for="name">Select sector type</label>
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <div class="card card-signin my-5 margin-top-10">
+          <div class="card-body">
+            <p class="text-info lead text-center">
+              Select a sector type to see sectors list and mappings for NDP sectors. You may assign/update 
+              the mapping using this section.
+            </p>
+              <div [class.disable]="isLoading" class="form-group">
                 <select type="text" class="form-control" id="name" (change)="getSectorsForType()" maxlength="200"
                   [(ngModel)]="model.sectorTypeId" name="sectorTypeId" #sectorTypeId="ngModel" required>
+                  <option value="null">--Sector type--</option>
                   <option *ngFor="let sType of sectorTypes" value={{sType.id}}>{{sType.typeName}}</option>
                 </select>
               </div>
 
-              <div *ngIf="sectorsForType.length > 0" class="form-group">
+              <div *ngIf="filteredSectorsForType.length > 0" class="form-group">
                 <input type="text" placeholder="Search sector" name="otherCriteria" id="otherCriteria" maxlength="25"
                 [(ngModel)]="otherCriteria" #otherSectorCriteria="ngModel" (input)="filterOtherSectors()"
                 onkeypress="return event.keyCode != 13;" />
               </div>
-            <!--</form>-->
 
-            <div>
+            <div class="iati-box">
               <table *ngIf="filteredSectorsForType.length > 0" class="table table-bordered">
                 <tbody>
                   <tr>
-                    <th>Sector</th>
-                    <th>Mapped to</th>
+                    <th width="70%">Sector</th>
+                    <th width="30%">Mapped to Somali sector</th>
                   </tr>
                   <tr *ngFor="let sector of filteredSectorsForType">
                     <td [class.disable]="checkIfSectorMapped(sector.id)">
@@ -108,7 +51,7 @@
                       </span>
                     </td>
                     <td>
-                      <select name="sector" [(ngModel)]="sector.mappingId" #mappingId="ngModel">
+                      <select class="form-control" name="sector" (change)="addOrUpdateSectorMapping(sector.id)" [(ngModel)]="sector.mappingId" #mappingId="ngModel">
                         <option value="null">--Mapped to--</option>
                         <option *ngFor="let sec of defaultSectors" value={{sec.id}}>
                           {{sec.sectorName}}
@@ -120,7 +63,7 @@
                 
               </table>
               <span *ngIf="filteredSectorsForType.length == 0 && isLoadingSectorsForType == false" class="text-info">
-                No sectors to show
+                <i>No sectors to show</i>
               </span>
               <span *ngIf="isLoadingSectorsForType" class="text-info">
                 Wait loading...
@@ -129,66 +72,6 @@
           </div>
         </div>
       </div>
-
-      <!--<div class="col-md-4 col-sm-6">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-            <h6>New mappings</h6>
-            <div class="split-box">
-              <table *ngIf="newMappings.length > 0" class="table table-bordered">
-                <tr *ngFor="let sector of newMappings">
-                  <td>{{sector.sectorName}}</td>
-                  <td>
-                      <button id="btnrmap-{{sector.id}}" (click)="unMapSector($event)"
-                      class="btn btn-danger btn-sm">
-                      <i id="irmap-{{sector.id}}" class="fa fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </table>
-              <span *ngIf="newMappings.length == 0" class="text-info">
-                <i>No mappings to show</i>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card card-signin my-5 iati-box">
-          <div class="card-body">
-            <h6>Mapped sectors</h6>
-            <table *ngIf="sectorMappings && sectorMappings.length > 0" class="table table-bordered">
-              <tr *ngFor="let mapping of sectorMappings">
-                <td>
-                  <table class="table table-bordered">
-                    <tr>
-                      <td class="bg-info" colspan="2"><span class="text-white">{{mapping.sectorType}}</span></td>
-                    </tr>
-                    <tr *ngFor="let sec of mapping.sectors">
-                      <td>
-                        {{sec.sector}}
-                      </td>
-                      <td>
-                          <button id="btnrmap-{{mapping.sectorTypeId}}-{{sec.sectorId}}" (click)="deleteMapping($event)"
-                          class="btn btn-danger btn-sm">
-                          <i id="irmap-{{mapping.sectorTypeId}}-{{sec.sectorId}}" class="fa fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-            <span class="text-info" *ngIf="sectorMappings.length == 0 && isLoadingMappings == false">
-              <i>
-                No mappings to show
-              </i>
-            </span>
-            <span *ngIf="isLoadingMappings" class="text-info">
-              Wait loading...
-            </span>
-          </div>
-        </div>
-      </div>-->
 
     </div>
     <!--End of Boxes row-->

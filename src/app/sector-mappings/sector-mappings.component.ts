@@ -39,9 +39,8 @@ export class SectorMappingsComponent implements OnInit {
     private storeService: StoreService) { }
 
   ngOnInit() {
+    this.isLoading = true;
     this.storeService.newReportItem(Settings.dropDownMenus.management);
-    this.getSectorTypes();
-    this.getAllSectors();
     this.getAllSectorsMappings();
 
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -58,13 +57,13 @@ export class SectorMappingsComponent implements OnInit {
       data => {
         if (data) {
           this.sectorTypes = data;
-          var defaultType = this.sectorTypes.filter(s => s.isDefault == true);
+          var defaultType = this.sectorTypes.filter(s => s.isPrimary == true);
           if (defaultType.length > 0) {
             this.defaultSectorTypeId = defaultType[0].id;
-            this.defaultSectors = this.sectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId);
             this.sectorTypes = this.sectorTypes.filter(t => t.id != this.defaultSectorTypeId);
           }
         }
+        this.getAllSectors();
       }
     );
   }
@@ -74,7 +73,11 @@ export class SectorMappingsComponent implements OnInit {
       data => {
         if (data) {
           this.sectorsList = data;
+          if (this.defaultSectorTypeId) {
+            this.defaultSectors = this.sectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSector != null);
+          }
         }
+        this.isLoading = false;
       }
     );
   }
@@ -85,6 +88,7 @@ export class SectorMappingsComponent implements OnInit {
         if (data) {
           this.allSectorMappings = data;
         }
+        this.getSectorTypes();
       }
     );
   }
@@ -116,42 +120,38 @@ export class SectorMappingsComponent implements OnInit {
   
     this.filteredSectorsForType = this.sectorsList.filter(s => s.sectorTypeId == this.model.sectorTypeId);
     this.filteredSectorsForType.forEach((s) => {
-      var mapping = this.allSectorMappings.filter(s => s.sectorId == s.id);
+      var mapping = this.allSectorMappings.filter(sec => sec.sectorId == s.id);
       if (mapping.length > 0) {
-        s.mappingId = mapping[0].mappingId;
+        s.mappingId = mapping[0].mappedSectorId;
       } else {
         s.mappingId = null;
       }
     });
   }
 
-  viewMappings(e) {
-    var id = e.target.id.split('-')[1];
-    if (id) {
-      this.model.selectedSectorId = id;
-      this.getSectorMappings();
-    }
-  }
-
-  filterSectors() {
-    if (!this.criteria) {
-        this.filteredSectors = this.defaultSectors;
-    } else {
-      if (this.defaultSectors.length > 0) {
-        var criteria = this.criteria.toLowerCase();
-        this.filteredSectors = this.defaultSectors.filter(s => s.sectorName.toLowerCase().indexOf(criteria) != -1);
+  addOrUpdateSectorMapping(id) {
+    var sector = this.filteredSectorsForType.filter(s => s.id == id);
+    if (sector.length > 0) {
+      var model = {
+        sectorTypeId: this.model.sectorTypeId,
+        sectorId: sector[0].id,
+        mappingId: sector[0].mappingId
       }
-    }
-  }
 
-  filterOtherSectors() {
-    if (!this.otherCriteria) {
-      this.filteredSectorsForType = this.sectorsForType;
-    } else {
-      if (this.sectorsForType.length > 0) {
-        var criteria = this.otherCriteria.toLowerCase();
-        this.filteredSectorsForType = this.sectorsForType.filter(s => s.sectorName.toLowerCase().indexOf(criteria) != -1);
-      }
+      this.blockUI.start('Wait update mapping');
+      this.sectorService.addOrUpdateSectorMappings(model).subscribe(
+        data => {
+          if (data) {
+            this.allSectorMappings = this.allSectorMappings.filter(s => s.sectorId != id);
+            var mappingModel = {
+              sectorId: model.sectorId,
+              mappedSectorId: model.mappingId
+            }
+            this.allSectorMappings.push(mappingModel);
+          }
+          this.blockUI.stop();
+        }
+      );
     }
   }
 

@@ -34,20 +34,12 @@ export class SectorService {
     );
   }
 
-  /*searchSectors(filter: { name: string } = { name: '' }, page = 1): Observable<Sector[]> {
-    var url = this.urlHelper.getSearchSectorsUrl(name);
-    return this.httpClient.get<Sector[]>(url)
-      .pipe(
-        tap((response: Sector[]) => {
-          if (response && response.length > 0) {
-            response
-              .map(s => new Sector(s.id, s.sectorName, s.category, s.subCategory))
-              .filter(s => (s.sectorName) ? s.sectorName.includes(filter.name) : null)
-          }
-          return response;
-        })
-      );
-  }*/
+  addOrUpdateSectorMappings(model: any) {
+    var url = this.urlHelper.getSectorMappingsAddOrUpdateUrl();
+    return this.httpClient.post(url, model, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Add or Update Sector Mapping'))
+    );
+  }
 
   filterSectors(criteria: string) {
     var url = this.urlHelper.getSearchSectorsUrl(criteria);

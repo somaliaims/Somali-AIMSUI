@@ -44,6 +44,7 @@ export const urls = {
 	defaultSectorTypeUrl: "SectorTypes/GetDefault",
 	sectorsForTypesUrl: "Sector/GetSectorsForType/",
 	sectorMappingsUrl: "SectorMappings/GetForSector/",
+	sectorMappingsAddOrUpdateUrl: "SectorMappings/AddOrUpdate",
 	sectorMappings: "SectorMappings/",
 	mappingsForSector: "SectorMappings/GetSectorMappings/",
 	mappingsForSectorByName: "SectorMappings/GetSectorMappingsByName",
