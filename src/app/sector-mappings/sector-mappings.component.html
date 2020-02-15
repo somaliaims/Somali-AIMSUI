@@ -23,7 +23,8 @@
               Select a sector type to see sectors list and mappings for NDP sectors. You may assign/update 
               the mapping using this section.
             </p>
-              <div [class.disable]="isLoading" class="form-group">
+            <div class="row">
+              <div [class.disable]="isLoading" class="form-group col-lg-6 col-md-6">
                 <select type="text" class="form-control" id="name" (change)="getSectorsForType()" maxlength="200"
                   [(ngModel)]="model.sectorTypeId" name="sectorTypeId" #sectorTypeId="ngModel" required>
                   <option value="null">--Sector type--</option>
@@ -31,11 +32,20 @@
                 </select>
               </div>
 
-              <div *ngIf="filteredSectorsForType.length > 0" class="form-group">
+              <!--<div [class.disable]="model.sectorTypeId == null || model.sectorTypeId == 'null'" class="form-group col-lg-4 col-md-4">
                 <input type="text" placeholder="Search sector" name="otherCriteria" id="otherCriteria" maxlength="25"
                 [(ngModel)]="otherCriteria" #otherSectorCriteria="ngModel" (input)="filterOtherSectors()"
                 onkeypress="return event.keyCode != 13;" />
+              </div>-->
+
+              <div [class.disable]="model.sectorTypeId == null || model.sectorTypeId == 'null'" class="form-group col-lg-6 col-md-6">
+                <button
+                        id="btn-show-unmapped"
+                        (click)="updateUnMappedStatus()"
+                        class="btn btn-success btn-sm"><i
+                          [className]="showUnmappedOnly ? 'fa fa-check' : 'fa fa-square'"></i></button>&nbsp;{{unMappedText}}
               </div>
+            </div>
 
             <div class="iati-box">
               <table *ngIf="filteredSectorsForType.length > 0" class="table table-bordered">
@@ -52,7 +62,7 @@
                     </td>
                     <td>
                       <select class="form-control" name="sector" (change)="addOrUpdateSectorMapping(sector.id)" [(ngModel)]="sector.mappingId" #mappingId="ngModel">
-                        <option value="null">--Mapped to--</option>
+                        <option value="null">--Un-mapped--</option>
                         <option *ngFor="let sec of defaultSectors" value={{sec.id}}>
                           {{sec.sectorName}}
                         </option>

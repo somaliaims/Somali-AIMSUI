@@ -32,6 +32,8 @@ export class SectorMappingsComponent implements OnInit {
   isLoading: boolean = false;
   criteria: string = null;
   otherCriteria: string = null;
+  showUnmappedOnly: boolean = false;
+  unMappedText: string = 'Show only un-mapped';
   model: any = { selectedSectorId: null, sectorTypeId: null };
   @BlockUI() blockUI: NgBlockUI;
   
@@ -127,6 +129,10 @@ export class SectorMappingsComponent implements OnInit {
         s.mappingId = null;
       }
     });
+
+    if (this.showUnmappedOnly) {
+      this.filteredSectorsForType = this.filteredSectorsForType.filter(s => s.mappingId == null);
+    }
   }
 
   addOrUpdateSectorMapping(id) {
@@ -155,6 +161,15 @@ export class SectorMappingsComponent implements OnInit {
     }
   }
 
+  updateUnMappedStatus() {
+    this.showUnmappedOnly = !this.showUnmappedOnly;
+    if (this.showUnmappedOnly) {
+      this.filteredSectorsForType = this.filteredSectorsForType.filter(s => s.mappingId == null);
+    } else {
+      this.getSectorsForType();
+    }
+  }
+
   mapSector(e) {
     var id = e.target.id.split('-')[1];
     if (id) {
@@ -175,89 +190,6 @@ export class SectorMappingsComponent implements OnInit {
     }
   }
 
-  saveNewMappings() {
-    if (this.model.selectedSectorId == null) {
-      this.errorMessage = Messages.INVALID_SECTOR_MAPPING;
-      this.errorModal.openModal();
-      return false;
-    }
-
-    this.blockUI.start('Saving mappings...');
-    var ids = this.newMappings.map(m => m.id);
-    var model = {
-      sectorTypeId: this.model.sectorTypeId,
-      sectorId: this.model.selectedSectorId,
-      mappingIds: ids
-    };
-
-    this.sectorService.saveSectorMappings(model).subscribe(
-      data => {
-        if (data) {
-          var mappings = [];
-          if (this.sectorMappings && this.sectorMappings.length > 0) {
-            mappings = this.sectorMappings.filter(s => s.sectorTypeId == this.model.sectorTypeId);
-          }
-
-          if (mappings.length > 0) {
-            for(var i=0; i < this.newMappings.length; i++) {
-              var newMapping = {
-                sectorId: this.newMappings[i].id,
-                sector: this.newMappings[i].sectorName
-              };
-              mappings[0].sectors.push(newMapping);
-            }
-          } else {
-            var sectorTypeName = '';
-            var sectorTypeObj = this.sectorTypes.filter(s => s.id == this.model.sectorTypeId);
-            if (sectorTypeObj.length > 0) {
-              var sectors: any = [];
-              sectorTypeName = sectorTypeObj[0].typeName;
-              for(var i=0; i < this.newMappings.length; i++) {
-                sectors.push({
-                  sectorId: this.newMappings[i].id,
-                  sector: this.newMappings[i].sectorName
-                });
-              }
-
-              var newSectorType = {
-                sectorTypeId: this.model.sectorTypeId,
-                sectorType: sectorTypeName,
-                sectors: sectors
-              }
-
-              if (!this.sectorMappings) {
-                this.sectorMappings = [];
-              }
-              this.sectorMappings.push(newSectorType);
-            }
-          }
-          this.newMappings = [];
-        }
-        this.blockUI.stop();
-      }
-    )
-  }
-
-  deleteMapping(e) {
-    var idsArr = e.target.id.split('-');
-    var sectorTypeId = idsArr[1];
-    var mappingId = idsArr[2];
-
-    if (mappingId) {
-      this.blockUI.start('Deleting mapping...');
-      this.sectorService.deleteSectorMapping(this.model.selectedSectorId, mappingId).subscribe(
-        data => {
-          if (data) {
-            var mapping = this.sectorMappings.filter(s => s.sectorTypeId == sectorTypeId);
-            if (mapping.length > 0) {
-              mapping[0].sectors = mapping[0].sectors.filter(s => s.sectorId != mappingId);
-            }
-          }
-          this.blockUI.stop();
-        }
-      )
-    } 
-  }
 
   checkIfSectorMapped(id) {
     if (this.sectorMappings.length > 0 && this.sectorMappings[0].sectors) {
