@@ -121,38 +121,90 @@
                   </table>
                 </div>
               </div>
+
               <div *ngIf="!isAIMSLoading && !isIATILoading" class="row margin-top-10">
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-4">
+                  <div class="margin-top-5">
+                    <ng-multiselect-dropdown [placeholder]="'-- All IATI organization/s --'" [data]="iatiOrganizationsList"
+                      [(ngModel)]="model.selectedIATIOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
+                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="organizationsSettings"
+                      name="selectedIATIOrganizations" #selectedIATIOrganizations="ngModel">
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="margin-top-5">
+                    <select name="iati-sector-type" [(ngModel)]="model.iatiSectorType" #iatiSectorType="ngModel" class="form-control">
+                      <option value="null">--IATI sector type--</option>
+                      <option *ngFor="let type of iatiSectorTypes" value="{{type.id}}">
+                        {{type.typeName}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="margin-top-5">
+                    <ng-multiselect-dropdown [placeholder]="'-- All IATI sector/s --'" [data]="iatiSectorsList"
+                    [(ngModel)]="model.iatiSelectedSectors" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
+                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings"
+                    name="iatiSelectedSectors" #selectedSectors="ngModel">
+                  </ng-multiselect-dropdown>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                  <div class="col">
+                    <ng-multiselect-dropdown [placeholder]="'-- All AIMS organization/s --'" [data]="organizationsList"
+                      [(ngModel)]="model.selectedOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
+                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="organizationsSettings"
+                      name="selectedOrganizations" #selectedOrganizations="ngModel">
+                    </ng-multiselect-dropdown>
+                  </div>
+
+                  <div class="col margin-top-5">
+                    <select name="sectorLevel" [(ngModel)]="model.sectorLevel" (change)="manageSectorLevels()" #sectorLevel="ngModel" class="form-control">
+                      <option value="null">--Sector level--</option>
+                      <option *ngFor="let level of sectorLevels" value="{{level.id}}">
+                        {{level.level}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="col margin-top-5">
+                    <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
+                      (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" (onSelectAll)="onItemSelectAll()"
+                      (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings" name="selectedSectors"
+                      #selectedSectors="ngModel">
+                    </ng-multiselect-dropdown>
+                  </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                  <div class="margin-top-5">
+                    <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" [data]="locationsList"
+                      [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
+                      (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" (onSelectAll)="onItemSelectAll()"
+                      (onDeSelectAll)="onItemDeSelectAll()" #selectedLocations="ngModel">
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+                
+                <!--<div class="col-md-4">
                   <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList"
                     [(ngModel)]="model.selectedSectors" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
-                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()"
-                    [settings]="sectorsSettings" name="selectedSectors" #selectedSectors="ngModel">
+                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings"
+                    name="selectedSectors" #selectedSectors="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-4">
-                    <ng-multiselect-dropdown [placeholder]="'-- All IATI organization/s --'" [data]="iatiOrganizationsList"
-                    [(ngModel)]="model.selectedIATIOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" 
-                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()"
-                    [settings]="organizationsSettings" name="selectedIATIOrganizations" #selectedIATIOrganizations="ngModel">
+                  <ng-multiselect-dropdown [placeholder]="'-- All AIMS organization/s --'" [data]="organizationsList"
+                    [(ngModel)]="model.selectedOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
+                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="organizationsSettings"
+                    name="selectedOrganizations" #selectedOrganizations="ngModel">
                   </ng-multiselect-dropdown>
-                </div>
-                <div class="col-md-4">
-                    <ng-multiselect-dropdown [placeholder]="'-- All AIMS organization/s --'" [data]="organizationsList"
-                    [(ngModel)]="model.selectedOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" 
-                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()"
-                    [settings]="organizationsSettings" name="selectedOrganizations" #selectedOrganizations="ngModel">
-                  </ng-multiselect-dropdown>
-                </div>
+                </div>-->
               </div>
 
               <div class="row margin-top-10">
                 <div class="col-md-4">
-                  <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" [data]="locationsList"
-                    [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
-                    (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
-                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" 
-                     #selectedLocations="ngModel">
-                  </ng-multiselect-dropdown>
+                  
                 </div>
               </div>
 

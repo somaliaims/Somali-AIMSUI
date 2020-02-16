@@ -18,6 +18,7 @@ import { FinancialYearService } from '../services/financial-year.service';
 import { LocationService } from '../services/location.service';
 import { SectorService } from '../services/sector.service';
 import { OrganizationService } from '../services/organization-service';
+import { SectorTypeService } from '../services/sector-types.service';
 
 @Component({
   selector: 'app-new-project',
@@ -66,10 +67,17 @@ export class NewProjectComponent implements OnInit {
   userOrganizationId: number = 0;
 
   sectorsSettings: any = {};
+  iatiSectorsSettings: any = {};
   locationsSettings: any = {};
   organizationsSettings: any = {};
+  allSectorTypes: any = [];
   yearsList: any = [];
+  defaultSectorTypeId: number = 0;
+  iatiSectorTypesList: any = [];
+  iatiSectorsList: any = [];
+  allSectorsList: any = [];
   sectorsList: any = [];
+  subSectorsList: any = [];
   selectedSectors: any = [];
   organizationsList: any = [];
   iatiOrganizationsList: any = [];
@@ -100,12 +108,23 @@ export class NewProjectComponent implements OnInit {
     USER: 'User'
   }
 
-  @BlockUI() blockUI: NgBlockUI;
+  sectorLevels: any = [
+    { "id": 1, "level": "Parent sectors" },
+    { "id": 2, "level": "Sub sectors" },
+  ];
 
+  sectorLevelCodes: any = {
+    NO_SECTORS: 4,
+    SECTORS: 1,
+    SUB_SECTORS: 2,
+    SUB_SUB_SECTORS: 3
+  }
+
+  @BlockUI() blockUI: NgBlockUI;
   model = {
     id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0,
     endingYear: 0, selectedOrganizations: [], selectedSectors: [], selectedLocations: [],
-    selectedIATIOrganizations: []
+    selectedIATIOrganizations: [], iatiSectorType: null, iatiSelectedSectors: [], sectorLevel: null
   };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
@@ -115,7 +134,8 @@ export class NewProjectComponent implements OnInit {
     private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent,
     private projectInfoModal: ProjectInfoModalComponent, private locationService: LocationService,
     private sectorService: SectorService, private fyService: FinancialYearService,
-    private organizationService: OrganizationService) {
+    private organizationService: OrganizationService,
+    private sectorTypeService: SectorTypeService) {
   }
 
   ngOnInit() {
@@ -126,8 +146,8 @@ export class NewProjectComponent implements OnInit {
     this.storeService.newReportItem(Settings.dropDownMenus.entry);
     this.userOrganizationId = (this.securityService.getUserOrganizationId()) ? parseInt(this.securityService.getUserOrganizationId()) : 0;
     this.requestNo = this.storeService.getCurrentRequestId();
+    this.getSectorTypes();
     this.getFinancialYearsList();
-    this.getSectorsList();
     this.getLocationsList();
     this.getUserOrganizationsList();
     this.getIATIOrganizationsList();
@@ -167,6 +187,16 @@ export class NewProjectComponent implements OnInit {
       allowSearchFilter: true
     };
 
+    this.iatiSectorsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'sectorName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
     this.organizationsSettings = {
       singleSelection: false,
       idField: 'id',
@@ -186,6 +216,22 @@ export class NewProjectComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+  }
+
+  getSectorTypes() {
+    this.sectorTypeService.getSectorTypesList().subscribe(
+      data => {
+        if (data) {
+          this.allSectorTypes = data;
+          var defaultSectorType = this.allSectorTypes.filter(t => t.isPrimary == true);
+          if (defaultSectorType.length > 0) {
+            this.defaultSectorTypeId = defaultSectorType[0].id;
+          }
+          this.iatiSectorTypesList = this.allSectorTypes.filter(t => t.isSourceType == true);
+          this.getSectorsList();
+        }
+      }
+    );
   }
 
   loadUserProjects() {
@@ -256,10 +302,32 @@ export class NewProjectComponent implements OnInit {
     this.sectorService.getSectorsList().subscribe(
       data => {
         if (data) {
-          this.sectorsList = data;
+          this.allSectorsList = data;
+          var iatiSectorTypeIds = this.iatiSectorTypesList.map(t => t.id);
+          this.iatiSectorsList = this.allSectorsList.filter(s => iatiSectorTypeIds.includes(s.sectorTypeId));
+          if (this.defaultSectorTypeId) {
+            this.sectorsList = this.allSectorsList.filter(t => t.sectorTypeId == this.defaultSectorTypeId);
+            this.subSectorsList = this.sectorsList.filter(s => s.parentSectorId != null);     
+          }
+          
         }
       }
     );
+  }
+
+  manageSectorLevels() {
+    if (this.model.sectorLevel) {
+      switch(this.model.sectorLevel) {
+        
+        case this.sectorLevelCodes.SECTORS:
+          this.sectorsList = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSectorId == null);
+          break;
+
+        case this.sectorLevelCodes.SUB_SECTORS:
+          this.sectorsList = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSectorId != null);
+          break;
+      }
+    }
   }
 
   getLocationsList() {
