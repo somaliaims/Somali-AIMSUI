@@ -12,6 +12,7 @@ import { Settings } from '../config/settings';
   styleUrls: ['./sector-mappings.component.css']
 })
 export class SectorMappingsComponent implements OnInit {
+
   inputTextHolder: string = 'Enter sector name to search';
   errorMessage: string = null;
   requestNo: number = 0;
@@ -158,6 +159,14 @@ export class SectorMappingsComponent implements OnInit {
           this.blockUI.stop();
         }
       );
+    }
+  }
+
+  filterSectors() {
+    if (this.criteria) {
+      this.getSectorsForType();
+      var criteria = this.criteria.toLowerCase();
+      this.filteredSectorsForType = this.filteredSectorsForType.filter(s => s.sectorName.toLowerCase().indexOf(criteria) != -1);
     }
   }
 
