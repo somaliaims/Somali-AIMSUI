@@ -132,19 +132,19 @@
                     </ng-multiselect-dropdown>
                   </div>
                   <div class="margin-top-5">
-                    <select name="iati-sector-type" [(ngModel)]="model.iatiSectorType" #iatiSectorType="ngModel" class="form-control">
+                    <select name="iati-sector-type" [(ngModel)]="model.iatiSectorType" (change)="getSectorsForIATIType()" #iatiSectorType="ngModel" class="form-control">
                       <option value="null">--IATI sector type--</option>
-                      <option *ngFor="let type of iatiSectorTypes" value="{{type.id}}">
+                      <option *ngFor="let type of iatiSectorTypesList" value="{{type.id}}">
                         {{type.typeName}}
                       </option>
                     </select>
                   </div>
-                  <div class="margin-top-5">
+                  <div [class.disable]="model.iatiSectorType == null || model.iatiSectorType == 'null'" class="margin-top-5">
                     <ng-multiselect-dropdown [placeholder]="'-- All IATI sector/s --'" [data]="iatiSectorsList"
-                    [(ngModel)]="model.iatiSelectedSectors" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
-                    (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings"
-                    name="iatiSelectedSectors" #selectedSectors="ngModel">
-                  </ng-multiselect-dropdown>
+                      [(ngModel)]="model.iatiSelectedSectors" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
+                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings"
+                      name="iatiSelectedSectors" #selectedSectors="ngModel">
+                    </ng-multiselect-dropdown>
                   </div>
                 </div>
 
@@ -166,7 +166,7 @@
                     </select>
                   </div>
 
-                  <div class="col margin-top-5">
+                  <div [class.disable]="model.sectorLevel == null || model.sectorLevel == 'null'" class="col margin-top-5">
                     <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
                       (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" (onSelectAll)="onItemSelectAll()"
                       (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings" name="selectedSectors"

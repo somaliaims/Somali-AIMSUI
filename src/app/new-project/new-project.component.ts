@@ -74,6 +74,7 @@ export class NewProjectComponent implements OnInit {
   yearsList: any = [];
   defaultSectorTypeId: number = 0;
   iatiSectorTypesList: any = [];
+  iatiAllSectorsList: any = [];
   iatiSectorsList: any = [];
   allSectorsList: any = [];
   sectorsList: any = [];
@@ -170,7 +171,6 @@ export class NewProjectComponent implements OnInit {
       map((event: any) => {
         return event.target.value;
       })
-      //,filter(res => res.length > 0)
       , debounceTime(1000)
       , distinctUntilChanged()
     ).subscribe((text: string) => {
@@ -304,9 +304,9 @@ export class NewProjectComponent implements OnInit {
         if (data) {
           this.allSectorsList = data;
           var iatiSectorTypeIds = this.iatiSectorTypesList.map(t => t.id);
-          this.iatiSectorsList = this.allSectorsList.filter(s => iatiSectorTypeIds.includes(s.sectorTypeId));
+          this.iatiAllSectorsList = this.allSectorsList.filter(s => iatiSectorTypeIds.includes(s.sectorTypeId));
           if (this.defaultSectorTypeId) {
-            this.sectorsList = this.allSectorsList.filter(t => t.sectorTypeId == this.defaultSectorTypeId);
+            //this.sectorsList = this.allSectorsList.filter(t => t.sectorTypeId == this.defaultSectorTypeId);
             this.subSectorsList = this.sectorsList.filter(s => s.parentSectorId != null);     
           }
           
@@ -315,16 +315,25 @@ export class NewProjectComponent implements OnInit {
     );
   }
 
+  getSectorsForIATIType() {
+    var id = this.model.iatiSectorType;
+    this.iatiSectorsList = [];
+    if (id) {
+      this.iatiSectorsList = this.iatiAllSectorsList.filter(s => s.sectorTypeId == id);
+    }
+  }
+
   manageSectorLevels() {
     if (this.model.sectorLevel) {
-      switch(this.model.sectorLevel) {
+      var level = parseInt(this.model.sectorLevel);
+      switch(level) {
         
         case this.sectorLevelCodes.SECTORS:
-          this.sectorsList = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSectorId == null);
+          this.sectorsList = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSector == null);
           break;
 
         case this.sectorLevelCodes.SUB_SECTORS:
-          this.sectorsList = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSectorId != null);
+          this.sectorsList = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSector != null);
           break;
       }
     }
