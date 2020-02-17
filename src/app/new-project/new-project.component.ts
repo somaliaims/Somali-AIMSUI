@@ -319,7 +319,9 @@ export class NewProjectComponent implements OnInit {
     var id = this.model.iatiSectorType;
     this.iatiSectorsList = [];
     if (id) {
+      this.model.iatiSelectedSectors = [];
       this.iatiSectorsList = this.iatiAllSectorsList.filter(s => s.sectorTypeId == id);
+      this.filterProjectMatches();
     }
   }
 
@@ -329,11 +331,15 @@ export class NewProjectComponent implements OnInit {
       switch(level) {
         
         case this.sectorLevelCodes.SECTORS:
+          this.model.selectedSectors = [];
           this.sectorsList = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSector == null);
+          this.filterProjectMatches();
           break;
 
         case this.sectorLevelCodes.SUB_SECTORS:
+          this.model.selectedSectors = [];
           this.sectorsList = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSector != null);
+          this.filterProjectMatches();
           break;
       }
     }
@@ -403,10 +409,10 @@ export class NewProjectComponent implements OnInit {
     }
 
     if (this.model.selectedIATIOrganizations.length > 0) {
-      var orgs = this.model.selectedIATIOrganizations.map(o => o.organizationName);
+      var orgs = this.model.selectedIATIOrganizations.map(o => o.organizationName.toLowerCase());
       this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
         var isMatched = false;
-        var projectOrgs = project.organizations.map(o => o.name);
+        var projectOrgs = project.organizations.map(o => o.name.toLowerCase());
         for (var i = 0; i < projectOrgs.length; i++) {
           if (orgs.includes(projectOrgs[i])) {
             isMatched = true;
