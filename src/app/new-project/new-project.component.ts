@@ -389,6 +389,7 @@ export class NewProjectComponent implements OnInit {
     }, 500);
   }
 
+
   filterProjectMatches() {
     var str = this.model.title;
     
@@ -435,25 +436,17 @@ export class NewProjectComponent implements OnInit {
       }.bind(this));
     }
 
-    //IATI
+    //AIMS
     if (this.model.selectedSectors.length > 0) {
-      var sectors = this.model.selectedSectors.map(s => s.sectorName);
-      //IATI
-      this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
-        var isMatched = false;
-        var projectSectors = project.sectors.map(o => o.name);
-        for (var i = 0; i < projectSectors.length; i++) {
-          if (sectors.includes(projectSectors[i])) {
-            isMatched = true;
-            break;
-          }
-        }
-        if (isMatched) {
-          return project;
-        }
-      }.bind(this));
-
-      //AIMS
+      var sectors = [];
+      if (this.model.sectorLevel == this.sectorLevelCodes.SECTORS) {
+        var parentSectorIds = this.model.selectedSectors.map(s => s.id);
+        sectors = this.allSectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSector != null && parentSectorIds.includes(s.parentSectorId))
+                    .map(s => s.sectorName);
+      } else {
+        sectors = this.model.selectedSectors.map(s => s.sectorName);
+      }
+      
       this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
         var isMatched = false;
         var projectSectors = project.sectors.map(o => o.name);
@@ -470,14 +463,13 @@ export class NewProjectComponent implements OnInit {
     }
 
     //IATI
-    if (this.model.selectedLocations.length > 0) {
-      var locations = this.model.selectedLocations.map(l => l.location);
-      //IATI
+    if (this.model.iatiSelectedSectors.length > 0) {
+      var sectors = this.model.iatiSelectedSectors.map(s => s.sectorName);
       this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
         var isMatched = false;
-        var projectLocations = project.locations.map(o => o.name);
-        for (var i = 0; i < projectLocations.length; i++) {
-          if (locations.includes(projectLocations[i])) {
+        var projectSectors = project.sectors.map(o => o.name);
+        for (var i = 0; i < projectSectors.length; i++) {
+          if (sectors.includes(projectSectors[i])) {
             isMatched = true;
             break;
           }
@@ -486,8 +478,11 @@ export class NewProjectComponent implements OnInit {
           return project;
         }
       }.bind(this));
+    }
 
-      //AIMS
+    //AIMS
+    if (this.model.selectedLocations.length > 0) {
+      var locations = this.model.selectedLocations.map(l => l.location);
       this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
         var isMatched = false;
         var projectLocations = project.locations.map(o => o.name);
