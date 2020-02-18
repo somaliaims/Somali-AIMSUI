@@ -12,6 +12,7 @@ import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/config/settings';
 import { ProjectService } from 'src/app/services/project.service';
+import { MarkerService } from 'src/app/services/marker.service';
 
 @Component({
   selector: 'sector-report',
@@ -66,6 +67,8 @@ export class SectorReportComponent implements OnInit {
   yearsList: any = [];
   allSectorsList: any = [];
   sectorsList: any = [];
+  markersList: any = [];
+  markerValues: any = [];
   sectorIds: any = [];
   subSectorIds: any = [];
   subSubSectorIds: any = [];
@@ -267,14 +270,16 @@ export class SectorReportComponent implements OnInit {
     selectedLocations: [], selectedProjects: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS,
-    noSectorOption: this.noSectorOptions.PROJECTS_WITH_SECTORS
+    noSectorOption: this.noSectorOptions.PROJECTS_WITH_SECTORS,
+    markerId: 0, markerValue: null
   };
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
     private sectorService: SectorService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private locationService: LocationService,
     private currencyService: CurrencyService, private errorModal: ErrorModalComponent,
-    private route: ActivatedRoute, private projectService: ProjectService
+    private route: ActivatedRoute, private projectService: ProjectService,
+    private markerService: MarkerService
   ) { }
 
   ngOnInit() {
@@ -304,6 +309,8 @@ export class SectorReportComponent implements OnInit {
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
+          this.model.markerId = (params.mid) ? params.mid : 0;
+          this.model.markerValue = (params.mvalue) ? params.mvalue: null;
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.loadReport = true;
         }
@@ -316,6 +323,7 @@ export class SectorReportComponent implements OnInit {
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
+    this.getMarkers();
 
     this.sectorsSettings = {
       singleSelection: false,
@@ -480,6 +488,31 @@ export class SectorReportComponent implements OnInit {
     );
   }
 
+  getMarkers() {
+    this.markerService.getMarkers().subscribe(
+      data => {
+        if (data) {
+          this.markersList = data;
+          if (this.model.markerId) {
+            this.getSelectedMarkerValues();
+          }
+        }
+      }
+    );
+  }
+
+  getSelectedMarkerValues() {
+    this.markerValues = [];
+    if (this.model.markerId) {
+      var values = this.markersList.filter(m => m.id == this.model.markerId).map(m => m.values);
+      if (values && values.length > 0) {
+        if (values[0].length > 0) {
+          this.markerValues = JSON.parse(values);
+        }
+      };
+    }
+  }
+
   searchProjectsByCriteriaReport() {
     var currentDate = new Date();
     this.blockUI.start('Generating report...');
@@ -503,6 +536,8 @@ export class SectorReportComponent implements OnInit {
       organizationIds: (this.loadReport) ? this.paramOrgIds : this.model.selectedOrganizations.map(o => o.id),
       parentSectorId: this.model.parentSectorId,
       sectorLevel: this.model.sectorLevel,
+      markerId: this.model.markerId,
+      markerValue: this.model.markerValue,
       chartType: chartType,
       sectorIds: (this.loadReport) ? this.paramSectorIds : this.model.selectedSectors.map(s => s.id),
     };

@@ -90,8 +90,29 @@
                   </select>
                 </div>
 
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="markerId" [(ngModel)]="model.markerId" name="markerId"
+                    title="Select a marker" (change)="getSelectedMarkerValues()" #sectorId="ngModel">
+                    <option value="0">--Select marker--</option>
+                    <option *ngFor="let marker of markersList" [value]="marker.id">{{marker.fieldTitle}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="markerValue" [(ngModel)]="model.markerValue" name="markerValue"
+                    title="Select marker value" #sectorId="ngModel">
+                    <option value="null">--Marker value--</option>
+                    <option *ngFor="let value of markerValues" [value]="value.value">{{value.value}}
+                    </option>
+                  </select>
+                </div>
+                
+              </div>
+
+              <div class="row">
+
                 <div class="col-lg-6 col-md-6">
-                    <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
+                  <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
                     (change)="selectCurrency();manageResetDisplay();" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
                     name="selectedCurrency" #selectedCurrency="ngModel">
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
@@ -112,13 +133,8 @@
                     </span>
                   </div>
                 </div>
-              </div>
 
-              <div class="row">
-                <div class="col-lg-4 col-md-4">
-
-                </div>
-                <div class="col-lg-8 col-md-8">
+                <div class="col-lg-6 col-md-6">
                   <div [class.disable]="!defaultCurrency" class="float-right margin-top-10">
                     <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                       <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
@@ -131,8 +147,8 @@
                         class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
                   </div>
                 </div>
-              </div>
 
+              </div>
             </form>
           </div>
         </div>
