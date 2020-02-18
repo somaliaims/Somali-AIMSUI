@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { Settings } from 'src/app/config/settings';
 import { Color } from 'ng2-charts';
+import { MarkerService } from 'src/app/services/marker.service';
 
 @Component({
   selector: 'time-trend-report',
@@ -38,6 +39,8 @@ export class TimeTrendReportComponent implements OnInit {
   yearsList: any = [];
   allSectorsList: any = [];
   sectorsList: any = [];
+  markersList: any = [];
+  markerValues: any = [];
   sectorIds: any = [];
   subSectorIds: any = [];
   subSubSectorIds: any = [];
@@ -232,7 +235,8 @@ export class TimeTrendReportComponent implements OnInit {
     selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], locationId: 0,
-    sectorLevel: this.sectorLevelCodes.SECTORS
+    sectorLevel: this.sectorLevelCodes.SECTORS,
+    markerId: 0, markerValue: null
   };
 
   //Overlay UI blocker
@@ -241,7 +245,8 @@ export class TimeTrendReportComponent implements OnInit {
     private sectorService: SectorService, private fyService: FinancialYearService,
     private organizationService: OrganizationService, private locationService: LocationService,
     private currencyService: CurrencyService, private errorModal: ErrorModalComponent,
-    private route: ActivatedRoute, private projectService: ProjectService
+    private route: ActivatedRoute, private projectService: ProjectService,
+    private markerService: MarkerService
   ) { }
 
   ngOnInit() {
@@ -259,6 +264,8 @@ export class TimeTrendReportComponent implements OnInit {
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.model.locationId = (params.locationId) ? params.locationId : 0;
+          this.model.markerId = (params.mid) ? params.mid : 0;
+          this.model.markerValue = (params.mvalue) ? params.mvalue: null;
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.loadReport = true;
@@ -273,6 +280,7 @@ export class TimeTrendReportComponent implements OnInit {
     this.getLocationsList();
     this.getOrganizationsList();
     this.loadFinancialYears();
+    this.getMarkers();
     this.datedToday = this.storeService.getLongDateString(new Date());
 
     this.sectorsSettings = {
@@ -376,6 +384,29 @@ export class TimeTrendReportComponent implements OnInit {
     );
   }
 
+  getMarkers() {
+    this.markerService.getMarkers().subscribe(
+      data => {
+        if (data) {
+          this.markersList = data;
+          if (this.model.markerId) {
+            this.getSelectedMarkerValues();
+          }
+        }
+      }
+    );
+  }
+
+  getSelectedMarkerValues() {
+    this.markerValues = [];
+    if (this.model.markerId) {
+      var values = this.markersList.filter(m => m.id == this.model.markerId).map(m => m.values);
+      if (values) {
+        this.markerValues = JSON.parse(values);
+      };
+    }
+  }
+
   searchProjectsByCriteriaReport() {
     this.blockUI.start('Searching Projects...');
     this.chartLabels = [];
@@ -402,6 +433,8 @@ export class TimeTrendReportComponent implements OnInit {
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       sectorIds: this.model.selectedSectors.map(s => s.id),
       locationId: this.model.locationId,
+      markerId: this.model.markerId,
+      markerValue: this.model.markerValue,
       chartType: chartType
     };
 
