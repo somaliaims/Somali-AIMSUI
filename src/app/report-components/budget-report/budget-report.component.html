@@ -17,40 +17,58 @@
             <form class="form-signin" (ngSubmit)="getBudgetReport()" #searchForm="ngForm">
 
               <div class="row margin-top-10">
-                <div class="col-md-6 form-inline">
+                <div class="col-md-3 form-inline">
                   <label>Currency: </label>&nbsp;&nbsp;
-                  <select [class.disable]="manualExRate == 0" class="form-control" (change)="selectCurrency()"
-                    id="selectedCurrency" [(ngModel)]="model.selectedCurrency" name="selectedCurrency"
-                    #selectedCurrency="ngModel">
+                  <select [class.disable]="manualExRate == 0" title="Currency for reporting" class="form-control"
+                    (change)="selectCurrency()" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
+                    name="selectedCurrency" #selectedCurrency="ngModel">
                     <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">
                       {{currency.currencyName}}
                     </option>
                   </select>&nbsp;
                   <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
-                    <b><i>Exchange rate: 1 USD = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
+                    <b><i>Exchange rate: 1 {{defaultCurrency}} = {{manualExRate}} {{nationalCurrencyName}} on
+                        {{datedToday}}</i></b>
                   </span>
-                  <span *ngIf="manualExRate != 0 && model.selectedCurrency == defaultCurrency" class="text-warning">
-                    <b><i>Exchange rate: 1 USD = 1 {{defaultCurrency}} on {{datedToday}}</i></b>
-                  </span>
-                  <span *ngIf="manualExRate == 0" class="text-danger">
+
+                  <span *ngIf="manualExRate == 0 && !isDataLoading" class="text-danger">
                     <i>No exchange rate available, contact Administrator.</i>
                   </span>
                 </div>
+
+                <div class="col-md-3 form-inline">
+                  <label>Arrangement: </label>&nbsp;&nbsp;
+                  <select class="form-control" name="arrangement" [(ngModel)]="currentArrangement"
+                    #arrangement="ngModel">
+                    <option *ngFor="let arrangement of reportArrangements" value="{{arrangement.id}}">
+                      {{arrangement.label}}
+                    </option>
+                  </select>
+                </div>
+
                 <div class="col-md-6">
                   <span [class.disable]="!defaultCurrency" class="float-right">
-                    <button type="submit" class="btn btn-info">View report</button>&nbsp;
-                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
-                    <!--<button type="button" class="btn btn-primary" (click)="generatePDF()">Download PDF</button>&nbsp;-->
-                    <button *ngIf="reportDataList && reportDataList.projects" type="button" class="btn btn-warning"
-                      (click)="printReport()">Print report</button>
+                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>&nbsp;
+                    <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
+                      class="btn btn-danger margin-top-2" (click)="generatePDF()">Download PDF</button>&nbsp;
+                    <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2">Download
+                      spreadsheet</a>&nbsp;
+                    <button *ngIf="reportDataList && reportDataList.projects" type="button"
+                      class="btn btn-warning margin-top-2" (click)="printReport()">Print report</button>
                   </span>
                 </div>
-                <div *ngIf="!defaultCurrency" class="col-md-12">
-                  <span class="text-danger">
-                    Default currency is not set and it may produce errors on reports.
-                    Please contact administrator.
-                  </span>
+              </div>
+
+              <div class="row margin-top-10">
+                <div class="col-md-6">
+                  <div *ngIf="!defaultCurrency && !isDataLoading" class="col-md-12">
+                    <span class="text-danger">
+                      Default currency is not set and it may produce errors on reports.
+                      Please contact administrator.
+                    </span>
+                  </div>
                 </div>
+
               </div>
 
             </form>
@@ -59,148 +77,61 @@
       </div>
     </div>
 
-    <div class="row margin-top-10" id="rpt-budget-report">
-      <div *ngIf="reportDataList && reportDataList.reportSettings" class="col-md-12 text-center">
-        <h5>{{reportDataList.reportSettings.title}} <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
+    <div class="row" id="rpt-budget-report">
+      <div id="rpt-heading" *ngIf="reportDataList && reportDataList.reportSettings"
+        class="col-md-12 text-center margin-top-10">
+        <h5>Budget report <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
       </div>
-    
-      <div class="col-md-12">
-    
-        <div *ngIf="reportDataList && reportDataList.projects" class="margin-bottom-none">
-          <div *ngFor="let project of reportDataList.projects | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }; let i = index;">
-            <span class="float-left lead"><b>{{project.title}}</b></span><hr />
-            
-            <table class="table table-striped table-condensed small margin-bottom-none">
-              <thead>
-                <tr>
-                    <th width="30%">Funder</th>
-                    <th width="10%">Type</th>
-                    <th class="text-center" width="15%">Amount</th>
-                    <th class="text-center" width="10%">Currency</th>
-                    <th class="text-center" width="15%">Xrate to default</th>
-                    <th class="text-center" width="20%">Amount default</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let funder of project.funding">
-                  <td>{{funder.funder}}</td>
-                  <td>{{funder.fundType}}</td>
-                  <td class="text-center">{{funder.amount}}</td>
-                  <td class="text-center">{{funder.currency}}</td>
-                  <td class="text-center">{{funder.exchangeRateToDefault}}</td>
-                  <td class="text-center">{{funder.amountInDefault}}</td>
-                </tr>
-              </table>
 
-              <table class="table table-condensed small">
-                <tr>
-                  <td class="bold-italic">Project start</td>
-                  <td class="bold-italic">{{project.startDateString}}</td>
-                  <td class="bold-italic">Project end</td>
-                  <td class="bold-italic">{{project.endDateString}}</td>
-                  <td class="bold-italic">Total months</td>
-                  <td class="bold-italic">{{project.totalMonths}}</td>
-                </tr>
-                <tr *ngFor="let share of project.fundShares">
-                  <td class="bold-italic">{{share.fundingType}} share</td>
-                  <td class="bold-italic">{{share.amount}}</td>
-                  <td class="bold-italic">{{share.percentage}}%</td>
-                </tr>
-            </table>
-
-            <h5 class="small"><b>Project disbursements</b></h5>
-            <table class="table table-striped small">
-              <tr>
-                <th width="15%">Date</th>
-                <th class="text-center" width="20%">Amount</th>
-                <th class="text-center" width="15%">Currency</th>
-                <th class="text-center" width="20%">Xrate to default</th>
-                <th class="text-center" width="30%">Amount default</th>
-              </tr>
-              <tbody>
-                <tr *ngFor="let disbursement of project.disbursements">
-                  <td>{{getLongDateString(disbursement.dated)}}</td>
-                  <td class="text-center">{{disbursement.amount}}</td>
-                  <td class="text-center">{{disbursement.currency}}</td>
-                  <td class="text-center">{{disbursement.exchangeRateToDefault}}</td>
-                  <td class="text-center">{{disbursement.amountInDefault}}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <table class="table table-striped small">
-              <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th class="text-center" *ngFor="let yr of project.yearlyDisbursements">
-                      <b>{{yr.year}}</b>
-                    </th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td><b>Active months per year</b></td>
-                      <td class="text-center" *ngFor="let yr of project.yearlyDisbursements">
-                        {{yr.activeMonths}}
-                      </td>
-                  </tr>
-                  <tr>
-                      <td><b>Actual disbursements</b></td>
-                      <td class="text-center" *ngFor="let yr of project.yearlyDisbursements">
-                          {{yr.disbursements}}
-                      </td>
-                  </tr>
-                  <tr>
-                      <td><b>Expected disbursements</b></td>
-                      <td class="text-center" *ngFor="let yr of project.yearlyDisbursements">
-                          {{yr.expectedDisbursements}}
-                      </td>
-                  </tr>
-              </tbody>
-            </table>
-
-            <table class="table table-striped small">
-              <tbody>
-                <tr>
-                  <td width="20%"><b>{{getCurrentYear()}} active months</b></td>
-                  <td width="80%" class="bold-italic float-left">{{project.monthsCurrentYear}}</td>
-                </tr>
-                <tr>
-                  <td><b>Months left</b></td>
-                  <td class="bold-italic float-left">{{project.monthsLeft}}</td>
-                </tr>
-                <tr>
-                  <td><b>Money previous 2 years</b></td>
-                  <td class="bold-italic float-left">{{project.moneyPreviousTwoYears}}</td>
-                </tr>
-                <tr>
-                  <td><b>Money left for the remaining years</b></td>
-                  <td class="bold-italic float-left">{{project.moneyLeftForYears}}</td>
-                </tr>
-                <tr>
-                    <td><b>Expected minus actual for {{getCurrentYear()}}</b></td>
-                    <td class="bold-italic float-left">{{project.expectedMinusActual}}</td>
-                  </tr>
-              </tbody>
-            </table>
-            <br />
-
-            <div class="col-md-12">
-                <div class="offset-3 col-md-6">
-                    <canvas id="chart-{{project.id}}" baseChart [datasets]="getChartData(project.id)" [labels]="getChartLabels(project.id)" [options]="chartOptions"
-                    [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
-                </div>
-            </div>
-            
-          </div>
-          <div class="col-md-12 margin-top-20 text-center">
-            <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
-          </div>
+      <div *ngIf="reportDataList && reportDataList.reportSettings && chartData.length > 0"
+        class="col-md-12 margin-top-10">
+        <div class="offset-2 col-md-8">
+          <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+            [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
         </div>
-    
       </div>
+
+      <div class="col margin-top-20" id="rpt-budget-report">
+        <div class="col-md-12 margin-top-10">
+          <div *ngIf="reportDataList && reportDataList.years" class="margin-bottom-none">
+
+            <table class="table small margin-bottom-none">
+              <tbody>
+                <tr>
+                  <th width="15%">&nbsp;</th>
+                  <th width="17%" class="text-right" *ngFor="let year of reportDataList.years">{{year.label}}</th>
+                </tr>
+                <tr *ngFor="let sector of reportDataList.sectorDisbursements">
+                  <td><b>{{sector.sectorName}}</b></td>
+                  <td class="text-right" *ngFor="let d of sector.disbursements">
+                    {{formatNumber(d.totalValue)}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+          <div class="col-md-12" *ngIf="reportDataList && reportDataList.projects && reportDataList.projects == 0">
+            <span class="text-info"><i>No budget data avaialable to show</i></span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-12 small">
+        <div *ngIf="reportDataList && reportDataList.reportSettings" class="text-center margin-top-20 text-info">
+          Report link: <a class="text-info"
+            href="{{reportDataList.reportSettings.reportUrl}}">{{reportDataList.reportSettings.reportUrl}}</a>
+        </div>
+        <div class="text-center margin-top-5">
+          <span><i>Generated on: {{getTodaysDate()}}</i></span>
+        </div>
+      </div>
+
     </div>
+
 
   </block-ui>
 </div>

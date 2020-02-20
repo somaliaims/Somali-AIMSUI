@@ -135,7 +135,7 @@ export const routes: Routes = [
   { path: 'data-export', component: AllProjectsReportComponent },
   { path: 'locations-report', component: LocationReportComponent },
   { path: 'time-trend-report', component: TimeTrendReportComponent },
-  { path: 'budget-report', component: BudgetReportSummaryComponent },
+  { path: 'budget-report', component: BudgetReportComponent },
   { path: 'envelope-report', component: EnvelopeReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },

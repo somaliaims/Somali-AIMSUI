@@ -6,9 +6,10 @@ import { StoreService } from 'src/app/services/store-service';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { Messages } from 'src/app/config/messages';
 import { Settings } from 'src/app/config/settings';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
-  selector: 'app-budget-report',
+  selector: 'budget-report',
   templateUrl: './budget-report.component.html',
   styleUrls: ['./budget-report.component.css']
 })
@@ -20,51 +21,74 @@ export class BudgetReportComponent implements OnInit {
   oldCurrency: string = null;
   selectedCurrencyName: string = null;
   nationalCurrency: string = null;
-  excelFile: string = null;
   nationalCurrencyName: string = null;
   reportDataList: any = [];
   reportSettings: any = { title: null};
   currenciesList: any = [];
+  exchangeRates: any = [];
   model: any = { selectedCurrency: null };
   errorMessage: string = null;
   grandTotalFunding: number = 0;
   grandTotalDisbursements: number = 0;
   datedToday: string = null;
-  chartDataList: any = [];
+  selectedYearlyDisbursements: any = [];
+  selectedProject: string = null;
+  excelFile: string = null;
+  isDataLoading: boolean = true;
+  btnReportText: string = 'View report';
+  currentArrangement: string = null;
+
+  chartLabels: any = [];
+  chartData: any = [];
   chartLegend: boolean = true;
   chartType: string = 'bar';
   pagingSize: number = Settings.rowsPerPage;
+  reportArrangements: any = [
+    { id: 1, label: 'By sectors' },
+    { id: 2, label: 'By locations' }
+  ];
+  arrangementConstants: any = {
+    SECTORS: 1,
+    LOCATIONS: 2
+  };
+
   chartOptions: any = {
-    scaleShowVerticalLines: false,
     responsive: true,
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        stacked: true
-      }],
-      xAxes: [{
-        ticks: {
-          autoSkip: false
-        },
-        stacked: true
-      }],
-      plugins: {
-        datalabels: {
-          anchor: 'end',
-          align: 'end',
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return parseInt(tooltipValue).toLocaleString();
         }
       }
+    },
+    scales: {
+      yAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value.toLocaleString("en-US");
+          }
+        }
+      }],
+      xAxes: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true
+        }
+      }]
     }
   };
 
   @BlockUI() blockUI: NgBlockUI;
-  
   constructor(private reportService: ReportService, private errorModal: ErrorModalComponent,
-    private storeService: StoreService, private currencyService: CurrencyService) { }
+    private storeService: StoreService, private currencyService: CurrencyService,
+    private modalService: ModalService) { }
 
   ngOnInit() {
+    this.storeService.newReportItem(Settings.dropDownMenus.reports);
+    this.currentArrangement = this.arrangementConstants.SECTORS;
     this.blockUI.start('Loading report...');
     this.getDefaultCurrency();
     this.getNationalCurrency();
@@ -74,13 +98,17 @@ export class BudgetReportComponent implements OnInit {
 
   getManualExchangeRateForToday() {
     var dated = this.storeService.getCurrentDateSQLFormat();
-    this.currencyService.getManualExRatesByDate(dated).subscribe(
+    var model = {
+      dated: dated
+    };
+    this.currencyService.getAverageCurrencyForDate(model).subscribe(
       data => {
         if (data) {
-          if (data.exchangeRate) {
-            this.manualExRate = data.exchangeRate;
+          this.exchangeRates = data;
+          var nationalCurrencyRate = this.exchangeRates.filter(c => c.currency == this.nationalCurrencyName);
+          if (nationalCurrencyRate.length > 0) {
+            this.manualExRate = nationalCurrencyRate[0].rate;
             this.oldCurrencyRate = 1;
-            this.oldExRateToDefault = 1;
           }
         }
       });
@@ -108,6 +136,10 @@ export class BudgetReportComponent implements OnInit {
           this.nationalCurrencyName = data.currency;
           this.currenciesList.push(data);
         }
+
+        setTimeout(() => {
+          this.isDataLoading = false;
+        }, 2000);
       }
     );
   }
@@ -118,22 +150,20 @@ export class BudgetReportComponent implements OnInit {
         if (data) {
           this.reportDataList = data;
           this.datedToday = this.storeService.getLongDateString(new Date());
+          this.btnReportText = 'Update report';
+          if (this.reportDataList.reportSettings) {
+            this.excelFile = this.reportDataList.reportSettings.excelReportName;
+            this.setExcelFile();
+          }
+
           if (this.reportDataList.projects) {
             this.reportDataList.projects.forEach((p) => {
-              if (p.yearlyDisbursements) {
-                var labels = p.yearlyDisbursements.map(y => y.year);
-                var disbursements = p.yearlyDisbursements.map(y => y.disbursements);
-                var eDisbursements = p.yearlyDisbursements.map(y => y.expectedDisbursements);
-                this.chartDataList.push(
-                  {
-                    id: p.id,
-                    labels: labels,
-                    disbursements: disbursements,
-                    expectedDisbursements: eDisbursements
-                  }
-                );
-              }
+              p.isDisplay = false;
             });
+          }
+
+          if (this.reportDataList.totalYearlyDisbursements) {
+            //this.setupChartData();
           }
         }
         this.blockUI.stop();
@@ -141,36 +171,51 @@ export class BudgetReportComponent implements OnInit {
     );
   }
 
-  getChartData(id: number) {
-    var data = this.chartDataList.filter(d => d.id == id);
-    if (data.length > 0) {
-      return [{ 
-        data: data[0].disbursements, label: 'Disbursements', stack: '1' 
-      }, {
-        data: data[0].expectedDisbursements, label: 'Expected disbursements', stack: '2' 
-      }];
+  displayHideRow(id) {
+    if (this.reportDataList.projects) {
+      var selectProject = this.reportDataList.projects.filter(p => p.id == id);
+      if (selectProject.length > 0) {
+        selectProject[0].isDisplay = !selectProject[0].isDisplay;
+      }
     }
-    return [];
   }
 
-  getChartLabels(id: number) {
-    var data = this.chartDataList.filter(d => d.id == id);
-    if (data.length > 0) {
-      return data[0].labels;
+  setupChartData() {
+    this.chartData = [];
+    var yearlyDisbursements = this.reportDataList.totalYearlyDisbursements;
+    this.chartLabels = yearlyDisbursements.map(y => y.year);
+    var disbursements = yearlyDisbursements.map(y => y.totalDisbursements);
+    var expectedDisbursements = yearlyDisbursements.map(y => y.totalExpectedDisbursements);
+
+    this.chartData.push({
+      data: disbursements,
+      label: 'Actual disbursements',
+      stack: 'Stack 0'
+    });
+
+    this.chartData.push({
+      data: expectedDisbursements,
+      label: 'Planned disbursements',
+      stack: 'Stack 0'
+    });
+  }
+
+  showDetail(id: number) {
+    var filteredProject = this.reportDataList.projects.filter(p => p.id == id);
+    if (filteredProject.length > 0) {
+      this.selectedProject = filteredProject[0].title;
+      this.selectedYearlyDisbursements = filteredProject[0].yearlyDisbursements;
+
+      this.modalService.open('disbursement-info-modal');
     }
-    return [];
   }
 
-  /*getGrandTotalForFunding() {
-    this.grandTotalFunding = (this.reportDataList.projects.map(p => p.projectValue).reduce(this.storeService.sumValues, 0));
+  closeDetail() {
+    this.modalService.close('disbursement-info-modal');
   }
-
-  getGrandTotalForDisbursements() {
-    this.grandTotalDisbursements = (this.reportDataList.projects.map(p => p.actualDisbursements).reduce(this.storeService.sumValues, 0));
-  }*/
 
   printReport() {
-    this.storeService.printSimpleReport('rpt-budget-report', 'Budget report');
+    this.storeService.printReport('rpt-budget-report', 'Budget report', this.selectedCurrencyName);
   }
 
   selectCurrency() {
@@ -206,47 +251,30 @@ export class BudgetReportComponent implements OnInit {
     this.oldCurrencyRate = exRate;
     this.oldCurrency = this.model.selectedCurrency;
     this.oldExRateToDefault = exRate;
-
-    //if (calculatedRate > 0 && calculatedRate != 1) {
-      this.applyRateOnFinancials(calculatedRate, exRate);
-    //}
+    this.applyRateOnFinancials(calculatedRate, exRate);
   }
 
   applyRateOnFinancials(calculatedRate = 1, defaultRate = 1) {
     if (calculatedRate != 1) {
       if (this.reportDataList.projects && this.reportDataList.projects.length > 0) {
         this.reportDataList.projects.forEach(p => {
-          p.projectValue = Math.round(parseFloat((p.projectValue * calculatedRate).toFixed(2)));
-          p.moneyLeftForYears = Math.round(parseFloat((p.moneyLeftForYears * calculatedRate).toFixed(2)));
-          p.moneyPreviousTwoYears = Math.round(parseFloat((p.moneyPreviousTwoYears * calculatedRate).toFixed(2)));
-          p.expectedDisbursementsCurrentYear = Math.round(parseFloat((p.expectedDisbursementsCurrentYear * calculatedRate).toFixed(2)));
-
-          if (p.funding) {
-            p.funding.forEach(f => {
-              f.exchangeRateToDefault = defaultRate;
-              f.amount = Math.round(parseFloat((f.amount * calculatedRate).toFixed(2)));
-              f.amountInDefault = Math.round(parseFloat((f.amountInDefault * calculatedRate).toFixed(2)));
-            });
-          }
-
-          if (p.disbursements) {
-            p.disbursements.forEach(d => {
-                d.exchangeRateToDefault = defaultRate;
-                d.disbursements = Math.round(parseFloat((d.amount * calculatedRate).toFixed(2)));
-                d.amountInDefault = Math.round(parseFloat((d.amountInDefault * calculatedRate).toFixed(2)));
-            });
-          }
-
           if (p.yearlyDisbursements) {
-            p.yearlyDisbursements.forEach(d => {
-                d.disbursements = Math.round(parseFloat((d.disbursements * calculatedRate).toFixed(2)));
-                d.expectedDisbursements = Math.round(parseFloat((d.expectedDisbursements * calculatedRate).toFixed(2)));
+            p.yearlyDisbursements.forEach((d) => {
+              d.disbursements = Math.round(parseFloat((d.disbursements * calculatedRate).toFixed(2)));
+              d.actualDisbursements = Math.round(parseFloat((d.actualDisbursements * calculatedRate).toFixed(2)));
+              d.expectedDisbursements = Math.round(parseFloat((d.expectedDisbursements * calculatedRate).toFixed(2)));
             });
           }
-
         });
-        /*this.getGrandTotalForFunding();
-        this.getGrandTotalForDisbursements();*/
+      }
+
+      if (this.reportDataList.totalYearlyDisbursements && this.reportDataList.totalYearlyDisbursements.length > 0) {
+          this.reportDataList.totalYearlyDisbursements.forEach((t) => {
+            t.totalDisbursements = Math.round(parseFloat((t.totalDisbursements * calculatedRate).toFixed(2)));
+            t.totalExpectedDisbursements = Math.round(parseFloat((t.totalExpectedDisbursements * calculatedRate).toFixed(2)));
+          });
+
+          this.setupChartData();
       }
     }
   }
@@ -261,6 +289,26 @@ export class BudgetReportComponent implements OnInit {
 
   getLongDateString(dated: string) {
     return this.storeService.getLongDateString(dated);
+  }
+
+  setExcelFile() {
+    if (this.excelFile) {
+      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+    }
+  }
+
+  generatePDF() {
+    this.blockUI.start('Generating PDF...');
+    setTimeout(() => {
+      var result = Promise.resolve(this.reportService.generatePDF('rpt-budget-report'));
+      result.then(() => {
+        this.blockUI.stop();
+      });
+    }, 500);
+  }
+
+  getTodaysDate() {
+    return this.storeService.getLongDateAndTime();
   }
 
 }
