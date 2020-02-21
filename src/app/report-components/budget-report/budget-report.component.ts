@@ -36,6 +36,7 @@ export class BudgetReportComponent implements OnInit {
   excelFile: string = null;
   isDataLoading: boolean = true;
   btnReportText: string = 'View report';
+  arrangementConstant: number = 1;
   currentArrangement: string = null;
 
   chartLabels: any = [];
@@ -47,10 +48,16 @@ export class BudgetReportComponent implements OnInit {
     { id: 1, label: 'By sectors' },
     { id: 2, label: 'By locations' }
   ];
+  
   arrangementConstants: any = {
     SECTORS: 1,
     LOCATIONS: 2
   };
+
+  arrangementConstantLabels: any = {
+    SECTORS: "Sectors",
+    LOCATIONS: "Locations"
+  }
 
   chartOptions: any = {
     responsive: true,
@@ -88,7 +95,8 @@ export class BudgetReportComponent implements OnInit {
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
-    this.currentArrangement = this.arrangementConstants.SECTORS;
+    this.currentArrangement = this.arrangementConstantLabels.SECTORS;
+    this.arrangementConstant = this.arrangementConstants.SECTORS;
     this.blockUI.start('Loading report...');
     this.getDefaultCurrency();
     this.getNationalCurrency();
@@ -169,6 +177,14 @@ export class BudgetReportComponent implements OnInit {
         this.blockUI.stop();
       }
     );
+  }
+
+  manageDataDisplayArrangements() {
+    if (this.arrangementConstant == this.arrangementConstants.SECTORS) {
+      this.currentArrangement = this.arrangementConstantLabels.SECTORS;
+    } else if (this.arrangementConstant == this.arrangementConstants.LOCATIONS) {
+      this.currentArrangement = this.arrangementConstantLabels.LOCATIONS;
+    }
   }
 
   displayHideRow(id) {

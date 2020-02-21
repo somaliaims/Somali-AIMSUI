@@ -38,8 +38,8 @@
 
                 <div class="col-md-3 form-inline">
                   <label>Arrangement: </label>&nbsp;&nbsp;
-                  <select class="form-control" name="arrangement" [(ngModel)]="currentArrangement"
-                    #arrangement="ngModel">
+                  <select class="form-control" name="arrangement" [(ngModel)]="arrangementConstant"
+                    #arrangement="ngModel" (change)="manageDataDisplayArrangements()">
                     <option *ngFor="let arrangement of reportArrangements" value="{{arrangement.id}}">
                       {{arrangement.label}}
                     </option>
@@ -99,15 +99,25 @@
             <table class="table small margin-bottom-none">
               <tbody>
                 <tr>
-                  <th width="15%">&nbsp;</th>
+                  <th width="15%">{{currentArrangement}}</th>
                   <th width="17%" class="text-right" *ngFor="let year of reportDataList.years">{{year.label}}</th>
                 </tr>
-                <tr *ngFor="let sector of reportDataList.sectorDisbursements">
-                  <td><b>{{sector.sectorName}}</b></td>
-                  <td class="text-right" *ngFor="let d of sector.disbursements">
-                    {{formatNumber(d.totalValue)}}
-                  </td>
-                </tr>
+                <ng-container *ngIf="arrangementConstant == arrangementConstants.SECTORS">
+                  <tr *ngFor="let sector of reportDataList.sectorDisbursements">
+                    <td><b>{{sector.sectorName}}</b></td>
+                    <td class="text-right" *ngFor="let d of sector.disbursements">
+                      {{formatNumber(d.totalValue)}}
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-container *ngIf="arrangementConstant == arrangementConstants.LOCATIONS">
+                  <tr *ngFor="let location of reportDataList.locationDisbursements">
+                    <td><b>{{location.locationName}}</b></td>
+                    <td class="text-right" *ngFor="let d of location.disbursements">
+                      {{formatNumber(d.totalValue)}}
+                    </td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
 
