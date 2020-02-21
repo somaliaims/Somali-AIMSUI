@@ -97,7 +97,6 @@ export class BudgetReportComponent implements OnInit {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
     this.currentArrangement = this.arrangementConstantLabels.SECTORS;
     this.arrangementConstant = this.arrangementConstants.SECTORS;
-    this.blockUI.start('Loading report...');
     this.getDefaultCurrency();
     this.getNationalCurrency();
     this.getManualExchangeRateForToday();
@@ -153,6 +152,7 @@ export class BudgetReportComponent implements OnInit {
   }
 
   getBudgetReport() {
+    this.blockUI.start('Loading report...');
     this.reportService.getBudgetReport().subscribe(
       data => {
         if (data) {
@@ -164,14 +164,8 @@ export class BudgetReportComponent implements OnInit {
             this.setExcelFile();
           }
 
-          if (this.reportDataList.projects) {
-            this.reportDataList.projects.forEach((p) => {
-              p.isDisplay = false;
-            });
-          }
-
-          if (this.reportDataList.totalYearlyDisbursements) {
-            //this.setupChartData();
+          if (this.reportDataList.years) {
+            this.setupChartData();
           }
         }
         this.blockUI.stop();
@@ -185,6 +179,7 @@ export class BudgetReportComponent implements OnInit {
     } else if (this.arrangementConstant == this.arrangementConstants.LOCATIONS) {
       this.currentArrangement = this.arrangementConstantLabels.LOCATIONS;
     }
+    this.setupChartData();
   }
 
   displayHideRow(id) {
@@ -198,22 +193,29 @@ export class BudgetReportComponent implements OnInit {
 
   setupChartData() {
     this.chartData = [];
-    var yearlyDisbursements = this.reportDataList.totalYearlyDisbursements;
-    this.chartLabels = yearlyDisbursements.map(y => y.year);
-    var disbursements = yearlyDisbursements.map(y => y.totalDisbursements);
-    var expectedDisbursements = yearlyDisbursements.map(y => y.totalExpectedDisbursements);
+    this.chartLabels = this.reportDataList.years.map(y => y.label);
 
-    this.chartData.push({
-      data: disbursements,
-      label: 'Actual disbursements',
-      stack: 'Stack 0'
-    });
-
-    this.chartData.push({
-      data: expectedDisbursements,
-      label: 'Planned disbursements',
-      stack: 'Stack 0'
-    });
+    if (this.arrangementConstant == this.arrangementConstants.SECTORS) {
+      var index = 0;
+      this.reportDataList.sectorDisbursements.forEach((s) => {
+        this.chartData.push({
+          data: s.disbursements.map(d => d.totalValue),
+          label: s.sectorName,
+          stack: 'Stack ' + index
+        });
+        ++index;
+      });
+    } else if (this.arrangementConstant == this.arrangementConstants.LOCATIONS) {
+      var index = 0;
+      this.reportDataList.locationDisbursements.forEach((l) => {
+        this.chartData.push({
+          data: l.disbursements.map(d => d.totalValue),
+          label: l.sectorName,
+          stack: 'Stack ' + index
+        });
+        ++index;
+      });
+    } 
   }
 
   showDetail(id: number) {

@@ -53,7 +53,7 @@
                       class="btn btn-danger margin-top-2" (click)="generatePDF()">Download PDF</button>&nbsp;
                     <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success margin-top-2">Download
                       spreadsheet</a>&nbsp;
-                    <button *ngIf="reportDataList && reportDataList.projects" type="button"
+                    <button *ngIf="reportDataList && reportDataList.years" type="button"
                       class="btn btn-warning margin-top-2" (click)="printReport()">Print report</button>
                   </span>
                 </div>
@@ -92,7 +92,7 @@
         </div>
       </div>
 
-      <div class="col margin-top-20" id="rpt-budget-report">
+      <div class="col margin-top-20">
         <div class="col-md-12 margin-top-10">
           <div *ngIf="reportDataList && reportDataList.years" class="margin-bottom-none">
 
