@@ -87,8 +87,7 @@
         class="col-md-12 margin-top-10">
         <div class="offset-2 col-md-8">
           <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
-            [legend]="chartLegend" [chartType]="chartType" (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
+            [legend]="chartLegend" [chartType]="chartType" [plugins]="barChartPlugins"></canvas>
         </div>
       </div>
 
@@ -103,7 +102,7 @@
                   <th width="17%" class="text-right" *ngFor="let year of reportDataList.years">{{year.label}}</th>
                 </tr>
                 <ng-container *ngIf="arrangementConstant == arrangementConstants.SECTORS">
-                  <tr *ngFor="let sector of reportDataList.sectorDisbursements">
+                  <tr *ngFor="let sector of reportDataList.parentSectorDisbursements">
                     <td><b>{{sector.sectorName}}</b></td>
                     <td class="text-right" *ngFor="let d of sector.disbursements">
                       {{formatNumber(d.totalValue)}}

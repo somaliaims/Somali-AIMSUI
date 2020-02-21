@@ -7,6 +7,8 @@ import { CurrencyService } from 'src/app/services/currency.service';
 import { Messages } from 'src/app/config/messages';
 import { Settings } from 'src/app/config/settings';
 import { ModalService } from 'src/app/services/modal.service';
+import { ChartType, ChartDataSets, ChartOptions } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 @Component({
   selector: 'budget-report',
@@ -39,10 +41,11 @@ export class BudgetReportComponent implements OnInit {
   arrangementConstant: number = 1;
   currentArrangement: string = null;
 
-  chartLabels: any = [];
-  chartData: any = [];
+  chartLabels: Label[] = [];
+  chartData: ChartDataSets[] = [];
   chartLegend: boolean = true;
-  chartType: string = 'bar';
+  chartType: ChartType = 'bar';
+  barChartPlugins: any = [];
   pagingSize: number = Settings.rowsPerPage;
   reportArrangements: any = [
     { id: 1, label: 'By sectors' },
@@ -59,13 +62,13 @@ export class BudgetReportComponent implements OnInit {
     LOCATIONS: "Locations"
   }
 
-  chartOptions: any = {
+  chartOptions: ChartOptions = {
     responsive: true,
     tooltips: {
       callbacks: {
         label: function (tooltipItem, data) {
           var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          return parseInt(tooltipValue).toLocaleString();
+          return parseInt(tooltipValue.toString()).toLocaleString();
         }
       }
     },
@@ -196,24 +199,20 @@ export class BudgetReportComponent implements OnInit {
     this.chartLabels = this.reportDataList.years.map(y => y.label);
 
     if (this.arrangementConstant == this.arrangementConstants.SECTORS) {
-      var index = 0;
-      this.reportDataList.sectorDisbursements.forEach((s) => {
+      this.reportDataList.parentSectorDisbursements.forEach((s) => {
         this.chartData.push({
           data: s.disbursements.map(d => d.totalValue),
           label: s.sectorName,
-          stack: 'Stack ' + index
+          stack: 'a'
         });
-        ++index;
       });
     } else if (this.arrangementConstant == this.arrangementConstants.LOCATIONS) {
-      var index = 0;
       this.reportDataList.locationDisbursements.forEach((l) => {
         this.chartData.push({
           data: l.disbursements.map(d => d.totalValue),
-          label: l.sectorName,
-          stack: 'Stack ' + index
+          label: l.locationName,
+          stack: 'a'
         });
-        ++index;
       });
     } 
   }

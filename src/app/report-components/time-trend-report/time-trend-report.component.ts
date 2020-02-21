@@ -495,13 +495,13 @@ export class TimeTrendReportComponent implements OnInit {
     this.chartData.push({
       data: actualDisbursements,
       label: 'Actual disbursements',
-      stack: 'Stack 0'
+      stack: 'a'
     });
 
     this.chartData.push({
       data: plannedDisbursements,
       label: 'Planned disbursements',
-      stack: 'Stack 0'
+      stack: 'a'
     });
   }
 

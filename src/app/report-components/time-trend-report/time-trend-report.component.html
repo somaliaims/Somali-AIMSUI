@@ -201,11 +201,11 @@
           <div class="offset-2 col-md-8">
             <canvas *ngIf="chartType == chartTypes.BAR" id="chart" baseChart [datasets]="chartData"
               [labels]="chartLabels" [options]="chartOptions" [legend]="chartLegend" [chartType]="chartType"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+              ></canvas>
 
             <canvas *ngIf="chartType == chartTypes.LINE" id="chart" baseChart [datasets]="chartData"
               [labels]="chartLabels" [options]="lineChartOptions" [legend]="chartLegend" [chartType]="chartType"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+              ></canvas>
           </div>
         </div>
       </div>
