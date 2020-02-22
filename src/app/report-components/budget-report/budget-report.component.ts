@@ -164,7 +164,7 @@ export class BudgetReportComponent implements OnInit {
         if (data) {
           this.reportDataList = data;
           if (this.reportDataList.years) {
-            this.chartLabels = this.reportDataList.years.map(y => y.label);
+            this.chartLabels = this.reportDataList.years.map(y => y.year);
           }
           this.datedToday = this.storeService.getLongDateString(new Date());
           this.btnReportText = 'Update report';

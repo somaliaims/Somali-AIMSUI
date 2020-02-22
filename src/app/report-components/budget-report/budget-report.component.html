@@ -99,7 +99,7 @@
               <tbody>
                 <tr>
                   <th width="15%">{{currentArrangement}}</th>
-                  <th width="17%" class="text-right" *ngFor="let year of reportDataList.years">{{year.label}}</th>
+                  <th width="17%" class="text-right" *ngFor="let year of reportDataList.years">{{year.year}}</th>
                 </tr>
                 <ng-container *ngIf="arrangementConstant == arrangementConstants.SECTORS">
                   <tr *ngFor="let sector of reportDataList.parentSectorDisbursements">
