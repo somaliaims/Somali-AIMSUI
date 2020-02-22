@@ -41,6 +41,8 @@ export class BudgetReportComponent implements OnInit {
   arrangementConstant: number = 1;
   currentArrangement: string = null;
 
+  chartDescriptiveLabels: any = [];
+  isChartLoading: boolean = true;
   chartLabels: Label[] = [];
   chartData: ChartDataSets[] = [];
   chartLegend: boolean = true;
@@ -68,7 +70,7 @@ export class BudgetReportComponent implements OnInit {
       callbacks: {
         label: function (tooltipItem, data) {
           var tooltipValue = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          return parseInt(tooltipValue.toString()).toLocaleString();
+          return parseFloat(tooltipValue.toString()).toLocaleString();
         }
       }
     },
@@ -79,7 +81,7 @@ export class BudgetReportComponent implements OnInit {
           beginAtZero: true,
           callback: function (value, index, values) {
             return value.toLocaleString("en-US");
-          }
+          }.bind(this)
         }
       }],
       xAxes: [{
@@ -156,10 +158,14 @@ export class BudgetReportComponent implements OnInit {
 
   getBudgetReport() {
     this.blockUI.start('Loading report...');
+    this.isChartLoading = true;
     this.reportService.getBudgetReport().subscribe(
       data => {
         if (data) {
           this.reportDataList = data;
+          if (this.reportDataList.years) {
+            this.chartLabels = this.reportDataList.years.map(y => y.label);
+          }
           this.datedToday = this.storeService.getLongDateString(new Date());
           this.btnReportText = 'Update report';
           if (this.reportDataList.reportSettings) {
@@ -196,9 +202,10 @@ export class BudgetReportComponent implements OnInit {
 
   setupChartData() {
     this.chartData = [];
-    this.chartLabels = this.reportDataList.years.map(y => y.label);
+    this.chartDescriptiveLabels = [];
 
     if (this.arrangementConstant == this.arrangementConstants.SECTORS) {
+      this.chartDescriptiveLabels = this.reportDataList.parentSectorDisbursements.map(s => s.sectorName);
       this.reportDataList.parentSectorDisbursements.forEach((s) => {
         this.chartData.push({
           data: s.disbursements.map(d => d.totalValue),
@@ -207,6 +214,7 @@ export class BudgetReportComponent implements OnInit {
         });
       });
     } else if (this.arrangementConstant == this.arrangementConstants.LOCATIONS) {
+      this.chartDescriptiveLabels = this.reportDataList.locationDisbursements.map(s => s.sectorName);
       this.reportDataList.locationDisbursements.forEach((l) => {
         this.chartData.push({
           data: l.disbursements.map(d => d.totalValue),
@@ -215,6 +223,7 @@ export class BudgetReportComponent implements OnInit {
         });
       });
     } 
+    this.isChartLoading = false;
   }
 
   showDetail(id: number) {

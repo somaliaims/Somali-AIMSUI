@@ -167,22 +167,24 @@
           </table>
           
           <table class="table table-striped small margin-bottom-0" *ngFor="let yView of envelopeList">
-            <tr class="row-highlight">
-              <td [attr.colspan]="cellCount"><b>{{yView.funder}}</b></td>
+            <tr class="row-highlight" title="Click here to view detail" (click)="displayHideRow(yView.funderId)">
+              <td width="20%">
+                <span *ngIf="!yView.isDisplay"><i class="fa fa-plus-square"></i></span>
+                <span *ngIf="yView.isDisplay"><i class="fa fa-minus-square"></i></span>
+                &nbsp;
+                <b>{{yView.funder}}</b>
+              </td>
+              <td class="text-right" width="{{cellPercent}}%" *ngFor="let yr of envelopeYearsList">
+                {{formatNumber(calculateTotalsForYear(yr, yView.funderId))}}
+              </td>
+              <td width="{{cellPercent}}%" class="text-right"><b>{{formatNumber(calculateTotalsForFunder(yView.funderId))}}</b></td>
             </tr>
-            <tr *ngFor="let breakup of yView.envelopeBreakupsByType">
+            <tr class="child" [hidden]="!yView.isDisplay" *ngFor="let breakup of yView.envelopeBreakupsByType">
               <td width="20%">{{breakup.envelopeType}}</td>
               <td width="{{cellPercent}}%" class="text-right" *ngFor="let yearly of breakup.yearlyBreakup">
                 {{formatNumber(yearly.amount)}}
               </td>
               <td width="{{cellPercent}}%" class="text-right"><b>{{formatNumber(calculateEnvelopeTypeTotal(yView.funderId, breakup.envelopeTypeId))}}</b></td>
-            </tr>
-            <tr>
-                <th width="20%">Yearly total</th>
-                <th class="text-right" width="{{cellPercent}}%" *ngFor="let yr of envelopeYearsList">
-                  {{formatNumber(calculateTotalsForYear(yr, yView.funderId))}}
-                </th>
-                <th width="{{cellPercent}}%" class="text-center">&nbsp;</th>
             </tr>
           </table>
         </div>

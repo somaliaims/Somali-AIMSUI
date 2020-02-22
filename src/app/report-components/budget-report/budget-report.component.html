@@ -83,7 +83,7 @@
         <h5>Budget report <small>(Currency: {{this.selectedCurrencyName}})</small></h5>
       </div>
 
-      <div *ngIf="reportDataList && reportDataList.reportSettings && chartData.length > 0"
+      <div *ngIf="reportDataList && reportDataList.reportSettings && chartData.length > 0 && !isChartLoading"
         class="col-md-12 margin-top-10">
         <div class="offset-2 col-md-8">
           <canvas id="chart" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"

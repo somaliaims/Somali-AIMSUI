@@ -221,8 +221,6 @@ export class EnvelopeReportComponent implements OnInit {
   getEnvelopeReport() {
     this.isShowChart = false;
     this.chartData = [];
-    //this.chartType = this.chartTypes.BAR;
-    //this.model.chartType = this.chartTypes.BAR;
     var chartType = this.chartTypeCodes.BAR;
     if (this.loadReport) {
       chartType = this.paramChartType;
@@ -260,6 +258,9 @@ export class EnvelopeReportComponent implements OnInit {
             this.setExcelFile();
           }
           this.envelopeList = data.envelope;
+          this.envelopeList.forEach((e) => {
+            e.isDisplay = false;
+          });
           this.envelopeYearsList = data.envelopeYears;
           this.cellCount = (this.envelopeYearsList.length + 2);
           this.cellPercent = (80 / this.cellCount);
@@ -268,12 +269,10 @@ export class EnvelopeReportComponent implements OnInit {
         }
         setTimeout(() => {
           this.isLoading = false;
-          //if (this.loadReport) {
-            var typeName = this.chartTypesList.filter(t => t.id == chartType);
-            if (typeName.length > 0) {
-              this.model.chartType = typeName[0].type;
-            }
-          //}
+          var typeName = this.chartTypesList.filter(t => t.id == chartType);
+          if (typeName.length > 0) {
+            this.model.chartType = typeName[0].type;
+          }
         }, 1000);
         this.blockUI.stop();
       }
@@ -499,6 +498,19 @@ export class EnvelopeReportComponent implements OnInit {
     return totalAmount;
   }
 
+  calculateTotalsForFunder(funderId: number) {
+    var totalAmount = 0;
+    var envelope = this.envelopeList.filter(e => e.funderId == funderId);
+    envelope.forEach((e) => {
+      e.envelopeBreakupsByType.forEach((b) => {
+        b.yearlyBreakup.forEach((y) => {
+          totalAmount += parseFloat(y.amount);
+        });
+      });
+    });
+    return totalAmount;
+  }
+
   calculateTotalForEnvelopeType(year: number, envelopeType: string) {
     var totalAmount = 0;
     this.envelopeList.forEach((e) => {
@@ -511,6 +523,13 @@ export class EnvelopeReportComponent implements OnInit {
       });
     });
     return totalAmount;
+  }
+
+  displayHideRow(id: number) {
+    var envelope = this.envelopeList.filter(e => e.funderId == id);
+    if (envelope.length > 0) {
+      envelope[0].isDisplay = !envelope[0].isDisplay;
+    }
   }
 
   generatePDF() {
