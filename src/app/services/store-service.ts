@@ -244,6 +244,14 @@ export class StoreService {
   }
 
   getNumberWithCommas(value: number) {
+    if (!value) {
+      return value;
+    }
+    if (!isNaN(value) && value > 0) {
+      value = Math.round(value);
+    } else {
+      return value;
+    }
     return value.toLocaleString();
   }
 

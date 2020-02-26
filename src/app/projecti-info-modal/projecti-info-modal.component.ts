@@ -55,13 +55,7 @@ export class ProjectiInfoModalComponent implements OnInit {
   }
 
   formatNumber(value: number) {
-    if (!value) {
-      return value;
-    }
-    if (!isNaN(value) && value > 0) {
-      return this.storeService.getNumberWithCommas(Math.round(value));
-    }
-    return value;
+    return this.storeService.getNumberWithCommas(value);
   }
 
 }

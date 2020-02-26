@@ -976,11 +976,24 @@ export class BasicDataComponent implements OnInit {
       var selectedBudget = budgets.filter(b => b.id == budgetId);
       if (selectedBudget && selectedBudget.length > 0) {
         if (selectedBudget.length > 0) {
-          this.projectData.projectCurrency = selectedBudget[0].currency;
           this.projectData.projectValue = selectedBudget[0].amount;
-          if (this.projectData.projectCurrency) {
-            this.getExchangeRateForCurrency();
-          }
+        }
+      }
+    }
+  }
+
+  enterIATITransaction(e) {
+    var arr = e.target.id.split('-');
+    var projectId = arr[1];
+    var transactionId = arr[2];
+
+    var selectProject = this.iatiProjects.filter(p => p.id == projectId);
+    if (selectProject && selectProject.length > 0) {
+      var transactions = selectProject[0].transactions;
+      var selectedTransaction = transactions.filter(b => b.id == transactionId);
+      if (selectedTransaction && selectedTransaction.length > 0) {
+        if (selectedTransaction.length > 0) {
+          this.projectData.projectValue = selectedTransaction[0].amount;
         }
       }
     }
@@ -1157,6 +1170,10 @@ export class BasicDataComponent implements OnInit {
 
   formatToLongDate(dated: string) {
     return this.storeService.getLongDateString(dated);
+  }
+
+  formatNumber(value: number) {
+    return this.storeService.getNumberWithCommas(value);
   }
 
   formatDateToYMD(dated: string) {

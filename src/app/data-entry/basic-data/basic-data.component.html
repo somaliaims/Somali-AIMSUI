@@ -369,12 +369,55 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
-                    <span *ngIf="currentSource == basicDataSource.CURRENCY">
-                      <b>Currency:</b> {{project.defaultCurrency}} &nbsp; <button id="btncurrency-{{project.id}}"
-                      (click)="enterCurrencyIATI($event)" class="btn btn-sm btn-outline-success">>></button>
+                  <td colspan="2">
+                    <span *ngIf="currentSource == basicDataSource.PROJECT_VALUE">
+                      <span *ngIf="project.projectValue">
+                        <b>Project value: </b>{{formatNumber(project.projectValue)}}
+                      </span>
+                      
+                      <b *ngIf="project.transactions.length > 0">Transactions</b>
+                      <table *ngIf="project.transactions.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Type</th>
+                          <th>Dated</th>
+                          <th>Amount</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let transaction of project.transactions">
+                          <td>{{transaction.transactionType}}</td>
+                          <td>{{formatToLongDate(transaction.dated)}}</td>
+                          <td>{{formatNumber(transaction.amount)}}</td>
+                          <td>
+                            <button [class.disable]="!transaction.amount"
+                              id="btnitamount-{{project.id}}-{{transaction.id}}" (click)="enterIATITransaction($event)"
+                              class="btn btn-sm btn-outline-success">>></button>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <b *ngIf="project.budgets.length > 0">Budgets</b>
+                      <table *ngIf="project.budgets.length > 0" class="table table-bordered">
+                        <tr>
+                          <th>Type</th>
+                          <th>Dated</th>
+                          <th>Amount</th>
+                          <th>Action</th>
+                        </tr>
+                        <tr *ngFor="let budget of project.budgets">
+                          <td>{{budget.budgetType}}</td>
+                          <td>{{formatToLongDate(budget.dated)}}</td>
+                          <td>{{formatNumber(budget.amount)}}</td>
+                          <td>
+                            <button [class.disable]="!budget.amount"
+                              id="btnibamount-{{project.id}}-{{budget.id}}" (click)="enterIATIBudget($event)"
+                              class="btn btn-sm btn-outline-success">>></button>
+                          </td>
+                        </tr>
+                      </table>
                     </span>
                   </td>
+                </tr>
+                <tr>
                   <td>
                     <span class="text-right">
                       <span class="badge badge-warning float-right">IATI</span>
