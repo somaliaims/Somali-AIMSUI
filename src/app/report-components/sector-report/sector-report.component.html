@@ -109,7 +109,7 @@
                 
               </div>
 
-              <div class="row">
+              <div class="row margin-top-10">
 
                 <div class="col-lg-6 col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
@@ -135,7 +135,7 @@
                 </div>
 
                 <div class="col-lg-6 col-md-6">
-                  <div [class.disable]="!defaultCurrency" class="float-right margin-top-10">
+                  <div [class.disable]="!defaultCurrency" class="float-right">
                     <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                       <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
                         class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>

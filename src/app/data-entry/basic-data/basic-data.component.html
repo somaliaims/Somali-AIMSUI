@@ -318,8 +318,10 @@
                       (click)="enterProjectValueAIMS($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                   <td>
-                    <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button *ngIf="currentSource == basicDataSource.CURRENCY" id="btnacurrency-{{project.id}}"
+                    <span *ngIf="currentSource == basicDataSource.CURRENCY">
+                      <b>Currency:</b> {{project.projectCurrency}} &nbsp; <button id="btnacurrency-{{project.id}}"
                       (click)="enterCurrencyAIMS($event)" class="btn btn-sm btn-outline-success">>></button>
+                    </span>
                   </td>
                 </tr>
                 <tr>
@@ -368,8 +370,10 @@
                 </tr>
                 <tr>
                   <td>
-                    <b>Currency:</b> {{project.defaultCurrency}} &nbsp; <button *ngIf="currentSource == basicDataSource.CURRENCY" id="btncurrency-{{project.id}}"
+                    <span *ngIf="currentSource == basicDataSource.CURRENCY">
+                      <b>Currency:</b> {{project.defaultCurrency}} &nbsp; <button id="btncurrency-{{project.id}}"
                       (click)="enterCurrencyIATI($event)" class="btn btn-sm btn-outline-success">>></button>
+                    </span>
                   </td>
                   <td>
                     <span class="text-right">
@@ -421,7 +425,7 @@
               Project title is required
             </div>
 
-            <div *ngIf="currentSource == basicDataSource.START_DATE" class="form-group">
+            <div *ngIf="currentSource == basicDataSource.START_DATE || currentSource == basicDataSource.END_DATE" class="form-group">
               <label>Start date</label>
               <input type="text" title="Start date of the project" onfocus="(this.type='date')"
                 onblur="(this.type='text')" class="form-control col-sm-12" name="startDate"
@@ -431,7 +435,7 @@
               Start date is required
             </div>
 
-            <div *ngIf="currentSource == basicDataSource.END_DATE" class="form-group">
+            <div *ngIf="currentSource == basicDataSource.START_DATE || currentSource == basicDataSource.END_DATE" class="form-group">
               <label>End date</label>
               <input type="text" title="End date of the project" onfocus="(this.type='date')"
                 onblur="(this.type='text')" class="form-control col-sm-12" name="endDate" placeholder="Project end date"
@@ -482,7 +486,7 @@
               Funding type is required
             </div>-->
 
-            <div class="form-group">
+            <div *ngIf="currentSource == basicDataSource.TITLE" class="form-group">
               <label>Project description</label>
               <textarea class="form-control" class="form-control" id="description" (input)="getDescriptionLimitInfo()"
                 [(ngModel)]="projectData.description" name="description" #description="ngModel" rows="5"

@@ -380,7 +380,7 @@ export class DataEntryComponent implements OnInit {
   }
 
   getCurrenciesList() {
-    this.currencyService.getCurrenciesForUser().subscribe(
+    this.currencyService.getCurrenciesList().subscribe(
       data => {
         if (data) {
           this.currenciesList = data;

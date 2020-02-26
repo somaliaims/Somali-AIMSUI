@@ -159,7 +159,7 @@
 
                   <div class="col margin-top-5">
                     <select name="sectorLevel" [(ngModel)]="model.sectorLevel" (change)="manageSectorLevels()" #sectorLevel="ngModel" class="form-control">
-                      <option value="null">--Sector level--</option>
+                      <option value="null">--AIMS sector level--</option>
                       <option *ngFor="let level of sectorLevels" value="{{level.id}}">
                         {{level.level}}
                       </option>
@@ -167,7 +167,7 @@
                   </div>
 
                   <div [class.disable]="model.sectorLevel == null || model.sectorLevel == 'null'" class="col margin-top-5">
-                    <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
+                    <ng-multiselect-dropdown [placeholder]="'-- All AIMS sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
                       (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" (onSelectAll)="onItemSelectAll()"
                       (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings" name="selectedSectors"
                       #selectedSectors="ngModel">
