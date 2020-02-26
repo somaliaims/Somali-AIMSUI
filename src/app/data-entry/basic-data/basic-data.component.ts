@@ -156,6 +156,8 @@ export class BasicDataComponent implements OnInit {
   viewProjectFunders: any = [];
   viewProjectImplementers: any = [];
   viewProjectDisbursements: any = [];
+  viewProjectBudgets: any = [];
+  viewProjectTransactions: any = [];
   viewProjectMarkers: any = [];
 
   @BlockUI() blockUI: NgBlockUI;
@@ -222,6 +224,7 @@ export class BasicDataComponent implements OnInit {
   ngOnChanges() {
     if (this.aimsProjects.length > 0 || this.iatiProjects.length > 0) {
       this.isProjectSourceAvailable = true;
+      console.log(this.iatiProjects);
     }
     
     if (this.projectData && this.projectData.description) {
@@ -1129,6 +1132,8 @@ export class BasicDataComponent implements OnInit {
         this.viewProjectFunders = projectData.funders;
         this.viewProjectImplementers = projectData.implementers;
         this.viewProjectDocuments = projectData.documents;
+        this.viewProjectBudgets = projectData.budgets;
+        this.viewProjectTransactions = projectData.transactions;
         this.projectIATIInfoModal.openModal();
       }
     }

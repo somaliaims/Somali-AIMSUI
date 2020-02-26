@@ -8,7 +8,7 @@
       </span>
     </div>
   </div>
-  <div class="row">
+  <div class="row small">
     <div class="col margin-top-10">
       <div class="col-md-12">
         <div class="card">
@@ -54,6 +54,39 @@
               <i>No sectors found</i>
             </span>
 
+            <h6 class="text-info margin-top-10"><b>Budgets</b></h6>
+            <table *ngIf="budgets.length > 0" class="table table-striped">
+              <tr>
+                <th>Type</th>
+                <th>Dated</th>
+                <th class="text-right">Amount</th>
+              </tr>
+              <tr *ngFor="let budget of budgets">
+                <td>{{budget.budgetType}}</td>
+                <td>{{getLongDateString(budget.endDate)}}</td>
+                <td class="text-right">{{formatNumber(budget.amount)}}</td>
+              </tr>
+            </table>
+            <span class="text-info" *ngIf="budgets.length == 0">
+              <i>No budgets found</i>
+            </span>
+
+            <h6 class="text-info margin-top-10"><b>Transactions</b></h6>
+            <table *ngIf="transactions.length > 0" class="table table-striped">
+              <tr>
+                <th>Type</th>
+                <th>Dated</th>
+                <th class="text-right">Amount</th>
+              </tr>
+              <tr *ngFor="let transaction of transactions">
+                <td>{{transaction.transactionType}}</td>
+                <td>{{getLongDateString(transaction.dated)}}</td>
+                <td class="text-right">{{formatNumber(transaction.amount)}}</td>
+              </tr>
+            </table>
+            <span class="text-info" *ngIf="transactions.length == 0">
+              <i>No transactions found</i>
+            </span>
 
             <h6 class="text-info margin-top-10"><b>Funders</b></h6>
             <table *ngIf="funders.length > 0" class="table table-striped">

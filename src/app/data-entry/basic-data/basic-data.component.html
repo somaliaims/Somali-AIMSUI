@@ -297,7 +297,7 @@
                       >></button>&nbsp;
                     <a href="#" title="View Project Details" id="aproject-{{project.id}}"
                       (click)="viewAIMSProject($event)" class="text-info">View
-                      Details</a><br />
+                      details</a><br />
                   </td>
                 </tr>
                 <tr>
@@ -353,7 +353,7 @@
                       >></button>&nbsp;
                     <a href="#" title="View Project Details" id="iproject-{{project.id}}"
                       (click)="viewIATIProject($event)" class="text-info">View
-                      Details</a>
+                      details</a>
                   </td>
                 </tr>
                 <tr>
@@ -765,7 +765,8 @@
 </project-info-modal>
 
 <projecti-info-modal [project]="viewProject" [locations]="viewProjectLocations" [sectors]="viewProjectSectors"
-  [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments">
+  [funders]="viewProjectFunders" [implementers]="viewProjectImplementers" [documents]="viewProjectDocuments"
+  [budgets]="viewProjectBudgets" [transactions]="viewProjectTransactions">
 </projecti-info-modal>
 
 <create-org-modal (organizationCreated)="updateFundersImplementers($event)">
