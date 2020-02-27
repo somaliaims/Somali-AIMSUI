@@ -927,6 +927,14 @@ export class BasicDataComponent implements OnInit {
     }
   }
 
+  enterProjectValueIATI(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.iatiProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.projectData.projectValue = selectedProject[0].projectValue;
+    }
+  }
+
   enterStartDateIATI(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
@@ -959,9 +967,9 @@ export class BasicDataComponent implements OnInit {
     var selectProject = this.iatiProjects.filter(p => p.id == projectId);
     if (selectProject.length > 0) {
       this.projectData.projectCurrency = selectProject[0].defaultCurrency;
-      if (this.projectData.projectCurrency) {
+      /*if (this.projectData.projectCurrency) {
         this.getExchangeRateForCurrency();
-      }
+      }*/
     }
   }
 
