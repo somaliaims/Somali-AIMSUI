@@ -1,27 +1,30 @@
 <div class="container-fluid view-area">
   <block-ui>
-    <div class="col-md-12">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link active btn-info" data-toggle="tab">Notifications</a>
-        </li>
-      </ul>
-    </div>
-
     <div class="row">
-      <div class="col-md-12 margin-top-10">
+      <div class="col-md-6">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Notifications</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-6">
         <div class="float-right form-inline">
-          <label><b><i>Notification display type:&nbsp;</i></b></label>
+          <label><b><i>Notification type:&nbsp;</i></b></label>
           <select class="form-control" id="displayOption" [(ngModel)]="displayOption" name="displayOption"
             #displayOptionModel="ngModel" (change)="showNotificationType()" required>
-            <option value="null">-- Notification type --</option>
+            <option value="null">-- All notification type --</option>
             <option *ngFor="let type of notificationTypes" value="{{type.id}}">
               {{type.text}}
             </option>
           </select>
         </div>
       </div>
+    </div>
+    
 
+    <div class="row">
       <div class="col-md-12 text-center" *ngIf="isLoading">
         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
       </div>

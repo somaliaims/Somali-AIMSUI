@@ -58,7 +58,7 @@ export class NotificationComponent implements OnInit {
   };
 
   notificationTypes: any = [
-    { id: 1, text: 'Notifications' },
+    { id: 1, text: 'General notifications' },
     { id: 2, text: 'Project permission requests' },
     { id: 3, text: 'Project deletion requests' },
     { id: 4, text: 'Merge organizations requests' }

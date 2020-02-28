@@ -428,7 +428,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <span *ngIf="currentSource == basicDataSource.CURRENCY || currentSource == basicDataSource.PROJECT_VALUE>
+                    <span *ngIf="currentSource == basicDataSource.CURRENCY || currentSource == basicDataSource.PROJECT_VALUE">
                       <b>Currency:</b> {{project.defaultCurrency}} &nbsp; <button id="btnicurrency-{{project.id}}"
                       (click)="enterCurrencyIATI($event)" [class.disable]="!project.defaultCurrency || currentSource == basicDataSource.PROJECT_VALUE" class="btn btn-sm btn-outline-success">>></button>
                     </span>
