@@ -51,15 +51,17 @@ export class NotificationComponent implements OnInit {
   ];
 
   notificationTypeCodes: any = {
+    'ALL': 0,
     'NOTIFICATIONS': 1,
-    'REQUESTS': 2,
+    'MEMBERSHIP_REQUESTS': 2,
     'PROJECT_DELETION_REQUESTS': 3,
     'MERGE_ORGS_REQUESTS': 4
   };
 
   notificationTypes: any = [
+    { id: 0, text: '--All notifications--' },
     { id: 1, text: 'General notifications' },
-    { id: 2, text: 'Project permission requests' },
+    { id: 2, text: 'Project membership requests' },
     { id: 3, text: 'Project deletion requests' },
     { id: 4, text: 'Merge organizations requests' }
   ];
@@ -83,23 +85,23 @@ export class NotificationComponent implements OnInit {
       }
     });
 
+    this.displayOption = this.notificationTypeCodes.ALL;
     this.getNotifications();
     this.getProjectRequests();
     this.getProjectDeletionRequests();
     this.getMergeOrganizationRequestsForUser();
-    this.displayOption = this.notificationTypeCodes.NOTIFICATIONS;
   }
 
   showNotificationType() {
-    if (this.displayOption == this.notificationTypeCodes.NOTIFICATIONS) {
+    /*if (this.displayOption == this.notificationTypeCodes.NOTIFICATIONS || this.displayOption == this.notificationTypeCodes.ALL) {
       this.showNotifications();
-    } else if (this.displayOption == this.notificationTypeCodes.REQUESTS) {
+    } else if (this.displayOption == this.notificationTypeCodes.MEMBERSHIP_REQUESTS || this.displayOption == this.notificationTypeCodes.ALL) {
       this.showRequests();
-    } else if (this.displayOption == this.notificationTypeCodes.PROJECT_DELETION_REQUESTS) {
+    } else if (this.displayOption == this.notificationTypeCodes.PROJECT_DELETION_REQUESTS  || this.displayOption == this.notificationTypeCodes.ALL) {
       this.showDeletionRequests();
-    } else if (this.displayOption == this.notificationTypeCodes.MERGE_ORGS_REQUESTS) {
+    } else if (this.displayOption == this.notificationTypeCodes.MERGE_ORGS_REQUESTS  || this.displayOption == this.notificationTypeCodes.ALL) {
       this.showMergeOrganizationsRequests();
-    }
+    }*/
   }
 
   getNotifications() {

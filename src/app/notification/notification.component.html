@@ -13,8 +13,7 @@
         <div class="float-right form-inline">
           <label><b><i>Notification type:&nbsp;</i></b></label>
           <select class="form-control" id="displayOption" [(ngModel)]="displayOption" name="displayOption"
-            #displayOptionModel="ngModel" (change)="showNotificationType()" required>
-            <option value="null">-- All notification type --</option>
+            #displayOptionModel="ngModel" (change)="showNotificationType()">
             <option *ngFor="let type of notificationTypes" value="{{type.id}}">
               {{type.text}}
             </option>
@@ -29,8 +28,8 @@
         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
       </div>
 
-      <div *ngIf="currentTab == tabConstants.NOTIFICATIONS" class="col-md-12 margin-top-10">
-
+      <div *ngIf="displayOption == notificationTypeCodes.NOTIFICATIONS || displayOption == notificationTypeCodes.ALL" class="col-md-12 margin-top-10">
+        <h6>General notifications</h6>
         <table class="table table-striped">
           <tr *ngFor="let notification of notifications; let i = index">
             <td width="75%">
@@ -65,7 +64,8 @@
         </table>
       </div>
 
-      <div *ngIf="currentTab == tabConstants.REQUESTS" class="col-md-12 margin-top-10">
+      <div *ngIf="displayOption == notificationTypeCodes.MEMBERSHIP_REQUESTS || displayOption == notificationTypeCodes.ALL" class="col-md-12 margin-top-10">
+        <h6>Project membership requests</h6>
         <table *ngIf="projectRequests.length > 0" class="table table-striped">
           <tr *ngFor="let request of projectRequests; let i = index">
             <td width="75%">
@@ -102,7 +102,8 @@
           </table>
       </div>
 
-      <div *ngIf="currentTab == tabConstants.DELETION_REQUESTS" class="col-md-12 margin-top-10">
+      <div *ngIf="displayOption == notificationTypeCodes.PROJECT_DELETION_REQUESTS || displayOption == notificationTypeCodes.ALL" class="col-md-12 margin-top-10">
+        <h6>Project deletion requests</h6>
         <table *ngIf="projectDeletionRequests.length > 0" class="table table-striped">
           <tr *ngFor="let request of projectDeletionRequests; let i = index">
             <td width="75%">
@@ -145,11 +146,12 @@
           </table>
       </div>
 
-      <div *ngIf="currentTab == tabConstants.MERGE_ORGS_REQUESTS" class="col-md-12 margin-top-10">
-        <p *ngIf="organizationMergeRequests.length > 0" class="text-info">
+      <div *ngIf="displayOption == notificationTypeCodes.MERGE_ORG_REQUESTS || displayOption == notificationTypeCodes.ALL" class="col-md-12 margin-top-10">
+        <!--<p *ngIf="organizationMergeRequests.length > 0" class="text-info">
           This section lists all the requests for organizations merge where you are member of an
           organization. Please accept or reject a merge, so that AIMS takes the required steps.
-        </p>
+        </p>-->
+        <h6>Organizations merge requests</h6>
         <table *ngIf="organizationMergeRequests.length > 0" class="table table-striped small">
           <tr>
             <th>Organizations to merge</th>
