@@ -121,6 +121,7 @@ import { FinancialYearSettingsComponent } from './financial-year-settings/financ
 import { ProjectMarkersComponent } from './data-entry/project-markers/project-markers.component';
 import { EmailUsersComponent } from './email-users/email-users.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
+import { environment } from 'src/environments/environment.prod';
 
 @NgModule({
   declarations: [
@@ -252,6 +253,9 @@ import { UserManagerComponent } from './user-manager/user-manager.component';
   providers: [
     /*{ 
       provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true,
+    }*/
+    /*{
+      provide: 'BACKEND_API_URL', useValue: environment.backendApiUrl
     }*/
   ],
   bootstrap: [AppComponent]
