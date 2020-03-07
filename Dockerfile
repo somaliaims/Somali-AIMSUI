@@ -18,7 +18,7 @@ COPY --from=build  /usr/aims-ui/dist/aims-ui /usr/share/nginx/html
 
 RUN echo "for mainFileName in /usr/share/nginx/html/main*.js ;\
             do \
-              envsubst '\$BACKEND_API_URL \$DEFAULT_LANGUAGE ' < \$mainFileName > main.tmp ;\
+              envsubst '\$BACKEND_API_URL' < \$mainFileName > main.tmp ;\
               mv main.tmp \${mainFileName} ;\
             done \
             && nginx -g 'daemon off;'" > run.sh

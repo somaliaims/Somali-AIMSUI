@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as urlsList from "../config/urls";
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
     providedIn: 'root'
@@ -8,7 +9,11 @@ export class UrlHelperService {
     BASE_URL : string; 
     
     constructor() {
-        this.BASE_URL = urlsList.urls.baseUrl; 
+        if (environment.backendApiUrl) {
+            this.BASE_URL = environment.backendApiUrl;
+        } else {
+            this.BASE_URL = urlsList.urls.baseUrl; 
+        }
     }
 
     getExcelFilesUrl() {
