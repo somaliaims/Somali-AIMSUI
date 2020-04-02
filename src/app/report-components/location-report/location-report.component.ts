@@ -13,6 +13,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { Settings } from 'src/app/config/settings';
 import { SectorService } from 'src/app/services/sector.service';
 import { MarkerService } from 'src/app/services/marker.service';
+import { UrlHelperService } from 'src/app/services/url-helper-service';
 
 @Component({
   selector: 'location-report',
@@ -278,7 +279,8 @@ export class LocationReportComponent implements OnInit {
     private organizationService: OrganizationService, private currencyService: CurrencyService,
     private errorModal: ErrorModalComponent, private route: ActivatedRoute, 
     private projectService: ProjectService, private sectorService: SectorService,
-    private markerService: MarkerService
+    private markerService: MarkerService,
+    private urlService: UrlHelperService
   ) { }
 
   ngOnInit() {
@@ -1071,7 +1073,7 @@ export class LocationReportComponent implements OnInit {
 
   setExcelFile() {
     if (this.excelFile) {
-      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+      this.excelFile = this.urlService.getExcelFilesUrl() + this.excelFile;
     }
   }
 

@@ -9,6 +9,7 @@ import { Settings } from 'src/app/config/settings';
 import { ModalService } from 'src/app/services/modal.service';
 import { ChartType, ChartDataSets, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { UrlHelperService } from 'src/app/services/url-helper-service';
 
 @Component({
   selector: 'budget-report',
@@ -96,7 +97,8 @@ export class BudgetReportComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private errorModal: ErrorModalComponent,
     private storeService: StoreService, private currencyService: CurrencyService,
-    private modalService: ModalService) { }
+    private modalService: ModalService,
+    private urlService: UrlHelperService) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
@@ -319,7 +321,7 @@ export class BudgetReportComponent implements OnInit {
 
   setExcelFile() {
     if (this.excelFile) {
-      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+      this.excelFile = this.urlService.getExcelFilesUrl() + this.excelFile;
     }
   }
 

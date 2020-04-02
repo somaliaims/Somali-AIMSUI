@@ -9,15 +9,16 @@ export class UrlHelperService {
     BASE_URL : string; 
     
     constructor() {
-        if (environment.backendApiUrl) {
+        if (environment.backendApiUrl.indexOf('http') != -1) {
             this.BASE_URL = environment.backendApiUrl;
         } else {
             this.BASE_URL = urlsList.urls.baseUrl; 
         }
+        console.log('Base url is: ' + this.BASE_URL);
     }
 
     getExcelFilesUrl() {
-        return (urlsList.urls.excelFilesUrl);
+        return (this.BASE_URL + urlsList.urls.excelFilesShortUrl);
     }
 
     userTokenUrl() {

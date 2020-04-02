@@ -5,6 +5,7 @@ import { Settings } from 'src/app/config/settings';
 import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
+import { UrlHelperService } from 'src/app/services/url-helper-service';
 
 @Component({
   selector: 'app-all-projects-report',
@@ -24,7 +25,8 @@ export class AllProjectsReportComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
-    private yearsService: FinancialYearService, private errorModal: ErrorModalComponent) { }
+    private yearsService: FinancialYearService, private errorModal: ErrorModalComponent,
+    private urlService: UrlHelperService) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
@@ -69,7 +71,7 @@ export class AllProjectsReportComponent implements OnInit {
 
   setExcelFile() {
     if (this.excelFile) {
-      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+      this.excelFile = this.urlService.getExcelFilesUrl() + this.excelFile;
     }
   }
 

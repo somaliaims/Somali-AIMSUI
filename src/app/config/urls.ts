@@ -2,6 +2,8 @@ export const urls = {
 	baseUrl: "http://104.140.103.36:81/api/",
 	excelFilesUrl: "http://104.140.103.36:81/ExcelFiles/",
 	dataBackupFilesUrl: "http://104.140.103.36:81/DataBackups/",
+	excelFilesShortUrl: "/ExcelFiles/",
+	dataBackupFilesShortUrl: "/DataBackups/",
 	//baseUrl: "http://104.140.103.166:7000/api/",
 	//excelFilesUrl: "http://104.140.103.166:7000/ExcelFiles/",
 	//dataBackupFilesUrl: "http://104.140.103.166:7000/DataBackups/",

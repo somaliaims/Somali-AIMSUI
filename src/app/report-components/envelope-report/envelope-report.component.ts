@@ -9,6 +9,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/config/settings';
 import { Color } from 'ng2-charts';
+import { UrlHelperService } from 'src/app/services/url-helper-service';
 
 @Component({
   selector: 'app-envelope-report',
@@ -158,7 +159,8 @@ export class EnvelopeReportComponent implements OnInit {
     private reportService: ReportService,
     private currencyService: CurrencyService,
     private storeService: StoreService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private urlService: UrlHelperService) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
@@ -281,7 +283,7 @@ export class EnvelopeReportComponent implements OnInit {
 
   setExcelFile() {
     if (this.excelFile) {
-      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+      this.excelFile = this.urlService.getExcelFilesUrl() + this.excelFile;
     }
   }
 
