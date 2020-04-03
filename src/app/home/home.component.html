@@ -106,9 +106,8 @@
               <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading introduction...</span>
             </div>
           </div>
-          <p *ngIf="!isIntroLoading" class="text-justify">
-            {{model.introductionText}}
-          </p>
+          <div *ngIf="!isIntroLoading" [innerHTML]="model.introductionText" class="text-justify">
+          </div>
         </div>
       </div>
 
@@ -116,7 +115,7 @@
       <div class="card bg-light margin-top-10">
         <div class="card-header">
           <span class="float-left">
-            <h6>Recent projects</h6>
+            <h6>Recently updated projects</h6>
           </span>
         </div>
         <div class="card-body bg-white padding-5">

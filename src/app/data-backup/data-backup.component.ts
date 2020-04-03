@@ -8,6 +8,7 @@ import { Messages } from '../config/messages';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { Settings } from '../config/settings';
+import { UrlHelperService } from '../services/url-helper-service';
 
 @Component({
   selector: 'app-data-backup',
@@ -43,7 +44,8 @@ export class DataBackupComponent implements OnInit {
   
   constructor(private storeService: StoreService, private backupService: DatabackupService,
     private infoModal: InfoModalComponent, private errorModal: ErrorModalComponent,
-    private securityService: SecurityHelperService, private router: Router) {
+    private securityService: SecurityHelperService, private router: Router,
+    private urlService: UrlHelperService) {
 
     this.permissions = this.securityService.getUserPermissions();
     if (!this.permissions.canTakeBackup) {
@@ -189,7 +191,7 @@ export class DataBackupComponent implements OnInit {
 
   setBackupFileUrl(fileName: string) {
     if (fileName) {
-      return (this.storeService.getBackupFileUrl() + fileName);
+      return (this.urlService.getDataBackupFilesDownloadUrl() + fileName);
     }
     return fileName;
   }

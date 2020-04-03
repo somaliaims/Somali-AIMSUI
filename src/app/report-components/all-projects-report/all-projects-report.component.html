@@ -46,7 +46,10 @@
                             </div>
                             <div class="col-md-12 col-lg-12 col-sm-12  margin-top-10">
                                 <div class="float-right">
-                                        <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download spreadsheet</a>&nbsp;
+                                        <span *ngIf="excelFile" class="text-warning">
+                                            <i><b>Export generated successfully</b>&nbsp;&nbsp;</i>
+                                        </span>
+                                        <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download export as spreadsheet</a>&nbsp;
                                         <button [class.disable]="isProcessing" type="submit" class="btn btn-info">
                                             {{btnReportText}}
                                         </button>

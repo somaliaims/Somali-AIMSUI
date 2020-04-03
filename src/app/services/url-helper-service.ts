@@ -14,11 +14,22 @@ export class UrlHelperService {
         } else {
             this.BASE_URL = urlsList.urls.baseUrl; 
         }
-        console.log('Base url is: ' + this.BASE_URL);
     }
 
     getExcelFilesUrl() {
-        return (this.BASE_URL + urlsList.urls.excelFilesShortUrl);
+        var excelBaseUrl = this.BASE_URL;
+        if (excelBaseUrl.indexOf('api') != -1) {
+            excelBaseUrl = excelBaseUrl.substring(0, excelBaseUrl.length - 4);
+        }
+        return (excelBaseUrl + urlsList.urls.excelFilesShortUrl);
+    }
+
+    getDataBackupFilesDownloadUrl() {
+        var backupFilesUrl = this.BASE_URL;
+        if (backupFilesUrl.indexOf('api') != -1) {
+            backupFilesUrl = backupFilesUrl.substring(0, backupFilesUrl.length - 4);
+        }
+        return (backupFilesUrl + urlsList.urls.dataBackupFilesShortUrl);
     }
 
     userTokenUrl() {

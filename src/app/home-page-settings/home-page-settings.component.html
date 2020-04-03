@@ -40,7 +40,15 @@
               </div>
 
               <div class="form-group">
-                <label for="title">Introduction text <span class="text-info">(Max characters: {{introductionLimit}} Left: {{introductionLimitLeft}})</span></label>
+                <label for="title">
+                  Introduction text 
+                  <span class="text-info">
+                    (Max characters: {{introductionLimit}} Left: {{introductionLimitLeft}})
+                  </span>
+                  <span class="text-warning">
+                    <b>Formatting help: </b> Use &#x3C;br&#x3E; to insert new line. For inserting heading use header tag from h1 (Largest) to h6 (Smallest). For example, &#x3C;h6&#x3E;Heading&#x3C;/h6&#x3E; and just after continue inserting the text.
+                  </span>
+                </label>
                 <textarea class="form-control" id="description" (input)="getIntroductionLimitInfo()" [(ngModel)]="model.introductionText" name="introductionText"
                   #introductionText="ngModel" rows="7" maxlength="{{introductionLimit}}">
                     </textarea>
