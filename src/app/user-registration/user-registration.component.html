@@ -5,7 +5,13 @@
             <div class="card-body">
               <h5 class="card-title text-center">Register</h5>
               <form (ngSubmit)="registrationForm.form.valid && proceedRegistration()" #registrationForm="ngForm">
-                
+                <div class="form-group">
+                  <span class="text-info">
+                    Please note that you only need to register if you wish to add and/or edit data on projects. 
+                    To view data on projects you do not need to register here, as all the data is accessible 
+                    via the Reports and Project List menu items.
+                  </span>
+                </div>
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" class="form-control" [class.disable]='disableEmail' id="email" [(ngModel)]="model.email" (input)="resetEmailAvailable($event)" [elFocus]="isEmailFocus" name="email" #email="ngModel" required>

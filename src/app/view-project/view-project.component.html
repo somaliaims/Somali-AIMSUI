@@ -69,7 +69,10 @@
                     <table class="table table-striped">
                       <tr>
                         <td width="15%"><b>Project title: </b></td>
-                        <td colspan="3">{{projectData.title}}</td>
+                        <td colspan="3">{{projectData.title}} 
+                          <span class="text-info">
+                            <b><i>(Updated on: {{formatDateUKStyle(projectData.dateUpdated)}})</i></b>
+                          </span></td>
                       </tr>
                       <tr>
                         <td><b>Start date: </b></td>

@@ -56,6 +56,7 @@ export class AllProjectsReportComponent implements OnInit {
     this.model.startingYear = (this.model.startingYear == null) ? 0 : this.model.startingYear;
     this.model.endingYear = (this.model.endingYear == null) ? 0 : this.model.endingYear;
     this.blockUI.start('Loading report...');
+    this.excelFile = null;
     this.reportService.getAllProjectsReport(this.model).subscribe(
       data => {
         if (data) {
