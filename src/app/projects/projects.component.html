@@ -104,14 +104,15 @@
               </div>
 
               <div class="row margin-top-10">
-                <div class="col-md-6">
-                  <select name="financial-range" title="Select a financial range to filter projects" [(ngModel)]="model.financialRange"
-                    (change)="changeFinancialRange()" class="form-control">
-                    <option value="0">--Financial range (Any)--</option>
-                    <option *ngFor="let range of financialRanges" value="{{range.id}}">
-                      {{range.label}}
-                    </option>
-                  </select>
+                <div class="col-md-3">
+                  <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" class="form-control" title="Project cost lower range" 
+                    [(ngModel)]="model.lowerRange" placeholder="Project cost from" 
+                    name="lowerRange" />
+                </div>
+                <div class="col-md-3">
+                  <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" class="form-control" title="Project cost upper range" 
+                  [(ngModel)]="model.upperRange" placeholder="Project cost upto" 
+                  name="upperRange" />
                 </div>
                 <div class="col-md-6">
                   <div class="float-right">

@@ -77,7 +77,8 @@ export class ProjectsComponent implements OnInit {
     title: null, description: null, organizationIds: [], startingYear: 0, endingYear: 0,
     sectorIds: [], locationIds: [], parentSectorId: 0, selectedProjects: [], selectedSectors: [], 
     selectedOrganizations: [], selectedLocations: [], sectorsList: [], locationsList: [], 
-    organizationsList: [], sectorLevel: this.sectorLevelCodes.SECTORS, financialRange: 0
+    organizationsList: [], sectorLevel: this.sectorLevelCodes.SECTORS, financialRange: 0,
+    lowerRange: null, upperRange: null
   }
 
   //Overlay UI blocker
@@ -428,7 +429,8 @@ export class ProjectsComponent implements OnInit {
       sectorIds: this.model.selectedSectors.map(s => s.id),
       locationIds: this.model.selectedLocations.map(l => l.id),
       description: this.model.description,
-      financialRange: this.model.financialRange
+      lowerRange: this.model.lowerRange ? this.model.lowerRange : 0,
+      upperRange: this.model.upperRange ? this.model.upperRange : 0
     };
 
     this.criteria = null;
