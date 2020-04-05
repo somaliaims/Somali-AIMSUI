@@ -60,6 +60,7 @@ export class ProjectsComponent implements OnInit {
   subSubSectorIds: any = [];
   financialRanges: any = Settings.financialRangeConstants;
   searchField: FormControl;
+  currentYearLabel: string = '';
 
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors"},
@@ -343,6 +344,7 @@ export class ProjectsComponent implements OnInit {
         if (data && data.length) {
           this.projectsList = data;
           this.filteredProjectsList = data;
+          this.currentYearLabel = data[0].currentYearLabel;
         }
         this.blockUI.stop();
       }
@@ -436,6 +438,7 @@ export class ProjectsComponent implements OnInit {
         if (data) {
           this.projectsList = data;  
           this.filteredProjectsList = data;
+          this.currentYearLabel = data[0].currentYearLabel;
         }
         this.blockUI.stop();
       }

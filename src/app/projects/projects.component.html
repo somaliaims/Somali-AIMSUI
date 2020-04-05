@@ -139,7 +139,7 @@
           <tr>
             <th>Project title</th>
             <th>Project value ({{defaultCurrency}})</th>
-            <th>Current year planned disbursements ({{defaultCurrency}})</th>
+            <th>{{currentYearLabel}} planned disbursements ({{defaultCurrency}})</th>
           </tr>
           <tr *ngFor="let project of filteredProjectsList | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }">
             <td>
