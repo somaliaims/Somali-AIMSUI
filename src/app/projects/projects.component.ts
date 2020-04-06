@@ -421,6 +421,14 @@ export class ProjectsComponent implements OnInit {
   }
 
   advancedSearchProjects() {
+    var lowerRange = this.model.lowerRange ? this.model.lowerRange : 0;
+    var upperRange = this.model.upperRange ? this.model.upperRange : 0;
+    if (isNaN(lowerRange) || isNaN(upperRange)) {
+      this.errorMessage = 'Project value for lower/upper range must be a valid number';
+      this.errorModal.openModal();
+      return false;
+    }
+
     var searchModel = {
       projectIds: this.model.selectedProjects.map(p => p.id),
       startingYear: this.model.startingYear,
@@ -429,8 +437,8 @@ export class ProjectsComponent implements OnInit {
       sectorIds: this.model.selectedSectors.map(s => s.id),
       locationIds: this.model.selectedLocations.map(l => l.id),
       description: this.model.description,
-      lowerRange: this.model.lowerRange ? this.model.lowerRange : 0,
-      upperRange: this.model.upperRange ? this.model.upperRange : 0
+      lowerRange: lowerRange,
+      upperRange: upperRange
     };
 
     this.criteria = null;
