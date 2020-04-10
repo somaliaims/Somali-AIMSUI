@@ -37,7 +37,7 @@ export const Messages = {
     ATLEAST_ORGANIZATION_MERGE: 'At least two organizations are required for merge',
     INVALID_PROJECT_MERGE: 'Two or more projects must be selected to complete the merge process',
     INVALID_DISBURSEMENT: 'You cannot add more disbursements than the project total value. Please increase the project funding amount before adding more disbursements.',
-    PASSWORD_UPDATED: 'Your password updated successfully. You must login with new password on next login.',
+    PASSWORD_UPDATED: 'Your password updated successfully. You can now login with your new password',
     ACCOUNT_DELETED: 'Your account is deleted successfully. In order to use AIMS again, register again with your Organization',
     INVALID_SECTOR_MAPPING: 'Select a sector before saving the mappings',
     EX_RATE_NOT_FOUND: 'Exchange rate could not be found for the selected source. Please select another source or contact administrator',

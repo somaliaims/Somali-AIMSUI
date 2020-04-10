@@ -58,7 +58,7 @@ export class ManageSectorComponent implements OnInit {
     
     this.getSectorTypes();
     if (this.model.id != 0) {
-        this.btnText = 'Edit Sector';
+        this.btnText = 'Save Sector';
         this.sectorTabText = 'Edit sector';
         this.isForEdit = true;
         this.sectorId = id;

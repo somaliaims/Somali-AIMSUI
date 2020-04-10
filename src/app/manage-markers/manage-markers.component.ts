@@ -51,7 +51,7 @@ export class ManageMarkersComponent implements OnInit {
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
-        this.btnText = 'Edit marker';
+        this.btnText = 'Save marker';
         this.tabText = 'Edit marker';
         this.isForEdit = true;
         this.fieldId = id;

@@ -14,11 +14,13 @@ import { Settings } from '../config/settings';
 export class ResetPasswordComponent implements OnInit {
   model: any = { password: null, confirmPassword: null, token: null };
   isError: boolean = false;
+  requestNo: number = 0;
   errorMessage: string = '';
   isInfo: boolean = false;
   infoMessage: string = '';
   btnText: string = 'Update Password';
   isBtnDisabled: boolean = false;
+  resetSuccessful: boolean = false;
 
   constructor(private userService: UserService, private route: ActivatedRoute, 
     private router: Router, private storeService: StoreService, 
@@ -36,6 +38,15 @@ export class ResetPasswordComponent implements OnInit {
     if (token != null) {
       this.model.token = token;
     }
+
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.isError = true;
+        this.resetFormStatus();
+      }
+    });
   }
 
   resetPassword() {
@@ -50,27 +61,31 @@ export class ResetPasswordComponent implements OnInit {
     this.btnText = 'Resetting Password...';
     this.userService.resetPassword(model).subscribe(
       data => {
-        if (data.success) {
-            this.btnText = 'Redirecting...';
+        if (data && data.success) {
+            //this.btnText = 'Redirecting...';
             this.infoMessage = Messages.PASSWORD_UPDATED;
-            this.modalService.open('message-modal');
-        } else {
-          this.errorMessage = 'Something went wrong with your request';
+            this.resetSuccessful = true;
+            //this.modalService.open('message-modal');
+        } else if (data && !data.success) {
+          this.errorMessage = data.message;
           this.isError = true;
           this.isBtnDisabled = false;
+          this.resetFormStatus();
         }
-      },
-      error => {
-        this.errorMessage = error;
-        this.isError = true;
       }
-    )
+    );
+  }
+
+  goToLogin() {
+    this.router.navigateByUrl('login');
   }
 
   closeModalAndNavigate() {
     this.modalService.close('message-modal');
     this.router.navigateByUrl('login');
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 2000);
   }
 
   resetFormStatus() {

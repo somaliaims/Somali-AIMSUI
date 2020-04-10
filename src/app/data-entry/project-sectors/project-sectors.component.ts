@@ -184,14 +184,16 @@ export class ProjectSectorsComponent implements OnInit {
 
   getTypeSectorsList() {
     this.sectorModel.sectorId = null;
+    this.showMappingAuto = false;
+    this.showMappingManual = false;
+    this.sectorModel.selectedSector = null;
+
     if (!this.sectorModel.sectorTypeId) {
       this.typeSectorsList = [];
     } else {
       this.typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
     }
-    if (this.sectorModel.sectorTypeId == this.defaultSectorTypeId) {
-      this.sectorMappings = this.defaultSectorsList;
-    }
+    this.getNDPSectors();
   }
 
   getNDPSectors() {
@@ -202,29 +204,30 @@ export class ProjectSectorsComponent implements OnInit {
 
   getSectorMappings() {
     if (this.defaultSectorTypeId != this.sectorModel.sectorTypeId) {
-      this.blockUI.start('Fetching sector mappings...');
-      var sectorId = this.sectorModel.sectorId;
-      this.mappingsCount = 0;
-      this.sectorMappings = [];
+      if (this.sectorModel.selectedSector && this.sectorModel.selectedSector.length > 0) {
+        this.blockUI.start('Fetching sector mappings...');
+        var sectorId = this.sectorModel.selectedSector[0].id;
+        this.mappingsCount = 0;
+        this.sectorMappings = [];
 
-      this.sectorService.getMappingsForSector(sectorId).subscribe(
-        data => {
-          if (data && data.length > 0) {
-            this.showMappingManual = true;
-            this.showMappingAuto = false;
-            this.sectorMappings = data;
-            this.mappedSectorsList = data;
-            this.mappingsCount = data.length;
-            if (data.length >= 1) {
-              this.sectorModel.mappingId = data[0].id;
+        this.sectorService.getMappingsForSector(sectorId).subscribe(
+          data => {
+            if (data && data.length > 0) {
+              this.showMappingManual = true;
+              this.showMappingAuto = false;
+              this.mappedSectorsList = data;
+              this.ndpSectorsList = data;
+              this.mappingsCount = data.length;
+              if (data.length >= 1) {
+                this.sectorModel.mappingId = data[0].id;
+              }
+            } else {
+              this.mappingsCount = 0;
             }
-          } else {
-            this.mappingsCount = 0;
-            this.sectorMappings = this.defaultSectorsList;
+            this.blockUI.stop();
           }
-          this.blockUI.stop();
-        }
-      );
+        );
+      }
     }
   }
 
@@ -258,6 +261,7 @@ export class ProjectSectorsComponent implements OnInit {
     this.sectorModel.selectedSector = null;
   }
 
+
   addSector(frm: any) {
     var sectorPercentage = this.sectorModel.fundsPercentage + this.calculateSectorPercentage();
     if (sectorPercentage > 100) {
@@ -268,7 +272,7 @@ export class ProjectSectorsComponent implements OnInit {
 
     if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
       if (!this.sectorModel.selectedSector) {
-        this.errorMessage = 'Sector is requred';
+        this.errorMessage = 'Sector is required';
         this.errorModal.openModal();
         return false;
       }
@@ -276,7 +280,15 @@ export class ProjectSectorsComponent implements OnInit {
 
     if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
       if (!this.sectorModel.selectedMapping) {
-        this.errorMessage = 'Sector mapping is requred';
+        this.errorMessage = 'Sector mapping is required';
+        this.errorModal.openModal();
+        return false;
+      }
+    }
+
+    if (this.sectorModel.sectorTypeId == this.defaultSectorTypeId) {
+      if (!this.sectorModel.selectedMapping) {
+        this.errorMessage = 'NDP sector is required';
         this.errorModal.openModal();
         return false;
       }
@@ -345,13 +357,13 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   setManualMappings() {
-    this.sectorMappings = this.defaultSectorsList;
     this.showMappingManual = false;
     this.showMappingAuto = true;
+    this.getNDPSectors();
   }
 
   setAutomaticMappings() {
-    this.sectorMappings = this.mappedSectorsList;
+    this.ndpSectorsList = this.mappedSectorsList;
     this.showMappingAuto = false;
     this.showMappingManual = true;
   }

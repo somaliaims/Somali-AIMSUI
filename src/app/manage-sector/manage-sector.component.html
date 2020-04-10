@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <div class="col-md-6 col-sm-12">
+      <div [class.disable]="model.parentId != 0" class="col-md-6 col-sm-12">
         <div [class.disable]="isDvDisabled" class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">New Child Sector</h5>

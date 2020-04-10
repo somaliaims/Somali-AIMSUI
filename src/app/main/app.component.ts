@@ -115,6 +115,7 @@ export class AppComponent {
   }
 
   getNotificationsCount() {
+    this.notificationsCount = 0;
     this.notificationService.getNotificationsCount().subscribe(
       data => {
         if (data) {

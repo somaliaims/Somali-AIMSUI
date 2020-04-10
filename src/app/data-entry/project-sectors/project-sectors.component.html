@@ -37,9 +37,9 @@
 
           <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)" class="col-md-3 col-lg-3">
             <div class="input-group form-inline mb-3">
-              <ng-multiselect-dropdown class="w-100 col-sm-10" [placeholder]="'-- Sector--'" title="Sector"
+              <ng-multiselect-dropdown class="w-100 col-sm-10" [placeholder]="'--Sector--'" title="Sector"
                 [data]="typeSectorsList" [(ngModel)]="sectorModel.selectedSector" [settings]="sectorsSettings"
-                (onDeSelect)="onDeSelectSector()"
+                (onDeSelect)="onDeSelectSector()" (onSelect)="getSectorMappings()"
                 name="selectedSector" #selectedSector="ngModel">
               </ng-multiselect-dropdown>
               <span class="col-sm-2" tooltip="{{sectorHelp.sector}}" [options]="tooltipOptions">
