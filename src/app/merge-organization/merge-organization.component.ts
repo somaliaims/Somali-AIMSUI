@@ -17,6 +17,7 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 })
 export class MergeOrganizationComponent implements OnInit {
 
+  requestNo: number = 0;
   permissions: any = {};
   organizationTypes: any = [];
   organizationsList: any = [];
@@ -46,6 +47,14 @@ export class MergeOrganizationComponent implements OnInit {
     this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.loadOrganizationTypes();
     this.loadOrganizations();
+
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.errorModal.openModal();
+      }
+    });
   }
 
   loadOrganizationTypes() {

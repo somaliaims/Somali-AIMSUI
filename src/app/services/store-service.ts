@@ -71,8 +71,14 @@ export class StoreService {
       var model = new RequestModel(currentRequestNo, error.status, '');
 
       var errorMessage = '';
-      if (error.error) {
-        errorMessage = error.error;
+      if (error && error.statusText) {
+        if (error.statusText == 'Unknown Error') {
+          errorMessage = 'Unkown Error: Make sure your internet connection is working. \
+          It may also happens if your login token is expired. Please try to logout, and login \
+          again';
+        } else {
+          errorMessage = error.statusText;
+        }
       } else {
         if (error.message || error.statusText) {
           errorMessage = error.message || error.statusText;
