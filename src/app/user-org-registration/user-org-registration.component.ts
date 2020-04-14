@@ -141,8 +141,11 @@ export class UserOrgRegistrationComponent implements OnInit {
   }
 
   registerUser() {
+    if (this.model.organizationTypeId == 0 || this.model.organizationTypeId == null) {
+      return false;
+    }
+    
     if (this.selectedOrganizationId == 0) {
-      this.model.organizationName = this.model.organizationName;
       if (this.model.organizationName.length == 0) {
         return false;
       } else if (this.model.isNewOrganization) {

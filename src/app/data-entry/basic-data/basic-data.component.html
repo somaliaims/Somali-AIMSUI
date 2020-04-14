@@ -92,7 +92,7 @@
           <span class="margin-left-2" tooltip="{{projectHelp.projectValue}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>
-          <span *ngIf="projectTotalValue != totalDisbursementsValue && projectId > 0" class="margin-left-2"
+          <span *ngIf="projectTotalValue != totalDisbursementsValue && projectId > 0 && (totalDisbursementsValue > 0)" class="margin-left-2"
             tooltip="{{invalidDisbursementsMessage}}" [options]="tooltipOptions">
             <button class="btn btn-danger" type="button"><i class="fa fa-times-circle"></i></button>
           </span>
@@ -111,10 +111,7 @@
             <option value="null">--Funding type--</option>
             <option *ngFor="let fType of fundingTypesList" value="{{fType.id}}">{{fType.fundingType}}</option>
           </select>
-          <!--<div *ngIf="isProjectSourceAvailable" class="input-group-append">
-            <button class="btn btn-primary" title="Source data available" (click)="showProjectSource(FUNDING_TYPE)" type="button"><i
-                class="fa fa-database"></i></button>
-          </div>-->
+          
           <span class="margin-left-2" tooltip="{{projectHelp.fundingType}}" [options]="tooltipOptions">
             <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
           </span>

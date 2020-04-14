@@ -3,7 +3,7 @@ import { Directive, Input, ElementRef, Renderer } from '@angular/core';
 @Directive({
   selector: '[elFocus]'
 })
-export class FocusDirectiveDirective {
+export class FocusDirective {
   @Input('elFocus') isFocused: boolean;
 
   constructor(private hostElement: ElementRef, private renderer: Renderer) { }

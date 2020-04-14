@@ -18,7 +18,7 @@ export class ResetPasswordComponent implements OnInit {
   errorMessage: string = '';
   isInfo: boolean = false;
   infoMessage: string = '';
-  btnText: string = 'Update Password';
+  btnText: string = 'Reset Password';
   isBtnDisabled: boolean = false;
   resetSuccessful: boolean = false;
 
@@ -54,6 +54,8 @@ export class ResetPasswordComponent implements OnInit {
       this.errorMessage = Messages.INVALID_ATTEMPT;
       this.isError = true;
       return false;
+    } else {
+      this.isError = false;
     }
     
     var model = { newPassword: this.model.password, token: this.model.token };
@@ -62,10 +64,8 @@ export class ResetPasswordComponent implements OnInit {
     this.userService.resetPassword(model).subscribe(
       data => {
         if (data && data.success) {
-            //this.btnText = 'Redirecting...';
             this.infoMessage = Messages.PASSWORD_UPDATED;
             this.resetSuccessful = true;
-            //this.modalService.open('message-modal');
         } else if (data && !data.success) {
           this.errorMessage = data.message;
           this.isError = true;

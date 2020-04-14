@@ -22,7 +22,7 @@ import { AppComponent } from './main/app.component';
 import { LoginComponent } from './login/login.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
-import { FocusDirectiveDirective } from './directives/focus-directive.directive';
+import { FocusDirective } from './directives/focus-directive.directive';
 import { HomeComponent } from './home/home.component';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { ProjectsComponent } from './projects/projects.component';
@@ -121,7 +121,7 @@ import { FinancialYearSettingsComponent } from './financial-year-settings/financ
 import { ProjectMarkersComponent } from './data-entry/project-markers/project-markers.component';
 import { EmailUsersComponent } from './email-users/email-users.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
-//import { environment } from 'src/environments/environment.prod';
+import { CopyPasteDirective } from './directives/copy-paste.directive';
 
 @NgModule({
   declarations: [
@@ -129,7 +129,8 @@ import { UserManagerComponent } from './user-manager/user-manager.component';
     LoginComponent,
     UserRegistrationComponent,
     UserOrgRegistrationComponent,
-    FocusDirectiveDirective,
+    FocusDirective,
+    CopyPasteDirective,
     HomeComponent,
     ProjectsComponent,
     ReportsPanelComponent,

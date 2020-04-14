@@ -8,6 +8,8 @@ import { SecurityHelperService } from '../services/security-helper.service';
 import { Router } from '@angular/router';
 import { ProjectService } from '../services/project.service';
 import { OrganizationService } from '../services/organization-service';
+import { Messages } from '../config/messages';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-notification',
@@ -70,11 +72,16 @@ export class NotificationComponent implements OnInit {
     private errorModal: ErrorModalComponent, private storeService: StoreService,
     private securityService: SecurityHelperService, private router: Router,
     private projectService: ProjectService,
-    private organizationService: OrganizationService) {
+    private organizationService: OrganizationService,
+    private modalService: ModalService) {
 
   }
 
   ngOnInit() {
+    this.permissions = this.securityService.getUserPermissions();
+    if (!this.permissions.canEditNotifications) {
+      this.router.navigateByUrl('home');
+    }
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -93,15 +100,6 @@ export class NotificationComponent implements OnInit {
   }
 
   showNotificationType() {
-    /*if (this.displayOption == this.notificationTypeCodes.NOTIFICATIONS || this.displayOption == this.notificationTypeCodes.ALL) {
-      this.showNotifications();
-    } else if (this.displayOption == this.notificationTypeCodes.MEMBERSHIP_REQUESTS || this.displayOption == this.notificationTypeCodes.ALL) {
-      this.showRequests();
-    } else if (this.displayOption == this.notificationTypeCodes.PROJECT_DELETION_REQUESTS  || this.displayOption == this.notificationTypeCodes.ALL) {
-      this.showDeletionRequests();
-    } else if (this.displayOption == this.notificationTypeCodes.MERGE_ORGS_REQUESTS  || this.displayOption == this.notificationTypeCodes.ALL) {
-      this.showMergeOrganizationsRequests();
-    }*/
   }
 
   getNotifications() {
@@ -229,7 +227,12 @@ export class NotificationComponent implements OnInit {
       this.organizationService.approveMergeOrganizationsRequest(requestId).subscribe(
         data => {
           if (data) {
-            this.reloadPage();
+            this.infoMessage = Messages.ORGANIZATIONS_MERGED;
+            this.modalService.open('readonly-message-modal');
+            this.securityService.clearLoginSession();
+            setTimeout(() => {
+              location.reload();
+            }, 3000);
           }
           this.blockUI.stop();
         }

@@ -218,7 +218,11 @@ export class BasicDataComponent implements OnInit {
       itemsShowLimit: this.itemsToShowInDropdowns,
       allowSearchFilter: true
     };
-    this.calculateDisbursements();
+
+    if (this.projectDisbursements.length > 0) {
+      this.calculateDisbursements();
+    }
+    
   }
 
   ngOnChanges() {
@@ -967,9 +971,6 @@ export class BasicDataComponent implements OnInit {
     var selectProject = this.iatiProjects.filter(p => p.id == projectId);
     if (selectProject.length > 0) {
       this.projectData.projectCurrency = selectProject[0].defaultCurrency;
-      /*if (this.projectData.projectCurrency) {
-        this.getExchangeRateForCurrency();
-      }*/
     }
   }
 

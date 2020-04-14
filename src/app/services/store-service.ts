@@ -72,10 +72,10 @@ export class StoreService {
 
       var errorMessage = '';
       if (error && error.statusText) {
-        if (error.statusText == 'Unknown Error') {
-          errorMessage = 'Unkown Error: Make sure your internet connection is working. \
-          It may also happens if your login token is expired. Please try to logout, and login \
-          again';
+        if (error.statusText.toLowerCase() == 'bad request') {
+          errorMessage = error.error;
+        } else if (error.statusText == 'Unknown Error') {
+          errorMessage = 'Unkown Error: Make sure your internet connection is working.';
         } else {
           errorMessage = error.statusText;
         }

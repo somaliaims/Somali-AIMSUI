@@ -26,9 +26,17 @@
                 
                 <div *ngIf="isEmailOk">
                   <div class="form-group">
+                    <label>Confirm email</label>
+                    <input type="email" [elFocus]="isConfirmEmailFocus" class="form-control" [(ngModel)]="model.confirmEmail" [elFocus]="isEmailFocus" name="confirmEmail" #confirmEmail="ngModel" preventCutCopyPaste required>
+                    <div *ngIf="registrationForm.submitted" [hidden]="confirmEmail.valid && model.email == model.confirmEmail" class="alert alert-danger">
+                      Your emails do not match
+                    </div>
+                  </div>
+
+                  <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" [elFocus]="isPasswordFocus" class="form-control" id="password" [(ngModel)]="model.password"
-                     [(ngModel)]="model.password" name="password" #Password="ngModel" required>
+                    <input type="password" class="form-control" id="password" [(ngModel)]="model.password"
+                     [(ngModel)]="model.password" name="password" #password="ngModel" required>
                     <div *ngIf="registrationForm.submitted" [hidden]="password.valid" class="alert alert-danger">
                       Password is required
                     </div>

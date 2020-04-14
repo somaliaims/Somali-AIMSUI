@@ -11,13 +11,13 @@ import { StoreService } from '../services/store-service';
 })
 export class UserRegistrationComponent implements OnInit {
   userTypes = [];
-  model: any = {};
+  model: any = { email: null, confirmEmail: null, password: null, confirmPassword: null};
   isEmailOk: boolean = false;
   emailNotAvailable: boolean = false;
   disableEmail: boolean = false;
   isNameFocus: boolean = false;
   isEmailFocus: boolean = false;
-  isPasswordFocus: boolean = true;
+  isConfirmEmailFocus: boolean = true;
   isSearchingEmail: boolean = false;
   invalidEmail: boolean = false;
   btnCheckEmailTitle: string = 'Check Availability';
@@ -27,7 +27,6 @@ export class UserRegistrationComponent implements OnInit {
   }
  
   onSubmit() {
-    //console.log(JSON.stringify(this.model));
   }
 
   ngOnInit() {
@@ -67,7 +66,7 @@ export class UserRegistrationComponent implements OnInit {
           this.disableEmail = true;
           this.isNameFocus = true;
           this.isEmailFocus = false;
-          this.isPasswordFocus = true;
+          this.isConfirmEmailFocus = true;
         }
         this.isSearchingEmail = false;
         this.btnCheckEmailTitle = 'Check Email';

@@ -52,5 +52,6 @@ export const Messages = {
     DATA_RESTORE_MESSAGE: 'Data restore is performed successfully using the selected backup file',
     INVALID_DISBURSEMENT_SPLIT: 'All the amounts are entered manually, split feature cannot be applied.',
     ORG_NOT_PROVIDED_PROJECT: 'Please provide your organization as funder/implementer',
-    INVALID_PROJECT_VALUE_DISBURSEMENTS: 'Project value must be equal to disbursements total value. Adjust disbursements using financials tab and/or adjust project value here.'
+    INVALID_PROJECT_VALUE_DISBURSEMENTS: 'Project value must be equal to disbursements total value. Adjust disbursements using financials tab and/or adjust project value here.',
+    ORGANIZATIONS_MERGED: 'Organizations merged. System will logout you to bring your updated data on the next login',
 }
