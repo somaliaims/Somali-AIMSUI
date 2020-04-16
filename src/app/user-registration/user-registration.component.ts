@@ -82,6 +82,16 @@ export class UserRegistrationComponent implements OnInit {
   }
 
   proceedRegistration() {
+    if (this.model.email == null || this.model.password == null) {
+      return false;
+    }
+    if (this.model.email != this.model.confirmEmail) {
+      return false;
+    }
+
+    if (this.model.password != this.model.confirmPassword) {
+      return false;
+    }
     this.storeService.newRegistration(this.model);
     this.router.navigateByUrl('user-org-registration');
   }

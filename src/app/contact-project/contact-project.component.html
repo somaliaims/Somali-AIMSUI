@@ -17,13 +17,22 @@
               </div>
               <span class="text-center"><h5>Project contact form</h5></span>
               <span class="text-center"><h6><b>Project name:</b> {{model.projectTitle}}</h6></span>
-              <div *ngIf="isSuccess" class="alert alert-success alert-dismissible">
+              <div *ngIf="isSuccess" class="alert alert-info alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 <strong>Information!</strong> {{successMessage}}
               </div>
               <form class="form-signin" (ngSubmit)="contactForm.form.valid && sendProjectSugggestion(contactForm)"
                 #contactForm="ngForm">
   
+                <div *ngIf="!isLoggedIn" class="form-group">
+                  <label for="senderEmail">Your email</label>
+                  <input type="email" class="form-control" id="senderEmail" [(ngModel)]="model.senderEmail" name="senderEmail"
+                    #senderEmail="ngModel" maxlength="30" required />
+                  <div *ngIf="contactForm.submitted" [hidden]="senderEmail.valid" class="alert alert-danger">
+                    Email is required
+                  </div>
+                </div>
+
                 <div class="form-group">
                   <label for="senderName">Your name</label>
                   <input type="text" class="form-control" id="senderName" [(ngModel)]="model.senderName" name="senderName"

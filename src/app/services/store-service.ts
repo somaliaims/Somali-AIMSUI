@@ -75,7 +75,8 @@ export class StoreService {
         if (error.statusText.toLowerCase() == 'bad request') {
           errorMessage = error.error;
         } else if (error.statusText == 'Unknown Error') {
-          errorMessage = 'Unkown Error: Make sure your internet connection is working.';
+          errorMessage = 'Unkown Error: Something went wrong. Make sure your Internet connection ' + 
+          'is working. In any other case contact AIMS Administrator.';
         } else {
           errorMessage = error.statusText;
         }

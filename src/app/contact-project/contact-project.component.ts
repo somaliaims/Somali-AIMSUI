@@ -21,6 +21,7 @@ export class ContactProjectComponent implements OnInit {
   errorMessage: string = null;
   successMessage: string = null;
   isSuccess: boolean = false;
+  isLoggedIn: boolean = false;
   isError: boolean = false;
   requestNo: number = 0;
   messageLimit: number = Settings.descriptionMediumLimit;
@@ -43,6 +44,11 @@ export class ContactProjectComponent implements OnInit {
       }
     } else {
       this.router.navigateByUrl('home');
+    }
+
+    this.isLoggedIn = (localStorage.getItem('isLoggedIn') == 'true');
+    if (this.isLoggedIn) {
+      this.model.senderEmail = (localStorage.getItem('userEmail'));
     }
     this.storeService.newReportItem(Settings.dropDownMenus.projects);
     this.requestNo = this.storeService.getNewRequestNumber();

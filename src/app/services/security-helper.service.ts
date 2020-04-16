@@ -32,6 +32,7 @@ export class SecurityHelperService {
       //var eToken = this.encryptText(token);
       localStorage.setItem('token', token);
       localStorage.setItem('userId', userObj.id);
+      localStorage.setItem('userEmail', userObj.email);
       localStorage.setItem('displayName', userObj.displayName);
       localStorage.setItem('organizationId', userObj.organizationId);
       localStorage.setItem('organizationName', userObj.organizationName);

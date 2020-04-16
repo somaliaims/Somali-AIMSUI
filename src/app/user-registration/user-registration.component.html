@@ -44,22 +44,13 @@
         
                   <div class="form-group">
                     <label for="confirmPassword">Confirm password</label>
-                    <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="model.confirmPassword" 
+                    <input type="password" class="form-control" id="confirmPassword" 
                     [(ngModel)]="model.confirmPassword" name="confirmPassword" #confirmPassword="ngModel" required>
                     <div *ngIf="registrationForm.submitted" [hidden]="model.password == model.confirmPassword" class="alert alert-danger">
                       Passwords do not match
                     </div>
                   </div>
-        
-                  <!--<div class="form-group">
-                    <label for="UserType">User Type</label>
-                    <select class="form-control" id="UserType" required [(ngModel)]="model.UserType" name="UserType" #UserType="ngModel">
-                      <option *ngFor="let uType of userTypes" [value]="uType.id">{{uType.typeName}}</option>
-                    </select>
-                    <div [hidden]="UserType.valid || UserType.pristine" class="alert alert-danger">
-                      Select a user type
-                    </div>
-                  </div>-->
+                  
                   <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Proceed</button>
                 </div>
                 
