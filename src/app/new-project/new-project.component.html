@@ -86,7 +86,7 @@
           <div class="card-body">
             <form class="form-signin" #searchForm="ngForm">
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                   <div class="input-group">
                     <input type="text" placeholder="{{inputTextHolder}}" class="form-control" id="title"
                       [(ngModel)]="model.title" (input)="filterProjectMatches()" name="title" #title onkeypress="return event.keyCode != 13;">
@@ -97,25 +97,18 @@
                     </span>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <table>
                     <tr>
                       <td>
-                        <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear"
-                          name="startingYear" (change)="filterProjectMatches()" #startingYear="ngModel" required>
-                          <option value="0">--All starting years--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">FY-{{year.financialYear}}
-                          </option>
-                        </select>
+                        <label>Period from:&nbsp;</label>
                       </td>
-                      <td>&nbsp;&nbsp;</td>
                       <td>
-                        <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
-                          #endingYear="ngModel" (change)="filterProjectMatches()" required>
-                          <option value="0">--All ending years--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">FY-{{year.financialYear}}
-                          </option>
-                        </select>
+                        <input class="form-control" type="date" name="startDate" [(ngModel)]="model.startDate" #startDate="ngModel" (change)="filterProjectMatches()" />
+                      </td>
+                      <td>&nbsp;To:&nbsp;</td>
+                      <td>
+                        <input class="form-control" type="date" name="endDate" [(ngModel)]="model.endDate" #endDate="ngModel" (change)="filterProjectMatches()" />
                       </td>
                     </tr>
                   </table>

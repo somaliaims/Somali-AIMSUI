@@ -124,7 +124,7 @@ export class NewProjectComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   model = {
     id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0,
-    endingYear: 0, selectedOrganizations: [], selectedSectors: [], selectedLocations: [],
+    endingYear: 0, startingDate: null, endingDate: null, selectedOrganizations: [], selectedSectors: [], selectedLocations: [],
     selectedIATIOrganizations: [], iatiSectorType: null, iatiSelectedSectors: [], sectorLevel: null
   };
 
@@ -504,44 +504,82 @@ export class NewProjectComponent implements OnInit {
       }.bind(this));
     }
 
-    if (this.model.startingYear != 0) {
+    if (this.model.startDate != null && this.model.endDate == null) {
+      var modelStartDate = new Date(this.model.startDate);
       this.filteredIatiProjects = this.filteredIatiProjects.filter((project) => {
-        if (Date.parse(project.startDate)) {
-          var dated = new Date(project.startDate);
-          var year = dated.getFullYear();
-          if (year >= this.model.startingYear) {
+          var isValidStartDate = Date.parse(project.startDate);
+          var isValidEndDate = Date.parse(project.endDate);
+
+          var startDate = (!isNaN(isValidStartDate)) ? new Date(project.startDate) : null;
+          var endDate = (!isNaN(isValidEndDate)) ? new Date(project.endDate) : null;
+          if (((startDate) && startDate >= modelStartDate) ||
+          ((endDate) && endDate >= modelStartDate)) {
             return project;
           }
-        }
       });
 
       this.filteredAIMSProjects = this.filteredAIMSProjects.filter((project) => {
-        var dated = new Date(project.startDate);
-        var year = dated.getFullYear();
-        if (year >= this.model.startingYear) {
-          return project;
-        }
+        var startDate = new Date(project.startDate);
+        var endDate = new Date(project.endDate);
+
+        if ((startDate >= modelStartDate) ||
+          (endDate >= modelStartDate)) {
+            return project;
+          }
       });
     }
 
-    if (this.model.endingYear != 0) {
+    if (this.model.startDate == null && this.model.endDate != null) {
+      var modelEndDate = new Date(this.model.endDate);
       this.filteredIatiProjects = this.filteredIatiProjects.filter((project) => {
-        if (Date.parse(project.startDate)) {
-          var dated = new Date(project.startDate);
-          var year = dated.getFullYear();
-          if (year <= this.model.endingYear) {
+          var isValidStartDate = Date.parse(project.startDate);
+          var isValidEndDate = Date.parse(project.endDate);
+
+          var startDate = (!isNaN(isValidStartDate)) ? new Date(project.startDate) : null;
+          var endDate = (!isNaN(isValidEndDate)) ? new Date(project.endDate) : null;
+          if (((startDate) && startDate <= modelEndDate) ||
+          ((endDate) && endDate <= modelEndDate)) {
             return project;
           }
-        }
       });
 
       this.filteredAIMSProjects = this.filteredAIMSProjects.filter((project) => {
-        var dated = new Date(project.endDate);
-        var year = dated.getFullYear();
-        if (year <= this.model.endingYear) {
+        var startDate = new Date(project.startDate);
+        var endDate = new Date(project.endDate);
+
+        if ((startDate <= modelEndDate) ||
+          (endDate <= modelEndDate)) {
+            return project;
+          }
+      });
+    }
+
+    if (this.model.startDate != null && this.model.endDate != null) {
+      var modelStartDate = new Date(this.model.startDate);
+      var modelEndDate = new Date(this.model.endDate);
+      this.filteredIatiProjects = this.filteredIatiProjects.filter((project) => {
+          var isValidStartDate = Date.parse(project.startDate);
+          var isValidEndDate = Date.parse(project.endDate);
+
+          var startDate = (!isNaN(isValidStartDate)) ? new Date(project.startDate) : null;
+          var endDate = (!isNaN(isValidEndDate)) ? new Date(project.endDate) : null;
+
+          if (((startDate) && (startDate >= modelStartDate && startDate <= modelEndDate) ||
+          ((endDate) && (endDate <= modelEndDate && endDate >= modelStartDate)))) {
+            return project;
+          }
+      });
+
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter((project) => {
+        var startDate = new Date(project.startDate);
+        var endDate = new Date(project.endDate);
+
+        if (((startDate) && (startDate >= modelStartDate && startDate <= modelEndDate) ||
+          ((endDate) && (endDate <= modelEndDate && endDate >= modelStartDate)))) {
           return project;
         }
       });
+
     }
   }
 
