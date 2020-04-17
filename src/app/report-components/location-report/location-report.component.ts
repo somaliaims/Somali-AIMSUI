@@ -26,6 +26,7 @@ export class LocationReportComponent implements OnInit {
   selectedOrganizations: any = [];
   exchangeRates: any = [];
   organizationsSettings: any = {};
+  markerValuesSettings: any = {};
   dataOptionSettings: any = {};
   projectsSettings: any = {};
   yearsList: any = [];
@@ -44,6 +45,7 @@ export class LocationReportComponent implements OnInit {
   sectorIds: any = [];
   subSectorIds: any = [];
   subSubSectorIds: any = [];
+  paramMarkerValues: any = [];
   requestNo: number = 0;
   isAnyFilterSet: boolean = false;
   isNoLocationReport: boolean = false;
@@ -269,7 +271,7 @@ export class LocationReportComponent implements OnInit {
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], sectorId: 0, 
     noLocationOption: this.noLocationCodes.PROJECTS_WITH_LOCATIONS, sectorLevel: 0,
-    markerId: 0, markerValue: null
+    markerId: 0, markerValues: []
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -306,11 +308,13 @@ export class LocationReportComponent implements OnInit {
           this.model.endingYear = (params.eyear) ? params.eyear : 0;
           this.model.sectorId = (params.sectorId) ? params.sectorId : 0;
           this.model.markerId = (params.mid) ? params.mid : 0;
-          this.model.markerValue = (params.mvalue) ? params.mvalue: null;
           this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
+          if (params.mvalue) {
+            this.paramMarkerValues = params.mvalue.split(',');
+          }
           this.loadReport = true;
           if (this.model.noLocationOption) {
             this.isNoLocationReport = true;
@@ -362,6 +366,16 @@ export class LocationReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'location',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.markerValuesSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'value',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -518,7 +532,7 @@ export class LocationReportComponent implements OnInit {
       locationIds: this.model.selectedLocations.map(l => l.id),
       sectorId: this.model.sectorId,
       markerId: this.model.markerId,
-      markerValue: this.model.markerValue,
+      markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
       chartType: chartType
     };
 
@@ -748,7 +762,6 @@ export class LocationReportComponent implements OnInit {
               }
             }.bind(this));
           }
-          //this.searchProjectsByCriteriaReport();
         }
       }
     )
@@ -1144,19 +1157,23 @@ export class LocationReportComponent implements OnInit {
         if (data) {
           this.markersList = data;
           if (this.model.markerId) {
-            this.getSelectedMarkerValues();
+            var values = (this.paramMarkerValues.length > 0) ? this.paramMarkerValues : [];
+            this.getSelectedMarkerValues(values);
           }
         }
       }
     );
   }
 
-  getSelectedMarkerValues() {
+  getSelectedMarkerValues(selectedValues: any = []) {
     this.markerValues = [];
     if (this.model.markerId) {
       var values = this.markersList.filter(m => m.id == this.model.markerId).map(m => m.values);
-      if (values) {
+      if (values && values.length > 0) {
         this.markerValues = JSON.parse(values);
+        if (selectedValues.length > 0) {
+          this.model.markerValues = this.markerValues.filter(m => selectedValues.indexOf(m.value) != -1);
+        }
       };
     }
   }

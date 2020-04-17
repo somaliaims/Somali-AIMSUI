@@ -579,7 +579,6 @@ export class NewProjectComponent implements OnInit {
           return project;
         }
       });
-
     }
   }
 
