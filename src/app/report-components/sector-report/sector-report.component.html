@@ -99,18 +99,16 @@
                   </select>
                 </div>
                 <div class="col-lg-3 col-md-3">
-                  <select class="form-control" id="markerValue" [(ngModel)]="model.markerValue" name="markerValue"
-                    title="Select marker value" #sectorId="ngModel">
-                    <option value="null">--Marker value--</option>
-                    <option *ngFor="let value of markerValues" [value]="value.value">{{value.value}}
-                    </option>
-                  </select>
+                  <ng-multiselect-dropdown [placeholder]="'-- All values --'" title="Marker value/s"
+                    [data]="markerValues" [(ngModel)]="model.markerValues"
+                    [settings]="markerValuesSettings" 
+                    name="selectedMarkerValues" #selectedMarkerValues="ngModel">
+                  </ng-multiselect-dropdown>
                 </div>
                 
               </div>
 
               <div class="row margin-top-10">
-
                 <div class="col-lg-6 col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
                     (change)="selectCurrency();manageResetDisplay();" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"

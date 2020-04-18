@@ -1167,6 +1167,8 @@ export class LocationReportComponent implements OnInit {
 
   getSelectedMarkerValues(selectedValues: any = []) {
     this.markerValues = [];
+    this.model.markerValues = [];
+    
     if (this.model.markerId) {
       var values = this.markersList.filter(m => m.id == this.model.markerId).map(m => m.values);
       if (values && values.length > 0) {

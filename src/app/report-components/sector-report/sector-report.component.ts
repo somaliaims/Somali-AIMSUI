@@ -36,6 +36,7 @@ export class SectorReportComponent implements OnInit {
   projectsSettings: any = {};
   dataOptionSettings: any = {};
   locationsSettings: any = {};
+  markerValuesSettings: any = {};
   oldCurrencyRate: number = 0;
   oldCurrency: string = null;
   currencyRate: number = 0;
@@ -79,6 +80,7 @@ export class SectorReportComponent implements OnInit {
   exchangeRatesList: any = [];
   projects: any = [];
   selectedProjects: any = [];
+  paramMarkerValues: any = [];
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -272,7 +274,7 @@ export class SectorReportComponent implements OnInit {
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS,
     noSectorOption: this.noSectorOptions.PROJECTS_WITH_SECTORS,
-    markerId: 0, markerValue: null
+    markerId: 0, markerValue: null, markerValues: []
   };
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
@@ -312,8 +314,10 @@ export class SectorReportComponent implements OnInit {
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.model.markerId = (params.mid) ? params.mid : 0;
-          this.model.markerValue = (params.mvalue) ? params.mvalue: null;
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
+          if (params.mvalue) {
+            this.paramMarkerValues = params.mvalue.split(',');
+          }
           this.loadReport = true;
         }
       });
@@ -361,6 +365,16 @@ export class SectorReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'location',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.markerValuesSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'value',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -496,20 +510,23 @@ export class SectorReportComponent implements OnInit {
         if (data) {
           this.markersList = data;
           if (this.model.markerId) {
-            this.getSelectedMarkerValues();
+            var values = (this.paramMarkerValues.length > 0) ? this.paramMarkerValues : [];
+            this.getSelectedMarkerValues(values);
           }
         }
       }
     );
   }
 
-  getSelectedMarkerValues() {
+  getSelectedMarkerValues(selectedValues: any = []) {
     this.markerValues = [];
+    this.model.markerValues = [];
     if (this.model.markerId) {
       var values = this.markersList.filter(m => m.id == this.model.markerId).map(m => m.values);
       if (values && values.length > 0) {
-        if (values[0].length > 0) {
-          this.markerValues = JSON.parse(values);
+        this.markerValues = JSON.parse(values);
+        if (selectedValues.length > 0) {
+          this.model.markerValues = this.markerValues.filter(m => selectedValues.indexOf(m.value) != -1);
         }
       };
     }
@@ -539,7 +556,7 @@ export class SectorReportComponent implements OnInit {
       parentSectorId: this.model.parentSectorId,
       sectorLevel: this.model.sectorLevel,
       markerId: this.model.markerId,
-      markerValue: this.model.markerValue,
+      markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
       chartType: chartType,
       sectorIds: (this.loadReport) ? this.paramSectorIds : this.model.selectedSectors.map(s => s.id),
     };

@@ -34,6 +34,7 @@ export class TimeTrendReportComponent implements OnInit {
   dataOptionSettings: any = {};
   locationsSettings: any = {};
   projectsSettings: any = {};
+  markerValuesSettings: any = {};
   oldCurrencyRate: number = 0;
   oldCurrency: string = null;
   currencyRate: number = 0;
@@ -67,11 +68,11 @@ export class TimeTrendReportComponent implements OnInit {
   paramChartType: string = null;
   paramLocationIds: any = [];
   paramProjectIds: any = [];
+  paramMarkerValues: any = [];
   loadReport: boolean = false;
   isLoading: boolean = true;
   isDataLoading: boolean = true;
   isAnyFilterSet: boolean = false;
-  //chartTypeName: string = 'bar';
   chartType: string = 'bar';
   btnReportText: string = 'Update report';
 
@@ -237,7 +238,7 @@ export class TimeTrendReportComponent implements OnInit {
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], locationId: 0,
     sectorLevel: this.sectorLevelCodes.SECTORS,
-    markerId: 0, markerValue: null
+    markerId: 0, markerValue: null, markerValues: []
   };
 
   //Overlay UI blocker
@@ -267,9 +268,11 @@ export class TimeTrendReportComponent implements OnInit {
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
           this.model.locationId = (params.locationId) ? params.locationId : 0;
           this.model.markerId = (params.mid) ? params.mid : 0;
-          this.model.markerValue = (params.mvalue) ? params.mvalue: null;
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
+          if (params.mvalue) {
+            this.paramMarkerValues = params.mvalue.split(',');
+          }
           this.loadReport = true;
         } 
       });
@@ -319,6 +322,16 @@ export class TimeTrendReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'location',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.markerValuesSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'value',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -392,19 +405,24 @@ export class TimeTrendReportComponent implements OnInit {
         if (data) {
           this.markersList = data;
           if (this.model.markerId) {
-            this.getSelectedMarkerValues();
+            var values = (this.paramMarkerValues.length > 0) ? this.paramMarkerValues : [];
+            this.getSelectedMarkerValues(values);
           }
         }
       }
     );
   }
 
-  getSelectedMarkerValues() {
+  getSelectedMarkerValues(selectedValues: any = []) {
     this.markerValues = [];
+    this.model.markerValues = [];
     if (this.model.markerId) {
       var values = this.markersList.filter(m => m.id == this.model.markerId).map(m => m.values);
-      if (values) {
+      if (values && values.length > 0) {
         this.markerValues = JSON.parse(values);
+        if (selectedValues.length > 0) {
+          this.model.markerValues = this.markerValues.filter(m => selectedValues.indexOf(m.value) != -1);
+        }
       };
     }
   }
