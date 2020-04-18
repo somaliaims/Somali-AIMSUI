@@ -46,6 +46,9 @@ export class ContactFormComponent implements OnInit {
     private projectService: ProjectService, private storeService: StoreService) {
 
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
+    if (this.isLoggedIn) {
+      this.model.senderEmail = (localStorage.getItem('userEmail'));
+    }
   }
 
   ngOnInit() {
