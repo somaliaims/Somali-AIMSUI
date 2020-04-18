@@ -454,7 +454,7 @@ export class TimeTrendReportComponent implements OnInit {
       sectorIds: this.model.selectedSectors.map(s => s.id),
       locationId: this.model.locationId,
       markerId: this.model.markerId,
-      markerValue: this.model.markerValue,
+      markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
       chartType: chartType
     };
 
