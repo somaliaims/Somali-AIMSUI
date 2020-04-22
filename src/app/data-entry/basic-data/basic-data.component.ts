@@ -455,11 +455,16 @@ export class BasicDataComponent implements OnInit {
     } else {
       this.saveProject();
     }
-    
   }
 
   saveProject() {
     this.modalService.close('confirmation-modal');
+
+    if (!this.projectData.description) {
+      this.errorMessage = 'Project description is required';
+      this.errorModal.openModal();
+      return false;
+    }
 
     var isOrgProvided = false;
     var userOrgInFunders = this.funderModel.selectedFunders.filter(f => f.id == this.userOrgId);

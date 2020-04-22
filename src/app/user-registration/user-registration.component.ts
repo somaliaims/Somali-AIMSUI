@@ -56,20 +56,22 @@ export class UserRegistrationComponent implements OnInit {
     this.btnCheckEmailTitle = 'Wait processing...';
     this.userService.checkEmailAvailability(this.model.email).subscribe(
       data => {
-        this.isEmailOk = data;
-        if (!this.isEmailOk) {
-          this.emailNotAvailable = true;
-          this.disableEmail = false;
-          this.isEmailFocus = true;
-        } else {
-          this.emailNotAvailable = false;
-          this.disableEmail = true;
-          this.isNameFocus = true;
-          this.isEmailFocus = false;
-          this.isConfirmEmailFocus = true;
+        if (data) {
+          this.isEmailOk = data.success;
+          if (!this.isEmailOk) {
+            this.emailNotAvailable = true;
+            this.disableEmail = false;
+            this.isEmailFocus = true;
+          } else {
+            this.emailNotAvailable = false;
+            this.disableEmail = true;
+            this.isNameFocus = true;
+            this.isEmailFocus = false;
+            this.isConfirmEmailFocus = true;
+          }
+          this.isSearchingEmail = false;
+          this.btnCheckEmailTitle = 'Check Email';
         }
-        this.isSearchingEmail = false;
-        this.btnCheckEmailTitle = 'Check Email';
       },
       error => {
         console.log("Request Failed: ", error);

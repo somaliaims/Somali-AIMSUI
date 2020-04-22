@@ -1064,17 +1064,17 @@ export class LocationReportComponent implements OnInit {
     this.stackedChartData = [];
     var locationProjects = this.reportDataList.locationProjectsList;
     this.stackedChartLabels = this.reportDataList.locationProjectsList.map(p => p.locationName);
-    var disbursements = locationProjects.map(s => s.actualDisbursements);
-    var expectedDisbursements = locationProjects.map(s => s.plannedDisbursements);
+    var actualDisbursements = locationProjects.map(s => s.actualDisbursements);
+    var plannedDisbursements = locationProjects.map(s => s.plannedDisbursements);
 
     this.stackedChartData.push({
-      data: disbursements,
+      data: actualDisbursements,
       label: 'Actual disbursements',
       stack: 'Stack 0'
     });
 
     this.stackedChartData.push({
-      data: expectedDisbursements,
+      data: plannedDisbursements,
       label: 'Planned disbursements',
       stack: 'Stack 0'
     });

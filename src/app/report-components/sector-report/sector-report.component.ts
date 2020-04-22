@@ -127,6 +127,7 @@ export class SectorReportComponent implements OnInit {
     SUB_SUB_SECTORS: 3
   }
 
+
   dataOptionsCodes: any = {
     'ACTUAL_DISBURSEMENTS': 1,
     'PLANNED_DISBURSEMENTS': 2,
@@ -315,6 +316,10 @@ export class SectorReportComponent implements OnInit {
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
           this.model.markerId = (params.mid) ? params.mid : 0;
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
+          this.model.sectorLevel = (params.level) ? params.level : this.sectorLevelCodes.SECTORS;
+          if (this.model.sectorLevel) {
+            this.manageSectorLevel();
+          }
           if (params.mvalue) {
             this.paramMarkerValues = params.mvalue.split(',');
           }
@@ -477,7 +482,6 @@ export class SectorReportComponent implements OnInit {
           this.oldCurrency = this.model.selectedCurrency;
           this.selectedCurrencyName = data.currencyName;
           this.currenciesList.push(data);
-          //this.getManualExchangeRateForToday();
         } else {
           this.isDefaultCurrencySet = false;
         }
@@ -558,6 +562,7 @@ export class SectorReportComponent implements OnInit {
       markerId: this.model.markerId,
       markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
       chartType: chartType,
+      level: this.model.sectorLevel,
       sectorIds: (this.loadReport) ? this.paramSectorIds : this.model.selectedSectors.map(s => s.id),
     };
 
@@ -675,8 +680,17 @@ export class SectorReportComponent implements OnInit {
   setupStackedChartData() {
     this.stackedChartData = [];
     this.stackedChartLabels = this.chartLables;
-    var actualDisbursements = this.parentSectorsSummary.map(s => s.actualDisbursements);
-    var plannedDisbursements = this.parentSectorsSummary.map(s => s.plannedDisbursements);
+    var actualDisbursements = [];
+    var plannedDisbursements = [];
+
+    if (this.model.sectorLevel == this.sectorLevelCodes.SECTORS) {
+      actualDisbursements = this.parentSectorsSummary.map(s => s.actualDisbursements);
+      plannedDisbursements = this.parentSectorsSummary.map(s => s.plannedDisbursements);
+    } else {
+      actualDisbursements = this.sectorProjectsList.map(s => s.actualDisbursements);
+      plannedDisbursements = this.sectorProjectsList.map(s => s.plannedDisbursements);
+    }
+    
 
     this.stackedChartData.push({
       data: actualDisbursements,

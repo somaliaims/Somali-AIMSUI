@@ -60,8 +60,8 @@ export class UserService {
 
     checkEmailAvailability(email: string) {
         var url = this.urlHelper.emailAvailabilityUrl(email);
-        return this.httpClient
-            .get<boolean>(url);
+        return this.httpClient.get(url, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Email availability')));
     }
 
     editUserPassword(password: string) {

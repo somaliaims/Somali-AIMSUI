@@ -18,6 +18,7 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 export class MergeOrganizationComponent implements OnInit {
 
   requestNo: number = 0;
+  envelopeOrganizationId: number = 0;
   permissions: any = {};
   organizationTypes: any = [];
   organizationsList: any = [];
@@ -99,6 +100,9 @@ export class MergeOrganizationComponent implements OnInit {
       this.filteredOrganizationsList.push(deSelectOrganization[0]);
     }
     this.selectedOrganizations = this.selectedOrganizations.filter(o => o.id != id);
+    if (id == this.envelopeOrganizationId) {
+      this.envelopeOrganizationId = 0;
+    }
   }
 
   checkIfOrganizationsHaveUsers() {
@@ -123,6 +127,13 @@ export class MergeOrganizationComponent implements OnInit {
     var model = {
       ids: ids
     };
+
+    if (ids.length > 1 && this.envelopeOrganizationId == 0) {
+      this.errorMessage = 'Selection for organization is required whose data must be used for Envelope after merge.';
+      this.errorModal.openModal();
+      return false;
+    }
+
     this.blockUI.start('Wait working on merge...');
     this.organizationService.checkIfOrganizationsHaveUsers(model).subscribe(
       data => {
@@ -144,7 +155,8 @@ export class MergeOrganizationComponent implements OnInit {
     var model = {
       newName: this.model.name,
       Ids: ids,
-      organizationTypeId: this.model.organizationTypeId
+      organizationTypeId: this.model.organizationTypeId,
+      envelopeOrganizationId: this.envelopeOrganizationId
     };
     this.organizationService.addMergeOrganizationsRequest(model).subscribe(
       data => {
@@ -154,6 +166,7 @@ export class MergeOrganizationComponent implements OnInit {
           this.selectedOrganizations = [];
           this.model.name = null;
           this.model.organizationTypeId = 0;
+          this.envelopeOrganizationId = 0;
         }
         this.blockUI.stop();
       }
@@ -165,7 +178,8 @@ export class MergeOrganizationComponent implements OnInit {
     var model = {
       newName: this.model.name,
       Ids: ids,
-      organizationTypeId: this.model.organizationTypeId
+      organizationTypeId: this.model.organizationTypeId,
+      envelopeOrganizationId: this.envelopeOrganizationId
     };
 
     this.organizationService.mergeOrganizations(model).subscribe(
@@ -202,6 +216,10 @@ export class MergeOrganizationComponent implements OnInit {
         this.blockUI.stop();
       }
     );
+  }
+
+  setEnvelopeOrganization(id: number) {
+    this.envelopeOrganizationId = id;
   }
 
 }
