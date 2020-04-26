@@ -20,7 +20,9 @@ export class HomePageSettingsComponent implements OnInit {
   errorMessage: string = null;
   isSuccess: boolean = false;
   successMessage: string = 'Home page settings saved successfully';
-  model: any = { aimsTitle: null, introductionHeading: null, introductionText: null };
+  model: any = { aimsTitle: null, introductionHeading: null, introductionText: null,
+  aimsTitleBarText: null };
+  
   @BlockUI() blockUI: NgBlockUI;
   
   constructor(private homePageService: HomePageService, private storeService: StoreService,

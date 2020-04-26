@@ -22,6 +22,15 @@
             <form class="form-signin" (ngSubmit)="homePageForm.form.valid && saveHomePageSettings()" #homePageForm="ngForm">
 
               <div class="form-group">
+                <label for="aimsTitleBarText">AIMS title bar text</label>
+                <input type="url" maxlength="30" class="form-control" id="aimsTitleBarText" [(ngModel)]="model.aimsTitleBarText" name="aimsTitleBarText"
+                  #aimsTitleBarText="ngModel" required>
+                <div *ngIf="homePageForm.submitted" [hidden]="aimsTitleBarText.valid" class="alert alert-danger">
+                  AIMS title bar text is required
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="aimsTitle">AIMS title</label>
                 <input type="url" maxlength="30" class="form-control" id="aimsTitle" [(ngModel)]="model.aimsTitle" name="aimsTitle"
                   #aimsTitle="ngModel" required>
