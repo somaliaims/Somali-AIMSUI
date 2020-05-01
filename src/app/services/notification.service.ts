@@ -49,5 +49,16 @@ export class NotificationService {
                 catchError(this.storeService.handleError<any>('User Activation')));
   }
 
+  activateUserWithInactiveOrganization(userId: number, notificationId: number) {
+    var model = {
+      UserId: userId,
+      NotificationId: notificationId
+    };
+
+    var url = this.urlHelper.userAccountLimitedActivationUrl();
+        return this.httpClient.post(url, model, httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('User Activation')));
+  }
+
 
 }

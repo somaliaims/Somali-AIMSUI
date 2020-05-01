@@ -7,6 +7,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ProjectService } from '../services/project.service';
 import { Settings } from '../config/settings';
 import { StoreService } from '../services/store-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact-form',
@@ -43,12 +44,16 @@ export class ContactFormComponent implements OnInit {
   
   constructor(private securityService: SecurityHelperService, 
     private contactService: ContactService, private errorModal: ErrorModalComponent,
-    private projectService: ProjectService, private storeService: StoreService) {
+    private projectService: ProjectService, private storeService: StoreService,
+    private router: Router) {
 
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
-    if (this.isLoggedIn) {
-      this.model.senderEmail = (localStorage.getItem('userEmail'));
+    if (!this.isLoggedIn) {
+      this.router.navigateByUrl('home');
     }
+    /*if (this.isLoggedIn) {
+      this.model.senderEmail = (localStorage.getItem('userEmail'));
+    }*/
   }
 
   ngOnInit() {

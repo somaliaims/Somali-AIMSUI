@@ -51,6 +51,9 @@
               <span class="float-right">
                   <button class="btn btn-warning btn-sm"
                   (click)="activateUserAccount($event, notification.treatmentId, notification.id)">Approve</button>
+                  &nbsp;
+                  <button class="btn btn-success btn-sm"
+                  (click)="activateUserWithInactiveOrganization($event, notification.treatmentId, notification.id)">Approve as Un-Affiliated</button>
               </span>
             </td>
           </tr>

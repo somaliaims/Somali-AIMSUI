@@ -124,6 +124,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.userAccountActivation);
     }
 
+    userAccountLimitedActivationUrl() {
+        return (this.BASE_URL + urlsList.urls.activateAccountInactiveOrganization);
+    }
+
     getSearchOrganizationUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.getOrganization + id);
     }

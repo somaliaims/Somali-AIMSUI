@@ -124,6 +124,18 @@ export class NotificationComponent implements OnInit {
     }
   }
 
+  activateUserWithInactiveOrganization(event, userId, notificationId) {
+    if (userId && notificationId) {
+      this.blockUI.start('Activating account...');
+      this.notificationService.activateUserWithInactiveOrganization(userId, notificationId).subscribe(data => {
+        if (data) {
+          this.reloadPage();
+        }
+        this.stopScreenBlocker();
+      });
+    }
+  }
+
   showNotifications() {
     this.manageTabsDisplay(this.tabConstants.NOTIFICATIONS);
   }

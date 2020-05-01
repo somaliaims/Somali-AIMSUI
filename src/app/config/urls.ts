@@ -31,6 +31,7 @@ export const urls = {
 	iatiOrganizationsUrl: "Organization/GetIATIOrganizations",
 	userNotificationsList: "Notification",
 	userAccountActivation: "User/ActivateAccount/",
+	activateAccountInactiveOrganization: "User/ActivateWithInactiveOrganization",
 	searchOrganizations: "Organization/",
 	getOrganization: "Organization/GetById/",
 	organizationsWithTypeUrl: "Organization/GetWithTypes",
