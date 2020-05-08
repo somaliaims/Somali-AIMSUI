@@ -37,12 +37,17 @@ export class SecurityHelperService {
       localStorage.setItem('organizationId', userObj.organizationId);
       localStorage.setItem('organizationName', userObj.organizationName);
       localStorage.setItem('userType', userObj.userType);
+      localStorage.setItem('isUnAffiliated', userObj.isUnAffiliated);
       localStorage.setItem('isLoggedIn', true.toString());
     }
   }
 
   checkIsLoggedIn() {
     return (localStorage.getItem('isLoggedIn') == 'true') ? true : false;
+  }
+
+  checkIsUnAffilated() {
+    return (localStorage.getItem('isUnAffiliated') == 'true') ? true : false;
   }
   
   getUserOrganizationId() {

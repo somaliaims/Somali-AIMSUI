@@ -26,7 +26,7 @@
               <a class="dropdown-item" [routerLink]="['/data-export']">Data export</a>
             </div>
           </li>
-          <li *ngIf="isLoggedIn" class="nav-item dropdown">
+          <li *ngIf="isLoggedIn && !isUnAffiliated" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" [ngClass]="{'active-link': isEntryActive == true}"
               data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Data entry</a>
             <div class="dropdown-menu">
@@ -35,7 +35,7 @@
               <a class="dropdown-item" [routerLink]="['/envelope']">Add/edit envelope data</a>
             </div>
           </li>
-          <li *ngIf="isLoggedIn" class="nav-item dropdown">
+          <li *ngIf="isLoggedIn && !isUnAffiliated" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" [ngClass]="{'active-link': isManagementActive == true}"
               data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
             <div class="dropdown-menu">

@@ -5,6 +5,8 @@ import { NotificationService } from '../services/notification.service';
 import { HomePageService } from '../services/home-page.service';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
+import { environment } from 'src/environments/environment.prod';
+
 
 @Component({
   selector: 'app-root',
@@ -14,6 +16,7 @@ import { Settings } from '../config/settings';
 export class AppComponent {
   aimsTitle = null;
   isLoggedIn: boolean = false;
+  isUnAffiliated: boolean = true;
   permissions: any = {};
   notificationsCount: number = 0;
   loggedInAs: string = null;
@@ -33,15 +36,26 @@ export class AppComponent {
   constructor(private securityService: SecurityHelperService, private router: Router,
     private notificationService: NotificationService, private homePageService: HomePageService,
     private storeService: StoreService) {
+
+    if (environment.production) {
+      if (location.protocol === 'http:') {
+        window.location.href = location.href.replace('http', 'https');
+      }
+    }
+
     this.isLoggedIn = (localStorage.getItem('isLoggedIn') == 'true');
+    this.isUnAffiliated = (localStorage.getItem('isUnAffiliated') == 'true');
 
     if (this.isLoggedIn) {
-      this.getNotificationsCount();
+      if (!this.isUnAffiliated) {
+        this.getNotificationsCount();
+      }
       this.loggedInAsFullName = this.securityService.getUserOrganization();
       if (this.loggedInAsFullName && this.loggedInAsFullName != undefined) {
         this.loggedInAs = this.truncate(this.loggedInAsFullName, 25, null);
       }
-    }
+    } 
+
 
     this.storeService.currentReportItem.subscribe(menu => {
       setTimeout(() => {

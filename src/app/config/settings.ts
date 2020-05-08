@@ -42,7 +42,7 @@ export const Settings = {
     introductionLimit: 1000,
     mediumRowsPerPage: 20,
     displayMessageTime: 10000,
-    helpTextLength: 150,
+    helpTextLength: 500,
     entryTabConstants: {
         BASIC: 1,
         FINANCIALS: 2,
