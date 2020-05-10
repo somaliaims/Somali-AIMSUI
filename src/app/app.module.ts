@@ -122,6 +122,7 @@ import { ProjectMarkersComponent } from './data-entry/project-markers/project-ma
 import { EmailUsersComponent } from './email-users/email-users.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
 import { CopyPasteDirective } from './directives/copy-paste.directive';
+import { JoinProjectModalComponent } from './join-project-modal/join-project-modal.component';
 
 @NgModule({
   declarations: [
@@ -229,6 +230,7 @@ import { CopyPasteDirective } from './directives/copy-paste.directive';
     ProjectMarkersComponent,
     EmailUsersComponent,
     UserManagerComponent,
+    JoinProjectModalComponent,
   ],
   imports: [
     BrowserModule,

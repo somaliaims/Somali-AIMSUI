@@ -1,0 +1,48 @@
+<jw-modal id="join-project-modal">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">Create new membership</div>
+                <div class="card-body text-info">
+                    <div *ngIf="isProcessing" class="text-info">
+                        Wait setting up...
+                    </div>
+
+                    <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Error!</strong> {{errorMessage}}
+                    </div>
+
+                    <div *ngIf="isSuccess" class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Information!</strong> {{successMessage}}
+                    </div>
+
+                    <div *ngIf="!isProcessing" class="form-group">
+                        <form class="form-signin" (ngSubmit)="membershipForm.form.valid && saveMembership()"
+                            #membershipForm="ngForm">
+
+                            <div class="form-group">
+                                <label for="text">Membership type</label>
+                                <select class="form-control" name="membershipType"
+                                    [(ngModel)]="model.membershipType" #membershipType="ngModel" required>
+                                    <option *ngFor="let orgType of membershipTypes" [value]="orgType.id">
+                                        {{orgType.typeName}}
+                                    </option>
+                                </select>
+                                <div *ngIf="membershipForm.submitted" [hidden]="membershiType.valid"
+                                    class="alert alert-danger">
+                                    Membership type is required
+                                </div>
+                            </div>
+
+                            <button *ngIf="!isProcessing" [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                                type="submit">{{btnText}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div><br />
+            <button class="btn btn-danger" (click)="closeModal();">Close</button>
+        </div>
+    </div>
+</jw-modal>

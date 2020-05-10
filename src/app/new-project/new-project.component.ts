@@ -19,6 +19,7 @@ import { LocationService } from '../services/location.service';
 import { SectorService } from '../services/sector.service';
 import { OrganizationService } from '../services/organization-service';
 import { SectorTypeService } from '../services/sector-types.service';
+import { JoinProjectModalComponent } from '../join-project-modal/join-project-modal.component';
 
 @Component({
   selector: 'app-new-project',
@@ -65,6 +66,7 @@ export class NewProjectComponent implements OnInit {
   pagingSize: number = Settings.rowsPerPage;
   isShowContact: boolean = false;
   userOrganizationId: number = 0;
+  joinProjectId: number = 0;
 
   sectorsSettings: any = {};
   iatiSectorsSettings: any = {};
@@ -136,7 +138,8 @@ export class NewProjectComponent implements OnInit {
     private projectInfoModal: ProjectInfoModalComponent, private locationService: LocationService,
     private sectorService: SectorService, private fyService: FinancialYearService,
     private organizationService: OrganizationService,
-    private sectorTypeService: SectorTypeService) {
+    private sectorTypeService: SectorTypeService,
+    private joinProjectModal: JoinProjectModalComponent) {
   }
 
   ngOnInit() {
@@ -872,7 +875,7 @@ export class NewProjectComponent implements OnInit {
   applyForProjectMembership(e) {
     var projectId = e.target.id.split('-')[1];
     if (projectId) {
-      this.blockUI.start('Wait submitting request...');
+      /*this.blockUI.start('Wait submitting request...');
       this.projectService.applyForProjectMembership(projectId).subscribe(
         data => {
           if (data) {
@@ -881,7 +884,8 @@ export class NewProjectComponent implements OnInit {
           }
           this.blockUI.stop();
         }
-      );
+      );*/
+      this.joinProjectModal.openModal();
     }
   }
 
