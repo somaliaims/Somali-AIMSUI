@@ -81,6 +81,7 @@
               <span class="text-info">
                 <b>Requesting organization: </b>{{request.userOrganization}} <br />
                 <b>Requesting user: </b>{{request.userEmail}} <br />
+                <b>Requesting role: </b>{{request.membershipType}}<br />
               </span>
               <span class="text-warning">
                 <b><i>Dated: {{getLongDateString(request.dated)}}</i></b>
@@ -88,9 +89,9 @@
             </td>
             <td width="30%">
               <span class="float-right">
-                  <button class="btn btn-warning btn-sm text-uppercase" id="btna-{{i}}-{{request.projectId}}-{{request.userId}}"
+                  <button class="btn btn-warning btn-sm text-uppercase" id="btna-{{i}}-{{request.projectId}}-{{request.userId}}-{{request.membershipTypeId}}"
                   (click)="approveRequest($event)">Approve</button>&nbsp;
-                <button class="btn btn-danger btn-sm text-uppercase" id="btnd-{{i}}-{{request.projectId}}-{{request.userId}}"
+                <button class="btn btn-danger btn-sm text-uppercase" id="btnd-{{i}}-{{request.projectId}}-{{request.userId}}-{{request.membershipTypeId}}"
                   (click)="unApproveRequest($event)">Unapprove</button>
               </span>
             </td>

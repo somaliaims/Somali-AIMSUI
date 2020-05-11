@@ -875,6 +875,7 @@ export class NewProjectComponent implements OnInit {
   applyForProjectMembership(e) {
     var projectId = e.target.id.split('-')[1];
     if (projectId) {
+      this.joinProjectId = projectId;
       /*this.blockUI.start('Wait submitting request...');
       this.projectService.applyForProjectMembership(projectId).subscribe(
         data => {
