@@ -31,9 +31,7 @@ export class JoinProjectModalComponent implements OnInit {
     { id: 2, typeName: 'Implementer' }
   ];
 
-
   model : any = { membershipTypeId: 1 };
-
   constructor(private projectService: ProjectService, private modalService: ModalService,
     private storeService: StoreService) { }
 
@@ -48,6 +46,7 @@ export class JoinProjectModalComponent implements OnInit {
   }
 
   applyForProjectMembership() {
+    this.resetMessageStatus();
     if (this.projectId) {
       this.isBtnDisabled = true;
       this.btnText = 'Wait processing...';
@@ -62,6 +61,7 @@ export class JoinProjectModalComponent implements OnInit {
             this.successMessage = Messages.MEMBERSHIP_REQUEST_MESSAGE;
             this.btnText = 'Membership requested';
             setTimeout(() => {
+              this.resetMessageStatus();
               this.closeModal();
             }, 3000);
           }
@@ -70,6 +70,13 @@ export class JoinProjectModalComponent implements OnInit {
         }
       );
     }
+  }
+
+  resetMessageStatus() {
+    this.isError = false;
+    this.errorMessage = null;
+    this.isSuccess = false;
+    this.errorMessage = null;
   }
 
   openModal() {

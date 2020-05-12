@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
+  production: true,
   backendApiUrl: '${BACKEND_API_URL}',
 };

@@ -216,7 +216,8 @@ export class NotificationComponent implements OnInit {
     var arr = e.currentTarget.id.split('-');
     var model = {
       projectId: arr[2],
-      userId: arr[3]
+      userId: arr[3],
+      membershipType: arr[4]
     };
 
     if (model.projectId && model.userId) {
