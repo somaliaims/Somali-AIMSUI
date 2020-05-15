@@ -52,6 +52,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationsMergeRequest);
     }
 
+    organizationsAppliedForMergeUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationsAppliedForMerge);
+    }
+
     getIfOrganizationsHaveUsersUrl() {
         return (this.BASE_URL + urlsList.urls.organizationsHaveUsersUrl);
     }

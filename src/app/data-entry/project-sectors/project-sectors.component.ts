@@ -263,7 +263,7 @@ export class ProjectSectorsComponent implements OnInit {
 
 
   addSector(frm: any) {
-    var sectorPercentage = this.sectorModel.fundsPercentage + this.calculateSectorPercentage();
+    var sectorPercentage = parseFloat(this.sectorModel.fundsPercentage) + parseFloat(this.calculateSectorPercentage());
     if (sectorPercentage > 100) {
       this.errorMessage = Messages.INVALID_PERCENTAGE;
       this.errorModal.openModal();
@@ -334,7 +334,7 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   addLocation(frm: any) {
-    var locationPercentage = this.locationModel.fundsPercentage + this.calculateLocationPercentage();
+    var locationPercentage = parseFloat(this.locationModel.fundsPercentage) + parseFloat(this.calculateLocationPercentage());
     if (locationPercentage > 100) {
       this.errorMessage = Messages.INVALID_PERCENTAGE;
       this.errorModal.openModal();
@@ -441,12 +441,12 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   calculateSectorPercentage() {
-    var percentageList = this.currentProjectSectors.map(s => parseInt(s.fundsPercentage));
+    var percentageList = this.currentProjectSectors.map(s => parseFloat(s.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
   }
 
   calculateLocationPercentage() {
-    var percentageList = this.currentProjectLocations.map(l => parseInt(l.fundsPercentage));
+    var percentageList = this.currentProjectLocations.map(l => parseFloat(l.fundsPercentage));
     return percentageList.reduce(this.storeService.sumValues, 0);
   }
 

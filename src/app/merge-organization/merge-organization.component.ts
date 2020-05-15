@@ -22,6 +22,7 @@ export class MergeOrganizationComponent implements OnInit {
   permissions: any = {};
   organizationTypes: any = [];
   organizationsList: any = [];
+  organizationsAppliedForMerge: any = [];
   isLoading: boolean = true;
   filteredOrganizationsList: any = [];
   selectedOrganizations: any = [];
@@ -46,8 +47,7 @@ export class MergeOrganizationComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
     this.storeService.newReportItem(Settings.dropDownMenus.management);
-    this.loadOrganizationTypes();
-    this.loadOrganizations();
+    this.loadOrganizationsAppliedForMerge();
 
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
@@ -58,12 +58,24 @@ export class MergeOrganizationComponent implements OnInit {
     });
   }
 
+  loadOrganizationsAppliedForMerge() {
+    this.organizationService.getOrganizationsAppliedForMerge().subscribe(
+      data => {
+        if (data) {
+          this.organizationsAppliedForMerge = data.map(d => d.id);
+        }
+        this.loadOrganizationTypes();
+      }
+    )
+  }
+
   loadOrganizationTypes() {
     this.organizationTypeService.getOrganizationTypes().subscribe(
       data => {
         if (data) {
           this.organizationTypes = data;
         }
+        this.loadOrganizations();
       }
     );
   }
@@ -220,6 +232,10 @@ export class MergeOrganizationComponent implements OnInit {
 
   setEnvelopeOrganization(id: number) {
     this.envelopeOrganizationId = id;
+  }
+
+  isOrganizationAppliedForMerge(id: number) {
+    return (this.organizationsAppliedForMerge.includes(id));
   }
 
 }

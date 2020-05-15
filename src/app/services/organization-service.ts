@@ -58,6 +58,13 @@ export class OrganizationService {
     );
   }
 
+  getOrganizationsAppliedForMerge() {
+    var url = this.urlHelper.organizationsAppliedForMergeUrl();
+    return this.httpClient.get(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Organizations Applied for Merge'))
+    );
+  }
+
   approveMergeOrganizationsRequest(id: string) {
     var url = this.urlHelper.getApproveMergeOrganizationsRequestUrl(id);
     return this.httpClient.get(url, httpOptions).pipe(

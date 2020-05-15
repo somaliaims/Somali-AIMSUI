@@ -64,7 +64,7 @@
                     {{organization.organizationName}}
                   </span>
                   <span class="float-right margin-right-15">
-                    <button type="button" id="select-{{organization.id}}" class="btn btn-success btn-sm"
+                    <button [class.disable]="isOrganizationAppliedForMerge(organization.id)" type="button" id="select-{{organization.id}}" class="btn btn-success btn-sm"
                       (click)="selectOrganization($event)">Select >></button>
                   </span>
                 </td>

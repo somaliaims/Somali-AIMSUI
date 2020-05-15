@@ -125,7 +125,7 @@ export class StoreService {
   }
 
   sumValues(prev, next){
-    return parseInt(prev) + parseInt(next);
+    return (parseFloat(prev) + parseFloat(next)).toFixed(2);
   }
 
   getCalendarUpperLimit() {
