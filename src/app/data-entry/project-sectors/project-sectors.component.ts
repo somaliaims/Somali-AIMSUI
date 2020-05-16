@@ -259,6 +259,10 @@ export class ProjectSectorsComponent implements OnInit {
 
   onDeSelectSector() {
     this.sectorModel.selectedSector = null;
+    this.ndpSectorsList = this.defaultSectorsList.filter(s => s.parentSector != null);
+    this.showMappingAuto = false;
+    this.showMappingManual = false;
+    this.mappingsCount = 0;
   }
 
 
@@ -327,6 +331,7 @@ export class ProjectSectorsComponent implements OnInit {
     this.sectorModel = { sectorTypeId: null, sectorId: null, mappingId: null, saved: false };
     this.mappingsCount = 0;
     this.sectorMappings = [];
+    this.ndpSectorsList = this.defaultSectorsList.filter(s => s.parentSector != null);
     frm.resetForm();
     setTimeout(() => {
       this.sectorModel.sectorTypeId = sectorTypeId;
@@ -458,11 +463,14 @@ export class ProjectSectorsComponent implements OnInit {
           s.sectorId = s.mappingId;
         }
         if (s.sectorTypeId != this.defaultSectorTypeId && s.sectorId != s.mappingId) {
-          this.newMappings.push({
-            sectorTypeId: s.sectorTypeId,
-            sectorId: s.sectorId,
-            mappingId: s.mappingId
-          });
+          var exists = this.newMappings.filter(m => m.sectorId == s.sectorId && m.mappingId == s.mappingId);
+          if (exists.length == 0) {
+            this.newMappings.push({
+              sectorTypeId: s.sectorTypeId,
+              sectorId: s.sectorId,
+              mappingId: s.mappingId
+            });
+          }
         }
       });
       var model = {
