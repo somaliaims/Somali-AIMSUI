@@ -98,6 +98,7 @@ export class ProjectSectorsComponent implements OnInit {
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.blockUI.stop();
         this.errorMessage = model.errorMessage;
         this.errorModal.openModal();
       }
@@ -273,6 +274,7 @@ export class ProjectSectorsComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
+    this.sectorModel.fundsPercentage = parseFloat(this.sectorModel.fundsPercentage.toFixed(2));
 
     if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
       if (!this.sectorModel.selectedSector) {
@@ -346,6 +348,7 @@ export class ProjectSectorsComponent implements OnInit {
       return false;
     }
 
+    this.locationModel.fundsPercentage = parseFloat(this.locationModel.fundsPercentage.toFixed(2));
     var mappedLocation = this.locationsList.filter(l => l.id == this.locationModel.locationId);
     if (mappedLocation.length > 0) {
       this.locationModel.location = mappedLocation[0].location;
@@ -392,6 +395,7 @@ export class ProjectSectorsComponent implements OnInit {
         }
       });
     }
+    this.newMappings = this.newMappings.filter(m => m.sectorId != id);
     this.currentProjectSectors = filterSectorsList;
   }
 
@@ -416,6 +420,7 @@ export class ProjectSectorsComponent implements OnInit {
             this.currentProjectSectors = this.currentProjectSectors.filter(s => s.sectorId != sectorId);
             this.updateSectorsToParent();
             this.getProjectSectors();
+            this.newMappings = this.newMappings.filter(m => m.sectorId != sectorId);
           }
         }
       );
@@ -473,6 +478,9 @@ export class ProjectSectorsComponent implements OnInit {
           }
         }
       });
+      var sectorIds = unSavedSectors.map(s => s.sectorId);
+      this.newMappings = this.newMappings.filter(m => sectorIds.includes(m.sectorId));
+
       var model = {
         projectId: this.projectId,
         projectSectors: unSavedSectors,
