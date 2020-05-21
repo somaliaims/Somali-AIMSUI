@@ -22,6 +22,7 @@ export class MergeOrganizationComponent implements OnInit {
   permissions: any = {};
   organizationTypes: any = [];
   organizationsList: any = [];
+  envelopeIds: any = [];
   organizationsAppliedForMerge: any = [];
   isLoading: boolean = true;
   filteredOrganizationsList: any = [];
@@ -47,6 +48,7 @@ export class MergeOrganizationComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
     this.storeService.newReportItem(Settings.dropDownMenus.management);
+    this.getEnvelopeIds();
     this.loadOrganizationsAppliedForMerge();
 
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -117,6 +119,20 @@ export class MergeOrganizationComponent implements OnInit {
     }
   }
 
+  getEnvelopeIds() {
+    this.organizationService.getOrganizationIdsHavingEnvelope().subscribe(
+      data => {
+        if (data) {
+          this.envelopeIds = data;
+        }
+      }
+    );
+  }
+
+  checkIfOrganizationHasEnvelope(id: number) {
+    return (this.envelopeIds.filter(e => e.id == id).length > 0 ? true : false);
+  }
+
   checkIfOrganizationsHaveUsers() {
     if (this.model.organizationTypeId == 0) {
       this.errorMessage = 'Organization type is required';
@@ -140,7 +156,15 @@ export class MergeOrganizationComponent implements OnInit {
       ids: ids
     };
 
-    if (ids.length > 1 && this.envelopeOrganizationId == 0) {
+    var hasEnvelope = false;
+    ids.forEach((id) => {
+      var envelopeMatched = this.envelopeIds.filter(e => e.id == id);
+      if (envelopeMatched.length > 0) {
+        hasEnvelope = true;
+      }
+    });
+
+    if (hasEnvelope && this.envelopeOrganizationId == 0) {
       this.errorMessage = 'Selection for organization is required whose data must be used for Envelope after merge.';
       this.errorModal.openModal();
       return false;

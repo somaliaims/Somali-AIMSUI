@@ -118,18 +118,21 @@
                       {{organization.organizationName}}<br />
                     </span>
                     <span class="float-right margin-right-15">
-                      <span *ngIf="selectedOrganizations.length > 1 && envelopeOrganizationId == organization.id" class="margin-right-2">
-                        <button [class.disable]="true" *ngIf="selectedOrganizations.length > 1" type="button" id="eorg-{{organization.id}}"
-                          class="btn btn-warning btn-sm">
-                          <i class="fa fa-check"></i>&nbsp;Envelope selected
-                        </button>
+                      <span *ngIf="checkIfOrganizationHasEnvelope(organization.id)">
+                        <span *ngIf="selectedOrganizations.length > 1 && envelopeOrganizationId == organization.id" class="margin-right-2">
+                          <button [class.disable]="true" *ngIf="selectedOrganizations.length > 1" type="button" id="eorg-{{organization.id}}"
+                            class="btn btn-warning btn-sm">
+                            <i class="fa fa-check"></i>&nbsp;Envelope selected
+                          </button>
+                        </span>
+                        <span *ngIf="selectedOrganizations.length > 1 && envelopeOrganizationId != organization.id" class="margin-right-2">
+                          <button *ngIf="selectedOrganizations.length > 1" type="button" id="eorg-{{organization.id}}"
+                            class="btn btn-warning btn-sm" (click)="setEnvelopeOrganization(organization.id)">
+                            Use envelope
+                          </button>
+                        </span>
                       </span>
-                      <span *ngIf="selectedOrganizations.length > 1 && envelopeOrganizationId != organization.id" class="margin-right-2">
-                        <button *ngIf="selectedOrganizations.length > 1" type="button" id="eorg-{{organization.id}}"
-                          class="btn btn-warning btn-sm" (click)="setEnvelopeOrganization(organization.id)">
-                          Use envelope
-                        </button>
-                      </span>
+                      
                       <button type="button" id="dselect-{{organization.id}}" class="btn btn-success btn-sm"
                         (click)="deSelectOrganization($event)">De-select</button>
                     </span>

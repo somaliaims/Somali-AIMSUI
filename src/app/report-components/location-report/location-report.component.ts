@@ -633,6 +633,7 @@ export class LocationReportComponent implements OnInit {
 
   manageSectorLevel() {
     this.model.selectedSectors = [];
+    this.model.sectorId = 0;
     if (this.model.sectorLevel) {
       var level = parseInt(this.model.sectorLevel);
       switch (level) {

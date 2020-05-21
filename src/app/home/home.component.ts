@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   organizationsCount: number = 0;
   currentYearDisbursements: number = 0;
   defaultCurrency: string = null;
+  defaultCurrencyCode: string = null;
   currentYear: number = 0;
   currentFinancialYear: string = 'FY...';
   model: any = { aimsTitle: null, introductionHeading: null, introductionText: null };
@@ -136,7 +137,8 @@ export class HomeComponent implements OnInit {
     this.projectService.getLatestProjects().subscribe(
       data => {
         if (data) {
-          this.latestProjects = data;
+          this.defaultCurrencyCode = (data.defaultCurrency) ? data.defaultCurrency : null;
+          this.latestProjects = (data.projects) ? data.projects : [];
         }
         this.isProjectsLoading = false;
       }

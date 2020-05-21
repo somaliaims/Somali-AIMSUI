@@ -36,6 +36,7 @@ export const urls = {
 	getOrganization: "Organization/GetById/",
 	organizationsWithTypeUrl: "Organization/GetWithTypes",
 	organizationsHavingEnvelopeUrl: "Organization/GetOrganizationsHavingEnvelope",
+	organizationIdsHavingEnvelopeUrl: "Organization/GetOrganizationIdsHavingEnvelope",
 	userOrganizationsUrl: "Organization/GetUserOrganizations",
 	organizationUrl: "Organization",
 	mergeOrganization: "Organization/Merge",

@@ -841,6 +841,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.organizationsHavingEnvelopeUrl);
     }
 
+    getOrganizationIdsHavingEnvelopeUrl() {
+        return (this.BASE_URL + urlsList.urls.organizationIdsHavingEnvelopeUrl);
+    }
+
     getCurrentYearDisbursementsUrl() {
         return (this.BASE_URL + urlsList.urls.currentYearDisbursementsUrl);
     }
