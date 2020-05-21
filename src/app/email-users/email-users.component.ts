@@ -18,7 +18,8 @@ export class EmailUsersComponent implements OnInit {
 
   requestNo: number = 0;
   isBtnDisabled: boolean = false;
-  standardUsersList: any = [];
+  usersList: any = [];
+  filteredUsers: any = [];
   managerUsersList: any = [];
   permissions: any = {};
   usersSettings: any = {};
@@ -30,6 +31,18 @@ export class EmailUsersComponent implements OnInit {
   currentEntryForm: any = null;
   infoMessage: string = null;
   errorMessage: string = null;
+  userFilters: any = [
+    { id: 1, label: '--All users--' },
+    { id: 2, label: 'Standard users'},
+    { id: 3, label: 'UnAffiliated users' }
+  ];
+  userFilterConstants: any = {
+    ALL_USERS: 1,
+    STANDARD_USERS: 2,
+    UN_AFFILIATED_USERS: 3
+  };
+
+  selectedUserFilter: any = this.userFilterConstants.ALL_USERS;
   emailModel: any = { subject: null, title: null, message: null, selectedManagers: [], selectedUsers: [], emailsList: [] };
 
   @BlockUI() blockUI: NgBlockUI;
@@ -74,17 +87,38 @@ export class EmailUsersComponent implements OnInit {
           this.managerUsersList = data;
         }
       }
-    )
+    );
   }
 
   getStandardUsers() {
     this.userService.getStandardUsers().subscribe(
       data => {
         if (data) {
-          this.standardUsersList = data;
+          this.usersList = data;
+          this.filteredUsers = data;
         }
       }
     )
+  }
+
+  filterUsers() {
+    switch(this.selectedUserFilter) {
+      case this.userFilterConstants.ALL_USERS:
+        this.filteredUsers = this.usersList;
+        break;
+
+      case this.userFilterConstants.STANDARD_USERS:
+        this.filteredUsers = this.usersList.filter(u => u.isUnAffiliated == false);
+        break;
+
+      case this.userFilterConstants.UN_AFFILIATED_USERS:
+        this.filteredUsers = this.usersList.filter(u => u.isUnAffiliated == true);
+        break;
+
+      default:
+        this.filteredUsers = this.usersList;
+        break;
+    }
   }
 
   sendEmailMessage(frm: any) {

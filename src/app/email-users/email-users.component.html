@@ -17,15 +17,22 @@
                 <div class="card-body">
                   <div class="col-md-12">
                     <div class="row margin-top-10">
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <ng-multiselect-dropdown [placeholder]="'-- Select manager email/s --'" [data]="managerUsersList"
                           [(ngModel)]="emailModel.selectedManagers" [settings]="usersSettings" name="selectedManagers"
                           (onSelect)="onManagerSelect($event)" (onDeSelect)="onManagerDeSelect($event)"
                           (onSelectAll)="onManagerSelectAll($event)" #selectedManagers="ngModel">
                         </ng-multiselect-dropdown>
                       </div>
-                      <div class="col-md-6">
-                        <ng-multiselect-dropdown [placeholder]="'-- Select user email/s --'" [data]="standardUsersList"
+                      <div class="col-md-4">
+                        <select name="usersFilterDropDown" class="form-control" [(ngModel)]="selectedUserFilter" (change)="filterUsers()" #userFilterConstant="ngModel">
+                          <option *ngFor="let filter of userFilters" value={{filter.id}}>
+                            {{filter.label}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <ng-multiselect-dropdown [placeholder]="'-- Select user email/s --'" [data]="filteredUsersList"
                           [(ngModel)]="emailModel.selectedUsers" [settings]="usersSettings" (onSelect)="onUserSelect($event)"
                           (onDeSelect)="onUserDeSelect($event)" (onSelectAll)="onUserSelectAll($event)" name="selectedUsers"
                           #selectedUsers="ngModel">
