@@ -40,6 +40,7 @@ export const Settings = {
     descriptionMediumLimit: 800,
     descriptionLongLimit: 3000,
     introductionLimit: 1000,
+    emailMessageLimit: 1500,
     mediumRowsPerPage: 20,
     displayMessageTime: 10000,
     helpTextLength: 500,

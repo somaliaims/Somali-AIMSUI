@@ -16,10 +16,12 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 })
 export class EmailUsersComponent implements OnInit {
 
+  messageLimit: number = Settings.emailMessageLimit;
+  messageLimitLeft: number = Settings.emailMessageLimit;
   requestNo: number = 0;
   isBtnDisabled: boolean = false;
   usersList: any = [];
-  filteredUsers: any = [];
+  filteredUsersList: any = [];
   managerUsersList: any = [];
   permissions: any = {};
   usersSettings: any = {};
@@ -95,34 +97,37 @@ export class EmailUsersComponent implements OnInit {
       data => {
         if (data) {
           this.usersList = data;
-          this.filteredUsers = data;
+          this.filteredUsersList = data;
         }
       }
     )
   }
 
   filterUsers() {
-    switch(this.selectedUserFilter) {
+    var filter = parseInt(this.selectedUserFilter);
+    switch(filter) {
       case this.userFilterConstants.ALL_USERS:
-        this.filteredUsers = this.usersList;
+        this.filteredUsersList = this.usersList;
         break;
 
       case this.userFilterConstants.STANDARD_USERS:
-        this.filteredUsers = this.usersList.filter(u => u.isUnAffiliated == false);
+        this.filteredUsersList = this.usersList.filter(u => u.isUnAffiliated == false);
         break;
 
       case this.userFilterConstants.UN_AFFILIATED_USERS:
-        this.filteredUsers = this.usersList.filter(u => u.isUnAffiliated == true);
+        this.filteredUsersList = this.usersList.filter(u => u.isUnAffiliated == true);
         break;
 
       default:
-        this.filteredUsers = this.usersList;
+        this.filteredUsersList = this.usersList;
         break;
     }
   }
 
   sendEmailMessage(frm: any) {
     if (this.selectedManagers.length == 0 && this.selectedUsers.length == 0) {
+      this.errorMessage = 'You must select at least one receiver for this email to send.';
+      this.errorModal.openModal();
       return false;
     }
 
@@ -142,6 +147,8 @@ export class EmailUsersComponent implements OnInit {
     this.emailMessageService.sendEmailMessage(model).subscribe(
       data => {
         if (data) {
+          this.selectedManagers = [];
+          this.selectedUsers = [];
           this.infoMessage = 'Email sent successfully to the recipient/s';
           this.infoModal.openModal();
         }
@@ -198,6 +205,13 @@ export class EmailUsersComponent implements OnInit {
     var email = item.email;
     var index = this.selectedUsers.indexOf(email);
     this.selectedUsers.splice(index, 1);
+  }
+
+  getMessageLimitInfo() {
+    this.messageLimitLeft = (this.messageLimit - this.emailModel.message.length);
+    if (this.messageLimitLeft < 0) {
+      this.emailModel.message = this.emailModel.message.substring(0, (this.messageLimit - 1));
+    }
   }
 
 }

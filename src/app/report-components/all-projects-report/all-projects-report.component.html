@@ -22,8 +22,8 @@
                         <form class="form-signin" (ngSubmit)="getAllProjectsReport()" #searchForm="ngForm">
 
                             <div class="row margin-top-10">
-                                <div class="col-md-6 form-inline">
-                                    <label>Starting year (Optional): </label>&nbsp;&nbsp;
+                                <div class="col-md-4">
+                                    <label>Starting year (optional): </label>&nbsp;&nbsp;
                                     <select [class.disable]="isLoading" title="Starting year" class="form-control col-sm-12" name="startingYear"
                                         [(ngModel)]="model.startingYear" #startingYear="ngModel" id="startingYear"
                                         (change)="onChangeStartYear()"
@@ -33,8 +33,8 @@
                                             {{year.label}}</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <label>Ending year (Optional): </label>&nbsp;&nbsp;
+                                <div class="col-md-4">
+                                    <label>Ending year (optional): </label>&nbsp;&nbsp;
                                     <select [class.disable]="isLoading" title="Ending year" class="form-control col-sm-12"
                                         name="endingYear" [(ngModel)]="model.endingYear"
                                         #endingYear="ngModel" id="endingYear" (change)="onChangeEndYear()">
@@ -42,6 +42,13 @@
                                         <option *ngFor="let year of financialYears" value="{{year.financialYear}}">
                                             {{year.label}}</option>
                                     </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Organization (optional): </label>
+                                    <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
+                                        [data]="organizationsList" [(ngModel)]="model.selectedOrganization" [settings]="organizationsSettings"
+                                        name="selectedOrganization" #selectedOrganization="ngModel">
+                                    </ng-multiselect-dropdown>
                                 </div>
                             </div>
                             <div class="col-md-12 col-lg-12 col-sm-12  margin-top-10">

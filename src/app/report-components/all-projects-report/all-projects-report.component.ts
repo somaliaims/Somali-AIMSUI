@@ -6,6 +6,7 @@ import { FinancialYearService } from 'src/app/services/financial-year.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { UrlHelperService } from 'src/app/services/url-helper-service';
+import { OrganizationService } from 'src/app/services/organization-service';
 
 @Component({
   selector: 'app-all-projects-report',
@@ -17,16 +18,20 @@ export class AllProjectsReportComponent implements OnInit {
   isLoading: boolean = true;
   excelFile: string = null;
   financialYears: any = [];
+  organizationsList: any = [];
   requestNo: number = 0;
   isAnyFilterSet: boolean = false;
   errorMessage: string = null;
   btnReportText: string = 'Generate export';
-  model: any = { startingYear: 0, endingYear: 0 };
+  model: any = { organizationId: 0, selectedOrganization: null, startingYear: 0, endingYear: 0 };
+  organizationsSettings: any = {};
 
+  
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
     private yearsService: FinancialYearService, private errorModal: ErrorModalComponent,
-    private urlService: UrlHelperService) { }
+    private urlService: UrlHelperService,
+    private organizationService: OrganizationService) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
@@ -39,6 +44,18 @@ export class AllProjectsReportComponent implements OnInit {
         this.errorModal.openModal();
       }
     });
+
+    this.organizationsSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'organizationName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+  
+    this.getOrganizationsList();
   }
 
   getFinancialYears() {
@@ -52,9 +69,20 @@ export class AllProjectsReportComponent implements OnInit {
     );
   }
 
+  getOrganizationsList() {
+    this.organizationService.getOrganizationsList().subscribe(
+      data => {
+        this.organizationsList = data;
+        
+      }
+    );
+  }
+
   getAllProjectsReport() {
+    var selectedOrganization = this.model.selectedOrganization;
     this.model.startingYear = (this.model.startingYear == null) ? 0 : this.model.startingYear;
     this.model.endingYear = (this.model.endingYear == null) ? 0 : this.model.endingYear;
+    this.model.organizationId = (selectedOrganization && selectedOrganization.length > 0) ? selectedOrganization[0].id : 0;
     this.blockUI.start('Loading report...');
     this.excelFile = null;
     this.reportService.getAllProjectsReport(this.model).subscribe(
