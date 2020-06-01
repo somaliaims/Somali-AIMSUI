@@ -33,7 +33,7 @@ export class NotificationComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   tabConstants: any = {
-    'NOTIFICATIONS': 'notifications',
+    'USER_REGISTRATIONS': 'notifications',
     'REQUESTS': 'requests',
     'DELETION_REQUESTS': 'deletionRequests',
     'MERGE_ORGS_REQUESTS': 'organizationMergeRequests'
@@ -54,7 +54,7 @@ export class NotificationComponent implements OnInit {
 
   notificationTypeCodes: any = {
     'ALL': 0,
-    'NOTIFICATIONS': 1,
+    'USER_REGISTRATIONS': 1,
     'MEMBERSHIP_REQUESTS': 2,
     'PROJECT_DELETION_REQUESTS': 3,
     'MERGE_ORGS_REQUESTS': 4
@@ -62,7 +62,7 @@ export class NotificationComponent implements OnInit {
 
   notificationTypes: any = [
     { id: 0, text: '--All notifications--' },
-    { id: 1, text: 'General notifications' },
+    { id: 1, text: 'New registrations' },
     { id: 2, text: 'Project membership requests' },
     { id: 3, text: 'Project deletion requests' },
     { id: 4, text: 'Merge organizations requests' }
@@ -137,7 +137,7 @@ export class NotificationComponent implements OnInit {
   }
 
   showNotifications() {
-    this.manageTabsDisplay(this.tabConstants.NOTIFICATIONS);
+    this.manageTabsDisplay(this.tabConstants.USER_REGISTRATIONS);
   }
 
   showRequests() {

@@ -21,15 +21,14 @@
         </div>
       </div>
     </div>
-    
 
     <div class="row">
       <div class="col-md-12 text-center" *ngIf="isLoading">
         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
       </div>
 
-      <div *ngIf="!isLoading && (displayOption == notificationTypeCodes.NOTIFICATIONS || displayOption == notificationTypeCodes.ALL)" class="col-md-12 margin-top-10">
-        <h6>General notifications</h6>
+      <div *ngIf="!isLoading && (displayOption == notificationTypeCodes.USER_REGISTRATIONS || displayOption == notificationTypeCodes.ALL)" class="col-md-12 margin-top-10">
+        <h6>New registration notifications</h6>
         <table class="table table-striped">
           <tr *ngFor="let notification of notifications; let i = index">
             <td width="70%">

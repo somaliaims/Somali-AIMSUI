@@ -36,7 +36,6 @@ export class FinancialsComponent implements OnInit {
   @Input()
   iatiProjects: any = [];
 
-
   @Output()
   disbursementsChanged = new EventEmitter<any[]>();
   @Output()
@@ -48,7 +47,9 @@ export class FinancialsComponent implements OnInit {
     startDate: null, endDate: null};
 
   errorMessage: string = null;
+  unsavedDisbursementsMessage: string = Messages.UNSAVED_DISBURSEMENTS;
   requestNo: number = 0;
+  disbursementsTotalOnLoad: number = 0;
   disbursementsTotal: number = 0;
   currentYear: any = 0;
   yearList: any = [];
@@ -91,6 +92,7 @@ export class FinancialsComponent implements OnInit {
     this.getProjectHelp();
     this.getHelp();
     this.calculateDisbursementsTotal();
+    this.disbursementsTotalOnLoad = this.disbursementsTotal;
   }
 
   ngOnChanges() {
@@ -338,6 +340,7 @@ export class FinancialsComponent implements OnInit {
         this.projectService.addProjectDisbursement(model).subscribe(
           data => {
             if (data) {
+              this.disbursementsTotalOnLoad = this.disbursementsTotal;
               this.updateDisbursementsToParent();
               this.currentTab = this.tabConstants.FINANCIALS;
             }
@@ -386,6 +389,11 @@ export class FinancialsComponent implements OnInit {
   }
 
   proceedToNext() {
+    if (this.disbursementsTotalOnLoad != this.disbursementsTotal) {
+      this.errorMessage = this.unsavedDisbursementsMessage;
+      this.errorModal.openModal();
+      return false;
+    }
     this.proceedToSectors.emit();
   }
   
