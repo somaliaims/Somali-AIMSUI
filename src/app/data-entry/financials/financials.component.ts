@@ -69,6 +69,7 @@ export class FinancialsComponent implements OnInit {
 
   currentTab: string = this.tabConstants.FINANCIALS;
   isSourceAvailable: boolean = false;
+  disbursementsInvalidOnNext: boolean = false;
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private storeService: StoreService, private errorModal: ErrorModalComponent,
@@ -390,10 +391,12 @@ export class FinancialsComponent implements OnInit {
 
   proceedToNext() {
     if (this.disbursementsTotalOnLoad != this.disbursementsTotal) {
+      this.disbursementsInvalidOnNext = true;
       this.errorMessage = this.unsavedDisbursementsMessage;
       this.errorModal.openModal();
       return false;
     }
+    this.disbursementsInvalidOnNext = false;
     this.proceedToSectors.emit();
   }
   

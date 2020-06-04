@@ -876,16 +876,6 @@ export class NewProjectComponent implements OnInit {
     var projectId = e.target.id.split('-')[1];
     if (projectId) {
       this.joinProjectId = projectId;
-      /*this.blockUI.start('Wait submitting request...');
-      this.projectService.applyForProjectMembership(projectId).subscribe(
-        data => {
-          if (data) {
-            this.successMessage = Messages.MEMBERSHIP_REQUEST_MESSAGE;
-            this.infoModal.openModal();
-          }
-          this.blockUI.stop();
-        }
-      );*/
       this.joinProjectModal.openModal();
     }
   }

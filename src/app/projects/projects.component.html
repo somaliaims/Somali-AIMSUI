@@ -144,7 +144,7 @@
           </tr>
           <tr *ngFor="let project of filteredProjectsList | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }">
             <td>
-              <a title="View Details" class="text-info" [routerLink]="['/view-project', project.id]">
+              <a title="View Details" class="text-info" [routerLink]="['/view-project', project.id]" target="_blank">
                 {{project.title}}
               </a>
             </td>
