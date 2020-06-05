@@ -80,7 +80,18 @@ export class ProjectReportModalComponent implements OnInit {
   getProjectReport() {
     this.projectService.getProjectReport(this.projectId.toString()).subscribe(
       data => {
-
+        if (data && data.projectProfile) {
+          var project = data.projectProfile.projects > 0 ? data.projectProfile.projects[0] : null;
+          if (project) {
+            this.projectFunders = project.funders;
+            this.projectImplementers = project.implementers;
+            this.projectSectors = project.sectors;
+            this.projectLocations = project.locations;
+            this.projectDisbursements = project.disbursements;
+            this.projectDocuments = project.documents;
+            this.projectMarkers = project.markers;
+          }
+        }
       }
     );
   }
