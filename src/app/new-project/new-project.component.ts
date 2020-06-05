@@ -412,10 +412,10 @@ export class NewProjectComponent implements OnInit {
     }
 
     if (this.model.selectedIATIOrganizations.length > 0) {
-      var orgs = this.model.selectedIATIOrganizations.map(o => o.organizationName.toLowerCase());
+      var orgs = this.model.selectedIATIOrganizations.map(o => o.organizationName.trim().toLowerCase());
       this.filteredIatiProjects = this.filteredIatiProjects.filter(function (project) {
         var isMatched = false;
-        var projectOrgs = project.organizations.map(o => o.name.toLowerCase());
+        var projectOrgs = project.organizations.map(o => o.name.trim().toLowerCase());
         for (var i = 0; i < projectOrgs.length; i++) {
           if (orgs.includes(projectOrgs[i])) {
             isMatched = true;
@@ -836,7 +836,6 @@ export class NewProjectComponent implements OnInit {
   proceedToDataEntry() {
     var projects = JSON.stringify(this.selectedProjects);
     localStorage.setItem("selected-projects", projects);
-    //this.router.navigateByUrl('project-entry');
     this.router.navigateByUrl('data-entry');
   }
 
