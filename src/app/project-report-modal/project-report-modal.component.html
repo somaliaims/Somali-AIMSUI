@@ -91,9 +91,6 @@
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                           <h6 class="text-info">Project locations</h6>
-                          <div class="container text-center margin-top-10" *ngIf="isLocationLoading">
-                              <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading locations...</span>
-                          </div>
                           <table *ngIf="projectLocations.length > 0" class="table table-striped">
                             <tbody>
                               <tr>
@@ -111,9 +108,6 @@
         
                         <div class="col-lg-6 col-md-6 col-sm-12">
                           <h6 class="text-info">Project sectors</h6>
-                          <div class="container text-center margin-top-10" *ngIf="isSectorLoading">
-                                <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sectors...</span>
-                            </div>
                             <table *ngIf="projectSectors.length > 0" class="table table-striped">
                               <tbody>
                                 <tr>
@@ -133,9 +127,6 @@
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                           <h6 class="text-info">Project funders</h6>
-                          <div class="container text-center margin-top-10" *ngIf="isFunderLoading">
-                                <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading funders...</span>
-                            </div>
                             <table *ngIf="projectFunders.length > 0" class="table table-striped">
                               <tbody>
                                 <tr>
@@ -150,9 +141,6 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                           <h6 class="text-info">Project implementers</h6>
-                            <div class="container text-center margin-top-10" *ngIf="isImplementerLoading">
-                                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading implementers...</span>
-                              </div>
                               <table *ngIf="projectImplementers.length > 0" class="table table-striped">
                                 <tbody>
                                   <tr>
@@ -173,12 +161,6 @@
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                           <h6 class="text-info">Project disbursements</h6>
-                          <div class="row text-center margin-top-10" *ngIf="isDisbursementLoading">
-                              <div class="container">
-                                <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading disbursements...</span>
-                              </div>
-                            </div>
-              
                             <table *ngIf="projectDisbursements.length > 0" class="table table-striped">
                               <tbody>
                                 <tr>
@@ -204,12 +186,6 @@
         
                         <div class="col-lg-6 col-md-6 col-sm-12">
                           <h6 class="text-info">Project documents</h6>
-                            <div class="row text-center margin-top-10" *ngIf="isDocumentLoading">
-                                <div class="container">
-                                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading documents...</span>
-                                </div>
-                              </div>
-                
                               <table *ngIf="projectDocuments.length > 0" class="table table-striped">
                                 <tbody>
                                   <tr>

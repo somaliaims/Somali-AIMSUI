@@ -25,6 +25,7 @@ export class ProjectReportModalComponent implements OnInit {
   successMessage: string = null;
   isError: boolean = false;
   isExcelGenerating: boolean = true;
+  isDataLoading: boolean = false;
   excelFile: string = null;
   projectProfileLink: string = null;
   dated: string = null;
@@ -83,6 +84,14 @@ export class ProjectReportModalComponent implements OnInit {
         if (data && data.projectProfile) {
           var project = data.projectProfile.projects > 0 ? data.projectProfile.projects[0] : null;
           if (project) {
+            this.projectData.title = project.title;
+            this.projectData.startDate = project.startDate;
+            this.projectData.endDate = project.endDate;
+            this.projectData.dateUpdated = project.dateUpdated;
+            this.projectData.projectCurrency = project.projectCurrency;
+            this.projectData.projectValue = project.projectValue;
+            this.projectData.exchangeRate = project.exchangeRate;
+            this.projectData.description = project.description;
             this.projectFunders = project.funders;
             this.projectImplementers = project.implementers;
             this.projectSectors = project.sectors;
