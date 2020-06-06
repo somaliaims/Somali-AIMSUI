@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
@@ -7,17 +7,20 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ReportService } from '../services/report.service';
 import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { ModalService } from '../services/modal.service';
 
 @Component({
-  selector: 'app-project-report-modal',
+  selector: 'project-report-modal',
   templateUrl: './project-report-modal.component.html',
   styleUrls: ['./project-report-modal.component.css']
 })
+
+@Injectable({
+  providedIn: 'root'
+})
 export class ProjectReportModalComponent implements OnInit {
 
-  @Input()
   projectId: number = 0;
-
   isLoggedIn: boolean = false;
   permissions: any = {};
   requestNo: number = 0;
@@ -25,7 +28,7 @@ export class ProjectReportModalComponent implements OnInit {
   successMessage: string = null;
   isError: boolean = false;
   isExcelGenerating: boolean = true;
-  isDataLoading: boolean = false;
+  isLoading: boolean = true;
   excelFile: string = null;
   projectProfileLink: string = null;
   dated: string = null;
@@ -57,19 +60,13 @@ export class ProjectReportModalComponent implements OnInit {
     private router: Router,
     private storeService: StoreService, private securityService: SecurityHelperService,
     private infoModal: InfoModalComponent,
+    private modalService: ModalService,
     private reportService: ReportService) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.projects);
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
     this.permissions = this.securityService.getUserPermissions();
-
-    if (this.isLoggedIn) {
-      this.getDeleteProjectIds();
-      this.loadUserProjects();
-    }
-    this.getProjectReport();
-    this.getProjectExcelReport();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
@@ -82,7 +79,7 @@ export class ProjectReportModalComponent implements OnInit {
     this.projectService.getProjectReport(this.projectId.toString()).subscribe(
       data => {
         if (data && data.projectProfile) {
-          var project = data.projectProfile.projects > 0 ? data.projectProfile.projects[0] : null;
+          var project = data.projectProfile.projects.length > 0 ? data.projectProfile.projects[0] : null;
           if (project) {
             this.projectData.title = project.title;
             this.projectData.startDate = project.startDate;
@@ -100,6 +97,7 @@ export class ProjectReportModalComponent implements OnInit {
             this.projectDocuments = project.documents;
             this.projectMarkers = project.markers;
           }
+          this.isLoading = false;
         }
       }
     );
@@ -167,6 +165,16 @@ export class ProjectReportModalComponent implements OnInit {
     }
   }
 
+  formatNumber(value: number) {
+    if (!value) {
+      return value;
+    }
+    if (!isNaN(value) && value > 0) {
+      return this.storeService.getNumberWithCommas(value);
+    }
+    return value;
+  }
+
   printProfile() {
     this.storeService.printSimpleReport('rpt-project', 'Project profile report');
   }
@@ -179,6 +187,23 @@ export class ProjectReportModalComponent implements OnInit {
         this.blockUI.stop();
       });
     },500);
+  }
+
+  openModal(projectId: number) {
+    this.projectId = projectId;
+    setTimeout(() => {
+      if (this.isLoggedIn) {
+        this.getDeleteProjectIds();
+        this.loadUserProjects();
+      }
+      this.getProjectReport();
+      this.getProjectExcelReport();
+    }, 1000);
+    this.modalService.open('project-report-modal');
+  }
+
+  closeModal() {
+    this.modalService.close('project-report-modal');
   }
 
 }

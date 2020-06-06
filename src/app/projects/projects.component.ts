@@ -17,6 +17,7 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Messages } from '../config/messages';
 import { CurrencyService } from '../services/currency.service';
+import { ProjectReportModalComponent } from '../project-report-modal/project-report-modal.component';
 
 @Component({
   selector: 'app-projects',
@@ -88,7 +89,8 @@ export class ProjectsComponent implements OnInit {
     private sectorService: SectorService, private organizationService: OrganizationService,
     private locationService: LocationService, private fyService: FinancialYearService,
     private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent,
-    private currencyService: CurrencyService
+    private currencyService: CurrencyService,
+    private projectReportModal: ProjectReportModalComponent
   ) { }
 
   ngOnInit() {
@@ -547,6 +549,12 @@ export class ProjectsComponent implements OnInit {
       this.isAnyFilterSet = false;
     } else {
       this.isAnyFilterSet = true;
+    }
+  }
+
+  viewProject(id: number) {
+    if (id) {
+      this.projectReportModal.openModal(id);  
     }
   }
 
