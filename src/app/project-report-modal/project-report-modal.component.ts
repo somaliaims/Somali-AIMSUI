@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injectable, NgZone } from '@angular/core';
+import { Component, OnInit, Input, Injectable, NgZone, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
@@ -23,6 +23,9 @@ export class ProjectReportModalComponent implements OnInit {
 
   @Input()
   projectId: number = 0;
+
+  @Output()
+  reportRendered = new EventEmitter<boolean>();
   
   isLoggedIn: boolean = false;
   permissions: any = {};
@@ -96,6 +99,8 @@ export class ProjectReportModalComponent implements OnInit {
               this.projectData.title = project.title;
               this.projectData.startDate = project.startDate;
               this.projectData.endDate = project.endDate;
+              this.projectData.startingFinancialYear = project.startingFinancialYear;
+              this.projectData.endingFinancialYear = project.endingFinancialYear;
               this.projectData.dateUpdated = project.dateUpdated;
               this.projectData.projectCurrency = project.projectCurrency;
               this.projectData.projectValue = project.projectValue;
@@ -241,7 +246,12 @@ export class ProjectReportModalComponent implements OnInit {
   }
 
   closeModal() {
+    this.reportRendered.emit(false);
     this.modalService.close('project-report-modal');
+  }
+
+  ngOnDestroy() {
+    this.reportRendered.emit(false);
   }
 
 }

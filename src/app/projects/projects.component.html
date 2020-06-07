@@ -164,5 +164,7 @@
 
   <error-modal message={{errorMessage}}></error-modal>
   <info-modal message={{successMessage}}></info-modal>
-  <project-report-modal *ngIf="renderReport" [projectId]="viewProjectId"></project-report-modal>
+  <project-report-modal *ngIf="renderReport" [projectId]="viewProjectId"
+    (reportRendered)="setReportRenderStatus($val)">
+  </project-report-modal>
 </div>

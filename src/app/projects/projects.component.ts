@@ -579,6 +579,11 @@ export class ProjectsComponent implements OnInit {
     }
   }
 
+  setReportRenderStatus(status: boolean) {
+    this.renderReport = status;
+    console.log('Report render: ' + status);
+  }
+
   resetFilters() {
     this.model.selectedProjects = [];
     this.model.selectedOrganizations = [];

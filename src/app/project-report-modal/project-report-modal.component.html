@@ -39,12 +39,12 @@
                   </div>
       
                   <div class="card-body">
-                    <!--<div class="row text-center" *ngIf="isLoading">
+                    <div class="row text-center" *ngIf="isLoading">
                       <div class="col-md-12">
                         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
                       </div>
-                    </div>-->
-                    <div id="rpt-project" class="container-fluid">
+                    </div>
+                    <div *ngIf="!isLoading" id="rpt-project" class="container-fluid">
                       <div class="col-lg-12 col-md-12 text-center">
                         <h6 class="text-info">Project profile report</h6>
                       </div>
@@ -100,7 +100,7 @@
                               </tr>
                             </tbody>
                           </table>
-                          <p *ngIf="projectLocations.length == 0 && !isLoading" class="text-info"><i>No project locations found.</i></p>
+                          <p *ngIf="projectLocations.length == 0" class="text-info"><i>No project locations found.</i></p>
                         </div>
         
                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -117,7 +117,7 @@
                                 </tr>
                               </tbody>
                             </table>
-                            <p *ngIf="projectSectors.length == 0 && !isLoading" class="text-info"><i>No project sectors found.</i></p>
+                            <p *ngIf="projectSectors.length == 0" class="text-info"><i>No project sectors found.</i></p>
                         </div>
                       </div>
         
@@ -130,11 +130,11 @@
                                   <th>Funder name</th>
                                 </tr>
                                 <tr *ngFor="let funder of projectFunders">
-                                  <td>{{funder.funder}}</td>
+                                  <td>{{funder.name}}</td>
                                 </tr>
                               </tbody>
                             </table>
-                            <p *ngIf="projectFunders.length == 0 && !isLoading" class="text-info"><i>No project funders found.</i></p>
+                            <p *ngIf="projectFunders.length == 0" class="text-info"><i>No project funders found.</i></p>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                           <h6 class="text-info">Project implementers</h6>
@@ -144,11 +144,11 @@
                                     <th>Implementer</th>
                                   </tr>
                                   <tr *ngFor="let implementer of projectImplementers">
-                                    <td>{{implementer.implementer}}</td>
+                                    <td>{{implementer.name}}</td>
                                   </tr>
                                 </tbody>
                               </table>
-                              <p *ngIf="projectImplementers.length == 0 && !isLoading" class="text-info">
+                              <p *ngIf="projectImplementers.length == 0" class="text-info">
                                 <i>No project implementers found.</i>
                               </p>
                         </div>
@@ -176,7 +176,7 @@
                                 </tr>
                               </tbody>
                             </table>
-                            <p *ngIf="projectDisbursements.length == 0 && !isLoading" class="text-info">
+                            <p *ngIf="projectDisbursements.length == 0" class="text-info">
                               <i>No project disbursements found.</i>
                             </p>
                         </div>
@@ -195,7 +195,7 @@
                                   </tr>
                                 </tbody>
                               </table>
-                              <p *ngIf="projectDocuments.length == 0 && !isLoading" class="text-info">
+                              <p *ngIf="projectDocuments.length == 0" class="text-info">
                                 <i>No project documents found.</i>
                               </p>
                         </div>
