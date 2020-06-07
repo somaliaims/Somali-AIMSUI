@@ -23,6 +23,10 @@ html {
   .anchor-menu:hover {
     color: #abd4fc;
   }
+
+  a.cursor-pointer:hover {
+    cursor: pointer !important;
+  }
   
   .sign-in-btn {
     color: #fff;
@@ -95,6 +99,10 @@ html {
 
   .view-area {
     margin: 70px 10px 10px 10px !important;
+  }
+
+  .view-area-modal {
+    margin: 10px 10px 10px 10px !important;
   }
 
   .view-area-shrinked {

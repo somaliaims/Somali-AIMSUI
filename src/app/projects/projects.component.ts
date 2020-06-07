@@ -62,6 +62,22 @@ export class ProjectsComponent implements OnInit {
   financialRanges: any = Settings.financialRangeConstants;
   searchField: FormControl;
   currentYearLabel: string = '';
+  viewProjectId: number = 0;
+  renderReport: boolean = false;
+
+  //variables for project report
+  projectData: any = [];
+  projectLocations: any = [];
+  projectSectors: any = [];
+  projectFunders: any = [];
+  projectImplementers: any = [];
+  projectDisbursements: any = [];
+  projectDocuments: any = [];
+  projectMarkers: any = [];
+  isExcelGenerating: boolean = true;
+  excelFile: string = null;
+  projectProfileLink: string = null;
+
 
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors"},
@@ -553,8 +569,13 @@ export class ProjectsComponent implements OnInit {
   }
 
   viewProject(id: number) {
+    this.blockUI.start('Wait loading...');
     if (id) {
-      this.projectReportModal.openModal(id);  
+      this.viewProjectId = id;
+      this.renderReport = true;
+      setTimeout(() => {
+        this.blockUI.stop();
+      }, 1000);
     }
   }
 
@@ -569,5 +590,61 @@ export class ProjectsComponent implements OnInit {
     this.model.description = null;
     this.isAnyFilterSet = false;
   }
+
+  //Section for viewing project report
+  getProjectReport(id: number) {
+    this.projectService.getProjectReport(id.toString()).subscribe(
+      data => {
+        if (data && data.projectProfile) {
+          var project = data.projectProfile.projects.length > 0 ? data.projectProfile.projects[0] : null;
+          if (project) {
+              this.projectData.title = project.title;
+              this.projectData.startDate = project.startDate;
+              this.projectData.endDate = project.endDate;
+              this.projectData.dateUpdated = project.dateUpdated;
+              this.projectData.projectCurrency = project.projectCurrency;
+              this.projectData.projectValue = project.projectValue;
+              this.projectData.exchangeRate = project.exchangeRate;
+              this.projectData.description = project.description;
+              this.projectFunders = project.funders;
+              this.projectImplementers = project.implementers;
+              this.projectSectors = project.sectors;
+              this.projectLocations = project.locations;
+              this.projectDisbursements = project.disbursements;
+              this.projectDocuments = project.documents;
+              this.projectMarkers = project.markers;
+              this.isLoading = false;
+            }
+          }
+      });
+  }
+
+  /*getProjectExcelReport(id: number) {
+    this.projectService.getProjectReport(id.toString()).subscribe(
+      data => {
+        if (data) {
+          if (data.reportSettings) {
+            this.excelFile = data.reportSettings.excelReportName;
+            this.projectProfileLink = data.reportSettings.reportUrl;
+            var currentDate = this.storeService.getLongDateString(new Date());
+            //this.dated = currentDate;
+            this.setExcelFile();
+            var projects = data.projectProfile.projects;
+            if (projects.length > 0) {
+              var project = projects[0];
+              this.projectMarkers = project.markers.filter(m => m.values != '');
+            }
+          }
+          this.isExcelGenerating = false;
+        }
+      }
+    );
+  }
+
+  setExcelFile() {
+    if (this.excelFile) {
+      this.excelFile = this.storeService.getExcelFilesUrl() + this.excelFile;
+    }
+  }*/
 
 }

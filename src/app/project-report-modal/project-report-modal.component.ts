@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injectable } from '@angular/core';
+import { Component, OnInit, Input, Injectable, NgZone } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../services/store-service';
@@ -8,6 +8,7 @@ import { ReportService } from '../services/report.service';
 import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ModalService } from '../services/modal.service';
+import { Messages } from '../config/messages';
 
 @Component({
   selector: 'project-report-modal',
@@ -20,7 +21,9 @@ import { ModalService } from '../services/modal.service';
 })
 export class ProjectReportModalComponent implements OnInit {
 
+  @Input()
   projectId: number = 0;
+  
   isLoggedIn: boolean = false;
   permissions: any = {};
   requestNo: number = 0;
@@ -61,11 +64,18 @@ export class ProjectReportModalComponent implements OnInit {
     private storeService: StoreService, private securityService: SecurityHelperService,
     private infoModal: InfoModalComponent,
     private modalService: ModalService,
-    private reportService: ReportService) { }
+    private reportService: ReportService,
+    private ngZone: NgZone) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.projects);
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
+    if (this.isLoggedIn) {
+      this.getDeleteProjectIds();
+      this.loadUserProjects();
+    }
+    this.getProjectReport();
+    this.getProjectExcelReport();
     this.permissions = this.securityService.getUserPermissions();
     this.storeService.currentRequestTrack.subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
@@ -73,6 +83,7 @@ export class ProjectReportModalComponent implements OnInit {
         this.isError = true;
       }
     });
+    this.openModal();
   }
 
   getProjectReport() {
@@ -81,23 +92,25 @@ export class ProjectReportModalComponent implements OnInit {
         if (data && data.projectProfile) {
           var project = data.projectProfile.projects.length > 0 ? data.projectProfile.projects[0] : null;
           if (project) {
-            this.projectData.title = project.title;
-            this.projectData.startDate = project.startDate;
-            this.projectData.endDate = project.endDate;
-            this.projectData.dateUpdated = project.dateUpdated;
-            this.projectData.projectCurrency = project.projectCurrency;
-            this.projectData.projectValue = project.projectValue;
-            this.projectData.exchangeRate = project.exchangeRate;
-            this.projectData.description = project.description;
-            this.projectFunders = project.funders;
-            this.projectImplementers = project.implementers;
-            this.projectSectors = project.sectors;
-            this.projectLocations = project.locations;
-            this.projectDisbursements = project.disbursements;
-            this.projectDocuments = project.documents;
-            this.projectMarkers = project.markers;
+            this.ngZone.run(() => {
+              this.projectData.title = project.title;
+              this.projectData.startDate = project.startDate;
+              this.projectData.endDate = project.endDate;
+              this.projectData.dateUpdated = project.dateUpdated;
+              this.projectData.projectCurrency = project.projectCurrency;
+              this.projectData.projectValue = project.projectValue;
+              this.projectData.exchangeRate = project.exchangeRate;
+              this.projectData.description = project.description;
+              this.projectFunders = project.funders;
+              this.projectImplementers = project.implementers;
+              this.projectSectors = project.sectors;
+              this.projectLocations = project.locations;
+              this.projectDisbursements = project.disbursements;
+              this.projectDocuments = project.documents;
+              this.projectMarkers = project.markers;
+              this.isLoading = false;
+            });
           }
-          this.isLoading = false;
         }
       }
     );
@@ -189,17 +202,42 @@ export class ProjectReportModalComponent implements OnInit {
     },500);
   }
 
-  openModal(projectId: number) {
-    this.projectId = projectId;
+  isShowContactToUser(id: number) {
+    return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? false : true;
+  }
+
+  contactProject(id) {
+    this.router.navigateByUrl('contact-project/' + id);
+  }
+
+  isShowDeleteProject(id: number) {
+    if (this.deleteProjectIds.includes(id)) {
+      return false;
+    }
+    return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? true : false;
+  }
+
+  makeDeleteRequest(id: number) {
+    if (id) {
+      var model = { projectId: id, userId: 0 };
+      this.blockUI.start('Making project delete request...');
+      this.projectService.makeProjectDeletionRequest(model).subscribe(
+        data => {
+          if (data) {
+            this.deleteProjectIds.push(id);
+            this.successMessage = Messages.DELETION_REQUEST_INFO;
+            this.infoModal.openModal();
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
+  }
+
+  openModal() {
     setTimeout(() => {
-      if (this.isLoggedIn) {
-        this.getDeleteProjectIds();
-        this.loadUserProjects();
-      }
-      this.getProjectReport();
-      this.getProjectExcelReport();
+      this.modalService.open('project-report-modal');
     }, 1000);
-    this.modalService.open('project-report-modal');
   }
 
   closeModal() {
