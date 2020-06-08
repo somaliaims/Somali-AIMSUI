@@ -569,11 +569,14 @@ export class ProjectsComponent implements OnInit {
   }
 
   viewProject(id: number) {
+    if (this.renderReport) {
+      this.renderReport = false;
+    }
     this.blockUI.start('Wait loading...');
     if (id) {
       this.viewProjectId = id;
-      this.renderReport = true;
       setTimeout(() => {
+        this.renderReport = true;
         this.blockUI.stop();
       }, 1000);
     }

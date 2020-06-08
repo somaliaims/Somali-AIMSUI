@@ -1,4 +1,5 @@
 <jw-modal id="project-report-modal">
+
     <div class="container-fluid view-area-modal small">
         <block-ui>
           <!--Loading project data -->
@@ -11,6 +12,11 @@
                       <h6>Project detail</h6>
                     </span>
       
+                    <span class="float-right margin-left-5">
+                      <button class="btn btn-danger btn-sm" (click)="closeModal()">
+                        Close report
+                      </button>
+                    </span>
                     <span class="float-right margin-left-5">
                       <button class="btn btn-primary btn-sm" (click)="printProfile()">
                         Print profile
@@ -27,15 +33,16 @@
                       </a>
                     </span>
                     <span class="float-right margin-left-5" *ngIf="!isLoading && isLoggedIn">
-                      <button class="btn btn-warning btn-sm" (click)="contactProject(projectData.id)">
+                      <button class="btn btn-warning btn-sm" (click)="contactProject()">
                         Suggest a change
                       </button>
                     </span>
-                    <span class="float-right margin-left-5" *ngIf="!isLoading && isLoggedIn && isShowDeleteProject(projectData.id)">
-                      <button class="btn btn-danger btn-sm" (click)="makeDeleteRequest(projectData.id)">
+                    <span class="float-right margin-left-5" *ngIf="!isLoading && isLoggedIn && isShowDeleteProject(projectId)">
+                      <button class="btn btn-danger btn-sm" (click)="makeDeleteRequest(projectId)">
                         Request deletion
                       </button>
                     </span>
+                    
                   </div>
       
                   <div class="card-body">
@@ -44,10 +51,17 @@
                         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
                       </div>
                     </div>
+                    <div class="col-md-12">
+                      <div *ngIf="deletionSuccess" class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Information!</strong> {{successMessage}}
+                      </div>
+                    </div>
                     <div *ngIf="!isLoading" id="rpt-project" class="container-fluid">
                       <div class="col-lg-12 col-md-12 text-center">
                         <h6 class="text-info">Project profile report</h6>
                       </div>
+      
                       <div class="row margin-top-20">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                           <table class="table table-striped">
@@ -95,7 +109,7 @@
                                 <th>Funds percentage</th>
                               </tr>
                               <tr *ngFor="let location of projectLocations">
-                                <td>{{location.location}}</td>
+                                <td>{{location.name}}</td>
                                 <td>{{location.fundsPercentage}}%</td>
                               </tr>
                             </tbody>
@@ -112,7 +126,7 @@
                                   <th>Funds percentage</th>
                                 </tr>
                                 <tr *ngFor="let sector of projectSectors">
-                                  <td>{{sector.sector}}</td>
+                                  <td>{{sector.name}}</td>
                                   <td>{{sector.fundsPercentage}}%</td>
                                 </tr>
                               </tbody>
@@ -168,7 +182,7 @@
                                   <th>Exchange rate</th>
                                 </tr>
                                 <tr *ngFor="let disbursement of projectDisbursements">
-                                  <td>{{disbursementTypeConstants[disbursement.disbursementType]}}</td>
+                                  <td>{{disbursement.disbursementType}}</td>
                                   <td>{{disbursement.financialYear}}</td>
                                   <td>{{formatNumber(disbursement.amount)}}</td>
                                   <td>{{disbursement.currency}}</td>
@@ -230,9 +244,16 @@
                             <span><i>Generated on: {{dated}}</i></span>
                           </div>
                         </div>
+                    </div>  
+                    
+                    <div class="col-lg-12 col-md-12">
+                      <span class="float-right">
+                        <button class="btn btn-danger btn-sm" (click)="closeModal()">
+                          Close report
+                        </button>
+                      </span>
                     </div>
                     
-      
                   </div>
                 </div>
               </div>

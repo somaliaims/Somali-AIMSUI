@@ -28,6 +28,7 @@ export class ProjectReportModalComponent implements OnInit {
   reportRendered = new EventEmitter<boolean>();
   
   isLoggedIn: boolean = false;
+  deletionSuccess: boolean = false;
   permissions: any = {};
   requestNo: number = 0;
   errorMessage: string = null;
@@ -200,7 +201,7 @@ export class ProjectReportModalComponent implements OnInit {
   generatePDF() {
     this.blockUI.start('Generating PDF...');
     setTimeout(() => {
-      var result = Promise.resolve(this.reportService.generatePDF('rpt-project'));
+      var result = Promise.resolve(this.reportService.generatePDF('rpt-project', 100));
       result.then(() => {
         this.blockUI.stop();
       });
@@ -211,8 +212,8 @@ export class ProjectReportModalComponent implements OnInit {
     return (this.userProjectIds.filter(ids => ids.id == id).length > 0) ? false : true;
   }
 
-  contactProject(id) {
-    this.router.navigateByUrl('contact-project/' + id);
+  contactProject() {
+    this.router.navigateByUrl('contact-project/' + this.projectId);
   }
 
   isShowDeleteProject(id: number) {
@@ -231,7 +232,10 @@ export class ProjectReportModalComponent implements OnInit {
           if (data) {
             this.deleteProjectIds.push(id);
             this.successMessage = Messages.DELETION_REQUEST_INFO;
-            this.infoModal.openModal();
+            this.deletionSuccess = true;
+            setTimeout(() => {
+              this.deletionSuccess = false;
+            }, 5000);
           }
           this.blockUI.stop();
         }
@@ -242,7 +246,7 @@ export class ProjectReportModalComponent implements OnInit {
   openModal() {
     setTimeout(() => {
       this.modalService.open('project-report-modal');
-    }, 1000);
+    }, 500);
   }
 
   closeModal() {

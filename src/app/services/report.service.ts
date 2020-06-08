@@ -189,7 +189,7 @@ export class ReportService {
         return result;
     }*/
 
-    generatePDF(reportElement) {
+    generatePDF(reportElement, yAxis: number = 0) {
       var quotes = document.getElementById(reportElement);
       var result  = html2canvas(quotes)
         .then((canvas) => {
@@ -221,6 +221,10 @@ export class ReportService {
             var dY = 0;
             var dWidth = docWidth;
             var dHeight = pageHeight;
+
+            if (yAxis > 0) {
+              dY += yAxis;
+            }
               
             var onePageCanvas = document.createElement("canvas");
             onePageCanvas.setAttribute('width', docWidth.toString());
