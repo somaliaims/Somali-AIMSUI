@@ -128,6 +128,17 @@ export class StoreService {
     return (parseFloat(prev) + parseFloat(next)).toFixed(2);
   }
 
+  sortArrayByProperty(prop) {
+    return function (a, b) {
+      if (a[prop] > b[prop]) {
+        return 1;
+      } else if (a[prop] < b[prop]) {
+        return -1;
+      }
+      return 0;
+    }
+  }   
+
   getCalendarUpperLimit() {
     var dated = new Date();
     var proposedYear = dated.getFullYear() + this.yearGap;

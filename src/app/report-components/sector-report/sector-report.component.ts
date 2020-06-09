@@ -618,6 +618,7 @@ export class SectorReportComponent implements OnInit {
                 plannedDisbursements: plannedDisbursements,
                 totalDisbursements: totalDisbursements,
               });
+              this.parentSectorsSummary.sort(this.storeService.sortArrayByProperty("sectorName"));
 
               this.parentSectorsWithProjects.push({
                 sectorId: sectorId,
@@ -690,7 +691,6 @@ export class SectorReportComponent implements OnInit {
       actualDisbursements = this.sectorProjectsList.map(s => s.actualDisbursements);
       plannedDisbursements = this.sectorProjectsList.map(s => s.plannedDisbursements);
     }
-    
 
     this.stackedChartData.push({
       data: actualDisbursements,
