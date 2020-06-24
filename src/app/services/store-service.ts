@@ -285,6 +285,38 @@ export class StoreService {
     return date;
   }
 
+  convertToDateInputFormat(date: string) {
+    if (date) {
+      //return new Date(date).toISOString().split('T')[0];
+      var timestamp = Date.parse(date);
+      if (isNaN(timestamp) == false) {
+        var dateParts = date.split('/');
+
+        if (parseInt(dateParts[0]) < 10) {
+          dateParts[0] =  '0' + dateParts[0];
+        }
+
+        if (parseInt(dateParts[1]) < 10) {
+          dateParts[1] =  '0' + dateParts[1];
+        }
+        return (dateParts[2] + '-' + dateParts[0] + '-' + dateParts[1]);
+      }
+    }
+    return date;
+  }
+
+  convertDateToMDYWithSlash(date: string) {
+    if (date) {
+      //return new Date(date).toISOString().split('T')[0];
+      var timestamp = Date.parse(date);
+      if (isNaN(timestamp) == false) {
+        var dateParts = date.split('/');
+        return (dateParts[1] + '/' + dateParts[0] + '/' + dateParts[2]);
+      }
+    }
+    return date;
+  }
+
   isLeapYear(year: number) {
     return !((year % 4) && (year % 100) || !(year % 400));
   }

@@ -62,7 +62,7 @@ export class MergeProjectsComponent implements OnInit {
   descriptionLimit: number = Settings.descriptionLongLimit;
   requestNo: number = 0;
   currentYear: number = 0;
-  model: any = { id: 0, title: null, startingFinancialYear: null, endingFinancialYear: null, 
+  model: any = { id: 0, title: null, startDate: null, endDate: null, startingFinancialYear: null, endingFinancialYear: null, 
   projectValue: null, projectCurrency: null, description: null, fundingTypeId: null };
 
   disbursementTypeConstants: any = {
@@ -241,6 +241,24 @@ export class MergeProjectsComponent implements OnInit {
     this.calculateDisbursementsTotal();
   }
 
+  enterStartDate(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.selectedProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.model.startDate = this.formatDateToYMD(selectedProject[0].startDate);
+      this.setDisbursementsData();
+    }
+  }
+
+  enterEndDate(e) {
+    var id = e.target.id.split('-')[1];
+    var selectedProject = this.selectedProjects.filter(p => p.id == id);
+    if (selectedProject && selectedProject.length > 0) {
+      this.model.endDate = this.formatDateToYMD(selectedProject[0].endDate);
+      this.setDisbursementsData();
+    }
+  }
+
   enterProjectValue (e) {
     var id = e.target.id.split('-')[1];
     var project = this.selectedProjects.filter(p => p.id == id);
@@ -283,7 +301,9 @@ export class MergeProjectsComponent implements OnInit {
   }
 
   setDisbursementsData() {
-    if (this.model.startingFinancialYear != 0 && this.model.endingFinancialYear != 0) {
+    if (this.model.startDate != null && this.model.endDate != null) {
+      this.model.startingFinancialYear = new Date(this.model.startDate).getFullYear();
+      this.model.endingFinancialYear = new Date(this.model.endDate).getFullYear();
       for (var yr = this.model.startingFinancialYear; yr <= this.model.endingFinancialYear; yr++) {
         var data = this.projectDisbursements.filter(d => d.year == yr);
         if (data.length == 0) {
@@ -607,6 +627,14 @@ export class MergeProjectsComponent implements OnInit {
       }
     }
     this.locationPercentageOk = (locationPercentage == 100) ? true : false;
+  }
+
+  formatToLongDate(dated: string) {
+    return this.storeService.getLongDateString(dated);
+  }
+
+  formatDateToYMD(dated: string) {
+    return this.storeService.convertToDateInputFormat(dated);
   }
 
   proceedToDataEntry() {

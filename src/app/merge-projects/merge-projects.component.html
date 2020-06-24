@@ -43,7 +43,7 @@
                       Details</a><br />
                   </td>
                 </tr>
-                <tr>
+                <!--<tr>
                   <td>
                     <b>Starting year: </b>{{project.startingFinancialYear}}&nbsp;<button type="button" id="btnsdate-{{project.id}}"
                       (click)="enterStartingYear($event)" class="btn btn-sm btn-outline-success">>></button>
@@ -51,6 +51,16 @@
                   <td>
                     <b>Ending year: </b>{{project.endingFinancialYear}}&nbsp;<button type="button" id="btnedate-{{project.id}}"
                       (click)="enterEndingYear($event)" class="btn btn-sm btn-outline-success">>></button>
+                  </td>
+                </tr>-->
+                <tr>
+                  <td>
+                    <b>Start date: </b>{{formatToLongDate(project.startDate)}}&nbsp;<button type="button" id="btnsdate-{{project.id}}"
+                      (click)="enterStartDate($event)" class="btn btn-sm btn-outline-success">>></button>
+                  </td>
+                  <td>
+                    <b>End date: </b>{{formatToLongDate(project.endDate)}}&nbsp;<button type="button" id="btnedate-{{project.id}}"
+                      (click)="enterEndDate($event)" class="btn btn-sm btn-outline-success">>></button>
                   </td>
                 </tr>
                 <tr>
@@ -94,7 +104,7 @@
 
             <div class="row">
               <div class="col-md-6 col-lg-6">
-                <div class="form-group">
+                <!--<div class="form-group">
                   <select class="form-control" title="Starting financial year" name="startingFinancialYear"
                     [(ngModel)]="model.startingFinancialYear" (change)="setDisbursementsData()"
                     #startingFinancialYear="ngModel" required>
@@ -105,11 +115,19 @@
                   <div *ngIf="projectForm.submitted" [hidden]="startingFinancialYear.valid" class="alert alert-danger">
                     Starting year is required
                   </div>
+                </div>-->
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control col-sm-12" onfocus="(this.type='date')" onblur="(this.type='text')"
+                    name="startDate" placeholder="Project start date" [(ngModel)]="model.startDate" (change)="setDisbursementsData()"
+                    #startDate="ngModel" required />
+                </div>
+                <div *ngIf="projectForm.submitted" [hidden]="startDate.valid" class="alert alert-danger">
+                  Start date is required
                 </div>
               </div>
 
               <div class="col-md-6 col-lg-6">
-                <div class="form-group">
+                <!--<div class="form-group">
                   <select class="form-control" title="Ending financial year" name="endingFinancialYear"
                     [(ngModel)]="model.endingFinancialYear" (change)="setDisbursementsData()"
                     #endingFinancialYear="ngModel" required>
@@ -120,6 +138,14 @@
                   <div *ngIf="projectForm.submitted" [hidden]="endingFinancialYear.valid" class="alert alert-danger">
                     Ending year is required
                   </div>
+                </div>-->
+                <div class="input-group mb-3">
+                  <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" (change)="setDisbursementsData()"
+                    class="form-control col-sm-12" name="endDate" placeholder="Project end date" [(ngModel)]="model.endDate"
+                    #endDate="ngModel" required />
+                </div>
+                <div *ngIf="projectForm.submitted" [hidden]="endDate.valid" class="alert alert-danger">
+                  End date is required
                 </div>
               </div>
             </div>
