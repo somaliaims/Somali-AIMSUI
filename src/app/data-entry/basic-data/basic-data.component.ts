@@ -1191,6 +1191,6 @@ export class BasicDataComponent implements OnInit {
   }
 
   formatDateToYMD(dated: string) {
-    return this.storeService.convertDateToYMDBySlash(dated);
+    return this.storeService.convertToDateInputFormat(dated);
   }
 }

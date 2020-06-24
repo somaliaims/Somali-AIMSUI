@@ -495,6 +495,8 @@ export class MergeProjectsComponent implements OnInit {
       projectValue: this.model.projectValue,
       projectCurrency: this.model.projectCurrency,
       exchangeRate: this.model.exchangeRate,
+      startDate: this.model.startDate,
+      endDate: this.model.endDate,
       startingFinancialYear: this.model.startingFinancialYear,
       endingFinancialYear: this.model.endingFinancialYear,
       description: this.model.description,
