@@ -91,7 +91,10 @@
               <span class="col-sm-3" tooltip="{{sectorHelp.percentage}}" [options]="tooltipOptions">
                 <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
               </span>
-              <button [class.disable]="calculateSectorPercentage() >= 100"
+              <button [class.disable]="(sectorModel.fundsPercentage < 1 || sectorModel.fundsPercentage > 100) || 
+                (!sectorModel.selectedMapping || (sectorModel.selectedMapping && sectorModel.selectedMapping.length == 0)) 
+                || calculateSectorPercentage() >= 100 || (sectorModel.sectorTypeId != defaultSectorTypeId && 
+                (!sectorModel.selectedSector) || (sectorModel.selectedSector && sectorModel.selectedSector.length == 0))"
                 class="col-sm-4 btn btn-sm btn-warning text-uppercase" type="submit">
                 Add sector
               </button>
@@ -198,7 +201,8 @@
                 <span class="col-md-2" tooltip="{{locationHelp.percentage}}" [options]="tooltipOptions">
                   <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
                 </span>
-                <button [class.disable]="calculateLocationPercentage() >= 100"
+                <button [class.disable]="calculateLocationPercentage() >= 100 || !locationModel.locationId 
+                  || !locationModel.fundsPercentage || (locationModel.fundsPercentage && (locationModel.fundsPercentage < 0 || locationModel.fundsPercentage > 100))"
                   class="btn btn-sm btn-warning text-uppercase col-md-3 col-md-2" type="submit">
                   Add location
                 </button>

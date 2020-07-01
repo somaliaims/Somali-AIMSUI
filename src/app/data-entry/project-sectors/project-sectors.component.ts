@@ -262,6 +262,7 @@ export class ProjectSectorsComponent implements OnInit {
 
   onDeSelectSector() {
     this.sectorModel.selectedSector = null;
+    this.sectorModel.selectedMapping = null;
     this.ndpSectorsList = this.defaultSectorsList.filter(s => s.parentSector != null);
     this.showMappingAuto = false;
     this.showMappingManual = false;
@@ -286,16 +287,8 @@ export class ProjectSectorsComponent implements OnInit {
       }
     }
 
-    if (this.sectorModel.sectorTypeId != this.defaultSectorTypeId) {
-      if (!this.sectorModel.selectedMapping) {
-        this.errorMessage = 'Sector mapping is required';
-        this.errorModal.openModal();
-        return false;
-      }
-    }
-
     if (this.sectorModel.sectorTypeId == this.defaultSectorTypeId) {
-      if (!this.sectorModel.selectedMapping) {
+      if (!this.sectorModel.selectedMapping || (this.sectorModel.selectedMapping && this.sectorModel.selectedMapping.length == 0)) {
         this.errorMessage = 'NDP sector is required';
         this.errorModal.openModal();
         return false;

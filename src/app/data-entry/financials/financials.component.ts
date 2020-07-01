@@ -183,7 +183,7 @@ export class FinancialsComponent implements OnInit {
         totalAmount += parseFloat(d.amount);
       });
     }
-    this.disbursementsTotal = Math.ceil(totalAmount);
+    this.disbursementsTotal = parseFloat(totalAmount.toFixed(2));
   }
 
   getDisbursementsTotal() {
@@ -256,7 +256,7 @@ export class FinancialsComponent implements OnInit {
   splitRemainingAmountEqually() {
     var projectValue = this.projectValue;
     var disbursementsTotal = this.getDisbursementsTotal();
-    var remainingAmount = projectValue - disbursementsTotal; 
+    var remainingAmount = parseFloat((projectValue - disbursementsTotal).toFixed(2)); 
     if (remainingAmount > 0) {
       var countZeros = 0;
       this.projectDisbursements.forEach((d) => {
@@ -266,13 +266,23 @@ export class FinancialsComponent implements OnInit {
       });
 
       if (countZeros > 0) {
-        var equalSplit = (remainingAmount / countZeros).toFixed(1);
-         this.projectDisbursements.forEach((d) => {
+        var equalSplit = (remainingAmount / countZeros).toFixed(2);
+        var amountRemaining = remainingAmount;
+        var amountSplitted = 0;
+        var counter = 0;
+        this.projectDisbursements.forEach((d) => {
           if (d.amount == 0 && d.disbursementType == 2) {
-            d.amount = equalSplit;
+            if ((counter + 1) == countZeros) {
+              d.amount = amountRemaining.toFixed(2);
+            } else {
+              d.amount = equalSplit;
+              amountSplitted += parseFloat(equalSplit);
+              amountRemaining = remainingAmount - parseFloat(equalSplit);
+            }
+            ++counter;
           }
-         });
-         this.calculateDisbursementsTotal();
+        });
+        this.calculateDisbursementsTotal();
       } else {
         this.errorMessage = Messages.INVALID_DISBURSEMENT_SPLIT;
         this.errorModal.openModal();
