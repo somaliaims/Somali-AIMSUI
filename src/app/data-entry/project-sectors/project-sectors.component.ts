@@ -192,14 +192,16 @@ export class ProjectSectorsComponent implements OnInit {
     if (!this.sectorModel.sectorTypeId) {
       this.typeSectorsList = [];
     } else {
-      this.typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
+      var typeSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.sectorModel.sectorTypeId);
+      this.typeSectorsList = typeSectorsList.sort(this.storeService.sortArrayByProperty("sectorName"));
     }
     this.getNDPSectors();
   }
 
   getNDPSectors() {
     if (this.defaultSectorTypeId) {
-      this.ndpSectorsList = this.sectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId);
+      var ndpSectors = this.sectorsList.filter(s => s.sectorTypeId == this.defaultSectorTypeId && s.parentSectorId != 0);
+      this.ndpSectorsList = ndpSectors.sort(this.storeService.sortArrayByProperty("sectorName"));
     }
   }
 
