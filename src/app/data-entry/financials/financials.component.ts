@@ -277,7 +277,7 @@ export class FinancialsComponent implements OnInit {
             } else {
               d.amount = equalSplit;
               amountSplitted += parseFloat(equalSplit);
-              amountRemaining = remainingAmount - parseFloat(equalSplit);
+              amountRemaining = remainingAmount - amountSplitted;
             }
             ++counter;
           }
@@ -342,6 +342,9 @@ export class FinancialsComponent implements OnInit {
 
       if (isDataValid) {
         this.blockUI.start('Saving disbursements');
+        this.projectDisbursements.forEach((d) => {
+          d.amount = parseFloat(d.amount);
+        });
         var model = {
           projectId: this.projectId,
           currency: this.projectCurrency,

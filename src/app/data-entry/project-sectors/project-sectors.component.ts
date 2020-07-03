@@ -181,6 +181,8 @@ export class ProjectSectorsComponent implements OnInit {
       this.isNdpSectorsLoading = false;
       this.ndpSectorsList = this.defaultSectorsList.filter(s => s.parentSector != null);
     }
+
+    this.locationsList = this.locationsList.filter(l => l.isUnAttributed == false);
   }
 
   getTypeSectorsList() {
@@ -460,22 +462,22 @@ export class ProjectSectorsComponent implements OnInit {
     if (unSavedSectors.length > 0 && this.projectId) {
       unSavedSectors.forEach(s => {
         if (!s.sectorId) {
-          s.sectorId = s.mappingId;
+          s.sectorTypeId = parseInt(s.sectorTypeId);
+          s.sectorId = parseInt(s.mappingId);
         }
         if (s.sectorTypeId != this.defaultSectorTypeId && s.sectorId != s.mappingId) {
           var exists = this.newMappings.filter(m => m.sectorId == s.sectorId && m.mappingId == s.mappingId);
           if (exists.length == 0) {
             this.newMappings.push({
-              sectorTypeId: s.sectorTypeId,
-              sectorId: s.sectorId,
-              mappingId: s.mappingId
+              sectorTypeId: parseInt(s.sectorTypeId),
+              sectorId: parseInt(s.sectorId),
+              mappingId: parseInt(s.mappingId)
             });
           }
         }
       });
       var sectorIds = unSavedSectors.map(s => s.sectorId);
       this.newMappings = this.newMappings.filter(m => sectorIds.includes(m.sectorId));
-
       var model = {
         projectId: this.projectId,
         projectSectors: unSavedSectors,
@@ -494,6 +496,9 @@ export class ProjectSectorsComponent implements OnInit {
 
   saveSourceSectors() {
     if (this.sourceSectorsList.length > 0) {
+      this.sourceSectorsList.forEach((s) => {
+        s.sectorTypeId = parseInt(s.sectorTypeId);
+      });
       var model = {
         projectId: this.projectId,
         projectSectors: this.sourceSectorsList,
@@ -519,6 +524,9 @@ export class ProjectSectorsComponent implements OnInit {
   saveProjectLocations() {
     var unSavedLocations = this.currentProjectLocations.filter(s => !s.saved);
     if (unSavedLocations.length > 0 && this.projectId) {
+      unSavedLocations.forEach((l) => {
+        l.locationId = parseInt(l.locationId);
+      });
       var model = {
         projectId: this.projectId,
         projectLocations: unSavedLocations,
@@ -609,7 +617,8 @@ export class ProjectSectorsComponent implements OnInit {
               var sectorTypeCode = sector[0].sectorTypeCode;
               var sectorId = 0;
               var sourceSector = [];
-              
+              fundsPercentage = parseFloat(fundsPercentage);
+
               if (!fundsPercentage || fundsPercentage < 1 || fundsPercentage > 100) {
                 this.errorMessage = 'Sector percentage' + Messages.PERCENTAGE_RANGE;
                 this.errorModal.openModal();
@@ -631,9 +640,9 @@ export class ProjectSectorsComponent implements OnInit {
               }
 
               this.sourceSectorsList.push({
-                sectorTypeId: sectorTypeCode,
+                sectorTypeId: this.defaultSectorTypeId,
                 sectorId: sectorId,
-                mappingId: mappingId,
+                mappingId: parseInt(mappingId),
                 sectorName: sectorName,
                 sector: iatiSector,
                 fundsPercentage: fundsPercentage

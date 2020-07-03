@@ -363,7 +363,9 @@ export class ProjectsComponent implements OnInit {
         if (data && data.length) {
           this.projectsList = data;
           this.filteredProjectsList = data;
-          this.currentYearLabel = data[0].currentYearLabel;
+          if (data.length && data.length > 0) {
+            this.currentYearLabel = data[0].currentYearLabel;
+          }
         }
         this.blockUI.stop();
       }
@@ -466,7 +468,9 @@ export class ProjectsComponent implements OnInit {
         if (data) {
           this.projectsList = data;  
           this.filteredProjectsList = data;
-          this.currentYearLabel = data[0].currentYearLabel;
+          if (data.length && data.length > 0) {
+            this.currentYearLabel = data[0].currentYearLabel;
+          }
         }
         this.blockUI.stop();
       }

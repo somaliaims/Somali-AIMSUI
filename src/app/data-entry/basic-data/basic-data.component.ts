@@ -484,6 +484,7 @@ export class BasicDataComponent implements OnInit {
     }
 
     this.isProjectBtnDisabled = true;
+    this.projectData.fundingTypeId = parseInt(this.projectData.fundingTypeId)
     if (this.projectId != 0) {
       this.blockUI.start('Saving project...');
       this.requestNo = this.storeService.getCurrentRequestId();
@@ -949,7 +950,8 @@ export class BasicDataComponent implements OnInit {
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
       var sDate = new Date(selectedProject[0].startDate);
-      this.projectData.startDate = sDate.getFullYear() + '-' + (sDate.getMonth() + 1) + '-' + sDate.getDate();
+      var sDateStr = (sDate.getMonth() + 1) + '/' + sDate.getDate() + '/' + sDate.getFullYear();
+      this.projectData.startDate = this.formatDateToYMD(sDateStr);
     }
   }
 
@@ -958,7 +960,8 @@ export class BasicDataComponent implements OnInit {
     var selectedProject = this.iatiProjects.filter(p => p.id == id);
     if (selectedProject && selectedProject.length > 0) {
       var eDate = new Date(selectedProject[0].endDate);
-      this.projectData.endDate = eDate.getFullYear() + '-' + (eDate.getMonth() + 1) + '-' + eDate.getDate();
+      var eDateStr = ((eDate.getMonth() + 1) + '/' + eDate.getDate() + '/' + eDate.getFullYear());
+      this.projectData.endDate = this.formatDateToYMD(eDateStr);
     }
   }
 

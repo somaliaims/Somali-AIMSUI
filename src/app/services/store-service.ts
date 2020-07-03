@@ -231,7 +231,11 @@ export class StoreService {
 
   getCurrentDateSQLFormat() {
     var dated = new Date();
-    return (dated.getFullYear() + '-' + (dated.getMonth() + 1) + '-' + dated.getDate());
+    var monthVal = dated.getMonth() + 1;
+    var dateVal = dated.getDate();
+    var month = (monthVal < 10) ? ('0' + monthVal) : monthVal;
+    var day = (dateVal < 10) ? ('0' + dateVal) : dateVal; 
+    return (dated.getFullYear() + '-' + month + '-' + day);
   }
 
   getCurrentYear() {
