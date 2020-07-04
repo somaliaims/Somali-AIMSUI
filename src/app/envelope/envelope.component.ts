@@ -204,16 +204,16 @@ export class EnvelopeComponent implements OnInit {
       var eTypeId = b.envelopeTypeId;
       b.yearlyBreakup.forEach((y) => {
         envelopeBreakups.push({
-          envelopeTypeId: eTypeId,
-          year: y.year,
-          amount: y.amount
+          envelopeTypeId: parseInt(eTypeId),
+          year: parseInt(y.year),
+          amount: parseFloat(y.amount)
         });
       });
     });
 
     var model = {
       currency: this.model.currency,
-      exchangeRate: this.model.exchangeRate,
+      exchangeRate: parseFloat(this.model.exchangeRate),
       envelopeBreakups: envelopeBreakups
     }
 

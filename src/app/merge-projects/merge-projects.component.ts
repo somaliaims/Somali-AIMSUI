@@ -450,23 +450,25 @@ export class MergeProjectsComponent implements OnInit {
     
     this.selectedProjects.forEach((p) => {
       if (p.funders.length > 0) {
-        var ids = p.funders.map(f => f.funderId);
+        var ids = p.funders.map(f => parseInt(f.funderId));
         funderIds = funderIds.concat(ids);
       }
 
       if (p.implementers.length > 0) {
-        var ids = p.implementers.map(i => i.implementerId);
+        var ids = p.implementers.map(i => parseInt(i.implementerId));
         implementerIds = implementerIds.concat(ids);
       }
 
       if (p.sectors.length > 0) {
         p.sectors.forEach((s) => {
+          s.fundsPercentage = parseFloat(s.fundsPercentage);
           sectors.push(s);
         });
       }
 
       if (p.locations.length > 0) {
         p.locations.forEach((l) => {
+          l.fundsPercentage = parseFloat(l.fundsPercentage);
           locations.push(l);
         });
       }
@@ -487,20 +489,24 @@ export class MergeProjectsComponent implements OnInit {
 
     if (this.projectDisbursements.length > 0) {
       disbursements = this.projectDisbursements;
+      disbursements.forEach((d) => {
+        d.amount = parseFloat(d.amount);
+        d.exchangeRate = parseFloat(d.exchangeRate);
+      });
     }
-    this.selectedProjects.map(p => p.id);
+    //this.selectedProjects.map(p => p.id);
     
     var model = {
       title: this.model.title,
-      projectValue: this.model.projectValue,
+      projectValue: parseFloat(this.model.projectValue),
       projectCurrency: this.model.projectCurrency,
-      exchangeRate: this.model.exchangeRate,
+      exchangeRate: parseFloat(this.model.exchangeRate),
       startDate: this.model.startDate,
       endDate: this.model.endDate,
-      startingFinancialYear: this.model.startingFinancialYear,
-      endingFinancialYear: this.model.endingFinancialYear,
+      startingFinancialYear: parseInt(this.model.startingFinancialYear),
+      endingFinancialYear: parseInt(this.model.endingFinancialYear),
       description: this.model.description,
-      fundingTypeId: this.model.fundingTypeId,
+      fundingTypeId: parseInt(this.model.fundingTypeId),
       projectIds: this.projectIds,
       funderIds: funderIds,
       implementerIds: implementerIds,

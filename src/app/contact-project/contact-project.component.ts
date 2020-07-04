@@ -69,6 +69,7 @@ export class ContactProjectComponent implements OnInit {
     }
     
     this.blockUI.start('Sending suggestion...');
+    this.model.projectId = parseInt(this.model.projectId.toString());
     this.contactService.sendProjectContactEmail(this.model).subscribe(
       data => {
         if (data) {
