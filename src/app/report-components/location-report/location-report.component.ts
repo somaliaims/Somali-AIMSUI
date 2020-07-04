@@ -521,19 +521,19 @@ export class LocationReportComponent implements OnInit {
     var projectIds = [];
     var chartType = (this.loadReport) ? this.paramChartType : this.model.chartType;
     if (this.model.selectedProjects.length > 0) {
-      projectIds = this.model.selectedProjects.map(p => p.id);
+      projectIds = this.model.selectedProjects.map(p => parseInt(p.id));
     }
 
     var searchModel = {
       projectIds: projectIds,
-      startingYear: this.model.startingYear,
-      endingYear: this.model.endingYear,
+      startingYear: (this.model.startingYear) ? parseInt(this.model.startingYear) : 0,
+      endingYear: (this.model.endingYear) ? parseInt(this.model.endingYear) : 0,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       locationIds: this.model.selectedLocations.map(l => l.id),
-      sectorId: this.model.sectorId,
-      markerId: this.model.markerId,
+      sectorId: (this.model.sectorId) ? parseInt(this.model.sectorId) : 0,
+      markerId: (this.model.markerId) ? parseInt(this.model.markerId) : 0,
       markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
-      chartType: chartType
+      chartType: (chartType) ? parseInt(chartType) : 1
     };
 
     this.resetSearchResults();

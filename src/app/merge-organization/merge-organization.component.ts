@@ -151,7 +151,7 @@ export class MergeOrganizationComponent implements OnInit {
       this.errorModal.openModal();
       return false;
     }
-    var ids = this.selectedOrganizations.map(org => org.id);
+    var ids = this.selectedOrganizations.map(org => parseInt(org.id));
     var model = {
       ids: ids
     };
@@ -187,11 +187,11 @@ export class MergeOrganizationComponent implements OnInit {
   }
 
   mergeOrganizationsRequest() {
-    var ids = this.selectedOrganizations.map(org => org.id);
+    var ids = this.selectedOrganizations.map(org => parseInt(org.id));
     var model = {
       newName: this.model.name,
       Ids: ids,
-      organizationTypeId: this.model.organizationTypeId,
+      organizationTypeId: parseInt(this.model.organizationTypeId.toString()),
       envelopeOrganizationId: this.envelopeOrganizationId
     };
     this.organizationService.addMergeOrganizationsRequest(model).subscribe(
@@ -214,7 +214,7 @@ export class MergeOrganizationComponent implements OnInit {
     var model = {
       newName: this.model.name,
       Ids: ids,
-      organizationTypeId: this.model.organizationTypeId,
+      organizationTypeId: parseInt(this.model.organizationTypeId.toString()),
       envelopeOrganizationId: this.envelopeOrganizationId
     };
 

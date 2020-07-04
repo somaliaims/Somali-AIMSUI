@@ -443,19 +443,19 @@ export class TimeTrendReportComponent implements OnInit {
     }
 
     if (this.model.selectedProjects.length > 0) {
-      projectIds = this.model.selectedProjects.map(p => p.id);
+      projectIds = this.model.selectedProjects.map(p => parseInt(p.id));
     }
 
     var searchModel = {
       projectIds: projectIds,
-      startingYear: this.model.startingYear,
-      endingYear: this.model.endingYear,
+      startingYear: (this.model.startingYear) ? parseInt(this.model.startingYear) : 0,
+      endingYear: (this.model.endingYear) ? parseInt(this.model.endingYear) : 0,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       sectorIds: this.model.selectedSectors.map(s => s.id),
-      locationId: this.model.locationId,
-      markerId: this.model.markerId,
+      locationId: (this.model.locationId) ? parseInt(this.model.locationId) : 0,
+      markerId: (this.model.markerId) ? parseInt(this.model.markerId) : 0,
       markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
-      chartType: chartType
+      chartType: (chartType) ? parseInt(chartType) : 0
     };
 
     this.resetSearchResults();

@@ -451,8 +451,8 @@ export class ProjectsComponent implements OnInit {
 
     var searchModel = {
       projectIds: this.model.selectedProjects.map(p => p.id),
-      startingYear: this.model.startingYear,
-      endingYear: this.model.endingYear,
+      startingYear: (this.model.startingYear) ? parseInt(this.model.startingYear) : 0,
+      endingYear: (this.model.endingYear) ? parseInt(this.model.endingYear) : 0,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       sectorIds: this.model.selectedSectors.map(s => s.id),
       locationIds: this.model.selectedLocations.map(l => l.id),

@@ -242,12 +242,12 @@ export class EnvelopeReportComponent implements OnInit {
     this.model.funderIds = this.selectedOrganizations.map(o => o.id);
 
     var model = {
-      startingYear: this.model.startingYear,
-      endingYear: this.model.endingYear,
+      startingYear: (this.model.startingYear) ? parseInt(this.model.startingYear) : 0,
+      endingYear: (this.model.endingYear) ? parseInt(this.model.endingYear) : 0,
       envelopeTypeIds: this.selectedEnvelopeTypes.map(t => t.id),
       funderTypeIds: this.selectedOrganizationTypes.map(t => t.id),
       funderIds: this.selectedOrganizations.map(o => o.id),
-      chartType: chartType
+      chartType: (chartType) ? parseInt(chartType) : 1
     };
     this.blockUI.start('Loading report...');
     this.reportService.getEnvelopeReport(model).subscribe(

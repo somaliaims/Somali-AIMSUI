@@ -80,8 +80,8 @@ export class AllProjectsReportComponent implements OnInit {
 
   getAllProjectsReport() {
     var selectedOrganization = this.model.selectedOrganization;
-    this.model.startingYear = (this.model.startingYear == null) ? 0 : this.model.startingYear;
-    this.model.endingYear = (this.model.endingYear == null) ? 0 : this.model.endingYear;
+    this.model.startingYear = (this.model.startingYear == null) ? 0 : parseInt(this.model.startingYear);
+    this.model.endingYear = (this.model.endingYear == null) ? 0 : parseInt(this.model.endingYear);
     this.model.organizationId = (selectedOrganization && selectedOrganization.length > 0) ? selectedOrganization[0].id : 0;
     this.blockUI.start('Loading report...');
     this.excelFile = null;
