@@ -140,9 +140,9 @@ export class SectorMappingsComponent implements OnInit {
     var sector = this.filteredSectorsForType.filter(s => s.id == id);
     if (sector.length > 0) {
       var model = {
-        sectorTypeId: this.model.sectorTypeId,
-        sectorId: sector[0].id,
-        mappingId: sector[0].mappingId
+        sectorTypeId: parseInt(this.model.sectorTypeId),
+        sectorId: parseInt(sector[0].id),
+        mappingId: parseInt(sector[0].mappingId)
       }
 
       this.blockUI.start('Wait update mapping');
@@ -151,8 +151,8 @@ export class SectorMappingsComponent implements OnInit {
           if (data) {
             this.allSectorMappings = this.allSectorMappings.filter(s => s.sectorId != id);
             var mappingModel = {
-              sectorId: model.sectorId,
-              mappedSectorId: model.mappingId
+              sectorId: parseInt(model.sectorId.toString()),
+              mappedSectorId: parseInt(model.mappingId.toString())
             }
             this.allSectorMappings.push(mappingModel);
           }

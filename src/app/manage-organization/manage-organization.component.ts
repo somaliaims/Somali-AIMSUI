@@ -82,7 +82,7 @@ export class ManageOrganizationComponent implements OnInit {
 
   saveOrganization() {
     var model = {
-      organizationTypeId: this.model.organizationTypeId,
+      organizationTypeId: parseInt(this.model.organizationTypeId),
       Name: this.model.organizationName,
     };
 
@@ -91,12 +91,14 @@ export class ManageOrganizationComponent implements OnInit {
       this.btnText = 'Updating...';
       this.organizationService.updateOrganization(this.model.id, model).subscribe(
         data => {
-          if (!this.isError) {
-            var message = 'Organization' + Messages.RECORD_UPDATED;
-            this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('organizations');
-          } else {
-            this.resetFormState();
+          if (data) {
+            if (!this.isError) {
+              var message = 'Organization' + Messages.RECORD_UPDATED;
+              this.storeService.newInfoMessage(message);
+              this.router.navigateByUrl('organizations');
+            } else {
+              this.resetFormState();
+            }
           }
         },
         error => {
@@ -109,12 +111,14 @@ export class ManageOrganizationComponent implements OnInit {
       this.btnText = 'Saving...';
       this.organizationService.addOrganization(model).subscribe(
         data => {
-          if (!this.isError) {
-            var message = 'New organization' + Messages.NEW_RECORD;
-            this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('organizations');
-          } else {
-            this.resetFormState();
+          if (data) {
+            if (!this.isError) {
+              var message = 'New organization' + Messages.NEW_RECORD;
+              this.storeService.newInfoMessage(message);
+              this.router.navigateByUrl('organizations');
+            } else {
+              this.resetFormState();
+            }
           }
         },
         error => {

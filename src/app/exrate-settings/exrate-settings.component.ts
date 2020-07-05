@@ -203,10 +203,10 @@ export class ExrateSettingsComponent implements OnInit {
     }
 
     var model = {
-      exchangeRate: this.model.exchangeRate,
+      exchangeRate: parseFloat(this.model.exchangeRate),
       currency: this.model.currency,
       defaultCurrency: this.defaultCurrency,
-      year: this.model.newYear
+      year: parseInt(this.model.newYear)
     }
 
     this.blockUI.start('Saving exchange rate...');

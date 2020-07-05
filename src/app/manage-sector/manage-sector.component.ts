@@ -152,9 +152,9 @@ export class ManageSectorComponent implements OnInit {
 
   saveSector() {
     var model = {
-      SectorTypeId: this.model.sectorTypeId,
+      SectorTypeId: parseInt(this.model.sectorTypeId.toString()),
       SectorName: this.model.sectorName,
-      ParentId: this.model.parentId,
+      ParentId: parseInt(this.model.parentId.toString()),
     };
 
     this.isBtnDisabled = true;

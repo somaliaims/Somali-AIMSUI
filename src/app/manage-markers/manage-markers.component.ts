@@ -170,7 +170,7 @@ export class ManageMarkersComponent implements OnInit {
 
     var newModel = {
       fieldTitle: this.model.fieldTitle,
-      fieldType: this.model.typeId,
+      fieldType: parseInt(this.model.typeId),
       values: values,
       help: this.model.help
     };

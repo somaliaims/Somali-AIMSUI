@@ -51,9 +51,6 @@ export class ContactFormComponent implements OnInit {
     if (!this.isLoggedIn) {
       this.router.navigateByUrl('home');
     }
-    /*if (this.isLoggedIn) {
-      this.model.senderEmail = (localStorage.getItem('userEmail'));
-    }*/
   }
 
   ngOnInit() {
@@ -69,6 +66,7 @@ export class ContactFormComponent implements OnInit {
     }
 
     this.blockUI.start('Submitting request...');
+    this.model.emailType = parseInt(this.model.emailType);
     this.model.projectTitle = this.criteria;
     this.contactService.sendContactEmail(this.model).subscribe(
       data => {
