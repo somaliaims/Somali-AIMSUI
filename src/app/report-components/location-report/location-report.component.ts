@@ -441,6 +441,16 @@ export class LocationReportComponent implements OnInit {
             this.sectorLevels.sort(s => s.id);
           }
 
+          if (this.model.sectorId) {
+            if (this.sectorIds.includes(this.model.sectorId)) {
+              this.model.sectorLevel == this.sectorLevelCodes.SECTORS;
+            } else if (this.subSectorIds.includes(this.model.sectorId)) {
+              this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
+            } else if (this.subSubSectorIds.includes(this.model.sectorId)) {
+              this.model.sectorLevel = this.sectorLevelCodes.SUB_SUB_SECTORS;
+            }
+          }
+
           if (this.loadReport) {
             if (this.model.sectorId > 0) {
               var sectorId = parseInt(this.model.sectorId);
@@ -633,7 +643,9 @@ export class LocationReportComponent implements OnInit {
 
   manageSectorLevel() {
     this.model.selectedSectors = [];
-    this.model.sectorId = 0;
+    if (!this.loadReport) {
+      this.model.sectorId = 0;  
+    }
     if (this.model.sectorLevel) {
       var level = parseInt(this.model.sectorLevel);
       switch (level) {
