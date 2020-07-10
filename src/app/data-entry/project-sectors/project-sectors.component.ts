@@ -208,6 +208,7 @@ export class ProjectSectorsComponent implements OnInit {
   }
 
   getSectorMappings() {
+    this.sectorModel.selectedMapping = null;
     if (this.defaultSectorTypeId != this.sectorModel.sectorTypeId) {
       if (this.sectorModel.selectedSector && this.sectorModel.selectedSector.length > 0) {
         this.blockUI.start('Fetching sector mappings...');
@@ -462,21 +463,33 @@ export class ProjectSectorsComponent implements OnInit {
     if (unSavedSectors.length > 0 && this.projectId) {
       unSavedSectors.forEach(s => {
         if (!s.sectorId) {
-          s.sectorTypeId = parseInt(s.sectorTypeId);
-          s.sectorId = parseInt(s.mappingId);
+          s.sectorTypeId = s.sectorTypeId;
+          s.sectorId = s.mappingId;
         }
         if (s.sectorTypeId != this.defaultSectorTypeId && s.sectorId != s.mappingId) {
           var exists = this.newMappings.filter(m => m.sectorId == s.sectorId && m.mappingId == s.mappingId);
           if (exists.length == 0) {
             this.newMappings.push({
-              sectorTypeId: parseInt(s.sectorTypeId),
-              sectorId: parseInt(s.sectorId),
-              mappingId: parseInt(s.mappingId)
+              sectorTypeId: s.sectorTypeId,
+              sectorId: s.sectorId,
+              mappingId: s.mappingId
             });
           }
         }
       });
-      var sectorIds = unSavedSectors.map(s => s.sectorId);
+
+      unSavedSectors.forEach((s) => {
+        s.sectorTypeId = parseInt(s.sectorTypeId);
+        s.sectorId = parseInt(s.sectorId);
+      });
+
+      this.newMappings.forEach((m) => {
+        m.sectorTypeId = parseInt(m.sectorTypeId);
+        m.sectorId = parseInt(m.sectorId);
+        m.mappingId = parseInt(m.mappingId);
+      });
+
+      var sectorIds = unSavedSectors.map(s => parseInt(s.sectorId));
       this.newMappings = this.newMappings.filter(m => sectorIds.includes(m.sectorId));
       var model = {
         projectId: this.projectId,

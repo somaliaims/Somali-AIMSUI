@@ -284,6 +284,13 @@ export class StoreService {
       var timestamp = Date.parse(date);
       if (isNaN(timestamp) == false) {
         var dateParts = date.split('/');
+        if (parseInt(dateParts[0]) < 10) {
+          dateParts[0] =  '0' + dateParts[0];
+        }
+
+        if (parseInt(dateParts[1]) < 10) {
+          dateParts[1] =  '0' + dateParts[1];
+        }
         return (dateParts[2] + '-' + dateParts[0] + '-' + dateParts[1]);
       }
     }
