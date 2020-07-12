@@ -454,11 +454,11 @@ export class ProjectsComponent implements OnInit {
       startingYear: (this.model.startingYear) ? parseInt(this.model.startingYear) : 0,
       endingYear: (this.model.endingYear) ? parseInt(this.model.endingYear) : 0,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
-      sectorIds: this.model.selectedSectors.map(s => s.id),
-      locationIds: this.model.selectedLocations.map(l => l.id),
+      sectorIds: this.model.selectedSectors.map(s => parseInt(s.id)),
+      locationIds: this.model.selectedLocations.map(l => parseInt(l.id)),
       description: this.model.description,
-      lowerRange: lowerRange,
-      upperRange: upperRange
+      lowerRange: parseFloat(lowerRange),
+      upperRange: parseFloat(upperRange)
     };
 
     this.criteria = null;

@@ -52,8 +52,8 @@ export class JoinProjectModalComponent implements OnInit {
       this.isBtnDisabled = true;
       this.btnText = 'Wait processing...';
       var model = {
-        membershipType: this.model.membershipTypeId,
-        projectId: this.projectId
+        membershipType: parseInt(this.model.membershipTypeId),
+        projectId: parseInt(this.projectId.toString())
       };
       this.projectService.applyForProjectMembership(model).subscribe(
         data => {

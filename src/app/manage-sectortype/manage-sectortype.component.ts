@@ -86,7 +86,7 @@ export class ManageSectortypeComponent implements OnInit {
   saveSectorType() {
     var model = {
       TypeName: this.model.typeName,
-      Id: this.model.id,
+      Id: parseInt(this.model.id.toString()),
       isPrimary: this.model.isPrimary,
       isSourceType: this.model.isSourceType,
       sourceUrl: this.model.sourceUrl

@@ -154,11 +154,12 @@ export class UserOrgRegistrationComponent implements OnInit {
         return false;
       }
       this.model.isNewOrganization = true;
-      this.model.organizationId = '0';
+      this.model.organizationId = 0;
     } else if (this.selectedOrganizationId != 0) {
-      this.model.organizationId = this.selectedOrganizationId.toString();
+      this.model.organizationId = parseInt(this.selectedOrganizationId.toString());
     }
 
+    this.model.organizationTypeId = parseInt(this.model.organizationTypeId);
     this.requestNo = this.storeService.getNewRequestNumber();
     this.isProcessing = true;
     this.btnRegisterText = 'Wait processing...';
