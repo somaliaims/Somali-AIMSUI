@@ -296,6 +296,26 @@ export class BudgetReportComponent implements OnInit {
         });
       }
 
+      if (this.reportDataList.parentSectorDisbursements) {
+        this.reportDataList.parentSectorDisbursements.forEach((p) => {
+          if (p.disbursements) {
+            p.disbursements.forEach((d) => {
+              d.totalValue = Math.round(parseFloat((d.totalValue * calculatedRate).toFixed(2)));
+            });
+          }
+        });
+      }
+
+      if (this.reportDataList.locationDisbursements) {
+        this.reportDataList.locationDisbursements.forEach((p) => {
+          if (p.disbursements) {
+            p.disbursements.forEach((d) => {
+              d.totalValue = Math.round(parseFloat((d.totalValue * calculatedRate).toFixed(2)));
+            });
+          }
+        });
+      }
+
       if (this.reportDataList.totalYearlyDisbursements && this.reportDataList.totalYearlyDisbursements.length > 0) {
           this.reportDataList.totalYearlyDisbursements.forEach((t) => {
             t.totalDisbursements = Math.round(parseFloat((t.totalDisbursements * calculatedRate).toFixed(2)));
