@@ -1151,6 +1151,19 @@ export class SectorReportComponent implements OnInit {
           });
         }
       });
+
+      this.parentSectorsSummary.forEach((p) => {
+        p.actualDisbursements = Math.round(parseFloat(((p.actualDisbursements * calculatedRate).toFixed(2))));
+        p.plannedDisbursements = Math.round(parseFloat(((p.plannedDisbursements * calculatedRate).toFixed(2))));
+        p.totalDisbursements = Math.round(parseFloat(((p.totalDisbursements * calculatedRate).toFixed(2))));
+      });
+
+      this.sectorProjectsList.forEach((s) => {
+        s.actualDisbursements = Math.round(parseFloat(((s.actualDisbursements * calculatedRate).toFixed(2))));
+        s.plannedDisbursements = Math.round(parseFloat(((s.plannedDisbursements * calculatedRate).toFixed(2))));
+        s.totalDisbursements = Math.round(parseFloat(((s.totalDisbursements * calculatedRate).toFixed(2))));
+      });
+
       this.getGrandTotalFundingForSector();
       this.getGrandTotalActualDisbursementForSector();
       this.getGrandTotalPlannedDisbursementForSector();
