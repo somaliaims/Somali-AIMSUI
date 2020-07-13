@@ -10,6 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/config/settings';
 import { Color } from 'ng2-charts';
 import { UrlHelperService } from 'src/app/services/url-helper-service';
+import { Messages } from 'src/app/config/messages';
+import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-envelope-report',
@@ -20,6 +22,7 @@ export class EnvelopeReportComponent implements OnInit {
 
   organizationTypes: any = [];
   exchangeRates: any = [];
+  oldExRateToDefault: number = 0;
   organizations: any = [];
   filteredOrganizations: any = [];
   financialYears: any = [];
@@ -160,7 +163,8 @@ export class EnvelopeReportComponent implements OnInit {
     private currencyService: CurrencyService,
     private storeService: StoreService,
     private route: ActivatedRoute,
-    private urlService: UrlHelperService) { }
+    private urlService: UrlHelperService,
+    private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
@@ -542,6 +546,54 @@ export class EnvelopeReportComponent implements OnInit {
         this.blockUI.stop();
       });
     }, 500);
+  }
+
+  selectCurrency() {
+    if (this.model.selectedCurrency == null || this.model.selectCurrency == 'null') {
+      return false;
+    } else {
+      var selectedCurrency = this.currenciesList.filter(c => c.currency == this.model.selectedCurrency);
+      if (selectedCurrency.length > 0) {
+        this.selectedCurrencyName = selectedCurrency[0].currencyName;
+      }
+    }
+    if (this.model.selectedCurrency) {
+      this.getCurrencyRates();
+    }
+  }
+
+  getCurrencyRates() {
+    var exRate: number = 0;
+    var calculatedRate = 0;
+    if (this.manualExRate == 0) {
+      this.errorMessage = Messages.EX_RATE_NOT_FOUND;
+      this.errorModal.openModal();
+      return false;
+    }
+
+    if (this.model.selectedCurrency == this.defaultCurrency) {
+      exRate = 1;
+    } else {
+      exRate = this.manualExRate;
+    }
+
+    calculatedRate = (exRate / this.oldCurrencyRate);
+    this.oldCurrencyRate = exRate;
+    this.oldCurrency = this.model.selectedCurrency;
+    this.oldExRateToDefault = exRate;
+    this.applyRateOnFinancials(calculatedRate, exRate);
+  }
+
+  applyRateOnFinancials(calculatedRate = 1, defaultRate = 1) {
+    if (calculatedRate != 1) {
+      this.envelopeList.forEach((e) => {
+        e.envelopeBreakupsByType.forEach((t) => {
+          t.yearlyBreakup.forEach((y) => {
+            y.amount = Math.round(parseFloat((y.amount * calculatedRate).toFixed(2)));
+          });
+        });
+      });
+    }
   }
 
   onChangeStartingYear() {
