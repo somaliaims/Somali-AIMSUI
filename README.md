@@ -1,6 +1,6 @@
 **AIMS Deployment Guide using Docker**
 
-This document is a guide to run AIMS using Docker. To make it easy for an end user to set up and run the application within the docker container the guide is written in a step by step manner. There are two parts of the application, the backend and the frontend. The backend includes setting up SQL Server and APIs server. Before following this guide, install the docker on your system. Once you set up docker on your system, we are ready to deploy AIMS using docker.
+This document is a guide to run AIMS using Docker. To make it easy for an end user to set up and run the application within the docker container, the guide is written in a step by step manner. There are two parts of the application, the backend, and the frontend. The backend includes setting up SQL Server and APIs server. Before following this guide, install the docker on your system. Once you set up the docker on your system, you are then ready to move along deploying AIMS using docker. If you wish to setup a free SSL on Server, we recommend Let's Encrypt. You may see detailed help using their official documentation, help, and download here: ([https://letsencrypt.org/](https://letsencrypt.org/)).
 
 **1. Setting up Docker**
 
