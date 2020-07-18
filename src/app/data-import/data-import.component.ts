@@ -118,4 +118,23 @@ export class DataImportComponent implements OnInit {
     });
   }
 
+  uploadFileFixGhostOrgs(files) {
+    if (files.length === 0) {
+      return;
+    }
+
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+
+    this.fileUploadService.uploadGhostOrgsFixFile(formData).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress)
+        this.progressLatest = Math.round(100 * event.loaded / event.total);
+      else if (event.type === HttpEventType.Response) {
+        this.messageLatest = 'File uploaded successfully';
+        this.onUploadFinished.emit(event.body);
+      }
+    });
+  }
+
 }

@@ -47,4 +47,11 @@ export class FileUploadService {
         );
     }
 
+    uploadGhostOrgsFixFile(formData: any) {
+        var url = this.urlHelper.getFixGhostOrgsImportUrl();
+        return this.httpClient.post(url, 
+            formData, {reportProgress: true, observe: 'events'}
+        );
+    }
+
 }

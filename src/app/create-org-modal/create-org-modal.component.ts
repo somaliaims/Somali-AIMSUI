@@ -47,17 +47,21 @@ export class CreateOrgModalComponent implements OnInit {
   saveOrganization() {
     this.isBtnDisabled = true;
     this.btnText = 'Saving...';
-    this.organizationService.addOrganization(this.model).subscribe(
-      data => {
-        if (data) {
-          this.model.id = data;
-          this.updateFundersImplementers();
-          setTimeout(() => {
-            this.modalService.close('create-org-modal');
-          }, 1000);
+    if (this.model.organizationTypeId) {
+      this.model.organizationTypeId = parseInt(this.model.organizationTypeId);
+      this.organizationService.addOrganization(this.model).subscribe(
+        data => {
+          if (data) {
+            this.model.id = data;
+            this.updateFundersImplementers();
+            setTimeout(() => {
+              this.modalService.close('create-org-modal');
+            }, 1000);
+          }
         }
-      }
-    );
+      );
+    }
+    
   }
 
   openModal() {

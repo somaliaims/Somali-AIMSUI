@@ -106,6 +106,23 @@
                 </span>
               </div>
 
+              <h5 class="card-title text-center margin-top-50">Upload fix for Ghost organizations</h5>
+              <div class="row">
+                <input type="file" accept=".xlsx" #fileghost placeholder="Choose file"
+                  (change)="uploadFileFixGhostOrgs(fileghost.files)" style="display:none;">
+                <button type="button" class="btn btn-lg btn-info btn-block text-uppercase"
+                  (click)="fileghost.click()">Click
+                  and select file</button>
+              </div>
+              <div class="row">
+                <span class="upload" *ngIf="progressLatest > 0">
+                  Uploaded {{progressLatest}}%
+                </span>
+                <span class="upload" *ngIf="messageNew">
+                  {{messageLatest}}
+                </span>
+              </div>
+
             </div>
 
           </div>

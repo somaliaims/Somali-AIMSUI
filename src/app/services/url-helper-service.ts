@@ -753,6 +753,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.importNewExcelDataUrl);
     }
 
+    getFixGhostOrgsImportUrl() {
+        return (this.BASE_URL + urlsList.urls.importFixGhostOrgsUrl);
+    }
+
     getLatestExcelImportUrl() {
         return (this.BASE_URL + urlsList.urls.importLatestDataUrl);
     }

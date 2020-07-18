@@ -153,7 +153,7 @@ export class BudgetReportComponent implements OnInit {
 
         setTimeout(() => {
           this.isDataLoading = false;
-        }, 2000);
+        }, 3000);
       }
     );
   }
