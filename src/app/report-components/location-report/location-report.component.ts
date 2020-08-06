@@ -304,13 +304,13 @@ export class LocationReportComponent implements OnInit {
         if (params) {
           this.model.title = (params.title) ? params.title : null;
           this.model.noLocationOption = (params.noLocations) ? this.noLocationCodes.PROJECTS_WITHOUT_LOCATIONS : this.noLocationCodes.PROJECTS_WITH_LOCATIONS;
-          this.model.startingYear = (params.syear) ? params.syear : 0;
-          this.model.endingYear = (params.eyear) ? params.eyear : 0;
-          this.model.sectorId = (params.sectorId) ? params.sectorId : 0;
-          this.model.markerId = (params.mid) ? params.mid : 0;
-          this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
-          this.paramLocationIds = (params.locations) ? params.locations.split(',') : [];
-          this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
+          this.model.startingYear = (params.syear) ? parseInt(params.syear) : 0;
+          this.model.endingYear = (params.eyear) ? parseInt(params.eyear) : 0;
+          this.model.sectorId = (params.sectorId) ? parseInt(params.sectorId) : 0;
+          this.model.markerId = (params.mid) ? parseInt(params.mid) : 0;
+          this.paramProjectIds = (params.projects) ? params.projects.split(',').map(p => parseInt(p)) : [];
+          this.paramLocationIds = (params.locations) ? params.locations.split(',').map(l => parseInt(l)) : [];
+          this.paramOrgIds = (params.orgs) ? params.orgs.split(',').map(o => parseInt(o)) : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           if (params.mvalue) {
             this.paramMarkerValues = params.mvalue.split(',');

@@ -308,15 +308,15 @@ export class SectorReportComponent implements OnInit {
           this.model.title = (params.title) ? params.title : null;
           this.isNoSectorReport = (params.noSectors) ? true : false;
           this.model.sectorLevel = (params.noSectors) ? this.sectorLevelCodes.NO_SECTORS : this.model.sectorLevel;
-          this.model.startingYear = (params.syear) ? params.syear : 0;
-          this.model.endingYear = (params.eyear) ? params.eyear : 0;
-          this.model.locationId = (params.locationId) ? params.locationId : 0;
-          this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
-          this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
-          this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
-          this.model.markerId = (params.mid) ? params.mid : 0;
+          this.model.startingYear = (params.syear) ? parseInt(params.syear) : 0;
+          this.model.endingYear = (params.eyear) ? parseInt(params.eyear) : 0;
+          this.model.locationId = (params.locationId) ? parseInt(params.locationId) : 0;
+          this.paramProjectIds = (params.projects) ? params.projects.split(',').map(p => parseInt(p)) : [];
+          this.paramSectorIds = (params.sectors) ? params.sectors.split(',').map(s => parseInt(s)) : [];
+          this.paramOrgIds = (params.orgs) ? params.orgs.split(',').map(o => parseInt(o)) : [];
+          this.model.markerId = (params.mid) ? parseInt(params.mid) : 0;
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
-          this.model.sectorLevel = (params.level) ? params.level : this.sectorLevelCodes.SECTORS;
+          this.model.sectorLevel = (params.level) ? parseInt(params.level) : this.sectorLevelCodes.SECTORS;
           if (this.model.sectorLevel) {
             this.manageSectorLevel();
           }
