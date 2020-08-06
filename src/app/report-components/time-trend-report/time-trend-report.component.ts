@@ -262,13 +262,13 @@ export class TimeTrendReportComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         if (params) {
           this.model.title = (params.title) ? params.title : null;
-          this.model.startingYear = (params.syear) ? params.syear : 0;
-          this.model.endingYear = (params.eyear) ? params.eyear : 0;
-          this.paramProjectIds = (params.projects) ? params.projects.split(',') : [];
-          this.paramSectorIds = (params.sectors) ? params.sectors.split(',') : [];
-          this.model.locationId = (params.locationId) ? params.locationId : 0;
-          this.model.markerId = (params.mid) ? params.mid : 0;
-          this.paramOrgIds = (params.orgs) ? params.orgs.split(',') : [];
+          this.model.startingYear = (params.syear) ? parseInt(params.syear) : 0;
+          this.model.endingYear = (params.eyear) ? parseInt(params.eyear) : 0;
+          this.paramProjectIds = (params.projects) ? params.projects.split(',').map(p => parseInt(p)) : [];
+          this.paramSectorIds = (params.sectors) ? params.sectors.split(',').map(s => parseInt(s)) : [];
+          this.model.locationId = (params.locationId) ? parseInt(params.locationId) : 0;
+          this.model.markerId = (params.mid) ? parseInt(params.mid) : 0;
+          this.paramOrgIds = (params.orgs) ? params.orgs.split(',').map(o => parseInt(o)) : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           if (params.mvalue) {
             this.paramMarkerValues = params.mvalue.split(',');

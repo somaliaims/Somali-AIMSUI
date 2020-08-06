@@ -33,6 +33,7 @@ export class EnvelopeReportComponent implements OnInit {
   selectedOrganizationTypes: any = [];
   selectedEnvelopeTypes: any = [];
   selectedOrganizations: any = [];
+  paramFunderTypes: any = [];
   paramFunders: any = [];
   paramEnvelopeTypes: any = [];
   humanitarianSummary: any = [];
@@ -204,11 +205,11 @@ export class EnvelopeReportComponent implements OnInit {
     if (this.route.snapshot.queryParams.load) {
       this.route.queryParams.subscribe(params => {
         if (params) {
-          this.model.funderTypeId = (params.funderType) ? params.funderType : null;
-          this.model.startingYear = (params.syear) ? params.syear : 0;
-          this.model.endingYear = (params.eyear) ? params.eyear : 0;
-          this.paramFunders = (params.funders) ? params.funders.split(',') : [];
-          this.paramEnvelopeTypes = (params.envelopeTypes) ? params.envelopeTypes.split(',') : [];
+          this.model.startingYear = (params.syear) ? parseInt(params.syear) : 0;
+          this.model.endingYear = (params.eyear) ? parseInt(params.eyear) : 0;
+          this.paramFunderTypes = (params.ftypes) ? params.ftypes.split(',').map(ft => parseInt(ft)) : [];
+          this.paramFunders = (params.funders) ? params.funders.split(',').map(f => parseInt(f)) : [];
+          this.paramEnvelopeTypes = (params.envelopeTypes) ? params.envelopeTypes.split(',').map(e => parseInt(e)) : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.loadReport = true;
         }
@@ -300,6 +301,16 @@ export class EnvelopeReportComponent implements OnInit {
       data => {
         if (data) {
           this.organizationTypes = data;
+          if (this.loadReport) {
+            if (this.paramFunderTypes.length > 0) {
+              this.paramFunderTypes.forEach((f) => {
+                var funderType = this.organizationTypes.filter(t => t.id == f);
+                if (funderType.length > 0) {
+                  this.selectedOrganizationTypes.push(funderType[0]);
+                }
+              });
+            }
+          }
         }
       }
     );
@@ -313,10 +324,6 @@ export class EnvelopeReportComponent implements OnInit {
           this.filteredOrganizations = data;
           if (this.loadReport) {
             if (this.paramFunders.length > 0) {
-              var org = this.organizations.filter(o => o.id == this.paramFunders[0]);
-              if (org.length > 0) {
-                this.model.funderTypeId = org[0].organizationTypeId;
-              }
               this.paramFunders.forEach((f) => {
                 var funder = this.organizations.filter(o => o.id == f);
                 if (funder.length > 0) {
