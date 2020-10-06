@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, Renderer } from '@angular/core';
+import { Directive, Input, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[elFocus]'
@@ -6,11 +6,11 @@ import { Directive, Input, ElementRef, Renderer } from '@angular/core';
 export class FocusDirective {
   @Input('elFocus') isFocused: boolean;
 
-  constructor(private hostElement: ElementRef, private renderer: Renderer) { }
+  constructor(private hostElement: ElementRef, private renderer: Renderer2) { }
 
   ngOnInit() {
     if (this.isFocused) {
-      this.renderer.invokeElementMethod(this.hostElement.nativeElement, 'focus');
+      this.hostElement.nativeElement.focus();
     }
   }
 

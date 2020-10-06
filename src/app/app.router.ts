@@ -181,7 +181,7 @@ export const routes: Routes = [
   { path: '**', component: NotFoundComponent },
 ];
 
-export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);
+export const Routing: ModuleWithProviders = RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" });
 
 /*
 Adding children to main routes
