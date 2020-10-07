@@ -133,5 +133,8 @@
       }
     }
   },
-  "defaultProject": "aims-ui"
+  "defaultProject": "aims-ui",
+  "cli": {
+    "analytics": "3e54cc7d-929b-4744-b786-908a4a2c01d1"
+  }
 }

@@ -9,6 +9,7 @@ import { CurrencyService } from '../services/currency.service';
 import { HomePageService } from '../services/home-page.service';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { EmbedVideoService } from 'ngx-embed-video';
+import { faBuilding, faMoneyCheck, faTasks, faUser } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,10 @@ import { EmbedVideoService } from 'ngx-embed-video';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  faBuilding: any = faBuilding;
+  faMoneyCheck: any = faMoneyCheck;
+  faTasks: any = faTasks;
+  faUser: any = faUser;
   infoMessage: string = null;
   showMessage: boolean = false;
   isProjectsLoading: boolean = true;

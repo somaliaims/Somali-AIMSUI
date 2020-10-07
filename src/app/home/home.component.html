@@ -20,7 +20,7 @@
         <div class="card-body text-info">
           <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-              <fa name="user" size="5x"></fa>
+              <fa-icon [icon]="faUser" size="4x"></fa-icon>
             </div>
             <div class="col-xs-9 col-md-9 col-sm-9 col-xs-9 text-right">
               <div class="font-dashboard-menu-item">{{usersCount}}</div>
@@ -39,7 +39,7 @@
         <div class="card-body text-danger">
           <div class="row">
             <div class="col-xs-3 col-md-3">
-              <fa name="tasks" size="5x"></fa>
+              <fa-icon [icon]="faTasks" size="4x"></fa-icon>
             </div>
             <div class="col-xs-9 col-md-9 text-right">
               <div class="font-dashboard-menu-item">{{projectsCount}}</div>
@@ -58,7 +58,7 @@
         <div class="card-body text-success">
           <div class="row">
             <div class="col-xs-3 col-md-3">
-              <fa name="building" size="5x"></fa>
+              <fa-icon [icon]="faBuilding" size="4x"></fa-icon>
             </div>
             <div class="col-xs-9 col-sm-9 col-md-9 text-right">
               <div class="font-dashboard-menu-item">{{organizationsCount}}</div>
@@ -79,7 +79,7 @@
         <div class="card-body text-primary">
           <div class="row">
             <div class="col-xs-3 col-md-3">
-              <fa name="money" size="5x"></fa>
+              <fa-icon [icon]="faMoneyCheck" size="4x"></fa-icon>
             </div>
             <div class="col-xs-9 col-md-9 text-right">
               <div class="font-dashboard-menu-item-small">{{formatNumberWithCommas(currentYearDisbursements)}}</div>

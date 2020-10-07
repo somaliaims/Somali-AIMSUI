@@ -8,7 +8,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxPaginationModule } from 'ngx-pagination';
 import {NgbDatepickerModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import { BlockUIModule } from 'ng-block-ui';
@@ -16,15 +15,15 @@ import { ChartsModule } from 'ng2-charts';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { EmbedVideo } from 'ngx-embed-video';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { AppRoutingModule } from './app.router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { Routing } from './app.router';
 import { AppComponent } from './main/app.component';
 import { LoginComponent } from './login/login.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 import { UserOrgRegistrationComponent } from './user-org-registration/user-org-registration.component';
 import { FocusDirective } from './directives/focus-directive.directive';
 import { HomeComponent } from './home/home.component';
-import { ErrorInterceptor } from './helpers/error.interceptor';
 import { ProjectsComponent } from './projects/projects.component';
 import { ReportsPanelComponent } from './reports-panel/reports-panel.component';
 import { ManagementComponent } from './management/management.component';
@@ -239,20 +238,20 @@ import { ProjectReportModalComponent } from './project-report-modal/project-repo
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    Routing,
+    AppRoutingModule,
     HttpClientModule,
     MatInputModule,
     MatAutocompleteModule,
     MatFormFieldModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    AngularFontAwesomeModule,
     NgxPaginationModule,
     NgbDatepickerModule,
     TooltipModule,
     BlockUIModule.forRoot(),
     ChartsModule,
     NgMultiSelectDropDownModule.forRoot(),
+    FontAwesomeModule,
     EmbedVideo.forRoot()
   ],
   providers: [

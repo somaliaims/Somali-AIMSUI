@@ -1,4 +1,4 @@
-import { ModuleWithProviders, Component }  from '@angular/core';
+import { ModuleWithProviders, Component, NgModule }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
@@ -84,7 +84,7 @@ import { EmailUsersComponent } from './email-users/email-users.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
 
 // Route Configuration
-export const routes: Routes = [
+const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'home', component: HomeComponent},
   { path: 'login', component: LoginComponent },
@@ -181,8 +181,14 @@ export const routes: Routes = [
   { path: '**', component: NotFoundComponent },
 ];
 
-export const Routing: ModuleWithProviders = RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" });
+//export const Routing: ModuleWithProviders = RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" });
 
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {
+}
 /*
 Adding children to main routes
 children: [
