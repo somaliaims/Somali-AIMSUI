@@ -78,6 +78,23 @@ export class OrganizationsComponent implements OnInit {
     }
   }
 
+  formatDateUKStyle(dated: any) {
+    var validDate = Date.parse(dated);
+    if (isNaN(validDate)) {
+      return 'Invalid date';
+    }
+    var datesArr = dated.split('/');
+    return this.storeService.formatDateInUkStyle(parseInt(datesArr[2]), parseInt(datesArr[0]), parseInt(datesArr[1]));
+  }
+
+  sortOrgsByDateUpdatedAsc() {
+    this.filteredOrganizationsList.sort((a, b) => new Date(a.dateUpdated) > new Date(b.dateUpdated));
+  }
+
+  sortOrgsByDateUpdatedDes() {
+    this.filteredOrganizationsList.sort((a, b) => new Date(b.dateUpdated) > new Date(a.dateUpdated));
+  }
+
   edit(id: string) {
     this.router.navigateByUrl('/manage-organization/' + id);
   }

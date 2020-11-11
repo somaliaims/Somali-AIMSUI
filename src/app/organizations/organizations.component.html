@@ -42,11 +42,17 @@
         <tr>
           <th>Organization name</th>
           <th>Type</th>
+          <th>
+            <button title="Sort by recently updated" (click)="sortOrgsByDateUpdatedDes()" class="btn btn-info btn-sm"><i class="fa fa-arrow-down color-white"></i></button>&nbsp;
+            Date updated&nbsp;
+            <button title="Sort by not recently updated" (click)="sortOrgsByDateUpdatedAsc()" class="btn btn-info btn-sm"><i class="fa fa-arrow-up color-white"></i></button>&nbsp;
+          </th>
           <th>Actions</th>
         </tr>
         <tr *ngFor="let org of filteredOrganizationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
           <td>{{org.organizationName}}</td>
           <td>{{org.organizationType}}</td>
+          <td>{{formatDateUKStyle(org.dateUpdated)}}</td>
           <td>
             <a title="Edit" (click)="edit(org.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
             &nbsp;
