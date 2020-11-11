@@ -54,5 +54,6 @@ export const Messages = {
     ORG_NOT_PROVIDED_PROJECT: 'Please provide your organization as funder/implementer',
     INVALID_PROJECT_VALUE_DISBURSEMENTS: 'Project value must be equal to disbursements total value. Adjust disbursements using financials tab and/or adjust project value here.',
     ORGANIZATIONS_MERGED: 'Organizations merged. System will logout you to bring your updated data on the next login',
-    UNSAVED_DISBURSEMENTS: 'There are unsaved disbursements on this page. Please save disbursements before moving forward'
+    UNSAVED_DISBURSEMENTS: 'There are unsaved disbursements on this page. Please save disbursements before moving forward',
+    ORG_CREATED_ADD_ANOTHER: 'Organization created successfully. You can now add another if required'
 }

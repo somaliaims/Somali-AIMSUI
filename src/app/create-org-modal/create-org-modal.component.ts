@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Injectable } from '@angular/co
 import { OrganizationService } from '../services/organization-service';
 import { ModalService } from '../services/modal.service';
 import { StoreService } from '../services/store-service';
+import { Messages } from '../config/messages';
 
 @Component({
   selector: 'create-org-modal',
@@ -13,11 +14,13 @@ import { StoreService } from '../services/store-service';
   providedIn: 'root'
 })
 export class CreateOrgModalComponent implements OnInit {
+  newOrganizations: any = [];
+  organizationForm: any = null;
   organization: string = null;
   isError: boolean = false;
   errorMessage: string = null;
   isSuccess: boolean = false;
-  successMessage: string = null;
+  successMessage: string = Messages.ORG_CREATED_ADD_ANOTHER;
   organizationTypes: any = [];
   model: any = { organizationTypeId: null, name: null };
   isBtnDisabled: boolean = false;
@@ -44,8 +47,10 @@ export class CreateOrgModalComponent implements OnInit {
     this.getOrganizationTypes();
   }
 
-  saveOrganization() {
+  saveOrganization(frm: any) {
+    this.isSuccess = false;
     this.isBtnDisabled = true;
+    this.organizationForm = frm;
     this.btnText = 'Saving...';
     if (this.model.organizationTypeId) {
       this.model.organizationTypeId = parseInt(this.model.organizationTypeId);
@@ -53,10 +58,24 @@ export class CreateOrgModalComponent implements OnInit {
         data => {
           if (data) {
             this.model.id = data;
-            this.updateFundersImplementers();
+            var model = {
+              id: this.model.id,
+              organizationName: this.model.name,
+              sourceType: 'User',
+              organizationTypeId: this.model.organizationTypeId
+            }
+            this.newOrganizations.push(model);
+            this.isSuccess = true;
+            this.model.organizationTypeId = null;
+            this.model.name = null;
+            this.model.id = 0;
+            this.isBtnDisabled = false;
+            this.btnText = 'Save organization';
+            this.organizationForm.resetForm();
+            /*this.updateFundersImplementers();
             setTimeout(() => {
               this.modalService.close('create-org-modal');
-            }, 1000);
+            }, 1000);*/
           }
         }
       );
@@ -69,6 +88,10 @@ export class CreateOrgModalComponent implements OnInit {
   }
 
   closeModal() {
+    if (this.newOrganizations.length > 0) {
+      this.model.sourceType = 'User';
+      this.organizationCreated.emit(this.newOrganizations);
+    }
     this.modalService.close('create-org-modal');
   }
 
@@ -84,14 +107,17 @@ export class CreateOrgModalComponent implements OnInit {
   }
 
   updateFundersImplementers() {
-    var model = {
+    /*var model = {
       id: this.model.id,
       organizationName: this.model.name,
       sourceType: 'User',
       organizationTypeId: this.model.organizationTypeId
-    }
+    }*/
+
     this.model.sourceType = 'User';
-    this.organizationCreated.emit(model);
+    //this.organizationCreated.emit(model);
+    this.organizationCreated.emit(this.newOrganizations);
+    this.modalService.close('create-org-modal');
   }
 
 }

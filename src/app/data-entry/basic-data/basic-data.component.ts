@@ -1175,14 +1175,17 @@ export class BasicDataComponent implements OnInit {
     this.orgModal.openModal();
   }
 
-  updateFundersImplementers(model) {
-    this.organizationsList = this.organizationsList.concat({
-        id: model.id,
-        organizationTypeId: model.organizationTypeId,
-        organizationName: model.organizationName,
-        sourceType: model.sourceType
-      }
-    );
+  updateFundersImplementers(newOrganizations) {
+    if (newOrganizations && newOrganizations.length > 0) {
+      newOrganizations.forEach((model) => {
+        this.organizationsList = this.organizationsList.concat({
+          id: model.id,
+          organizationTypeId: model.organizationTypeId,
+          organizationName: model.organizationName,
+          sourceType: model.sourceType
+        });
+      });
+    }
   }
 
   formatToLongDate(dated: string) {

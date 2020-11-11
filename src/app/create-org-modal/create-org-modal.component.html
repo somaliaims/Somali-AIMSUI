@@ -19,7 +19,7 @@
                     </div>
 
                     <div *ngIf="!isDataLoading" class="form-group">
-                        <form class="form-signin" (ngSubmit)="organizationForm.form.valid && saveOrganization()"
+                        <form class="form-signin" (ngSubmit)="organizationForm.form.valid && saveOrganization(organizationForm);"
                             #organizationForm="ngForm">
                             <div class="form-group">
                                 <label for="text">Organization type</label>
@@ -44,8 +44,15 @@
                                 </div>
                             </div>
 
-                            <button *ngIf="!isDataLoading" [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
-                                type="submit">{{btnText}}</button>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button *ngIf="!isDataLoading" [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{btnText}}</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button *ngIf="!isDataLoading" [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase" (click)="updateFundersImplementers()" type="button">Done</button>
+                                </div>
+                            </div>
+                            
                         </form>
                     </div>
                 </div>
