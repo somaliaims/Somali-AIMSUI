@@ -43,6 +43,7 @@ export class OrganizationsComponent implements OnInit {
         if (data && data.length) {
           this.organizationsList = data;
           this.filteredOrganizationsList = data;
+          this.sortOrgsByDateUpdatedDesc();
         }
       }
     );
@@ -88,11 +89,11 @@ export class OrganizationsComponent implements OnInit {
   }
 
   sortOrgsByDateUpdatedAsc() {
-    this.filteredOrganizationsList.sort((a, b) => new Date(a.dateUpdated) > new Date(b.dateUpdated));
+    this.filteredOrganizationsList.sort(this.sortByDateAsc);
   }
 
-  sortOrgsByDateUpdatedDes() {
-    this.filteredOrganizationsList.sort((a, b) => new Date(b.dateUpdated) > new Date(a.dateUpdated));
+  sortOrgsByDateUpdatedDesc() {
+    this.filteredOrganizationsList.sort(this.sortByDateDesc);
   }
 
   edit(id: string) {
@@ -102,5 +103,17 @@ export class OrganizationsComponent implements OnInit {
   delete(id: string) {
     this.router.navigateByUrl('/delete-organization/' + id);
   }
+
+  sortByDateDesc(a,b){  
+    var dateA = new Date(a.dateUpdated).getTime();
+    var dateB = new Date(b.dateUpdated).getTime();
+    return dateB > dateA ? 1 : -1;  
+  }; 
+
+  sortByDateAsc(a,b){  
+    var dateA = new Date(a.dateUpdated).getTime();
+    var dateB = new Date(b.dateUpdated).getTime();
+    return dateA > dateB ? 1 : -1;  
+  }; 
 
 }

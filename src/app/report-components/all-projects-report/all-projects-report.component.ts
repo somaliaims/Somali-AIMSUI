@@ -7,6 +7,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { UrlHelperService } from 'src/app/services/url-helper-service';
 import { OrganizationService } from 'src/app/services/organization-service';
+import { CurrencyService } from 'src/app/services/currency.service';
 
 @Component({
   selector: 'app-all-projects-report',
@@ -22,8 +23,10 @@ export class AllProjectsReportComponent implements OnInit {
   requestNo: number = 0;
   isAnyFilterSet: boolean = false;
   errorMessage: string = null;
+  defaultCurrency: string = null;
   btnReportText: string = 'Generate export';
-  model: any = { organizationId: 0, selectedOrganization: null, startingYear: 0, endingYear: 0 };
+  model: any = { organizationId: 0, selectedOrganization: null, startingYear: 0, endingYear: 0,
+    useDefaultCurrency: false };
   organizationsSettings: any = {};
 
   
@@ -31,10 +34,12 @@ export class AllProjectsReportComponent implements OnInit {
   constructor(private reportService: ReportService, private storeService: StoreService,
     private yearsService: FinancialYearService, private errorModal: ErrorModalComponent,
     private urlService: UrlHelperService,
-    private organizationService: OrganizationService) { }
+    private organizationService: OrganizationService,
+    private currencyService: CurrencyService) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.reports);
+    this.getDefaultCurrency();
     this.getFinancialYears();
 
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -98,6 +103,16 @@ export class AllProjectsReportComponent implements OnInit {
     );
   }
 
+  getDefaultCurrency() {
+    this.currencyService.getDefaultCurrency().subscribe(
+      data => {
+        if (data) {
+          this.defaultCurrency = data.currency;
+        }
+      }
+    );
+  }
+
   setExcelFile() {
     if (this.excelFile) {
       this.excelFile = this.urlService.getExcelFilesUrl() + this.excelFile;
@@ -118,6 +133,10 @@ export class AllProjectsReportComponent implements OnInit {
       } else {
         this.isAnyFilterSet = true;
       }
+  }
+
+  toggleCurrencyUsage() {
+    this.model.useDefaultCurrency = !this.model.useDefaultCurrency;
   }
 
   setFilter() {

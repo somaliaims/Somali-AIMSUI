@@ -51,17 +51,29 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-lg-12 col-sm-12  margin-top-10">
-                                <div class="float-right">
-                                        <span *ngIf="excelFile" class="text-warning">
-                                            <i><b>Export generated successfully</b>&nbsp;&nbsp;</i>
-                                        </span>
-                                        <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download export as spreadsheet</a>&nbsp;
-                                        <button [class.disable]="isProcessing" type="submit" class="btn btn-info">
-                                            {{btnReportText}}
+                            <div class="row margin-top-10">
+                                <div class="col-md-6 col-lg-6 col-sm-6">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <button type="button" (click)="toggleCurrencyUsage()" class="btn btn-info btn-sm">
+                                          <i *ngIf="!model.useDefaultCurrency" class="fa fa-square"></i>
+                                          <i *ngIf="model.useDefaultCurrency" class="fa fa-check"></i>
                                         </button>
+                                        &nbsp;Show amounts in {{defaultCurrency}}
+                                      </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="float-right">
+                                            <span *ngIf="excelFile" class="text-warning">
+                                                <i><b>Export generated successfully</b>&nbsp;&nbsp;</i>
+                                            </span>
+                                            <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download export as spreadsheet</a>&nbsp;
+                                            <button [class.disable]="isProcessing" type="submit" class="btn btn-info">
+                                                {{btnReportText}}
+                                            </button>
+                                    </div>
                                 </div>
                             </div>
+                            
                         </form>
                     </div>
                 </div>
