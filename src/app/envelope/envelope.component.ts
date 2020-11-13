@@ -39,6 +39,11 @@ export class EnvelopeComponent implements OnInit {
   defaultCurrency: string = null;
   nationalCurrency: string = null;
   exRateSource: string = null;
+  areSettingsLoading: boolean = true;
+  financialYearSettings: any = { currentFinancialYear: 0, currentFinancialYearLabel: '', 
+    month: 1, day: 1 };
+  fyStartingDate: any = null;
+  fyEndingDate: any = null;
   model: any = { currency: null, exchangeRate: 1 };
   envelopeData: any = { funderId: 0, funderName: null, currency: null, yearlyBreakup: [] };
   envelopeBreakups: any = [];
@@ -52,6 +57,11 @@ export class EnvelopeComponent implements OnInit {
     currentYear: 0,
     nextYear: 0
   };
+
+  tooltipOptions = {
+    'placement': 'top',
+    'show-delay': 500
+  }
 
   @BlockUI() blockUI: NgBlockUI;
   constructor(private securityService: SecurityHelperService, private router: Router,
@@ -67,6 +77,7 @@ export class EnvelopeComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
+    this.getFinancialYearSettings();
     this.getFinancialYears();
     this.getAverageExchangeRates();
     this.getCurrenciesList();
@@ -74,6 +85,28 @@ export class EnvelopeComponent implements OnInit {
     this.currentYear = this.storeService.getCurrentYear();
     this.previousYear = (this.currentYear - 1);
     this.nextYear = (this.currentYear + 1);
+    
+  }
+
+  getFinancialYearSettings() {
+    this.yearsService.getSettings().subscribe(
+      data => {
+        if (data) {
+          this.financialYearSettings.month = data.month;
+          this.financialYearSettings.day = data.day;
+          this.financialYearSettings.currentFinancialYear = data.currentFinancialYear;
+          this.financialYearSettings.currentFinancialYearLabel = data.currentFinancialYearLabel;
+
+          var year = this.financialYearSettings.currentFinancialYear;
+          var month = this.financialYearSettings.month;
+          var day = this.financialYearSettings.day;
+          this.fyStartingDate = new Date(year, (month - 1), day).toDateString();
+          var endDate = new Date(year, (month - 1), day - 1);
+          this.fyEndingDate = new Date(year, endDate.getMonth(), endDate.getDate()).toDateString();
+        }
+        this.areSettingsLoading = false;
+      }
+    );
   }
 
   getEnvelopeTypes() {
