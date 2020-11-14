@@ -34,8 +34,9 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                    <ng-multiselect-dropdown [placeholder]="'-- All Envelope type/s --'" title="Envelope type" [data]="envelopeTypes"
-                    [(ngModel)]="selectedEnvelopeTypes" [settings]="envelopeTypeSettings"
+                    <ng-multiselect-dropdown [placeholder]="'-- All Envelope type/s --'" title="Envelope type" 
+                    [settings]="envelopeTypeSettings" [data]="envelopeTypes"
+                    [(ngModel)]="selectedEnvelopeTypes" 
                     (onSelect)="onEnvelopeSelect($event)" (onDeSelect)="onEnvelopeDeSelect($event)"
                     (onSelectAll)="onEnvelopeSelectAll($event)" (onDeSelectAll)="onEnvelopeDeSelectAll($event)"
                     name="selectedEnvelopeTypes"
@@ -46,8 +47,10 @@
 
               <div class="row margin-top-10">
                 <div class="col-md-6">
-                    <ng-multiselect-dropdown [placeholder]="'-- All organization types --'" title="Organization type" [data]="organizationTypes"
-                    [(ngModel)]="selectedOrganizationTypes" [settings]="organizationTypeSettings"
+                    <ng-multiselect-dropdown [placeholder]="'-- All organization types --'" 
+                    [settings]="organizationTypeSettings"
+                    title="Organization type" [data]="organizationTypes"
+                    [(ngModel)]="selectedOrganizationTypes" 
                     name="selectedOrganizationTypes" (onSelect)="getOrganizationsForType();onOrganizationTypeSelect($event)" 
                     (onDeSelect)="getOrganizationsForType(0);onOrganizationTypeDeSelect($event)" 
                     (onSelectAll)="getOrganizationsForType(1);onOrganizationTypeSelectAll($event)"
@@ -56,8 +59,10 @@
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
-                    <ng-multiselect-dropdown [placeholder]="'-- All organizations --'" title="Organization" [data]="filteredOrganizations"
-                    [(ngModel)]="selectedOrganizations" [settings]="organizationSettings"
+                    <ng-multiselect-dropdown [placeholder]="'-- All organizations --'" title="Organization" 
+                    [settings]="organizationSettings"
+                    [data]="filteredOrganizations"
+                    [(ngModel)]="selectedOrganizations" 
                     (onSelect)="onOrganizationSelectAll($event)" (onDeSelect)="onOrganizationDeSelect($event)"
                     (onSelectAll)="onOrganizationSelectAll($event)" (onDeSelectAll)="onOrganizationDeSelectAll($event)"
                     name="selectedOrganizations"

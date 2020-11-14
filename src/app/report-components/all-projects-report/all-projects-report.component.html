@@ -46,7 +46,8 @@
                                 <div class="col-md-4">
                                     <label>Organization (optional): </label>
                                     <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
-                                        [data]="organizationsList" [(ngModel)]="model.selectedOrganization" [settings]="organizationsSettings"
+                                        [settings]="organizationsSettings"
+                                        [data]="organizationsList" [(ngModel)]="model.selectedOrganization" 
                                         name="selectedOrganization" #selectedOrganization="ngModel">
                                     </ng-multiselect-dropdown>
                                 </div>

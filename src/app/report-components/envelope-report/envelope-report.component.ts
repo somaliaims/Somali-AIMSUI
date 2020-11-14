@@ -168,9 +168,6 @@ export class EnvelopeReportComponent implements OnInit {
     private errorModal: ErrorModalComponent) { }
 
   ngOnInit() {
-    this.storeService.newReportItem(Settings.dropDownMenus.reports);
-    this.getDefaultCurrency();
-    this.getNationalCurrency();
     
     this.envelopeTypeSettings = {
       singleSelection: false,
@@ -201,6 +198,10 @@ export class EnvelopeReportComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+
+    this.storeService.newReportItem(Settings.dropDownMenus.reports);
+    this.getDefaultCurrency();
+    this.getNationalCurrency();
 
     if (this.route.snapshot.queryParams.load) {
       this.route.queryParams.subscribe(params => {
@@ -254,6 +255,13 @@ export class EnvelopeReportComponent implements OnInit {
       funderIds: this.selectedOrganizations.map(o => o.id),
       chartType: (chartType) ? parseInt(chartType) : 1
     };
+
+    if (this.model.startingYear > this.model.endingYear && this.model.endingYear != 0) {
+      this.errorMessage = Messages.START_YEAR_GREATER_THAN_ERROR;
+      this.errorModal.openModal();
+      return false;
+    }
+
     this.blockUI.start('Loading report...');
     this.reportService.getEnvelopeReport(model).subscribe(
       data => {
@@ -356,14 +364,15 @@ export class EnvelopeReportComponent implements OnInit {
     this.financialYearService.getYearsList().subscribe(
       data => {
         if (data) {
-          this.currentYear = this.storeService.getCurrentYear();
+          /*this.currentYear = this.storeService.getCurrentYear();
           var yearsList = [];
           for (var y = (this.currentYear - 1); y <= (this.currentYear + 1); y++) {
             yearsList.push(y);
           }
           if (data.length > 0) {
             this.financialYears = data.filter(f => yearsList.includes(f.financialYear));
-          }
+          }*/
+          this.financialYears = data;
         }
 
         if (this.loadReport) {

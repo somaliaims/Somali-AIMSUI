@@ -17,9 +17,11 @@
             <form class="form-signin" (ngSubmit)="searchProjectsByCriteriaReport()" #searchForm="ngForm">
               <div class="row">
                 <div class="col-lg-6 col-md-6">
-                  <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" [data]="projects"
+                  <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects" 
+                    [settings]="projectsSettings"
+                    [data]="projects"
                     [(ngModel)]="model.selectedProjects" (onSelect)="onProjectSelect($event)" (onSelectAll)="onProjectSelectAll($event)" 
-                    (onDeSelect)="onProjectDeselect($event)" (onDeSelectAll)="onProjectDeSelectAll($event)" [settings]="projectsSettings" name="selectedProjects"
+                    (onDeSelect)="onProjectDeselect($event)" (onDeSelectAll)="onProjectDeSelectAll($event)" name="selectedProjects"
                     #selectedProjects="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
@@ -60,8 +62,10 @@
                   </select>
                 </div>
                 <div [class.disable]="(model.sectorLevel == 4)" class="col-lg-3 col-md-3">
-                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" [data]="sectorsList"
-                    [(ngModel)]="model.selectedSectors" [settings]="sectorsSettings" name="selectedSectors"
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" 
+                    [settings]="sectorsSettings"
+                    [data]="sectorsList"
+                    [(ngModel)]="model.selectedSectors" name="selectedSectors"
                     (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
                     (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeSelectAll($event)" 
                     #selectedSectors="ngModel">
@@ -69,8 +73,8 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                   <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
-                    [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
-                    [settings]="organizationsSettings" 
+                    [settings]="organizationsSettings"
+                    [data]="organizationsList" [(ngModel)]="model.selectedOrganizations" 
                     (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
                     (onSelectAll)="onOrganizationSelectAll($event)" (onDeSelectAll)="onOrganizationDeSelectAll($event)" 
                     name="selectedOrganizations" #selectedOrganizations="ngModel">
@@ -100,8 +104,8 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                   <ng-multiselect-dropdown [placeholder]="'-- All values --'" title="Marker value/s"
-                    [data]="markerValues" [(ngModel)]="model.markerValues"
-                    [settings]="markerValuesSettings" 
+                    [settings]="markerValuesSettings"
+                    [data]="markerValues" [(ngModel)]="model.markerValues" 
                     name="selectedMarkerValues" #selectedMarkerValues="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
