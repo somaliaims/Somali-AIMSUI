@@ -361,7 +361,7 @@ export class EnvelopeReportComponent implements OnInit {
   }
 
   getFinancialYears() {
-    this.financialYearService.getYearsList().subscribe(
+    this.financialYearService.getYearsForEnvelope().subscribe(
       data => {
         if (data) {
           /*this.currentYear = this.storeService.getCurrentYear();
