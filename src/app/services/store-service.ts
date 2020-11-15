@@ -73,7 +73,13 @@ export class StoreService {
       var errorMessage = '';
       if (error && error.statusText) {
         if (error.statusText.toLowerCase() == 'bad request') {
-          errorMessage = error.error;
+          if(error.error && error.error.errors) {
+            var errorObject = error.error.errors;
+            var key = (Object.keys(error.error.errors)[0]);
+            errorMessage = errorObject[key];
+          } else {
+            errorMessage = error.error;
+          }
         } else if (error.statusText == 'Unknown Error') {
           errorMessage = 'Unkown Error: Something went wrong. Make sure your Internet connection ' + 
           'is working. In any other case contact AIMS Administrator.';

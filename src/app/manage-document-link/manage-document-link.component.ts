@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Messages } from '../config/messages';
 import { Settings } from '../config/settings';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { DocumentLinkService } from '../services/document-link.service';
 import { SecurityHelperService } from '../services/security-helper.service';
 import { StoreService } from '../services/store-service';
@@ -30,7 +31,7 @@ export class ManageDocumentLinkComponent implements OnInit {
 
   ngOnInit() {
     this.permissions = this.securityService.getUserPermissions();
-    if (!this.permissions.canEditDocumentLink) {
+    if (!this.permissions.canEditDocument) {
       this.router.navigateByUrl('home');
     }
     this.storeService.newReportItem(Settings.dropDownMenus.management);
@@ -49,10 +50,10 @@ export class ManageDocumentLinkComponent implements OnInit {
       this.btnText = 'Saving...';
       this.documentlinkService.addDocumentLink(this.model).subscribe(
         data => {
-          if (!this.isError) {
+          if (data) {
             var message = 'New document link' + Messages.NEW_RECORD;
             this.storeService.newInfoMessage(message);
-            this.router.navigateByUrl('documentlinks');
+            this.router.navigateByUrl('document-links');
           } else {
             this.resetFormState();
           }
