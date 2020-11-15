@@ -214,5 +214,6 @@ export const urls = {
 	deleteBackupUrl: "DataBackup/DeleteBackup",
 	countriesUrl: "IATICountry",
 	setActiveCountryUrl: "IATICountry/SetActiveCountry",
-	financialYearSettingsUrl: "FinancialYearSettings"
+	financialYearSettingsUrl: "FinancialYearSettings",
+	documentLinkUrl: "DocumentLink"
 };

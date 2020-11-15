@@ -82,6 +82,8 @@ import { DeleteOrganizationTypeComponent } from './delete-organization-type/dele
 import { FinancialYearSettingsComponent } from './financial-year-settings/financial-year-settings.component';
 import { EmailUsersComponent } from './email-users/email-users.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
+import { DocumentLinkComponent } from './document-link/document-link.component';
+import { ManageDocumentLinkComponent } from './manage-document-link/manage-document-link.component';
 
 // Route Configuration
 const routes: Routes = [
@@ -178,6 +180,8 @@ const routes: Routes = [
   { path: 'contact', component: ContactFormComponent },
   { path: 'help-text', component: ManageHelpComponent },
   { path: 'data-backup', component: DataBackupComponent },
+  { path: 'document-links', component: DocumentLinkComponent },
+  { path: 'manage-document-link', component: ManageDocumentLinkComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

@@ -921,4 +921,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.financialYearSettingsUrl);
     }
 
+    getDocumentLinkUrl() {
+        return (this.BASE_URL + urlsList.urls.documentLinkUrl);
+    }
+
 }

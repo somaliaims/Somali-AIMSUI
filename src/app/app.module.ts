@@ -123,6 +123,8 @@ import { UserManagerComponent } from './user-manager/user-manager.component';
 import { CopyPasteDirective } from './directives/copy-paste.directive';
 import { JoinProjectModalComponent } from './join-project-modal/join-project-modal.component';
 import { ProjectReportModalComponent } from './project-report-modal/project-report-modal.component';
+import { ManageDocumentLinkComponent } from './manage-document-link/manage-document-link.component';
+import { DocumentLinkComponent } from './document-link/document-link.component';
 
 @NgModule({
   declarations: [
@@ -232,6 +234,8 @@ import { ProjectReportModalComponent } from './project-report-modal/project-repo
     UserManagerComponent,
     JoinProjectModalComponent,
     ProjectReportModalComponent,
+    ManageDocumentLinkComponent,
+    DocumentLinkComponent,
   ],
   imports: [
     BrowserModule,

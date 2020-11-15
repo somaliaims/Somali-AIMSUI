@@ -52,6 +52,8 @@
                 types</a>
               <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-year-settings']">Financial
                 years</a>
+              <a *ngIf="permissions.canEditDocument" class="dropdown-item" [routerLink]="['/document-links']">Links
+                  for documents</a>
               <!--<a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial
                 years</a>-->
               <a *ngIf="permissions.canEditCustomFields" class="dropdown-item" [routerLink]="['/markers']">Markers</a>

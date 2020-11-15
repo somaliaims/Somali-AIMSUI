@@ -1,0 +1,54 @@
+<div class="container-fluid view-area">
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab" >Links to documents list</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-document-link']">Create new</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Enter title" [(ngModel)]="criteria"
+          (input)="searchLinks()" onkeypress="return event.keyCode != 13;">
+          <div class="input-group-append">
+            <button class="btn btn-outline-info" (click)="searchLinks()" type="button"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row text-center" *ngIf="isLoading">
+      <div class="col-md-12">
+        <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="!isLoading" class="col-md-12">
+      <div *ngIf="filteredLinks.length > 0" class="margin-top-10">
+        <table  class="table table-bordered table-stripped">
+          <tr>
+            <th>Title</th>
+            <th>Link</th>
+            <th>Date posted</th>
+            <th>Actions</th>
+          </tr>
+          <tr *ngFor="let link of filteredLinks | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+            <td>{{link.title}}</td>
+            <td>{{link.url}}</td>
+            <td>{{formatDateUKStyle(link.datePosted)}}</td>
+            <td>
+              <a title="Delete" (click)="delete(link.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+            </td>
+          </tr>
+        </table>
+        <pagination-controls (pageChange)="p=$event"></pagination-controls>
+      </div>
+      <div class="col-md-12 margin-top-10" *ngIf="filteredLinks.length == 0" class="text-info margin-left-10">
+            <i>No documents to show</i>
+      </div>
+    </div>
+  </div>
