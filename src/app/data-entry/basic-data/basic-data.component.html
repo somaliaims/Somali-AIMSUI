@@ -127,8 +127,10 @@
       <div class="col-lg-6 col-md-6">
         <div class="form-group form-inline">
           <label class="col-sm-1 col-form-label justify-left" for="funders">Funders</label>
-          <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select funders'" [data]="organizationsList"
-            [(ngModel)]="funderModel.selectedFunders" [settings]="fundersSettings" name="selectedFunders"
+          <ng-multiselect-dropdown class="col-sm-9" [placeholder]="'Select funders'" 
+            [settings]="fundersSettings"
+            [data]="organizationsList"
+            [(ngModel)]="funderModel.selectedFunders" name="selectedFunders"
             #selectedFunders="ngModel" title="{{projectFunderHelp.funder}}">
           </ng-multiselect-dropdown>
 
@@ -158,8 +160,10 @@
       <div class="col-lg-6 col-md-6">
         <div class="form-group form-inline">
           <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
-          <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Select implementers'" [data]="organizationsList"
-            [(ngModel)]="implementerModel.selectedImplementers" [settings]="implementersSettings" name="selectedImplementers"
+          <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Select implementers'" 
+            [settings]="implementersSettings"
+            [data]="organizationsList"
+            [(ngModel)]="implementerModel.selectedImplementers" name="selectedImplementers"
             #selectedImplementers="ngModel" title="{{projectImplementerHelp.implementer}}">
           </ng-multiselect-dropdown>
           <span class="col-sm-1">

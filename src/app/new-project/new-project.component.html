@@ -118,9 +118,11 @@
               <div *ngIf="!isAIMSLoading && !isIATILoading" class="row margin-top-10">
                 <div class="col-lg-4 col-md-4">
                   <div class="margin-top-5">
-                    <ng-multiselect-dropdown [placeholder]="'-- All IATI organization/s --'" [data]="iatiOrganizationsList"
+                    <ng-multiselect-dropdown [placeholder]="'-- All IATI organization/s --'" 
+                      [settings]="organizationsSettings"
+                      [data]="iatiOrganizationsList"
                       [(ngModel)]="model.selectedIATIOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
-                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="organizationsSettings"
+                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()"
                       name="selectedIATIOrganizations" #selectedIATIOrganizations="ngModel">
                     </ng-multiselect-dropdown>
                   </div>
@@ -133,9 +135,11 @@
                     </select>
                   </div>
                   <div [class.disable]="model.iatiSectorType == null || model.iatiSectorType == 'null'" class="margin-top-5">
-                    <ng-multiselect-dropdown [placeholder]="'-- All IATI sector/s --'" [data]="iatiSectorsList"
+                    <ng-multiselect-dropdown [placeholder]="'-- All IATI sector/s --'" 
+                      [settings]="sectorsSettings"
+                      [data]="iatiSectorsList"
                       [(ngModel)]="model.iatiSelectedSectors" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
-                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings"
+                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()"
                       name="iatiSelectedSectors" #selectedSectors="ngModel">
                     </ng-multiselect-dropdown>
                   </div>
@@ -143,9 +147,11 @@
 
                 <div class="col-lg-4 col-md-4">
                   <div class="col">
-                    <ng-multiselect-dropdown [placeholder]="'-- All AIMS organization/s --'" [data]="organizationsList"
+                    <ng-multiselect-dropdown [placeholder]="'-- All AIMS organization/s --'" 
+                      [settings]="organizationsSettings"
+                      [data]="organizationsList"
                       [(ngModel)]="model.selectedOrganizations" (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()"
-                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()" [settings]="organizationsSettings"
+                      (onSelectAll)="onItemSelectAll()" (onDeSelectAll)="onItemDeSelectAll()"
                       name="selectedOrganizations" #selectedOrganizations="ngModel">
                     </ng-multiselect-dropdown>
                   </div>
@@ -160,9 +166,11 @@
                   </div>
 
                   <div [class.disable]="model.sectorLevel == null || model.sectorLevel == 'null'" class="col margin-top-5">
-                    <ng-multiselect-dropdown [placeholder]="'-- All AIMS sector/s --'" [data]="sectorsList" [(ngModel)]="model.selectedSectors"
+                    <ng-multiselect-dropdown [placeholder]="'-- All AIMS sector/s --'" 
+                      [settings]="sectorsSettings"
+                      [data]="sectorsList" [(ngModel)]="model.selectedSectors"
                       (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" (onSelectAll)="onItemSelectAll()"
-                      (onDeSelectAll)="onItemDeSelectAll()" [settings]="sectorsSettings" name="selectedSectors"
+                      (onDeSelectAll)="onItemDeSelectAll()" name="selectedSectors"
                       #selectedSectors="ngModel">
                     </ng-multiselect-dropdown>
                   </div>
@@ -171,8 +179,10 @@
 
                 <div class="col-lg-4 col-md-4">
                   <div class="margin-top-5">
-                    <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" [data]="locationsList"
-                      [(ngModel)]="model.selectedLocations" [settings]="locationsSettings" name="selectedLocations"
+                    <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" 
+                      [settings]="locationsSettings"
+                      [data]="locationsList"
+                      [(ngModel)]="model.selectedLocations" name="selectedLocations"
                       (onSelect)="onItemSelect()" (onDeSelect)="onItemDeSelect()" (onSelectAll)="onItemSelectAll()"
                       (onDeSelectAll)="onItemDeSelectAll()" #selectedLocations="ngModel">
                     </ng-multiselect-dropdown>

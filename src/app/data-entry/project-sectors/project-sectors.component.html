@@ -38,7 +38,8 @@
           <div [class.disable]="(sectorModel.sectorTypeId == defaultSectorTypeId)" class="col-md-3 col-lg-3">
             <div class="input-group form-inline mb-3">
               <ng-multiselect-dropdown class="w-100 col-sm-10" [placeholder]="'--Sector--'" title="Sector"
-                [data]="typeSectorsList" [(ngModel)]="sectorModel.selectedSector" [settings]="sectorsSettings"
+                [settings]="sectorsSettings"
+                [data]="typeSectorsList" [(ngModel)]="sectorModel.selectedSector" 
                 (onDeSelect)="onDeSelectSector()" (onSelect)="getSectorMappings()"
                 name="selectedSector" #selectedSector="ngModel">
               </ng-multiselect-dropdown>
@@ -54,7 +55,8 @@
           <div class="col-md-3 col-lg-3">
             <div [class.disable]="sectorModel.sectorTypeId == null || sectorModel.sectorTypeId == 'null'" class="input-group form-inline mb-3">
               <ng-multiselect-dropdown class="col-sm-10" [placeholder]="'-- NDP sector/s --'" title="NDP sector/s"
-                [data]="ndpSectorsList" [(ngModel)]="sectorModel.selectedMapping" [settings]="sectorsSettings"
+                [settings]="sectorsSettings"
+                [data]="ndpSectorsList" [(ngModel)]="sectorModel.selectedMapping" 
                 name="selectedMappingSector" #selectedMappingSector="ngModel">
               </ng-multiselect-dropdown>
               <span class="col-sm-2" tooltip="{{sectorHelp.mappingSector}}" [options]="tooltipOptions">
