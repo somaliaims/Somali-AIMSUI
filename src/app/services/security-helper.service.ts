@@ -66,6 +66,14 @@ export class SecurityHelperService {
     return null;
   }
 
+  getUserEmail() {
+    return localStorage.getItem('userEmail');
+  }
+
+  getUserId() {
+    return localStorage.getItem('userId');
+  }
+
   getUserPermissions() {
     var userType = localStorage.getItem("userType");
     var permissions = {};

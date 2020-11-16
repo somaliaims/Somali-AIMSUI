@@ -158,6 +158,8 @@
         </div>
       </div>
 
+      
+
     </div>
 
 
@@ -182,6 +184,40 @@
           </div>
         </div>
 
+        <div class="col-md-12 col-lg-12 col-sm-12 margin-top-10">
+          <div class="card bg-light">
+            <div class="card-header">
+              <span class="float-left">
+                <h6>Important links</h6>
+              </span>
+            </div>
+            <div class="card-body bg-white padding-5">
+              <div class="row text-center" *ngIf="isLinkLoading">
+                <div class="container">
+                  <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading links...</span>
+                </div>
+              </div>
+              <div class="container">
+                <table *ngIf="links.length > 0" class="table table-condensed small">
+                  <tbody>
+                    <tr *ngFor="let link of links">
+                      <td>
+                        <a href="{{link.url}}" target="_blank" class="text-info">
+                          {{link.title}}
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div *ngIf="links.length == 0 && !isLinkLoading">
+                  <span class="text-info"><i>No links to show</i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+        
       </div>
     </div>
 

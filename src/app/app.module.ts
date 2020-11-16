@@ -125,6 +125,7 @@ import { JoinProjectModalComponent } from './join-project-modal/join-project-mod
 import { ProjectReportModalComponent } from './project-report-modal/project-report-modal.component';
 import { ManageDocumentLinkComponent } from './manage-document-link/manage-document-link.component';
 import { DocumentLinkComponent } from './document-link/document-link.component';
+import { ContactEmailsComponent } from './contact-emails/contact-emails.component';
 
 @NgModule({
   declarations: [
@@ -236,6 +237,7 @@ import { DocumentLinkComponent } from './document-link/document-link.component';
     ProjectReportModalComponent,
     ManageDocumentLinkComponent,
     DocumentLinkComponent,
+    ContactEmailsComponent,
   ],
   imports: [
     BrowserModule,

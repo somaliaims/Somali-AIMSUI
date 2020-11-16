@@ -88,6 +88,11 @@
                 </div>
             </div>
         </div>
-
     </block-ui>
+
+    <contact-emails *ngIf="isCreateContactEmails" 
+        [emails]="selectedEmails" 
+        [userEmail]="userEmail" 
+        (showUsers)="showUsers($event)">
+    </contact-emails>
 </div>

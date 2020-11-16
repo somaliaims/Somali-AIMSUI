@@ -10,6 +10,7 @@ import { HomePageService } from '../services/home-page.service';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { EmbedVideoService } from 'ngx-embed-video';
 import { faBuilding, faMoneyCheck, faTasks, faUser } from '@fortawesome/free-solid-svg-icons';
+import { DocumentLinkService } from '../services/document-link.service';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
   showMessage: boolean = false;
   isProjectsLoading: boolean = true;
   isIntroLoading: boolean = true;
+  isLinkLoading: boolean = true;
   usersCount: number = 0;
   projectsCount: number = 0;
   organizationsCount: number = 0;
@@ -35,6 +37,8 @@ export class HomeComponent implements OnInit {
   currentFinancialYear: string = 'FY...';
   model: any = { aimsTitle: null, introductionHeading: null, introductionText: null };
   latestProjects: any = [];
+  links: any = [];
+  requestNo: number = 0;
   safeSrcVideoOne: SafeResourceUrl;
   safeSrcVideoTwo: SafeResourceUrl;
   yt_video1_frame: any;
@@ -46,7 +50,8 @@ export class HomeComponent implements OnInit {
     private userService: UserService, private organizationService: OrganizationService,
     private projectService: ProjectService, private currencyService: CurrencyService,
     private homePageService: HomePageService, private router: Router,
-    private embedService: EmbedVideoService
+    private embedService: EmbedVideoService,
+    private documentService: DocumentLinkService
     ) { }
 
   ngOnInit() {
@@ -73,6 +78,7 @@ export class HomeComponent implements OnInit {
     this.getOrganizationsCount();
     this.getDefaultCurrency();
     this.getLatestProjects();
+    this.getDocumentLinks();
   }
 
   getDefaultCurrency() {
@@ -146,6 +152,17 @@ export class HomeComponent implements OnInit {
           this.latestProjects = (data.projects) ? data.projects : [];
         }
         this.isProjectsLoading = false;
+      }
+    );
+  }
+
+  getDocumentLinks() {
+    this.documentService.getDocumentLinks().subscribe(
+      data => {
+        if (data) {
+          this.links = data;
+        }
+        this.isLinkLoading = false;
       }
     );
   }

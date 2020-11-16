@@ -13,10 +13,12 @@ import { Router } from '@angular/router';
 })
 export class UserManagerComponent implements OnInit {
   loggedInUserId: string = null;
+  userEmail: string = null;
   permissions: any = {};
   usersList: any = [];
   managerUsers: any = [];
   standardUsers: any = [];
+  selectedEmails: any = [];
   isManagersLoading: boolean = true;
   isStandardUsersLoading: boolean = true;
   currentTab: string = null;
@@ -29,6 +31,7 @@ export class UserManagerComponent implements OnInit {
     MANAGER_USER: 1,
     STANDARD_USER: 2
   };
+  isCreateContactEmails: boolean = false;
 
   displayTabs: any = [
     { visible: true, identity: 'manager' },
@@ -46,7 +49,8 @@ export class UserManagerComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
-    this.loggedInUserId = localStorage.getItem('userId');
+    this.userEmail = this.securityService.getUserEmail();
+    this.loggedInUserId = this.securityService.getUserId();
     this.currentTab = this.userTypeConstants.MANAGER_USER;
     this.getManagerUsers();
     this.getStandardUsers();
@@ -138,6 +142,19 @@ export class UserManagerComponent implements OnInit {
         }
       );
     }
+  }
+
+  createContactEmails() {
+    if (this.currentTab == this.userTypeConstants.STANDARD_USER) {
+      this.selectedEmails = this.standardUsers.filter(u => u.email != this.userEmail).map(u => u.email); 
+    } else if (this.currentTab == this.userTypeConstants.MANAGER_USER) {
+      this.selectedEmails = this.managerUsers.filter(u => u.email != this.userEmail).map(u => u.email); 
+    }
+    this.isCreateContactEmails = true;
+  }
+
+  showUsers($event) {
+    this.isCreateContactEmails = false;
   }
 
 }
