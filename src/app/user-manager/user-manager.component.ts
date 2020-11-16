@@ -144,7 +144,7 @@ export class UserManagerComponent implements OnInit {
     }
   }
 
-  createContactEmails() {
+  exportContactEmails() {
     if (this.currentTab == this.userTypeConstants.STANDARD_USER) {
       this.selectedEmails = this.standardUsers.filter(u => u.email != this.userEmail).map(u => u.email); 
     } else if (this.currentTab == this.userTypeConstants.MANAGER_USER) {
