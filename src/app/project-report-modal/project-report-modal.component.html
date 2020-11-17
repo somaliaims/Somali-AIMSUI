@@ -22,7 +22,7 @@
                         Print profile
                       </button>
                     </span>
-                    <span *ngIf="canJoinProject()" class="float-right margin-left-5">
+                    <span *ngIf="!isLoading && isLoggedIn && canJoinProject()" class="float-right margin-left-5">
                       <button class="btn btn-info btn-sm" (click)="applyForProjectMembership()">
                         Join project
                       </button>

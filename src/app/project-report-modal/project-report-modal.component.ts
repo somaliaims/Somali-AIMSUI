@@ -146,7 +146,8 @@ export class ProjectReportModalComponent implements OnInit {
   }
 
   canJoinProject() {
-    return (this.userProjectIds.includes(this.projectId)) ? false : true;
+    var projectIds = this.userProjectIds.map(p => p.id);
+    return (projectIds.includes(this.projectId)) ? false : true;
   }
 
   applyForProjectMembership() {
