@@ -22,6 +22,11 @@
                         Print profile
                       </button>
                     </span>
+                    <span *ngIf="canJoinProject()" class="float-right margin-left-5">
+                      <button class="btn btn-info btn-sm" (click)="applyForProjectMembership()">
+                        Join project
+                      </button>
+                    </span>
                     <span class="float-right margin-left-5">
                       <button [class.disable]="excelFile == null" class="btn btn-danger btn-sm" (click)="generatePDF()">
                         Download PDF
@@ -261,6 +266,7 @@
           </div>
       
         </block-ui>
+        <join-project-modal [projectId]="projectId"></join-project-modal>
         <!--<info-modal message={{successMessage}}></info-modal>-->
       </div>
 

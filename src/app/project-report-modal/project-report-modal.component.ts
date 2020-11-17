@@ -9,6 +9,7 @@ import { Settings } from '../config/settings';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ModalService } from '../services/modal.service';
 import { Messages } from '../config/messages';
+import { JoinProjectModalComponent } from '../join-project-modal/join-project-modal.component';
 
 @Component({
   selector: 'project-report-modal',
@@ -69,6 +70,7 @@ export class ProjectReportModalComponent implements OnInit {
     private infoModal: InfoModalComponent,
     private modalService: ModalService,
     private reportService: ReportService,
+    private joinProjectModal: JoinProjectModalComponent,
     private ngZone: NgZone) { }
 
   ngOnInit() {
@@ -141,6 +143,16 @@ export class ProjectReportModalComponent implements OnInit {
         }
       }
     );
+  }
+
+  canJoinProject() {
+    return (this.userProjectIds.includes(this.projectId)) ? false : true;
+  }
+
+  applyForProjectMembership() {
+    if (this.projectId) {
+      this.joinProjectModal.openModal();
+    }
   }
 
   getProjectExcelReport() {
