@@ -116,7 +116,7 @@
                   {{disbursementTypeConstants[disbursement.disbursementType]}}
                 </td>
                 <td>
-                  <button id="adisbursement-{{project.id}}-{{disbursement.year}}-{{disbursement.disbursementType}}"
+                  <button [class.disable]="disbursement.selected" id="adisbursement-{{project.id}}-{{disbursement.year}}-{{disbursement.disbursementType}}"
                     (click)="enterAIMSDisbursement($event)" class="btn btn-success btn-sm">Enter >></button>
                 </td>
               </tr>
@@ -154,7 +154,7 @@
                   {{displayNull(disbursement.dated)}}
                 </td>
                 <td>
-                  <button id="idisbursement-{{project.id}}-{{disbursement.id}}" (click)="enterIATIDisbursement($event)"
+                  <button [class.disable]="disbursement.selected" id="idisbursement-{{project.id}}-{{disbursement.id}}" (click)="enterIATIDisbursement($event)"
                     class="btn btn-success btn-sm">Enter >></button>
                 </td>
               </tr>
@@ -200,7 +200,7 @@
               <span *ngIf="disbursement.disbursementType == 1">Actual</span>
               <span *ngIf="disbursement.disbursementType == 2">Planned</span>
             </label>
-            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (change)="calculateDisbursementsTotal()"
+            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (change)="manageSourceDisbursementsSelection(disbursement.year, disbursement.amount, disbursement.disbursementType)"
               name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"
               class="form-control col-md-8" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
           </div>

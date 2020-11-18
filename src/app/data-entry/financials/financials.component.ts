@@ -66,6 +66,10 @@ export class FinancialsComponent implements OnInit {
     ACTUAL: 1,
     PLANNED: 2
   };
+  disbursementSourceTypes: any = {
+    AIMS: 1,
+    IATI: 2
+  };
 
   currentTab: string = this.tabConstants.FINANCIALS;
   isSourceAvailable: boolean = false;
@@ -98,6 +102,20 @@ export class FinancialsComponent implements OnInit {
 
   ngOnChanges() {
     if (this.aimsProjects.length > 0 || this.iatiProjects.length > 0) {
+      this.aimsProjects.forEach((d) => {
+        if (d.disbursements && d.disbursements.length > 0) {
+          d.disbursements.forEach((d) => {
+            d.selected = false;  
+          });
+        }
+      });
+      this.iatiProjects.forEach((d) => {
+        if (d.disbursementTransactions && d.disbursementTransactions.length > 0) {
+          d.disbursementTransactions.forEach((d) => {
+            d.selected = false;
+          });
+        }
+      });
       this.isSourceAvailable = true;
     }
   }
@@ -173,6 +191,31 @@ export class FinancialsComponent implements OnInit {
     }
   }
 
+  manageSourceDisbursementsSelection(year, amount, type) {
+    this.aimsProjects.forEach((p) => {
+      if (p.disbursements && p.disbursements.length > 0) {
+        var yearDisbursement = p.disbursements.filter(d => d.year == year && d.disbursementType == type);
+        if (yearDisbursement.length > 0) {
+          if (yearDisbursement[0].amount != amount) {
+            yearDisbursement[0].selected = false;
+          }
+        }
+      }
+    });
+
+    this.iatiProjects.forEach((p) => {
+      if (p.disbursementTransactions && p.disbursementTransactions.length > 0) {
+        var yearDisbursement = p.disbursementTransactions.filter(d => d.year == year);
+        if (yearDisbursement.length > 0) {
+          if (yearDisbursement[0].amount != amount) {
+            yearDisbursement[0].selected = false;
+          }
+        }
+      }
+    });
+    this.calculateDisbursementsTotal();
+  }
+
   calculateDisbursementsTotal() {
     var totalAmount = 0;
     if (this.projectDisbursements.length > 0) {
@@ -206,8 +249,6 @@ export class FinancialsComponent implements OnInit {
     return amount;
   }
 
-
-
   setDisbursementForYear(e) {
     var newValue = e.target.value;
     if (newValue < 0) {
@@ -238,6 +279,7 @@ export class FinancialsComponent implements OnInit {
       if (selectTransaction && selectTransaction.length > 0) {
         var amount = selectTransaction[0].amount;
         var dated = selectTransaction[0].dated;
+        selectTransaction[0].selected = true;
         
         if (dated && dated.length > 0) {
           var dateArr = dated.split('-');
@@ -302,6 +344,7 @@ export class FinancialsComponent implements OnInit {
       var selectTransaction = disbursements.filter(i => i.year == year && i.disbursementType == type);
       if (selectTransaction && selectTransaction.length > 0) {
         var amount = selectTransaction[0].amount;
+        selectTransaction[0].selected = true;
 
         if (year && year > 0) {
           var disbursement = this.projectDisbursements.filter(d => d.year == year && d.disbursementType == type);
