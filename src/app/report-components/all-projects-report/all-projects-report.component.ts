@@ -137,6 +137,7 @@ export class AllProjectsReportComponent implements OnInit {
 
   toggleCurrencyUsage() {
     this.model.useDefaultCurrency = !this.model.useDefaultCurrency;
+    this.excelFile = null;
   }
 
   setFilter() {

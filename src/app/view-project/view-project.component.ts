@@ -8,6 +8,7 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Messages } from '../config/messages';
 import { Settings } from '../config/settings';
 import { ReportService } from '../services/report.service';
+import { JoinProjectModalComponent } from '../join-project-modal/join-project-modal.component';
 
 @Component({
   selector: 'app-view-project',
@@ -63,7 +64,8 @@ export class ViewProjectComponent implements OnInit {
     private router: Router,
     private storeService: StoreService, private securityService: SecurityHelperService,
     private infoModal: InfoModalComponent,
-    private reportService: ReportService) { }
+    private reportService: ReportService,
+    private joinProjectModal: JoinProjectModalComponent) { }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.projects);
@@ -411,6 +413,17 @@ export class ViewProjectComponent implements OnInit {
         }
       }
     );
+  }
+
+  canJoinProject() {
+    var projectIds = this.userProjectIds.map(p => p.id);
+    return (projectIds.includes(this.projectId)) ? false : true;
+  }
+
+  applyForProjectMembership() {
+    if (this.projectId) {
+      this.joinProjectModal.openModal();
+    }
   }
 
   hideLoader() {
