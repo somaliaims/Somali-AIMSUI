@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group">
                     <label>Receivers email list</label>
-                    <textarea #txtEmails class="form-control">{{emailStr}}</textarea><br />
+                    <textarea #txtEmails rows="10" class="form-control">{{emailStr}}</textarea><br />
                     <button type="button" class="btn btn-info" (click)="copyEmails()">Copy emails</button>&nbsp;
                     <span *ngIf="emailsCopied" class="text-warning"><i>Emails copied</i></span>
                 </div>
