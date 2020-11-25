@@ -805,6 +805,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.projectEmailUrl);
     }
 
+    getContactMessageUrl() {
+        return (this.BASE_URL + urlsList.urls.contactMessageUrl);
+    }
+
     getDeleteProjectIdsUrl() {
         return (this.BASE_URL + urlsList.urls.deleteProjectIdsUrl);
     }

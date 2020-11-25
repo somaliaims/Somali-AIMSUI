@@ -126,6 +126,7 @@ import { ProjectReportModalComponent } from './project-report-modal/project-repo
 import { ManageDocumentLinkComponent } from './manage-document-link/manage-document-link.component';
 import { DocumentLinkComponent } from './document-link/document-link.component';
 import { ContactEmailsComponent } from './contact-emails/contact-emails.component';
+import { ContactMessagesComponent } from './contact-messages/contact-messages.component';
 
 @NgModule({
   declarations: [
@@ -238,6 +239,7 @@ import { ContactEmailsComponent } from './contact-emails/contact-emails.componen
     ManageDocumentLinkComponent,
     DocumentLinkComponent,
     ContactEmailsComponent,
+    ContactMessagesComponent,
   ],
   imports: [
     BrowserModule,

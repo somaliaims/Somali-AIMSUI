@@ -84,6 +84,7 @@ import { EmailUsersComponent } from './email-users/email-users.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
 import { DocumentLinkComponent } from './document-link/document-link.component';
 import { ManageDocumentLinkComponent } from './manage-document-link/manage-document-link.component';
+import { ContactMessagesComponent } from './contact-messages/contact-messages.component';
 
 // Route Configuration
 const routes: Routes = [
@@ -99,6 +100,7 @@ const routes: Routes = [
   { path: 'reports-panel', component: ReportsPanelComponent},
   { path: 'management', component: ManagementComponent },
   { path: 'notification', component: NotificationComponent },
+  { path: 'contact-messages', component: ContactMessagesComponent},
   { path: 'organizations', component: OrganizationsComponent},
   { path: 'organization-types', component: OrganizationTypesComponent},
   { path: 'delete-organization/:{id}', component: DeleteOrganizationComponent },

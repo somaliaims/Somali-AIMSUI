@@ -1,0 +1,82 @@
+<div class="container-fluid view-area">
+    <block-ui>
+      <div class="row">
+        <div class="col-md-6">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active btn-info" data-toggle="tab">Pending contact messages</a>
+            </li>
+          </ul>
+        </div>
+  
+        <div class="col-md-6">
+          <div class="float-right form-inline">
+            <label><b><i>Notification type:&nbsp;</i></b></label>
+            
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-12 text-center" *ngIf="isLoading">
+          <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+        </div>
+  
+        <div *ngIf="!isLoading" class="col-md-12 margin-top-10">
+          <table class="table table-striped">
+            <tr *ngFor="let message of contactMessages; let i = index">
+              <td width="70%">
+                <span class="badge badge-info lead">
+                  {{i + 1}}
+                </span>
+                <span class="text-info margin-left-5">
+                    <b>Subject:</b> {{message.subject}}<br />
+                    <b>Message:</b> {{message.message}}<br />
+                </span>
+                <span class="text-info">
+                  <b>Sender name:</b> {{message.senderName}} <br />
+                  <b>Sener email:</b> {{message.senderEmail}} <br />
+                </span>
+                <span class="text-warning">
+                  <b>Project: </b>{{message.projectTitle}}
+                </span>
+              </td>
+              <td width="20%">
+                <span class="float-right">
+                    <button class="btn btn-warning btn-sm text-uppercase"
+                    (click)="approve(message.id)">Approve</button>
+                    &nbsp;
+                    <button class="btn btn-danger btn-sm text-uppercase"
+                    (click)="delete(message.id)">Delete</button>
+                </span>
+              </td>
+            </tr>
+          </table>
+          <table *ngIf="contactMessages.length == 0" class="table table-bordered">
+            <tr>
+              <td class="text-info">
+                  <i>No contact messages to show</i>
+              </td>
+            </tr>
+          </table>
+        </div>
+  
+      </div>
+    </block-ui>
+  </div>
+  
+  <info-modal message={{infoMessage}}></info-modal>
+  <error-modal message={{errorMessage}}></error-modal>
+  
+  <jw-modal id="contact-message-modal">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">Information Message</div>
+            <div class="card-body text-info">
+                {{infoMessage}}
+            </div>
+          </div><br />
+      </div>
+    </div>
+  </jw-modal>

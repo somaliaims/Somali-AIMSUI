@@ -6,6 +6,7 @@ import { ContactService } from '../services/contact.service';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { StoreService } from '../services/store-service';
 import { Settings } from '../config/settings';
+import { SecurityHelperService } from '../services/security-helper.service';
 
 @Component({
   selector: 'app-contact-project',
@@ -26,14 +27,28 @@ export class ContactProjectComponent implements OnInit {
   requestNo: number = 0;
   messageLimit: number = Settings.descriptionMediumLimit;
   messageLimitLeft: number = Settings.descriptionMediumLimit;
+  MESSAGE_SENT = 1;
+  MESSAGE_TO_REVIEW = 2;
+
+  emailTypes: any = [
+    { text: 'Help', val: 1 },
+    { text: 'Project information', val: 2 }
+  ];
+
+  emailTypeCodes: any = {
+    HELP: 1,
+    INFORMATION: 2
+  };
+  
   @BlockUI() blockUI: NgBlockUI;
 
-  model = { senderName: null, senderEmail: null, subject: null, message: null, 
-    projectId: 0, projectTitle: null };
+  model = { senderName: null, senderEmail: '', subject: null, message: null, 
+    projectId: 0, projectTitle: null, emailType: this.emailTypeCodes.HELP };
   
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
     private contactService: ContactService, private errorModal: ErrorModalComponent,
-    private storeService: StoreService, private router: Router) { }
+    private storeService: StoreService, private router: Router,
+    private securityService: SecurityHelperService) { }
 
   ngOnInit() {
     if (this.route.snapshot.data) {
@@ -46,9 +61,9 @@ export class ContactProjectComponent implements OnInit {
       this.router.navigateByUrl('home');
     }
 
-    this.isLoggedIn = (localStorage.getItem('isLoggedIn') == 'true');
+    this.isLoggedIn = this.securityService.checkIsLoggedIn();
     if (this.isLoggedIn) {
-      this.model.senderEmail = (localStorage.getItem('userEmail'));
+      this.model.senderEmail = this.securityService.getUserEmail();
     }
     this.storeService.newReportItem(Settings.dropDownMenus.projects);
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -62,6 +77,11 @@ export class ContactProjectComponent implements OnInit {
   }
 
   sendProjectSugggestion(frm: any) {
+    this.isError = false;
+    this.isSuccess = false;
+    this.errorMessage = null;
+    this.successMessage = null;
+
     if (this.model.projectId == 0) {
       this.errorMessage = 'Select a valid project before proceeding with this request';
       this.errorModal.openModal();
@@ -70,16 +90,31 @@ export class ContactProjectComponent implements OnInit {
     
     this.blockUI.start('Sending suggestion...');
     this.model.projectId = parseInt(this.model.projectId.toString());
-    this.contactService.sendProjectContactEmail(this.model).subscribe(
+    this.model.emailType = parseInt(this.model.emailType.toString());
+    this.contactService.sendContactMessage(this.model).subscribe(
       data => {
         if (data) {
-          this.successMessage = 'Your suggestion for the project is forwarded successfully';
+          if (data.success && data.returnedId == this.MESSAGE_SENT) {
+            this.successMessage = 'Your message for the project is forwarded successfully';
+          } else if (data.success && data.returnedId == this.MESSAGE_TO_REVIEW) {
+            this.successMessage = 'Your message is sent for review by the management user. Once reviewed, it will be forwarded.';
+          }
           this.isSuccess = true;
           frm.resetForm();
+          this.resetModel();
         }
+        window.scroll(0, 0);
         this.blockUI.stop();
       }
     );
+  }
+
+  resetModel() {
+    this.model.senderName = null;
+    this.model.senderEmail = '';
+    this.model.emailType = this.emailTypeCodes.HELP;
+    this.model.subject = null;
+    this.model.message = null;
   }
 
   getProjectInfo(id) {

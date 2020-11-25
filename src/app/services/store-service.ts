@@ -71,26 +71,30 @@ export class StoreService {
       var model = new RequestModel(currentRequestNo, error.status, '');
 
       var errorMessage = '';
-      if (error && error.statusText) {
-        if (error.statusText.toLowerCase() == 'bad request') {
-          if(error.error && error.error.errors) {
-            var errorObject = error.error.errors;
-            var key = (Object.keys(error.error.errors)[0]);
-            errorMessage = errorObject[key];
-          } else {
-            errorMessage = error.error;
-          }
-        } else if (error.statusText == 'Unknown Error') {
-          errorMessage = 'Unkown Error: Something went wrong. Make sure your Internet connection ' + 
-          'is working. In any other case contact AIMS Administrator.';
-        } else {
-          errorMessage = error.statusText;
-        }
+      if (error.status == 401) {
+        errorMessage = 'You are unauthorized to perform this action. In case if your are a valid registered user, please logout and login again';
       } else {
-        if (error.message || error.statusText) {
-          errorMessage = error.message || error.statusText;
+        if (error && error.statusText) {
+          if (error.statusText.toLowerCase() == 'bad request') {
+            if(error.error && error.error.errors) {
+              var errorObject = error.error.errors;
+              var key = (Object.keys(error.error.errors)[0]);
+              errorMessage = errorObject[key];
+            } else {
+              errorMessage = error.error;
+            }
+          } else if (error.statusText == 'Unknown Error') {
+            errorMessage = 'Unkown Error: Something went wrong. Make sure your Internet connection ' + 
+            'is working. In any other case contact AIMS Administrator.';
+          } else {
+            errorMessage = error.statusText;
+          }
         } else {
-          errorMessage = 'Something went wrong';
+          if (error.message || error.statusText) {
+            errorMessage = error.message || error.statusText;
+          } else {
+            errorMessage = 'Something went wrong';
+          }
         }
       }
       
