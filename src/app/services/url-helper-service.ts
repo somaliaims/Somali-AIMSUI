@@ -809,6 +809,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.contactMessageUrl);
     }
 
+    getApproveContactMessageUrl() {
+        return (this.BASE_URL + urlsList.urls.approveContactMessageUrl);
+    }
+
     getDeleteProjectIdsUrl() {
         return (this.BASE_URL + urlsList.urls.deleteProjectIdsUrl);
     }

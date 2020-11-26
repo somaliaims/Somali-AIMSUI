@@ -40,6 +40,12 @@ export class ContactService {
             catchError(this.storeService.handleError<any>('Contact Message')));
     }
 
+    approveContactMessage(id: number) {
+        var url = this.urlHelper.getApproveContactMessageUrl() + '/' + id.toString();
+        return this.httpClient.post(url, null, httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Contact Message')));
+    }
+
     deleteContactMessage(id: string) {
         var url = this.urlHelper.getContactMessageUrl() + '/' + id;
         return this.httpClient.delete(url, httpOptions).pipe(

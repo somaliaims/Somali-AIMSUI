@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ContactService } from '../services/contact.service';
 
 @Component({
@@ -12,6 +13,8 @@ export class ContactMessagesComponent implements OnInit {
   contactMessages: any = [];
   infoMessage: string = null;
   errorMessage: string = null;
+
+  @BlockUI() blockUI: NgBlockUI;
   
   constructor(private contactService: ContactService) { }
 
@@ -28,6 +31,35 @@ export class ContactMessagesComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  approveMessage(id: number) {
+    if (id) {
+      this.blockUI.start('Wait approving...');
+      
+        this.contactService.approveContactMessage(id).subscribe(
+          data => {
+            if (data) {
+              this.contactMessages = this.contactMessages.filter(m => m.id != id);
+            }
+            this.blockUI.stop();
+          }
+        );
+    }
+  }
+
+  delete(id: number) {
+    if (id) {
+      this.blockUI.start('Wait approving...');
+        this.contactService.deleteContactMessage(id.toString()).subscribe(
+          data => {
+            if (data) {
+              this.contactMessages = this.contactMessages.filter(m => m.id != id);
+            }
+            this.blockUI.stop();
+          }
+        );
+    }
   }
 
 }

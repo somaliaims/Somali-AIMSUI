@@ -183,6 +183,7 @@ export const urls = {
 	contactUrl: "Contact",
 	projectEmailUrl: "Contact/SendSuggestionEmailForProject",
 	contactMessageUrl: "ContactMessage",
+	approveContactMessageUrl: "ContactMessage/Approve",
 	deleteProjectIdsUrl: "ProjectDeletionRequest/GetProjectIds",
 	projectDeletionRequestUrl: "ProjectDeletionRequest",
 	projectDeletionActiveRequestsUrl: "ProjectDeletionRequest/GetActiveRequests",
