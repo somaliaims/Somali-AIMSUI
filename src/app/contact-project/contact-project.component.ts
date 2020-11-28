@@ -74,6 +74,7 @@ export class ContactProjectComponent implements OnInit {
         this.isError = true;
       }
     });
+    window.scroll(0, 0);
   }
 
   sendProjectSugggestion(frm: any) {

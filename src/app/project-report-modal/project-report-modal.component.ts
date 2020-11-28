@@ -226,7 +226,11 @@ export class ProjectReportModalComponent implements OnInit {
   }
 
   contactProject() {
-    this.router.navigateByUrl('contact-project/' + this.projectId);
+    this.modalService.close('project-report-modal');
+    setTimeout(() => {
+      this.router.navigateByUrl('contact-project/' + this.projectId);
+    }, 500);
+    
   }
 
   isShowDeleteProject(id: number) {
