@@ -66,6 +66,7 @@ export const urls = {
 	sectorChildren: "Sector/GetChildren/",
 	financialYearsUrl: "FinancialYear",
 	envelopeFinancialYearsUrl: "FinancialYear/GetYearsForEnvelope",
+	envelopeEntryFinancialYearsUrl: "FinancialYear/GetYearsForEnvelopeEntry",
 	financialYearsRangeUrl: "FinancialYear/AddRange",
 	getSector: "Sector/GetById/",
 	setSectorChild: "Sector/SetChild/",

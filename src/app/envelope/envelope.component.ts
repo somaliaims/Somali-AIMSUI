@@ -26,6 +26,7 @@ export class EnvelopeComponent implements OnInit {
   envelopeTypes: any = [];
   yearsList: any = [];
   financialYears: any = [];
+  yearHelpLabels: any = [];
   currenciesList: any = [];
   exchangeRates: any = [];
   isError: boolean = false;
@@ -40,10 +41,15 @@ export class EnvelopeComponent implements OnInit {
   nationalCurrency: string = null;
   exRateSource: string = null;
   areSettingsLoading: boolean = true;
-  financialYearSettings: any = { currentFinancialYear: 0, currentFinancialYearLabel: '', 
+  financialYearSettings: any = { 
+    nextFinancialYearLabel: '', 
     month: 1, day: 1 };
+  fyPreviousStartingDate: any = null;
+  fyPreviousEndingDate: any = null;
   fyStartingDate: any = null;
   fyEndingDate: any = null;
+  fyNextStartingDate: any = null;
+  fyNextEndingDate: any = null;
   model: any = { currency: null, exchangeRate: 1 };
   envelopeData: any = { funderId: 0, funderName: null, currency: null, yearlyBreakup: [] };
   envelopeBreakups: any = [];
@@ -94,19 +100,60 @@ export class EnvelopeComponent implements OnInit {
         if (data) {
           this.financialYearSettings.month = data.month;
           this.financialYearSettings.day = data.day;
-          this.financialYearSettings.currentFinancialYear = data.currentFinancialYear;
-          this.financialYearSettings.currentFinancialYearLabel = data.currentFinancialYearLabel;
+          //this.financialYearSettings.currentFinancialYearLabel = data.currentFinancialYearLabel;
 
-          var year = this.financialYearSettings.currentFinancialYear;
-          var month = this.financialYearSettings.month;
-          var day = this.financialYearSettings.day;
-          this.fyStartingDate = new Date(year, (month - 1), day).toDateString();
+          var year = data.currentFinancialYear;
+          var yearLabel = data.currentFinancialYearLabel;
+          var previousYear = data.previousFinancialYear;
+          var previousYearLabel = data.previousFinancialYearLabel;
+          var nextYear = data.nextFinancialYear;
+          var nextYearLabel = data.nextFinancialYearLabel;
+          var month = data.month;
+          var day = data.day;
+          
+          var previousStartingDate = new Date(previousYear, (month - 1), day).toDateString();
+          var pEndDate = new Date(previousYear, (month - 1), day - 1);
+          var previousEndingDate = new Date(previousYear, pEndDate.getMonth(), pEndDate.getDate()).toDateString();
+          this.yearHelpLabels.push({
+            year: previousYear,
+            label: previousYearLabel,
+            startingDate: previousStartingDate,
+            endingDate: previousEndingDate
+          });
+
+          var startingDate = new Date(year, (month - 1), day).toDateString();
           var endDate = new Date(year, (month - 1), day - 1);
-          this.fyEndingDate = new Date(year, endDate.getMonth(), endDate.getDate()).toDateString();
+          var endingDate = new Date(year, endDate.getMonth(), endDate.getDate()).toDateString();
+          this.yearHelpLabels.push({
+            year: year,
+            label: yearLabel,
+            startingDate: startingDate,
+            endingDate: endingDate
+          });
+          
+
+          var nextStartingDate = new Date(nextYear, (month - 1), day).toDateString();
+          var nEndDate = new Date(nextYear, (month - 1), day - 1);
+          var nextEndingDate = new Date(nextYear, nEndDate.getMonth(), nEndDate.getDate()).toDateString();
+          this.yearHelpLabels.push({
+            year: nextYear,
+            label: nextYearLabel,
+            startingDate: nextStartingDate,
+            endingDate: nextEndingDate
+          });
         }
         this.areSettingsLoading = false;
       }
     );
+  }
+
+  getFinancialYearLabel(year) {
+    var yearLabel = '';
+    var label = this.yearHelpLabels.filter(y => y.year == year);
+    if (label.length > 0) {
+      yearLabel = label[0].label + ' starts on ' + label[0].startingDate + ' and ends on ' + label[0].endingDate;
+    }
+    return yearLabel;
   }
 
   getEnvelopeTypes() {
@@ -120,7 +167,7 @@ export class EnvelopeComponent implements OnInit {
   }
 
   getFinancialYears() {
-    this.yearsService.getYearsForEnvelope().subscribe(
+    this.yearsService.getYearsForEnvelopeEntry().subscribe(
       data => {
         this.yearsList = data
       }

@@ -620,6 +620,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.envelopeFinancialYearsUrl);
     }
 
+    getFinancialYearsForEnvelopeEntryUrl() {
+        return (this.BASE_URL + urlsList.urls.envelopeEntryFinancialYearsUrl);
+    }
+
     getFinancialYearRangeUrl() {
         return (this.BASE_URL + urlsList.urls.financialYearsRangeUrl);
     }

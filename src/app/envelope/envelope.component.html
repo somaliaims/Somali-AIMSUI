@@ -22,20 +22,18 @@
                   <option value="null">--Currency--</option>
                   <option *ngFor="let currency of currenciesList" [value]="currency.currency">{{currency.currencyName}}</option>
                 </select>&nbsp;
-                <span tooltip="{{financialYearSettings.currentFinancialYearLabel}} starts on {{fyStartingDate}} and ends on {{fyEndingDate}}" [options]="tooltipOptions">
-                  <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
-                </span>
+          
               </div>
               <div class="col-md-12">
                 <table class="table">
                   <thead>
                     <tr>
                       <th>Envelope type</th>
-                      <!--<th class="text-center">{{previousYear}}</th>
-                      <th class="text-center">{{currentYear}}</th>
-                      <th class="text-center">{{nextYear}}</th>-->
                       <th class="text-center" *ngFor="let year of yearsList">
-                        {{year.label}}
+                        {{year.label}}&nbsp;
+                        <span tooltip="{{getFinancialYearLabel(year.financialYear)}}" [options]="tooltipOptions">
+                          <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+                        </span>
                       </th>
                     </tr>
                   </thead>
@@ -48,9 +46,6 @@
                     </tr>
                     <tr>
                       <td><b>Total</b></td>
-                      <!--<td class="text-center"><b>{{formatNumber(yearlyTotals[previousYear])}}</b></td>
-                      <td class="text-center"><b>{{formatNumber(yearlyTotals[currentYear])}}</b></td>
-                      <td class="text-center"><b>{{formatNumber(yearlyTotals[nextYear])}}</b></td>-->
                       <td class="text-center" *ngFor="let year of yearsList">
                         <b>{{formatNumber(yearlyTotals[year.financialYear])}}</b>
                       </td>
