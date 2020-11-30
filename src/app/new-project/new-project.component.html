@@ -189,7 +189,7 @@
                   </div>
 
                   <div class="col margin-top-5">
-                      <select class="form-control" id="markerId" [(ngModel)]="model.markerId" name="markerId"
+                      <select class="form-control" id="markerId" [(ngModel)]="model.markerId" name="markerId" (change)="filterProjectMatches()"
                       title="Select a marker" (change)="getSelectedMarkerValues()" #sectorId="ngModel">
                       <option value="0">--Select marker--</option>
                       <option *ngFor="let marker of markersList" [value]="marker.id">{{marker.fieldTitle}}
@@ -197,6 +197,15 @@
                     </select>
                   </div>
                   
+                  <div class="col margin-top-5">
+                    <ng-multiselect-dropdown [placeholder]="'-- All values --'" title="Marker value/s"
+                    [settings]="markerValuesSettings"
+                    [data]="markerValues" [(ngModel)]="model.selectedMarkerValues" 
+                    (onSelect)="onMarkerValueSelect()" (onDeSelect)="onIMarkerValueDeSelect()" (onSelectAll)="onMarkerValueSelectAll()"
+                      (onDeSelectAll)="onMarkerValueDeSelectAll()"
+                    name="selectedMarkerValues" #selectedMarkerValues="ngModel">
+                  </ng-multiselect-dropdown>
+                  </div>
                 </div>
                 
               </div>

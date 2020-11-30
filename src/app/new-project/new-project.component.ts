@@ -108,6 +108,7 @@ export class NewProjectComponent implements OnInit {
   viewProjectFields: any = [];
   markersList: any = [];
   markerValues: any = [];
+  markerValuesSettings: any = {};
 
   organizationSourceTypes: any = {
     IATI: 'IATI',
@@ -130,7 +131,9 @@ export class NewProjectComponent implements OnInit {
   model = {
     id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0, markerId: 0,
     endingYear: 0, startingDate: null, endingDate: null, selectedOrganizations: [], selectedSectors: [], selectedLocations: [],
-    selectedIATIOrganizations: [], iatiSectorType: null, iatiSelectedSectors: [], sectorLevel: null
+    selectedIATIOrganizations: [], iatiSectorType: null, iatiSelectedSectors: [], 
+    selectedMarkerValues: [],
+    sectorLevel: null
   };
 
   constructor(private projectService: ProjectService, private route: ActivatedRoute,
@@ -163,6 +166,16 @@ export class NewProjectComponent implements OnInit {
     this.loadUserProjects();
     this.loadIATIProjects();
     this.loadAIMSProjects();
+
+    this.markerValuesSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'value',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
 
     this.requestNo = this.storeService.getNewRequestNumber();
     this.storeService.currentRequestTrack.subscribe(model => {
@@ -402,10 +415,30 @@ export class NewProjectComponent implements OnInit {
     }, 500);
   }
 
+  onMarkerValueSelect() {
+    this.filterProjectMatches();
+  }
+
+  onMarkerValueDeSelect() {
+    this.filterProjectMatches();
+  }
+
+  onMarkerValueSelectAll() {
+    setTimeout(() => {
+      this.filterProjectMatches();
+    }, 500);
+  }
+
+  onMarkerValueDeSelectAll() {
+    setTimeout(() => {
+      this.filterProjectMatches();
+    }, 500);
+  }
 
   filterProjectMatches() {
     var str = this.model.title;
-    
+    console.log('Marker is: ' + this.model.markerId);
+    console.log('Marker values are: ' + this.model.selectedMarkerValues);
     if (this.model.title) {
       str = str.toLowerCase();
       this.filteredIatiProjects = this.iatiProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
