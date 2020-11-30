@@ -178,7 +178,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-4">
-                  <div class="margin-top-5">
+                  <div class="col margin-top-5">
                     <ng-multiselect-dropdown [placeholder]="'-- All location/s --'" 
                       [settings]="locationsSettings"
                       [data]="locationsList"
@@ -187,12 +187,22 @@
                       (onDeSelectAll)="onItemDeSelectAll()" #selectedLocations="ngModel">
                     </ng-multiselect-dropdown>
                   </div>
+
+                  <div class="col margin-top-5">
+                      <select class="form-control" id="markerId" [(ngModel)]="model.markerId" name="markerId"
+                      title="Select a marker" (change)="getSelectedMarkerValues()" #sectorId="ngModel">
+                      <option value="0">--Select marker--</option>
+                      <option *ngFor="let marker of markersList" [value]="marker.id">{{marker.fieldTitle}}
+                      </option>
+                    </select>
+                  </div>
+                  
                 </div>
                 
               </div>
 
               <div class="row margin-top-10">
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-4">
                   
                 </div>
               </div>
@@ -320,10 +330,6 @@
                         </span>
   
                         <span class="float-right margin-right-15">
-                          <!--<button *ngIf="!checkIfProjectPermittedToUser(project.id)" type="button"
-                            id="raims-{{project.id}}" class="btn btn-warning btn-sm"
-                            (click)="applyForProjectMembership($event)">Join project</button>&nbsp;-->
-  
                           <button type="button" id="vaims-{{project.id}}" class="btn btn-info btn-sm"
                             (click)="showAIMSProjectDescription($event)">View detail</button>
                           &nbsp;

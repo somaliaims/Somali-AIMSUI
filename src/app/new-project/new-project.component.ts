@@ -20,6 +20,7 @@ import { SectorService } from '../services/sector.service';
 import { OrganizationService } from '../services/organization-service';
 import { SectorTypeService } from '../services/sector-types.service';
 import { JoinProjectModalComponent } from '../join-project-modal/join-project-modal.component';
+import { MarkerService } from '../services/marker.service';
 
 @Component({
   selector: 'app-new-project',
@@ -105,6 +106,8 @@ export class NewProjectComponent implements OnInit {
   viewProjectImplementers: any = [];
   viewProjectDisbursements: any = [];
   viewProjectFields: any = [];
+  markersList: any = [];
+  markerValues: any = [];
 
   organizationSourceTypes: any = {
     IATI: 'IATI',
@@ -125,7 +128,7 @@ export class NewProjectComponent implements OnInit {
 
   @BlockUI() blockUI: NgBlockUI;
   model = {
-    id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0,
+    id: 0, title: '', startDate: null, endDate: null, description: null, startingYear: 0, markerId: 0,
     endingYear: 0, startingDate: null, endingDate: null, selectedOrganizations: [], selectedSectors: [], selectedLocations: [],
     selectedIATIOrganizations: [], iatiSectorType: null, iatiSelectedSectors: [], sectorLevel: null
   };
@@ -137,6 +140,7 @@ export class NewProjectComponent implements OnInit {
     private errorModal: ErrorModalComponent, private infoModal: InfoModalComponent,
     private projectInfoModal: ProjectInfoModalComponent, private locationService: LocationService,
     private sectorService: SectorService, private fyService: FinancialYearService,
+    private markerService: MarkerService,
     private organizationService: OrganizationService,
     private sectorTypeService: SectorTypeService,
     private joinProjectModal: JoinProjectModalComponent) {
@@ -151,6 +155,7 @@ export class NewProjectComponent implements OnInit {
     this.userOrganizationId = (this.securityService.getUserOrganizationId()) ? parseInt(this.securityService.getUserOrganizationId()) : 0;
     this.requestNo = this.storeService.getCurrentRequestId();
     this.getSectorTypes();
+    this.getMarkers();
     this.getFinancialYearsList();
     this.getLocationsList();
     this.getUserOrganizationsList();
@@ -309,7 +314,6 @@ export class NewProjectComponent implements OnInit {
           var iatiSectorTypeIds = this.iatiSectorTypesList.map(t => t.id);
           this.iatiAllSectorsList = this.allSectorsList.filter(s => iatiSectorTypeIds.includes(s.sectorTypeId));
           if (this.defaultSectorTypeId) {
-            //this.sectorsList = this.allSectorsList.filter(t => t.sectorTypeId == this.defaultSectorTypeId);
             this.subSectorsList = this.sectorsList.filter(s => s.parentSectorId != null);     
           }
           
@@ -954,4 +958,25 @@ export class NewProjectComponent implements OnInit {
     }
     return this.storeService.getNumberWithCommas(value);
   }
+
+  getMarkers() {
+    this.markerService.getMarkers().subscribe(
+      data => {
+        if (data) {
+          this.markersList = data;
+        }
+      }
+    );
+  }
+
+  getSelectedMarkerValues() {
+    this.markerValues = [];
+    if (this.model.markerId) {
+      var values = this.markersList.filter(m => m.id == this.model.markerId).map(m => m.values);
+      if (values && values.length > 0) {
+        this.markerValues = JSON.parse(values);
+      };
+    }
+  }
+
 }

@@ -78,7 +78,6 @@ export class ProjectsComponent implements OnInit {
   excelFile: string = null;
   projectProfileLink: string = null;
 
-
   sectorLevels: any = [
     { "id": 1, "level": "Parent sectors"},
     { "id": 2, "level": "Sub sectors"},

@@ -52,8 +52,6 @@
                 types</a>
               <a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-year-settings']">Financial
                 years</a>
-              <a *ngIf="permissions.canEditDocument" class="dropdown-item" [routerLink]="['/document-links']">Links
-                  for documents</a>
               <!--<a *ngIf="permissions.canEditYear" class="dropdown-item" [routerLink]="['/financial-years']">Financial
                 years</a>-->
               <a *ngIf="permissions.canEditCustomFields" class="dropdown-item" [routerLink]="['/markers']">Markers</a>
@@ -76,7 +74,9 @@
               <div class="dropdown-divider"></div>
               <h5 *ngIf="permissions.canManage" class="dropdown-header">AIMS management</h5>
               <a *ngIf="permissions.canDoHomePageSettings" class="dropdown-item"
-                [routerLink]="['/home-page-settings']">Home page settings</a>
+                [routerLink]="['/home-page-settings']">Homepage text</a>
+                <a *ngIf="permissions.canEditDocument" class="dropdown-item" [routerLink]="['/document-links']">Homepage
+                  links</a>
               <a *ngIf="permissions.canDoSMTPSettings" class="dropdown-item" [routerLink]="['/smtp-settings']">Email
                 settings</a>
               <a *ngIf="permissions.canDoIATISettings" class="dropdown-item" [routerLink]="['/iati-settings']">IATI
