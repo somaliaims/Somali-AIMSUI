@@ -435,6 +435,12 @@ export class NewProjectComponent implements OnInit {
     }, 500);
   }
 
+  changeMarkerForProjectFilters() {
+    this.model.selectedMarkerValues = [];
+    this.getSelectedMarkerValues();
+    this.filterProjectMatches();
+  }
+
   filterProjectMatches() {
     var str = this.model.title;
     console.log('Marker is: ' + this.model.markerId);
@@ -619,6 +625,50 @@ export class NewProjectComponent implements OnInit {
           return project;
         }
       });
+    }
+
+    if (this.model.markerId)
+    {
+      this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
+        var isMatched = false;
+        var markerIds = project.markers.map(m => m.markerId);
+        for (var i = 0; i < markerIds.length; i++) {
+          if (this.model.markerId == markerIds[i]) {
+            isMatched = true;
+            break;
+          }
+        }
+        if (isMatched) {
+          return project;
+        }
+      }.bind(this));
+
+      if (this.model.selectedMarkerValues.length > 0) {
+        var markerValuesToMatch = this.model.selectedMarkerValues.map(m => m.value);
+        this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
+          var isMatched = false;
+          var markerValues = project.markers.map(m => m.values);
+          for (var i = 0; i < markerValues.length; i++) {
+            var values = [];
+            if (markerValues[i].includes(',')) {
+              values = markerValues[i].split(',');
+              values.forEach((v) => {
+                if (markerValuesToMatch.includes(markerValues[i])) {
+                  isMatched = true;
+                }
+              });
+            } else {
+              if (markerValuesToMatch.includes(markerValues[i])) {
+                isMatched = true;
+                break;
+              }
+            }
+          }
+          if (isMatched) {
+            return project;
+          }
+        }.bind(this));
+      }
     }
   }
 
