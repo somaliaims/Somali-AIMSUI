@@ -223,10 +223,10 @@ export class FinancialsComponent implements OnInit {
         if (!d.amount) {
           d.amount = 0;
         }
-        totalAmount += parseFloat(d.amount);
+        totalAmount += parseInt(d.amount);
       });
     }
-    this.disbursementsTotal = parseFloat(totalAmount.toFixed(2));
+    this.disbursementsTotal = parseInt(totalAmount.toString());
   }
 
   getDisbursementsTotal() {
@@ -263,7 +263,7 @@ export class FinancialsComponent implements OnInit {
 
     var disbursement = this.projectDisbursements.filter(d => d.year == year && d.disbursementType == disbursementType);
     if (disbursement.length > 0) {
-      disbursement.amount = newValue;
+      disbursement.amount = parseInt(newValue);
     }
   }
 
@@ -287,7 +287,7 @@ export class FinancialsComponent implements OnInit {
 
           var disbursement = this.projectDisbursements.filter(d => d.year == year);
           if (disbursement.length > 0) {
-            disbursement[0].amount = amount;
+            disbursement[0].amount = parseInt(amount);
           }
         }
       }
@@ -298,7 +298,7 @@ export class FinancialsComponent implements OnInit {
   splitRemainingAmountEqually() {
     var projectValue = this.projectValue;
     var disbursementsTotal = this.getDisbursementsTotal();
-    var remainingAmount = parseFloat((projectValue - disbursementsTotal).toFixed(2)); 
+    var remainingAmount = (projectValue - disbursementsTotal); 
     if (remainingAmount > 0) {
       var countZeros = 0;
       this.projectDisbursements.forEach((d) => {
@@ -308,20 +308,24 @@ export class FinancialsComponent implements OnInit {
       });
 
       if (countZeros > 0) {
-        var equalSplit = (remainingAmount / countZeros).toFixed(2);
+        var equalSplit = parseInt((remainingAmount / countZeros).toString());
         var amountRemaining = remainingAmount;
         var amountSplitted = 0;
         var counter = 0;
         this.projectDisbursements.forEach((d) => {
           if (d.amount == 0 && d.disbursementType == 2) {
             if ((counter + 1) == countZeros) {
-              d.amount = amountRemaining.toFixed(2);
+              d.amount = amountRemaining;
+              amountSplitted = amountRemaining;
             } else {
               d.amount = equalSplit;
-              amountSplitted += parseFloat(equalSplit);
+              amountSplitted += equalSplit;
               amountRemaining = remainingAmount - amountSplitted;
             }
             ++counter;
+            if (counter == countZeros) {
+              d.amount += (amountRemaining - amountSplitted);
+            }
           }
         });
         this.calculateDisbursementsTotal();
@@ -349,7 +353,7 @@ export class FinancialsComponent implements OnInit {
         if (year && year > 0) {
           var disbursement = this.projectDisbursements.filter(d => d.year == year && d.disbursementType == type);
           if (disbursement.length > 0) {
-            disbursement[0].amount = amount;
+            disbursement[0].amount = parseInt(amount);
           }
         }
       }
