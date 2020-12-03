@@ -240,8 +240,8 @@
                 <button *ngIf="!isAIMSLoading && countAIMSProjects() == 1 && isProjectPermitted" [class.disable]='isSearchingProjects'
                   class="btn btn-success btn-lg float-right text-uppercase" (click)="editProject()">Edit
                   Project</button>
-                <button *ngIf="!isAIMSLoading && countAIMSProjects() == 1 && !isProjectPermitted" [class.disable]='isSearchingProjects'
-                  class="btn btn-warning btn-lg float-right text-uppercase" (click)="applyForMembership()">Join project</button>
+                <!--<button *ngIf="!isAIMSLoading && countAIMSProjects() == 1 && !isProjectPermitted" [class.disable]='isSearchingProjects'
+                  class="btn btn-warning btn-lg float-right text-uppercase" (click)="applyForMembership()">Join project</button>-->
               </td>
               <td>
                 <button *ngIf="selectedProjects.length == 0" class="btn btn-info btn-lg float-right text-uppercase"
@@ -257,7 +257,7 @@
       </div>
     </div>
 
-    <div *ngIf="countAIMSProjects() == 1 && !isProjectPermitted" class="row">
+    <!--<div *ngIf="countAIMSProjects() == 1 && !isProjectPermitted" class="row">
       <div class="col-md-12">
         <div class="text-warning float-right">
           <b><i>
@@ -265,7 +265,7 @@
             </i></b>
         </div>
       </div>
-    </div>
+    </div>-->
     <div *ngIf="countAIMSProjects() > 1 && !checkIfCanMerge()" class="row">
       <div class="col-md-12">
         <div class="text-warning float-right">

@@ -40,7 +40,7 @@
               <span *ngIf="disbursement.disbursementType == 2">Planned</span>
             </label>
             <!--pattern="^\d*(\.\d{0,2})?$"-->
-            <input type="text" type="text" pattern="[0-9]*"
+            <input type="text" pattern="[0-9]*"
               oninput="validity.valid || (value = this.value.slice(0, -1))"  maxlength="11" (input)="calculateDisbursementsTotal()"
               name="{{disbursement.year}}-{{disbursement.disbursementType}}" placeholder="Example (12345)" [(ngModel)]="disbursement.amount"
               class="form-control col-md-5" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
@@ -202,7 +202,7 @@
               <span *ngIf="disbursement.disbursementType == 1">Actual</span>
               <span *ngIf="disbursement.disbursementType == 2">Planned</span>
             </label>
-            <input type="text" pattern="[0-9]*" maxlength="11" (change)="manageSourceDisbursementsSelection(disbursement.year, disbursement.amount, disbursement.disbursementType)"
+            <input type="text" pattern="[0-9]*" oninput="validity.valid || (value = this.value.slice(0, -1))" maxlength="11" (change)="manageSourceDisbursementsSelection(disbursement.year, disbursement.amount, disbursement.disbursementType)"
               name="{{disbursement.year}}-{{disbursement.disbursementType}}" [(ngModel)]="disbursement.amount"
               class="form-control col-md-8" id="d-{{disbursement.year}}-{{disbursement.disbursementType}}" required />
             <!--<input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" (change)="manageSourceDisbursementsSelection(disbursement.year, disbursement.amount, disbursement.disbursementType)"
