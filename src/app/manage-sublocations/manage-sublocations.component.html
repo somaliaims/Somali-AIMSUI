@@ -1,0 +1,58 @@
+<div class="container-fluid view-area">
+    <block-ui>
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/sublocations']">Sub-locations list</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active btn-info" data-toggle="tab">{{locationTabText}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+  
+      <div class="row">
+  
+        <div class="col-sm-12 col-md-6">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <div *ngIf="isError" class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Error!</strong> {{errorMessage}}
+              </div>
+              <h5 class="card-title text-center">Manage Sub-location</h5>
+  
+              <form class="form-signin" (ngSubmit)="locationForm.form.valid && saveSubLocation()" #locationForm="ngForm">
+  
+                <div class="form-group">
+                  <label for="locationId">Location</label>
+                  <select class="form-control" id="locationId" [(ngModel)]="model.locationId" name="locationId"
+                    #locationId="ngModel">
+                    <option *ngFor="let location of locations" [value]="location.id">{{location.subLocation}}</option>
+                  </select>
+                </div>
+  
+                <div class="form-group">
+                  <label for="text">Sub-location</label>
+                  <input type="text" class="form-control" id="subLocation" [(ngModel)]="model.subLocation" name="subLocation"
+                    #subLocation="ngModel" required>
+                  <div *ngIf="locationForm.submitted" [hidden]="subLocation.valid" class="alert alert-danger">
+                    Sub-location Name is required
+                  </div>
+                </div>
+  
+                <button [class.disable]="isBtnDisabled" class="btn btn-lg btn-info btn-block text-uppercase"
+                  type="submit">{{btnText}}</button>
+              </form>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+  
+    </block-ui>
+  </div>
+  
+  <error-modal message={{errorMessage}}></error-modal>

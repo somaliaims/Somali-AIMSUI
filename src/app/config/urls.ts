@@ -45,6 +45,8 @@ export const urls = {
 	deleteOrganization: "Organization/Delete/",
 	locationUrl: "Location",
 	getLocation: "Location/GetById/",
+	subLocationUrl: "SubLocation",
+	subLocationForLocationUrl: "SubLocation/GetForLocation/",
 	sectorTypesUrl: "SectorTypes",
 	defaultSectorTypeUrl: "SectorTypes/GetDefault",
 	sectorsForTypesUrl: "Sector/GetSectorsForType/",

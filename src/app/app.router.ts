@@ -85,6 +85,8 @@ import { UserManagerComponent } from './user-manager/user-manager.component';
 import { DocumentLinkComponent } from './document-link/document-link.component';
 import { ManageDocumentLinkComponent } from './manage-document-link/manage-document-link.component';
 import { ContactMessagesComponent } from './contact-messages/contact-messages.component';
+import { SublocationsComponent } from './sublocations/sublocations.component';
+import { ManageSubLocationsComponent } from './manage-sublocations/manage-sublocations.component';
 
 // Route Configuration
 const routes: Routes = [
@@ -110,7 +112,9 @@ const routes: Routes = [
   { path: 'manage-organization-type/:{id}', component: ManageOrganizationTypeComponent, data: { isForEdit: true } },
   { path: 'manage-organization-type', component: ManageOrganizationTypeComponent },
   { path: 'locations', component: LocationsComponent },
+  { path: 'sublocations', component: SublocationsComponent },
   { path: 'manage-location/:{id}', component: ManageLocationComponent, data: { isForEdit: true } },
+  { path: 'manage-sublocation/:{id}', component: ManageSubLocationsComponent, data: { isForEdit: true } },
   { path: 'delete-location/:{id}', component: DeleteLocationComponent },
   { path: 'manage-location', component: ManageLocationComponent },
   { path: 'sector-types', component: SectorTypesComponent },

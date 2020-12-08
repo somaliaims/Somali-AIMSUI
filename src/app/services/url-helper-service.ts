@@ -268,6 +268,14 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.locationUrl);
     }
 
+    getSubLocationUrl() {
+        return (this.BASE_URL + urlsList.urls.subLocationUrl);
+    }
+
+    getSubLocationsForLocationUrl() {
+        return (this.BASE_URL + urlsList.urls.subLocationForLocationUrl);
+    }
+
     deleteLocationUrl(id: string, newId: string) {
         return (this.BASE_URL + urlsList.urls.deleteLocation + id + '/' + newId);
     }

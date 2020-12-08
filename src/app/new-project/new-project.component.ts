@@ -443,8 +443,6 @@ export class NewProjectComponent implements OnInit {
 
   filterProjectMatches() {
     var str = this.model.title;
-    console.log('Marker is: ' + this.model.markerId);
-    console.log('Marker values are: ' + this.model.selectedMarkerValues);
     if (this.model.title) {
       str = str.toLowerCase();
       this.filteredIatiProjects = this.iatiProjects.filter(project => project.title.toLowerCase().indexOf(str) != -1);
@@ -627,7 +625,7 @@ export class NewProjectComponent implements OnInit {
       });
     }
 
-    if (this.model.markerId)
+    if (this.model.markerId && this.model.markerId > 0)
     {
       this.filteredAIMSProjects = this.filteredAIMSProjects.filter(function (project) {
         var isMatched = false;

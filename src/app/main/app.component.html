@@ -41,6 +41,7 @@
             <div class="dropdown-menu">
               <h5 *ngIf="permissions.canManage" class="dropdown-header">Field management</h5>
               <a *ngIf="permissions.canEditLocation" class="dropdown-item" [routerLink]="['/locations']">Locations</a>
+              <a *ngIf="permissions.canEditLocation" class="dropdown-item" [routerLink]="['/sublocations']">Sub-locations</a>
               <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sector-types']">Sector
                 types</a>
               <a *ngIf="permissions.canEditSector" class="dropdown-item" [routerLink]="['/sectors']">Sectors</a>

@@ -127,6 +127,8 @@ import { ManageDocumentLinkComponent } from './manage-document-link/manage-docum
 import { DocumentLinkComponent } from './document-link/document-link.component';
 import { ContactEmailsComponent } from './contact-emails/contact-emails.component';
 import { ContactMessagesComponent } from './contact-messages/contact-messages.component';
+import { SublocationsComponent } from './sublocations/sublocations.component';
+import { ManageSubLocationsComponent } from './manage-sublocations/manage-sublocations.component';
 
 @NgModule({
   declarations: [
@@ -240,6 +242,8 @@ import { ContactMessagesComponent } from './contact-messages/contact-messages.co
     DocumentLinkComponent,
     ContactEmailsComponent,
     ContactMessagesComponent,
+    SublocationsComponent,
+    ManageSubLocationsComponent,
   ],
   imports: [
     BrowserModule,

@@ -20,6 +20,12 @@ export class LocationService {
         catchError(this.storeService.handleError<any>('Locations')));
     }
 
+    getSubLocationsList() {
+      var url = this.urlHelper.getSubLocationUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Sub-Locations')));
+    }
+
     filterLocations(criteria: string) {
       var url = this.urlHelper.getSearchLocationsUrl(criteria);
       return this.httpClient.get(url, httpOptions).pipe(
@@ -32,6 +38,12 @@ export class LocationService {
         catchError(this.storeService.handleError<any>('Location')));
     }
 
+    getSubLocation(id: string) {
+      var url = this.urlHelper.getSubLocationUrl() + '/' + id;
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Sub Location')));
+    }
+
     addLocation(model: any) {
       var url  = this.urlHelper.getLocationUrl();
         return this.httpClient.post(url,
@@ -39,11 +51,25 @@ export class LocationService {
                 catchError(this.storeService.handleError<any>('New Location')));
     }
 
+    addSubLocation(model: any) {
+      var url  = this.urlHelper.getSubLocationUrl();
+        return this.httpClient.post(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('New Sub Location')));
+    }
+
     updateLocation(id: number, model: any) {
       var url  = this.urlHelper.getLocationUrl() + '/' + id;
         return this.httpClient.put(url,
             JSON.stringify(model), httpOptions).pipe(
                 catchError(this.storeService.handleError<any>('Update Location')));
+    }
+
+    updateSubLocation(id: number, model: any) {
+      var url  = this.urlHelper.getSubLocationUrl() + '/' + id;
+        return this.httpClient.put(url,
+            JSON.stringify(model), httpOptions).pipe(
+                catchError(this.storeService.handleError<any>('Update Sub Location')));
     }
 
     getLocationProjects(id: string) {
@@ -57,6 +83,13 @@ export class LocationService {
       var url = this.urlHelper.deleteLocationUrl(id, newId);
       return this.httpClient.delete(url, httpOptions).pipe(
         catchError(this.storeService.handleError<any>('Delete Location'))
+      );
+    }
+
+    deleteSubLocation(id: string) {
+      var url = this.urlHelper.getSubLocationUrl + '/' + id;
+      return this.httpClient.delete(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Delete Sub Location'))
       );
     }
 
