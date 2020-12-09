@@ -117,6 +117,7 @@ const routes: Routes = [
   { path: 'manage-sublocation/:{id}', component: ManageSubLocationsComponent, data: { isForEdit: true } },
   { path: 'delete-location/:{id}', component: DeleteLocationComponent },
   { path: 'manage-location', component: ManageLocationComponent },
+  { path: 'manage-sublocation', component: ManageSubLocationsComponent },
   { path: 'sector-types', component: SectorTypesComponent },
   { path: 'manage-sectortype/:{id}', component: ManageSectortypeComponent, data: { isForEdit: true } },
   { path: 'manage-sectortype', component: ManageSectortypeComponent },

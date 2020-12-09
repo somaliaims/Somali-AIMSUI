@@ -15,7 +15,7 @@
   
       <div class="row">
   
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-12">
           <div class="card card-signin my-5">
             <div class="card-body">
               <div *ngIf="isError" class="alert alert-danger alert-dismissible">
@@ -30,7 +30,8 @@
                   <label for="locationId">Location</label>
                   <select class="form-control" id="locationId" [(ngModel)]="model.locationId" name="locationId"
                     #locationId="ngModel">
-                    <option *ngFor="let location of locations" [value]="location.id">{{location.subLocation}}</option>
+                    <option value="0">--Select location--</option>
+                    <option *ngFor="let location of locations" [value]="location.id">{{location.location}}</option>
                   </select>
                 </div>
   

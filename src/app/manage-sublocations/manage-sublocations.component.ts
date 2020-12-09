@@ -21,7 +21,7 @@ export class ManageSubLocationsComponent implements OnInit {
   isError: boolean = false;
   permissions: any = {};
   locations: any = [];
-  btnText: string = 'Add Sector';
+  btnText: string = 'Add Sub-location';
   locationTabText: string = 'Manage sub-location';
   model: any = { id: 0, subLocation: null, locationId: 0 };
   
@@ -42,6 +42,8 @@ export class ManageSubLocationsComponent implements OnInit {
     if (this.route.snapshot.data && this.route.snapshot.data.isForEdit) {
       var id = this.route.snapshot.params["{id}"];
       if (id) {
+        this.btnText = 'Edit Sub-Location';
+        this.isForEdit = true;
         this.model.id = id;
         this.getSubLocation();
       }
@@ -83,7 +85,7 @@ export class ManageSubLocationsComponent implements OnInit {
       this.locationService.updateSubLocation(this.model.id, model).subscribe(
         data => {
           if (data) {
-            this.router.navigateByUrl('sectors');
+            this.router.navigateByUrl('sublocations');
           }
         },
         error => {
@@ -96,7 +98,7 @@ export class ManageSubLocationsComponent implements OnInit {
       this.locationService.addSubLocation(model).subscribe(
         data => {
           if (data) {
-            this.router.navigateByUrl('sectors');
+            this.router.navigateByUrl('sublocations');
           }
         },
         error => {

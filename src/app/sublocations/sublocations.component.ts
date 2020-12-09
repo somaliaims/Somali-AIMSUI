@@ -12,12 +12,14 @@ import { StoreService } from '../services/store-service';
 })
 export class SublocationsComponent implements OnInit {
 
+  criteria: string = null;
   permissions: any = {};
   locationsList: any = [];
   subLocationsList: any = [];
   filteredSubLocationsList: any = [];
   selectedLocationId: number = 0;
   isLoading: boolean = false;
+  pagingSize: number = Settings.rowsPerPage;
 
   constructor(private locationService: LocationService,
     private securityService: SecurityHelperService,
@@ -51,10 +53,34 @@ export class SublocationsComponent implements OnInit {
       data => {
         if (data) {
           this.subLocationsList = data;
+          this.filteredSubLocationsList = data;
         }
-        this.isLoading = true;
+        this.isLoading = false;
       }
     );
+  }
+
+  filterLocations() {
+    if (this.selectedLocationId == 0) {
+      this.filteredSubLocationsList = this.subLocationsList;
+    } else {
+      this.filteredSubLocationsList = this.subLocationsList.filter(s => s.locationId == this.selectedLocationId);
+    }
+  }
+
+  searchSubLocations() {
+    if (!this.criteria) {
+      this.filteredSubLocationsList = this.subLocationsList; 
+    } else {
+      var stringToMatch = this.criteria.toLowerCase();
+      this.filteredSubLocationsList = this.filteredSubLocationsList.filter(s => s.subLocation.toLowerCase().indexOf(stringToMatch) != -1);
+    }
+  }
+
+  edit(id: number) {
+    if (id) {
+      this.router.navigateByUrl('manage-sublocation/' + id);
+    }
   }
 
 }
