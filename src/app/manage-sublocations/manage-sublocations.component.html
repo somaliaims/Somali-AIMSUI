@@ -29,10 +29,13 @@
                 <div class="form-group">
                   <label for="locationId">Location</label>
                   <select class="form-control" id="locationId" [(ngModel)]="model.locationId" name="locationId"
-                    #locationId="ngModel">
+                    #locationId="ngModel" required>
                     <option value="0">--Select location--</option>
                     <option *ngFor="let location of locations" [value]="location.id">{{location.location}}</option>
                   </select>
+                  <div *ngIf="locationForm.submitted" [hidden]="locationId.valid && locationId > 0" class="alert alert-danger">
+                    Location is required
+                  </div>
                 </div>
   
                 <div class="form-group">

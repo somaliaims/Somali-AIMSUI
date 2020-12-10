@@ -129,6 +129,7 @@ import { ContactEmailsComponent } from './contact-emails/contact-emails.componen
 import { ContactMessagesComponent } from './contact-messages/contact-messages.component';
 import { SublocationsComponent } from './sublocations/sublocations.component';
 import { ManageSubLocationsComponent } from './manage-sublocations/manage-sublocations.component';
+import { SublocationModalComponent } from './sublocation-modal/sublocation-modal.component';
 
 @NgModule({
   declarations: [
@@ -244,6 +245,7 @@ import { ManageSubLocationsComponent } from './manage-sublocations/manage-subloc
     ContactMessagesComponent,
     SublocationsComponent,
     ManageSubLocationsComponent,
+    SublocationModalComponent,
   ],
   imports: [
     BrowserModule,

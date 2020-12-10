@@ -74,8 +74,13 @@ export class ManageSubLocationsComponent implements OnInit {
   }
 
   saveSubLocation() {
+    var locationId = parseInt(this.model.locationId.toString()); 
+    if (locationId <= 0) {
+      return false;
+    }
+    
     var model = {
-      locationId: parseInt(this.model.locationId.toString()),
+      locationId: locationId,
       subLocation: this.model.subLocation,
     };
 
