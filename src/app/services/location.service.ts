@@ -87,7 +87,7 @@ export class LocationService {
     }
 
     deleteSubLocation(id: string) {
-      var url = this.urlHelper.getSubLocationUrl + '/' + id;
+      var url = this.urlHelper.getSubLocationUrl() + '/' + id;
       return this.httpClient.delete(url, httpOptions).pipe(
         catchError(this.storeService.handleError<any>('Delete Sub Location'))
       );

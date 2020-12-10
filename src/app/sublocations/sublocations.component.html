@@ -1,10 +1,10 @@
 <div class="container-fluid view-area">
-  
+  <block-ui>
     <div class="row">
       <div class="col-md-4">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link active btn-info" data-toggle="tab" >Sub locations list</a>
+            <a class="nav-link active btn-info" data-toggle="tab">Sub locations list</a>
           </li>
           <li *ngIf="permissions.canEditLocation" class="nav-item">
             <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-sublocation']">Create new</a>
@@ -23,21 +23,22 @@
       <div class="col-md-4">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Enter sub-location name" (input)="searchSubLocations()"
-          [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;"
-          maxlength="50" aria-describedby="basic-addon2">
+            [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;"
+            maxlength="50" aria-describedby="basic-addon2">
           <div class="input-group-append">
-            <button class="btn btn-outline-info" (click)="searchSubLocations()" type="button"><i class="fa fa-search"></i></button>
+            <button class="btn btn-outline-info" (click)="searchSubLocations()" type="button"><i
+                class="fa fa-search"></i></button>
           </div>
         </div>
       </div>
     </div>
-    
+
     <div class="row text-center" *ngIf="isLoading">
       <div class="col-md-12">
         <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
       </div>
     </div>
-    
+
     <div *ngIf="!isLoading" class="row">
       <div *ngIf="filteredSubLocationsList.length > 0" class="col margin-top-10">
         <table class="table table-bordered table-stripped">
@@ -50,15 +51,19 @@
             <td *ngIf="permissions.canEditLocation">
               <a title="Edit" (click)="edit(loc.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
               &nbsp;
-              <a [class.disable]="loc.isUnAttributed" title="Delete" (click)="delete(loc.id)" class="btn btn-danger"><i class="fa fa-trash color-white"></i></a>
+              <a [class.disable]="loc.isUnAttributed" title="Delete" (click)="delete(loc.id)" class="btn btn-danger"><i
+                  class="fa fa-trash color-white"></i></a>
             </td>
           </tr>
         </table>
         <pagination-controls (pageChange)="p=$event"></pagination-controls>
       </div>
-      <div *ngIf="filteredSubLocationsList.length == 0" class="col-md-12 text-info">
+      <div *ngIf="filteredSubLocationsList.length == 0 && !isLoading" class="col-md-12 text-info">
         <i>No locations to show</i>
       </div>
     </div>
-    </div>
-    
+
+  </block-ui>
+</div>
+
+<error-modal message="{{errorMessage}}"></error-modal>
