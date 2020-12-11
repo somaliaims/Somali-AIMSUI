@@ -11,13 +11,13 @@
                     </div>
                     
                     <div  class="form-group">
-                        <form class="form-signin" (ngSubmit)="sublocationForm.form.valid && saveItemOptions()" #sublocationForm="ngForm">
-                            <div *ngIf="!isLoading" class="form-group">
-                                <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Set Options for menu item'"
-                                    [settings]="subLocationsSettings" [data]="optionItems" 
+                        <form class="form-signin" (ngSubmit)="sublocationForm.form.valid && setSubLocations()" #sublocationForm="ngForm">
+                            <div class="form-group">
+                                <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Set sub-locations'"
+                                    [settings]="subLocationsSettings" [data]="subLocations" 
                                     [(ngModel)]="selectedSubLocations"
-                                     name="selectedOptions"
-                                    #selectedOptions="ngModel" title="Select/Unselect sublocations to set">
+                                     name="sublocations"
+                                    #selectedOptions="ngModel" title="Select/Unselect sub-locations to set">
                                 </ng-multiselect-dropdown>
                             </div>
     

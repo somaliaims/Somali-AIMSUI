@@ -270,6 +270,11 @@ export class DataEntryComponent implements OnInit {
             this.currentProjectLocations = data.locations;
             this.currentProjectLocations.forEach(l => {
               l.saved = true;
+              if (l.subLocations) {
+                l.subLocations = JSON.parse(l.subLocations);
+              } else {
+                l.subLocations = [];
+              }
             });
             this.locationTotalPercentage = this.calculateLocationPercentage();
           }
@@ -373,7 +378,7 @@ export class DataEntryComponent implements OnInit {
         if (data) {
           this.locationsList = data;
         }
-        this.subLocationsList();
+        this.getSubLocationsList();
         setTimeout(() => {
           this.blockUI.stop();        
         }, 1000);

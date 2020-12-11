@@ -15,7 +15,7 @@ export class SublocationModalComponent implements OnInit {
   subLocations: any = [];
 
   @Input()
-  selectedSublocations: any = [];
+  selectedSubLocations: any = [];
 
   @Input()
   locationName: string = null;
@@ -25,6 +25,9 @@ export class SublocationModalComponent implements OnInit {
 
   subLocationsSettings = {};
   itemsToShowInDropdowns = 5;
+  isBtnDisabled: boolean = false;
+  isError: boolean = false;
+  errorMessage: string = null;
   btnText = 'Set Sub-locations';
 
   constructor() { 
@@ -42,8 +45,12 @@ export class SublocationModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  setSubLocationsAndClose() {
-    this.updatedSubLocations.emit(this.selectedSublocations);
+  setSubLocations() {
+    this.updatedSubLocations.emit(this.selectedSubLocations);
+  }
+
+  closeModal() {
+
   }
 
 }

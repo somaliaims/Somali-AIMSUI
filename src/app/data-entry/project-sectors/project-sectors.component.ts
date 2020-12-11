@@ -71,6 +71,7 @@ export class ProjectSectorsComponent implements OnInit {
   isSectorHelpLoading: boolean = true;
   isLocationHelpLoading: boolean = true;
   isNdpSectorsLoading: boolean = true;
+  isShowSubLocationsSettings: boolean = false;
   sectorModel: any = { sectorTypeId: null, sector: null, selectedSector: null, sectorId: null, selectedMapping: null, mappingId: null, fundsPercentage: null, saved: false };
   newMappings: any = [];
   locationModel: any = { locationId: null, location: null, fundsPercentage: null, saved: false };
@@ -266,16 +267,6 @@ export class ProjectSectorsComponent implements OnInit {
     }
   }
 
-  onDeSelectSector() {
-    this.sectorModel.selectedSector = null;
-    this.sectorModel.selectedMapping = null;
-    this.ndpSectorsList = this.defaultSectorsList.filter(s => s.parentSector != null);
-    this.showMappingAuto = false;
-    this.showMappingManual = false;
-    this.mappingsCount = 0;
-  }
-
-
   addSector(frm: any) {
     var sectorPercentage = parseFloat(this.sectorModel.fundsPercentage) + parseFloat(this.calculateSectorPercentage());
     if (sectorPercentage > 100) {
@@ -363,6 +354,30 @@ export class ProjectSectorsComponent implements OnInit {
     }
     this.locationModel = { locationId: null, location: null, fundsPercentage: null, saved: false };
     frm.resetForm();
+  }
+
+  openSubLocationsForLocation(id) {
+    if (id) {
+      this.selectedSubLocations = this.subLocationsList.filter(s => s.locationId == id);
+      this.isShowSubLocationsSettings = true;
+    }
+  }
+
+  updateSubLocationsForLocation($event) {
+    var subLocationData = $event;
+    if (subLocationData) {
+      var locationId = subLocationData.locationId;
+      var selectedLocationArr = this.currentProjectLocations.filter(l => l.locationId == locationId);
+      if (selectedLocationArr.length > 0) {
+        var selectedLocation = selectedLocationArr[0];
+        var subLocations = subLocationData.subLocations;
+        selectedLocation.subLocations = [];
+        subLocations.forEach( s => {
+          selectedLocation.subLocations.push(s);
+        });
+      }
+    }
+    this.isShowSubLocationsSettings = false;
   }
 
   setManualMappings() {
@@ -735,6 +750,14 @@ export class ProjectSectorsComponent implements OnInit {
     this.proceedToNext.emit();
   }
 
+  displaySubLocations(subLocations: any = []) {
+    var subLocationsStr = '';
+    if (subLocations && subLocations.length > 0) {
+      subLocationsStr = subLocations.map(l => l.subLocation).join(', ');
+    }
+    return subLocationsStr;
+  }
+
   /*Sending updated data to parent*/
   updateSectorsToParent() {
     this.projectSectorsChanged.emit(this.currentProjectSectors);
@@ -742,6 +765,15 @@ export class ProjectSectorsComponent implements OnInit {
 
   updateLocationsToParent() {
     this.projectLocationsChanged.emit(this.currentProjectLocations);
+  }
+
+  onDeSelectSector() {
+    this.sectorModel.selectedSector = null;
+    this.sectorModel.selectedMapping = null;
+    this.ndpSectorsList = this.defaultSectorsList.filter(s => s.parentSector != null);
+    this.showMappingAuto = false;
+    this.showMappingManual = false;
+    this.mappingsCount = 0;
   }
 
 }

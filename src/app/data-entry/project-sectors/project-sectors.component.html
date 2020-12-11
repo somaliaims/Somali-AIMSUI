@@ -231,6 +231,7 @@
                   <tr>
                     <th>Location</th>
                     <th class="text-center">Percentage</th>
+                    <th class="text-center">Sub-locations</th>
                     <th class="text-center">
                       Action
                     </th>
@@ -240,6 +241,12 @@
                   <tr *ngFor="let location of currentProjectLocations">
                     <td>{{location.location}}</td>
                     <td class="text-center">{{location.fundsPercentage}}</td>
+                    <td>
+                      {{displaySubLocations(location.subLocations)}}&nbsp;
+                      <span class="float-right">
+                        <button type="button" title="Manage sub-locations" (click)="openSubLocationsForLocation(location.locationId)" class="btn btn-info btn-sm"><i class="fa fa-list-alt"></i></button>
+                      </span>
+                    </td>
                     <td class="text-center">
                       <button *ngIf="location.saved" title="Delete location"
                         (click)="deleteProjectLocation(location.locationId)" class="btn btn-danger btn-sm"><i
@@ -517,4 +524,5 @@
 
 </block-ui>
 
+<sublocation-modal *ngIf="isShowSubLocationsSettings" [subLocations]="subLocationsList" (updateSubLocationsForLocation)="updateSubLocationsForLocation($event)"></sublocation-modal>
 <error-modal message={{errorMessage}}></error-modal>
