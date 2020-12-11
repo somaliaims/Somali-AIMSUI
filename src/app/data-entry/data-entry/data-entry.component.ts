@@ -53,7 +53,7 @@ export class DataEntryComponent implements OnInit {
   aimsProjects: any = [];
   iatiProjects: any = [];
   markersList: any = [];
-  sublocationsList: any = [];
+  subLocationsList: any = [];
 
   selectedProjects: any = [];
   currentProjectFunders: any = [];
@@ -373,7 +373,7 @@ export class DataEntryComponent implements OnInit {
         if (data) {
           this.locationsList = data;
         }
-        this.sublocationsList();
+        this.subLocationsList();
         setTimeout(() => {
           this.blockUI.stop();        
         }, 1000);
@@ -385,7 +385,7 @@ export class DataEntryComponent implements OnInit {
     this.locationService.getSubLocationsList().subscribe(
       data => {
         if (data) {
-          this.sublocationsList = data;
+          this.subLocationsList = data;
         }
       }
     );

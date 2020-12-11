@@ -32,6 +32,8 @@ export class ProjectSectorsComponent implements OnInit {
   @Input()
   locationsList: any = [];
   @Input()
+  subLocationsList: any = [];
+  @Input()
   currentProjectLocations: any = [];
   
   @Input()
@@ -52,6 +54,7 @@ export class ProjectSectorsComponent implements OnInit {
   mappedSectorsList: any = [];
   newProjectSectors: any = [];
   sourceSectorsList: any = [];
+  selectedSubLocations: any = [];
   sectorsSettings: any = {};
   sectorsWithCodeSettings: any = {};
   sectorHelp: any = { sectorType: null, sector: null, mappingSector: null, percentage: null };
