@@ -7,6 +7,7 @@ import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
 import { Messages } from 'src/app/config/messages';
 import { Settings } from 'src/app/config/settings';
 import { HelpService } from 'src/app/services/help-service';
+import { SublocationModalComponent } from 'src/app/sublocation-modal/sublocation-modal.component';
 
 @Component({
   selector: 'project-sectors',
@@ -55,15 +56,18 @@ export class ProjectSectorsComponent implements OnInit {
   newProjectSectors: any = [];
   sourceSectorsList: any = [];
   selectedSubLocations: any = [];
+  settledSublocations: any = [];
   sectorsSettings: any = {};
   sectorsWithCodeSettings: any = {};
   sectorHelp: any = { sectorType: null, sector: null, mappingSector: null, percentage: null };
   locationHelp: any = { location: null, percentage: null };
   mappingsCount: number = 0;
   sourceSectorPercentage: number = 0;
+  selectedLocationId: number = 0;
   requestNo: number = 0;
   currentTab: string = null;
   errorMessage: string = null;
+  selectedLocationName: string = null;
   showMappingManual: boolean = false;
   showMappingAuto: boolean = false;
   isSectorsSourceAvailable: boolean = false;
@@ -96,7 +100,8 @@ export class ProjectSectorsComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   constructor(private projectService: ProjectService, private sectorService: SectorService,
     private storeService: StoreService, private errorModal: ErrorModalComponent,
-    private helpService: HelpService) { }
+    private helpService: HelpService,
+    private sublocationModal: SublocationModalComponent) { }
 
   ngOnInit() {
     this.requestNo = this.storeService.getNewRequestNumber();
@@ -350,6 +355,7 @@ export class ProjectSectorsComponent implements OnInit {
     if (islocationExists.length > 0) {
       islocationExists[0].fundsPercentage += this.locationModel.fundsPercentage;
     } else {
+      this.locationModel.subLocations = [];
       this.currentProjectLocations.unshift(this.locationModel);
     }
     this.locationModel = { locationId: null, location: null, fundsPercentage: null, saved: false };
@@ -358,8 +364,23 @@ export class ProjectSectorsComponent implements OnInit {
 
   openSubLocationsForLocation(id) {
     if (id) {
+      this.selectedLocationId = id;
+      var location = this.locationsList.filter(l => l.id == id);
+      if (location.length > 0) {
+        this.selectedLocationName = location[0].locationName;
+        var projectLocation = this.currentProjectLocations.filter(l => l.locationId == id);
+        if (projectLocation.length > 0) {
+          this.settledSublocations = [];
+          if (projectLocation[0].subLocations.length > 0) {
+            this.settledSublocations = projectLocation[0].subLocations;
+          }
+        }
+      }
       this.selectedSubLocations = this.subLocationsList.filter(s => s.locationId == id);
       this.isShowSubLocationsSettings = true;
+      this.sublocationModal.openModal();
+    } else {
+      this.selectedLocationId = 0;
     }
   }
 
@@ -370,11 +391,7 @@ export class ProjectSectorsComponent implements OnInit {
       var selectedLocationArr = this.currentProjectLocations.filter(l => l.locationId == locationId);
       if (selectedLocationArr.length > 0) {
         var selectedLocation = selectedLocationArr[0];
-        var subLocations = subLocationData.subLocations;
-        selectedLocation.subLocations = [];
-        subLocations.forEach( s => {
-          selectedLocation.subLocations.push(s);
-        });
+        selectedLocation.subLocations = subLocationData.subLocations;
       }
     }
     this.isShowSubLocationsSettings = false;

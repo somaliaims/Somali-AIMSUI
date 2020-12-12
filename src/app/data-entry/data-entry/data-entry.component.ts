@@ -271,7 +271,7 @@ export class DataEntryComponent implements OnInit {
             this.currentProjectLocations.forEach(l => {
               l.saved = true;
               if (l.subLocations) {
-                l.subLocations = JSON.parse(l.subLocations);
+                l.subLocations = l.subLocations;
               } else {
                 l.subLocations = [];
               }

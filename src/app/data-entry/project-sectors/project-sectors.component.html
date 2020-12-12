@@ -242,7 +242,9 @@
                     <td>{{location.location}}</td>
                     <td class="text-center">{{location.fundsPercentage}}</td>
                     <td>
-                      {{displaySubLocations(location.subLocations)}}&nbsp;
+                      <span class="float-left">
+                        {{displaySubLocations(location.subLocations)}}
+                      </span>
                       <span class="float-right">
                         <button type="button" title="Manage sub-locations" (click)="openSubLocationsForLocation(location.locationId)" class="btn btn-info btn-sm"><i class="fa fa-list-alt"></i></button>
                       </span>
@@ -524,5 +526,11 @@
 
 </block-ui>
 
-<sublocation-modal *ngIf="isShowSubLocationsSettings" [subLocations]="subLocationsList" (updateSubLocationsForLocation)="updateSubLocationsForLocation($event)"></sublocation-modal>
+<sublocation-modal *ngIf="isShowSubLocationsSettings" 
+  [subLocations]="selectedSubLocations" 
+  [selectedSubLocations]="settledSubLocations"
+  [locationId]="selectedLocationId"
+  [locationName]="selectedLocationName"
+  (updatedSubLocations)="updateSubLocationsForLocation($event)">
+</sublocation-modal>
 <error-modal message={{errorMessage}}></error-modal>

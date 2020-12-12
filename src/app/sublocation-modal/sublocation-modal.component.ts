@@ -1,10 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Injectable, Input, OnInit, Output } from '@angular/core';
 import { Settings } from '../config/settings';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'sublocation-modal',
   templateUrl: './sublocation-modal.component.html',
   styleUrls: ['./sublocation-modal.component.css']
+})
+
+@Injectable({
+  providedIn: 'root'
 })
 export class SublocationModalComponent implements OnInit {
 
@@ -28,9 +33,9 @@ export class SublocationModalComponent implements OnInit {
   isBtnDisabled: boolean = false;
   isError: boolean = false;
   errorMessage: string = null;
-  btnText = 'Set Sub-locations';
+  btnText = 'Set & Close';
 
-  constructor() { 
+  constructor(private modalService: ModalService) { 
     this.subLocationsSettings = {
       singleSelection: false,
       idField: 'id',
@@ -45,12 +50,23 @@ export class SublocationModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  openModal() {
+    setTimeout(() => {
+      this.modalService.open('sublocation-modal');
+    }, 500);
+  }
+
   setSubLocations() {
-    this.updatedSubLocations.emit(this.selectedSubLocations);
+    var model = {
+      locationId: this.locationId,
+      subLocations: this.selectedSubLocations
+    }
+    this.updatedSubLocations.emit(model);
+    this.closeModal();
   }
 
   closeModal() {
-
+    this.modalService.close('sublocation-modal');
   }
 
 }
