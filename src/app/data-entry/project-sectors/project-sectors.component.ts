@@ -370,9 +370,10 @@ export class ProjectSectorsComponent implements OnInit {
         this.selectedLocationName = location[0].locationName;
         var projectLocation = this.currentProjectLocations.filter(l => l.locationId == id);
         if (projectLocation.length > 0) {
-          this.settledSublocations = [];
           if (projectLocation[0].subLocations.length > 0) {
             this.settledSublocations = projectLocation[0].subLocations;
+          } else {
+            this.settledSublocations = [];
           }
         }
       }
@@ -392,7 +393,7 @@ export class ProjectSectorsComponent implements OnInit {
       if (selectedLocationArr.length > 0) {
         var selectedLocation = selectedLocationArr[0];
         selectedLocation.subLocations = subLocationData.subLocations;
-      }
+      } 
     }
     this.isShowSubLocationsSettings = false;
   }

@@ -33,21 +33,26 @@ export class SublocationModalComponent implements OnInit {
   isBtnDisabled: boolean = false;
   isError: boolean = false;
   errorMessage: string = null;
+  isLoading: boolean = true;
   btnText = 'Set & Close';
 
   constructor(private modalService: ModalService) { 
-    this.subLocationsSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'subLocation',
-      selectAllText: 'Select all',
-      unSelectAllText: 'Unselect all',
-      itemsShowLimit: this.itemsToShowInDropdowns,
-      allowSearchFilter: true
-    };
   }
 
   ngOnInit(): void {
+    console.log(this.selectedSubLocations);
+    setTimeout(() => {
+      this.isLoading = false;
+      this.subLocationsSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'subLocation',
+        selectAllText: 'Select all',
+        unSelectAllText: 'Unselect all',
+        itemsShowLimit: this.itemsToShowInDropdowns,
+        allowSearchFilter: true
+      };
+    }, 500);
   }
 
   openModal() {
@@ -61,8 +66,11 @@ export class SublocationModalComponent implements OnInit {
       locationId: this.locationId,
       subLocations: this.selectedSubLocations
     }
-    this.updatedSubLocations.emit(model);
     this.closeModal();
+    setTimeout(() => {
+      this.updatedSubLocations.emit(model);
+    }, 500);
+    
   }
 
   closeModal() {

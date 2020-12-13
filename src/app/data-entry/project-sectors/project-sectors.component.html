@@ -260,7 +260,7 @@
                   </tr>
                   <tr>
                     <th>&nbsp;</th>
-                    <th class="text-center">
+                    <th colspan="2" class="text-center">
                       <span *ngIf="currentProjectLocations.length > 0" class="text-info"><b>Total</b>:
                         {{calculateLocationPercentage()}}%</span>
                     </th>
@@ -528,7 +528,7 @@
 
 <sublocation-modal *ngIf="isShowSubLocationsSettings" 
   [subLocations]="selectedSubLocations" 
-  [selectedSubLocations]="settledSubLocations"
+  [selectedSubLocations]="settledSublocations"
   [locationId]="selectedLocationId"
   [locationName]="selectedLocationName"
   (updatedSubLocations)="updateSubLocationsForLocation($event)">
