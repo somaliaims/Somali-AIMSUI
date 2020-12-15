@@ -785,6 +785,16 @@ export class LocationReportComponent implements OnInit {
         if (data) {
           this.subLocationsList = data;
           this.filteredSubLocationsList = data;
+          if (this.loadReport) {
+            if (this.paramSubLocationIds.length > 0) {
+              this.paramSubLocationIds.forEach(function (id) {
+                var subLocation = this.subLocationsList.filter(s => s.id == id);
+                if (subLocation.length > 0) {
+                  this.model.selectedSubLocations.push(subLocation[0]);
+                }
+              }.bind(this));
+            }
+          }
         }
       }
     )
