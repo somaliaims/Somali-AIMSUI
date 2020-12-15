@@ -49,6 +49,7 @@ export class ProjectSectorsComponent implements OnInit {
   @Output()
   proceedToNext = new EventEmitter();
 
+  filteredSubLocationsList: any = this.subLocationsList;
   typeSectorsList: any = [];
   ndpSectorsList: any = [];
   sectorMappings: any = [];
@@ -58,6 +59,7 @@ export class ProjectSectorsComponent implements OnInit {
   selectedSubLocations: any = [];
   settledSublocations: any = [];
   sectorsSettings: any = {};
+  subLocationsSettings: any = {};
   sectorsWithCodeSettings: any = {};
   sectorHelp: any = { sectorType: null, sector: null, mappingSector: null, percentage: null };
   locationHelp: any = { location: null, percentage: null };
@@ -78,7 +80,7 @@ export class ProjectSectorsComponent implements OnInit {
   isShowSubLocationsSettings: boolean = false;
   sectorModel: any = { sectorTypeId: null, sector: null, selectedSector: null, sectorId: null, selectedMapping: null, mappingId: null, fundsPercentage: null, saved: false };
   newMappings: any = [];
-  locationModel: any = { locationId: null, location: null, fundsPercentage: null, saved: false };
+  locationModel: any = { locationId: null, location: null, selectedSubLocations: [], fundsPercentage: null, saved: false };
 
   sourceTypes: any = {
     IATI: 'IATI',
@@ -113,12 +115,23 @@ export class ProjectSectorsComponent implements OnInit {
       }
     });
     this.currentTab = this.tabConstants.SECTORS_LOCATIONS;
+    
     this.sectorsSettings = {
       singleSelection: true,
       idField: 'id',
       textField: 'sectorWithCode',
       selectAllText: '',
       unSelectAllText: '',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+    
+    this.subLocationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'subLocation',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
@@ -353,13 +366,24 @@ export class ProjectSectorsComponent implements OnInit {
 
     var islocationExists = this.currentProjectLocations.filter(l => l.locationId == this.locationModel.locationId && l.saved == false);
     if (islocationExists.length > 0) {
+      islocationExists[0].subLocations = this.locationModel.selectedSubLocations;
       islocationExists[0].fundsPercentage += this.locationModel.fundsPercentage;
     } else {
-      this.locationModel.subLocations = [];
+      this.locationModel.subLocations = this.locationModel.selectedSubLocations;
       this.currentProjectLocations.unshift(this.locationModel);
     }
-    this.locationModel = { locationId: null, location: null, fundsPercentage: null, saved: false };
+    this.locationModel = { locationId: null, location: null, selectedSubLocations: [], subLocations: [], fundsPercentage: null, saved: false };
     frm.resetForm();
+  }
+
+  manageSubLocations() {
+    this.locationModel.selectedSubLocations = [];
+    if (this.locationModel.locationId) {
+      var id = this.locationModel.locationId;
+      this.filteredSubLocationsList = this.subLocationsList.filter(l => l.locationId == id);
+    } else {
+      this.locationModel.selectedSubLocations = [];
+    }
   }
 
   openSubLocationsForLocation(id) {
