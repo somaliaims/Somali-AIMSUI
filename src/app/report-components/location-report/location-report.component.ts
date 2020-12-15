@@ -28,10 +28,12 @@ export class LocationReportComponent implements OnInit {
   organizationsSettings: any = {};
   markerValuesSettings: any = {};
   dataOptionSettings: any = {};
+  subLocationsSettings: any = {};
   projectsSettings: any = {};
   yearsList: any = [];
   locationsList: any = [];
   subLocationsList: any = [];
+  filteredSubLocationsList: any = [];
   organizationsList: any = [];
   currenciesList: any = [];
   exchangeRatesList: any = [];
@@ -64,6 +66,7 @@ export class LocationReportComponent implements OnInit {
   multiDataDisplay: boolean = true;
   datedToday: string = null;
   paramLocationIds: any = [];
+  paramSubLocationIds: any = [];
   paramOrgIds: any = [];
   paramProjectIds: any = [];
   paramChartType: string = null;
@@ -267,7 +270,7 @@ export class LocationReportComponent implements OnInit {
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: this.chartTypeCodes.BAR,
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
-    selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
+    selectedLocations: [], selectedSubLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], sectorId: 0, 
     noLocationOption: this.noLocationCodes.PROJECTS_WITH_LOCATIONS, sectorLevel: 0,
@@ -310,6 +313,7 @@ export class LocationReportComponent implements OnInit {
           this.model.markerId = (params.mid) ? parseInt(params.mid) : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',').map(p => parseInt(p)) : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',').map(l => parseInt(l)) : [];
+          this.paramSubLocationIds = (params.slocations) ? params.slocations.split(',').map(l => parseInt(l)) : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',').map(o => parseInt(o)) : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           if (params.mvalue) {
@@ -336,6 +340,16 @@ export class LocationReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'locationName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.subLocationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'subLocation',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -540,6 +554,7 @@ export class LocationReportComponent implements OnInit {
       endingYear: (this.model.endingYear) ? parseInt(this.model.endingYear) : 0,
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       locationIds: this.model.selectedLocations.map(l => l.id),
+      subLocationIds: this.model.selectedSubLocations.map(l => l.id),
       sectorId: (this.model.sectorId) ? parseInt(this.model.sectorId) : 0,
       markerId: (this.model.markerId) ? parseInt(this.model.markerId) : 0,
       markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
@@ -746,19 +761,33 @@ export class LocationReportComponent implements OnInit {
   getLocationsList() {
     this.locationService.getLocationsList().subscribe(
       data => {
-        this.locationsList = data;
-        if (this.loadReport) {
-          if (this.paramLocationIds.length > 0) {
-            this.paramLocationIds.forEach(function (id) {
-              var location = this.locationsList.filter(s => s.id == id);
-              if (location.length > 0) {
-                this.model.selectedLocations.push(location[0]);
-              }
-            }.bind(this));
+        if (data) {
+          this.locationsList = data;
+          this.getSubLocationsList();
+          if (this.loadReport) {
+            if (this.paramLocationIds.length > 0) {
+              this.paramLocationIds.forEach(function (id) {
+                var location = this.locationsList.filter(s => s.id == id);
+                if (location.length > 0) {
+                  this.model.selectedLocations.push(location[0]);
+                }
+              }.bind(this));
+            }
           }
         }
       }
     );
+  }
+
+  getSubLocationsList() {
+    this.locationService.getSubLocationsList().subscribe(
+      data => {
+        if (data) {
+          this.subLocationsList = data;
+          this.filteredSubLocationsList = data;
+        }
+      }
+    )
   }
 
   getOrganizationsList() {
@@ -818,6 +847,7 @@ export class LocationReportComponent implements OnInit {
   }
 
   onLocationSelect(item: any) {
+    this.filterSubLocations();
     this.setFilter();
   }
 
@@ -825,13 +855,36 @@ export class LocationReportComponent implements OnInit {
     if (this.model.selectedLocations.length == 0) {
       this.manageResetDisplay();
     } 
+    this.filterSubLocations();
   }
 
   onLocationSelectAll(items: any) {
+    this.filterSubLocations();
     this.setFilter();
   }
 
   onLocationDeSelectAll(items: any) {
+    this.model.selectedLocations = [];
+    this.model.selectedSubLocations = [];
+    this.filteredSubLocationsList = [];
+    this.manageResetDisplay();
+  }
+
+  onSubLocationSelect(item: any) {
+    this.setFilter();
+  }
+
+  onSubLocationDeSelect(item: any) {
+    if (this.model.selectedLocations.length == 0) {
+      this.manageResetDisplay();
+    } 
+  }
+
+  onSubLocationSelectAll(items: any) {
+    this.setFilter();
+  }
+
+  onSubLocationDeSelectAll(items: any) {
     this.model.selectedLocations = [];
     this.manageResetDisplay();
   }
@@ -853,6 +906,13 @@ export class LocationReportComponent implements OnInit {
   onOrganizationDeSelectAll(items: any) {
     this.model.selectedOrganizations = [];  
     this.manageResetDisplay();
+  }
+
+  filterSubLocations() {
+    var locationIds = this.model.selectedLocations.map(l => l.id);
+    this.model.filteredSubLocationsList = [];
+    this.model.selectedSubLocations = [];
+    this.filteredSubLocationsList = this.subLocationsList.filter(s => locationIds.includes(s.locationId));
   }
 
   selectDataOption() {
@@ -1202,6 +1262,7 @@ export class LocationReportComponent implements OnInit {
     this.model.startingYear = 0;
     this.model.endingYear = 0;
     this.model.selectedLocations = [];
+    this.model.selectedSubLocations = [];
     this.model.selectedOrganizations = [];
     this.model.sectorId = 0;
     this.model.sectorLevel = this.sectorLevelCodes.SECTORS;

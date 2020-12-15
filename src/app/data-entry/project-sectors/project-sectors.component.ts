@@ -467,8 +467,8 @@ export class ProjectSectorsComponent implements OnInit {
       this.projectService.deleteProjectLocation(this.projectId.toString(), locationId).subscribe(
         data => {
           if (data) {
-            this.currentProjectLocations = this.currentProjectLocations.filter(l => l.locationId != locationId);
-            this.updateLocationsToParent();
+            //this.currentProjectLocations = this.currentProjectLocations.filter(l => l.locationId != locationId);
+            //this.updateLocationsToParent();
             this.getProjectLocations();
           }
         }
