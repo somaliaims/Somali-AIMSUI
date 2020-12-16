@@ -36,6 +36,7 @@ export class SectorReportComponent implements OnInit {
   projectsSettings: any = {};
   dataOptionSettings: any = {};
   locationsSettings: any = {};
+  subLocationsSettings: any = {};
   markerValuesSettings: any = {};
   oldCurrencyRate: number = 0;
   oldCurrency: string = null;
@@ -77,10 +78,13 @@ export class SectorReportComponent implements OnInit {
   organizationsList: any = [];
   currenciesList: any = [];
   locationsList: any = [];
+  subLocationsList: any = [];
+  filteredSubLocationsList: any = [];
   exchangeRatesList: any = [];
   projects: any = [];
   selectedProjects: any = [];
   paramMarkerValues: any = [];
+  paramSubLocationIds: any = [];
 
   chartOptions: any = [
     { id: 1, type: 'bar', title: 'Bar chart' },
@@ -271,7 +275,8 @@ export class SectorReportComponent implements OnInit {
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, parentSectorId: 0, chartType: 1,
     sectorIds: [], locationId: 0, selectedSectors: [], selectedOrganizations: [],
-    selectedLocations: [], selectedProjects: [], sectorsList: [], locationsList: [], organizationsList: [],
+    selectedLocations: [], selectedSubLocations: [], selectedProjects: [], sectorsList: [], 
+    locationsList: [], subLocationsList: [], organizationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS,
     noSectorOption: this.noSectorOptions.PROJECTS_WITH_SECTORS,
@@ -311,6 +316,7 @@ export class SectorReportComponent implements OnInit {
           this.model.startingYear = (params.syear) ? parseInt(params.syear) : 0;
           this.model.endingYear = (params.eyear) ? parseInt(params.eyear) : 0;
           this.model.locationId = (params.locationId) ? parseInt(params.locationId) : 0;
+          this.paramSubLocationIds = (params.slocations) ? params.slocations.split(',').map(l => parseInt(l)) : [];
           this.paramProjectIds = (params.projects) ? params.projects.split(',').map(p => parseInt(p)) : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',').map(s => parseInt(s)) : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',').map(o => parseInt(o)) : [];
@@ -340,6 +346,16 @@ export class SectorReportComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'sectorName',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.subLocationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'subLocation',
       selectAllText: 'Select all',
       unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
@@ -554,6 +570,7 @@ export class SectorReportComponent implements OnInit {
     var searchModel = {
       projectIds: (this.loadReport) ? this.paramProjectIds : projectIds,
       locationId: (this.model.locationId) ? parseInt(this.model.locationId) : 0,
+      subLocationIds: (this.loadReport) ? this.paramSubLocationIds : this.model.selectedSubLocations.map(o => o.id),
       startingYear: (this.model.startingYear) ? parseInt(this.model.startingYear) : 0,
       endingYear: (this.model.endingYear) ? parseInt(this.model.endingYear) : 0,
       organizationIds: (this.loadReport) ? this.paramOrgIds : this.model.selectedOrganizations.map(o => o.id),
@@ -815,9 +832,37 @@ export class SectorReportComponent implements OnInit {
       data => {
         if (data) {
           this.locationsList = data;
+          this.getSubLocationsList();
         }
       }
     );
+  }
+
+  getSubLocationsList() {
+    this.locationService.getSubLocationsList().subscribe(
+      data => {
+        if (data) {
+          this.subLocationsList = data;
+          this.filteredSubLocationsList = data;
+          if (this.loadReport) {
+            if (this.paramSubLocationIds.length > 0) {
+              this.paramSubLocationIds.forEach(function (id) {
+                var subLocation = this.subLocationsList.filter(s => s.id == id);
+                if (subLocation.length > 0) {
+                  this.model.selectedSubLocations.push(subLocation[0]);
+                }
+              }.bind(this));
+            }
+          }
+        }
+      }
+    );
+  }
+
+  filterSubLocations() {
+    this.model.filteredSubLocationsList = [];
+    this.model.selectedSubLocations = [];
+    this.filteredSubLocationsList = this.subLocationsList.filter(s => s.locationId == this.model.locationId);
   }
 
   getOrganizationsList() {
@@ -944,12 +989,34 @@ export class SectorReportComponent implements OnInit {
     this.manageResetDisplay();
   }
 
+  onSubLocationSelect(item: any) {
+    this.setFilter();
+  }
+
+  onSubLocationDeSelect(item: any) {
+    if (this.model.selectedLocations.length == 0) {
+      this.manageResetDisplay();
+    } 
+  }
+
+  onSubLocationSelectAll(items: any) {
+    this.setFilter();
+  }
+
+  onSubLocationDeSelectAll(items: any) {
+    this.model.selectedLocations = [];
+    this.manageResetDisplay();
+  }
+
+
   changeLocation() {
     if (this.model.locationId != 0) {
       this.setFilter();
     } else {
       this.manageResetDisplay();
     }
+    this.model.selectedSubLocations = [];
+    this.filterSubLocations();
   }
 
   manageDataToDisplay() {

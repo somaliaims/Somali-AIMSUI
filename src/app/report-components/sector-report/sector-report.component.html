@@ -83,7 +83,7 @@
               </div>
 
               <div class="row margin-top-10">
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-3 col-md-3">
                     <select class="form-control" title="Location"
                     (change)="changeLocation();" id="selectedLocation" [(ngModel)]="model.locationId"
                     name="selectedLocation" #selectedLocation="ngModel">
@@ -92,6 +92,16 @@
                       {{location.location}}
                     </option>
                   </select>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <ng-multiselect-dropdown [placeholder]="'-- All sub-location/s --'" title="Location/s"
+                      [settings]="subLocationsSettings"
+                      [data]="filteredSubLocationsList" [(ngModel)]="model.selectedSubLocations" 
+                      name="selectedSubLocations" (onSelect)="onSubLocationSelect($event)"
+                      (onDeSelect)="onSubLocationDeSelect($event)" (onSelectAll)="onSubLocationSelectAll($event)"
+                      (onDeSelectAll)="onSubLocationDeSelectAll($event)"
+                      #selectedSubLocations="ngModel">
+                    </ng-multiselect-dropdown>
                 </div>
 
                 <div class="col-lg-3 col-md-3">

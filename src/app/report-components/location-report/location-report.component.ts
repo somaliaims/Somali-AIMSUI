@@ -797,7 +797,7 @@ export class LocationReportComponent implements OnInit {
           }
         }
       }
-    )
+    );
   }
 
   getOrganizationsList() {
