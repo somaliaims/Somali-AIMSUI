@@ -34,6 +34,7 @@ export class TimeTrendReportComponent implements OnInit {
   dataOptionSettings: any = {};
   locationsSettings: any = {};
   projectsSettings: any = {};
+  subLocationsSettings: any = {};
   markerValuesSettings: any = {};
   oldCurrencyRate: number = 0;
   oldCurrency: string = null;
@@ -49,6 +50,8 @@ export class TimeTrendReportComponent implements OnInit {
   organizationsList: any = [];
   currenciesList: any = [];
   locationsList: any = [];
+  subLocationsList: any = [];
+  filteredSubLocationsList: any = [];
   exchangeRatesList: any = [];
   exchangeRates: any = [];
   manualExRate: any = 0;
@@ -67,6 +70,7 @@ export class TimeTrendReportComponent implements OnInit {
   paramOrgIds: any = [];
   paramChartType: string = null;
   paramLocationIds: any = [];
+  paramSubLocationIds: any = [];
   paramProjectIds: any = [];
   paramMarkerValues: any = [];
   loadReport: boolean = false;
@@ -234,7 +238,8 @@ export class TimeTrendReportComponent implements OnInit {
   model: any = {
     title: '', organizationIds: [], startingYear: 0, endingYear: 0, chartType: this.chartTypes.BAR,
     sectorIds: [], locationIds: [], selectedSectors: [], selectedOrganizations: [],
-    selectedLocations: [], sectorsList: [], locationsList: [], organizationsList: [],
+    selectedLocations: [], selectedSubLocations: [], sectorsList: [], locationsList: [], 
+    organizationsList: [], subLocationsList: [],
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], locationId: 0,
     sectorLevel: this.sectorLevelCodes.SECTORS,
@@ -267,6 +272,7 @@ export class TimeTrendReportComponent implements OnInit {
           this.paramProjectIds = (params.projects) ? params.projects.split(',').map(p => parseInt(p)) : [];
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',').map(s => parseInt(s)) : [];
           this.model.locationId = (params.locationId) ? parseInt(params.locationId) : 0;
+          this.paramSubLocationIds = (params.slocations) ? params.slocations.split(',').map(l => parseInt(l)) : [];
           this.model.markerId = (params.mid) ? parseInt(params.mid) : 0;
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',').map(o => parseInt(o)) : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
@@ -297,6 +303,17 @@ export class TimeTrendReportComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+
+    this.subLocationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'subLocation',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
 
     this.projectsSettings = {
       singleSelection: false,
@@ -453,6 +470,7 @@ export class TimeTrendReportComponent implements OnInit {
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       sectorIds: this.model.selectedSectors.map(s => s.id),
       locationId: (this.model.locationId) ? parseInt(this.model.locationId) : 0,
+      subLocationIds: (this.loadReport) ? this.paramSubLocationIds : this.model.selectedSubLocations.map(o => o.id),
       markerId: (this.model.markerId) ? parseInt(this.model.markerId) : 0,
       markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
       chartType: (chartType) ? parseInt(chartType) : 0
@@ -688,12 +706,42 @@ export class TimeTrendReportComponent implements OnInit {
   getLocationsList() {
     this.locationService.getLocationsList().subscribe(
       data => {
-        this.locationsList = data;
+        if (data) {
+          this.locationsList = data;
+          this.getSubLocationsList();
+        }
       },
       error => {
         console.log(error);
       }
     );
+  }
+
+  getSubLocationsList() {
+    this.locationService.getSubLocationsList().subscribe(
+      data => {
+        if (data) {
+          this.subLocationsList = data;
+          this.filteredSubLocationsList = data;
+          if (this.loadReport) {
+            if (this.paramSubLocationIds.length > 0) {
+              this.paramSubLocationIds.forEach(function (id) {
+                var subLocation = this.subLocationsList.filter(s => s.id == id);
+                if (subLocation.length > 0) {
+                  this.model.selectedSubLocations.push(subLocation[0]);
+                }
+              }.bind(this));
+            }
+          }
+        }
+      }
+    );
+  }
+
+  filterSubLocations() {
+    this.model.filteredSubLocationsList = [];
+    this.model.selectedSubLocations = [];
+    this.filteredSubLocationsList = this.subLocationsList.filter(s => s.locationId == this.model.locationId);
   }
 
   getOrganizationsList() {
