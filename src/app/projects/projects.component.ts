@@ -43,15 +43,18 @@ export class ProjectsComponent implements OnInit {
   permissions: any = {};
   projectsSettings: any = {};
   sectorsSettings: any = {};
+  organizationsSettings: any = {};
+  locationsSettings: any = {};
+  subLocationsSettings: any = {};
   selectedSectors: any = [];
   selectedOrganizations: any = [];
   selectedLocations: any = [];
-  organizationsSettings: any = [];
-  locationsSettings: any = [];
   projectTitles: any = [];
   yearsList: any = [];
   organizationsList: any = [];
   locationsList: any = [];
+  subLocationsList: any = [];
+  filteredSubLocationsList: any = [];
   userProjectIds: any = [];
   deleteProjectIds: any = [];
   allSectorsList: any = [];
@@ -92,7 +95,8 @@ export class ProjectsComponent implements OnInit {
   model: any = {
     title: null, description: null, organizationIds: [], startingYear: 0, endingYear: 0,
     sectorIds: [], locationIds: [], parentSectorId: 0, selectedProjects: [], selectedSectors: [], 
-    selectedOrganizations: [], selectedLocations: [], sectorsList: [], locationsList: [], 
+    selectedOrganizations: [], selectedLocations: [], sectorsList: [], locationsList: [],
+    selectedSubLocations: [], 
     organizationsList: [], sectorLevel: this.sectorLevelCodes.SECTORS, financialRange: 0,
     lowerRange: null, upperRange: null
   }
@@ -166,6 +170,16 @@ export class ProjectsComponent implements OnInit {
       textField: 'location',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.subLocationsSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'subLocation',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
@@ -257,6 +271,7 @@ export class ProjectsComponent implements OnInit {
 
   onSelectLocation(item: any) {
     this.setFilter();
+    this.filterSubLocations();
   }
 
   onDeSelectLocation(item: any) {
@@ -266,13 +281,35 @@ export class ProjectsComponent implements OnInit {
     } else {
       this.setFilter();
     }
+    this.filterSubLocations();
   }
 
   onSelectAllLocations(items: any) {
     this.setFilter();
+    this.filterSubLocations();
   }
 
   onDeSelectAllLocations(items: any) {
+    this.model.selectedLocations = [];
+    this.manageResetDisplay();
+    this.filterSubLocations();
+  }
+
+  onSubLocationSelect(item: any) {
+    this.setFilter();
+  }
+
+  onSubLocationDeSelect(item: any) {
+    if (this.model.selectedLocations.length == 0) {
+      this.manageResetDisplay();
+    } 
+  }
+
+  onSubLocationSelectAll(items: any) {
+    this.setFilter();
+  }
+
+  onSubLocationDeSelectAll(items: any) {
     this.model.selectedLocations = [];
     this.manageResetDisplay();
   }
@@ -282,6 +319,18 @@ export class ProjectsComponent implements OnInit {
       this.setFilter();
     } else {
       this.manageResetDisplay();
+    }
+  }
+
+  filterSubLocations() {
+    var locationIds = this.model.selectedLocations.map(l => l.id);
+    this.model.filteredSubLocationsList = [];
+    this.model.selectedSubLocations = [];
+
+    if (locationIds.length == 0) {
+      this.filteredSubLocationsList = this.subLocationsList;
+    } else {
+      this.filteredSubLocationsList = this.subLocationsList.filter(s => locationIds.includes(s.locationId));
     }
   }
 
@@ -424,6 +473,18 @@ export class ProjectsComponent implements OnInit {
       data => {
         if (data) {
           this.locationsList = data;
+          this.getSubLocationsList();
+        }
+      }
+    );
+  }
+
+  getSubLocationsList() {
+    this.locationService.getSubLocationsList().subscribe(
+      data => {
+        if (data) {
+          this.subLocationsList = data;
+          this.filteredSubLocationsList = data;
         }
       }
     );
@@ -455,6 +516,7 @@ export class ProjectsComponent implements OnInit {
       organizationIds: this.model.selectedOrganizations.map(o => o.id),
       sectorIds: this.model.selectedSectors.map(s => parseInt(s.id)),
       locationIds: this.model.selectedLocations.map(l => parseInt(l.id)),
+      subLocationIds: this.model.selectedSubLocations.map(l => parseInt(l.id)),
       description: this.model.description,
       lowerRange: parseFloat(lowerRange),
       upperRange: parseFloat(upperRange)
@@ -594,10 +656,12 @@ export class ProjectsComponent implements OnInit {
     this.model.selectedProjects = [];
     this.model.selectedOrganizations = [];
     this.model.selectedLocations = [];
+    this.model.selectedSubLocations = [];
     this.model.selectedSectors = [];
     this.model.financialRange = 0;
     this.model.startingYear = 0;
     this.model.endingYear = 0;
+    this.filteredSubLocationsList = this.subLocationsList;
     this.model.description = null;
     this.isAnyFilterSet = false;
   }

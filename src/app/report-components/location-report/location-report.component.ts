@@ -922,7 +922,12 @@ export class LocationReportComponent implements OnInit {
     var locationIds = this.model.selectedLocations.map(l => l.id);
     this.model.filteredSubLocationsList = [];
     this.model.selectedSubLocations = [];
-    this.filteredSubLocationsList = this.subLocationsList.filter(s => locationIds.includes(s.locationId));
+
+    if (locationIds.length == 0) {
+      this.filteredSubLocationsList = this.subLocationsList;
+    } else {
+      this.filteredSubLocationsList = this.subLocationsList.filter(s => locationIds.includes(s.locationId));
+    }
   }
 
   selectDataOption() {

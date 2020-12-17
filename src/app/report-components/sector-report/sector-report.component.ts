@@ -862,7 +862,11 @@ export class SectorReportComponent implements OnInit {
   filterSubLocations() {
     this.model.filteredSubLocationsList = [];
     this.model.selectedSubLocations = [];
-    this.filteredSubLocationsList = this.subLocationsList.filter(s => s.locationId == this.model.locationId);
+    if (this.model.locationId == 0) {
+      this.filterSubLocations = this.subLocationsList;
+    } else {
+      this.filteredSubLocationsList = this.subLocationsList.filter(s => s.locationId == this.model.locationId);
+    }
   }
 
   getOrganizationsList() {

@@ -95,7 +95,7 @@
                 </div>
               </div>
               <div class="row margin-top-10">
-                <div class="col-md-6">
+                <div class="col-md-3">
                   <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'" 
                     [settings]="locationsSettings"
                     [data]="locationsList" [(ngModel)]="model.selectedLocations"
@@ -103,6 +103,16 @@
                     (onSelect)="onSelectLocation($event)" (onDeSelect)="onDeSelectLocation($event)"
                     (onSelectAll)="onSelectAllLocations($event)" (onDeSelectAll)="onDeSelectAllLocations($event)"
                     #selectedLocations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-md-3">
+                  <ng-multiselect-dropdown [placeholder]="'-- All sub-location/s --'" title="Location/s"
+                    [settings]="subLocationsSettings"
+                    [data]="filteredSubLocationsList" [(ngModel)]="model.selectedSubLocations" 
+                    name="selectedSubLocations" (onSelect)="onSubLocationSelect($event)"
+                    (onDeSelect)="onSubLocationDeSelect($event)" (onSelectAll)="onSubLocationSelectAll($event)"
+                    (onDeSelectAll)="onSubLocationDeSelectAll($event)"
+                    #selectedSubLocations="ngModel">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="col-md-6">
