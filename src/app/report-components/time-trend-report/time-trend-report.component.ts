@@ -831,12 +831,32 @@ export class TimeTrendReportComponent implements OnInit {
     this.manageResetDisplay();
   }
 
+  onSubLocationSelect(item: any) {
+    this.setFilter();
+  }
+
+  onSubLocationDeSelect(item: any) {
+    if (this.model.selectedLocations.length == 0) {
+      this.manageResetDisplay();
+    } 
+  }
+
+  onSubLocationSelectAll(items: any) {
+    this.setFilter();
+  }
+
+  onSubLocationDeSelectAll(items: any) {
+    this.model.selectedLocations = [];
+    this.manageResetDisplay();
+  }
+
   changeLocation() {
     if (this.model.locationId != 0) {
       this.setFilter();
     } else {
       this.manageResetDisplay();
     }
+    this.filterSubLocations();
   }
 
   getGrandTotalFundingForYear() {
@@ -980,6 +1000,10 @@ export class TimeTrendReportComponent implements OnInit {
     this.model.parentSectorId = 0;
     this.model.selectedSectors = [];
     this.model.selectedOrganizations = [];
+    this.model.selectedSubLocations = [];
+    this.model.subLocationsList = [];
+    this.filteredSubLocationsList = this.subLocationsList;
+    this.model.locationId = 0;
     this.isAnyFilterSet = false;
   }
 

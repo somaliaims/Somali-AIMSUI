@@ -1308,8 +1308,10 @@ export class SectorReportComponent implements OnInit {
     this.model.parentSectorId = 0;
     this.model.selectedSectors = [];
     this.model.selectedOrganizations = [];
+    this.model.selectedSubLocations = [];
     this.model.sectorLevel = this.sectorLevelCodes.SECTORS;
     this.model.locationId = 0;
+    this.filteredSubLocationsList = this.subLocationsList;
     this.isAnyFilterSet = false;
   }
 
