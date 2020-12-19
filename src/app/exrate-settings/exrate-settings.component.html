@@ -44,7 +44,7 @@
 
         <div class="card card-signin my-5 margin-top-10">
           <div class="card-body">
-              <div *ngIf="!defaultCurrency" class="alert alert-danger alert-dismissible">
+              <div *ngIf="!defaultCurrency && !isLoading" class="alert alert-danger alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 <strong>Error!</strong> Please set the default and national currencies first before
                 you save the exchange rates.
