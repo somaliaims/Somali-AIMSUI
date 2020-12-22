@@ -583,6 +583,11 @@ export class SectorReportComponent implements OnInit {
       sectorIds: (this.loadReport) ? this.paramSectorIds : this.model.selectedSectors.map(s => s.id),
     };
 
+    /*if (searchModel.sectorIds.length == 1) {
+      searchModel.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
+      this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
+    }*/
+
     this.resetSearchResults();
     this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(
       data => {
@@ -594,7 +599,12 @@ export class SectorReportComponent implements OnInit {
           });
 
           var sectorProjectsList = this.reportDataList.sectorProjectsList;
-          if (this.model.sectorLevel == this.sectorLevelCodes.SECTORS) {
+          var sectorLevel = this.model.sectorLevel;
+          if (sectorLevel == this.sectorLevelCodes.SECTORS && searchModel.sectorIds.length == 1) {
+            sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
+          }
+
+          if (sectorLevel == this.sectorLevelCodes.SECTORS) {
             var parentSectorIds = sectorProjectsList.map(item => item.parentSectorId)
               .filter((value, index, self) => self.indexOf(value) === index);
 
@@ -1011,7 +1021,6 @@ export class SectorReportComponent implements OnInit {
     this.model.selectedLocations = [];
     this.manageResetDisplay();
   }
-
 
   changeLocation() {
     if (this.model.locationId != 0) {
