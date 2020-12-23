@@ -280,7 +280,7 @@ export class SectorReportComponent implements OnInit {
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', sectorLevel: this.sectorLevelCodes.SECTORS,
     noSectorOption: this.noSectorOptions.PROJECTS_WITH_SECTORS,
-    markerId: 0, markerValue: null, markerValues: []
+    markerId: 0, markerValue: null, markerValues: [], markerId2: 0, markerValues2: []
   };
   @BlockUI() blockUI: NgBlockUI;
   constructor(private reportService: ReportService, private storeService: StoreService,
@@ -552,6 +552,20 @@ export class SectorReportComponent implements OnInit {
     }
   }
 
+  getSelectedMarkerValuesTwo(selectedValues: any = []) {
+    this.markerValues = [];
+    this.model.markerValues2 = [];
+    if (this.model.markerId2) {
+      var values = this.markersList.filter(m => m.id == this.model.markerId2).map(m => m.values);
+      if (values && values.length > 0) {
+        this.markerValues = JSON.parse(values);
+        if (selectedValues.length > 0) {
+          this.model.markerValues2 = this.markerValues.filter(m => selectedValues.indexOf(m.value) != -1);
+        }
+      };
+    }
+  }
+
   searchProjectsByCriteriaReport() {
     var currentDate = new Date();
     this.blockUI.start('Generating report...');
@@ -582,11 +596,6 @@ export class SectorReportComponent implements OnInit {
       level: (this.model.sectorLevel) ? parseInt(this.model.sectorLevel) : 0,
       sectorIds: (this.loadReport) ? this.paramSectorIds : this.model.selectedSectors.map(s => s.id),
     };
-
-    /*if (searchModel.sectorIds.length == 1) {
-      searchModel.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
-      this.model.sectorLevel = this.sectorLevelCodes.SUB_SECTORS;
-    }*/
 
     this.resetSearchResults();
     this.reportService.getSectorWiseProjectsReport(searchModel).subscribe(

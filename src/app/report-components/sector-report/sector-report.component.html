@@ -123,6 +123,22 @@
               </div>
 
               <div class="row margin-top-10">
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="markerId2" [(ngModel)]="model.markerId2" name="markerId2"
+                    title="Select marker two" (change)="getSelectedMarkerValuesTwo()" #markerId1="ngModel">
+                    <option value="0">--Select marker two--</option>
+                    <option *ngFor="let marker of markersList" [value]="marker.id">{{marker.fieldTitle}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                  <ng-multiselect-dropdown [placeholder]="'-- All values --'" title="Marker-2 value/s"
+                    [settings]="markerValuesSettings"
+                    [data]="markerValues" [(ngModel)]="model.markerValues2" 
+                    name="selectedMarkerValuesTwo" #selectedMarkerValues="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+
                 <div class="col-lg-6 col-md-6">
                   <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
                     (change)="selectCurrency();manageResetDisplay();" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
@@ -145,8 +161,10 @@
                     </span>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-lg-6 col-md-6">
+              <div class="row">
+                <div class="col-lg-12 col-md-12">
                   <div [class.disable]="!defaultCurrency" class="float-right">
                     <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
                       <button *ngIf="reportDataList && reportDataList.reportSettings" type="button"
@@ -159,8 +177,8 @@
                         class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
                   </div>
                 </div>
-
               </div>
+              
             </form>
           </div>
         </div>
