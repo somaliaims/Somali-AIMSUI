@@ -538,6 +538,10 @@ export class SectorReportComponent implements OnInit {
             var values = (this.paramMarkerValues.length > 0) ? this.paramMarkerValues : [];
             this.getSelectedMarkerValues(values);
           }
+          if (this.model.markerId2) {
+            var values = (this.paramMarkerValues2.length > 0) ? this.paramMarkerValues2 : [];
+            this.getSelectedMarkerValuesTwo(values);
+          }
         }
       }
     );
