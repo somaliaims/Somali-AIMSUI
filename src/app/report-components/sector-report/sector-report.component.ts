@@ -84,6 +84,7 @@ export class SectorReportComponent implements OnInit {
   projects: any = [];
   selectedProjects: any = [];
   paramMarkerValues: any = [];
+  paramMarkerValues2: any = [];
   paramSubLocationIds: any = [];
 
   chartOptions: any = [
@@ -321,6 +322,7 @@ export class SectorReportComponent implements OnInit {
           this.paramSectorIds = (params.sectors) ? params.sectors.split(',').map(s => parseInt(s)) : [];
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',').map(o => parseInt(o)) : [];
           this.model.markerId = (params.mid) ? parseInt(params.mid) : 0;
+          this.model.markerId2 = (params.mid2) ? parseInt(params.mid2) : 0;
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           this.model.sectorLevel = (params.level) ? parseInt(params.level) : this.sectorLevelCodes.SECTORS;
           if (this.model.sectorLevel) {
@@ -328,6 +330,9 @@ export class SectorReportComponent implements OnInit {
           }
           if (params.mvalue) {
             this.paramMarkerValues = params.mvalue.split(',');
+          }
+          if (params.mvalue2) {
+            this.paramMarkerValues2 = params.mvalue2.split(',');
           }
           this.loadReport = true;
         }
@@ -592,6 +597,8 @@ export class SectorReportComponent implements OnInit {
       sectorLevel: (this.model.sectorLevel) ? parseInt(this.model.sectorLevel) : 0,
       markerId: (this.model.markerId) ? parseInt(this.model.markerId) : 0,
       markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
+      markerId2: (this.model.markerId2) ? parseInt(this.model.markerId2) : 0,
+      markerValues2: (this.model.markerValues2.length > 0) ? this.model.markerValues2.map(v => v.value) : [],
       chartType: (chartType) ? parseInt(chartType) : 1,
       level: (this.model.sectorLevel) ? parseInt(this.model.sectorLevel) : 0,
       sectorIds: (this.loadReport) ? this.paramSectorIds : this.model.selectedSectors.map(s => s.id),
