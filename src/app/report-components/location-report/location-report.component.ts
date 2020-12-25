@@ -47,7 +47,6 @@ export class LocationReportComponent implements OnInit {
   sectorIds: any = [];
   subSectorIds: any = [];
   subSubSectorIds: any = [];
-  paramMarkerValues: any = [];
   requestNo: number = 0;
   isAnyFilterSet: boolean = false;
   isNoLocationReport: boolean = false;
@@ -65,6 +64,8 @@ export class LocationReportComponent implements OnInit {
   chartCategory: number = 1;
   multiDataDisplay: boolean = true;
   datedToday: string = null;
+  paramMarkerValues: any = [];
+  paramMarkerValues2: any = [];
   paramLocationIds: any = [];
   paramSubLocationIds: any = [];
   paramOrgIds: any = [];
@@ -274,7 +275,7 @@ export class LocationReportComponent implements OnInit {
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], sectorId: 0, 
     noLocationOption: this.noLocationCodes.PROJECTS_WITH_LOCATIONS, sectorLevel: 0,
-    markerId: 0, markerValues: []
+    markerId: 0, markerValues: [], markerId2: 0, markerValues2: []
   };
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -311,6 +312,7 @@ export class LocationReportComponent implements OnInit {
           this.model.endingYear = (params.eyear) ? parseInt(params.eyear) : 0;
           this.model.sectorId = (params.sectorId) ? parseInt(params.sectorId) : 0;
           this.model.markerId = (params.mid) ? parseInt(params.mid) : 0;
+          this.model.markerId2 = (params.mid2) ? parseInt(params.mid2) : 0;
           this.paramProjectIds = (params.projects) ? params.projects.split(',').map(p => parseInt(p)) : [];
           this.paramLocationIds = (params.locations) ? params.locations.split(',').map(l => parseInt(l)) : [];
           this.paramSubLocationIds = (params.slocations) ? params.slocations.split(',').map(l => parseInt(l)) : [];
@@ -318,6 +320,9 @@ export class LocationReportComponent implements OnInit {
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           if (params.mvalue) {
             this.paramMarkerValues = params.mvalue.split(',');
+          }
+          if (params.mvalue2) {
+            this.paramMarkerValues2 = params.mvalue2.split(',');
           }
           this.loadReport = true;
           if (this.model.noLocationOption) {
@@ -557,7 +562,9 @@ export class LocationReportComponent implements OnInit {
       subLocationIds: this.model.selectedSubLocations.map(l => l.id),
       sectorId: (this.model.sectorId) ? parseInt(this.model.sectorId) : 0,
       markerId: (this.model.markerId) ? parseInt(this.model.markerId) : 0,
+      markerId2: (this.model.markerId2) ? parseInt(this.model.markerId2) : 0,
       markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
+      markerValues2: (this.model.markerValues2.length > 0) ? this.model.markerValues2.map(v => v.value) : [],
       chartType: (chartType) ? parseInt(chartType) : 1
     };
 
@@ -652,7 +659,7 @@ export class LocationReportComponent implements OnInit {
 
     setTimeout(() => {
       this.isLoading = false;
-    }, 1000);
+    }, 2000);
     this.manageResetDisplay();
   }
 
@@ -763,17 +770,7 @@ export class LocationReportComponent implements OnInit {
       data => {
         if (data) {
           this.locationsList = data;
-          this.getSubLocationsList();
-          if (this.loadReport) {
-            if (this.paramLocationIds.length > 0) {
-              this.paramLocationIds.forEach(function (id) {
-                var location = this.locationsList.filter(s => s.id == id);
-                if (location.length > 0) {
-                  this.model.selectedLocations.push(location[0]);
-                }
-              }.bind(this));
-            }
-          }
+          this.getSubLocationsList();          
         }
       }
     );
@@ -785,6 +782,17 @@ export class LocationReportComponent implements OnInit {
         if (data) {
           this.subLocationsList = data;
           this.filteredSubLocationsList = data;
+          if (this.loadReport) {
+            if (this.paramLocationIds.length > 0) {
+              this.paramLocationIds.forEach(function (id) {
+                var location = this.locationsList.filter(s => s.id == id);
+                if (location.length > 0) {
+                  this.model.selectedLocations.push(location[0]);
+                }
+              }.bind(this));
+            }
+          }
+
           if (this.loadReport) {
             if (this.paramSubLocationIds.length > 0) {
               this.paramSubLocationIds.forEach(function (id) {
@@ -1248,6 +1256,10 @@ export class LocationReportComponent implements OnInit {
             var values = (this.paramMarkerValues.length > 0) ? this.paramMarkerValues : [];
             this.getSelectedMarkerValues(values);
           }
+          if (this.model.markerId2) {
+            var values = (this.paramMarkerValues2.length > 0) ? this.paramMarkerValues2 : [];
+            this.getSelectedMarkerValuesTwo(values);
+          }
         }
       }
     );
@@ -1263,6 +1275,20 @@ export class LocationReportComponent implements OnInit {
         this.markerValues = JSON.parse(values);
         if (selectedValues.length > 0) {
           this.model.markerValues = this.markerValues.filter(m => selectedValues.indexOf(m.value) != -1);
+        }
+      };
+    }
+  }
+
+  getSelectedMarkerValuesTwo(selectedValues: any = []) {
+    this.markerValues = [];
+    this.model.markerValues2 = [];
+    if (this.model.markerId2) {
+      var values = this.markersList.filter(m => m.id == this.model.markerId2).map(m => m.values);
+      if (values && values.length > 0) {
+        this.markerValues = JSON.parse(values);
+        if (selectedValues.length > 0) {
+          this.model.markerValues2 = this.markerValues.filter(m => selectedValues.indexOf(m.value) != -1);
         }
       };
     }
