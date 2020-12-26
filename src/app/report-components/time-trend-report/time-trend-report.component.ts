@@ -243,7 +243,7 @@ export class TimeTrendReportComponent implements OnInit {
     selectedCurrency: null, exRateSource: null, dataOption: 1, selectedDataOptions: [],
     selectedDataOption: 1, chartTypeName: 'bar', selectedProjects: [], locationId: 0,
     sectorLevel: this.sectorLevelCodes.SECTORS,
-    markerId: 0, markerValue: null, markerValues: []
+    markerId: 0, markerValue: null, markerValues: [], markerId2: 0, markerValues2: []
   };
 
   //Overlay UI blocker
@@ -274,6 +274,7 @@ export class TimeTrendReportComponent implements OnInit {
           this.model.locationId = (params.locationId) ? parseInt(params.locationId) : 0;
           this.paramSubLocationIds = (params.slocations) ? params.slocations.split(',').map(l => parseInt(l)) : [];
           this.model.markerId = (params.mid) ? parseInt(params.mid) : 0;
+          this.model.markerId2 = (params.mid2) ? parseInt(params.mid2) : 0;
           this.paramOrgIds = (params.orgs) ? params.orgs.split(',').map(o => parseInt(o)) : [];
           this.paramChartType = (params.ctype) ? params.ctype : this.chartTypeCodes.BAR;
           if (params.mvalue) {
@@ -425,6 +426,10 @@ export class TimeTrendReportComponent implements OnInit {
             var values = (this.paramMarkerValues.length > 0) ? this.paramMarkerValues : [];
             this.getSelectedMarkerValues(values);
           }
+          if (this.model.markerId2) {
+            var values = (this.paramMarkerValues.length > 0) ? this.paramMarkerValues : [];
+            this.getSelectedMarkerValuesTwo(values);
+          }
         }
       }
     );
@@ -439,6 +444,20 @@ export class TimeTrendReportComponent implements OnInit {
         this.markerValues = JSON.parse(values);
         if (selectedValues.length > 0) {
           this.model.markerValues = this.markerValues.filter(m => selectedValues.indexOf(m.value) != -1);
+        }
+      };
+    }
+  }
+
+  getSelectedMarkerValuesTwo(selectedValues: any = []) {
+    this.markerValues = [];
+    this.model.markerValues2 = [];
+    if (this.model.markerId2) {
+      var values = this.markersList.filter(m => m.id == this.model.markerId2).map(m => m.values);
+      if (values && values.length > 0) {
+        this.markerValues = JSON.parse(values);
+        if (selectedValues.length > 0) {
+          this.model.markerValues2 = this.markerValues.filter(m => selectedValues.indexOf(m.value) != -1);
         }
       };
     }
@@ -473,6 +492,8 @@ export class TimeTrendReportComponent implements OnInit {
       subLocationIds: (this.loadReport) ? this.paramSubLocationIds : this.model.selectedSubLocations.map(o => o.id),
       markerId: (this.model.markerId) ? parseInt(this.model.markerId) : 0,
       markerValues: (this.model.markerValues.length > 0) ? this.model.markerValues.map(v => v.value) : [],
+      markerId2: (this.model.markerId2) ? parseInt(this.model.markerId2) : 0,
+      markerValues2: (this.model.markerValues2.length > 0) ? this.model.markerValues2.map(v => v.value) : [],
       chartType: (chartType) ? parseInt(chartType) : 0
     };
 

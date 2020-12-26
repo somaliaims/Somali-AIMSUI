@@ -570,9 +570,9 @@ export class LocationReportComponent implements OnInit {
 
     this.resetSearchResults();
     this.blockUI.start('Generating report...');
-    if (this.isNoLocationReport) {
+    /*if (this.isNoLocationReport) {
       this.model.selectedLocations = [];
-    }
+    }*/
 
     if (this.model.noLocationOption == this.noLocationCodes.PROJECTS_WITHOUT_LOCATIONS) {
       this.reportService.getNoLocationProjectsReport(searchModel).subscribe(
@@ -659,7 +659,7 @@ export class LocationReportComponent implements OnInit {
 
     setTimeout(() => {
       this.isLoading = false;
-    }, 2000);
+    }, 1000);
     this.manageResetDisplay();
   }
 
@@ -770,7 +770,19 @@ export class LocationReportComponent implements OnInit {
       data => {
         if (data) {
           this.locationsList = data;
-          this.getSubLocationsList();          
+          this.getSubLocationsList();
+          
+          if (this.loadReport) {
+            if (this.paramLocationIds.length > 0) {
+              this.paramLocationIds.forEach(function (id) {
+                var location = this.locationsList.filter(s => s.id == id);
+                if (location.length > 0) {
+                  this.model.selectedLocations.push(location[0]);
+                }
+              }.bind(this));
+            }
+          }
+          
         }
       }
     );
@@ -782,17 +794,6 @@ export class LocationReportComponent implements OnInit {
         if (data) {
           this.subLocationsList = data;
           this.filteredSubLocationsList = data;
-          if (this.loadReport) {
-            if (this.paramLocationIds.length > 0) {
-              this.paramLocationIds.forEach(function (id) {
-                var location = this.locationsList.filter(s => s.id == id);
-                if (location.length > 0) {
-                  this.model.selectedLocations.push(location[0]);
-                }
-              }.bind(this));
-            }
-          }
-
           if (this.loadReport) {
             if (this.paramSubLocationIds.length > 0) {
               this.paramSubLocationIds.forEach(function (id) {
@@ -1239,6 +1240,7 @@ export class LocationReportComponent implements OnInit {
   manageResetDisplay() {
     if (this.model.selectedProjects.length == 0 && this.model.startingYear == 0 &&
       this.model.endingYear == 0 && this.model.selectedLocations.length == 0 && 
+      this.model.selectedSubLocations == 0 &&
       this.model.selectedOrganizations.length == 0 && this.model.sectorId == 0 &&
       this.model.selectedCurrency == this.defaultCurrency) {
         this.isAnyFilterSet = false;
