@@ -22,13 +22,17 @@ export class ContactFormComponent implements OnInit {
   isShowSuccessMessage: boolean = false;
   isShowList: boolean = false;
   projectsList: any = [];
+  projectsSettings: any = {};
   filteredProjectsList: any = [];
   criteria: string = null;
   isLoading: boolean = false;
+  itemsToShowInDropdowns: number = 5;
+  MESSAGE_SENT = 1;
+  MESSAGE_TO_REVIEW = 2;
   messageLimit: number = Settings.descriptionMediumLimit;
   messageLimitLeft: number = Settings.descriptionMediumLimit;
   model: any = { emailType: null, senderName: null, projectTitle: null, senderEmail: null, 
-    projectId: 0, subject: null, message: null 
+    projectId: 0, subject: null, message: null, selectedProject: null 
   };
 
   emailTypes: any = [
@@ -40,41 +44,68 @@ export class ContactFormComponent implements OnInit {
     HELP: 1,
     INFORMATION: 2
   };
+
   @BlockUI() blockUI: NgBlockUI;
   
   constructor(private securityService: SecurityHelperService, 
     private contactService: ContactService, private errorModal: ErrorModalComponent,
     private projectService: ProjectService, private storeService: StoreService,
     private router: Router) {
-
-    this.isLoggedIn = this.securityService.checkIsLoggedIn();
-    if (!this.isLoggedIn) {
-      this.router.navigateByUrl('home');
-    }
   }
 
   ngOnInit() {
     this.storeService.newReportItem(Settings.dropDownMenus.contact);
+    this.isLoggedIn = this.securityService.checkIsLoggedIn();
+    if (this.isLoggedIn) {
+      this.model.senderEmail = this.securityService.getUserEmail();
+    }
+    this.getProjects();
+
+    this.projectsSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'title',
+      selectAllText: 'Select all',
+      unSelectAllText: 'Unselect all',
+      itemsShowLimit: this.itemsToShowInDropdowns,
+      allowSearchFilter: true
+    };
   }
 
   sendEmailRequest(frm: any) {
     this.isShowSuccessMessage = false;
-    if (this.model.emailType == this.emailTypeCodes.INFORMATION && this.model.projectId == 0) {
-      this.errorMessage = Messages.PROJECT_FOR_INFORMATION_REQUIRED;
+    if (this.model.selectedProject == null) {
+      this.errorMessage = 'Select a project before posting the message';
       this.errorModal.openModal();
       return false;
     }
 
+    this.model.projectId = this.model.selectedProject.id;
     this.blockUI.start('Submitting request...');
     this.model.emailType = parseInt(this.model.emailType);
-    this.model.projectTitle = this.criteria;
-    this.contactService.sendContactEmail(this.model).subscribe(
+    this.model.projectTitle = this.model.selectedProject.title;
+    this.model.projectId = this.model.selectedProject.id;
+    var model = {
+      emailType: this.model.emailType, 
+      senderName: this.model.senderName, 
+      projectTitle: this.model.selectedProject[0].title, 
+      senderEmail: this.model.senderEmail, 
+      projectId: this.model.selectedProject[0].id, 
+      subject: this.model.subject, 
+      message: this.model.message
+    }
+    this.contactService.sendContactMessage(model).subscribe(
       data => {
         if (data) {
-          this.successMessage = "Your request is submitted successfully";
+          if (data.success && data.returnedId == this.MESSAGE_SENT) {
+            this.successMessage = 'Your message for the project is forwarded successfully';
+          } else if (data.success && data.returnedId == this.MESSAGE_TO_REVIEW) {
+            this.successMessage = 'Your message is sent for review by the management user. Once reviewed, it will be forwarded.';
+          }
           this.isShowSuccessMessage = true;
           this.resetModel();
           frm.resetForm();
+          window.scroll(0, 0);
         }
         this.blockUI.stop();
       }
@@ -83,7 +114,7 @@ export class ContactFormComponent implements OnInit {
 
   getProjects() {
     this.isLoading = true;
-    this.projectService.getProjectsList().subscribe(
+    this.projectService.getProjectTitles().subscribe(
       data => {
         if (data) {
           this.projectsList = data;

@@ -56,6 +56,8 @@ export class ContactProjectComponent implements OnInit {
       if (id) {
         this.model.projectId = id;
         this.getProjectInfo(id);
+        this.model.subject = 'Contacting a project';
+        this.model.emailType = this.emailTypeCodes.HELP;
       }
     } else {
       this.router.navigateByUrl('home');
@@ -89,7 +91,7 @@ export class ContactProjectComponent implements OnInit {
       return false;
     }
     
-    this.blockUI.start('Sending suggestion...');
+    this.blockUI.start('Sending message...');
     this.model.projectId = parseInt(this.model.projectId.toString());
     this.model.emailType = parseInt(this.model.emailType.toString());
     this.contactService.sendContactMessage(this.model).subscribe(

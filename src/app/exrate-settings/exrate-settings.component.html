@@ -132,7 +132,7 @@
               <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save key</button>
             </form>
 
-            <div class="margin-top-10 iati-box">
+            <div *ngIf="!isLoading" class="margin-top-10 iati-box">
               <h6 class="card-title text-center">Ex. Rates from (OpenExchangeRates) for 1 USD ({{exchangeRateDate}})
               </h6>
               <table *ngIf="exchangeRates.length > 0" class="table table-bordered">
