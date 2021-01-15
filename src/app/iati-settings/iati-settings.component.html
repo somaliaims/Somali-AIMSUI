@@ -10,67 +10,69 @@
           </li>
         </ul>
       </div>
+    </div>
 
-      <div class="row">
+    <div class="row margin-top-10">
 
-        <div class="col-md-6 col-lg-6">
-          <div class="card">
-            <div class="card-body">
-  
-              <h6 class="card-title text-center">IATI URL Settings (Old data store)</h6>
-              <form class="form-signin" (ngSubmit)="iatiForm.form.valid && saveIATISettings(1)" #iatiForm="ngForm">
-  
-                <div class="form-group">
-                  <label for="baseUrl">Datastore query link</label>
-                  <input type="url" class="form-control" id="baseUrl" [(ngModel)]="iatiSettingsOld.baseUrl" name="baseUrl"
-                    #baseUrlOld="ngModel" required>&nbsp;&nbsp;
-                      
-                  <div *ngIf="iatiForm.submitted" [hidden]="baseUrlOld.valid" class="alert alert-danger">
-                    Base Url is required
-                  </div>
+      <div class="col-sm-12 col-md-6 col-lg-6">
+        <div class="card">
+          <div class="card-body">
+
+            <h6 class="card-title text-center">IATI URL Settings (Old data store)</h6>
+            <form class="form-signin" (ngSubmit)="iatiForm.form.valid && saveIATISettings(1)" #iatiForm="ngForm">
+              <div class="form-group">
+                <label for="baseUrl">Datastore query link</label>
+                <input type="url" class="form-control" id="baseUrl" [(ngModel)]="iatiSettingsOld.baseUrl" name="baseUrl"
+                  #baseUrlOld="ngModel" required>&nbsp;&nbsp;
+
+                <div *ngIf="iatiForm.submitted" [hidden]="baseUrlOld.valid" class="alert alert-danger">
+                  Base Url is required
                 </div>
-                <div class="form-group">
-                  <label>&nbsp;</label>
-                  <div class="btn-group" data-toggle="buttons">
-                    <button (click)="toggleActive(1)" class="btn btn-success btn-sm">
-                      <i *ngIf="!iatiSettingsOld.isActive" class="fa fa-square text-white"></i>
-                      <i *ngIf="iatiSettingsOld.isActive" class="fa fa-check text-white"></i>
-                    </button>
-                    &nbsp;Use this source for IATI?
-                  </div>
+              </div>
+
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <div class="btn-group" data-toggle="buttons">
+                  <button (click)="toggleActive(1)" class="btn btn-success btn-sm">
+                    <i *ngIf="!iatiSettingsOld.isActive" class="fa fa-square text-white"></i>
+                    <i *ngIf="iatiSettingsOld.isActive" class="fa fa-check text-white"></i>
+                  </button>
+                  &nbsp;Use this source for IATI?
                 </div>
-                <div class="form-group">
-                  <label for="helpText">Help text</label>
-                  <input type="text" class="form-control" id="helpText" [(ngModel)]="iatiSettingsOld.helpText" name="baseUrl"
-                    #helpTextOld="ngModel" required>
-                  <div *ngIf="iatiForm.submitted" [hidden]="helpTextOld.valid" class="alert alert-danger">
-                    Help text is required
-                  </div>
+              </div>
+
+              <div class="form-group">
+                <label for="helpText">Help text</label>
+                <input type="text" class="form-control" id="helpText" [(ngModel)]="iatiSettingsOld.helpText"
+                  name="baseUrl" #helpTextOld="ngModel" required>
+                <div *ngIf="iatiForm.submitted" [hidden]="helpTextOld.valid" class="alert alert-danger">
+                  Help text is required
                 </div>
-  
-                <button class="btn btn-lg btn-info btn-block text-uppercase"
-                  type="submit">Save Settings</button>
-              </form>
-  
-            </div>
+              </div>
+
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save Settings</button>
+            </form>
+
           </div>
         </div>
+      </div>
 
-        <div class="col-md-6 col-lg-6">
-          <div class="card">
-            <div class="card-body">
+      <div class="col-sm-12 col-md-6 col-lg-6">
+        <div class="card">
+          <div class="card-body">
 
             <h6 class="card-title text-center">IATI URL Settings (New data store)</h6>
             <form class="form-signin" (ngSubmit)="iatiFormNew.form.valid && saveIATISettings(2)" #iatiFormNew="ngForm">
 
-              <div cs="form-group">
+              <div class="form-group">
                 <label for="baseUrl">Datastore query link</label>
-                <input type="url" class="form-control" id="baseUrlNew" [(ngModel)]="iatiSettingsNew.baseUrl" name="baseUrlNew"
-                  #baseUrlNew="ngModel" required>&nbsp;&nbsp;
+                <input type="url" class="form-control" id="baseUrlNew" [(ngModel)]="iatiSettingsNew.baseUrl"
+                  name="baseUrlNew" #baseUrlNew="ngModel" required>&nbsp;&nbsp;
                 <div *ngIf="iatiForm.submitted" [hidden]="baseUrlNew.valid" class="alert alert-danger">
                   Base Url is required
                 </div>
               </div>
+
               <div class="form-group">
                 <label>&nbsp;</label>
                 <div class="btn-group" data-toggle="buttons">
@@ -81,24 +83,22 @@
                   &nbsp;Use this source for IATI?
                 </div>
               </div>
-              <div cs="form-group">
+
+              <div class="form-group">
                 <label for="helpTextNew">Help text</label>
-                <input type="text" class="form-control" id="helpTextNew" [(ngModel)]="iatiSettingsNew.helpText" name="baseUrl"
-                  #helpTextNew="ngModel" required>
+                <input type="text" class="form-control" id="helpTextNew" [(ngModel)]="iatiSettingsNew.helpText"
+                  name="baseUrl" #helpTextNew="ngModel" required>
                 <div *ngIf="iatiFormNew.submitted" [hidden]="helpTextNew.valid" class="alert alert-danger">
                   Help text is required
                 </div>
               </div>
 
-              <button class="btn btn-lg btn-info btn-block text-uppercase"
-                type="submit">Save Settings</button>
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save Settings</button>
             </form>
 
-            </div>
           </div>
         </div>
       </div>
-
     </div>
 
   </block-ui>
