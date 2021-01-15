@@ -22,9 +22,24 @@ export class IatiSettingsComponent implements OnInit {
   isError: boolean = false;
   infoMessage: string = null;
   countriesList: any = [];
-  model = { baseUrl: null, countryCode: null };
+  iatiSettingsOld: any = { baseUrl: null, helpText: null, isActive: false, sourceType: 0 };
+  iatiSettingsNew: any = { baseUrl: null, helpText: null, isActive: false, sourceType: 0 };
   permissions: any = {};
   isLoading: boolean = true;
+  iatiSettingsType: any = {
+    OLD: 1,
+    NEW: 2
+  };
+  iatiSettingsTypesList: any = [
+    {
+      id: 1,
+      text: 'Old'
+    },
+    {
+      id: 2,
+      text: 'New'
+    }
+  ];
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
@@ -44,53 +59,34 @@ export class IatiSettingsComponent implements OnInit {
     this.getIATISettings();
   }
 
-  getCountriesList() {
-    this.iatiService.getIATICountries().subscribe(
-      data => {
-        if (data) {
-          var countries = data;
-          this.countriesList = countries;
-          var activeCountry = countries.filter(c => c.isActive == true);
-          if (activeCountry.length > 0) {
-            setTimeout(() => {
-              this.model.countryCode = activeCountry[0].code;
-            }, 2000);
-          }
-        }
-        this.isLoading = false;
-      }
-    );
-  }
-
-  setActiveCountry() {
-    var countryCode = this.model.countryCode;
-    this.blockUI.start('Saving changes...');
-    this.iatiService.setActiveCountry(countryCode).subscribe(
-      data => {
-        if (data) {
-        }
-        this.blockUI.stop();
-      }
-    );
-  }
-
   getIATISettings() {
     this.iatiService.getIATISettings().subscribe(
       data => {
-        this.model.baseUrl = data.baseUrl;
+        if (data) {
+          var settings = data.filter(s => s.sourceType == this.iatiSettingsType.OLD);
+          if (settings.length > 0) {
+            this.iatiSettingsOld = settings[0];
+          }
+
+          settings = data.filter(s => s.sourceType == this.iatiSettingsType.NEW);
+          if (settings.length > 0) {
+            this.iatiSettingsNew = settings[0];
+          }
+        }
       }
     )
   }
 
-  saveIATISettings() {
-    if (this.model.baseUrl == null) {
-      this.errorMessage = Messages.INVALID_INPUT;
-      this.errorModal.openModal();
-      return false;
+  saveIATISettings(sourceType) {
+    var model = {};
+    if (sourceType == this.iatiSettingsType.OLD) {
+      model = this.iatiSettingsOld;
+    } else if (sourceType == this.iatiSettingsType.NEW) {
+      model = this.iatiSettingsNew;
     }
 
     this.blockUI.start('Saving IATI Settings');
-    this.iatiService.setIATISettings(this.model).subscribe(
+    this.iatiService.setIATISettings(model).subscribe(
       data => {
         this.infoMessage = 'IATI Settings' + Messages.SAVED_SUCCESSFULLY;
         this.blockUI.stop();
@@ -102,6 +98,14 @@ export class IatiSettingsComponent implements OnInit {
         this.errorModal.openModal();
       }
     )
+  }
+
+  toggleActive(sourceType) {
+    if (sourceType == this.iatiSettingsType.OLD) {
+      this.iatiSettingsOld.isActive = !this.iatiSettingsOld.isActive;
+    } else if (sourceType == this.iatiSettingsType.NEW) {
+      this.iatiSettingsNew.isActive = !this.iatiSettingsNew.isActive;
+    }
   }
 
 }
