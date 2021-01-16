@@ -22,8 +22,8 @@ export class IatiSettingsComponent implements OnInit {
   isError: boolean = false;
   infoMessage: string = null;
   countriesList: any = [];
-  iatiSettingsOld: any = { baseUrl: null, helpText: null, isActive: false, sourceType: 0 };
-  iatiSettingsNew: any = { baseUrl: null, helpText: null, isActive: false, sourceType: 0 };
+  iatiSettingsOld: any = { baseUrl: null, helpText: null, isActive: false, sourceType: 1 };
+  iatiSettingsNew: any = { baseUrl: null, helpText: null, isActive: false, sourceType: 2 };
   permissions: any = {};
   isLoading: boolean = true;
   iatiSettingsType: any = {
@@ -60,7 +60,7 @@ export class IatiSettingsComponent implements OnInit {
   }
 
   getIATISettings() {
-    this.iatiService.getIATISettings().subscribe(
+    this.iatiService.getIATISettingsList().subscribe(
       data => {
         if (data) {
           var settings = data.filter(s => s.sourceType == this.iatiSettingsType.OLD);
@@ -68,13 +68,13 @@ export class IatiSettingsComponent implements OnInit {
             this.iatiSettingsOld = settings[0];
           }
 
-          settings = data.filter(s => s.sourceType == this.iatiSettingsType.NEW);
-          if (settings.length > 0) {
-            this.iatiSettingsNew = settings[0];
+          var settingsNew = data.filter(s => s.sourceType == this.iatiSettingsType.NEW);
+          if (settingsNew.length > 0) {
+            this.iatiSettingsNew = settingsNew[0];
           }
         }
       }
-    )
+    );
   }
 
   saveIATISettings(sourceType) {
@@ -103,8 +103,10 @@ export class IatiSettingsComponent implements OnInit {
   toggleActive(sourceType) {
     if (sourceType == this.iatiSettingsType.OLD) {
       this.iatiSettingsOld.isActive = !this.iatiSettingsOld.isActive;
+      this.iatiSettingsNew.isActive = !this.iatiSettingsOld.isActive;
     } else if (sourceType == this.iatiSettingsType.NEW) {
       this.iatiSettingsNew.isActive = !this.iatiSettingsNew.isActive;
+      this.iatiSettingsOld.isActive = !this.iatiSettingsNew.isActive;
     }
   }
 

@@ -114,6 +114,7 @@ export const urls = {
 	iatiMatchingActivities: "IATI/GetMatchingActivities",
 	iatiProjects: "IATI/GetProjects",
 	getIatiSettings: "IATI/GetIATISettings",
+	getIatiSettingsList: "IATI/GetIATISettingsList",
 	setIatiSettings: "IATI/SetIATISettings",
 	iatiProjectsByIds: "IATI/ExtractProjectsByIds",
 	aimsProjectsByIds: "Project/ExtractProjectsByIds",

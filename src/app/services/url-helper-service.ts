@@ -640,6 +640,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.getIatiSettings);
     }
 
+    getIATISettingsListUrl() {
+        return (this.BASE_URL + urlsList.urls.getIatiSettingsList);
+    }
+
     setIATISettingsUrl() {
         return (this.BASE_URL + urlsList.urls.setIatiSettings);
     }

@@ -33,7 +33,7 @@
               <div class="form-group">
                 <label>&nbsp;</label>
                 <div class="btn-group" data-toggle="buttons">
-                  <button (click)="toggleActive(1)" class="btn btn-success btn-sm">
+                  <button type="button" (click)="toggleActive(1)" class="btn btn-success btn-sm">
                     <i *ngIf="!iatiSettingsOld.isActive" class="fa fa-square text-white"></i>
                     <i *ngIf="iatiSettingsOld.isActive" class="fa fa-check text-white"></i>
                   </button>
@@ -44,7 +44,7 @@
               <div class="form-group">
                 <label for="helpText">Help text</label>
                 <input type="text" class="form-control" id="helpText" [(ngModel)]="iatiSettingsOld.helpText"
-                  name="baseUrl" #helpTextOld="ngModel" required>
+                  name="helpText" #helpTextOld="ngModel" required>
                 <div *ngIf="iatiForm.submitted" [hidden]="helpTextOld.valid" class="alert alert-danger">
                   Help text is required
                 </div>
@@ -76,7 +76,7 @@
               <div class="form-group">
                 <label>&nbsp;</label>
                 <div class="btn-group" data-toggle="buttons">
-                  <button (click)="toggleActive(1)" class="btn btn-success btn-sm">
+                  <button type="button" (click)="toggleActive(2)" class="btn btn-success btn-sm">
                     <i *ngIf="!iatiSettingsNew.isActive" class="fa fa-square text-white"></i>
                     <i *ngIf="iatiSettingsNew.isActive" class="fa fa-check text-white"></i>
                   </button>
