@@ -88,9 +88,21 @@ export class IatiSettingsComponent implements OnInit {
     this.blockUI.start('Saving IATI Settings');
     this.iatiService.setIATISettings(model).subscribe(
       data => {
-        this.infoMessage = 'IATI Settings' + Messages.SAVED_SUCCESSFULLY;
+        if (data) {
+          if (data.success) {
+            if (data.returnedId == 1) {
+              this.infoMessage = 'IATI Settings' + Messages.SAVED_SUCCESSFULLY;
+              this.infoModal.openModal();
+            } else {
+              
+            }
+            
+          } else {
+            this.errorMessage = 'An error occurred: ' + data.message;
+            this.errorModal.openModal();
+          }
+        }
         this.blockUI.stop();
-        this.infoModal.openModal();
       },
       error => {
         this.blockUI.stop();
