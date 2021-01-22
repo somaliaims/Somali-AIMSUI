@@ -56,5 +56,6 @@ export const Messages = {
     ORGANIZATIONS_MERGED: 'Organizations merged. System will logout you to bring your updated data on the next login',
     UNSAVED_DISBURSEMENTS: 'There are unsaved disbursements on this page. Please save disbursements before moving forward',
     ORG_CREATED_ADD_ANOTHER: 'Organization created successfully. You can now add another if required',
-    START_YEAR_GREATER_THAN_ERROR: 'Starting financial year cannot be greater than ending financial year'
+    START_YEAR_GREATER_THAN_ERROR: 'Starting financial year cannot be greater than ending financial year',
+    LATEST_IATI_LOAD_MESSAGE: 'IATI Settings are updated. Active source for the IATI is changed, it will load the IATI for the settings. It is recommended not to change IATI settings until IATI is loaded. Please be patient, it will take some time.'
 }

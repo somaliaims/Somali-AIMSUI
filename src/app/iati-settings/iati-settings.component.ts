@@ -18,6 +18,8 @@ export class IatiSettingsComponent implements OnInit {
 
   btnText: string = 'Save IATI Settings';
   errorMessage: string = null;
+  iatiMessage: string = null;
+  isIATILoading: boolean = false;
   requestNo: number = 0;
   isError: boolean = false;
   infoMessage: string = null;
@@ -90,11 +92,13 @@ export class IatiSettingsComponent implements OnInit {
       data => {
         if (data) {
           if (data.success) {
-            if (data.returnedId == 1) {
+            if (data.returnedId == 2) {
               this.infoMessage = 'IATI Settings' + Messages.SAVED_SUCCESSFULLY;
               this.infoModal.openModal();
-            } else {
-              
+            } else if (data.returnedId == 1) {
+              this.iatiMessage = Messages.LATEST_IATI_LOAD_MESSAGE;
+              this.isIATILoading = true;
+              this.loadLatestIATI();
             }
             
           } else {
@@ -109,7 +113,24 @@ export class IatiSettingsComponent implements OnInit {
         this.errorMessage = 'An error occurred: ' + error;
         this.errorModal.openModal();
       }
-    )
+    );
+  }
+
+  loadLatestIATI() {
+    this.iatiService.loadLatestIATI().subscribe(
+      data => {
+        if (data) {
+          this.iatiMessage = 'IATI loaded successfully';
+          setTimeout(() => {
+            this.isIATILoading = false;
+          }, 5000);
+        }
+      },
+      error => {
+        this.errorMessage = error.error;
+        this.errorModal.openModal();
+      }
+    );
   }
 
   toggleActive(sourceType) {

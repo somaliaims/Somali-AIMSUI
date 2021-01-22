@@ -116,6 +116,7 @@ export const urls = {
 	getIatiSettings: "IATI/GetIATISettings",
 	getIatiSettingsList: "IATI/GetIATISettingsList",
 	setIatiSettings: "IATI/SetIATISettings",
+	loadLatestIATI: "IATI/LoadLatestIATI",
 	iatiProjectsByIds: "IATI/ExtractProjectsByIds",
 	aimsProjectsByIds: "Project/ExtractProjectsByIds",
 	sectorProjects: "Project/GetSectorProjects/",

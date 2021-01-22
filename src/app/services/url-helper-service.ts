@@ -648,6 +648,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.setIatiSettings);
     }
 
+    getLoadLatestIATIUrl() {
+        return (this.BASE_URL + urlsList.urls.loadLatestIATI);
+    }
+
     getSMTPSettingsUrl() {
         return (this.BASE_URL + urlsList.urls.smtpSettings);
     }

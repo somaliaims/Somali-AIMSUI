@@ -48,6 +48,12 @@ export class IATIService {
         catchError(this.storeService.handleError<any>('IATI Settings')));
     }
 
+    loadLatestIATI() {
+      var url = this.urlHelper.getLoadLatestIATIUrl();
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('IATI Load')));
+    }
+
     extractProjectsByIds(model: any) {
       var url = this.urlHelper.extractProjectsByIds();
       return this.httpClient.post(url,

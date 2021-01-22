@@ -1307,6 +1307,13 @@ export class SectorReportComponent implements OnInit {
         if (selectSector.length > 0) {
           selectSector[0].isDisplay = !selectSector[0].isDisplay;
         }
+      } else {
+        if (this.reportDataList.sectorProjectsList) {
+          var selectSector = this.reportDataList.sectorProjectsList.filter(s => s.sectorName == sector);
+          if (selectSector.length > 0) {
+            selectSector[0].isDisplay = !selectSector[0].isDisplay;
+          }
+        }
       }
     } else {
       if (this.reportDataList.sectorProjectsList) {
