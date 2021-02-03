@@ -91,7 +91,7 @@ export class FinancialsComponent implements OnInit {
 
     this.currentYear = this.storeService.getCurrentYear();
     this.disbursementModel.currency = this.projectCurrency;
-    this.disbursementModel.projectValue = this.projectValue;
+    this.disbursementModel.projectValue = parseInt(this.projectValue.toString());
     //this.setDisbursementsData();
     this.getExchangeRateForCurrency();
     this.getProjectHelp();
@@ -236,7 +236,7 @@ export class FinancialsComponent implements OnInit {
         if (!d.amount) {
           d.amount = 0;
         }
-        totalAmount += parseFloat(d.amount);
+        totalAmount += parseInt(d.amount);
       });
     }
     return totalAmount;

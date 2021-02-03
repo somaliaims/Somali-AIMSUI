@@ -54,7 +54,7 @@
                 </div>
               </div>
 
-              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save Settings</button>
+              <button [class.disable]="isIATILoading" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save Settings</button>
             </form>
 
           </div>
@@ -97,7 +97,7 @@
                 </div>
               </div>
 
-              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save Settings</button>
+              <button [class.disable]="isIATILoading" class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Save Settings</button>
             </form>
 
           </div>

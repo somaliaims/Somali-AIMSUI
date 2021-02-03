@@ -59,6 +59,13 @@ export class IatiSettingsComponent implements OnInit {
 
     this.storeService.newReportItem(Settings.dropDownMenus.management);
     this.getIATISettings();
+    this.requestNo = this.storeService.getNewRequestNumber();
+    this.storeService.currentRequestTrack.subscribe(model => {
+      if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
+        this.errorMessage = model.errorMessage;
+        this.errorModal.openModal();
+      }
+    });
   }
 
   getIATISettings() {
@@ -87,31 +94,14 @@ export class IatiSettingsComponent implements OnInit {
       model = this.iatiSettingsNew;
     }
 
-    this.blockUI.start('Saving IATI Settings');
+    this.blockUI.start('Saving IATI Settings. If you have changed the active souce, please be patient, it will take time.');
     this.iatiService.setIATISettings(model).subscribe(
       data => {
         if (data) {
-          if (data.success) {
-            if (data.returnedId == 2) {
-              this.infoMessage = 'IATI Settings' + Messages.SAVED_SUCCESSFULLY;
-              this.infoModal.openModal();
-            } else if (data.returnedId == 1) {
-              this.iatiMessage = Messages.LATEST_IATI_LOAD_MESSAGE;
-              this.isIATILoading = true;
-              this.loadLatestIATI();
-            }
-            
-          } else {
-            this.errorMessage = 'An error occurred: ' + data.message;
-            this.errorModal.openModal();
-          }
+          this.infoMessage = 'IATI Settings' + Messages.SAVED_SUCCESSFULLY;
+          //this.infoModal.openModal();
         }
         this.blockUI.stop();
-      },
-      error => {
-        this.blockUI.stop();
-        this.errorMessage = 'An error occurred: ' + error;
-        this.errorModal.openModal();
       }
     );
   }
@@ -125,10 +115,6 @@ export class IatiSettingsComponent implements OnInit {
             this.isIATILoading = false;
           }, 5000);
         }
-      },
-      error => {
-        this.errorMessage = error.error;
-        this.errorModal.openModal();
       }
     );
   }
