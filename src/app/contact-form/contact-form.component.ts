@@ -168,8 +168,10 @@ export class ContactFormComponent implements OnInit {
   }
 
   resetModel() {
-    this.model = { emailType: null, senderName: null, projectTitle: null, senderEmail: null, 
-      projectId: 0, subject: null, message: null 
+    var senderEmail = this.model.senderEmail;
+    this.model = { emailType: null, senderName: null, projectTitle: null, 
+      projectId: 0, subject: null, message: null,
+      senderEmail: senderEmail
     };
   }
 
