@@ -54,11 +54,13 @@ export class EnvelopeComponent implements OnInit {
   envelopeData: any = { funderId: 0, funderName: null, currency: null, yearlyBreakup: [] };
   envelopeBreakups: any = [];
   envelopeSectorsBreakups: any = [];
+  secondPreviousYear: number = 0;
   previousYear: number = 0
   currentYear: number = 0;
   nextYear: number = 0;
   numberLength: number = 11;
   yearlyTotals: any = {
+    secondPreviousYear: 0,
     previousYear: 0,
     currentYear: 0,
     nextYear: 0
@@ -89,6 +91,7 @@ export class EnvelopeComponent implements OnInit {
     this.getCurrenciesList();
     this.getEnvelopeData();
     this.currentYear = this.storeService.getCurrentYear();
+    this.secondPreviousYear = (this.currentYear - 2);
     this.previousYear = (this.currentYear - 1);
     this.nextYear = (this.currentYear + 1);
     
@@ -106,11 +109,23 @@ export class EnvelopeComponent implements OnInit {
           var yearLabel = data.currentFinancialYearLabel;
           var previousYear = data.previousFinancialYear;
           var previousYearLabel = data.previousFinancialYearLabel;
+          var secondPreviousYear = data.secondPreviousFinancialYear;
+          var secondPreviousYearLabel = data.secondPreviousFinancialYearLabel;
           var nextYear = data.nextFinancialYear;
           var nextYearLabel = data.nextFinancialYearLabel;
           var month = data.month;
           var day = data.day;
           
+          var secondPreviousStartingDate = new Date(secondPreviousYear, (month - 1), day).toDateString();
+          var spEndDate = new Date(secondPreviousYear, (month - 1), day - 1);
+          var secondPreviousEndingDate = new Date(secondPreviousYear, spEndDate.getMonth(), spEndDate.getDate()).toDateString();
+          this.yearHelpLabels.push({
+            year: secondPreviousYear,
+            label: secondPreviousYearLabel,
+            startingDate: secondPreviousStartingDate,
+            endingDate: secondPreviousEndingDate
+          });
+
           var previousStartingDate = new Date(previousYear, (month - 1), day).toDateString();
           var pEndDate = new Date(previousYear, (month - 1), day - 1);
           var previousEndingDate = new Date(previousYear, pEndDate.getMonth(), pEndDate.getDate()).toDateString();
@@ -308,7 +323,7 @@ export class EnvelopeComponent implements OnInit {
   }
 
   calculateYearlyTotal() {
-    for (var year = this.previousYear; year <= this.nextYear; year++) {
+    for (var year = this.secondPreviousYear; year <= this.nextYear; year++) {
       var totalAmountForYear = 0;
       if (this.envelopeData.envelopeBreakupsByType) {
         this.envelopeData.envelopeBreakupsByType.forEach((b) => {
