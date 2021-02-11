@@ -105,6 +105,7 @@ export class ProjectReportModalComponent implements OnInit {
               this.projectData.startingFinancialYear = project.startingFinancialYear;
               this.projectData.endingFinancialYear = project.endingFinancialYear;
               this.projectData.dateUpdated = project.dateUpdated;
+              this.projectData.lastUpdatedByOrganization = project.lastUpdatedByOrganization;
               this.projectData.projectCurrency = project.projectCurrency;
               this.projectData.projectValue = project.projectValue;
               this.projectData.exchangeRate = project.exchangeRate;

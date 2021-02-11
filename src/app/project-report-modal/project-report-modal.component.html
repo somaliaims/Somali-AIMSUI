@@ -73,7 +73,12 @@
                               <td width="15%"><b>Project title: </b></td>
                               <td>{{projectData.title}}</td>
                               <td><b>Project last updates: </b></td>
-                              <td>{{formatDateUKStyle(projectData.dateUpdated)}}</td>
+                              <td>
+                                {{formatDateUKStyle(projectData.dateUpdated)}}
+                                <ng-container *ngIf="projectData.lastUpdatedByOrganization">
+                                  <span class="text-info">&nbsp;by&nbsp;{{projectData.lastUpdatedByOrganization}}</span>
+                                </ng-container>
+                              </td>
                             </tr>
                             <tr>
                               <td><b>Start date: </b></td>

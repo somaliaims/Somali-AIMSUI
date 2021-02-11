@@ -215,9 +215,9 @@ export class NotificationComponent implements OnInit {
   unApproveRequest(e) {
     var arr = e.currentTarget.id.split('-');
     var model = {
-      projectId: arr[2],
-      userId: arr[3],
-      membershipType: arr[4]
+      projectId: parseInt(arr[2]),
+      userId: parseInt(arr[3]),
+      membershipType: parseInt(arr[4])
     };
 
     if (model.projectId && model.userId) {
