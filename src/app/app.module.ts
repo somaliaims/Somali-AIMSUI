@@ -130,6 +130,8 @@ import { ContactMessagesComponent } from './contact-messages/contact-messages.co
 import { SublocationsComponent } from './sublocations/sublocations.component';
 import { ManageSubLocationsComponent } from './manage-sublocations/manage-sublocations.component';
 import { SublocationModalComponent } from './sublocation-modal/sublocation-modal.component';
+import { SponsorLogosComponent } from './sponsor-logos/sponsor-logos.component';
+import { ManageSponsorLogosComponent } from './manage-sponsor-logos/manage-sponsor-logos.component';
 
 @NgModule({
   declarations: [
@@ -246,6 +248,8 @@ import { SublocationModalComponent } from './sublocation-modal/sublocation-modal
     SublocationsComponent,
     ManageSubLocationsComponent,
     SublocationModalComponent,
+    SponsorLogosComponent,
+    ManageSponsorLogosComponent,
   ],
   imports: [
     BrowserModule,

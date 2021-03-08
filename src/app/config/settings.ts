@@ -103,7 +103,8 @@ export const Settings = {
             canEditHelp: false,
             canTakeBackup: false,
             canEditDocument: false,
-            canEditContactMessages: false
+            canEditContactMessages: false,
+            canEditLogos: false
         },
         manager: {
             canManageUsers: true,
@@ -129,7 +130,8 @@ export const Settings = {
             canEditHelp: true,
             canTakeBackup: true,
             canEditDocument: true,
-            canEditContactMessages: true
+            canEditContactMessages: true,
+            canEditLogos: true
         },
         superAdmin: {
             canManageUsers: true,
@@ -155,7 +157,8 @@ export const Settings = {
             canEditHelp: true,
             canTakeBackup: true,
             canEditDocument: true,
-            canEditContactMessages: false
+            canEditContactMessages: false,
+            canEditLogos: true
         },
         guest: {
             canManageUsers: false,
@@ -181,7 +184,8 @@ export const Settings = {
             canEditHelp: false,
             canTakeBackup: false,
             canEditDocument: false,
-            canEditContactMessages: false
+            canEditContactMessages: false,
+            canEditLogos: false
         }
     },
     markerTypes: [

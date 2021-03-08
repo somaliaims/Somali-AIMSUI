@@ -1,0 +1,55 @@
+<div class="container-fluid view-area">
+    <block-ui>
+      <div class="row">
+        <div class="col-md-6">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active btn-info" data-toggle="tab">Sponsor logos</a>
+            </li>
+            <li *ngIf="permissions.canEditLogos" class="nav-item">
+              <a class="nav-link text-info" data-toggle="tab" [routerLink]="['/manage-logos']">Create new</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Enter sponsor name" (input)="searchSponsors()"
+              [(ngModel)]="criteria" name="criteria" #criteriaModel="ngModel" onkeypress="return event.keyCode != 13;"
+              maxlength="50" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" (click)="searchSponsors()" type="button"><i
+                  class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="!isLoading" class="row">
+        <div *ngIf="filteredSponsors.length > 0" class="col margin-top-10">
+          <table class="table table-bordered table-stripped">
+            <tr>
+              <th>Sponsor</th>
+              <th>Logo</th>
+              <th *ngIf="permissions.canEditLogos">Actions</th>
+            </tr>
+            <tr *ngFor="let sponsor of filteredSponsors | paginate: { itemsPerPage: pagingSize, currentPage: p }">
+              <td>{{sponsor.title}}</td>
+              <td *ngIf="permissions.canEditLogos">
+                <a title="Edit" (click)="edit(sponsor.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
+                &nbsp;
+                <a title="Delete" (click)="delete(sponsor.id)" class="btn btn-danger"><i
+                    class="fa fa-trash color-white"></i></a>
+              </td>
+            </tr>
+          </table>
+          <pagination-controls (pageChange)="p=$event"></pagination-controls>
+        </div>
+        <div *ngIf="filteredSponsors.length == 0 && !isLoading" class="col-md-12 text-info">
+          <i>No sponsors to show</i>
+        </div>
+      </div>
+  
+    </block-ui>
+  </div>
+  
+  <error-modal message="{{errorMessage}}"></error-modal>
