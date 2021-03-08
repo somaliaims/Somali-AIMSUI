@@ -222,5 +222,6 @@ export const urls = {
 	countriesUrl: "IATICountry",
 	setActiveCountryUrl: "IATICountry/SetActiveCountry",
 	financialYearSettingsUrl: "FinancialYearSettings",
-	documentLinkUrl: "DocumentLink"
+	documentLinkUrl: "DocumentLink",
+	sponsorLogoUrl: "SponsorLogo"
 };

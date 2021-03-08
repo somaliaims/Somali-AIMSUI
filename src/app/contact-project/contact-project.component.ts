@@ -114,9 +114,9 @@ export class ContactProjectComponent implements OnInit {
 
   resetModel() {
     this.model.senderName = null;
-    this.model.senderEmail = '';
+    //this.model.senderEmail = '';
     this.model.emailType = this.emailTypeCodes.HELP;
-    this.model.subject = null;
+    //this.model.subject = null;
     this.model.message = null;
   }
 

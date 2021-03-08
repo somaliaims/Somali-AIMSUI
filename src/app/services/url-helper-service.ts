@@ -953,4 +953,8 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.documentLinkUrl);
     }
 
+    getSponsorLogoUrl() {
+        return (this.BASE_URL + urlsList.urls.sponsorLogoUrl);
+    }
+
 }
