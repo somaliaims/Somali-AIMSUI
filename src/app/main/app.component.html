@@ -85,7 +85,9 @@
               <a *ngIf="permissions.canEditEmailMessage" class="dropdown-item" [routerLink]="['/email-messages']">Email
                 messages</a>
               <a *ngIf="permissions.canEditEmailMessage" class="dropdown-item" [routerLink]="['/email-users']">Email
-                  users</a>
+                users</a>
+              <a *ngIf="permissions.canEditSponsors" class="dropdown-item" [routerLink]="['/sponsors']">Sponsors
+                management</a>
               <h5 *ngIf="permissions.canTakeBackup" class="dropdown-header">AIMS database management</h5>
               <a *ngIf="permissions.canTakeBackup"  class="dropdown-item" [routerLink]="['/data-backup']">
                 Data backup & restore

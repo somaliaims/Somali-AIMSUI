@@ -18,7 +18,8 @@ export class SponsorLogoService {
   uploadAndSaveLogo(file: File, title: string): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
-    formData.append('file', file);
+    formData.append('logo', file);
+    formData.append('title', title);
     var url = this.urlHelper.getSponsorLogoUrl();
     const req = new HttpRequest('POST', url, formData, {
       reportProgress: true,

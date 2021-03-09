@@ -87,6 +87,8 @@ import { ManageDocumentLinkComponent } from './manage-document-link/manage-docum
 import { ContactMessagesComponent } from './contact-messages/contact-messages.component';
 import { SublocationsComponent } from './sublocations/sublocations.component';
 import { ManageSubLocationsComponent } from './manage-sublocations/manage-sublocations.component';
+import { SponsorLogosComponent } from './sponsor-logos/sponsor-logos.component';
+import { ManageSponsorLogosComponent } from './manage-sponsor-logos/manage-sponsor-logos.component';
 
 // Route Configuration
 const routes: Routes = [
@@ -180,6 +182,9 @@ const routes: Routes = [
   { path: 'email-users', component: EmailUsersComponent },
   { path: 'manage-email-message', component: ManageEmailMessageComponent },
   { path: 'manage-email-message/:{id}', component: ManageEmailMessageComponent, data: { isForEdit: true } },
+  { path: 'sponsors', component: SponsorLogosComponent},
+  { path: 'manage-sponsors', component: ManageSponsorLogosComponent },
+  { path: 'manage-sponsors/:{id}', component: ManageSponsorLogosComponent, data: { isForEdit: true } },
   { path: 'project-membership/:{id}', component: ProjectMembershipComponent },
   { path: 'contact-project/:{id}', component: ContactProjectComponent },
   { path: 'membership-requests', component: MembershipRequestsComponent },
