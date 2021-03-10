@@ -16,6 +16,15 @@ export class UrlHelperService {
         }
     }
 
+    getBaseUrl() {
+        return this.BASE_URL;
+    }
+
+    getLogosUrl() {
+        var urlWithoutAPI = this.BASE_URL.substring(0, this.BASE_URL.length - 4);
+        return urlWithoutAPI + 'Logos/'; 
+    }
+
     getExcelFilesUrl() {
         var excelBaseUrl = this.BASE_URL;
         if (excelBaseUrl.indexOf('api') != -1) {

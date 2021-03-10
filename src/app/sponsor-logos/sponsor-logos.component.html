@@ -30,13 +30,16 @@
             <tr>
               <th>Sponsor</th>
               <th>Logo</th>
-              <th *ngIf="permissions.canEditLogos">Actions</th>
+              <th *ngIf="permissions.canEditSponsors">Actions</th>
             </tr>
             <tr *ngFor="let sponsor of filteredSponsors | paginate: { itemsPerPage: pagingSize, currentPage: p }">
               <td>{{sponsor.title}}</td>
-              <td *ngIf="permissions.canEditLogos">
-                <a title="Edit" (click)="edit(sponsor.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
-                &nbsp;
+              <td>
+                <img width="80" src="{{sponsor.logoPath}}" />
+              </td>
+              <td *ngIf="permissions.canEditSponsors">
+                <!--<a title="Edit" (click)="edit(sponsor.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
+                &nbsp;-->
                 <a title="Delete" (click)="delete(sponsor.id)" class="btn btn-danger"><i
                     class="fa fa-trash color-white"></i></a>
               </td>

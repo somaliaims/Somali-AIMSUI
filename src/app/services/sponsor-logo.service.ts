@@ -30,7 +30,7 @@ export class SponsorLogoService {
   }
 
   getLogos() {
-    var url = this.urlHelper.organizationTypesUrl();
+    var url = this.urlHelper.getSponsorLogoUrl();
     return this.httpClient
       .get(url, httpOptions).pipe(
         catchError(this.storeService.handleError<any>('Organization Types'))
