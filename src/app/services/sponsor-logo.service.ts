@@ -33,8 +33,14 @@ export class SponsorLogoService {
     var url = this.urlHelper.getSponsorLogoUrl();
     return this.httpClient
       .get(url, httpOptions).pipe(
-        catchError(this.storeService.handleError<any>('Organization Types'))
+        catchError(this.storeService.handleError<any>('Sponsor logos'))
       );
+  }
+
+  deleteSponsor(id: string) {
+    var url = this.urlHelper.getSponsorLogoUrl();
+    return this.httpClient.delete(url, httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Sponsor')));
   }
   
 }
