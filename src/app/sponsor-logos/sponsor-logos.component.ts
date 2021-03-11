@@ -69,6 +69,17 @@ export class SponsorLogosComponent implements OnInit {
   }
 
   delete(id: number) {
-
+    if (id) {
+      this.blockUI.start('Deleting sponsor...');
+      this.logoService.deleteSponsor(id.toString()).subscribe(
+        data => {
+          if (data) {
+            this.sponsors = this.sponsors.filter(s => s.id != id);
+            this.filteredSponsors = this.filteredSponsors.filter(s => s.id != id);
+          }
+          this.blockUI.stop();
+        }
+      );
+    }
   }
 }

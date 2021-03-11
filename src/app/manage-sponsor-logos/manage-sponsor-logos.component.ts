@@ -48,6 +48,8 @@ export class ManageSponsorLogosComponent implements OnInit {
       return false;
     }
 
+    this.isBtnDisabled = true;
+    this.btnText = 'Saving...';
     this.progress = 0;
     this.currentFile = this.selectedFiles.item(0);
     this.sponsorService.uploadAndSaveLogo(this.currentFile, this.model.sponsorName).subscribe(
@@ -56,11 +58,14 @@ export class ManageSponsorLogosComponent implements OnInit {
           this.progress = Math.round(100 * event.loaded / event.total);
         } else if (event instanceof HttpResponse) {
           this.message = event.body.message;
+          setTimeout(() => {
+            this.router.navigateByUrl('sponsors');
+          }, 2000);
         }
-
-        this.router.navigateByUrl('sponsors');
       },
       err => {
+        this.btnText = 'Save sponsor';
+        this.isBtnDisabled = false;
         this.progress = 0;
         this.errorMessage = 'Could not upload the file!';
         //this.currentFile = undefined;

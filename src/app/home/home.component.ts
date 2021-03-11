@@ -11,6 +11,8 @@ import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { EmbedVideoService } from 'ngx-embed-video';
 import { faBuilding, faMoneyCheck, faTasks, faUser } from '@fortawesome/free-solid-svg-icons';
 import { DocumentLinkService } from '../services/document-link.service';
+import { SponsorLogoService } from '../services/sponsor-logo.service';
+import { UrlHelperService } from '../services/url-helper-service';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +27,7 @@ export class HomeComponent implements OnInit {
   infoMessage: string = null;
   showMessage: boolean = false;
   isProjectsLoading: boolean = true;
+  isSponsorsLoading: boolean = true;
   isIntroLoading: boolean = true;
   isLinkLoading: boolean = true;
   usersCount: number = 0;
@@ -38,6 +41,7 @@ export class HomeComponent implements OnInit {
   model: any = { aimsTitle: null, introductionHeading: null, introductionText: null };
   latestProjects: any = [];
   links: any = [];
+  sponsors: any = [];
   requestNo: number = 0;
   safeSrcVideoOne: SafeResourceUrl;
   safeSrcVideoTwo: SafeResourceUrl;
@@ -51,7 +55,9 @@ export class HomeComponent implements OnInit {
     private projectService: ProjectService, private currencyService: CurrencyService,
     private homePageService: HomePageService, private router: Router,
     private embedService: EmbedVideoService,
-    private documentService: DocumentLinkService
+    private documentService: DocumentLinkService,
+    private sponsorService: SponsorLogoService,
+    private urlService: UrlHelperService
     ) { }
 
   ngOnInit() {
@@ -79,6 +85,7 @@ export class HomeComponent implements OnInit {
     this.getDefaultCurrency();
     this.getLatestProjects();
     this.getDocumentLinks();
+    this.getSponsors();
   }
 
   getDefaultCurrency() {
@@ -163,6 +170,21 @@ export class HomeComponent implements OnInit {
           this.links = data;
         }
         this.isLinkLoading = false;
+      }
+    );
+  }
+
+  getSponsors() {
+    var logosBaseUrl = this.urlService.getLogosUrl();
+    this.sponsorService.getLogos().subscribe(
+      data => {
+        if (data) {
+          this.sponsors = data.sponsorLogos; 
+          this.sponsors.forEach((s) => {
+            s.logoPath = logosBaseUrl + s.logoPath;
+          });
+        }
+        this.isSponsorsLoading = false;
       }
     );
   }

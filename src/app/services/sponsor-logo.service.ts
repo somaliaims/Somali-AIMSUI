@@ -38,7 +38,7 @@ export class SponsorLogoService {
   }
 
   deleteSponsor(id: string) {
-    var url = this.urlHelper.getSponsorLogoUrl();
+    var url = this.urlHelper.getSponsorLogoUrl() + '/' + id;
     return this.httpClient.delete(url, httpOptions).pipe(
       catchError(this.storeService.handleError<any>('Sponsor')));
   }
