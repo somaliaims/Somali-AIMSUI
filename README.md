@@ -194,7 +194,7 @@ Once all set up and AIMS is running, we can login with the default manager accou
     <td>Password</td>
   </tr>
   <tr>
-    <td>aims.developer18@gmail.com</td>
-    <td>test</td>
+    <td>xxx@xxx</td>
+    <td>xxx</td>
   </tr>
 </table>
