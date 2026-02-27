@@ -20,7 +20,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY ./dev/nginx.conf /etc/nginx/nginx.conf
 
 # Copy Angular build output
-COPY --from=build /app/dist/aims-ui /usr/share/nginx/html
+COPY --from=build /app/dist/aims-ui/browser/ /usr/share/nginx/html
 
 # Replace environment variable inside built JS
 RUN apk add --no-cache gettext
