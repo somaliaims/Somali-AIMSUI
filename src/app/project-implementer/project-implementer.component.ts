@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Organization } from '../models/organization-model';
 import { ProjectService } from '../services/project.service';
@@ -26,11 +26,11 @@ export class ProjectImplementerComponent implements OnInit {
   isError: boolean = false;
   isLoading: boolean = false;
   model = { projectId: 0, organizationId: null };
-  implementerSelectionForm: FormGroup;
-  userInput = new FormControl();
+  implementerSelectionForm: UntypedFormGroup;
+  userInput = new UntypedFormControl();
   filteredOrganizations: Observable<Organization[]>;
 
-  constructor(private fb: FormBuilder,private projectService: ProjectService, private route: ActivatedRoute,
+  constructor(private fb: UntypedFormBuilder,private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private organizationService: OrganizationService,
     private storeService: StoreService) {
   }
