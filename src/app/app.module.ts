@@ -13,7 +13,6 @@ import {NgbDatepickerModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap'
 import { BlockUIModule } from 'ng-block-ui';
 import { ChartsModule } from 'ng2-charts';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { EmbedVideo } from 'ngx-embed-video';
 import { AppRoutingModule } from './app.router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -268,7 +267,6 @@ import { ManageSponsorLogosComponent } from './manage-sponsor-logos/manage-spons
     ChartsModule,
     NgMultiSelectDropDownModule.forRoot(),
     FontAwesomeModule,
-    EmbedVideo.forRoot()
   ],
   providers: [
     /*{ 

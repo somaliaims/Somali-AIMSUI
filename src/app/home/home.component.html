@@ -158,34 +158,34 @@
         </div>
       </div>
 
-        <div class="card bg-light margin-top-10">
-          <div class="card-header">
-            <span class="float-left">
-              <h6>Sponsors</h6>
-            </span>
-          </div>
-          <div class="card-body bg-white padding-5">
-            <div class="row text-center" *ngIf="isSponsorsLoading">
-              <div class="container">
-                <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sponsors...</span>
-              </div>
-            </div>
+      <div class="card bg-light margin-top-10">
+        <div class="card-header">
+          <span class="float-left">
+            <h6>Sponsors</h6>
+          </span>
+        </div>
+        <div class="card-body bg-white padding-5">
+          <div class="row text-center" *ngIf="isSponsorsLoading">
             <div class="container">
-              <ng-container *ngIf="sponsors.length > 0">
-                <div class="row">
-                  <div class="col-md-3 margin-top-20" *ngFor="let sponsor of sponsors">
-                    <img title="{{sponsor.title}}" src="{{sponsor.logoPath}}" />
-                  </div>
+              <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading sponsors...</span>
+            </div>
+          </div>
+          <div class="container">
+            <ng-container *ngIf="sponsors.length > 0">
+              <div class="row">
+                <div class="col-md-3 margin-top-20" *ngFor="let sponsor of sponsors">
+                  <img title="{{sponsor.title}}" src="{{sponsor.logoPath}}" />
                 </div>
-              </ng-container>
-              
-              <div *ngIf="sponsors.length == 0 && !isSponsorsLoading">
-                <span class="text-info"><i>No sponsors to show</i></span>
               </div>
+            </ng-container>
+
+            <div *ngIf="sponsors.length == 0 && !isSponsorsLoading">
+              <span class="text-info"><i>No sponsors to show</i></span>
             </div>
           </div>
         </div>
-      
+      </div>
+
 
     </div>
 
@@ -202,9 +202,11 @@
             </div>
             <div class="card-body bg-white padding-5">
               <div class="row">
-                <div class="col-md-12" [innerHtml]="yt_video1_frame">
+                <div class="col-md-12">
+                  <iframe width="560" height="315" [src]="videoOneUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
-                <div class="col-md-12 margin-top-10" [innerHtml]="yt_video2_frame">
+                <div class="col-md-12 margin-top-10">
+                  <iframe width="560" height="315" [src]="videoTwoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
               </div>
             </div>
@@ -242,12 +244,10 @@
               </div>
             </div>
           </div>
-  
+
         </div>
-        
+
       </div>
     </div>
 
   </div>
-
-  
