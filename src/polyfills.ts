@@ -42,6 +42,10 @@
 // Used for reflect-metadata in JIT. If you use AOT (and only Angular decorators), you can remove.
 import 'core-js/es/reflect';
 
+/***************************************************************************************************
+ * Load `$localize` - used by Angular i18n.
+ */
+import '@angular/localize/init';
 /**
  * By default, zone.js will patch all possible macroTask and DomEvents
  * user can disable parts of macroTask/DomEvents patch by setting following flags
