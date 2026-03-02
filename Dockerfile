@@ -1,26 +1,30 @@
-FROM gmathieu/node-browsers:3.0.0 AS build
+# ----------- Build Stage -----------
+FROM node:20-alpine AS build
 
-COPY package.json /usr/aims-ui/
-WORKDIR /usr/aims-ui
-RUN npm install
+WORKDIR /app
 
-COPY ./ /usr/aims-ui
-RUN npm run build
+COPY package*.json ./
+RUN npm ci
 
-FROM nginx:1.15.8-alpine
+COPY . .
+RUN npm run build -- --configuration production
 
-## Remove default nginx website
+
+# ----------- Runtime Stage -----------
+FROM nginx:1.25-alpine
+
+# Remove default nginx files
 RUN rm -rf /usr/share/nginx/html/*
 
+# Copy custom nginx config
 COPY ./dev/nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=build  /usr/aims-ui/dist/aims-ui /usr/share/nginx/html
+# Copy Angular build output
+COPY --from=build /app/dist/aims-ui/browser/ /usr/share/nginx/html
 
-RUN echo "for mainFileName in /usr/share/nginx/html/main*.js ;\
-            do \
-              envsubst '\$BACKEND_API_URL' < \$mainFileName > main.tmp ;\
-              mv main.tmp \${mainFileName} ;\
-            done \
-            && nginx -g 'daemon off;'" > run.sh
+# Replace environment variable inside built JS
+RUN apk add --no-cache gettext
 
-ENTRYPOINT ["sh", "run.sh"]
+CMD sh -c "for file in /usr/share/nginx/html/main*.js; do \
+  envsubst '\$BACKEND_API_URL' < \$file > tmp.js && mv tmp.js \$file; \
+done && nginx -g 'daemon off;'"

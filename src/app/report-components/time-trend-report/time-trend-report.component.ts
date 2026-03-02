@@ -12,7 +12,6 @@ import { Messages } from 'src/app/config/messages';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { Settings } from 'src/app/config/settings';
-import { Color } from 'ng2-charts';
 import { MarkerService } from 'src/app/services/marker.service';
 import { UrlHelperService } from 'src/app/services/url-helper-service';
 
@@ -214,13 +213,6 @@ export class TimeTrendReportComponent implements OnInit {
       ]
     }
   };
-
-  public lineChartColors: Color[] = [
-    {
-      borderColor: 'black',
-      backgroundColor: 'rgba(255,0,0,0.3)',
-    },
-  ];
   
   chartColors: any = [
     {

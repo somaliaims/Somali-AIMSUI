@@ -8,7 +8,6 @@ import { ProjectService } from '../services/project.service';
 import { CurrencyService } from '../services/currency.service';
 import { HomePageService } from '../services/home-page.service';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { EmbedVideoService } from 'ngx-embed-video';
 import { faBuilding, faMoneyCheck, faTasks, faUser } from '@fortawesome/free-solid-svg-icons';
 import { DocumentLinkService } from '../services/document-link.service';
 import { SponsorLogoService } from '../services/sponsor-logo.service';
@@ -43,30 +42,23 @@ export class HomeComponent implements OnInit {
   links: any = [];
   sponsors: any = [];
   requestNo: number = 0;
-  safeSrcVideoOne: SafeResourceUrl;
-  safeSrcVideoTwo: SafeResourceUrl;
-  yt_video1_frame: any;
-  yt_video2_frame: any;
-  videoOneUrl: string = "https://www.youtube.com/watch?v=DYG0VayhKcs";
-  videoTwoUrl: string = "https://www.youtube.com/watch?v=H_n8DjUbCmk";
+  videoOneUrl!: SafeResourceUrl;
+  videoTwoUrl!: SafeResourceUrl;
   
   constructor(private storeService: StoreService, private route: ActivatedRoute,
     private userService: UserService, private organizationService: OrganizationService,
     private projectService: ProjectService, private currencyService: CurrencyService,
     private homePageService: HomePageService, private router: Router,
-    private embedService: EmbedVideoService,
     private documentService: DocumentLinkService,
     private sponsorService: SponsorLogoService,
-    private urlService: UrlHelperService
-    ) { }
+    private urlService: UrlHelperService,
+    private sanitizer: DomSanitizer
+    ) {
+      this.videoOneUrl = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/DYG0VayhKcs?si=2TW1SsKu1LSCd6Ym');
+      this.videoTwoUrl = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/H_n8DjUbCmk?si=VNmsK9nCbVNf4A-t');
+     }
 
   ngOnInit() {
-    this.yt_video1_frame = this.embedService.embed(this.videoOneUrl, {
-      attr: {width: '100%', height: '250px'}
-    });
-    this.yt_video2_frame = this.embedService.embed(this.videoTwoUrl, {
-      attr: {width: '100%', height: '250px'}
-    });
     this.storeService.newReportItem(Settings.dropDownMenus.home);
     this.storeService.currentInfoMessage.subscribe(message => this.infoMessage = message);
     if (this.infoMessage !== null && this.infoMessage !== '') {

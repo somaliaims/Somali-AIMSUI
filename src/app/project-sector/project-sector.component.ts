@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SectorService } from '../services/sector.service';
 import { StoreService } from '../services/store-service';
 import { Messages } from '../config/messages';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { Sector } from '../models/sector-model';
 import { Observable } from 'rxjs';
@@ -26,11 +26,11 @@ export class ProjectSectorComponent implements OnInit {
   isError: boolean = false;
   isLoading: boolean = false;
   model = { projectId: 0, sectorId: null, fundsPercentage: null };
-  sectorSelectionForm: FormGroup;
-  userInput = new FormControl();
+  sectorSelectionForm: UntypedFormGroup;
+  userInput = new UntypedFormControl();
   filteredSectors: Observable<Sector[]>;
 
-  constructor(private fb: FormBuilder,private projectService: ProjectService, private route: ActivatedRoute,
+  constructor(private fb: UntypedFormBuilder,private projectService: ProjectService, private route: ActivatedRoute,
     private router: Router, private sectorService: SectorService,
     private storeService: StoreService) {
   }

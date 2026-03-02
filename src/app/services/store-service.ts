@@ -189,7 +189,7 @@ export class StoreService {
       var valuesString = '';
       var parsedJson = null;
       try {
-        parsedJson = eval(json);
+        parsedJson = JSON.parse(json);
       } catch (e) {
         return json;
       }

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { SectorService } from '../services/sector.service';
 import { Sector } from '../models/sector-model';
 import { Location } from '../models/location-model';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ProjectInfoModalComponent } from '../project-info-modal/project-info-modal.component';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -85,15 +85,15 @@ export class ProjectEntryComponent implements OnInit {
   errorMessage: string = '';
   startDateModel: NgbDateStruct;
   currentTab: string = 'project';
-  sectorSelectionForm: FormGroup;
-  sectorInput = new FormControl();
-  locationSelectionForm: FormGroup;
-  funderForm: FormGroup;
-  implementerForm: FormGroup;
-  locationInput = new FormControl();
-  parentSectorInput = new FormControl();
-  funderInput = new FormControl();
-  implementerInput = new FormControl();
+  sectorSelectionForm: UntypedFormGroup;
+  sectorInput = new UntypedFormControl();
+  locationSelectionForm: UntypedFormGroup;
+  funderForm: UntypedFormGroup;
+  implementerForm: UntypedFormGroup;
+  locationInput = new UntypedFormControl();
+  parentSectorInput = new UntypedFormControl();
+  funderInput = new UntypedFormControl();
+  implementerInput = new UntypedFormControl();
   sectorEntryType: string = 'aims';
   locationEntryType: string = 'aims';
   documentEntryType: string = 'aims';
@@ -252,7 +252,7 @@ export class ProjectEntryComponent implements OnInit {
 
   constructor(private storeService: StoreService, private iatiService: IATIService,
     private projectService: ProjectService, private sectorService: SectorService,
-    private router: Router, private fb: FormBuilder, private infoModal: InfoModalComponent,
+    private router: Router, private fb: UntypedFormBuilder, private infoModal: InfoModalComponent,
     private locationService: LocationService, private securityService: SecurityHelperService,
     private organizationService: OrganizationService,
     private projectInfoModal: ProjectInfoModalComponent,

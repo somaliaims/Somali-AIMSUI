@@ -8,7 +8,6 @@ import { StoreService } from 'src/app/services/store-service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/config/settings';
-import { Color } from 'ng2-charts';
 import { UrlHelperService } from 'src/app/services/url-helper-service';
 import { Messages } from 'src/app/config/messages';
 import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
@@ -74,13 +73,6 @@ export class EnvelopeReportComponent implements OnInit {
       ]
     }
   };
-
-  public lineChartColors: Color[] = [
-    {
-      borderColor: 'black',
-      backgroundColor: 'rgba(255,0,0,0.3)',
-    },
-  ];
 
   stackedChartOptions: any = {
     responsive: true,

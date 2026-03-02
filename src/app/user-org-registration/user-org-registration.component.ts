@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, UntypedFormControl } from '@angular/forms';
 import { switchMap, debounceTime, tap, finalize, startWith, map } from 'rxjs/operators';
 import { OrganizationService } from '../services/organization-service';
 import { StoreService } from '../services/store-service';
@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 export class UserOrgRegistrationComponent implements OnInit {
 
   organizations: any = [];
-  userInput = new FormControl();
+  userInput = new UntypedFormControl();
   filteredOrganizations: any = [] ;
   organizationTypes: any = [];
   organizationType: string = null;
@@ -36,7 +36,7 @@ export class UserOrgRegistrationComponent implements OnInit {
   errorMessage: string = '';
   model: any = { email: null, password: null, organizationTypeId: null, organizationId: null, isNewOrganization: false, organizationName: null };
 
-  constructor(private fb: FormBuilder, private organizationService: OrganizationService,
+  constructor(private fb: UntypedFormBuilder, private organizationService: OrganizationService,
     private storeService: StoreService, private userService: UserService,
     private router: Router,
     private zone: NgZone) {

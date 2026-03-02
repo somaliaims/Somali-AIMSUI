@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { CustomValidators } from './custom-validators';
 import { StoreService } from '../services/store-service';
 import { UserService } from '../services/user-service';
@@ -11,15 +11,15 @@ import { UserService } from '../services/user-service';
   styleUrls: ['./password-change.component.css']
 })
 export class PasswordChangeComponent{
-  public frmChangePassword: FormGroup;
+  public frmChangePassword: UntypedFormGroup;
   btnText: string = 'Save';
   isBtnDisabled: boolean = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.frmChangePassword = this.createChangePasswordForm();
   }
 
-  createChangePasswordForm(): FormGroup {
+  createChangePasswordForm(): UntypedFormGroup {
     return this.fb.group(
       {
         password: [

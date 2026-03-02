@@ -4,7 +4,7 @@ import { UrlHelperService } from './url-helper-service';
 import { catchError } from 'rxjs/operators';
 import { StoreService } from './store-service';
 import { httpOptions } from '../config/httpoptions';
-import * as jsPDF from 'jspdf';
+import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Settings } from '../config/settings';
 

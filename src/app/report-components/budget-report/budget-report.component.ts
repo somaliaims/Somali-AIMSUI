@@ -7,8 +7,7 @@ import { CurrencyService } from 'src/app/services/currency.service';
 import { Messages } from 'src/app/config/messages';
 import { Settings } from 'src/app/config/settings';
 import { ModalService } from 'src/app/services/modal.service';
-import { ChartType, ChartDataSets, ChartOptions } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartType, ChartDataset, ChartOptions } from 'chart.js';
 import { UrlHelperService } from 'src/app/services/url-helper-service';
 
 @Component({
@@ -44,8 +43,8 @@ export class BudgetReportComponent implements OnInit {
 
   chartDescriptiveLabels: any = [];
   isChartLoading: boolean = true;
-  chartLabels: Label[] = [];
-  chartData: ChartDataSets[] = [];
+  chartLabels: string[] = [];
+  chartData: ChartDataset[] = [];
   chartLegend: boolean = true;
   chartType: ChartType = 'bar';
   barChartPlugins: any = [];
@@ -65,7 +64,7 @@ export class BudgetReportComponent implements OnInit {
     LOCATIONS: "Locations"
   }
 
-  chartOptions: ChartOptions = {
+  chartOptions: any = {
     responsive: true,
     tooltips: {
       callbacks: {
