@@ -23,22 +23,12 @@
 
                             <div class="row margin-top-10">
                                 <div class="col-md-4">
-                                    <label>Starting year (optional): </label>&nbsp;&nbsp;
+                                    <label>Active within (optional): </label>&nbsp;&nbsp;
                                     <select [class.disable]="isLoading" title="Starting year" class="form-control col-sm-12" name="startingYear"
                                         [(ngModel)]="model.startingYear" #startingYear="ngModel" id="startingYear"
                                         (change)="onChangeStartYear()"
                                         >
-                                        <option value="0">--Starting year--</option>
-                                        <option *ngFor="let year of financialYears" value="{{year.financialYear}}">
-                                            {{year.label}}</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label>Ending year (optional): </label>&nbsp;&nbsp;
-                                    <select [class.disable]="isLoading" title="Ending year" class="form-control col-sm-12"
-                                        name="endingYear" [(ngModel)]="model.endingYear"
-                                        #endingYear="ngModel" id="endingYear" (change)="onChangeEndYear()">
-                                        <option value="0">--Ending year--</option>
+                                        <option value="0">--Active within--</option>
                                         <option *ngFor="let year of financialYears" value="{{year.financialYear}}">
                                             {{year.label}}</option>
                                     </select>

@@ -30,27 +30,18 @@
                   <table>
                     <tr>
                       <td>
-                        Period from:&nbsp;
+                        Period:&nbsp;
                       </td>
                       <td>
                         <select class="form-control" id="startingYear" title="Starting financial year"
                           [(ngModel)]="model.startingYear" name="startingYear" #startingYear="ngModel"
                           (change)="onChangeStartingYear()" required>
-                          <option value="0">--Start--</option>
+                          <option value="0">--Active within--</option>
                           <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.label}}
                           </option>
                         </select>
                       </td>
-                      <td>&nbsp;&nbsp;</td>
-                      <td>
-                        <select class="form-control" id="endingYear" title="Ending financial year"
-                          [(ngModel)]="model.endingYear" name="endingYear" #endingYear="ngModel"
-                          (change)="onChangeEndingYear()" required>
-                          <option value="0">--End--</option>
-                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.label}}
-                          </option>
-                        </select>
-                      </td>
+                      <td>&nbsp;&nbsp;</td>                  
                     </tr>
                   </table>
                 </div>
