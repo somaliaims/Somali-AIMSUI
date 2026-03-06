@@ -966,4 +966,7 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.sponsorLogoUrl);
     }
 
+    // getProjectLocationWise(){
+    //     return (this.BASE_URL + urlsList.urls.projectLocationWise);
+    // }
 }

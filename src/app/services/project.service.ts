@@ -360,4 +360,8 @@ export class ProjectService {
     );
   }
 
+  // getProjectLocationWise(){
+  //   var url = this.urlHelper.getProjectLocationWiseUrl();
+  // }
+
 }

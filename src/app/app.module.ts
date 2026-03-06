@@ -135,6 +135,7 @@ import { ManageSubLocationsComponent } from './manage-sublocations/manage-subloc
 import { SublocationModalComponent } from './sublocation-modal/sublocation-modal.component';
 import { SponsorLogosComponent } from './sponsor-logos/sponsor-logos.component';
 import { ManageSponsorLogosComponent } from './manage-sponsor-logos/manage-sponsor-logos.component';
+import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -252,6 +253,7 @@ import { ManageSponsorLogosComponent } from './manage-sponsor-logos/manage-spons
         SublocationModalComponent,
         SponsorLogosComponent,
         ManageSponsorLogosComponent,
+        LeafletMapComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         BrowserAnimationsModule,
