@@ -89,6 +89,7 @@ import { SublocationsComponent } from './sublocations/sublocations.component';
 import { ManageSubLocationsComponent } from './manage-sublocations/manage-sublocations.component';
 import { SponsorLogosComponent } from './sponsor-logos/sponsor-logos.component';
 import { ManageSponsorLogosComponent } from './manage-sponsor-logos/manage-sponsor-logos.component';
+import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 
 // Route Configuration
 const routes: Routes = [
@@ -194,7 +195,8 @@ const routes: Routes = [
   { path: 'data-backup', component: DataBackupComponent },
   { path: 'document-links', component: DocumentLinkComponent },
   { path: 'manage-document-link', component: ManageDocumentLinkComponent },
-  { path: '**', component: NotFoundComponent },
+  { path: 'map', component: LeafletMapComponent },
+  { path: '**', component: NotFoundComponent }
 ];
 
 //export const Routing: ModuleWithProviders = RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" });

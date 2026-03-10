@@ -1,0 +1,189 @@
+<div class="container-fluid view-area">
+    <block-ui>
+
+        <div class="row text-center">
+            <div *ngIf="showMessage" class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Information!</strong> {{infoMessage}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active btn-info" data-toggle="tab">Projects list</a>
+                    </li>
+                </ul>
+            </div>
+            <!--<div class="col-md-6">
+        <div class="input-group mb-3">
+          <input type="search" class="form-control" onkeypress="return event.keyCode != 13;" 
+          placeholder="Enter project name to search" name="title" (input)="filterProjects()" [(ngModel)]="model.title" #title="ngModel"  aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button title="Advanced Search" class="btn btn-warning" (click)="showSearchOptions()" type="buttton">Advanced
+              search</button>
+          </div>
+        </div>
+      </div>-->
+        </div>
+        <div>
+            <div class="card">
+                <div class="card-body">
+                    <form class="form-signin" #searchForm="ngForm">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <ng-multiselect-dropdown [placeholder]="'-- All project/s --'"
+                                    title="Select/Search project titles" [settings]="projectsSettings"
+                                    [data]="projectTitles" [(ngModel)]="model.selectedProjects" name="selectedProjects"
+                                    (onSelect)="onSelectProject($event)" (onDeSelect)="onDeSelectProject($event)"
+                                    (onSelectAll)="onSelectAllProjects($event)"
+                                    (onDeSelectAll)="onDeSelectAllProjects($event)"
+                                    #selectedProjects="ngModel"></ng-multiselect-dropdown>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control" id="startingYear"
+                                                [(ngModel)]="model.startingYear" name="startingYear"
+                                                #startingYear="ngModel" (change)="startingYearChanged()" required>
+                                                <option value="0">--Active In--</option>
+                                                <option *ngFor="let year of yearsList" [value]="year.financialYear">
+                                                    {{year.label}}</option>
+                                            </select>
+                                        </td>
+                                        <td>&nbsp;&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row margin-top-10">
+                            <div class="col-lg-3 col-md-3">
+                                <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel"
+                                    name="sectorLevel" title="Sector level" #sectorLevel="ngModel" required
+                                    (change)="manageSectorLevel();">
+                                    <option value="0">--Sector levels--</option>
+                                    <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s"
+                                    [settings]="sectorsSettings" [data]="sectorsList"
+                                    [(ngModel)]="model.selectedSectors" name="selectedSectors"
+                                    (onSelect)="onSelectSector($event)" (onDeSelect)="onDeSelectSector($event)"
+                                    (onSelectAll)="onSelectAllSectors($event)"
+                                    (onDeSelectAll)="onDeSelectAllSectors($event)" #selectedSectors="ngModel">
+                                </ng-multiselect-dropdown>
+                            </div>
+                            <div class="col-md-6">
+                                <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'"
+                                    [settings]="organizationsSettings" [data]="organizationsList"
+                                    [(ngModel)]="model.selectedOrganizations" (onSelect)="onSelectOrganization($event)"
+                                    (onDeSelect)="onDeSelectOrganization($event)"
+                                    (onSelectAll)="onSelectAllOrganizations($event)"
+                                    (onDeSelectAll)="onDeSelectAllOrganizations($event)" name="selectedOrganizations"
+                                    #selectedOrganizations="ngModel">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="row margin-top-10">
+                            <div class="col-md-3">
+                                <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'"
+                                    [settings]="locationsSettings" [data]="locationsList"
+                                    [(ngModel)]="model.selectedLocations" name="selectedLocations"
+                                    (onSelect)="onSelectLocation($event)" (onDeSelect)="onDeSelectLocation($event)"
+                                    (onSelectAll)="onSelectAllLocations($event)"
+                                    (onDeSelectAll)="onDeSelectAllLocations($event)" #selectedLocations="ngModel">
+                                </ng-multiselect-dropdown>
+                            </div>
+                            <div class="col-md-3">
+                                <ng-multiselect-dropdown [placeholder]="'-- All sub-location/s --'" title="Location/s"
+                                    [settings]="subLocationsSettings" [data]="filteredSubLocationsList"
+                                    [(ngModel)]="model.selectedSubLocations" name="selectedSubLocations"
+                                    (onSelect)="onSubLocationSelect($event)"
+                                    (onDeSelect)="onSubLocationDeSelect($event)"
+                                    (onSelectAll)="onSubLocationSelectAll($event)"
+                                    (onDeSelectAll)="onSubLocationDeSelectAll($event)" #selectedSubLocations="ngModel">
+                                </ng-multiselect-dropdown>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control"
+                                    title="Enter some keywords from project description to search"
+                                    placeholder="Search project descriptions" maxlength="100" name="description"
+                                    (input)="descriptionChanged()" [(ngModel)]="model.description"
+                                    #description="ngModel" />
+                            </div>
+                        </div>
+
+                        <div class="row margin-top-10">
+                            <div class="col-md-3">
+                                <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" class="form-control"
+                                    title="Project value lower range" [(ngModel)]="model.lowerRange"
+                                    placeholder="Project value from" name="lowerRange" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" class="form-control"
+                                    title="Project value upper range" [(ngModel)]="model.upperRange"
+                                    placeholder="Project value upto" name="upperRange" />
+                            </div>
+                            <div class="col-md-6">
+                                <div class="float-right">
+                                    <button class="btn btn-info" (click)="advancedSearchProjects()">Search
+                                        projects</button>
+                                    <button *ngIf="isAnyFilterSet" type="button" class="btn btn-primary margin-left-2"
+                                        (click)="resetFilters()">Reset filters</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid view-area">
+            <div #map class="map-container">
+            </div>
+        </div>
+        <div class="row text-center" *ngIf="isLoading">
+            <div class="col-md-12">
+                <img src="assets/images/loader-md.gif" /><span>&nbsp;Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf="filteredProjectsList.length > 0" class="row">
+            <div class="col margin-top-10">
+                <table class="table table-bordered table-stripped">
+                    <tr>
+                        <th>Project title</th>
+                        <th>Project value ({{defaultCurrency}})</th>
+                        <th>{{currentYearLabel}} planned disbursements ({{defaultCurrency}})</th>
+                    </tr>
+                    <tr
+                        *ngFor="let project of filteredProjectsList | paginate: { itemsPerPage: pagingSize, currentPage: d, id: 'd' }">
+                        <td>
+                            <a title="View Details" class="text-info cursor-pointer" (click)="viewProject(project.id)"
+                                target="_blank">
+                                {{project.title}}
+                            </a>
+                        </td>
+                        <td>{{formatNumber(project.projectValueInDefaultCurrency)}}</td>
+                        <td>{{formatNumber(project.currentYearPlannedDisbursements)}}</td>
+                    </tr>
+                </table>
+                <pagination-controls (pageChange)="d = $event" id="d"></pagination-controls>
+            </div>
+        </div>
+        <div *ngIf="filteredProjectsList.length == 0" class="row">
+            <div class="col-md-12 margin-top-10">
+                <p class="text-info"><i>No projects to show</i></p>
+            </div>
+        </div>
+    </block-ui>
+
+    <error-modal message={{errorMessage}}></error-modal>
+    <info-modal message={{successMessage}}></info-modal>
+    <project-report-modal *ngIf="renderReport" [projectId]="viewProjectId"
+        (reportRendered)="setReportRenderStatus($val)">
+    </project-report-modal>
+</div>

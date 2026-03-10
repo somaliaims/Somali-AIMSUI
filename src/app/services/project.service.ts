@@ -359,5 +359,11 @@ export class ProjectService {
       catchError(this.storeService.handleError<any>('Current Year Disbursements'))
     );
   }
+  getLocationsOfProjects(model: any) {
+    var url = this.urlHelper.getLocationsOfProjectsUrl();
+    return this.httpClient.post(url, JSON.stringify(model), httpOptions).pipe(
+      catchError(this.storeService.handleError<any>('Locations Of Projects'))
+    );
+  }
 
 }
