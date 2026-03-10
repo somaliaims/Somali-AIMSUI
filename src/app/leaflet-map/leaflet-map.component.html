@@ -47,21 +47,12 @@
                                             <select class="form-control" id="startingYear"
                                                 [(ngModel)]="model.startingYear" name="startingYear"
                                                 #startingYear="ngModel" (change)="startingYearChanged()" required>
-                                                <option value="0">--Starting year--</option>
+                                                <option value="0">--Active In--</option>
                                                 <option *ngFor="let year of yearsList" [value]="year.financialYear">
                                                     {{year.label}}</option>
                                             </select>
                                         </td>
                                         <td>&nbsp;&nbsp;</td>
-                                        <td>
-                                            <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear"
-                                                name="endingYear" #endingYear="ngModel" (change)="endingYearChanged()"
-                                                required>
-                                                <option value="0">--Ending year--</option>
-                                                <option *ngFor="let year of yearsList" [value]="year.financialYear">
-                                                    {{year.label}}</option>
-                                            </select>
-                                        </td>
                                     </tr>
                                 </table>
                             </div>

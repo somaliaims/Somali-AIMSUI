@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { LocationService } from '../services/location.service';
 import { Location } from '../models/location-model';
@@ -17,6 +17,9 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { Messages } from '../config/messages';
 import { CurrencyService } from '../services/currency.service';
 import { ProjectReportModalComponent } from '../project-report-modal/project-report-modal.component';
+import { of, switchMap, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import 'leaflet.markercluster';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -24,7 +27,9 @@ import { ProjectReportModalComponent } from '../project-report-modal/project-rep
   styleUrl: './leaflet-map.component.css'
 })
 
-export class LeafletMapComponent implements AfterViewInit, OnInit {
+export class LeafletMapComponent implements AfterViewInit, OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   defaultCurrency: string = null;
   isSearchVisible = false;
@@ -91,21 +96,24 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
     SECTORS: 1,
     SUB_SECTORS: 2,
   }
+  currentYear: number = new Date().getFullYear();
 
   model: any = {
-    title: null, description: null, organizationIds: [], startingYear: 0, endingYear: 0,
+    title: null, description: null, organizationIds: [], startingYear: this.currentYear, endingYear: 0,
     sectorIds: [], locationIds: [], parentSectorId: 0, selectedProjects: [], selectedSectors: [],
     selectedOrganizations: [], selectedLocations: [], sectorsList: [], locationsList: [],
     selectedSubLocations: [],
     organizationsList: [], sectorLevel: this.sectorLevelCodes.SECTORS, financialRange: 0,
     lowerRange: null, upperRange: null
   }
-  
+
   @ViewChild('map') mapContainer!: ElementRef<HTMLDivElement>;
   map!: L.Map;
 
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
+  markerClusterGroup: any;
+  markersFeatureGroup: any;  // Feature group to hold all markers
   constructor(private projectService: ProjectService, private router: Router,
     private storeService: StoreService, private securityService: SecurityHelperService,
     private sectorService: SectorService, private organizationService: OrganizationService,
@@ -116,19 +124,13 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
   ) { }
 
   ngOnInit() {
-    this.blockUI.start('Loading Projects...');
+    this.setFilter()
     this.getDefaultCurrency();
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
-    if (this.isLoggedIn) {
-      this.loadUserProjects();
-      this.getDeleteProjectIds();
-    } else {
-      this.getProjectsList();
-    }
 
-    this.storeService.newReportItem(Settings.dropDownMenus.projects);
-    this.requestNo = this.storeService.getNewRequestNumber();
-    this.storeService.currentRequestTrack.subscribe(model => {
+    this.storeService.currentRequestTrack.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(model => {
       if (model && this.requestNo == model.requestNo && model.errorStatus != 200) {
         this.errorMessage = model.errorMessage;
         this.errorModal.openModal();
@@ -140,13 +142,11 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
       this.showMessage = false;
     }, Settings.displayMessageTime);
 
+    this.storeService.newReportItem(Settings.dropDownMenus.projects);
+    this.requestNo = this.storeService.getNewRequestNumber();
     this.permissions = this.securityService.getUserPermissions();
-    this.getProjectTitles();
-    this.getSectorsList();
-    this.getOrganizationsList();
-    this.getLocationsList();
-    this.getFinancialYearsList();
 
+    // Configure dropdowns
     this.sectorsSettings = {
       singleSelection: false,
       idField: 'id',
@@ -206,16 +206,40 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
       shadowUrl: 'assets/images/marker-shadow.png',
     });
   }
+
+  private loadInitialData() {
+    this.getProjectTitles();
+    this.getSectorsList();
+    this.getOrganizationsList();
+    this.getLocationsList();
+    this.getFinancialYearsList();
+
+    if (this.isLoggedIn) {
+      this.loadUserProjects();
+      this.getDeleteProjectIds();
+    } else {
+      this.advancedSearchProjects();
+    }
+  }
   ngAfterViewInit() {
     setTimeout(() => {
-      this.initMap();
+      if (!this.map) {
+        this.initMap();
+      }
       setTimeout(() => {
-        this.map.invalidateSize();
+        if (this.map) {
+          this.map.invalidateSize();
+          this.loadInitialData();
+        }
       }, 100);
     }, 100);
   }
 
   initMap() {
+    if (this.map) {
+      return;
+    }
+
     this.map = L.map(this.mapContainer.nativeElement).setView(
       [5.1521, 46.1996], // Somalia
       6
@@ -228,24 +252,76 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
 
-    this.addMarkers();
+    // feature group to hold all markers
+    this.markersFeatureGroup = L.featureGroup();
+    this.map.addLayer(this.markersFeatureGroup);
+
+    this.markerClusterGroup = L.markerClusterGroup();
+    this.map.addLayer(this.markerClusterGroup);
   }
 
   addMarkers() {
-    this.locationsList.forEach(loc => {
-      const marker = L.marker([loc.latitude, loc.longitude])
-        .addTo(this.map)
-        .bindPopup(`<b>${loc.location}</b>`);
 
-      marker.on('click', () => {
-        this.getLocationWiseProjects(loc);
-      });
+    if (!this.map) {
+      console.error('Map not initialized');
+      return;
+    }
+
+    if (!this.markersFeatureGroup || !this.markerClusterGroup) {
+      console.error('Feature group or marker cluster group not initialized');
+      return;
+    }
+
+    // resetting / clearing markers for both feature and marker group
+    this.markersFeatureGroup.clearLayers();
+    this.markerClusterGroup.clearLayers();
+
+    if (!this.projectLocations || this.projectLocations.length === 0) {
+
+      return;
+    }
+
+    this.projectLocations.forEach((loc, index) => {
+      try {
+        // marker for feature group (display on map)
+        const markerForFeatureGroup = L.marker([loc.latitude, loc.longitude])
+          .bindPopup(`<b>${loc.location}</b>`);
+
+        markerForFeatureGroup.on('click', () => {
+          this.getLocationWiseProjects(loc);
+        });
+
+        // Separte marker for cluster group (for clustering)
+        const markerForCluster = L.marker([loc.latitude, loc.longitude])
+          .bindPopup(`<b>${loc.location}</b>`);
+
+        markerForCluster.on('click', () => {
+          this.getLocationWiseProjects(loc);
+        });
+
+        //separate marker instances to each group
+        this.markersFeatureGroup.addLayer(markerForFeatureGroup);
+        this.markerClusterGroup.addLayer(markerForCluster);
+
+      } catch (error) {
+        console.error('Error adding marker:', error, loc);
+      }
     });
+
   }
 
   getLocationWiseProjects(location: Location) {
-    // Implement the logic to fetch and display projects based on the selected location
-    console.log('Fetching projects for the selected location...', location);
+    this.model.selectedLocations.push(location)
+    this.advancedSearchProjects()
+    this.model.selectedLocations = []
+    this.scrollDown()
+  }
+
+  scrollDown() {
+    window.scrollBy({
+      top: 200,
+      behavior: 'smooth'
+    });
   }
 
   onSelectProject(item: any) {
@@ -429,7 +505,9 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
   }
 
   getDefaultCurrency() {
-    this.currencyService.getDefaultCurrency().subscribe(
+    this.currencyService.getDefaultCurrency().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       data => {
         if (data) {
           this.defaultCurrency = data.currency;
@@ -439,7 +517,9 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
   }
 
   getProjectTitles() {
-    this.projectService.getProjectTitles().subscribe(
+    this.projectService.getProjectTitles().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       data => {
         if (data) {
           this.projectTitles = data;
@@ -458,36 +538,48 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
   }
 
   getProjectsList() {
-    this.projectService.getProjectsList().subscribe(
-      data => {
+    this.projectService.getProjectsList().pipe(
+      switchMap(data => {
         if (data && data.length) {
           this.projectsList = data;
           this.filteredProjectsList = data;
-          if (data.length && data.length > 0) {
-            this.currentYearLabel = data[0].currentYearLabel;
-          }
+
+          this.currentYearLabel = data[0]?.currentYearLabel;
+
+          const projectIds = data.map(p => p.id);
+          return this.projectService.getLocationsOfProjects(projectIds);
         }
-        this.blockUI.stop();
+
+        return of([]);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe(locations => {
+      this.projectLocations = locations;
+      if (this.map) {
+        this.addMarkers();
       }
-    );
+      this.blockUI.stop();
+    });
   }
 
   loadUserProjects() {
-    this.projectService.getUserProjects().subscribe(
-      data => {
+    this.projectService.getUserProjects().pipe(
+      switchMap(data => {
         if (data) {
           this.userProjectIds = data;
         }
-        setTimeout(() => {
-          this.getProjectsList();
-        }, 1000);
-
-      }
-    );
+        return of(null);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.advancedSearchProjects();
+    });
   }
 
   getFinancialYearsList() {
-    this.fyService.getYearsList().subscribe(
+    this.fyService.getYearsList().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       data => {
         if (data) {
           this.yearsList = data;
@@ -497,7 +589,9 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
   }
 
   getSectorsList() {
-    this.sectorService.getDefaultSectors().subscribe(
+    this.sectorService.getDefaultSectors().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       data => {
         if (data) {
           this.allSectorsList = data;
@@ -521,18 +615,29 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
   }
 
   getLocationsList() {
-    this.locationService.getLocationsList().subscribe(
-      data => {
+    this.locationService.getLocationsList().pipe(
+      switchMap(data => {
         if (data) {
           this.locationsList = data;
-          this.getSubLocationsList();
+          return this.locationService.getSubLocationsList();
+        }
+        return of([]);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe(
+      data => {
+        if (data) {
+          this.subLocationsList = data;
+          this.filteredSubLocationsList = data;
         }
       }
     );
   }
 
   getSubLocationsList() {
-    this.locationService.getSubLocationsList().subscribe(
+    this.locationService.getSubLocationsList().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       data => {
         if (data) {
           this.subLocationsList = data;
@@ -543,7 +648,9 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
   }
 
   getOrganizationsList() {
-    this.organizationService.getUserOrganizations().subscribe(
+    this.organizationService.getUserOrganizations().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       data => {
         if (data) {
           this.organizationsList = data;
@@ -573,18 +680,38 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
       lowerRange: parseFloat(lowerRange),
       upperRange: parseFloat(upperRange)
     };
-
     this.criteria = null;
     this.blockUI.start('Searching Projects...');
-    this.projectService.searchProjectsViewByCriteria(searchModel).subscribe(
-      data => {
-        if (data) {
-          this.projectsList = data;
-          this.filteredProjectsList = data;
-          if (data.length && data.length > 0) {
-            this.currentYearLabel = data[0].currentYearLabel;
+    this.projectService.searchProjectsViewByCriteria(searchModel).pipe(
+      switchMap(
+        data => {
+          if (data) {
+            this.projectsList = data;
+            this.filteredProjectsList = data;
+            if (data.length && data.length > 0) {
+              this.currentYearLabel = data[0].currentYearLabel;
+              const projectIds = data.map(p => p.id);
+              return this.projectService.getLocationsOfProjects(projectIds);
+            }
           }
+          return of([]);
         }
+      ),
+      takeUntil(this.destroy$)
+    ).subscribe(
+      locations => {
+        this.projectLocations = locations;
+        if (this.map) {
+          this.addMarkers();
+        }
+        this.blockUI.stop();
+      },
+      error => {
+        console.error('Error searching projects:', error);
+        this.blockUI.stop();
+      },
+      () => {
+        // Complete
         this.blockUI.stop();
       }
     )
@@ -647,7 +774,9 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
     if (id) {
       var model = { projectId: id, userId: 0 };
       this.blockUI.start('Making project delete request...');
-      this.projectService.makeProjectDeletionRequest(model).subscribe(
+      this.projectService.makeProjectDeletionRequest(model).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(
         data => {
           if (data) {
             this.deleteProjectIds.push(id);
@@ -661,7 +790,9 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
   }
 
   getDeleteProjectIds() {
-    this.projectService.getDeleteProjectIds().subscribe(
+    this.projectService.getDeleteProjectIds().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       data => {
         if (data) {
           this.deleteProjectIds = data;
@@ -710,40 +841,46 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
     this.model.selectedSubLocations = [];
     this.model.selectedSectors = [];
     this.model.financialRange = 0;
-    this.model.startingYear = 0;
+    this.model.startingYear = 0;  // Reset to 0 (no filter)
     this.model.endingYear = 0;
+    this.model.lowerRange = null;
+    this.model.upperRange = null;
     this.filteredSubLocationsList = this.subLocationsList;
     this.model.description = null;
     this.isAnyFilterSet = false;
+
+    // Clear the data - user needs to click "Search Projects" to fetch
+
   }
 
   //Section for viewing project report
-  getProjectReport(id: number) {
-    this.projectService.getProjectReport(id.toString()).subscribe(
-      data => {
-        if (data && data.projectProfile) {
-          var project = data.projectProfile.projects.length > 0 ? data.projectProfile.projects[0] : null;
-          if (project) {
-            this.projectData.title = project.title;
-            this.projectData.startDate = project.startDate;
-            this.projectData.endDate = project.endDate;
-            this.projectData.dateUpdated = project.dateUpdated;
-            this.projectData.projectCurrency = project.projectCurrency;
-            this.projectData.projectValue = project.projectValue;
-            this.projectData.exchangeRate = project.exchangeRate;
-            this.projectData.description = project.description;
-            this.projectFunders = project.funders;
-            this.projectImplementers = project.implementers;
-            this.projectSectors = project.sectors;
-            this.projectLocations = project.locations;
-            this.projectDisbursements = project.disbursements;
-            this.projectDocuments = project.documents;
-            this.projectMarkers = project.markers;
-            this.isLoading = false;
-          }
-        }
-      });
-  }
+  // getProjectReport(id: number) {
+  //   this.projectService.getProjectReport(id.toString()).subscribe(
+  //     data => {
+  //       if (data && data.projectProfile) {
+  //         var project = data.projectProfile.projects.length > 0 ? data.projectProfile.projects[0] : null;
+  //         if (project) {
+  //           this.projectData.title = project.title;
+  //           this.projectData.startDate = project.startDate;
+  //           this.projectData.endDate = project.endDate;
+  //           this.projectData.dateUpdated = project.dateUpdated;
+  //           this.projectData.projectCurrency = project.projectCurrency;
+  //           this.projectData.projectValue = project.projectValue;
+  //           this.projectData.exchangeRate = project.exchangeRate;
+  //           this.projectData.description = project.description;
+  //           this.projectFunders = project.funders;
+  //           this.projectImplementers = project.implementers;
+  //           this.projectSectors = project.sectors;
+  //           this.projectLocations = project.locations;
+  //           this.projectDisbursements = project.disbursements;
+  //           this.projectDocuments = project.documents;
+  //           this.projectMarkers = project.markers;
+  //           this.isLoading = false;
+  //         }
+  //         console.log('Project Data', this.projectData);
+  //       }
+  //     });
+  // }
 
   /*getProjectExcelReport(id: number) {
     this.projectService.getProjectReport(id.toString()).subscribe(
@@ -773,4 +910,25 @@ export class LeafletMapComponent implements AfterViewInit, OnInit {
     }
   }*/
 
+  // Destroy subject to unsubscribe all observables
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    // Clean up markers
+    if (this.markersFeatureGroup) {
+      this.markersFeatureGroup.clearLayers();
+    }
+    if (this.markerClusterGroup) {
+      this.markerClusterGroup.clearLayers();
+    }
+
+    // Clean up map if it exists
+    if (this.map) {
+      this.map.remove();
+    }
+  }
+
 }
+
+
