@@ -32,6 +32,14 @@ export class UserManagerComponent implements OnInit {
     STANDARD_USER: 2
   };
   isCreateContactEmails: boolean = false;
+  selectedManagerOrganizationFilter: string = '';
+  selectedStandardOrganizationFilter: string = '';
+  searchManagerText: string = '';
+  searchStandardText: string = '';
+  managerOrganizations: any = [];
+  standardOrganizations: any = [];
+  m: number = 1;
+  s: number = 1;
 
   displayTabs: any = [
     { visible: true, identity: 'manager' },
@@ -71,6 +79,8 @@ export class UserManagerComponent implements OnInit {
       data => {
         if (data) {
           this.managerUsers = data;
+          this.managerOrganizations = this.getUniqueOrganizations(this.managerUsers);
+          this.selectedManagerOrganizationFilter = '';
         }
         this.isManagersLoading = false;
       }
@@ -82,6 +92,8 @@ export class UserManagerComponent implements OnInit {
       data => {
         if (data) {
           this.standardUsers = data;
+          this.standardOrganizations = this.getUniqueOrganizations(this.standardUsers);
+          this.selectedStandardOrganizationFilter = '';
         }
         this.isStandardUsersLoading = false;
       }
@@ -155,6 +167,65 @@ export class UserManagerComponent implements OnInit {
 
   showUsers($event) {
     this.isCreateContactEmails = false;
+  }
+
+  getUniqueOrganizations(users: any[]): string[] {
+    const uniqueOrganizations = [...new Set(users.map(u => u.organization).filter(org => org))].sort();
+    return uniqueOrganizations;
+  }
+
+  getFilteredManagerUsers(): any[] {
+    let filtered = this.managerUsers;
+
+    // Apply organization filter
+    if (this.selectedManagerOrganizationFilter) {
+      filtered = filtered.filter(u => u.organization === this.selectedManagerOrganizationFilter);
+    }
+
+    // Apply email search filter
+    if (this.searchManagerText && this.searchManagerText.trim()) {
+      const searchTerm = this.searchManagerText.toLowerCase();
+      filtered = filtered.filter(u => u.email.toLowerCase().includes(searchTerm));
+    }
+
+    return filtered;
+  }
+
+  getFilteredStandardUsers(): any[] {
+    let filtered = this.standardUsers;
+
+    // Apply organization filter
+    if (this.selectedStandardOrganizationFilter) {
+      filtered = filtered.filter(u => u.organization === this.selectedStandardOrganizationFilter);
+    }
+
+    // Apply email search filter
+    if (this.searchStandardText && this.searchStandardText.trim()) {
+      const searchTerm = this.searchStandardText.toLowerCase();
+      filtered = filtered.filter(u => u.email.toLowerCase().includes(searchTerm));
+    }
+
+    return filtered;
+  }
+
+  onManagerOrganizationFilterChange() {
+    // Reset pagination when filter changes
+    this.m = 1;
+  }
+
+  onStandardOrganizationFilterChange() {
+    // Reset pagination when filter changes
+    this.s = 1;
+  }
+
+  onManagerSearchChange() {
+    // Reset pagination when search changes
+    this.m = 1;
+  }
+
+  onStandardSearchChange() {
+    // Reset pagination when search changes
+    this.s = 1;
   }
 
 }
