@@ -35,6 +35,8 @@ export class FinancialsComponent implements OnInit {
   aimsProjects: any = [];
   @Input()
   iatiProjects: any = [];
+  @Input()
+  fundingRecords: any = [];  // injected from data-entry; contains EFFinancing rows
 
   @Output()
   disbursementsChanged = new EventEmitter<any[]>();
@@ -75,6 +77,11 @@ export class FinancialsComponent implements OnInit {
   isSourceAvailable: boolean = false;
   disbursementsInvalidOnNext: boolean = false;
 
+  // Funding-level selection
+  selectedFundingId: number = null;
+  selectedFunding: any = null;
+  filteredDisbursements: any = [];
+
   @BlockUI() blockUI: NgBlockUI;
   constructor(private storeService: StoreService, private errorModal: ErrorModalComponent,
     private projectService: ProjectService,
@@ -92,15 +99,16 @@ export class FinancialsComponent implements OnInit {
     this.currentYear = this.storeService.getCurrentYear();
     this.disbursementModel.currency = this.projectCurrency;
     this.disbursementModel.projectValue = parseInt(this.projectValue.toString());
-    //this.setDisbursementsData();
     this.getExchangeRateForCurrency();
     this.getProjectHelp();
     this.getHelp();
     this.calculateDisbursementsTotal();
     this.disbursementsTotalOnLoad = this.disbursementsTotal;
+    this.applyFundingFilter();
   }
 
   ngOnChanges() {
+    this.applyFundingFilter();
     if (this.aimsProjects.length > 0 || this.iatiProjects.length > 0) {
       this.aimsProjects.forEach((d) => {
         if (d.disbursements && d.disbursements.length > 0) {
@@ -122,6 +130,25 @@ export class FinancialsComponent implements OnInit {
 
   indexTracker(index: number) {
     return index;
+  }
+
+  /** Called when the user picks an organisation/funding from the dropdown */
+  selectFunding(financingId: number) {
+    this.selectedFundingId = financingId ? parseInt(financingId.toString()) : null;
+    this.selectedFunding = this.fundingRecords.find(f => f.id === this.selectedFundingId) || null;
+    this.applyFundingFilter();
+  }
+
+  /** Filters the visible disbursement rows to match the selected funding record */
+  applyFundingFilter() {
+    if (this.selectedFundingId) {
+      this.filteredDisbursements = this.projectDisbursements.filter(
+        d => d.financingId === this.selectedFundingId
+      );
+    } else {
+      this.filteredDisbursements = [];
+    }
+    this.calculateDisbursementsTotal();
   }
 
   getHelp() {
@@ -218,11 +245,10 @@ export class FinancialsComponent implements OnInit {
 
   calculateDisbursementsTotal() {
     var totalAmount = 0;
-    if (this.projectDisbursements.length > 0) {
-      this.projectDisbursements.forEach((d) => {
-        if (!d.amount) {
-          d.amount = 0;
-        }
+    var rows = this.selectedFundingId ? this.filteredDisbursements : this.projectDisbursements;
+    if (rows.length > 0) {
+      rows.forEach((d) => {
+        if (!d.amount) { d.amount = 0; }
         totalAmount += parseInt(d.amount);
       });
     }
@@ -296,23 +322,22 @@ export class FinancialsComponent implements OnInit {
   }
 
   splitRemainingAmountEqually() {
-    var projectValue = this.projectValue;
-    var disbursementsTotal = this.getDisbursementsTotal();
-    var remainingAmount = (projectValue - disbursementsTotal); 
+    var fundingValue = this.selectedFunding ? parseFloat(this.selectedFunding.fundingAmount) : this.projectValue;
+    var disbursementsTotal = 0;
+    var rows = this.selectedFundingId ? this.filteredDisbursements : this.projectDisbursements;
+    rows.forEach(d => { disbursementsTotal += parseFloat(d.amount || 0); });
+    var remainingAmount = (fundingValue - disbursementsTotal);
     if (remainingAmount > 0) {
       var countZeros = 0;
-      this.projectDisbursements.forEach((d) => {
-        if (d.disbursementType == 2) {
-          countZeros = (d.amount == 0) ? ++countZeros : countZeros;
-        }
+      rows.forEach((d) => {
+        if (d.disbursementType == 2) { countZeros = (d.amount == 0) ? ++countZeros : countZeros; }
       });
-
       if (countZeros > 0) {
         var equalSplit = parseInt((remainingAmount / countZeros).toString());
         var amountRemaining = remainingAmount;
         var amountSplitted = 0;
         var counter = 0;
-        this.projectDisbursements.forEach((d) => {
+        rows.forEach((d) => {
           if (d.amount == 0 && d.disbursementType == 2) {
             if ((counter + 1) == countZeros) {
               d.amount = amountRemaining;
@@ -323,9 +348,7 @@ export class FinancialsComponent implements OnInit {
               amountRemaining = remainingAmount - amountSplitted;
             }
             ++counter;
-            if (counter == countZeros) {
-              d.amount += (amountRemaining - amountSplitted);
-            }
+            if (counter == countZeros) { d.amount += (amountRemaining - amountSplitted); }
           }
         });
         this.calculateDisbursementsTotal();
@@ -371,37 +394,26 @@ export class FinancialsComponent implements OnInit {
           isDataValid = false;
         }
       });
-
-      if (!isDataValid) {
-        return false;
-      }
-
-      var totalDisbursements = 0;
-      this.projectDisbursements.forEach(d => {
-        totalDisbursements = (d.disbursement * d.exchangeRate);
-      });
-
-      if (totalDisbursements > (this.projectValue * this.exchangeRate)) {
-        this.errorMessage = '';
-        this.errorModal.openModal();
-        return false;
-      }
+      if (!isDataValid) { return false; }
 
       if (isDataValid) {
         this.blockUI.start('Saving disbursements');
-        this.projectDisbursements.forEach((d) => {
-          d.amount = parseFloat(d.amount);
-        });
-        var model = {
+        this.projectDisbursements.forEach((d) => { d.amount = parseFloat(d.amount); });
+        var model: any = {
           projectId: this.projectId,
           currency: this.projectCurrency,
           exchangeRate: this.exchangeRate,
           yearlyDisbursements: this.projectDisbursements
         };
+        // Pass the selected FinancingId so backend can scope validation + tagging
+        if (this.selectedFundingId) {
+          model.financingId = this.selectedFundingId;
+        }
         this.projectService.addProjectDisbursement(model).subscribe(
           data => {
             if (data) {
               this.disbursementsTotalOnLoad = this.disbursementsTotal;
+              this.applyFundingFilter();
               this.updateDisbursementsToParent();
               this.currentTab = this.tabConstants.FINANCIALS;
             }

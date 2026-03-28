@@ -6,13 +6,13 @@ import { environment } from 'src/environments/environment.prod';
     providedIn: 'root'
 })
 export class UrlHelperService {
-    BASE_URL : string; 
-    
+    BASE_URL : string;
+
     constructor() {
         if (environment.backendApiUrl.indexOf('http') != -1) {
             this.BASE_URL = environment.backendApiUrl;
         } else {
-            this.BASE_URL = urlsList.urls.baseUrl; 
+            this.BASE_URL = urlsList.urls.baseUrl;
         }
     }
 
@@ -22,7 +22,7 @@ export class UrlHelperService {
 
     getLogosUrl() {
         var urlWithoutAPI = this.BASE_URL.substring(0, this.BASE_URL.length - 4);
-        return urlWithoutAPI + 'Logos/'; 
+        return urlWithoutAPI + 'Logos/';
     }
 
     getExcelFilesUrl() {
@@ -160,7 +160,7 @@ export class UrlHelperService {
     getResetPasswordUrl() {
         return (this.BASE_URL + urlsList.urls.resetPassword);
     }
-    
+
     getOrganizationUrl() {
         return (this.BASE_URL + urlsList.urls.organizationUrl);
     }
@@ -327,7 +327,7 @@ export class UrlHelperService {
 
     getSingleFundingTypeUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.fundingTypeUrl + '/' + id);
-    } 
+    }
 
     getEmailMessagesUrl() {
         return (this.BASE_URL + urlsList.urls.emailMessageUrl);
@@ -346,7 +346,7 @@ export class UrlHelperService {
     }
 
     getSectorTypesUrl() {
-        return(this.BASE_URL + urlsList.urls.sectorTypesUrl);
+        return (this.BASE_URL + urlsList.urls.sectorTypesUrl);
     }
 
     getSearchSectorTypeUrl(criteria: string) {
@@ -354,7 +354,7 @@ export class UrlHelperService {
     }
 
     getSectorChildrenUrl(id: string) {
-        return(this.BASE_URL + urlsList.urls.sectorChildren + id);
+        return (this.BASE_URL + urlsList.urls.sectorChildren + id);
     }
 
     getSectorTypeUrl() {
@@ -711,7 +711,7 @@ export class UrlHelperService {
     }
 
     getYearlyProjectsReportUrl() {
-        return(this.BASE_URL + urlsList.urls.yearlyProjectsReport);
+        return (this.BASE_URL + urlsList.urls.yearlyProjectsReport);
     }
 
     getSearchProjectsReportUrl() {
@@ -739,7 +739,7 @@ export class UrlHelperService {
     }
 
     getFunderEnvelopeUrl() {
-        return(this.BASE_URL + urlsList.urls.envelopeUrl);
+        return (this.BASE_URL + urlsList.urls.envelopeUrl);
     }
 
     getEnvelopeTypeUrl() {
@@ -769,7 +769,7 @@ export class UrlHelperService {
     approveProjectMembershipUrl() {
         return (this.BASE_URL + urlsList.urls.approveProjectMembership);
     }
-    
+
     unApproveProjectMembershipUrl() {
         return (this.BASE_URL + urlsList.urls.unApproveProjectMembership);
     }
@@ -968,5 +968,17 @@ export class UrlHelperService {
 
     getLocationsOfProjectsUrl() {
         return (this.BASE_URL + urlsList.urls.locationsOfProjectsUrl);
+    }
+
+    getAddFundingUrl() {
+        return (this.BASE_URL + urlsList.urls.addFundingUrl);
+    }
+
+    getDeleteFundingUrl(id: number) {
+        return (this.BASE_URL + urlsList.urls.deleteFundingUrl + id);
+    }
+
+    getFundingByProjectIdUrl(id: number) {
+        return (this.BASE_URL + urlsList.urls.getFundingByProjectIdUrl + id);
     }
 }

@@ -1,0 +1,175 @@
+<div class="col-lg-12 col-md-12 card padding-20 margin-top-5">
+  <h5 class="card-header">Funding Management</h5>
+
+  <!-- Form Section -->
+  <form class="form-signin margin-top-10">
+    <!-- Row 1: Organization, Project, Dates -->
+    <div class="row">
+      <!-- Organization Dropdown -->
+      <div class="col-lg-4 col-md-4">
+        <div class="input-group mb-3">
+          <select title="Organization" class="form-control col-sm-12" name="funderId"
+            [(ngModel)]="fundingModel.funderId" #funderId="ngModel" id="funderId" [disabled]="isOrganizationDisabled()"
+            required>
+            <option [value]="undefined">--Select Organization--</option>
+            <option *ngFor="let org of organizationsList" [value]="org.id">
+              {{org.name || org.organizationName || org.title || org.orgName || '(unnamed)'}}
+            </option>
+          </select>
+        </div>
+        <div [hidden]="fundingModel.funderId || isOrganizationDisabled()" class="alert alert-danger alert-sm">
+          Organization is required
+        </div>
+        <div *ngIf="isOrganizationDisabled()" class="alert alert-info alert-sm">
+          <small><i>Pre-selected from Basic Data (First row only)</i></small>
+        </div>
+      </div>
+
+      <!-- Project (Pre-selected, Disabled) -->
+      <div class="col-lg-4 col-md-4">
+        <div class="input-group mb-3">
+          <input type="text" title="Project" class="form-control col-sm-12" name="projectName" placeholder="Project"
+            [value]="getProjectName()" disabled readonly />
+          <input type="hidden" [(ngModel)]="fundingModel.projectId" name="projectId" />
+        </div>
+        <div class="alert alert-info alert-sm">
+          <small><i>From Basic Data (Read-only)</i></small>
+        </div>
+      </div>
+
+      <!-- Funding Start Date -->
+      <div class="col-lg-4 col-md-4">
+        <div class="input-group mb-3">
+          <input type="text" title="Funding Start Date" onfocus="(this.type='date')" onblur="(this.type='text')"
+            class="form-control col-sm-12" name="fundingStartDte" placeholder="Funding start date"
+            [(ngModel)]="fundingModel.fundingStartDte" [min]="getTodayDate()" #fundingStartDte="ngModel" required />
+        </div>
+        <div [hidden]="fundingModel.fundingStartDte" class="alert alert-danger alert-sm">
+          Funding start date is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: End Date, Funding Type, Currency -->
+    <div class="row">
+      <!-- Funding End Date -->
+      <div class="col-lg-4 col-md-4">
+        <div class="input-group mb-3">
+          <input type="text" title="Funding End Date" onfocus="(this.type='date')" onblur="(this.type='text')"
+            class="form-control col-sm-12" name="fundingEndDte" placeholder="Funding end date"
+            [(ngModel)]="fundingModel.fundingEndDte" [min]="fundingModel.fundingStartDte"
+            [disabled]="!fundingModel.fundingStartDte" #fundingEndDte="ngModel" required />
+        </div>
+        <div [hidden]="fundingModel.fundingEndDte" class="alert alert-danger alert-sm">
+          Funding end date is required
+        </div>
+        <div *ngIf="!fundingModel.fundingStartDte" class="alert alert-info alert-sm">
+          <small><i>Select funding start date first</i></small>
+        </div>
+      </div>
+
+      <!-- Funding Type -->
+      <div class="col-lg-4 col-md-4">
+        <div class="input-group mb-3">
+          <select title="Funding Type" class="form-control col-sm-12" name="fundingTypeId"
+            [(ngModel)]="fundingModel.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
+            <option [value]="undefined">--Select Funding Type--</option>
+            <option *ngFor="let fundingType of fundingTypesList" [value]="fundingType.id">
+              {{fundingType.fundingType}}
+            </option>
+          </select>
+        </div>
+        <div [hidden]="fundingTypeId.valid" class="alert alert-danger alert-sm">
+          Funding type is required
+        </div>
+      </div>
+
+      <!-- Currency -->
+      <div class="col-lg-4 col-md-4">
+        <div class="input-group mb-3">
+          <select title="Currency" class="form-control col-sm-12" name="fundingCurrencyId"
+            [(ngModel)]="fundingModel.fundingCurrencyId" #fundingCurrencyId="ngModel" id="fundingCurrencyId" required>
+            <option [value]="undefined">--Select Currency--</option>
+            <option *ngFor="let currency of currenciesList" [value]="currency.id">
+              {{currency.currency}} - {{currency.currencyName}}
+            </option>
+          </select>
+        </div>
+        <div [hidden]="fundingCurrencyId.valid" class="alert alert-danger alert-sm">
+          Currency is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Amount and Add Button -->
+    <div class="row">
+      <!-- Funding Amount -->
+      <div class="col-lg-6 col-md-6">
+        <div class="input-group mb-3">
+          <input placeholder="Funding amount" title="Funding Amount" class="form-control col-sm-12" type="number"
+            min="0" step="0.01" name="fundingAmount" [(ngModel)]="fundingModel.fundingAmount" #fundingAmount="ngModel"
+            id="fundingAmount" required>
+        </div>
+        <div [hidden]="fundingAmount.valid" class="alert alert-danger alert-sm">
+          Funding amount is required
+        </div>
+      </div>
+
+      <!-- Add Button -->
+      <div class="col-lg-6 col-md-6">
+        <button type="button" class="btn btn-warning text-uppercase" (click)="addFunding()">
+          <i class="fa fa-plus"></i> Add Funding
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Table Section -->
+  <div class="col-md-12 margin-top-20">
+    <table *ngIf="fundingList.length > 0" class="table table-striped small margin-top-5">
+      <thead>
+        <tr>
+          <th>Organization</th>
+          <th>Project</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Type</th>
+          <th>Currency</th>
+          <th>Amount</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let funding of fundingList">
+          <td>{{getOrganizationName(funding.funderId)}}</td>
+          <td>{{getProjectName()}}</td>
+          <td>{{funding.fundingStartDte}}</td>
+          <td>{{funding.fundingEndDte}}</td>
+          <td>{{getFundingTypeName(funding.fundingTypeId)}}</td>
+          <td>{{getCurrencyCode(funding.fundingCurrencyId)}}</td>
+          <td>{{funding.fundingAmount | number:'1.2-2'}}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" type="button" (click)="removeFunding(funding.id || 0)"
+              title="Remove this funding entry">
+              <i class="fa fa-trash"></i> Remove
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <span *ngIf="fundingList.length == 0" class="text-info margin-top-20"><i>No funding entries to show</i></span>
+  </div>
+
+  <!-- Action Buttons Section -->
+  <div class="col-lg-12 col-md-12">
+    <span [class.disable]="fundingList.length === 0" class="float-right">
+      <button class="btn btn-info text-uppercase" (click)="proceedToNext()" [disabled]="fundingList.length === 0"
+        type="button" title="Proceed to next section (requires at least one funding entry)">
+        Next >>
+      </button>
+      <button class="btn btn-info text-uppercase margin-left-10" (click)="saveData()" type="button">
+        Save data
+      </button>
+    </span>
+  </div>
+</div>

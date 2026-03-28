@@ -109,6 +109,7 @@ import { BasicDataComponent } from './data-entry/basic-data/basic-data.component
 import { FinancialsComponent } from './data-entry/financials/financials.component';
 import { ProjectSectorsComponent } from './data-entry/project-sectors/project-sectors.component';
 import { ProjectFinishComponent } from './data-entry/project-finish/project-finish.component';
+import { FundingComponent } from './data-entry/funding/funding.component';
 import { EnvelopeTypesComponent } from './envelope-types/envelope-types.component';
 import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envelope-type.component';
 import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
@@ -228,6 +229,7 @@ import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
         FinancialsComponent,
         ProjectSectorsComponent,
         ProjectFinishComponent,
+        FundingComponent,
         EnvelopeTypesComponent,
         ManageEnvelopeTypeComponent,
         DeleteEnvelopeTypeComponent,

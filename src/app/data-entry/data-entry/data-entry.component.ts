@@ -63,6 +63,8 @@ export class DataEntryComponent implements OnInit {
   currentProjectDisbursements: any = [];
   currentProjectDocuments: any = [];
   currentProjectMarkers: any = [];
+  currentSelectedFunders: any = [];
+  currentFundingRows: any = [];
 
   viewProject = {};
   viewProjectFunders: any = [];
@@ -100,6 +102,7 @@ export class DataEntryComponent implements OnInit {
 
   displayTabs: any = [
     { visible: true, identity: 'basic' },
+    { visible: false, identity: 'funding' },
     { visible: false, identity: 'financials' },
     { visible: false, identity: 'sectors' },
     { visible: false, identity: 'markers' },
@@ -108,6 +111,7 @@ export class DataEntryComponent implements OnInit {
 
   tabConstants: any = {
     BASIC: 'basic',
+    FUNDING: 'funding',
     FINANCIALS: 'financials',
     SECTORS: 'sectors',
     MARKERS: 'markers',
@@ -436,6 +440,10 @@ export class DataEntryComponent implements OnInit {
     this.manageTabsDisplay(this.tabConstants.BASIC);
   }
 
+  showFunding() {
+    this.manageTabsDisplay(this.tabConstants.FUNDING);
+  }
+
   showFinancials() {
     this.manageTabsDisplay(this.tabConstants.FINANCIALS);
   }
@@ -471,6 +479,49 @@ export class DataEntryComponent implements OnInit {
   /*Updating data from child*/
   updateProjectFunders($event) {
     this.currentProjectFunders = $event;
+  }
+
+  updateSelectedFunders($event) {
+    this.currentSelectedFunders = $event;
+  }
+
+  updateFundingRows($event) {
+    this.currentFundingRows = $event;
+    this.recalculateProjectSummary();
+  }
+
+  recalculateProjectSummary() {
+    if (this.currentFundingRows && this.currentFundingRows.length > 0) {
+      let totalValue = 0;
+      let minDate: Date | null = null;
+      let maxDate: Date | null = null;
+
+      this.currentFundingRows.forEach(f => {
+        totalValue += Number(f.fundingAmount || 0);
+
+        if (f.fundingStartDte) {
+          const startDate = new Date(f.fundingStartDte);
+          if (!minDate || startDate < minDate) {
+            minDate = startDate;
+          }
+        }
+
+        if (f.fundingEndDte) {
+          const endDate = new Date(f.fundingEndDte);
+          if (!maxDate || endDate > maxDate) {
+            maxDate = endDate;
+          }
+        }
+      });
+
+      this.projectData.projectValue = totalValue;
+      if (minDate) {
+        this.projectData.startDate = this.formatDateToYMD((minDate as Date).toISOString());
+      }
+      if (maxDate) {
+        this.projectData.endDate = this.formatDateToYMD((maxDate as Date).toISOString());
+      }
+    }
   }
 
   updateProjectImplementers($event) {

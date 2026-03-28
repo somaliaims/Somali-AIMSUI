@@ -224,5 +224,8 @@ export const urls = {
 	financialYearSettingsUrl: "FinancialYearSettings",
 	documentLinkUrl: "DocumentLink",
 	sponsorLogoUrl: "SponsorLogo",
-	locationsOfProjectsUrl: "Project/GetLocationsOfProjects"
+	locationsOfProjectsUrl: "Project/GetLocationsOfProjects",
+	addFundingUrl: "Funding/AddFunding",
+	deleteFundingUrl: "Funding/DeleteFunding/",
+	getFundingByProjectIdUrl: "Funding/GetByProjectId/"
 };

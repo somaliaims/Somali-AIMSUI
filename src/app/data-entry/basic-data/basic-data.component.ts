@@ -75,11 +75,13 @@ export class BasicDataComponent implements OnInit {
   @Output() 
   projectFundersChanged = new EventEmitter<any[]>();
   @Output()
+  selectedFundersChanged = new EventEmitter<any[]>();
+  @Output()
   projectImplementersChanged = new EventEmitter<any[]>();
   @Output()
   projectDocumentsChanged = new EventEmitter<any []>();
   @Output()
-  proceedToFinancials = new EventEmitter();
+  proceedToFunding = new EventEmitter();
   @Output()
   disbursementsChanged = new EventEmitter<any>();
 
@@ -553,6 +555,8 @@ export class BasicDataComponent implements OnInit {
             });
           });
           this.updateFundersToParent();
+          // Emit selected funders for funding component
+          this.selectedFundersChanged.emit(this.funderModel.selectedFunders);
           this.saveProjectImplementers();
         } else {
           this.blockUI.stop();
@@ -864,7 +868,9 @@ export class BasicDataComponent implements OnInit {
   }
 
   proceedToNext() {
-    this.proceedToFinancials.emit();
+    // Emit selected funders for funding component
+    this.selectedFundersChanged.emit(this.funderModel.selectedFunders);
+    this.proceedToFunding.emit();
   }
 
   /*Handling IATI Stuff*/
@@ -912,7 +918,7 @@ export class BasicDataComponent implements OnInit {
       this.projectData.endingFinancialYear = selectedProject[0].endingFinancialYear;
     }
   }
-
+   
   enterStartDate(e) {
     var id = e.target.id.split('-')[1];
     var selectedProject = this.aimsProjects.filter(p => p.id == id);
@@ -981,7 +987,7 @@ export class BasicDataComponent implements OnInit {
       this.projectData.projectCurrency = selectProject[0].defaultCurrency;
     }
   }
-
+  
   enterIATIBudget(e) {
     var arr = e.target.id.split('-');
     var projectId = arr[1];
