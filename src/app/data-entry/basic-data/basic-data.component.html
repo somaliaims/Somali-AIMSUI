@@ -64,7 +64,7 @@
             [(ngModel)]="projectData.projectCurrency" #projectCurrency="ngModel" id="projectCurrency"
             (change)="getExchangeRateForCurrency()" required>
             <option value="null">--Project currency--</option>
-            <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currencyName}}
+            <option *ngFor="let currency of currenciesList" value="{{currency.currency}}">{{currency.currency}} - {{currency.currencyName}}
             </option>
           </select>
           <div *ngIf="isProjectSourceAvailable" class="input-group-append">

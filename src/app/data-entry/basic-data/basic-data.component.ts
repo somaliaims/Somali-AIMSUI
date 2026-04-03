@@ -84,7 +84,7 @@ export class BasicDataComponent implements OnInit {
   proceedToFunding = new EventEmitter();
   @Output()
   disbursementsChanged = new EventEmitter<any>();
-
+  
   tooltipOptions = {
     'placement': 'top',
     'show-delay': 500
@@ -524,6 +524,10 @@ export class BasicDataComponent implements OnInit {
         }
       );
     }
+  }
+
+  updateCurrentCurrencyToParent(){
+
   }
 
   calculateDisbursements() {

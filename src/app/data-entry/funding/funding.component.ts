@@ -3,6 +3,10 @@ import { FundingTypeService } from 'src/app/services/funding-type.service';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { FundingService } from 'src/app/services/funding.service';
 import { FinancingModel } from 'src/app/models/FinancingModel';
+import { ErrorModalComponent } from 'src/app/error-modal/error-modal.component';
+import { ProjectInfoModalComponent } from 'src/app/project-info-modal/project-info-modal.component';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-funding',
@@ -26,6 +30,8 @@ export class FundingComponent implements OnInit {
     return this._selectedFunders;
   }
 
+  @BlockUI() blockUI: NgBlockUI;
+
   @Input()
   organizationsList: any[] = [];
 
@@ -33,16 +39,21 @@ export class FundingComponent implements OnInit {
   fundingTypesList: any[] = [];
 
   @Input()
-  currenciesList: any[] = [];
+  currency: any;
 
   @Input()
   projectId: number = 0;
+
+  @Input()
+  currenciesList: any[]
 
   @Output()
   fundingRowsChanged = new EventEmitter<any[]>();
 
   @Output()
   proceedToFinancials = new EventEmitter();
+  
+  fundingCurrencyFullName: string = ''
 
   // Form model
   fundingModel: Partial<FinancingModel> = {
@@ -59,12 +70,16 @@ export class FundingComponent implements OnInit {
   fundingList: FinancingModel[] = [];
   fundingTempId: number = 0;
   firstRowAdded: boolean = false;
+  errorMessage: string;
+  infoMessage: string;
 
   constructor(
     private cdr: ChangeDetectorRef,
     private fundingTypeService: FundingTypeService,
     private currencyService: CurrencyService,
-    private fundingService: FundingService
+    private fundingService: FundingService,
+    private errorModal: ErrorModalComponent,
+    private infoModal: ProjectInfoModalComponent
   ) { }
 
   ngOnInit(): void {
@@ -78,6 +93,8 @@ export class FundingComponent implements OnInit {
     if (this.projectId && this.projectId > 0) {
       this.loadFinancings();
     }
+    console.log(this.projectData)
+    //console.log(this.fundingTypesList)
   }
 
   loadFinancings(): void {
@@ -102,7 +119,8 @@ export class FundingComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Failed to load financings:', err);
+        this.errorMessage = 'Failed to load financings: ' + err;
+        this.errorModal.openModal()
       }
     });
   }
@@ -115,7 +133,16 @@ export class FundingComponent implements OnInit {
     if (this.projectId && this.projectId > 0) {
       this.fundingModel.projectId = this.projectId;
     }
-
+    //Pre-fill funding type id
+    if (this.projectData && this.projectData.fundingTypeId) {
+      this.fundingModel.fundingTypeId = this.projectData.fundingTypeId
+    }
+    //Pre-fill currencies data
+    if(this.projectData?.projectCurrency){
+      this.fundingModel.currency = this.projectData.projectCurrency
+      this.fundingModel.fundingCurrencyId = this.getCurrencyIdFromCurrencyCode(this.fundingModel.currency)
+      this.fundingCurrencyFullName = this.getCurrencyName()
+    }
     // Pre-fill organization from selectedFunders by matching NAME
     if (this._selectedFunders && this._selectedFunders.length > 0) {
       const firstFunder = this._selectedFunders[0];
@@ -141,6 +168,10 @@ export class FundingComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  getCurrencyIdFromCurrencyCode(currencyCode: string): number {
+    return this.currenciesList.find(c => c.currency == currencyCode)?.id ?? 0
+  }
+
   /**
    * Check if organization field should be disabled
    */
@@ -163,6 +194,16 @@ export class FundingComponent implements OnInit {
   getProjectName(): string {
     if (this.projectData && this.projectData.title) {
       return this.projectData.title;
+    }
+    return '';
+  }
+
+  getFundingName(): string {
+    if (this.fundingModel?.fundingTypeId && this.fundingTypesList) {
+      const match = this.fundingTypesList.find(
+        f => f.id == this.fundingModel.fundingTypeId
+      );
+      return match ? match.fundingType : '';
     }
     return '';
   }
@@ -210,31 +251,43 @@ export class FundingComponent implements OnInit {
   addFunding(): void {
     // Validation
     if (!this.fundingModel.funderId) {
-      alert('Organization is required');
+      this.errorMessage = 'Organization is required';
+      this.errorModal.openModal()
       return;
     }
     if (!this.fundingModel.projectId) {
-      alert('Project is required');
+      this.errorMessage = 'Project is required';
+      this.errorModal.openModal()
       return;
     }
     if (!this.fundingModel.fundingStartDte) {
-      alert('Funding start date is required');
+      this.errorMessage = 'Funding start date is required';
+      this.errorModal.openModal()
       return;
     }
     if (!this.fundingModel.fundingEndDte) {
-      alert('Funding end date is required');
+      this.errorMessage = 'Funding end date is required';
+      this.errorModal.openModal()
       return;
     }
     if (!this.fundingModel.fundingTypeId) {
-      alert('Funding type is required');
+      this.errorMessage = 'Funding type is required';
+      this.errorModal.openModal()
       return;
     }
     if (!this.fundingModel.fundingCurrencyId) {
-      alert('Currency is required');
+      this.errorMessage = 'Currency is required';
+      this.errorModal.openModal()
       return;
     }
     if (!this.fundingModel.fundingAmount || this.fundingModel.fundingAmount <= 0) {
-      alert('Funding amount is required and must be greater than 0');
+      this.errorMessage = 'Funding amount is required and must be greater than 0';
+      this.errorModal.openModal()
+      return;
+    }
+    if (this.fundingModel.fundingAmount > this.projectData.projectValue || this.checkAlreadyFundingsSum()) {
+      this.errorMessage = 'Funding value cannot be greater than the project value'
+      this.errorModal.openModal()
       return;
     }
 
@@ -250,6 +303,8 @@ export class FundingComponent implements OnInit {
       fundingAmount: Number(this.fundingModel.fundingAmount)
     };
 
+
+
     // Add to list
     this.fundingList.unshift(newFunding);
     this.firstRowAdded = true;
@@ -260,12 +315,23 @@ export class FundingComponent implements OnInit {
     // Clear form but keep project and organization enabled for next rows
     this.resetFundingForm();
   }
-
+  checkAlreadyFundingsSum(): boolean {
+    var sumOfFundings = 0
+    if (this.fundingList) {
+      this.fundingList.forEach(f => {
+        sumOfFundings += f.fundingAmount
+      });
+      if (this.fundingModel.fundingAmount > (this.projectData.projectValue - sumOfFundings)) {
+        return true
+      }
+      else return false
+    }
+    else return false
+  }
   /**
    * Remove funding entry from the list
    */
   removeFunding(id: number): void {
-    console.log('id to be deleted', id)
     if (confirm('Are you sure you want to delete this funding entry?')) {
       if (id && id > 0) { // existing database record
         this.fundingService.deleteFunding(id).subscribe({
@@ -273,11 +339,13 @@ export class FundingComponent implements OnInit {
             if (res.success) {
               this.removeFundingLocally(id);
             } else {
-              alert(res.message);
+              this.errorMessage = res.message;
+              this.errorModal.openModal()
             }
           },
           error: (err) => {
-            alert('Something went wrong while deleting funding');
+            this.errorMessage = 'Something went wrong while deleting funding';
+            this.errorModal.openModal()
           }
         });
       } else {
@@ -317,8 +385,7 @@ export class FundingComponent implements OnInit {
       projectId: this.projectId > 0 ? this.projectId : undefined, // Keep project ID if valid
       fundingStartDte: undefined,
       fundingEndDte: undefined,
-      fundingTypeId: undefined,
-      fundingCurrencyId: undefined,
+      fundingTypeId: this.fundingModel.fundingTypeId ?? undefined, //keep funding id if not null
       fundingAmount: undefined
     };
 
@@ -354,6 +421,11 @@ export class FundingComponent implements OnInit {
     );
   }
 
+  getCurrencyName(): string{
+    if(this.fundingModel.currency && this.fundingModel.fundingCurrencyId){
+      return this.fundingModel.currency + ' - ' + this.currenciesList.find(c => c.id == this.fundingModel.fundingCurrencyId)?.currencyName
+    }
+  }
   /**
    * Fetch currencies from API
    */
@@ -373,7 +445,8 @@ export class FundingComponent implements OnInit {
    */
   proceedToNext() {
     if (this.fundingList.length === 0) {
-      alert('Please add at least one funding entry before proceeding.');
+      this.errorMessage = 'Please add at least one funding entry before proceeding.';
+      this.errorModal.openModal()
       return;
     }
     else {
@@ -387,39 +460,46 @@ export class FundingComponent implements OnInit {
    * Handle Save Data button click - Save current funding data
    */
   saveData() {
-    //block UI code
+    this.blockUI.start('Saving Fundings...')
     const newFundings = this.fundingList.filter(f => !f.id || f.id <= 0);
-
     if (newFundings.length === 0) {
-      alert('No new funding entries to save.');
+      this.blockUI.stop()
+      this.errorMessage = 'No new funding entries to save.';
+      this.errorModal.openModal()
       return;
     }
-
     // Reset IDs so Entity Framework generates them
     const payload: FinancingModel[] = newFundings.map(f => ({
       ...f,
       id: 0
     }));
 
-    this.fundingService.addFunding(payload).subscribe({
+    this.fundingService.addFunding(payload).pipe(
+      finalize(()=>{
+        this.blockUI.stop()
+      })
+
+    ).subscribe({
       next: (res: any) => {
         if (res.success) {
-          console.log('Inserted Financings:', res.data);
 
           // Merge newly inserted rows back with the existing ones
           const existingList = this.fundingList.filter(f => f.id && f.id > 0);
           this.fundingList = [...res.data, ...existingList];
           this.enrichAndEmitFundingList();
 
-          alert('Funding saved successfully');
+          this.infoMessage = 'Funding saved successfully';
+          this.infoModal.openModal()
+          
+
         } else {
-          console.error('API Error:', res.message);
-          alert(res.message);
+          this.errorMessage = 'API Error: ' + res.message;
+          this.errorModal.openModal()
         }
       },
       error: (err) => {
-        console.error('HTTP Error:', err);
-        alert('Something went wrong while saving funding');
+        this.errorMessage = 'Something went wrong while saving funding: ' + err;
+        this.errorModal.openModal()
       }
     });
 

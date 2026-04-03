@@ -30,7 +30,7 @@
         <div class="input-group mb-3">
           <input type="text" title="Project" class="form-control col-sm-12" name="projectName" placeholder="Project"
             [value]="getProjectName()" disabled readonly />
-          <input type="hidden" [(ngModel)]="fundingModel.projectId" name="projectId" />
+          <!-- <input type="hidden" [(ngModel)]="fundingModel.projectId" name="projectId" /> -->
         </div>
         <div class="alert alert-info alert-sm">
           <small><i>From Basic Data (Read-only)</i></small>
@@ -71,33 +71,34 @@
       <!-- Funding Type -->
       <div class="col-lg-4 col-md-4">
         <div class="input-group mb-3">
-          <select title="Funding Type" class="form-control col-sm-12" name="fundingTypeId"
+          <!-- <select title="Funding Type" class="form-control col-sm-12" name="fundingTypeId"
             [(ngModel)]="fundingModel.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
             <option [value]="undefined">--Select Funding Type--</option>
             <option *ngFor="let fundingType of fundingTypesList" [value]="fundingType.id">
               {{fundingType.fundingType}}
             </option>
-          </select>
-        </div>
-        <div [hidden]="fundingTypeId.valid" class="alert alert-danger alert-sm">
-          Funding type is required
+          </select> -->
+          <input type="text" title="Funding Type" class="form-control col-sm-12" name="fundingType" placeholder="Funding Type"
+            [value]="getFundingName()" disabled readonly />
         </div>
       </div>
 
       <!-- Currency -->
       <div class="col-lg-4 col-md-4">
         <div class="input-group mb-3">
-          <select title="Currency" class="form-control col-sm-12" name="fundingCurrencyId"
+          <!-- <select title="Currency" class="form-control col-sm-12" name="fundingCurrencyId"
             [(ngModel)]="fundingModel.fundingCurrencyId" #fundingCurrencyId="ngModel" id="fundingCurrencyId" required>
             <option [value]="undefined">--Select Currency--</option>
             <option *ngFor="let currency of currenciesList" [value]="currency.id">
               {{currency.currency}} - {{currency.currencyName}}
             </option>
-          </select>
+          </select> -->
+          <input type="text" title="Project Currency" class="form-control col-sm-12" placeholder="Project Currency"
+            [value]="fundingCurrencyFullName" disabled readonly />
         </div>
-        <div [hidden]="fundingCurrencyId.valid" class="alert alert-danger alert-sm">
+        <!-- <div [hidden]="fundingCurrencyId.valid" class="alert alert-danger alert-sm">
           Currency is required
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -173,3 +174,5 @@
     </span>
   </div>
 </div>
+<error-modal message={{errorMessage}}></error-modal>
+<info-modal message={{infoMessage}}></info-modal>
