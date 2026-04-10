@@ -127,6 +127,15 @@
                                       </div>
                                 </div>
                                 <div class="col-md-3">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <button type="button" (click)="toggleExportGrouping()" class="btn btn-info btn-sm">
+                                          <i *ngIf="!model.isExportGroupedData" class="fa fa-square"></i>
+                                          <i *ngIf="model.isExportGroupedData" class="fa fa-check"></i>
+                                        </button>
+                                        &nbsp;Export Combined Data
+                                      </div>
+                                </div>
+                                <div class="col-md-3" style="margin-top: 10px;">
                                     <div class="float-right">
                                         <button *ngIf="isAnyFilterSet" type="button"
                                             class="btn btn-primary margin-left-2" (click)="resetFilters()">Reset filters</button>

@@ -34,7 +34,8 @@ export class AllProjectsReportComponent implements OnInit {
     selectedProjects: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], selectedSubLocations: [],
     description: null, lowerRange: null, upperRange: null,
-    sectorLevel: 0
+    sectorLevel: 0,
+    isExportGroupedData: false
   };
   organizationsSettings: any = {};
 
@@ -400,7 +401,8 @@ export class AllProjectsReportComponent implements OnInit {
       description: this.model.description,
       lowerRange: lowerRange ? parseFloat(lowerRange) : 0,
       upperRange: upperRange ? parseFloat(upperRange) : 0,
-      sectorLevel: this.model.sectorLevel
+      sectorLevel: this.model.sectorLevel,
+      isExportGroupedData: this.model.isExportGroupedData
     };
     console.log('search model', searchModel)
     this.blockUI.start('Loading report...');
@@ -458,6 +460,11 @@ export class AllProjectsReportComponent implements OnInit {
 
   toggleCurrencyUsage() {
     this.model.useDefaultCurrency = !this.model.useDefaultCurrency;
+    this.excelFile = null;
+  }
+
+  toggleExportGrouping() {
+    this.model.isExportGroupedData = !this.model.isExportGroupedData;
     this.excelFile = null;
   }
 
