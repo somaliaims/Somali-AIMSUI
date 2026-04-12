@@ -44,10 +44,14 @@
         <table class="table table-bordered table-stripped">
           <tr>
             <th>Location name</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
             <th *ngIf="permissions.canEditLocation">Actions</th>
           </tr>
           <tr *ngFor="let loc of filteredSubLocationsList | paginate: { itemsPerPage: pagingSize, currentPage: p }">
             <td>{{loc.subLocation}}</td>
+            <td>{{loc.longitude}}</td>
+            <td>{{loc.latitude}}</td>
             <td *ngIf="permissions.canEditLocation">
               <a title="Edit" (click)="edit(loc.id)" class="btn btn-success"><i class="fa fa-edit color-white"></i></a>
               &nbsp;

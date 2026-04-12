@@ -78,9 +78,23 @@ export class LocationService {
         catchError(this.storeService.handleError<any>('Location Projects'))
       );
     }
+    getSubLocationProjects(id: string) {
+      var url = this.urlHelper.getSubLocationProjectsUrl(id);
+      return this.httpClient.get(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('SubLocation Projects'))
+      );
+    }
+
 
     deleteLocation(id: string, newId: string) {
       var url = this.urlHelper.deleteLocationUrl(id, newId);
+      return this.httpClient.delete(url, httpOptions).pipe(
+        catchError(this.storeService.handleError<any>('Delete Location'))
+      );
+    }
+   
+  deleteSubLocationWithProject(id: string, newId: string) {
+      var url = this.urlHelper.deleteSubLocationUrl(id, newId);
       return this.httpClient.delete(url, httpOptions).pipe(
         catchError(this.storeService.handleError<any>('Delete Location'))
       );
