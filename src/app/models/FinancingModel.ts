@@ -3,10 +3,7 @@ export interface FinancingModel {
 
   funderId: number;
   projectId: number;
-
-  fundingStartDte: string;
-  fundingEndDte: string;
-
+  
   fundingTypeId: number;
   fundingCurrencyId: number;
 

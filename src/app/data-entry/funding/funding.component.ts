@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ChangeDetectorRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FundingTypeService } from 'src/app/services/funding-type.service';
 import { CurrencyService } from 'src/app/services/currency.service';
 import { FundingService } from 'src/app/services/funding.service';
@@ -13,7 +13,7 @@ import { finalize } from 'rxjs';
   templateUrl: './funding.component.html',
   styleUrl: './funding.component.css'
 })
-export class FundingComponent implements OnInit {
+export class FundingComponent implements OnInit, OnChanges {
   // Inputs from parent (data-entry component)
   @Input()
   projectData: any = {};
@@ -30,7 +30,7 @@ export class FundingComponent implements OnInit {
     return this._selectedFunders;
   }
 
-  @BlockUI() blockUI: NgBlockUI;
+  @BlockUI() blockUI!: NgBlockUI;
 
   @Input()
   organizationsList: any[] = [];
@@ -45,7 +45,7 @@ export class FundingComponent implements OnInit {
   projectId: number = 0;
 
   @Input()
-  currenciesList: any[]
+  currenciesList: any[] = [];
 
   @Output()
   fundingRowsChanged = new EventEmitter<any[]>();
@@ -53,14 +53,12 @@ export class FundingComponent implements OnInit {
   @Output()
   proceedToFinancials = new EventEmitter();
   
-  fundingCurrencyFullName: string = ''
+  fundingCurrencyFullName: string = '';
 
   // Form model
   fundingModel: Partial<FinancingModel> = {
     funderId: undefined,
     projectId: undefined,
-    fundingStartDte: undefined,
-    fundingEndDte: undefined,
     fundingTypeId: undefined,
     fundingCurrencyId: undefined,
     fundingAmount: undefined
@@ -70,8 +68,9 @@ export class FundingComponent implements OnInit {
   fundingList: FinancingModel[] = [];
   fundingTempId: number = 0;
   firstRowAdded: boolean = false;
-  errorMessage: string;
-  infoMessage: string;
+  errorMessage: string = '';
+  infoMessage: string = '';
+  isSaved: boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -101,18 +100,9 @@ export class FundingComponent implements OnInit {
     this.fundingService.getFundingByProjectId(this.projectId).subscribe({
       next: (res: any) => {
         if (res.success && res.data) {
-          // Format dates to remove time portion if necessary
-          this.fundingList = res.data.map((f: any) => {
-            if (f.fundingStartDte && f.fundingStartDte.indexOf('T') > -1) {
-              f.fundingStartDte = f.fundingStartDte.split('T')[0];
-            }
-            if (f.fundingEndDte && f.fundingEndDte.indexOf('T') > -1) {
-              f.fundingEndDte = f.fundingEndDte.split('T')[0];
-            }
-            return f;
-          });
-
+          this.fundingList = res.data;
           if (this.fundingList.length > 0) {
+            this.isSaved = true; // Existing financings are already saved.
             this.firstRowAdded = true;
           }
           this.enrichAndEmitFundingList();
@@ -129,47 +119,56 @@ export class FundingComponent implements OnInit {
    * Initialize form with data from basic-data component
    */
   initializeForm(): void {
-    // Pre-fill project from projectId (passed from parent data-entry component)
-    if (this.projectId && this.projectId > 0) {
-      this.fundingModel.projectId = this.projectId;
-    }
-    //Pre-fill funding type id
-    if (this.projectData && this.projectData.fundingTypeId) {
-      this.fundingModel.fundingTypeId = this.projectData.fundingTypeId
-    }
-    //Pre-fill currencies data
-    if(this.projectData?.projectCurrency){
-      this.fundingModel.currency = this.projectData.projectCurrency
-      this.fundingModel.fundingCurrencyId = this.getCurrencyIdFromCurrencyCode(this.fundingModel.currency)
-      this.fundingCurrencyFullName = this.getCurrencyName()
-    }
-    // Pre-fill organization from selectedFunders by matching NAME
-    if (this._selectedFunders && this._selectedFunders.length > 0) {
-      const firstFunder = this._selectedFunders[0];
-
-      if (firstFunder) {
-        const searchName = firstFunder.organizationName;
-
-        if (searchName && this.organizationsList && this.organizationsList.length > 0) {
-          // Try to find by different property names
-          let matchedOrg = this.organizationsList.find(o => o.name === searchName);
-          if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.organizationName === searchName);
-          if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.title === searchName);
-          if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.orgName === searchName);
-
-          if (matchedOrg) {
-            this.fundingModel.funderId = matchedOrg.id;
-          }
-        }
-      }
-    }
+    this.applyBasicDataDefaults();
 
     // Manually trigger change detection
     this.cdr.detectChanges();
   }
 
-  getCurrencyIdFromCurrencyCode(currencyCode: string): number {
-    return this.currenciesList.find(c => c.currency == currencyCode)?.id ?? 0
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.projectData && changes.projectData.currentValue) {
+      this.applyBasicDataDefaults();
+    }
+
+    if (changes.selectedFunders && changes.selectedFunders.currentValue) {
+      this.applyBasicDataDefaults();
+    }
+  }
+
+  private applyBasicDataDefaults(): void {
+    if (this.projectId && this.projectId > 0) {
+      this.fundingModel.projectId = this.projectId;
+    }
+
+    if (this.projectData?.fundingTypeId != null) {
+      this.fundingModel.fundingTypeId = Number(this.projectData.fundingTypeId);
+    }
+
+    if (this.projectData?.projectCurrency) {
+      this.fundingModel.currency = this.projectData.projectCurrency;
+      this.fundingModel.fundingCurrencyId = this.getCurrencyIdFromCurrencyCode(this.fundingModel.currency);
+      this.fundingCurrencyFullName = this.getCurrencyName();
+    }
+
+    if (!this.firstRowAdded && this._selectedFunders && this._selectedFunders.length > 0) {
+      const firstFunder = this._selectedFunders[0];
+      const searchName = firstFunder.organizationName;
+
+      if (searchName && this.organizationsList && this.organizationsList.length > 0) {
+        let matchedOrg = this.organizationsList.find(o => o.name === searchName);
+        if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.organizationName === searchName);
+        if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.title === searchName);
+        if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.orgName === searchName);
+
+        if (matchedOrg) {
+          this.fundingModel.funderId = matchedOrg.id;
+        }
+      }
+    }
+  }
+
+  getCurrencyIdFromCurrencyCode(currencyCode: string | undefined): number {
+    return this.currenciesList.find(c => c.currency == currencyCode)?.id ?? 0;
   }
 
   /**
@@ -178,6 +177,14 @@ export class FundingComponent implements OnInit {
   isOrganizationDisabled(): boolean {
     // Disable organization only if no rows have been added yet (for first row)
     return this.fundingList.length === 0;
+  }
+
+  /**
+   * Check if funding type field should be disabled
+   */
+  isFundingTypeDisabled(): boolean {
+    // Disable funding type only for the first row and when it is available from basic data
+    return this.fundingList.length === 0 && !!this.projectData?.fundingTypeId;
   }
 
   /**
@@ -235,17 +242,6 @@ export class FundingComponent implements OnInit {
   }
 
   /**
-   * Get today's date in YYYY-MM-DD format for date picker min attribute
-   */
-  getTodayDate(): string {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
-  /**
    * Add new funding entry to the list
    */
   addFunding(): void {
@@ -257,16 +253,6 @@ export class FundingComponent implements OnInit {
     }
     if (!this.fundingModel.projectId) {
       this.errorMessage = 'Project is required';
-      this.errorModal.openModal()
-      return;
-    }
-    if (!this.fundingModel.fundingStartDte) {
-      this.errorMessage = 'Funding start date is required';
-      this.errorModal.openModal()
-      return;
-    }
-    if (!this.fundingModel.fundingEndDte) {
-      this.errorMessage = 'Funding end date is required';
       this.errorModal.openModal()
       return;
     }
@@ -296,8 +282,6 @@ export class FundingComponent implements OnInit {
       id: (--this.fundingTempId),
       funderId: Number(this.fundingModel.funderId),
       projectId: Number(this.fundingModel.projectId),
-      fundingStartDte: this.fundingModel.fundingStartDte!,
-      fundingEndDte: this.fundingModel.fundingEndDte!,
       fundingTypeId: Number(this.fundingModel.fundingTypeId),
       fundingCurrencyId: Number(this.fundingModel.fundingCurrencyId),
       fundingAmount: Number(this.fundingModel.fundingAmount)
@@ -321,7 +305,7 @@ export class FundingComponent implements OnInit {
       this.fundingList.forEach(f => {
         sumOfFundings += f.fundingAmount
       });
-      if (this.fundingModel.fundingAmount > (this.projectData.projectValue - sumOfFundings)) {
+      if ((this.fundingModel.fundingAmount ?? 0) > ((this.projectData?.projectValue ?? 0) - sumOfFundings)) {
         return true
       }
       else return false
@@ -383,28 +367,14 @@ export class FundingComponent implements OnInit {
     this.fundingModel = {
       funderId: undefined,
       projectId: this.projectId > 0 ? this.projectId : undefined, // Keep project ID if valid
-      fundingStartDte: undefined,
-      fundingEndDte: undefined,
-      fundingTypeId: this.fundingModel.fundingTypeId ?? undefined, //keep funding id if not null
-      fundingAmount: undefined
+      fundingTypeId: undefined,
+      fundingAmount: undefined,
+      fundingCurrencyId: this.fundingModel.fundingCurrencyId ?? undefined //keep currency if not null
     };
+    console.log('funding model in reset', this.fundingModel)
 
-    // If this is the first row, pre-fill organization again from selectedFunders
-    if (!this.firstRowAdded && this._selectedFunders && this._selectedFunders.length > 0) {
-      const firstFunder = this._selectedFunders[0];
-      const searchName = firstFunder.organizationName;
-
-      if (searchName && this.organizationsList && this.organizationsList.length > 0) {
-        // Try different property names
-        let matchedOrg = this.organizationsList.find(o => o.name === searchName);
-        if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.organizationName === searchName);
-        if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.title === searchName);
-        if (!matchedOrg) matchedOrg = this.organizationsList.find(o => o.orgName === searchName);
-
-        if (matchedOrg) {
-          this.fundingModel.funderId = matchedOrg.id;
-        }
-      }
+    if (!this.firstRowAdded) {
+      this.applyBasicDataDefaults();
     }
   }
 
@@ -421,10 +391,11 @@ export class FundingComponent implements OnInit {
     );
   }
 
-  getCurrencyName(): string{
-    if(this.fundingModel.currency && this.fundingModel.fundingCurrencyId){
-      return this.fundingModel.currency + ' - ' + this.currenciesList.find(c => c.id == this.fundingModel.fundingCurrencyId)?.currencyName
+  getCurrencyName(): string {
+    if (this.fundingModel.currency && this.fundingModel.fundingCurrencyId) {
+      return this.fundingModel.currency + ' - ' + (this.currenciesList.find(c => c.id == this.fundingModel.fundingCurrencyId)?.currencyName || '');
     }
+    return '';
   }
   /**
    * Fetch currencies from API
@@ -449,17 +420,21 @@ export class FundingComponent implements OnInit {
       this.errorModal.openModal()
       return;
     }
+    else if(!this.isSaved) {
+      this.errorMessage = 'Please save the funding entries before proceeding.';
+      this.errorModal.openModal()
+      return;
+    }
     else {
       this.proceedToFinancials.emit()
     }
-    // Emit event to parent component to proceed to next tab
-    // Parent component will handle navigation based on the event
   }
 
   /**
    * Handle Save Data button click - Save current funding data
    */
   saveData() {
+
     this.blockUI.start('Saving Fundings...')
     const newFundings = this.fundingList.filter(f => !f.id || f.id <= 0);
     if (newFundings.length === 0) {
@@ -482,7 +457,7 @@ export class FundingComponent implements OnInit {
     ).subscribe({
       next: (res: any) => {
         if (res.success) {
-
+          this.isSaved = true;
           // Merge newly inserted rows back with the existing ones
           const existingList = this.fundingList.filter(f => f.id && f.id > 0);
           this.fundingList = [...res.data, ...existingList];

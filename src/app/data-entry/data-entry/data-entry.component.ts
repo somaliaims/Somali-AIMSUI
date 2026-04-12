@@ -491,37 +491,8 @@ export class DataEntryComponent implements OnInit {
   }
 
   recalculateProjectSummary() {
-    if (this.currentFundingRows && this.currentFundingRows.length > 0) {
-      let totalValue = 0;
-      let minDate: Date | null = null;
-      let maxDate: Date | null = null;
-
-      this.currentFundingRows.forEach(f => {
-        totalValue += Number(f.fundingAmount || 0);
-
-        if (f.fundingStartDte) {
-          const startDate = new Date(f.fundingStartDte);
-          if (!minDate || startDate < minDate) {
-            minDate = startDate;
-          }
-        }
-
-        if (f.fundingEndDte) {
-          const endDate = new Date(f.fundingEndDte);
-          if (!maxDate || endDate > maxDate) {
-            maxDate = endDate;
-          }
-        }
-      });
-
-      this.projectData.projectValue = totalValue;
-      if (minDate) {
-        this.projectData.startDate = this.formatDateToYMD((minDate as Date).toISOString());
-      }
-      if (maxDate) {
-        this.projectData.endDate = this.formatDateToYMD((maxDate as Date).toISOString());
-      }
-    }
+    // No project summary updates are required from funding rows.
+    // Funding start/end dates are removed from the backend and funding component.
   }
 
   updateProjectImplementers($event) {

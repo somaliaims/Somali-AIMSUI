@@ -37,49 +37,24 @@
         </div>
       </div>
 
-      <!-- Funding Start Date -->
-      <div class="col-lg-4 col-md-4">
-        <div class="input-group mb-3">
-          <input type="text" title="Funding Start Date" onfocus="(this.type='date')" onblur="(this.type='text')"
-            class="form-control col-sm-12" name="fundingStartDte" placeholder="Funding start date"
-            [(ngModel)]="fundingModel.fundingStartDte" [min]="getTodayDate()" #fundingStartDte="ngModel" required />
-        </div>
-        <div [hidden]="fundingModel.fundingStartDte" class="alert alert-danger alert-sm">
-          Funding start date is required
-        </div>
-      </div>
     </div>
 
-    <!-- Row 2: End Date, Funding Type, Currency -->
+    <!-- Row 2: Funding Type, Currency -->
     <div class="row">
-      <!-- Funding End Date -->
-      <div class="col-lg-4 col-md-4">
-        <div class="input-group mb-3">
-          <input type="text" title="Funding End Date" onfocus="(this.type='date')" onblur="(this.type='text')"
-            class="form-control col-sm-12" name="fundingEndDte" placeholder="Funding end date"
-            [(ngModel)]="fundingModel.fundingEndDte" [min]="fundingModel.fundingStartDte"
-            [disabled]="!fundingModel.fundingStartDte" #fundingEndDte="ngModel" required />
-        </div>
-        <div [hidden]="fundingModel.fundingEndDte" class="alert alert-danger alert-sm">
-          Funding end date is required
-        </div>
-        <div *ngIf="!fundingModel.fundingStartDte" class="alert alert-info alert-sm">
-          <small><i>Select funding start date first</i></small>
-        </div>
-      </div>
-
       <!-- Funding Type -->
       <div class="col-lg-4 col-md-4">
         <div class="input-group mb-3">
-          <!-- <select title="Funding Type" class="form-control col-sm-12" name="fundingTypeId"
-            [(ngModel)]="fundingModel.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId" required>
-            <option [value]="undefined">--Select Funding Type--</option>
-            <option *ngFor="let fundingType of fundingTypesList" [value]="fundingType.id">
+          <select title="Funding Type" class="form-control col-sm-12" name="fundingTypeId"
+            [(ngModel)]="fundingModel.fundingTypeId" #fundingTypeId="ngModel" id="fundingTypeId"
+            [disabled]="isFundingTypeDisabled()" required>
+            <option [ngValue]="undefined">--Select Funding Type--</option>
+            <option *ngFor="let fundingType of fundingTypesList" [ngValue]="fundingType.id">
               {{fundingType.fundingType}}
             </option>
-          </select> -->
-          <input type="text" title="Funding Type" class="form-control col-sm-12" name="fundingType" placeholder="Funding Type"
-            [value]="getFundingName()" disabled readonly />
+          </select>
+        </div>
+        <div *ngIf="isFundingTypeDisabled()" class="alert alert-info alert-sm">
+          <small><i>Pre-selected from Basic Data (First row only)</i></small>
         </div>
       </div>
 
@@ -132,8 +107,6 @@
         <tr>
           <th>Organization</th>
           <th>Project</th>
-          <th>Start Date</th>
-          <th>End Date</th>
           <th>Type</th>
           <th>Currency</th>
           <th>Amount</th>
@@ -144,8 +117,6 @@
         <tr *ngFor="let funding of fundingList">
           <td>{{getOrganizationName(funding.funderId)}}</td>
           <td>{{getProjectName()}}</td>
-          <td>{{funding.fundingStartDte}}</td>
-          <td>{{funding.fundingEndDte}}</td>
           <td>{{getFundingTypeName(funding.fundingTypeId)}}</td>
           <td>{{getCurrencyCode(funding.fundingCurrencyId)}}</td>
           <td>{{funding.fundingAmount | number:'1.2-2'}}</td>
