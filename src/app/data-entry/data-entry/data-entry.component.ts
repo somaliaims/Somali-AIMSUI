@@ -63,6 +63,8 @@ export class DataEntryComponent implements OnInit {
   currentProjectDisbursements: any = [];
   currentProjectDocuments: any = [];
   currentProjectMarkers: any = [];
+  currentSelectedFunders: any = [];
+  currentFundingRows: any = [];
 
   viewProject = {};
   viewProjectFunders: any = [];
@@ -100,6 +102,7 @@ export class DataEntryComponent implements OnInit {
 
   displayTabs: any = [
     { visible: true, identity: 'basic' },
+    { visible: false, identity: 'funding' },
     { visible: false, identity: 'financials' },
     { visible: false, identity: 'sectors' },
     { visible: false, identity: 'markers' },
@@ -108,6 +111,7 @@ export class DataEntryComponent implements OnInit {
 
   tabConstants: any = {
     BASIC: 'basic',
+    FUNDING: 'funding',
     FINANCIALS: 'financials',
     SECTORS: 'sectors',
     MARKERS: 'markers',
@@ -436,6 +440,10 @@ export class DataEntryComponent implements OnInit {
     this.manageTabsDisplay(this.tabConstants.BASIC);
   }
 
+  showFunding() {
+    this.manageTabsDisplay(this.tabConstants.FUNDING);
+  }
+
   showFinancials() {
     this.manageTabsDisplay(this.tabConstants.FINANCIALS);
   }
@@ -471,6 +479,20 @@ export class DataEntryComponent implements OnInit {
   /*Updating data from child*/
   updateProjectFunders($event) {
     this.currentProjectFunders = $event;
+  }
+
+  updateSelectedFunders($event) {
+    this.currentSelectedFunders = $event;
+  }
+
+  updateFundingRows($event) {
+    this.currentFundingRows = $event;
+    this.recalculateProjectSummary();
+  }
+
+  recalculateProjectSummary() {
+    // No project summary updates are required from funding rows.
+    // Funding start/end dates are removed from the backend and funding component.
   }
 
   updateProjectImplementers($event) {
