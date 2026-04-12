@@ -268,6 +268,10 @@ export class UrlHelperService {
     getLocationProjectsUrl(id: string) {
         return (this.BASE_URL + urlsList.urls.locationProjects + id);
     }
+     getSubLocationProjectsUrl(id: string) {
+        return (this.BASE_URL + urlsList.urls.sublocationProjects + id);
+    }
+
 
     getSearchLocationsUrl(criteria: string) {
         return (this.BASE_URL + urlsList.urls.locationUrl + '/' + criteria);
@@ -288,7 +292,10 @@ export class UrlHelperService {
     deleteLocationUrl(id: string, newId: string) {
         return (this.BASE_URL + urlsList.urls.deleteLocation + id + '/' + newId);
     }
-
+     
+     deleteSubLocationUrl(id: string, newId: string) {
+        return (this.BASE_URL + urlsList.urls.deleteSubLocation + id + '/' + newId);
+    }
     getMarkerUrl() {
         return (this.BASE_URL + urlsList.urls.markersUrl);
     }

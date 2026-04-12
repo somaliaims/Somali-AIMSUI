@@ -90,6 +90,7 @@ import { ManageSubLocationsComponent } from './manage-sublocations/manage-subloc
 import { SponsorLogosComponent } from './sponsor-logos/sponsor-logos.component';
 import { ManageSponsorLogosComponent } from './manage-sponsor-logos/manage-sponsor-logos.component';
 import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
+import { DeleteSublocationComponent } from './delete-sublocation/delete-sublocation.component';
 
 // Route Configuration
 const routes: Routes = [
@@ -119,6 +120,7 @@ const routes: Routes = [
   { path: 'manage-location/:{id}', component: ManageLocationComponent, data: { isForEdit: true } },
   { path: 'manage-sublocation/:{id}', component: ManageSubLocationsComponent, data: { isForEdit: true } },
   { path: 'delete-location/:{id}', component: DeleteLocationComponent },
+  { path: 'delete-sublocation/:{id}', component: DeleteSublocationComponent },
   { path: 'manage-location', component: ManageLocationComponent },
   { path: 'manage-sublocation', component: ManageSubLocationsComponent },
   { path: 'sector-types', component: SectorTypesComponent },

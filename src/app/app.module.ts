@@ -137,6 +137,7 @@ import { SublocationModalComponent } from './sublocation-modal/sublocation-modal
 import { SponsorLogosComponent } from './sponsor-logos/sponsor-logos.component';
 import { ManageSponsorLogosComponent } from './manage-sponsor-logos/manage-sponsor-logos.component';
 import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
+import { DeleteSublocationComponent } from './delete-sublocation/delete-sublocation.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -190,6 +191,7 @@ import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
         MergeOrganizationComponent,
         DeleteOrganizationComponent,
         DeleteLocationComponent,
+        DeleteSublocationComponent,
         DeleteSectorComponent,
         SectorMappingsComponent,
         SectorTypesComponent,

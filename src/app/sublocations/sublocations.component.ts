@@ -97,19 +97,23 @@ export class SublocationsComponent implements OnInit {
     }
   }
 
-  delete(id: number) {
-    if (id) {
-      this.blockUI.start('Deleting sub location...');
-      this.locationService.deleteSubLocation(id.toString()).subscribe(
-        data => {
-          if (data) {
-            this.subLocationsList = this.subLocationsList.filter(s => s.id != id);
-            this.filteredSubLocationsList = this.filteredSubLocationsList.filter(s => s.id != id);
-          }
-          this.blockUI.stop();
-        }
-      );
-    }
+  // delete(id: number) {
+  //   if (id) {
+  //     this.blockUI.start('Deleting sub location...');
+  //     this.locationService.deleteSubLocation(id.toString()).subscribe(
+  //       data => {
+  //         if (data) {
+  //           this.subLocationsList = this.subLocationsList.filter(s => s.id != id);
+  //           this.filteredSubLocationsList = this.filteredSubLocationsList.filter(s => s.id != id);
+  //         }
+  //         this.blockUI.stop();
+  //       }
+  //     );
+  //   }
+  // }
+
+  delete(id) {
+    this.router.navigateByUrl('delete-sublocation/' + id);
   }
 
 }
