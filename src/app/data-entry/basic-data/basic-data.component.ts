@@ -40,7 +40,7 @@ export class BasicDataComponent implements OnInit {
   currentTab: string = null;
 
   funderModel: any = { selectedFunders: [] };
-  implementerModel: any = { selectedImplementers: [] };
+  implementerModel: any = { selectedImplementers: [], newImplementer: [], newFundsPercentage: 0 };
   documentModel: any = { document: null, documentUrl: null };
 
   @Input()
@@ -196,7 +196,8 @@ export class BasicDataComponent implements OnInit {
       this.projectImplementers.forEach(i => {
         this.implementerModel.selectedImplementers.push({
           id: i.implementerId,
-          organizationName: i.implementer
+          organizationName: i.implementer,
+          fundsPercentage: i.fundsPercentage || 0
         });
       });
     }
@@ -212,7 +213,7 @@ export class BasicDataComponent implements OnInit {
     };
 
     this.implementersSettings = {
-      singleSelection: false,
+      singleSelection: true,
       idField: 'id',
       textField: 'organizationName',
       selectAllText: 'Select all',
@@ -614,10 +615,13 @@ export class BasicDataComponent implements OnInit {
   }
 
   saveProjectImplementers() {
-    var implementerIds = this.implementerModel.selectedImplementers.map(i => i.id);
+    var implementersWithPercentage = this.implementerModel.selectedImplementers.map(i => ({
+      implementerId: i.id,
+      fundsPercentage: i.fundsPercentage || 0
+    }));
     var model = {
       projectId: this.projectId,
-      implementerIds: implementerIds
+      implementers: implementersWithPercentage
     };
     this.requestNo = this.storeService.getCurrentRequestId();
     this.projectService.addProjectImplementer(model).subscribe(
@@ -627,7 +631,8 @@ export class BasicDataComponent implements OnInit {
           this.implementerModel.selectedImplementers.forEach((i) => {
             this.projectImplementers.push({
               implementerId: i.id,
-              implementer: i.organizationName
+              implementer: i.organizationName,
+              fundsPercentage: i.fundsPercentage || 0
             });
           });
           this.updateImplementersToParent();
@@ -708,7 +713,8 @@ export class BasicDataComponent implements OnInit {
               this.projectImplementers.forEach((i) => {
                 this.implementerModel.selectedImplementers.push({
                   id: i.implementerId,
-                  organizationName: i.implementer
+                  organizationName: i.implementer,
+                  fundsPercentage: i.fundsPercentage || 0
                 });
               });
               this.blockUI.stop();
@@ -784,6 +790,54 @@ export class BasicDataComponent implements OnInit {
     });
     this.documentModel.document = null;
     this.documentModel.documentUrl = null;
+  }
+
+  addImplementer() {
+    if (!this.implementerModel.newImplementer || this.implementerModel.newImplementer.length === 0) {
+      this.errorMessage = 'Implementer is required';
+      this.errorModal.openModal();
+      return false;
+    }
+
+    // Handle single selection - dropdown returns array even with singleSelection: true
+    var implementer = Array.isArray(this.implementerModel.newImplementer) 
+      ? this.implementerModel.newImplementer[0] 
+      : this.implementerModel.newImplementer;
+    
+    var percentage = this.implementerModel.newFundsPercentage || 0;
+    
+    // Check if implementer already exists in the list
+    var exists = this.implementerModel.selectedImplementers.some(i => i.id == implementer.id);
+    if (exists) {
+      this.errorMessage = 'Implementer already added';
+      this.errorModal.openModal();
+      return false;
+    }
+    if(percentage < 0 || percentage > 100) {
+      this.errorMessage = 'Funds percentage must be between 0 and 100';
+      this.errorModal.openModal();
+      return false;
+    }
+    var sumOfPercentages = this.implementerModel.selectedImplementers.reduce((sum, i) => sum + (i.fundsPercentage || 0), 0) + percentage;
+    if (sumOfPercentages > 100) {
+      this.errorMessage = 'Total funds percentage cannot exceed 100';
+      this.errorModal.openModal();
+      return false;
+    }
+    this.implementerModel.selectedImplementers.push({
+      id: implementer.id,
+      organizationName: implementer.organizationName,
+      fundsPercentage: percentage
+    });
+
+    this.implementerModel.newImplementer = [];
+    this.implementerModel.newFundsPercentage = 0;
+  }
+
+  removeImplementer(id: number) {
+    if (id) {
+      this.implementerModel.selectedImplementers = this.implementerModel.selectedImplementers.filter(i => i.id != id);
+    }
   }
 
   removeResource(id) {
