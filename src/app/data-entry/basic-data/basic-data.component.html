@@ -158,31 +158,70 @@
       </div>
 
       <div class="col-lg-6 col-md-6">
-        <div class="form-group form-inline">
-          <label class="col-sm-2 col-form-label float-left" for="implementers">Implementers</label>
-          <ng-multiselect-dropdown class="col-sm-8" [placeholder]="'Select implementers'" 
-            [settings]="implementersSettings"
-            [data]="organizationsList"
-            [(ngModel)]="implementerModel.selectedImplementers" name="selectedImplementers"
-            #selectedImplementers="ngModel" title="{{projectImplementerHelp.implementer}}">
-          </ng-multiselect-dropdown>
-          <span class="col-sm-1">
-            <button type="button" *ngIf="isImplementerDataAvailable && projectId != 0" (click)="showImplementersSource()"
-              title="Source data available for implementers" class="btn btn-success"><i class="fa fa-database"></i></button>
-          </span>
-          <span class="col-sm-1" tooltip="{{projectImplementerHelp.implementer}}" [options]="tooltipOptions">
-            <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
-          </span>
-      
-          <div class="container row margin-top-5">
-            <div class="col-sm-2">&nbsp;&nbsp;</div>
-            <span class="col-md-10">
-              <a href="#" class="text-info margin-left-10" (click)="openCreateOrg($event)">
+        <div class="form-group">
+          <label class="col-form-label float-left" for="implementers">Implementers</label>
+          
+          <!-- Add Implementer Form with Search -->
+          <div class="input-group mb-2">
+            <ng-multiselect-dropdown class="col-sm-5" [placeholder]="'Search implementer'" 
+              [settings]="implementersSettings"
+              [data]="organizationsList"
+              [(ngModel)]="implementerModel.newImplementer" name="newImplementer"
+              #newImplementer="ngModel">
+            </ng-multiselect-dropdown>
+            <input type="number" class="form-control col-sm-3" 
+              [(ngModel)]="implementerModel.newFundsPercentage" 
+              name="newFundsPercentage"
+              min="0" max="100" 
+              placeholder="Funds %" />
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" (click)="addImplementer()">
+                <i class="fa fa-plus"></i> Add
+              </button>
+            </div>
+            <span class="col-sm-1" tooltip="{{projectImplementerHelp.implementer}}" [options]="tooltipOptions">
+              <button class="btn btn-info" type="button"><i class="fa fa-question-circle"></i></button>
+            </span>
+          </div>
+          
+          <div class="container margin-top-5">
+            <span>
+              <a href="#" class="text-info" (click)="openCreateOrg($event)">
                 Add an organisation which is not listed
               </a>
             </span>
           </div>
-      
+        </div>
+        
+        <!-- Implementers Grid with Funds Percentage -->
+        <div class="margin-top-10" *ngIf="implementerModel.selectedImplementers.length > 0">
+          <label class="col-form-label">Selected Implementers</label>
+          <table class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>Implementer</th>
+                <th width="35%">Funds Percentage</th>
+                <th width="10%">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let impl of implementerModel.selectedImplementers; let i = index">
+                <td>{{impl.organizationName}}</td>
+                <td>
+                  <input type="number" class="form-control form-control-sm" 
+                    [(ngModel)]="impl.fundsPercentage" 
+                    name="fundsPercentage_{{i}}"
+                    min="0" max="100" 
+                    placeholder="Enter percentage" />
+                </td>
+                <td>
+                  <button class="btn btn-danger btn-sm" type="button" (click)="removeImplementer(impl.id)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -776,7 +815,6 @@
           <td>
             <b>Project title: </b>{{project.title}}
             <br />
-
             <div class="badge badge-warning float-right">IATI</div>
             <div class="margin-top-10">
               <table *ngIf="project.documents.length > 0" class="table table-striped margin-top-5">

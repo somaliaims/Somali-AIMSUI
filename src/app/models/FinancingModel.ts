@@ -10,4 +10,5 @@ export interface FinancingModel {
   fundingAmount: number;
   funderName?: string;
   currency?: string;
+  fundsPercentage?: number;
 }

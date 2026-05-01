@@ -61,13 +61,15 @@ export class FundingComponent implements OnInit, OnChanges {
     projectId: undefined,
     fundingTypeId: undefined,
     fundingCurrencyId: undefined,
-    fundingAmount: undefined
+    fundingAmount: undefined,
+    fundsPercentage: undefined
   };
 
   // Data list to store added rows
   fundingList: FinancingModel[] = [];
   fundingTempId: number = 0;
   firstRowAdded: boolean = false;
+  userAddedFirstRow: boolean = false; // Track if user has added a row in this session
   errorMessage: string = '';
   infoMessage: string = '';
   isSaved: boolean = false;
@@ -92,7 +94,7 @@ export class FundingComponent implements OnInit, OnChanges {
     if (this.projectId && this.projectId > 0) {
       this.loadFinancings();
     }
-    console.log(this.projectData)
+    console.log('selected funders from basic data',this.projectFunders)
     //console.log(this.fundingTypesList)
   }
 
@@ -104,6 +106,7 @@ export class FundingComponent implements OnInit, OnChanges {
           if (this.fundingList.length > 0) {
             this.isSaved = true; // Existing financings are already saved.
             this.firstRowAdded = true;
+            this.userAddedFirstRow = true; // Enable dropdown for existing saved rows
           }
           this.enrichAndEmitFundingList();
         }
@@ -172,11 +175,24 @@ export class FundingComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Get available funders list - shows projectFunders from parent component
+   */
+  getAvailableFundersList(): any[] {
+    // Show only the projectFunders from parent component for new rows
+    if (this.projectFunders && this.projectFunders.length > 0) {
+      return this.projectFunders;
+    }
+    // Fallback to organizationsList if projectFunders is not available
+    return this.organizationsList;
+  }
+
+  /**
    * Check if organization field should be disabled
    */
   isOrganizationDisabled(): boolean {
-    // Disable organization only if no rows have been added yet (for first row)
-    return this.fundingList.length === 0;
+    // Disable organization only if user hasn't added the first row yet in this session
+    // This keeps the first funder greyed out until user actively adds a row
+    return !this.userAddedFirstRow;
   }
 
   /**
@@ -223,6 +239,14 @@ export class FundingComponent implements OnInit, OnChanges {
     const org = this.organizationsList.find(o => o.id == orgId);
     // Try different property names
     return org ? (org.name || org.organizationName || org.title || org.orgName || '') : '';
+  }
+
+  /**
+   * Get display name for an organization object
+   */
+  getOrgDisplayName(org: any): string {
+    if (!org) return '(unnamed)';
+    return org.funder || org.name || org.organizationName || org.title || org.orgName || '(unnamed)';
   }
 
   /**
@@ -276,7 +300,13 @@ export class FundingComponent implements OnInit, OnChanges {
       this.errorModal.openModal()
       return;
     }
-
+    // Check for duplicate funder entries
+    if (this.fundingList.some(f => f.funderId === Number(this.fundingModel.funderId))) {
+      this.errorMessage = 'This organization/funder has already been added to the funding list';
+      this.errorModal.openModal()
+      return;
+    }
+    this.CalculateFundsPercentage();
     // Create new funding object
     const newFunding: FinancingModel = {
       id: (--this.fundingTempId),
@@ -284,7 +314,8 @@ export class FundingComponent implements OnInit, OnChanges {
       projectId: Number(this.fundingModel.projectId),
       fundingTypeId: Number(this.fundingModel.fundingTypeId),
       fundingCurrencyId: Number(this.fundingModel.fundingCurrencyId),
-      fundingAmount: Number(this.fundingModel.fundingAmount)
+      fundingAmount: Number(this.fundingModel.fundingAmount),
+      fundsPercentage: this.fundingModel.fundsPercentage
     };
 
 
@@ -292,6 +323,7 @@ export class FundingComponent implements OnInit, OnChanges {
     // Add to list
     this.fundingList.unshift(newFunding);
     this.firstRowAdded = true;
+    this.userAddedFirstRow = true; // Mark that user has added the first row
 
     // Notify parent of funding rows change
     this.enrichAndEmitFundingList();
@@ -299,6 +331,11 @@ export class FundingComponent implements OnInit, OnChanges {
     // Clear form but keep project and organization enabled for next rows
     this.resetFundingForm();
   }
+
+  CalculateFundsPercentage(): void {
+    this.fundingModel.fundsPercentage = this.projectData.projectValue ? ((this.fundingModel.fundingAmount ?? 0) / this.projectData.projectValue) * 100 : undefined;
+  }
+
   checkAlreadyFundingsSum(): boolean {
     var sumOfFundings = 0
     if (this.fundingList) {
@@ -342,9 +379,10 @@ export class FundingComponent implements OnInit, OnChanges {
   private removeFundingLocally(id: number): void {
     this.fundingList = this.fundingList.filter(f => f.id !== id);
 
-    // If all rows are removed, reset the firstRowAdded flag to disable organization again
+    // If all rows are removed and they're only user-added rows (not from API), reset the flags
     if (this.fundingList.length === 0) {
       this.firstRowAdded = false;
+      this.userAddedFirstRow = false; // Reset user-added flag to disable organization again
       this.resetFundingForm();
     }
 
@@ -371,7 +409,6 @@ export class FundingComponent implements OnInit, OnChanges {
       fundingAmount: undefined,
       fundingCurrencyId: this.fundingModel.fundingCurrencyId ?? undefined //keep currency if not null
     };
-    console.log('funding model in reset', this.fundingModel)
 
     if (!this.firstRowAdded) {
       this.applyBasicDataDefaults();

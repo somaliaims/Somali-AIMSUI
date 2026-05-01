@@ -12,8 +12,8 @@
             [(ngModel)]="fundingModel.funderId" #funderId="ngModel" id="funderId" [disabled]="isOrganizationDisabled()"
             required>
             <option [value]="undefined">--Select Organization--</option>
-            <option *ngFor="let org of organizationsList" [value]="org.id">
-              {{org.name || org.organizationName || org.title || org.orgName || '(unnamed)'}}
+            <option *ngFor="let org of getAvailableFundersList()" [value]="org.funderId || org.id">
+              {{org.funder || org.name || org.organizationName || org.title || org.orgName || '(unnamed)'}}
             </option>
           </select>
         </div>
