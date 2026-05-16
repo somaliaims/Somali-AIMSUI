@@ -20,144 +20,160 @@
                             </p>
                         </div>
                         <form class="form-signin" (ngSubmit)="getAllProjectsReport()" #searchForm="ngForm">
-
-                            <div class="row margin-top-10">
-                                <!-- <div class="col-lg-6 col-md-6">
-                                    <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="Select/Search project titles" 
-                                    [settings]="projectsSettings"
-                                    [data]="projectTitles"
-                                    [(ngModel)]="model.selectedProjects" 
-                                    name="selectedProjects"
-                                    (onSelect)="onSelectProject($event)" (onDeSelect)="onDeSelectProject($event)"
-                                    (onSelectAll)="onSelectAllProjects($event)" (onDeSelectAll)="onDeSelectAllProjects($event)"
-                                    #selectedProjects="ngModel"></ng-multiselect-dropdown>
-                                </div> -->
-                                <div class="col-lg-3 col-md-3">
-                                    <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear" name="startingYear"
-                                      #startingYear="ngModel" (change)="startingYearChanged()" required>
-                                      <option value="0">--Active In--</option>
-                                      <option *ngFor="let year of financialYears" [value]="year.financialYear">{{year.label}}</option>
-                                    </select>
-                                </div>
-                                <!-- <div class="col-lg-3 col-md-3">
-                                    <select class="form-control" id="endingYear" [(ngModel)]="model.endingYear" name="endingYear"
-                                      #endingYear="ngModel" (change)="endingYearChanged()" required>
-                                      <option value="0">--Active Until--</option>
-                                      <option *ngFor="let year of financialYears" [value]="year.financialYear">{{year.label}}</option>
-                                    </select>
-                                </div> -->
-                            </div>
-
-                            <div class="row margin-top-10">
-                                <div class="col-lg-3 col-md-3">
-                                    <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
-                                      title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel();">
-                                      <option value="0">--Sector levels--</option>
-                                      <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}
-                                      </option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-3 col-md-3">
-                                    <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s" 
-                                      [settings]="sectorsSettings"
-                                      [data]="sectorsList"
-                                      [(ngModel)]="model.selectedSectors" name="selectedSectors"
-                                      (onSelect)="onSelectSector($event)" (onDeSelect)="onDeSelectSector($event)"
-                                      (onSelectAll)="onSelectAllSectors($event)" (onDeSelectAll)="onDeSelectAllSectors($event)"
-                                      #selectedSectors="ngModel">
-                                    </ng-multiselect-dropdown>
-                                </div>
-                                <div class="col-md-6">
-                                    <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'" 
-                                      [settings]="organizationsSettings"
-                                      [data]="organizationsList"
-                                      [(ngModel)]="model.selectedOrganizations"
-                                      (onSelect)="onSelectOrganization($event)" (onDeSelect)="onDeSelectOrganization($event)"
-                                      (onSelectAll)="onSelectAllOrganizations($event)" (onDeSelectAll)="onDeSelectAllOrganizations($event)"
-                                       name="selectedOrganizations" #selectedOrganizations="ngModel">
-                                    </ng-multiselect-dropdown>
-                                </div>
-                            </div>
-
-                            <div class="row margin-top-10">
-                                <div class="col-md-3">
-                                    <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'" 
-                                      [settings]="locationsSettings"
-                                      [data]="locationsList" [(ngModel)]="model.selectedLocations"
-                                      name="selectedLocations" 
-                                      (onSelect)="onSelectLocation($event)" (onDeSelect)="onDeSelectLocation($event)"
-                                      (onSelectAll)="onSelectAllLocations($event)" (onDeSelectAll)="onDeSelectAllLocations($event)"
-                                      #selectedLocations="ngModel">
-                                    </ng-multiselect-dropdown>
-                                </div>
-                                <div class="col-md-3">
-                                    <ng-multiselect-dropdown [placeholder]="'-- All sub-location/s --'" title="Location/s"
-                                      [settings]="subLocationsSettings"
-                                      [data]="filteredSubLocationsList" [(ngModel)]="model.selectedSubLocations" 
-                                      name="selectedSubLocations" (onSelect)="onSubLocationSelect($event)"
-                                      (onDeSelect)="onSubLocationDeSelect($event)" (onSelectAll)="onSubLocationSelectAll($event)"
-                                      (onDeSelectAll)="onSubLocationDeSelectAll($event)"
-                                      #selectedSubLocations="ngModel">
-                                    </ng-multiselect-dropdown>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" title="Enter some keywords from project description to search" placeholder="Search project descriptions"
-                                    maxlength="100" name="description" (input)="descriptionChanged()" [(ngModel)]="model.description" #description="ngModel" />
-                                </div>
-                            </div>
-
-                            <div class="row margin-top-10">
-                                <div class="col-md-3">
-                                    <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" class="form-control" title="Project value lower range" 
-                                      [(ngModel)]="model.lowerRange" placeholder="Project value from" 
-                                      name="lowerRange" />
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" class="form-control" title="Project value upper range" 
-                                    [(ngModel)]="model.upperRange" placeholder="Project value upto" 
-                                    name="upperRange" />
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <button type="button" (click)="toggleCurrencyUsage()" class="btn btn-info btn-sm">
-                                          <i *ngIf="!model.useDefaultCurrency" class="fa fa-square"></i>
-                                          <i *ngIf="model.useDefaultCurrency" class="fa fa-check"></i>
-                                        </button>
-                                        &nbsp;Show amounts in {{defaultCurrency}}
-                                      </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <button type="button" (click)="toggleExportGrouping()" class="btn btn-info btn-sm">
-                                          <i *ngIf="!model.isExportGroupedData" class="fa fa-square"></i>
-                                          <i *ngIf="model.isExportGroupedData" class="fa fa-check"></i>
-                                        </button>
-                                        &nbsp;Export Combined Data
-                                      </div>
-                                </div>
-                                <div class="col-md-3" style="margin-top: 10px;">
-                                    <div class="float-right">
-                                        <button *ngIf="isAnyFilterSet" type="button"
-                                            class="btn btn-primary margin-left-2" (click)="resetFilters()">Reset filters</button>
+                            <div class="card mb-4">
+                                
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <select class="form-control" id="startingYear" [(ngModel)]="model.startingYear" name="startingYear"
+                                              #startingYear="ngModel" (change)="startingYearChanged()" required>
+                                              <option value="0">--Active In--</option>
+                                              <option *ngFor="let year of financialYears" [value]="year.financialYear">{{year.label}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
+                                              title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel();">
+                                              <option value="0">--Sector levels--</option>
+                                              <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="sector/s"
+                                              [settings]="sectorsSettings"
+                                              [data]="sectorsList"
+                                              [(ngModel)]="model.selectedSectors" name="selectedSectors"
+                                              (onSelect)="onSelectSector($event)" (onDeSelect)="onDeSelectSector($event)"
+                                              (onSelectAll)="onSelectAllSectors($event)" (onDeSelectAll)="onDeSelectAllSectors($event)"
+                                              #selectedSectors="ngModel">
+                                            </ng-multiselect-dropdown>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <ng-multiselect-dropdown [placeholder]="'-- Select Organization/s --'"
+                                              [settings]="organizationsSettings"
+                                              [data]="organizationsList"
+                                              [(ngModel)]="model.selectedOrganizations"
+                                              (onSelect)="onSelectOrganization($event)" (onDeSelect)="onDeSelectOrganization($event)"
+                                              (onSelectAll)="onSelectAllOrganizations($event)" (onDeSelectAll)="onDeSelectAllOrganizations($event)"
+                                               name="selectedOrganizations" #selectedOrganizations="ngModel">
+                                            </ng-multiselect-dropdown>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="row margin-top-10">
-                                <div class="col-md-12 col-lg-12 col-sm-12">
-                                    <div class="float-right">
-                                            <span *ngIf="excelFile" class="text-warning">
-                                                <i><b>Export generated successfully</b>&nbsp;&nbsp;</i>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <ng-multiselect-dropdown [placeholder]="'-- Select Location/s --'"
+                                              [settings]="locationsSettings"
+                                              [data]="locationsList" [(ngModel)]="model.selectedLocations"
+                                              name="selectedLocations"
+                                              (onSelect)="onSelectLocation($event)" (onDeSelect)="onDeSelectLocation($event)"
+                                              (onSelectAll)="onSelectAllLocations($event)" (onDeSelectAll)="onDeSelectAllLocations($event)"
+                                              #selectedLocations="ngModel">
+                                            </ng-multiselect-dropdown>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <ng-multiselect-dropdown [placeholder]="'-- All sub-location/s --'" title="Location/s"
+                                              [settings]="subLocationsSettings"
+                                              [data]="filteredSubLocationsList" [(ngModel)]="model.selectedSubLocations"
+                                              name="selectedSubLocations" (onSelect)="onSubLocationSelect($event)"
+                                              (onDeSelect)="onSubLocationDeSelect($event)" (onSelectAll)="onSubLocationSelectAll($event)"
+                                              (onDeSelectAll)="onSubLocationDeSelectAll($event)"
+                                              #selectedSubLocations="ngModel">
+                                            </ng-multiselect-dropdown>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 mb-3">
+                                            <input type="text" class="form-control" title="Enter some keywords from project description to search" placeholder="Search project descriptions"
+                                            maxlength="100" name="description" (input)="descriptionChanged()" [(ngModel)]="model.description" #description="ngModel" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" class="form-control" title="Project value lower range"
+                                              [(ngModel)]="model.lowerRange" placeholder="Project value from"
+                                              name="lowerRange" />
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 mb-3">
+                                            <input type="text" pattern="^\d*(\.\d{0,2})?$" maxlength="11" class="form-control" title="Project value upper range"
+                                            [(ngModel)]="model.upperRange" placeholder="Project value upto"
+                                            name="upperRange" />
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 mb-3">
+                                            <div class="row">
+                                                        <div class="col-sm-6 mb-2">
+                                                    <div class="btn-group" data-toggle="buttons">
+                                                        <button type="button" (click)="toggleCurrencyUsage()" class="btn btn-info btn-sm">
+                                                            <i *ngIf="!model.useDefaultCurrency" class="fa fa-square"></i>
+                                                            <i *ngIf="model.useDefaultCurrency" class="fa fa-check"></i>
+                                                        </button>
+                                                        &nbsp;Show amounts in {{defaultCurrency}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 mb-2">
+                                                    <div class="btn-group" data-toggle="buttons">
+                                                        <button type="button" (click)="toggleExportGrouping()" class="btn btn-info btn-sm">
+                                                            <i *ngIf="!model.isExportGroupedData" class="fa fa-square"></i>
+                                                            <i *ngIf="model.isExportGroupedData" class="fa fa-check"></i>
+                                                        </button>
+                                                        &nbsp;Export Combined Data
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-end">
+                                        <div class="col-md-6">
+                                            <button *ngIf="isAnyFilterSet" type="button" class="btn btn-outline-primary" (click)="resetFilters()">Reset filters</button>
+                                        </div>
+                                        <div class="col-md-6 text-md-right">
+                                            <span *ngIf="excelFile" class="text-warning d-block mb-2">
+                                                <i><b>Export generated successfully</b></i>
                                             </span>
-                                            <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success">Download export as spreadsheet</a>&nbsp;
-                                            <button [class.disable]="isProcessing" type="submit" class="btn btn-info">
+                                            <a *ngIf="excelFile" href="{{excelFile}}" class="btn btn-success mr-2">Download export as spreadsheet</a>
+                                            <button [class.disable]="isProcessing" type="submit" class="btn btn-info btn-lg">
                                                 {{btnReportText}}
                                             </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
                         </form>
+
+                        <div class="row mt-4">
+                            <div class="col-12 mb-3">
+                                <h5>Quick Download Reports</h5>
+                                <p class="text-muted">Download the latest prebuilt reports without applying filters.</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        Projects Report
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <p class="card-text">Download the latest projects report.</p>
+                                    <p class="text-muted small mb-3">URL: {{ projectsReportUrl }}</p>
+                                        <div class="mt-auto">
+                                            <button type="button" class="btn btn-info" (click)="exportProjectsReport()">Export Projects report</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        Project Transactions Report
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <p class="card-text">Download the latest project transactions report.</p>
+                                    <p class="text-muted small mb-3">URL: {{ projectTransactionsReportUrl }}</p>
+                                        <div class="mt-auto">
+                                            <button type="button" class="btn btn-info" (click)="exportProjectTransactionsReport()">Export Project Transactions report</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

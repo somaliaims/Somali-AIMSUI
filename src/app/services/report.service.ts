@@ -62,6 +62,12 @@ export class ReportService {
             catchError(this.storeService.handleError<any>('All Projects Report')));
     }
 
+    downloadAllProjectsReportFile(isExportGroupedData: boolean) {
+      var url = this.urlHelper.getAllProjectsReportFileUrl(isExportGroupedData);
+      return this.httpClient.get(url, { observe: 'response', responseType: 'blob' as 'json' }).pipe(
+        catchError(this.storeService.handleError<any>('Download All Projects Report File')));
+    }
+
     getReportNames() {
       var url = this.urlHelper.getReportNamesUrl();
       return this.httpClient.get(url, httpOptions).pipe(

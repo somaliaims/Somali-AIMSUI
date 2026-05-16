@@ -556,6 +556,10 @@ export class UrlHelperService {
         return (this.BASE_URL + urlsList.urls.allProjectsReport);
     }
 
+    getAllProjectsReportFileUrl(isExportGroupedData: boolean) {
+        return (this.BASE_URL + 'Report/GetAllProjectsReportFile?isExportGroupedData=' + (isExportGroupedData ? 'true' : 'false'));
+    }
+
     deleteProjectFunderUrl(projectId: string, funderId: string) {
         return (this.BASE_URL + urlsList.urls.deleteProjectFunder + projectId + '/' + funderId);
     }
