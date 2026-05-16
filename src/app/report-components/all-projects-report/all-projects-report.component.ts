@@ -30,7 +30,7 @@ export class AllProjectsReportComponent implements OnInit {
   btnReportText: string = 'Generate export';
   model: any = { 
     organizationId: 0, startingYear: 0, endingYear: 0,
-    useDefaultCurrency: false,
+    useDefaultCurrency: true,
     selectedProjects: [], selectedSectors: [], selectedOrganizations: [],
     selectedLocations: [], selectedSubLocations: [],
     description: null, lowerRange: null, upperRange: null,
@@ -50,6 +50,9 @@ export class AllProjectsReportComponent implements OnInit {
   locationsList: any = [];
   subLocationsList: any = [];
   filteredSubLocationsList: any = [];
+
+  projectsReportUrl: string = null;
+  projectTransactionsReportUrl: string = null;
 
   sectorIds: any = [];
   subSectorIds: any = [];
@@ -88,6 +91,9 @@ export class AllProjectsReportComponent implements OnInit {
         this.errorModal.openModal();
       }
     });
+
+    this.projectsReportUrl = this.urlService.getAllProjectsReportFileUrl(false);
+    this.projectTransactionsReportUrl = this.urlService.getAllProjectsReportFileUrl(true);
 
     this.organizationsSettings = {
       singleSelection: true,
@@ -434,6 +440,54 @@ export class AllProjectsReportComponent implements OnInit {
     if (this.excelFile) {
       this.excelFile = this.urlService.getExcelFilesUrl() + this.excelFile;
     }
+  }
+
+  exportProjectsReport() {
+    this.blockUI.start('Generating export...');
+    this.isProcessing = true;
+    this.reportService.downloadAllProjectsReportFile(false).subscribe((resp: any) => {
+      const blob: Blob = resp.body as Blob;
+      const filename = 'ProjectsReport-Latest.xlsx';
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+      this.blockUI.stop();
+      this.isProcessing = false;
+    }, error => {
+      this.blockUI.stop();
+      this.isProcessing = false;
+      this.errorMessage = 'Error generating export';
+      this.errorModal.openModal();
+    });
+  }
+
+  exportProjectTransactionsReport() {
+    this.blockUI.start('Generating export...');
+    this.isProcessing = true;
+    this.reportService.downloadAllProjectsReportFile(true).subscribe((resp: any) => {
+      const blob: Blob = resp.body as Blob;
+      const filename = 'ProjectTransactionsReport-Latest.xlsx';
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+      this.blockUI.stop();
+      this.isProcessing = false;
+    }, error => {
+      this.blockUI.stop();
+      this.isProcessing = false;
+      this.errorMessage = 'Error generating export';
+      this.errorModal.openModal();
+    });
   }
 
   onChangeStartYear() {

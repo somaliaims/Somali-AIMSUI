@@ -33,7 +33,8 @@ export class NewProjectComponent implements OnInit {
   @Input()
   displayTime: number = Settings.displayMessageTime;
   isProjectLoaded: boolean = false;
-  isIATILoading: boolean = true;
+  isIATILoading: boolean = false;
+  isIATILoaded: boolean = false;
   isAIMSLoading: boolean = false;
   isBtnDisabled: boolean = false;
   isTextReadOnly: boolean = true;
@@ -164,7 +165,6 @@ export class NewProjectComponent implements OnInit {
     this.getUserOrganizationsList();
     this.getIATIOrganizationsList();
     this.loadUserProjects();
-    this.loadIATIProjects();
     this.loadAIMSProjects();
 
     this.markerValuesSettings = {
@@ -300,6 +300,7 @@ export class NewProjectComponent implements OnInit {
         this.isTextReadOnly = false;
         this.inputTextHolder = projectTitle;
         this.isIATILoading = false;
+        this.isIATILoaded = true;
 
         if (!this.isAIMSLoading) {
           if (this.organizationsList && this.organizationsList.length > 0) {

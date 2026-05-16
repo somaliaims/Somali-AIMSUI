@@ -1,3 +1,18 @@
+<style>
+  .load-iati-btn {
+    background-color: #17A2B8;
+    border-color: #17A2B8;
+    color: white;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .load-iati-btn:hover {
+    background-color: #117a8b;
+    border-color: #117a8b;
+    color: white;
+  }
+</style>
+
 <jw-modal id="project-description">
   <div class="row">
     <div class="col-md-12">
@@ -271,10 +286,17 @@
           <div class="card-body">
             <h5 class="card-title text-center">Matches from IATI</h5>
             <div>
+              <div *ngIf="!isIATILoaded">
+                <div class="text-center margin-top-10">
+                  <button class="btn btn-lg load-iati-btn" (click)="loadIATIProjects()">
+                    Load IATI Projects
+                  </button>
+                </div>
+              </div>
               <div *ngIf="isIATILoading">
                 Loading IATI projects...
               </div>
-              <div *ngIf="!isIATILoading">
+              <div *ngIf="isIATILoaded">
                 <div *ngIf="filteredIatiProjects.length > 0" class="projects-list-box">
                   <table class="table table-bordered table-fixed-layout">
                     <tr
