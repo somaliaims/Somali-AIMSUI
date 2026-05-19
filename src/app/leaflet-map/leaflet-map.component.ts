@@ -1,5 +1,4 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import * as L from 'leaflet';
 import { LocationService } from '../services/location.service';
 import { Location } from '../models/location-model';
 import { ProjectService } from '../services/project.service';
@@ -19,6 +18,7 @@ import { CurrencyService } from '../services/currency.service';
 import { ProjectReportModalComponent } from '../project-report-modal/project-report-modal.component';
 import { of, switchMap, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import 'leaflet';
 import 'leaflet.markercluster';
 
 @Component({
@@ -109,7 +109,6 @@ export class LeafletMapComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @ViewChild('map') mapContainer!: ElementRef<HTMLDivElement>;
   map!: L.Map;
-
   //Overlay UI blocker
   @BlockUI() blockUI: NgBlockUI;
   markerClusterGroup: any;
@@ -124,6 +123,7 @@ export class LeafletMapComponent implements AfterViewInit, OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    const L = (window as any).L;
     this.setFilter()
     this.getDefaultCurrency();
     this.isLoggedIn = this.securityService.checkIsLoggedIn();
@@ -236,6 +236,7 @@ export class LeafletMapComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   initMap() {
+    const L = (window as any).L;
     if (this.map) {
       return;
     }
@@ -261,7 +262,7 @@ export class LeafletMapComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   addMarkers() {
-
+    const L = (window as any).L;
     if (!this.map) {
       console.error('Map not initialized');
       return;
