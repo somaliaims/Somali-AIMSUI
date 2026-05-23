@@ -130,6 +130,7 @@ export const urls = {
 	budgetReport: "Report/GetBudgetReport",
 	budgetSummaryReport: "Report/GetProjectsBudgetSummaryReport",
 	envelopeReport: "Report/GetEnvelopeReport",
+	organisationsReportUrl: "Report/GetOrganizationWiseProjects",
 	allProjectsReport: "Report/GetAllProjectsReport",
 	searchProjectsViewByCriteria: "Project/SearchProjectsViewByCriteria",
 	searchProjectsByCriteriaReport: "Report/GetSectorWiseProjects",
