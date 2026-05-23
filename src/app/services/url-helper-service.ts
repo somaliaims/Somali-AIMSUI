@@ -708,6 +708,9 @@ export class UrlHelperService {
     getSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.sectorProjectsReport);
     }
+     getOrganizationProjectsReportUrl() {
+        return (this.BASE_URL + urlsList.urls.organisationsReportUrl);
+    }
 
     getNoSectorProjectsReportUrl() {
         return (this.BASE_URL + urlsList.urls.noSectorProjectsReport);
@@ -738,7 +741,11 @@ export class UrlHelperService {
     }
 
     getEnvelopeReportUrl() {
-        return (this.BASE_URL + urlsList.urls.envelopeReport);
+      return (this.BASE_URL + urlsList.urls.envelopeReport);
+    }
+
+    getOrganisationsReportUrl() {
+      return (this.BASE_URL + urlsList.urls.organisationsReportUrl);
     }
 
     getReportNamesUrl() {

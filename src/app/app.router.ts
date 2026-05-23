@@ -74,6 +74,7 @@ import { ManageEnvelopeTypeComponent } from './manage-envelope-type/manage-envel
 import { EnvelopeTypesComponent } from './envelope-types/envelope-types.component';
 import { DeleteEnvelopeTypeComponent } from './delete-envelope-type/delete-envelope-type.component';
 import { EnvelopeReportComponent } from './report-components/envelope-report/envelope-report.component';
+import { OrganisationsReportComponent } from './report-components/organisations-report/organisations-report.component';
 import { DataBackupComponent } from './data-backup/data-backup.component';
 import { AllProjectsReportComponent } from './report-components/all-projects-report/all-projects-report.component';
 import { OrganizationTypesComponent } from './organization-types/organization-types.component';
@@ -151,6 +152,7 @@ const routes: Routes = [
   { path: 'time-trend-report', component: TimeTrendReportComponent },
   { path: 'budget-report', component: BudgetReportComponent },
   { path: 'envelope-report', component: EnvelopeReportComponent },
+  { path: 'organisations-report', component: OrganisationsReportComponent },
   { path: 'iati-settings', component: IatiSettingsComponent },
   { path: 'smtp-settings', component: SmtpSettingsComponent },
   { path: 'home-page-settings', component: HomePageSettingsComponent},

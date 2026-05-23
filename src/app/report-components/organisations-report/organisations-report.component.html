@@ -1,0 +1,438 @@
+<div class="container-fluid view-area">
+  <block-ui>
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active btn-info" data-toggle="tab">Organisations report</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="row" *ngIf="!isLoading">
+      <div class="col-lg-12 col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form class="form-signin" (ngSubmit)="getOrganisationsReport()" #searchForm="ngForm">
+              <div class="row">
+                <div class="col-lg-6 col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- All project/s --'" title="AIMS Projects"
+                    [settings]="projectsSettings"
+                    [data]="projects"
+                    [(ngModel)]="model.selectedProjects" (onSelect)="onProjectSelect($event)" (onSelectAll)="onProjectSelectAll($event)"
+                    (onDeSelect)="onProjectDeSelect($event)" (onDeSelectAll)="onProjectDeSelectAll($event)"
+                    name="selectedProjects"
+                    #selectedProjects="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                  <table>
+                    <tr>
+                      <td>Period:&nbsp;</td>
+                      <td>
+                        <select class="form-control" id="startingYear" title="Starting financial year"
+                          [(ngModel)]="model.startingYear" name="startingYear" (change)="onChangeStartingYear()" #startingYear="ngModel" required>
+                          <option value="0">--Active In--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.label}}</option>
+                        </select>
+                      </td>
+                      <td>&nbsp;&nbsp;</td>
+                      <td>
+                        <select class="form-control" id="endingYear" title="Ending financial year"
+                          [(ngModel)]="model.endingYear" name="endingYear" (change)="onChangeEndingYear()" #endingYear="ngModel">
+                          <option value="0">--Active Until--</option>
+                          <option *ngFor="let year of yearsList" [value]="year.financialYear">{{year.label}}</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+              <div class="row margin-top-10">
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="sectorLevel" [(ngModel)]="model.sectorLevel" name="sectorLevel"
+                    title="Sector level" #sectorLevel="ngModel" required (change)="manageSectorLevel();">
+                    <option value="0">--Sector levels--</option>
+                    <option *ngFor="let level of sectorLevels" [value]="level.id">{{level.level}}</option>
+                  </select>
+                </div>
+                <div [class.disable]="model.sectorLevel == 0" class="col-lg-3 col-md-3">
+                  <ng-multiselect-dropdown [placeholder]="'-- All sector/s --'" title="Sector/s"
+                    [settings]="sectorsSettings"
+                    [data]="sectorsList"
+                    [(ngModel)]="model.selectedSectors" name="selectedSectors"
+                    (onSelect)="onSectorSelect($event)" (onDeSelect)="onSectorDeSelect($event)"
+                    (onSelectAll)="onSectorSelectAll($event)" (onDeSelectAll)="onSectorDeSelectAll($event)"
+                    #selectedSectors="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                  <ng-multiselect-dropdown [placeholder]="'-- All organization/s --'" title="Organization/s"
+                    [settings]="organizationsSettings"
+                    [data]="organizationsList" [(ngModel)]="model.selectedOrganizations"
+                    (onSelect)="onOrganizationSelect($event)" (onDeSelect)="onOrganizationDeSelect($event)"
+                    (onSelectAll)="onOrganizationSelectAll($event)" (onDeSelectAll)="onOrganizationDeSelectAll($event)"
+                    name="selectedOrganizations" #selectedOrganizations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+
+              <div class="row margin-top-10">
+                <div class="col-lg-3 col-md-3">
+                  <select class="form-control" id="selectedLocation" [(ngModel)]="model.locationId"
+                    name="selectedLocation" (change)="changeLocation()" #selectedLocation="ngModel">
+                    <option value="0">--All location/s--</option>
+                    <option *ngFor="let location of locationsList" [value]="location.id">{{location.location}}</option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                  <ng-multiselect-dropdown [placeholder]="'-- All sub-location/s --'" title="Sub-location/s"
+                    [settings]="subLocationsSettings"
+                    [data]="filteredSubLocationsList" [(ngModel)]="model.selectedSubLocations"
+                    name="selectedSubLocations" (onSelect)="onSubLocationSelect($event)"
+                    (onDeSelect)="onSubLocationDeSelect($event)" (onSelectAll)="onSubLocationSelectAll($event)"
+                    (onDeSelectAll)="onSubLocationDeSelectAll($event)"
+                    #selectedSubLocations="ngModel">
+                  </ng-multiselect-dropdown>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                  <select [class.disable]="manualExRate == 0" class="form-control" title="Currency for reporting"
+                    (change)="selectCurrency();manageResetDisplay();" id="selectedCurrency" [(ngModel)]="model.selectedCurrency"
+                    name="selectedCurrency" #selectedCurrency="ngModel">
+                    <option *ngFor="let currency of currenciesList" [value]="currency.currency">
+                      {{currency.currencyName}}
+                    </option>
+                  </select>&nbsp;
+                  <span *ngIf="manualExRate > 0 && model.selectedCurrency == nationalCurrencyName" class="text-warning">
+                    <b><i>Exchange rate: 1 {{defaultCurrency}} = {{manualExRate}} {{nationalCurrencyName}} on {{datedToday}}</i></b>
+                  </span>
+                  <span *ngIf="manualExRate == 0 && !isDataLoading" class="text-danger">
+                    <i>No exchange rate available, contact Administrator.</i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row margin-top-10">
+                <div class="col-lg-12 col-md-12">
+                  <div [class.disable]="!defaultCurrency" class="float-right">
+                    <button type="submit" class="btn btn-info margin-top-2">{{btnReportText}}</button>
+                    <button *ngIf="organisationsSummary && organisationsSummary.length > 0" type="button"
+                      class="btn btn-danger margin-top-2 margin-left-2" (click)="generatePDF()">Download PDF</button>
+                    <a *ngIf="excelFile" [href]="excelFile" class="btn btn-success margin-top-2 margin-left-2">Download spreadsheet</a>
+                    <button *ngIf="organisationsSummary && organisationsSummary.length > 0" type="button"
+                      class="btn btn-warning margin-top-2 margin-left-2" (click)="printReport()">Print report</button>
+                    <button *ngIf="isAnyFilterSet" type="button"
+                      class="btn btn-primary margin-top-2 margin-left-2" (click)="resetFilters()">Reset filters</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="col-lg-12 col-md-12 text-center">
+      <img src="assets/images/loader-md.gif" /><span>&nbsp;Setting up report...</span>
+    </div>
+
+    <!-- Charts and Map Section -->
+    <div  class="row margin-top-10">
+      <div class="col-md-12">
+      
+      
+      
+        <!-- Sector Distribution Chart -->
+        <div class="row margin-top-20">
+          <div class="col-lg-6 col-md-6">
+           <div class="card">
+  <div class="card-header">
+    <h6 class="card-title">Sector Distribution of Projects</h6>
+  </div>
+  <div class="card-body">
+   <div *ngIf="showSectorChart && sectorDoughnutData"
+     style="display: block;"
+     class="canvas-container mx-auto">
+
+  <canvas
+  baseChart
+  [type]="'doughnut'"
+  [data]="sectorDoughnutData"
+  [options]="pieChartOptions"
+  height="120">
+</canvas>
+
+</div>
+    <div *ngIf="!sectorDoughnutData" class="text-center text-muted">
+      <small>No sector data available</small>
+    </div>
+  </div>
+</div>
+          </div>
+
+          <!-- Financial Chart -->
+         <!-- Financial Chart -->
+<div class="col-lg-6 col-md-6">
+  <div class="card">
+    <div class="card-header">
+      <h6 class="card-title">Financial Overview by Organization</h6>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row margin-top-10">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <form class="form-inline float-right">
+            <label>Chart type:&nbsp;</label>
+
+            <select class="form-control"
+              [(ngModel)]="model.chartType"
+              name="chartType"
+              (change)="manageDataToDisplay()"
+              required>
+
+              <option *ngFor="let chart of chartOptions" [value]="chart.id">
+                {{chart.title}}
+              </option>
+
+            </select>
+
+            <label>&nbsp;Data option:&nbsp;</label>
+
+            <select class="form-control"
+              [(ngModel)]="model.selectedDataOption"
+              name="dataOption"
+              (change)="manageDataToDisplay()"
+              required>
+
+              <option value="0">-- Chart data option --</option>
+
+              <option *ngFor="let option of dataOptions" [value]="option.id">
+                {{option.value}}
+              </option>
+
+            </select>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- CHARTS -->
+      <div *ngIf="organisationsSummary?.length > 0"
+        class="canvas-container mx-auto"
+        style="display:block;">
+
+        <!-- STACKED BAR -->
+        <canvas *ngIf="model?.chartTypeName == chartTypes.STACKEDBAR"
+  baseChart
+  [datasets]="financialChartData"
+  [labels]="financialChartLabels"
+  [options]="stackedChartOptions"
+  [legend]="true"
+  [chartType]="'bar'">
+</canvas>
+
+        <!-- LINE -->
+        <canvas *ngIf="model?.chartTypeName == chartTypes.LINE"
+  baseChart
+  [datasets]="financialChartData"
+  [labels]="financialChartLabels"
+  [options]="lineChartOptions"
+  [legend]="true"
+  [chartType]="'line'">
+</canvas>
+
+        <!-- BAR -->
+        <canvas *ngIf="model?.chartTypeName == chartTypes.BAR"
+  baseChart
+  [datasets]="financialChartData"
+  [labels]="financialChartLabels"
+  [options]="barChartOptions"
+  [legend]="true"
+  [chartType]="'bar'">
+</canvas>
+
+        <!-- PIE / DOUGHNUT -->
+      <!-- PIE / DOUGHNUT -->
+<canvas *ngIf="model?.chartTypeName == chartTypes.PIE || model?.chartTypeName == chartTypes.DOUGHNUT"
+  baseChart
+  [datasets]="financialChartData"
+  [labels]="financialChartLabels"
+  [options]="pieChartOptions"
+  [legend]="true"
+  [chartType]="model?.chartTypeName == chartTypes.DOUGHNUT ? 'doughnut' : 'pie'">
+</canvas>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="row margin-top-20">
+          <div class="col-lg-12 col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h6 class="card-title">Project Locations</h6>
+              </div>
+              <div class="card-body">
+                <div #mapContainer id="organisations-map" style="height: 500px; width: 100%; z-index: 1;"></div>
+                <div *ngIf="!projectLocations || projectLocations.length == 0" class="text-center text-muted margin-top-20">
+                  <small>No location data available for the filtered projects</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projects Table Section -->
+       <!-- Projects Table Section -->
+<div class="row margin-top-20">
+  <div class="col-lg-12 col-md-12">
+    <div class="card">
+
+      <div class="card-header">
+        <h6 class="card-title">Projects Associated with Organizations</h6>
+      </div>
+
+      <div class="card-body">
+        <div id="rpt-organisations-pdf-view">
+
+          <!-- HEADER -->
+          <table class="table table-striped table-condensed small">
+            <thead>
+              <tr>
+                <th width="25%">Project</th>
+                <th class="text-center" width="20%">Funders</th>
+                <th class="text-center" width="20%">Implementers</th>
+                <th class="text-right" width="15%">Actual disbursements</th>
+                <th class="text-right" width="15%">Planned disbursements</th>
+              </tr>
+            </thead>
+          </table>
+
+          <!-- DATA -->
+          <div *ngIf="organisationProjectsList?.length > 0; else noData">
+
+            <div *ngFor="let orgProject of organisationProjectsList">
+
+              <table class="table table-condensed small mb-0">
+                <tbody>
+
+                  <!-- ORGANIZATION ROW -->
+                  <tr class="row-highlight"
+                      (click)="displayHideRow(orgProject.organizationId)">
+
+                    <td colspan="3">
+
+                      <i class="fa"
+                         [ngClass]="orgProject.isDisplay ? 'fa-minus-square' : 'fa-plus-square'">
+                      </i>
+
+                      &nbsp;
+                      <b>
+                        <i>
+                          {{ orgProject.organizationName }}
+                          ({{ orgProject.projects?.length || 0 }} projects)
+                        </i>
+                      </b>
+
+                    </td>
+
+                    <td class="text-right">
+                      {{ orgProject.actualDisbursements }}
+                    </td>
+
+                    <td class="text-right">
+                      {{ orgProject.plannedDisbursements }}
+                    </td>
+
+                  </tr>
+
+                  <!-- PROJECTS LIST -->
+                  <ng-container *ngIf="orgProject.isDisplay">
+
+                    <tr *ngFor="let project of orgProject.projects">
+
+                      <td width="25%">
+                        {{ project.title }}
+                      </td>
+
+                      <td class="text-center word-wrap" width="20%">
+                        {{ project.funders }}
+                      </td>
+
+                      <td class="text-center word-wrap" width="20%">
+                        {{ project.implementers }}
+                      </td>
+
+                      <td class="text-right" width="15%">
+                        {{ project.actualDisbursements }}
+                      </td>
+
+                      <td class="text-right" width="15%">
+                        {{ project.plannedDisbursements }}
+                      </td>
+
+                    </tr>
+
+                    <!-- EMPTY STATE -->
+                    <tr *ngIf="!orgProject.projects?.length">
+                      <td colspan="5" class="text-info text-center">
+                        <i>No projects found for this organisation</i>
+                      </td>
+                    </tr>
+
+                  </ng-container>
+
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+
+          <!-- NO DATA -->
+          <ng-template #noData>
+            <div class="text-center margin-top-20">
+              <span class="text-info">
+                <i>No projects found for the selected filters</i>
+              </span>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+        <!-- Report Metadata -->
+        <div class="col-md-12 small">
+          <div *ngIf="organisationsSummary && isArray(organisationsSummary) && organisationsSummary.length > 0" class="text-center margin-top-20 text-info">
+            Report link: <a class="text-info" [href]="reportDataList?.reportSettings?.reportUrl">{{reportDataList?.reportSettings?.reportUrl}}</a>
+          </div>
+          <div class="text-center margin-top-5">
+            <span><i>Generated on: {{getTodaysDate()}}</i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state when not loading and no data -->
+    <div *ngIf="!isLoading && (!organisationsSummary || !isArray(organisationsSummary) || organisationsSummary.length == 0)" class="row margin-top-20">
+      <div class="col-md-12 text-center">
+        <span class="text-warning"><i>No data available. Please adjust filters and generate report.</i></span>
+      </div>
+    </div>
+  </block-ui>
+</div>
+
+<error-modal [message]="errorMessage"></error-modal>

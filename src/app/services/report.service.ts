@@ -80,7 +80,12 @@ export class ReportService {
         JSON.stringify(model), httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Projects Report by Sectors')));
     }
-
+   getOrganizationWiseProjectsReport(model: any) {
+      var url = this.urlHelper.getOrganizationProjectsReportUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Projects Report by Sectors')));
+    }
     getNoSectorProjectsReport(model: any) {
       var url = this.urlHelper.getNoSectorProjectsReportUrl();
       return this.httpClient.post(url,
@@ -100,6 +105,13 @@ export class ReportService {
       return this.httpClient.post(url,
         JSON.stringify(model), httpOptions).pipe(
             catchError(this.storeService.handleError<any>('Envelope Report')));
+    }
+
+    getOrganisationsReport(model: any) {
+      var url = this.urlHelper.getOrganisationsReportUrl();
+      return this.httpClient.post(url,
+        JSON.stringify(model), httpOptions).pipe(
+            catchError(this.storeService.handleError<any>('Organisations Report')));
     }
 
     getLocationWiseProjectsReport(model: any) {
